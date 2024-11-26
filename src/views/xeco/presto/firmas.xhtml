@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<p:outputPanel styleClass="update-presto #{presto.cssFirmas}">
+	<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
+	<div class="ui-blocks">
+	<c:forEach items="#{presto.principales}" var="firma">
+		<div class="ui-block-box">
+			<p>#{firma.cargo}</p>
+			<p>#{firma.fullName}</p>
+			<p>
+			<c:choose>
+				<c:when test="#{firma.aceptada}">
+					<i class="fas fa-flag-alt icon icon-green" title="Firma aceptada"></i>#{uae.getMsg('lblAceptada')} #{uae.isoDate(firma.getFecha())}
+				</c:when>
+				<c:when test="#{firma.rechazada}">
+					<i class="fas fa-flag-alt icon icon-red" title="#{firma.info}"></i>#{uae.getMsg('lblRechazada')} #{uae.isoDate(firma.getFecha())}
+				</c:when>
+				<c:otherwise>
+					<i class="fas fa-flag-alt icon icon-warn" title="Pendiente de firma"></i>#{uae.getMsg('lblPendiente')}
+				</c:otherwise>
+			</c:choose>
+			</p>
+		</div>
+	</c:forEach>
+	</div>
+	<c:if test="#{presto.rechazada}">
+		<p class="notice notice-error"><h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (#{presto.nameRechazo}) #{presto.infoRechazo}</p>
+	</c:if>
+	<ui:include src="../parts/leyenda_firmas.xhtml"></ui:include>
+</p:outputPanel>
+</html>

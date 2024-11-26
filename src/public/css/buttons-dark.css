@@ -1,0 +1,32 @@
+
+html.dark {
+	.btn-primary { background-color: rgb(37 99 235)/* blue-600 */; }
+	.btn-primary:hover { background-color: rgb(29 78 216)/* blue-700 */; }
+
+	/*.btn-secondary { }
+	.btn-secondary:hover { }
+
+	.btn-light { }
+	.btn-light:hover { }*/
+
+	.btn-info { background-color: rgb(2 132 199)/* sky-600 */; }
+	.btn-info:hover { background-color: rgb(3 105 161)/* sky-700 */; }
+
+	.btn-green { background-color: rgb(22 163 74)/* green-600 */; }
+	.btn-green:hover { background-color: rgb(21 128 61)/* green-700 */; }
+
+	.btn-success { background-color: rgb(5 150 105)/* emerald-600 */; }
+	.btn-success:hover { background-color: rgb(4 120 87)/* emerald-700 */; }
+
+	/*.btn-warn { background-color: rgb(133 77 14); }
+	.btn-warn:hover { background-color: rgb(161 98 7); }*/
+
+	.btn-error { background-color: rgb(220 38 38)/* red-600 */; }
+	.btn-error:hover { background-color: rgb(185 28 28)/* red-700 */; }
+
+	.btn-danger { background-color: rgb(131 35 42)/* mexican-red-600 */; }
+	.btn-danger:hover { background-color: rgb(102 27 38)/* mexican-red-700 */; }
+
+	.btn-dark { background-color: rgb(31 41 55)/* gray-800 */; }
+	.btn-dark:hover { background-color: rgb(55 65 81)/* gray-700 */; }
+}

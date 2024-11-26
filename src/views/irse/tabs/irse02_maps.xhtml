@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="card-xeco">
+		<h2 class="wrap"><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab2.msg.tit.maps']}" escape="false" /></span></h2>
+		<c:if test="#{iris.form.editable}">
+			<ui:include src="./irse02_info.xhtml"></ui:include>
+			<div class="ui-blocks no-print">
+			<label class="ui-block-xl">
+				<div class="label required"><h:outputText value="#{msg['lbl.sali']}" escape="false" />:</div>
+				<input type="search" id="origen" name="origen" class="ui-input ui-autocomplete" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
+				<input type="date" id="f1" name="f1" class="ui-input ui-date" tabindex="31" />
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.a.las']}" escape="false" />:</div>
+				<input type="time" id="h1" name="h1" class="ui-input ui-time" tabindex="32" placeholder="hh:mm" />
+			</label>
+
+			<label class="ui-block-xl">
+				<div class="label required"><h:outputText value="#{msg['lbl.llegue']}" escape="false" />:</div>
+				<input type="search" id="destino" name="destino" class="ui-input ui-autocomplete" tabindex="33" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}"/>
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
+				<input type="date" id="f2" name="f2" class="ui-input ui-date" tabindex="34" />
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.a.las']}" escape="false" />:</div>
+				<input type="time" id="h2" name="h2" class="ui-input ui-time" tabindex="35" placeholder="hh:mm"/>
+			</label>
+
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
+				<select id="desp" name="desp" class="ui-input ui-select" tabindex="37" title="#{msg['tit.medio.trans']}">
+					<option value=""></option>
+					<option value="1">#{iris.rutas.getMsgDesp(1)}</option>
+					<option value="8">#{iris.rutas.getMsgDesp(8)}</option>
+					<option value="6">#{iris.rutas.getMsgDesp(6)}</option>
+					<option value="2">#{iris.rutas.getMsgDesp(2)}</option>
+					<option value="3">#{iris.rutas.getMsgDesp(3)}</option>
+					<option value="4">#{iris.rutas.getMsgDesp(4)}</option>
+					<option value="5">#{iris.rutas.getMsgDesp(5)}</option>
+					<option value="7">#{iris.rutas.getMsgDesp(7)}</option>
+					<option value="9">#{iris.rutas.getMsgDesp(9)}</option>
+				</select>
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block hide grupo-matricula">
+				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
+				<h:inputText id="matricula" value="#{iris.gastos.matricula}" maxlength="10" tabindex="38" styleClass="ui-input ui-short #{iris.form.cssDisabled}"/>
+				<div class="ui-errtip"></div>
+			</label>
+			<div class="ui-block-btn">
+				<a id="add-ruta" href="#" class="btn btn-green success-btn" tabindex="39">
+					<i class="fas fa-arrow-alt-down btn-icon-left"></i><h:outputText value="#{msg['lbl.add.tabla']}" escape="false" /></a>
+			</div>
+			</div>
+		</c:if>
+
+		<table id="rutas" class="tb-xeco table-xs rutas-maps">
+			<thead>
+				<tr>
+					<th class="hide-sm">Nº</th>
+					<th><h:outputText value="#{msg['lbl.origen.etapa']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.fecha.salida']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.hora.salida']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.destino.etapa']}" escape="false" /> <span class="text-warn">(<h:outputText value="#{msg['lbl.principal']}" escape="false" /><i class="fal fa-flag-checkered icon"></i>)</span> *</th>
+					<th><h:outputText value="#{msg['lbl.fecha.llegada']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.hora.llegada']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></th>
+					<th class="hide-sm">Km.</th>
+					<th class="no-print"></th>
+				</tr>
+			</thead>
+			<tbody class="hide">
+				<tr id="@id;" class="tb-data tb-data-tc">
+					<td class="hide-sm" data-cell="Nº">@count;</td>
+					<td data-cell="Origen">@origen;</td>
+					<td data-cell="#{msg['lbl.fecha.salida']}">@f1;</td>
+					<td data-cell="#{msg['lbl.hora.salida']}">@h1;</td>
+					<td data-cell="Destino">
+					<c:choose>
+						<c:when test="#{iris.form.editable}"><a href="#find">@destino; @principal;</a></c:when>
+						<c:otherwise><div>@destino; @principal;</div></c:otherwise>
+					</c:choose>
+					</td>
+					<td data-cell="#{msg['lbl.fecha.llegada']}">@f2;</td>
+					<td data-cell="#{msg['lbl.hora.llegada']}">@h2;</td>
+					<td data-cell="#{msg['lbl.medio.trans']}">@desp;</td>
+					<td class="hide-sm" data-cell="Km.">@km2;</td>
+					<td class="no-print" data-cell="Acciones"><c:if test="#{iris.form.editable}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
+				</tr>
+			</tbody>
+			<tbody class="hide">
+				<tr><td class="no-data" colspan="99"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></td></tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="8"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @size;</td>
+					<td class="tb-data-tc hide-xs hide-sm">@totKmCalc;</td>
+					<td class="hide-sm no-print"></td>
+				</tr>
+			</tfoot>
+		</table>
+		<br/>
+		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab2.info.principal']}" escape="false" /></div>
+	</div>
+
+	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="57">
+		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+	<c:choose>
+		<c:when test="#{iris.form.editable}">
+			<p:commandButton action="#{iris.form.paso2()}" onclick="if (!ir.paso2()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args);"
+				icon="fas fa-caret-right" iconPos="right" styleClass="btn btn-info" value="#{msg['lbl.btn.siguiente']}" title="#{msg['tit.btn.siguiente']}" tabindex="58" />
+			<p:commandButton action="#{iris.form.save2()}" onclick="if (!ir.paso2()) return false;" oncomplete="saveTab();"
+				icon="far fa-save" styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="59" />
+		</c:when>
+		<c:otherwise>
+			<a href="#tab-next" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="58">
+				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
+		</c:otherwise>
+	</c:choose>
+
+	<c:if test="#{iris.form.firmable}">
+		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
+	</c:if>
+</html>

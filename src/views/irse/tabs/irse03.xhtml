@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="card-xeco">
+		<h2 class="wrap"><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn #{iris.perfil.cssTab3H1}">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab3.msg.sub.tit2']}" escape="false" /></span></h2>
+
+		<label class="ui-blocks">
+			<div class="label required inline"><h:outputText value="#{msg['lbl.justifi']}" escape="false" />:</div>
+			<div class="ui-block-main">
+				<h:inputTextarea id="justifi" value="#{iris.gastos.justifi}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="50"/>
+				<div class="ui-errtip"></div>
+			</div>
+		</label>
+		<label class="ui-blocks rutas-vp">
+			<div class="label required inline"><h:outputText value="#{msg['lbl.justifi.vp']}" escape="false" />:</div>
+			<div class="ui-block-main">
+				<h:inputTextarea id="justifiVp" value="#{iris.gastos.justifiVp}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="51"/>
+				<br/><span class="ui-errtip"></span>
+			</div>
+		</label>
+
+		<div class="ui-blocks">
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.tipo.gasto']}" escape="false" />:</div>
+				<h:selectOneMenu id="tg" value="#{iris.gastos.subvTipo}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="52">
+					<f:selectItem itemValue="1" itemLabel="#{msg['lbl.subv.tipo.1']}" itemEscaped="false" />
+					<f:selectItem itemValue="2" itemLabel="#{msg['lbl.subv.tipo.2']}" itemEscaped="false" />
+					<f:selectItem itemValue="3" itemLabel="#{msg['lbl.subv.tipo.3']}" itemEscaped="false" />
+					<f:selectItem itemValue="4" itemLabel="#{msg['lbl.subv.tipo.4']}" itemEscaped="false" />
+					<f:selectItem itemValue="5" itemLabel="#{msg['lbl.subv.tipo.5']}" itemEscaped="false" />
+				</h:selectOneMenu>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.finalidad']}" escape="false" />:</div>
+				<h:selectOneMenu id="finalidad" value="#{iris.gastos.finalidad}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="53">
+					<f:selectItem itemValue="1" itemLabel="#{msg['lbl.finalidad.1']}" itemEscaped="false" />
+					<f:selectItem itemValue="2" itemLabel="#{msg['lbl.finalidad.2']}" itemEscaped="false" />
+					<f:selectItem itemValue="3" itemLabel="#{msg['lbl.finalidad.3']}" itemEscaped="false" />
+				</h:selectOneMenu>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.vinc']}" escape="false" />:</div>
+				<h:selectOneMenu id="vinc" value="#{iris.gastos.vinc}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="54">
+					<f:selectItem itemValue="1" itemLabel="#{msg['lbl.vinc.1']}" itemEscaped="false" />
+					<f:selectItem itemValue="2" itemLabel="#{msg['lbl.vinc.2']}" itemEscaped="false" />
+					<f:selectItem itemValue="3" itemLabel="#{msg['lbl.vinc.3']}" itemEscaped="false" />
+					<f:selectItem itemValue="4" itemLabel="#{msg['lbl.vinc.4']}" itemEscaped="false" />
+					<f:selectItem itemValue="5" itemLabel="#{msg['lbl.vinc.5']}" itemEscaped="false" />
+				</h:selectOneMenu>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.congreso']}" escape="false" />:</div>
+				<h:selectOneMenu id="congreso" value="#{iris.gastos.congreso}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="65">
+					<f:selectItem itemValue="0" itemLabel="#{iris.getMsg('lblNo')}" />
+					<f:selectItem itemValue="4" itemLabel="#{iris.getMsg('lblSi')}" />
+				</h:selectOneMenu>
+			</label>
+		</div>
+
+		<div class="ui-blocks grp-congreso">
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.imp.inscripcion']}" escape="false" />:</div>
+				<h:inputText id="impInsc" value="#{iris.gastos.impInsc}" tabindex="66" styleClass="ui-input ui-float #{iris.form.cssDisabled}"/><span class="icon">€</span>
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label required">#{msg['lbl.f1.congreso']}:</div>
+				<h:inputText id="fIniCong" value="#{iris.gastos.FIniCong}" maxlength="10" tabindex="67" styleClass="ui-input ui-date #{iris.form.cssDisabled}"/>
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label required">#{msg['lbl.f2.congreso']}:</div>
+				<h:inputText id="fFinCong" value="#{iris.gastos.FFinCong}" maxlength="10" tabindex="68" styleClass="ui-input ui-date #{iris.form.cssDisabled}"/>
+				<div class="ui-errtip"></div>
+			</label>
+		</div>
+
+		<div class="hide justifi-congreso">
+			<p class="notice notice-info"><h:outputText value="#{msg['msg.justifi.congreso']}" escape="false" /></p>
+			<label class="ui-blocks">
+				<div class="label required inline"><h:outputText value="#{msg['lbl.justifi.comision']}" escape="false" />:</div>
+				<div class="ui-block-main">
+					<h:inputTextarea id="justifiCong" value="#{iris.gastos.justifiCong}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="69"/>
+					<div class="ui-errtip"></div>
+				</div>
+			</label>
+		</div>
+	</div>
+
+	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="70">
+		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+	<c:choose>
+		<c:when test="#{iris.form.editable}">
+			<p:commandLink action="#{iris.form.paso3()}" onclick="if (!fnPaso3()) return false;" oncomplete="showNextTab(xhr, status, args);"
+					styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="71">
+				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
+			</p:commandLink>
+			<p:commandButton action="#{iris.form.save3()}" onclick="if (!fnPaso3()) return false;" oncomplete="saveTab();" icon="far fa-save" 
+				styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="72" />
+		</c:when>
+		<c:otherwise>
+			<a href="#tab-next" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="71">
+				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
+		</c:otherwise>
+	</c:choose>
+
+	<c:if test="#{iris.form.firmable}">
+		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
+	</c:if>
+</html>

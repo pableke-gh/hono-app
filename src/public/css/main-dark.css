@@ -1,0 +1,36 @@
+
+/* Navigation.js component define theme dark/light from system */
+/* @media (prefers-color-scheme: dark) { } */ /* System dark */
+
+html.dark {
+    body { color: rgb(249 250 251); background-color: #13151A; }
+    .route-bar { background-color: #13151A; } /* Override bootstrap styles in CV */
+
+    hr { border-color: #ccc; }
+    thead { border: white; }
+    tr.tb-data:nth-child(odd) { background-color: rgb(55 65 81)/* gray-700 */; }
+    tr.tb-data:nth-child(even) { background-color: rgb(31 41 55)/* gray-800 */; }
+    tr.tb-data:hover { background-color: rgb(75 85 99)/* gray-600 */; }
+    tfoot { border: white; }
+
+    img {
+        opacity: .75;
+        transition: opacity .5s ease-in-out;
+    }
+    img:hover { opacity: 1; }
+
+    /* Actions */
+    .action.text-gray { color: #ddd; fill: #ddd; }
+    .action.text-gray:hover { color: white; fill: white; }
+    .action.text-blue:hover { color: rgb(147 197 253); fill: rgb(147 197 253)/*blue-300*/; }
+    .action.text-green:hover { color: rgb(187 247 208)/*green-300*/; }
+    .action.text-purple:hover { color: pink; fill: pink; }
+    .action.text-warn:hover { color: rgb(253 224 71)/*yellow-300*/; }
+    .action.text-red:hover { color: rgb(248 113 113)/*red-400*/; }
+    .action.text-error:hover { color: rgb(248 113 113)/*red-400*/; }
+    /* Actions */
+
+    .link { color: #1976d2; }
+    .link:hover { color: #5fb4f7; }
+    a:hover:not(.btn) { color: #5fb4f7; }
+}

@@ -1,0 +1,32 @@
+
+.dropdown {
+    position: relative;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+.dropdown > button {
+    display: flex; align-items: center; justify-content: center; 
+    margin: 0 2px; padding: 4px 8px; min-width: 36px; min-height: 36px;
+    color: inherit; background-color: inherit; cursor: pointer;
+    border-radius: 8px; border-width: 0;
+}
+.dropdown > button:hover { color: #333; background-color: gainsboro; }
+.dropdown .fa-chevron-down { margin-left: 6px; transition: .5s; }
+.dropdown:hover .fa-chevron-down { rotate: 180deg; }
+
+.dropdown > .list {
+    position: absolute; top: calc(100%); display: none; margin: 0; padding: 8px 4px;
+    text-wrap: nowrap; box-shadow: 0 0 2px 1px #ccc; border-radius: 8px; background-color: #333;
+    list-style: none;
+}
+.dropdown:hover > .list, .dropdown.active > .list {
+	display: block; min-width: 100%; z-index: 3;
+}
+
+.dropdown img { display: inline-block; width: 24px; height: auto; }
+.dropdown a {
+	display: flex; gap: 4px; align-items: center;
+	padding: 4px 8px; color: #ccc; text-decoration: none;
+}
+.dropdown a:hover {
+	color: #333 !important; background-color: gainsboro;
+}

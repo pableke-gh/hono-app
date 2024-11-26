@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="card-xeco">
+		<h2 class="wrap"><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab2.msg.act']}" escape="false" /></span></h2>
+		<ui:include src="irse01_act.xhtml"></ui:include>
+
+		<hr/>
+		<div class="ui-blocks">
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
+				<div class="ui-block-xl">
+					<input type="text" id="origen" name="origen" class="ui-input ui-text #{iris.form.cssDisabled}" tabindex="46" placeholder="#{iris.getMsg('ph.ubicacion')}" />
+					<div class="ui-errtip"></div>
+				</div>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
+				<select id="desp" name="desp" class="ui-input ui-select #{iris.form.cssDisabled}" tabindex="47">
+					<option value="1">#{iris.rutas.getMsgDesp(1)}</option>
+					<option value="10">#{iris.rutas.getMsgDesp(10)}</option>
+				</select>
+			</label>
+			<label class="ui-block grupo-matricula">
+				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
+				<div>
+					<h:inputText id="matricula" value="#{iris.gastos.matricula}" maxlength="10" tabindex="48" styleClass="ui-input ui-code #{iris.form.cssDisabled}"/>
+					<div class="ui-errtip"></div>
+				</div>
+			</label>
+			<label class="ui-block grupo-matricula">
+				<div class="label required">km:</div>
+				<div>
+					<input type="text" id="dist" name="km1" maxlength="10" tabindex="49" class="ui-input ui-float #{iris.form.cssDisabled}"/>
+					<div class="ui-errtip"></div>
+				</div>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
+				<div>
+					<input type="date" id="f1" name="f1" class="ui-input ui-date #{iris.form.cssDisabled}" tabindex="50" />
+					<div class="ui-errtip"></div>
+				</div>
+			</label>
+		</div>
+	</div>	
+
+	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="57">
+		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+	<c:choose>
+		<c:when test="#{iris.form.editable}">
+			<p:commandLink action="#{iris.form.paso1()}" onclick="if (!ir.validItinerario()) return false;" oncomplete="showNextTab(xhr, status, args);"
+					styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="58">
+				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
+			</p:commandLink>
+			<p:commandButton action="#{iris.form.save1()}" onclick="if (!ir.paso1()) return false;" oncomplete="saveTab();" icon="far fa-save" 
+				styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="59" />
+		</c:when>
+		<c:otherwise>
+			<a href="#tab-next" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="58">
+				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
+		</c:otherwise>
+	</c:choose>
+
+	<c:if test="#{iris.form.firmable}">
+		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
+	</c:if>
+</html>

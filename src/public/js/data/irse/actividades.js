@@ -1,0 +1,52 @@
+
+export default { //BD actividades
+    //por cuenta ajena - PAS
+    "A,PAS,OTR": 0b1100000000111,
+    "A,PAS,xOT": 0b1000000000011, 
+    "A,PAS,ISU": 0b1100000000011,
+    "A,PAS,xSU": 0b1000000000011, 
+
+    //por cuenta ajena - PDI-FU
+    "A,PDI-FU,OTR": 0b1100000000111,
+    "A,PDI-FU,xOT": 0b1000000000011, 
+    "A,PDI-FU,ISU": 0b1100000000011,
+    "A,PDI-FU,xSU": 0b1000000000011, 
+
+    //por cuenta ajena - PDI-LA
+    "A,PDI-LA,OTR": 0b1100000000111,
+    "A,PDI-LA,xOT": 0b1000000000011, 
+    "A,PDI-LA,ISU": 0b1100000000011,
+    "A,PDI-LA,xSU": 0b1000000000011, 
+
+    //por cuenta ajena - BPE
+    "A,BPE,OTR": 0b1100000000111,
+    "A,BPE,xOT": 0b1000000000011, 
+    "A,BPE,ISU": 0b1100000000011,
+    "A,BPE,xSU": 0b1000000000011, 
+
+    //por cuenta ajena - PIN
+    "A,PIN,OTR": 0b1100000000111,
+    "A,PIN,xOT": 0b1000000000011, 
+    "A,PIN,ISU": 0b1100000000011,
+    "A,PIN,xSU": 0b1000000000011, 
+
+    //por cuenta ajena - EXT
+    "A,EXT,OTR": 0b0011111111010,
+    "A,EXT,xOT": 0b0011011111010, 
+    "A,EXT,ISU": 0b0011000001010,
+    "A,EXT,xSU": 0b0011000001010, 
+    "A,EXT,A83": 0b0011000001010,
+    "A,EXT,x83": 0b0011000001010, 
+    "A,EXT,ACA": 0b0011000001010,
+    "A,EXT,xAC": 0b0011000001010, 
+
+    //por cuenta ajena - ALU
+    "A,ALU,OTR": 0b0011000001110,
+    "A,ALU,xOT": 0b0011000001010, 
+    "A,ALU,ISU": 0b0011000001010,
+    "A,ALU,xSU": 0b0011000001010, 
+    "A,ALU,A83": 0b0011000001010,
+    "A,ALU,x83": 0b0011000001010, 
+    "A,ALU,ACA": 0b0011000001010,
+    "A,ALU,xAC": 0b0011000001010
+};

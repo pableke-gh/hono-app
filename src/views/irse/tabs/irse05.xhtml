@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="card-xeco">
+		<h2 class="wrap"><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab5.msg.tit']}" escape="false" />​</span></h2>
+		<c:if test="#{iris.form.editable}">
+			<ui:include src="./irse05_info.xhtml"></ui:include>
+			<div class="ui-blocks">
+				<div class="ui-block-btn">
+					<a href="#open-file-gasto" class="btn btn-green success-btn pf-upload" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
+					<p:fileUpload id="fileGasto" value="#{iris.input.fileGasto}" fileUploadListener="#{iris.input.uploadFileGasto}" mode="advanced" auto="true" styleClass="hide" />
+					<h:inputHidden id="tipoGasto" value="#{iris.input.tipoGasto}" />
+					<div class="filename" style="position: absolute; margin: 0 4px;"></div>
+				</div>
+				<label class="ui-block grupo-gasto hide">
+					<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
+					<select id="tipo-gasto" class="ui-input ui-select" tabindex="100">
+						<option value=""></option>
+						<c:if test="#{iris.form.verTrayectosPendientes() and ((iris.gastos.nochesPendientes gt 0) or (iris.rutas.numTrayectosOut gt 0))}">
+							<optgroup label="Factura a nombre del comisionado">
+							<c:if test="#{iris.gastos.nochesPendientes gt 0}">
+								<option value="9"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
+							</c:if>
+							<c:if test="#{iris.rutas.numTrayectosOut gt 0}">
+								<option value="8"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
+							</c:if>
+							</optgroup>
+						</c:if>
+						<c:if test="#{iris.form.facturaUpct}">
+							<optgroup label="Tickets por transporte">
+								<c:choose>
+									<c:when test="#{iris.form.isu}">
+										<option value="1">#{iris.gastos.getMsgTicket(1)}</option>
+										<option value="2">#{iris.gastos.getMsgTicket(2)}</option>
+										<option value="3">#{iris.gastos.getMsgTicket(3)}</option>
+										<option value="4">#{iris.gastos.getMsgTicket(4)}</option>
+										<option value="5">#{iris.gastos.getMsgTicket(5)}</option>
+										<option value="6">#{iris.gastos.getMsgTicket(6)}</option>
+										<option value="7">#{iris.gastos.getMsgTicket(7)}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="10">#{iris.gastos.getMsgTicket(10)}</option>
+									</c:otherwise>
+								</c:choose>
+							</optgroup>
+						</c:if>
+						<optgroup label="Otra Documentación">
+							<c:if test="#{iris.form.facturaUpct}">
+								<option value="201"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
+							</c:if>
+							<c:if test="#{iris.form.docProgramaMov}">
+								<option value="206"><h:outputText value="#{msg['lbl.doc.movilidad']}" escape="false" /></option>
+							</c:if>
+							<option value="202"><h:outputText value="#{msg['lbl.doc.otra']}" escape="false" /></option>
+						</optgroup>
+						<c:if test="#{iris.form.extAlu and iris.form.iaeExt}">
+							<optgroup label="Justificaciones">
+								<option value="203"><h:outputText value="#{msg['lbl.justifi.dietas']}" escape="false" /></option>
+							</optgroup>
+						</c:if>
+						<c:if test="#{iris.perfil.tab8}">
+							<optgroup label="Gasto Extraordinario">
+								<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
+								<c:if test="#{not iris.form.mun}">
+									<option value="302"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
+								</c:if>
+								<c:if test="#{iris.rutas.llegadaCena and iris.gastos.extraCena}">
+									<option value="303"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
+								</c:if>
+								<c:if test="#{iris.form.alu or iris.form.ext}">
+									<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
+								</c:if>
+							</optgroup>
+						</c:if>
+					</select>
+					<div class="ui-errtip"></div>
+				</label>
+				<label class="ui-block grupo-gasto hide">
+					<div for="impGasto" class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
+					<h:inputText id="impGasto" value="#{iris.input.impGasto}" maxlength="12" tabindex="101" styleClass="ui-input ui-float" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
+					<div class="ui-errtip"></div>
+				</label>
+				<label class="ui-block grupo-gasto hide">
+					<div class="label required label-text-gasto"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
+					<h:inputText id="txtGasto" value="#{iris.input.txtGasto}" maxlength="300" tabindex="102" styleClass="ui-input ui-text"/>
+					<div class="ui-errtip"></div>
+				</label>
+				<label class="ui-block grupo-gasto hide">
+					<div class="label required"><h:outputText value="#{msg['lbl.check.in.out']}" escape="false" />:</div>
+					<h:inputText id="fAloMin" value="#{iris.input.FMinGasto}" tabindex="102" styleClass="ui-input ui-date ui-pernocta" title="Límite inferior del rango de fechas"/> ...
+					<h:inputText id="fAloMax" value="#{iris.input.FMaxGasto}" tabindex="103" styleClass="ui-input ui-date ui-pernocta" title="Límite superior del rango de fechas"/>
+					<div class="ui-errtip"></div>
+				</label>
+				<div class="ui-block-btn grupo-gasto hide">
+					<h:inputHidden id="trayectos" value="#{iris.input.etapas}" />
+					<p:commandButton id="uploadGasto"
+						onclick="if (!fnPaso5()) return false;" action="#{iris.form.uploadGasto()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);"
+						icon="fas fa-arrow-alt-down" iconPos="right" value="Añadir" styleClass="btn btn-green success-btn" tabindex="104" />
+				</div>
+			</div>
+			<br class="clear"/>
+		</c:if>
+
+		<div class="navbar">
+			<ui:include src="./irse05_table.xhtml"></ui:include>
+		</div>
+		<div class="navbar">
+		<c:if test="#{iris.rutas.numRutas gt 1}">
+			<p>* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: #{iris.rutas.numTrayectosOut}; <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: #{iris.gastos.nochesPendientes}; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>
+		</c:if>
+		<c:if test="#{iris.form.extAlu and iris.perfil.tab7}">
+			<p>* <h:outputText value="#{msg['lbl.imp.dietas.prop']}" escape="false" />: #{iris.gastos.impManutencionI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.justifi']}" escape="false" />: #{iris.gastos.impJustifiI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.no.justifi']}" escape="false" />: #{iris.gastos.impNoJustifiI18n} €​</p>
+		</c:if>
+		</div>
+	</div>
+
+	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="110">
+		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+	<c:choose>
+	<c:when test="#{iris.form.editable}">
+		<p:commandLink action="#{iris.form.paso5()}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args);"
+				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="111">
+			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></p:commandLink>
+		<p:commandButton action="#{iris.form.save5()}" onclick="loading();" oncomplete="saveTab();" icon="far fa-save" 
+			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="112" title="#{msg['tit.btn.no.enviar']}" />
+	</c:when>
+	<c:otherwise>
+		<a href="#tab-next" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="111">
+			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
+	</c:otherwise>
+	</c:choose>
+
+	<c:if test="#{iris.form.firmable}">
+		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
+	</c:if>
+</html>

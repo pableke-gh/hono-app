@@ -1,0 +1,26 @@
+
+html.dark {
+    /* Cards */
+    .card-xeco {
+        background: rgb(31 41 55); border-left: 6px solid white;
+    }
+    .card-xeco h2, .card-xeco h3 {
+        color: rgb(96 165 250);
+    }
+    .card-filter {
+        background-color: #999;
+        border-bottom: 1px solid white;
+        border-top: 1px solid white;
+    }
+    /* Cards */
+      
+    /* Dialog Box / Modals */
+    .dialog-modal {
+        border: 1px solid white;
+        background-color: #888;
+    }
+    .dialog-header h2 {
+        color: white;
+    }
+    /* Dialog Box / Modals */
+}

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h3>
+	<a id="p6-irpf" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
+		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.irpf']}" escape="false" />: <b class="texterr">#{iris.form.retencionIrpfI18n} €</b>
+	</a>
+	</h3>
+	<table id="gastos" class="info-p6-irpf hide table-xs">
+		<thead>
+		<tr>
+			<th>Total dietas no justificadas</th>
+			<th>Total asistencias / colaboraciones</th>
+			<th>Total sujeto a IRPF</th>
+			<th>Tipo IRPF​</th>
+			<th>Importe retención IRPF</th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr class="tb-data tb-data-tc">
+				<td data-cell="Total dietas no justificadas">#{iris.gastos.impNoJustifiI18n} €</td>
+				<td data-cell="Total asistencias / colaboraciones">#{iris.gastos.totAcI18n} €</td>
+				<td data-cell="Total sujeto a IRPF">#{iris.gastos.totSujetoIrpfI18n} €</td>
+				<td data-cell="Tipo IRPF​">#{iris.gastos.irpf} %</td>
+				<td data-cell="Importe retención IRPF">#{iris.form.retencionIrpfI18n} €</td>
+			</tr>
+		</tbody>
+	</table>
+</html>

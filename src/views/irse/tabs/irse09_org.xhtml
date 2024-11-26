@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:inputHidden id="imp-org" value="#{iris.input.impOrg}" />
+	<div id="gastos-org" class="hide">#{iris.gastos.organicasJson}</div>
+	<div class="#{(irse.multiorganica || iris.admin) ? 'card-xeco' : 'hide'}">
+		<h2><h:outputText value="#{msg['lbl.multiorganica']}" escape="false" /></h2>
+		<c:if test="#{iris.form.editable}">
+			<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.multiorganicas']}" escape="false" /></div>
+			<div class="ui-blocks">
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.tipo.gasto']}" escape="false" />:</div>
+				<select id="tipo-org" name="subtipo" class="ui-input ui-select" tabindex="185">
+					<c:if test="#{iris.form.totManutenciones gt 0}">
+						<option value="1"><h:outputText value="#{msg['lbl.dietas']}" escape="false" /></option>
+					</c:if>
+					<c:if test="#{iris.form.totPernoctas gt 0}">
+						<option value="2"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
+					</c:if>
+					<c:if test="#{iris.form.totTransporte gt 0}">
+						<option value="3"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
+					</c:if>
+					<c:if test="#{iris.gastos.totAc gt 0}">
+						<option value="4"><h:outputText value="#{msg['lbl.asistencias']}" escape="false" /></option>
+					</c:if>
+				</select>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />:</div>
+				<select id="organicas" name="num" class="ui-input ui-select" tabindex="186">
+					<c:forEach items="#{iris.perfil.organicas}" var="org">
+						<option value="#{org.idOrganica}">#{org.organica}</option>
+					</c:forEach>
+				</select>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
+				<input type="text" id="imp1-org" name="imp1" maxlength="12" tabindex="187" class="ui-input ui-float #{iris.form.cssDisabled}"/><span class="icon">€</span>
+				<div class="ui-errtip"></div>
+			</label>
+			<div class="ui-block-btn">
+				<a href="#" onclick="return io.add();" class="btn btn-green success-btn" tabindex="188">
+					<i class="fas fa-plus btn-icon-left"></i><h:outputText value="#{msg['lbl.add']}" escape="false" /></a>
+			</div>
+			</div>
+		</c:if>
+
+		<table id="multiorganicas" class="tb-xeco table-xs">
+			<thead>
+				<tr>
+					<th>Nº</th>
+					<th><h:outputText value="#{msg['lbl.tipo.gasto']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.economica']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="@id;" class="tb-data tb-data-tc">
+					<td data-cell="Nº">@count;</td>
+					<td data-cell="#{msg['lbl.tipo.gasto']}">@subtipo;</td>
+					<td data-cell="#{msg['lbl.organica']}">@cod;</td>
+					<td data-cell="#{msg['lbl.economica']}">@nombre;</td>
+					<td data-cell="#{msg['lbl.importe']}">@imp1; €</td>
+					<td data-cell="#{msg['lbl.descripcion']}">@desc;</td>
+					<td data-cell="Acciones"><c:if test="#{iris.form.editable}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
+				</tr>
+			</tbody>
+			<tbody class="hide">
+				<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['lbl.organicas.not.found']}" escape="false" /></td></tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />: @size;</td>
+					<td class="tb-data-tc hide-xs">@imp1; €</td><td colspan="2"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</html>

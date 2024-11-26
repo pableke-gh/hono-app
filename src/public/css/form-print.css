@@ -1,0 +1,7 @@
+
+@media print {
+	.ui-blocks { page-break-inside: avoid; }
+
+	input, select, textarea { border: 0; border-style: none; } /* remove inputs borders */
+    .btn { display: none; }
+}

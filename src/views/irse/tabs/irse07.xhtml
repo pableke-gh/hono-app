@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h3>
+	<a id="p7-dietas" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
+		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.4']}" escape="false" />: <b id="imp-dietas" class="text-green">#{iris.gastos.impManutencionI18n} €</b>
+	</a>
+	</h3>
+	<div class="info-p7-dietas hide">
+		<p class="notice notice-info">​<h:outputText value="#{msg['msg.google']}" escape="false" /></p>
+
+		<div id="dietas-data" class="hide">#{iris.gastos.manutencionesJson}</div>
+		<h:inputHidden id="gastos-dietas" value="#{iris.input.dietas}" />
+		<table id="manutenciones" class="tb-xeco table-xs">
+			<thead>
+				<tr>
+					<th><h:outputText value="#{msg['lbl.dia.periodo']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.pais']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.fecha.inicio']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.fecha.fin']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.dias']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.dietas.propuestas']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.imp.dieta']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.imp.propuesto']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.tus.dietas']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.imp.reduccion']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.imp.tot']}" escape="false" /></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="@id;" class="tb-data tb-data-tc">
+					<td data-cell="#{msg['lbl.dia.periodo']}">@periodo;</td>
+					<td data-cell="#{msg['lbl.pais']}">@nombre;</td>
+					<td data-cell="#{msg['lbl.fecha.inicio']}">@f1;</td>
+					<td data-cell="#{msg['lbl.fecha.fin']}">@f2;</td>
+					<td data-cell="#{msg['lbl.dias']}">@num;</td>
+					<td data-cell="#{msg['lbl.dietas.propuestas']}">@maxDietas;</td>
+					<td data-cell="#{msg['lbl.imp.dieta']}">@imp2; €</td>
+					<td data-cell="#{msg['lbl.imp.propuesto']}">@impMax; €</td>
+					<td data-cell="#{msg['lbl.tus.dietas']}">
+					<c:choose>
+						<c:when test="#{iris.form.editableP6}"><select tabindex="111">@dietas;</select></c:when>
+						<c:otherwise>@imp1;</c:otherwise>
+					</c:choose>
+					</td>
+					<td data-cell="#{msg['lbl.imp.reduccion']}">@reducido; €</td>
+					<td data-cell="#{msg['lbl.imp.tot']}">@percibir; €</td>
+				</tr>
+			</tbody>
+			<tbody class="hide">
+				<tr><td class="no-data" colspan="99"><h:outputText value="#{msg['msg.no.dietas']}" escape="false" /></td></tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4"></td>
+					<td class="tb-data-tc hide-xs">@dias;</td>
+					<td></td>
+					<td></td>
+					<td class="tb-data-tc hide-xs">@impMax; €</td>
+					<td></td>
+					<td class="tb-data-tc hide-xs">@reducido; €</td>
+					<td class="tb-data-tc" data-cell="#{msg['lbl.imp.tot']}">@percibir; €</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</html>

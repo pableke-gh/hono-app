@@ -1,0 +1,114 @@
+<ui:composition
+		template="/templates/layout/private-embed-layout.xhtml"
+		xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:o="http://omnifaces.org/ui"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="metadata">
+		<f:metadata>
+            <f:viewParam name="lang" value="#{uae.lang}" />
+            <f:viewAction action="#{uae.initLang()}" />
+            <f:viewAction action="#{uae.onLoadPage()}" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="header">
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
+	</ui:define>
+	<ui:define name="outputScript">
+		<script type="module" src="/uae/resources/js/modules/xeco/inicio.js"></script>
+	</ui:define>
+
+	<ui:define name="title">UAE</ui:define>
+	<ui:define name="description">Extraeco</ui:define>
+	<ui:define name="semilla">
+		<li class="active">UAE</li>
+	</ui:define>
+
+	<ui:define name="body">
+		<ui:include src="parts/msgs.xhtml"></ui:include>
+
+		<h:form id="xeco" prependId="false" class="cards" onsubmit="loading();">
+			<div class="card-xeco">
+			<h2>Aplicaciones Económicas</h2>
+			<ul>
+				<li><a href="/uae/modules/irse/inicio.xhtml"><i class="fab fa-telegram-plane"></i> IRIS</a></li>
+				<!-- <li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=PRESTO#"><i class="fal fa-fw fa-money-check"></i> PRESTO</a></li> -->
+				<li><a href="/uae/modules/xeco/presto.xhtml"><i class="fal fa-fw fa-money-check layout-menuitem-icon"></i> PRESTO</a></li>
+				<!--<li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=JB#"><i class="fa fa-euro fa-fw"></i> Justificaciones bancarias + ICM</a></li>-->
+				<li><a href="/uae/modules/xeco/jb.xhtml"><i class="fa fa-euro fa-fw layout-menuitem-icon"></i> Justificaciones Bancarias + ICM</a></li>
+				<li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=PATRIMONIO#"><i class="fas fa-boxes"></i> Comunicaciones electrónicas de inventario</a></li>
+				<li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=MIS_GASTOS#"><i class="fal fa-file-invoice-dollar"></i> Mis Orgánicas</a></li>
+				<li>
+					<a href='https://apps.powerapps.com/play/644e89b5-9b97-424e-acf1-4a2e5e8cd40d?tenantId=967e1b81-5cf6-4b03-bb60-d71bf48069f9:SOURCE=portal:SCREENCOLOR=rgba(39%2C%20113%2C%20194%2C%201)'><i class="fas fa-inbox-in"></i> eComing</a> / 
+					<a href='https://apps.powerapps.com/play/db0968e6-c629-40ab-87f9-420b91020d98?tenantId=967e1b81-5cf6-4b03-bb60-d71bf48069f9:SOURCE=portal:SCREENCOLOR=rgba%2839%2C+113%2C+194%2C+1%29:SKIPAPPETADA=true'>B03 Actividad formativa</a>
+				</li>
+				<c:if test="#{uae.tester}">
+					<li><a href="/uae/modules/xeco/buzon.xhtml"><i class="far fa-tablet-alt"></i> Tablero Económico</a></li>
+				</c:if>
+				<li><a href="/uae/modules/xeco/factura.xhtml"><i class="fas fa-file-invoice"></i> Solicitud de Facturas y Cartas de Pago</a></li>
+			</ul>
+			</div>
+
+			<div class="card-xeco">
+			<h2>Solicitud de Certificados</h2>
+			<ul>
+				<li>
+					<a id="cargo-interno" href="#tab-toggle"><i class="fas fa-file-plus"></i> Certificado de cargo interno</a>
+					<div class="ui-blocks hide info-cargo-interno">
+					<label class="ui-block">
+						<div class="label required">Ejercicios:</div>
+						<h:selectOneMenu id="ej-pago" value="#{uae.ejercicio}" styleClass="ui-input ui-select" tabindex="1">
+							<f:selectItems value="#{uae.ejercicios}" />
+						</h:selectOneMenu>
+					</label>
+					<label class="ui-block-xl autocomplete">
+						<div class="label required">Nº de JG / Descripción:</div>
+						<p:remoteCommand name="rcFindJg" action="#{uae.findCargoInterno()}" oncomplete="loadItems(xhr, status, args)" />
+						<h:inputText id="jg" value="#{uae.acJg}" styleClass="ui-input ui-autocomplete" tabindex="2" />
+						<h:inputHidden id="id-jg" value="#{uae.jg}" />
+						<ul role="list" class="results"></ul>
+					</label>
+					<div class="ui-block-btn">
+						<p:commandButton action="#{uae.cargoInterno()}" icon="far fa-share" oncomplete="showAlerts(xhr, status, args)"
+							styleClass="success-btn" style="min-height: 40px;" value="Solicitar" tabindex="3" />
+					</div>
+					</div>
+				</li>
+
+				<li>
+					<a id="incompatibilidad" href="#tab-toggle"><i class="fas fa-file-times"></i> Certificado de incompatibilidad</a>
+					<div class="ui-blocks hide info-incompatibilidad">
+					<label class="ui-block-xl autocomplete">
+						<div class="label required">Tercero (CIF / NIF / Nombre):</div>
+						<p:remoteCommand name="rcFindTercero" action="#{uae.findTercero()}" oncomplete="loadItems(xhr, status, args)" />
+						<h:inputText id="tercero" value="#{uae.acTercero}" styleClass="ui-input ui-autocomplete" tabindex="4" />
+						<h:inputHidden id="nif-tercero" value="#{uae.tercero}" />
+						<ul role="list" class="results"></ul>
+					</label>
+					<div class="ui-block-btn">
+						<p:commandButton action="#{uae.incompatibilidad()}" icon="far fa-share" oncomplete="showAlerts(xhr, status, args)"
+							styleClass="success-btn" style="min-height: 40px;" value="Solicitar" tabindex="5" />
+					</div>
+					</div>
+				</li>
+
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198aeat6.pdf" target="_blank"><i class="fas fa-file-download"></i> Certificado de la AEAT de estar al corriente de las obligaciones tributarias (Entidad Nacional de Acreditación)</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198aeat1.pdf" target="_blank"><i class="fas fa-file-chart-line"></i> Certificado de la AEAT de estar al corriente de las obligaciones tributarias</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198aeat2.pdf" target="_blank"><i class="fas fa-file-chart-pie"></i> Certificado de la AEAT, para subvenciones de las Administraciones Públicas</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198aeat3.pdf" target="_blank"><i class="fas fa-file-powerpoint"></i> Certificado de la AEAT, para contratar con el Sector Público</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198aeat4.pdf" target="_blank"><i class="fas fa-file-chart-line"></i> Certificado de la AEAT, sobre impuesto de actividades económicas</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198aeat5.pdf" target="_blank"><i class="fas fa-file-user"></i> Certificado de la AEAT, identificación Fiscal NIF</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198carm1.pdf" target="_blank"><i class="fas fa-file-chart-pie"></i> Certificado de la CARM de estar al corriente de obligaciones tributarias</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198IAE1.pdf" target="_blank"><i class="fas fa-file-alt"></i> Certificado exención IAE y ausencia de obligación de inscripción en Registro Mercantil</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198subv.pdf" target="_blank"><i class="fas fa-file-contract"></i> Certificado de estar al corriente del pago de reintegros y subvenciones (a presentar ante Gerencia)</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198canon_digital.pdf" target="_blank"><i class="fas fa-file-check"></i> Certificado de canon digital</a></li>
+				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198Certificacion_declaracion_responsable_SEFYCU_2547004.pdf" target="_blank"><i class="fas fa-file-check"></i> Certificado de cumplimiento de plazos de pago de operaciones comerciales</a></li>
+			</ul>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

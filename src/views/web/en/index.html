@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Static Test Page</title>
+    <link rel="icon" type="image/png" href="/public/img/png/fav.png"></link>
+    <link rel="stylesheet" type="text/css" media="screen" href="/public/css/styles-min.css">
+	<script type="text/javascript" src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> 
+    <script type="module" src="/public/js/index.js"></script>
+</head>
+<body>
+	<header></header>
+	<!-- Menu component -->
+	<nav class="navbar">
+		<div class="nav-title">Brand Name</div>
+		<div class="separator"></div>
+        <div class="navbar-menu">
+			<ul class="menu">
+			<li class="item-menu level-1 item-leaf"><a href="/web/es/index.html" title="Nav Link Inicio" class="link-menu level-1"><span class="label-menu level-1"><i class="icon-left fas fa-home"></i>Home</span></a></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 1" class="link-menu level-1"><span class="label-menu level-1"><i class="icon-left fas fa-euro-sign"></i>Ingresos</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 1" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 1</span></a></li><li class="item-menu level-2 item-parent"><a href="#" title="Sub Nav Link 2" class="link-menu level-2"><span class="label-menu level-2">Sub Nav Link 2</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-3"><li class="item-menu level-3 item-leaf"><a href="#" title="Sub Nav Link 11" class="link-menu level-3 load-main"><span class="label-menu level-3">Sub Nav Link 11</span></a></li><li class="item-menu level-3 item-leaf"><a href="#" title="Sub Nav Link 12" class="link-menu level-3 load-main"><span class="label-menu level-3">Sub Nav Link 12</span></a></li></ul></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 3" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 3</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 4" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 4</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 5" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 5</span></a></li></ul></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 3" class="link-menu level-1"><span class="label-menu level-1">Nav Link 3</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 6" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 6</span></a></li></ul></li><li class="item-menu level-1 item-leaf"><a href="#" title="Nav Link 4" class="link-menu level-1 load-main"><span class="label-menu level-1">Nav Link 4</span></a></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 5" class="link-menu level-1"><span class="label-menu level-1">Nav Link 5</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 8" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 8</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 9" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 9</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 10" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 10</span></a></li></ul></li><li class="item-menu level-1 item-leaf"><a href="#" title="Nav Link About" class="link-menu level-1 load-main"><span class="label-menu level-1"><i class="icon-left fas fa-address-card"></i>Sobre Nosotros</span></a></li>
+			</ul>
+		</div>
+		<button id="theme-toggle" class="hide-sm">
+			<i class="fas fa-moon hide"></i>
+			<i class="fas fa-sun hide"></i>
+		</button>
+		<a href="#" class="menu-toggle"><i class="fas fa-bars"></i></a>
+		<!--<div class="separator"></div>-->
+		<div id="user" class="dropdown">
+			<button id="selected"><i class="fas fa-user"></i></button>
+			<ul class="list">
+				<li class="option"><a href="mailto:#">email@google.com</a></li>
+				<li class="option"><a href="/">Home</a></li>
+				<li class="option"><hr class="slim"/></li>
+				<li class="option"><a href="#">Login</a></li>
+			</ul>
+		</div>
+		<div id="languages" class="dropdown">
+			<button>
+				<img src="/public/img/flags/spain.png">
+				<i class="fas fa-chevron-down"></i>
+			</button>
+			<ul class="list">
+				<li class="option"><a id="es" href="/web/es/index.html?nav=1"><img src="/public/img/flags/spain.png"> ES</a></li>
+				<li class="options"><a id="en" href="/web/en/index.html?nav=1"><img src="/public/img/flags/great_britain.png"> EN</a></li>
+			</ul>
+		</div>
+	</nav>
+	<!-- Menu component -->
+
+    <!-- Alerts component -->
+    <div class="alerts">
+		<div class="alert alert-success">
+			<div class="alert-icon"><i class="fas fa-check-circle fa-3x"></i></div>
+			<div class="alert-text"></div>
+			<div class="alert-close"><i class="fas fa-times"></i></div>
+		</div>
+		<div class="alert alert-info">
+			<div class="alert-icon"><i class="fas fa-info fa-3x"></i></div>
+			<div class="alert-text"></div>
+			<div class="alert-close"><i class="fas fa-times"></i></div>
+		</div>
+		<div class="alert alert-warn">
+			<div class="alert-icon"><i class="fas fa-exclamation-triangle fa-2x"></i></div>
+			<div class="alert-text"></div>
+			<div class="alert-close"><i class="fas fa-times"></i></div>
+		</div>
+		<div class="alert alert-error">
+			<div class="alert-icon"><i class="fas fa-exclamation fa-2x"></i></div>
+			<div class="alert-text"></div>
+			<div class="alert-close"><i class="fas fa-times"></i></div>
+		</div>
+	</div>
+	<div class="loading">
+		<b class="fas fa-circle-notch fa-3x fa-spin loading-content"></b>
+	</div>
+	<a id="back-to-top" href="#top" class="hide back-to-top">
+		<i class="fas fa-arrow-up"></i>
+	</a>
+    <!-- Alerts component -->
+
+    <main>
+        <div id="tab-0" class="tab-content active">
+            <h2>Alerts<hr class="underline"/></h2>
+            <div class="notice notice-flex notice-info">
+                <div class="notice-icon"><i class="fas fa-bullhorn"></i></div>
+                <div class="notice-text"><b>Info:</b> <span>Area de pruebas</span></div>
+            </div>
+            <div class="notice notice-flex notice-note">
+                <div class="notice-icon"><i class="fas fa-bell"></i></div>
+                <div class="notice-text"><b>Note:</b> <span>Area de pruebas</span></div>
+            </div>
+            <div class="notice notice-flex notice-ok">
+                <div class="notice-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="notice-text"><b>OK:</b> <span>Area de pruebas</span></div>
+            </div>
+            <div class="notice notice-flex notice-green">
+                <div class="notice-icon"><i class="far fa-thumbs-up"></i></div>
+                <div class="notice-text"><b>Green:</b> <span>Area de pruebas</span></div>
+            </div>
+            <div class="notice notice-flex notice-success">
+                <div class="notice-icon"><i class="far fa-calendar-check"></i></div>
+                <div class="notice-text"><b>Saccessfully:</b> <span>Area de pruebas</span></div>
+            </div>
+            <div class="notice notice-flex notice-warn">
+                <div class="notice-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="notice-text">
+                    <b>Warn:</b> <span>Area de pruebas</span>
+                    <p><b>Extra info:</b> añkjfdsaldñlka fjasñlkadjf asñlk adñlkajf asñlkdsfdjk aslsñlkadfkjk asñsdñlkafjlk asñldkfdjk aksldjf alskfdj asñlkdsfdjk aslsñlkadfkjk asñsdñlkafjlk asñldkfdjk aksldjf alskfdj</p>
+                </div>
+            </div>
+            <div class="notice notice-flex notice-error">
+                <div class="notice-icon"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="notice-text"><b>Error:</b> <span>Area de pruebas</span></div>
+            </div>
+            <div class="notice notice-flex notice-danger">
+                <div class="notice-icon"><i class="fas fa-radiation-alt"></i></div>
+                <div class="notice-text"><b>Danger:</b> <span>Area de pruebas</span></div>
+            </div>
+            <div class="notice notice-flex notice-dark">
+                <div class="notice-icon"><i class="fas fa-skull-crossbones"></i></div>
+                <div class="notice-text"><b>Dark:</b> <span>Area de pruebas</span></div>
+            </div>
+            <div class="notice notice-flex notice-info">
+                <div class="notice-text">
+                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. A, dolorum, veritatis tenetur ea dolor quo consequuntur ullam molestias fugit quam.</span>
+                    <a href="#tab-toggle" class="link" data-toggle="fa-angle-double-down fa-angle-double-up" data-target=".info-test">
+                        Más Info <i class="fas fa-angle-double-down"></i>
+                    </a>
+                    <div class="info-test hide"><hr/>Lorem ipsum dolor, sit amet consectetur adipisicing, elit. Corrupti rem aut, minus asperiores, sunt eligendi hic ipsum maiores itaque numquam sequi eius voluptates consequuntur debitis impedit quae dolore ad, enim?</div>
+                </div>
+            </div>
+
+            <div class="navbar">
+                <a href="#tab-next" class="btn btn-info">Sig. <i class="fas fa-angle-double-right"></i></a>
+                <a href="/login" class="btn btn-info load-main">Login <i class="fas fa-angle-double-right"></i></a>
+                <a href="/web/en/maps.html" class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
+                <a href="/maps" class="btn btn-green load-main">Go maps by AJAX <i class="fas fa-undo-alt"></i></a>
+                <a href="/web/en/tables.html" class="btn btn-green">Tables <i class="fas fa-table"></i></a>
+                <button id="xlsx" class="btn btn-green">Button</button>
+            </div>
+        </div>
+
+        <div id="tab-1" class="tab-content">
+            <h2>Actions<hr class="underline"/></h2>
+
+            <form id="form-pokemon" action="#">
+                <div class="ui-blocks">
+                    <label class="ui-block">
+                        <div class="label">Multiselect:</div>
+                        <select class="ui-input ui-select">
+                            <option value="1">&#x2611; Opción 1</option>
+                            <option value="2">&#x2611; Opción 2</option>
+                            <option value="3">&#x2611; Opción 3</option>
+                            <option value="4">&#x2611; Opción 4</option>
+                            <option value="5">&#x2611; Opción 5</option>
+                        </select>
+                    </label>
+                    <div class="ui-block multiselect multi-options">
+                        <div class="label">Multiselect:</div>
+                        <button class="ui-input ui-select">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <ul class="options"></ul>
+                    </div>
+                    <div class="ui-block-row"></div>
+                    <label class="ui-block-xl autocomplete">
+                        <div class="label required">Pokemon finder:</div>
+                        <i class="fas fa-search ui-input-icon left"></i>
+                        <input type="search" id="ac-pokemon" class="ui-input ui-autocomplete" tabindex="1" placeholder="Search a pokemon" />
+                        <input type="hidden" name="id"/>
+                        <ul class="results"></ul>
+                        <div class="ui-errtip"></div>
+                    </label>
+                </div>
+                </form>
+    
+            <div id="info-pokemon" class="hide ui-blocks" style="align-items: end;"></div>
+
+            <div class="navbar">
+                <a href="#" class="action text-green resize">Green</a>
+                <a href="#" class="action text-blue resize">Blue</a>
+                <a href="#" class="action text-warn resize">Warn</a>
+            </div>
+
+            <div class="navbar">
+                <a href="#tab-0" class="btn btn-info"><i class="fas fa-angle-double-left"></i></a>
+            </div>
+        </div>
+        <script id="index-js" type="module" src="/public/js/modules/web/index.js"></script>
+    </main>
+
+    <footer>Page Footer</footer>
+</body>
+</html>

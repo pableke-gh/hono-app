@@ -1,0 +1,14 @@
+# build output
+dist/
+
+# dependencies
+node_modules/
+
+# environment variables
+.env
+.env.production
+
+# static files and data
+src/data/**/*.sqlite
+src/public/files/**/*
+src/public/js/modules/xeco/irse/place.js

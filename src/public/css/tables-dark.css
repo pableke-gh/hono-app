@@ -1,0 +1,15 @@
+
+/* Navigation.js component define theme dark/light from system */
+/* @media (prefers-color-scheme: dark) { } */ /* System dark */
+
+html.dark {
+	caption { background-color: hsl(0 0% 0%); }
+
+	thead { border-color: black; }
+    th { background-color: hsl(0 0% 0% / .5); }
+
+	tr.tb-data:nth-child(even) { background-color: hsl(0 0% 0% / .1); }
+    tr.tb-data:hover { background-color: rgb(75 85 99)/* gray-600 */; }
+
+	tfoot { border-top: 1px dashed white; }
+}

@@ -1,0 +1,38 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch dist/index.js",
+    "test": "node --import tsx --test tests/index.js",
+    "postinstall": "gulp deploy",
+    "build": "gulp"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.8.2",
+    "@supabase/supabase-js": "^2.42.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "hono": "^4.1.2",
+    "hono-sessions": "^0.3.4",
+    "jsonwebtoken": "^9.0.2",
+    "jspdf": "^2.5.1",
+    "nodemailer": "^6.9.11",
+    "sharp": "^0.33.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.3",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-uglify": "^3.0.2",
+    "tsx": "^3.12.2",
+    "typescript": "^5.3.3"
+  },
+  "imports": {
+    "#config.js": "./src/config.js",
+    "#client/components/*.js": "./src/public/js/components/*.js",
+    "#client/model/*.js": "./src/public/js/model/*.js",
+    "#client/i18n/*.js": "./src/public/js/i18n/*.js"
+  }
+}

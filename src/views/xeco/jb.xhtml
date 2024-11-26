@@ -1,0 +1,149 @@
+<ui:composition
+		template="/templates/layout/private-embed-layout.xhtml"
+		xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:o="http://omnifaces.org/ui"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="metadata">
+		<f:metadata>
+            <f:viewParam name="lang" value="#{uae.lang}" />
+            <f:viewAction action="#{uae.initLang()}" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="header">
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
+	</ui:define>
+	<ui:define name="outputScript">
+		<script type="module" src="/uae/resources/js/modules/xeco/jb.js"></script>
+	</ui:define>
+
+	<ui:define name="title">UAE</ui:define>
+	<ui:define name="description">Justificaciones Bancarias + ICM</ui:define>
+	<ui:define name="semilla"><li class="active">UAE</li></ui:define>
+
+	<ui:define name="body">
+		<ui:include src="parts/msgs.xhtml"></ui:include>
+
+		<h2>Justificaciones Bancarias + ICM</h2>
+		<div id="tab-0" class="tab-content active">
+			<h:form id="xeco-jb" prependId="false" class="card-filter" onsubmit="loading();">
+				<div class="ui-blocks">
+					<label class="ui-block">
+						<div class="label required"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
+						<h:selectOneMenu value="#{jb.ejercicio}" styleClass="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
+							<f:selectItems value="#{jb.ejercicios}" />
+						</h:selectOneMenu>
+					</label>
+					<label class="ui-block-xl autocomplete">
+						<div class="label required">Documento Contable:</div>
+						<i class="fas fa-search ui-input-icon left"></i>
+						<input type="search" id="num-dc" name="numDc" class="ui-input ui-autocomplete" tabindex="2" />
+						<h:inputHidden id="dc" value="#{jb.idDc}" class="ui-number" />
+						<ul role="list" class="results"></ul>
+						<div class="ui-errtip"></div> 
+						<p:remoteCommand name="rcFindDcs" action="#{jb.findDcs()}" oncomplete="loadItems(xhr, status, args)" />
+					</label>
+				</div>
+
+				<div class="navbar">
+					<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" tabindex="12" title="#{msg['tit.btn.volver.ini']}">
+						<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+					<p:commandButton id="search" action="#{jb.search()}" onclick="if (!jbSearch())return false;" update="xeco-doc" oncomplete="jbLoaded();"
+							icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
+					<p:commandLink id="reset" action="#{jb.reset()}" onclick="jbReset();" update="xeco-doc" oncomplete="working();" styleClass="btn btn-warn warning-btn" tabindex="14">
+						<i class="far fa-times-circle btn-icon-left"></i>Limpiar</p:commandLink>
+				</div>
+
+				<!-- modals dialog -->
+				<dialog id="modal-cm" class="dialog-modal">
+					<div class="dialog-header">
+						<h2>Justificantes de Gasto asociados al DC #{jb.doc.numDc}</h2>
+						<a href="#modal-close" class="action text-gray"><i class="fas fa-times"></i></a>
+					</div>
+					<div class="dialog-body">
+					<div class="ui-blocks">
+						<label class="ui-block-xl autocomplete">
+							<div class="label required">Seleccione un Justificante de Gasto:</div>
+							<i class="fas fa-search ui-input-icon left"></i>
+							<input type="search" id="num-jg" name="numJg" class="ui-input ui-autocomplete" tabindex="1" />
+							<h:inputHidden id="jg" value="#{jb.numJg}" class="" />
+							<ul role="list" class="results"></ul>
+							<div class="ui-errtip"></div> 
+							<p:remoteCommand name="rcFindJgs" action="#{jb.findJgs()}" oncomplete="loadItems(xhr, status, args)" />
+							<p:remoteCommand name="rcReportCm" action="#{jb.reportCm()}" oncomplete="handleReport(xhr, status, args)" />
+						</label>
+					</div>
+					</div>
+					<div class="dialog-footer">
+						<a href="#modal-close" class="btn btn-info"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
+						<a href="#modal-action" class="btn btn-warn" data-action="report"><i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
+					</div>
+				</dialog>
+			</h:form>
+
+			<h:form id="xeco-doc" prependId="false" class="navbar" onsubmit="loading();">
+			<h:inputText id="id" value="#{jb.idDc}" styleClass="ui-input ui-number hide" />
+			<c:choose>
+				<c:when test="#{jb.docSelected}">
+					<h3>Datos encontrados en el sistema:</h3>
+					<ul>
+						<li><b>Nº de DC:</b> #{jb.doc.numDc}</li>
+						<c:if test="#{jb.doc.monoJg}">
+							<li><b>Nº de JG:</b> #{jb.doc.numJg}</li>
+							<li><b>Nº Factura:</b> #{jb.doc.factura}</li>
+						</c:if>
+						<li><b>Clave de Fase:</b> #{jb.doc.claveFase}</li>
+						<li><b>NIF Tercero:</b> #{jb.doc.nifTercero}</li>
+						<li><b>Nombre Tercero:</b> #{jb.doc.tercero}</li>
+						<li><b>Aplicación:</b> #{jb.aplicacion}</li>
+						<li><b>Importe:</b> #{jb.importe} €</li>
+						<li><b>F. Pago:</b> #{jb.fechaPago}</li>
+						<li><b>Documentación:</b>
+							<ul>
+								<c:if test="#{jb.doc.cm}">
+									<c:choose>
+									<c:when test="#{jb.doc.monoJgCm}">
+										<li><b>(ICM) Informe:</b> <a href="#{jb.getUrlCm()}" target="_blank">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li><b>(ICM) Informe:</b> <a href="#modal-open" data-open="cm">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
+									</c:otherwise>
+									</c:choose>
+								</c:if>
+								<c:choose>
+								<c:when test="#{jb.adjunto}">
+									<li><b>(ZIP) Adjunto:</b> <a href="#{jb.getUrlAdjunto()}" target="_blank">Ver documentación del pago<i class="fas fa-arrow-alt-down icon"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="#{jb.adjuntos}" var="adjunto" varStatus="loop">
+										<li>
+											<b>#{adjunto.tipo}:</b>
+											<p:commandLink ajax="false" onclick="setTimeout(working,400)" title="#{msg['tit.btn.zip1']}" tabindex="20">
+												#{adjunto.nombre}<i class="fas fa-arrow-alt-down btn-icon-right"></i>
+												<p:fileDownload value="#{jb.download(loop.index)}"/>
+											</p:commandLink>
+										</li>
+									</c:forEach>
+								</c:otherwise>
+								</c:choose>
+							</ul>
+						</li>
+						<li><b>Descripción:</b> #{jb.doc.descripcion}</li>
+					</ul>
+				</c:when>
+				<c:otherwise>
+					<div class="notice notice-warn">Sistema de búsqueda de la documentación bancaria asociada a un Documento Contable (DC).</div>
+				</c:otherwise>
+			</c:choose>
+			</h:form>
+
+			<br class="clear"/><hr/>
+			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		</div>
+	</ui:define>
+</ui:composition>
