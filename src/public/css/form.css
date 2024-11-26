@@ -97,11 +97,11 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
     color: rgb(107 114 128); opacity: .8; z-index: 1;
 }
 
-.ui-input-icon.left { top: 31px; left: 0.5rem; }
+.ui-input-icon.left { top: 30px; left: .5rem; }
 .ui-input-icon.left.inline { top: 11px; }
 .ui-input-icon.left + input { padding-left: 30px; }
 
-.ui-input-icon.right { top: 31px; right: 0.5rem; }
+.ui-input-icon.right { top: 30px; right: .5rem; }
 .ui-input-icon.right.inline { top: 11px; }
 .ui-input-icon.right + input { padding-right: 30px; }
 /* Inputs icon styles */

@@ -18,7 +18,7 @@ window.initMap = function() {
     origen.addListener("place_changed", function() {
         const placeMaps = origen.getPlace();
         divAddress.render(place.render(placeMaps)).show();
-        console.log("CT = " + place.isCartagena(placeMaps), placeMaps);
+        console.log("CT =", place.isCartagena(placeMaps), placeMaps);
     });
 }
 
