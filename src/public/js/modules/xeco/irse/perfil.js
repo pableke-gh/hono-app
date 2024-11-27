@@ -173,7 +173,7 @@ function IrsePerfil() {
 		eCol.parentNode.setVisible(acInteresado.isLoaded()); //muestro el colectivo
 		eRol.addEventListener("change", fnUpdatePerfil);
 		eAct.addEventListener("change", fnUpdatePerfil);
-		form.querySelector(".msg-cd").render().setVisible(impCd);
+		form.querySelector(".msg-cd")?.render().setVisible(impCd);
 		return self;
 	}
 }

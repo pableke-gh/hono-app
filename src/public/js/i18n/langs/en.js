@@ -63,7 +63,7 @@ export default {
 	firstDay: "Primer día", medDay: "Días Intermedios", lastDay: "Último día",
 	lblDescObserv: "Descripción / observaciones:", lblDescTaxi: "Itinerario (para justificación del proyecto):",
 
-	lblPais: "Country", lblDireccion: "Address", lblLocalidad: "Locality", lblCP: "Postal Code", lblProvincia: "Provincia", lblCCAA: "Administrative area",  
+	lblPais: "Country", lblDireccion: "Address", lblLocalidad: "Locality", lblCP: "Postal Code", lblProvincia: "Province", lblCCAA: "Administrative area",  
 
 	// IRIS Collections
 	despMun: [ "Vehículo Propio", "Transportes Públicos" ],

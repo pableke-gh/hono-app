@@ -46,7 +46,7 @@
 			<thead>
 				<tr>
 					<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
-					<th><span class="msg-cd #{iris.form.cssVisible}"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /> @lblA; @fCache.d;</span></th>
+					<c:if test="#{iris.form.editable}"><th class="msg-cd"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /> @lblA; @fCache.d;</th></c:if>
 					<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
 					<th>#{msg['lbl.responsable.gasto']}</th><th>#{msg['lbl.nombre.apellidos']}</th>
 					<th class="no-print"></th>
@@ -55,7 +55,7 @@
 			<tbody class="hide">
 				<tr class="tb-data tb-data-tc">
 					<td data-cell="#{msg['lbl.organica']}">@o;</td>
-					<td data-cell="Crédito Disp."><c:if test="#{iris.form.editable}">@imp;</c:if></td>
+					<c:if test="#{iris.form.editable}"><td data-cell="Crédito Disp.">@imp;</td></c:if>
 					<td data-cell="#{msg['lbl.descripcion']}">@dOrg;</td>
 					<td data-cell="#{msg['lbl.responsable.gasto']}">@resp;</td>
 					<td data-cell="#{msg['lbl.nombre.apellidos']}">@r;</td>

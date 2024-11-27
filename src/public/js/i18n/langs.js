@@ -92,17 +92,19 @@ function Langs() {
 			return str;
 		i = i || 0;
 		STATUS.index = i;
+		STATUS.matches = 0;
 		STATUS.count = i + 1;
 		STATUS.size = size || 1;
 		data = data || _lang; // default lang
 		return str.replace(RE_VAR, (m, k, t) => { // remplace function
+			STATUS.matches++; // increment matches
 			if (m.startsWith("$") || (t == ".f")) // float
 				return self.isoFloat(data[k]);
 			if (t == ".d") // Date in ISO string format
 				return self.isoDate(data[k]); // substring = 0, 10
 			/*if (t == ".s") { // data styled by function
 				const fnStyle = data[m] || _lang[m]; // handler
-				return fnStyle(data[k], data); // restyle data
+				return fnStyle(data[k], STATUS); // restyle data
 			}*/
 			return (data[k] ?? _lang[k] ?? STATUS[k] ?? ""); // Default = String
         });
