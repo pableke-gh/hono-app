@@ -103,13 +103,14 @@ pf.ready(() => {
         const data = JSON.read(args.presto);
         presto.setData(data); // Load data-model before view
         ecoInc.reset(); // cargo las econonomicas a incrementar
-        formPresto.closeAlerts().setData(data).readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
-                    .setVisible(".insert-only", presto.isEditable()).setVisible(".update-only", presto.isDisabled())
-                    .setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())
-                    .setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.showPartidasInc())
-                    .setVisible(".show-imp-cd", presto.isImpCd()).setVisible(".show-memoria", !presto.isL83()).setVisible(".grp-urgente", presto.isUrgente())
-                    .setVisible(".show-subtipo", presto.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto())
-                    .text(".filename", "");
+        formPresto.closeAlerts().resetCache().setData(data)
+				.readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
+				.setVisible(".insert-only", presto.isEditable()).setVisible(".update-only", presto.isDisabled())
+				.setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())
+    			.setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.showPartidasInc())
+        	    .setVisible(".show-imp-cd", presto.isImpCd()).setVisible(".show-memoria", !presto.isL83()).setVisible(".grp-urgente", presto.isUrgente())
+                .setVisible(".show-subtipo", presto.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto())
+                .text(".filename", "");
         pDec.loadEconomica(args); // cargo las econonomicas a decrementar
         lineas.render(JSON.read(args.data)); // Load table partidas
         acOrgDec.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);

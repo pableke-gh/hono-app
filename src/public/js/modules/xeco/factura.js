@@ -89,7 +89,8 @@ pf.ready(() => {
 
 		const data = JSON.read(args.fact);
         factura.setData(data); // Load data-model before view
-		formFact.closeAlerts().setData(data).setval("#nifTercero", data.nif).readonly(factura.isDisabled())
+		formFact.closeAlerts().resetCache().setData(data)
+				.setval("#nifTercero", data.nif).readonly(factura.isDisabled())
 				.setVisible(".insert-only", factura.isEditable()).setVisible(".update-only", factura.isDisabled())
 				.setVisible(".firmable-only", factura.isFirmable()).setVisible(".rechazable-only", factura.isRechazable())
 				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFacturable()).setVisible(".show-cp", factura.isCartaPago())

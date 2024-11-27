@@ -45,17 +45,13 @@ gulp.task("minify-views", done => {
 		removeComments: true, // removeComments => remove CDATA
 		removeRedundantAttributes: false // remove attr with default value
 	};
-	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest("dist/views")).on("end", done);
+	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest("dist/views")).on("end", () => {
+		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
+		deployCV("dist/views/xeco/**/*", CV_XECO, () => {}); // deploy xeco XHTML in Campus Virtual
+		const CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
+		deployCV("dist/views/irse/**/*", CV_IRSE, done); // deploy irse XHTML in Campus Virtual
+	});
 });
-gulp.task("minify-views-xeco", done => {
-	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
-	deployCV("dist/views/xeco/**/*", CV, done); // deploy xeco XHTML in Campus Virtual
-});
-gulp.task("minify-views-irse", done => {
-	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
-	deployCV("dist/views/irse/**/*", CV, done); // deploy irse XHTML in Campus Virtual
-});
-gulp.task("minify-html", gulp.series("minify-views", "minify-views-xeco", "minify-views-irse"));
 
 // Tasks to minify all CSS
 gulp.task("minify-css", done => {
@@ -98,7 +94,7 @@ gulp.task("static", done => {
 });
 
 // Task to build dist when deployment on server
-gulp.task("deploy", gulp.series("modules", "minify-html", "minify-css", "copy-ts", "minify-js"));
+gulp.task("deploy", gulp.series("modules", "minify-views", "minify-css", "copy-ts", "minify-js"));
 
 gulp.task("watch", () => {
 	// Gulp views minifies
@@ -114,4 +110,4 @@ gulp.task("watch", () => {
 	// Other watchers ...
 });
 
-gulp.task("default", gulp.series("copy-ts", "minify-html", "minify-css", "minify-js", "modules", "static", "watch"));
+gulp.task("default", gulp.series("copy-ts", "minify-views", "minify-css", "minify-js", "modules", "static", "watch"));

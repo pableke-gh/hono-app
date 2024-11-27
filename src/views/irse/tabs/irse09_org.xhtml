@@ -9,7 +9,7 @@
 
 	<h:inputHidden id="imp-org" value="#{iris.input.impOrg}" />
 	<div id="gastos-org" class="hide">#{iris.gastos.organicasJson}</div>
-	<div class="#{(irse.multiorganica || iris.admin) ? 'card-xeco' : 'hide'}">
+	<div class="#{iris.form.cssGastosOrganica}">
 		<h2><h:outputText value="#{msg['lbl.multiorganica']}" escape="false" /></h2>
 		<c:if test="#{iris.form.editable}">
 			<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.multiorganicas']}" escape="false" /></div>
