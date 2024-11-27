@@ -5,9 +5,7 @@ import uglify from "gulp-uglify";
 import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
 
-const HTML_FILES = "src/views/**/*.html";
-const HTML_XECO = "src/views/xeco/**/*";
-const HTML_IRSE = "src/views/irse/**/*";
+const VIEW_FILES = "src/views/**/*";
 
 const JS_FILES = "src/public/js/**/*.js";
 const JS_ROOT = "src/public/js/*.js";
@@ -38,25 +36,26 @@ gulp.task("copy-ts", done => {
 });
 
 // Task to minify all views HTML
-gulp.task("minify-html-views", done => {
+gulp.task("minify-views", done => {
 	const options = {
 		caseSensitive: true,
 		sortClassName: true,
-		collapseWhitespace: true,
-		removeComments: true, //removeComments => remove CDATA
-		removeRedundantAttributes: false //remove attr with default value
+		keepClosingSlash: true, // not to remove /> close tag
+		collapseWhitespace: true, // remove extra white spaces
+		removeComments: true, // removeComments => remove CDATA
+		removeRedundantAttributes: false // remove attr with default value
 	};
-	gulp.src(HTML_FILES).pipe(htmlmin(options)).pipe(gulp.dest("dist/views")).on("end", done);
+	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest("dist/views")).on("end", done);
 });
-gulp.task("minify-html-xeco", done => {
+gulp.task("minify-views-xeco", done => {
 	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
-	deployCV(HTML_XECO, CV, done); // deploy xeco XHTML in Campus Virtual
+	deployCV("dist/views/xeco/**/*", CV, done); // deploy xeco XHTML in Campus Virtual
 });
-gulp.task("minify-html-irse", done => {
+gulp.task("minify-views-irse", done => {
 	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
-	deployCV(HTML_IRSE, CV, done); // deploy irse XHTML in Campus Virtual
+	deployCV("dist/views/irse/**/*", CV, done); // deploy irse XHTML in Campus Virtual
 });
-gulp.task("minify-html", gulp.series("minify-html-views", "minify-html-xeco", "minify-html-irse"));
+gulp.task("minify-html", gulp.series("minify-views", "minify-views-xeco", "minify-views-irse"));
 
 // Tasks to minify all CSS
 gulp.task("minify-css", done => {
@@ -103,9 +102,7 @@ gulp.task("deploy", gulp.series("modules", "minify-html", "minify-css", "copy-ts
 
 gulp.task("watch", () => {
 	// Gulp views minifies
-	gulp.watch(HTML_FILES, gulp.series("minify-html-views"));
-	gulp.watch(HTML_XECO, gulp.series("minify-html-xeco"));
-	gulp.watch(HTML_IRSE, gulp.series("minify-html-irse"));
+	gulp.watch(VIEW_FILES, gulp.series("minify-views"));
 
 	// Gulp JS minifies
 	gulp.watch(JS_FILES, gulp.series("minify-js"));
