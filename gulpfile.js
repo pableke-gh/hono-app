@@ -40,11 +40,14 @@ gulp.task("minify-views", done => {
 	const options = {
 		caseSensitive: true,
 		sortClassName: true,
+		minifyJS: true, // inline js (<script> tag)
+		minifyCSS: true, // inline css (<style> tag)
 		keepClosingSlash: true, // not to remove /> close tag
 		collapseWhitespace: true, // remove extra white spaces
 		removeComments: true, // removeComments => remove CDATA
 		removeRedundantAttributes: false // remove attr with default value
 	};
+
 	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest("dist/views")).on("end", () => {
 		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
 		deployCV("dist/views/xeco/**/*", CV_XECO, () => {}); // deploy xeco XHTML in Campus Virtual
