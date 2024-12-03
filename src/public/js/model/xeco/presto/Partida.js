@@ -38,10 +38,10 @@ export default function Partida(presto) {
         let output = "";
         if (presto.isPartidaExt()) {
             output = `<td class="text-right">${i18n.isoFloat(data.ing) || NO_APLICA} €</td>
-                        <td class="text-right">${i18n.isoFloat(data.gg) || NO_APLICA} €</td>
-                        <td class="text-right">${i18n.isoFloat(data.mh) || NO_APLICA} €</td>
-                        <td class="text-right">${i18n.isoFloat(data.ch) || NO_APLICA} €</td>
-                        <td class="text-right">${i18n.isoFloat(data.ih) || NO_APLICA} €</td>`;
+				<td class="text-right">${i18n.isoFloat(data.gg) || NO_APLICA} €</td>
+				<td class="text-right">${i18n.isoFloat(data.mh) || NO_APLICA} €</td>
+				<td class="text-right">${i18n.isoFloat(data.ch) || NO_APLICA} €</td>
+				<td class="text-right">${i18n.isoFloat(data.ih) || NO_APLICA} €</td>`;
         }
         return `<tr class="tb-data">
             <td class="text-center">${excedido}${anticipada}</td>
@@ -51,7 +51,7 @@ export default function Partida(presto) {
             <td class="text-center hide-sm">${i18n.boolval(self.isAfectada(data.omask))}</td>
             <td class="text-center">${data.e}</td>
             <td class="hide-sm">${data.dEco}</td>
-            ${output}
+			${output}
             <td class="text-right">${i18n.isoFloat(data.imp)} €</td>
             <td class="text-center">${doc030}${remove}</td>
         </tr>`;
@@ -67,10 +67,10 @@ export default function Partida(presto) {
     }
 
     this.validate = data => {
-        const valid = i18n.getValidators();
-        valid.isKey("acOrgInc", data.idOrgInc, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
-        valid.isKey("idEcoInc", data.idEcoInc, "Debe seleccionar una económica"); // select required number
-        valid.gt0("impInc", data.impInc); // float number > 0
-        return valid.close("No ha seleccionada correctamente la partida a incrementar.");
+		const valid = i18n.getValidators();
+		valid.isKey("acOrgInc", data.idOrgInc, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
+		valid.isKey("idEcoInc", data.idEcoInc, "Debe seleccionar una económica"); // select required number
+		valid.gt0("impInc", data.impInc); // float number > 0
+		return valid.close("No ha seleccionada correctamente la partida a incrementar.");
     }
 }

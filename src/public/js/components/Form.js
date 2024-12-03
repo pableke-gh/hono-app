@@ -115,6 +115,8 @@ export default function(form, opts) {
 	this.setAttr = (selector, name, value) => self.setAttribute(self.getInput(selector), name, value);
 	this.delAttr = (selector, name) => { dom.delAttr(self.getInput(selector), name); return self; }
 
+	const isSelect = el => (el.tagName == "SELECT");
+	const isCheckbox = el => (el.type == "checkbox");
 	function fnParseValue(el) {
 		if (fnContains(el, opts.floatFormatClass))
 			return i18n.toFloat(el.value); // Float
@@ -132,12 +134,14 @@ export default function(form, opts) {
 		fnUpdate(selector, el => {
 			if (!el.name)
 				return; // No value to save
-			if ((el.type === "checkbox") && el.checked) {
+			if (isCheckbox(el) && el.checked) {
 				data[el.name] = data[el.name] || [];
 				data[el.name].push(el.value); // Array type
+				return;
 			}
-			else
-				data[el.name] = fnParseValue(el);
+			if (isSelect(el))
+				data[el.name + "Option"] = dom.getOptionText(el);
+			data[el.name] = fnParseValue(el);
 		});
 		return data;
 	}
@@ -260,7 +264,7 @@ export default function(form, opts) {
 				el.type = "date"; // Hack PF type
 			else if (fnContains(el, opts.checkAllClass))
 				el.addEventListener("click", ev => {
-					const fnCheck = input => (input.type == "checkbox") && (input.name == el.id);
+					const fnCheck = input => (isCheckbox(input) && (input.name == el.id));
 					form.elements.forEach(input => { if (fnCheck(input)) input.checked = el.checked; });
 				});
 		});
