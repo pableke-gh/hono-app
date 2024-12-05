@@ -29,21 +29,21 @@
 		</button>
 		<a href="#" class="menu-toggle"><i class="fas fa-bars"></i></a>
 		<!--<div class="separator"></div>-->
-		<div id="user" class="dropdown-menu">
-			<button id="selected" popovertarget="user-profile"><i class="fas fa-user"></i></button>
-			<ul id="user-profile" popover class="list">
+		<div id="user" class="popover-menu">
+			<button popovertarget="user-profile" anchor-name="--popover-anchor"><i class="fas fa-user"></i></button>
+			<ul id="user-profile" popover="auto" position-anchor="--popover-anchor" class="list">
 				<li class="option"><a href="mailto:#">email@google.com</a></li>
 				<li class="option"><a href="/">Home</a></li>
 				<li class="option"><hr class="slim"/></li>
 				<li class="option"><a href="#">Login</a></li>
 			</ul>
 		</div>
-		<div id="languages" class="dropdown">
-			<button>
+		<div id="languages" class="popover-menu">
+			<button popovertarget="langs-menu" anchor-name="--anchor-langs">
 				<img src="/public/img/flags/spain.png">
 				<i class="fas fa-chevron-down"></i>
 			</button>
-			<ul class="list">
+			<ul id="langs-menu" popover="auto" position-anchor="--anchor-langs" class="list">
 				<li class="option"><a id="es" href="/web/es/index.html?nav=1"><img src="/public/img/flags/spain.png"> ES</a></li>
 				<li class="options"><a id="en" href="/web/en/index.html?nav=1"><img src="/public/img/flags/great_britain.png"> EN</a></li>
 			</ul>

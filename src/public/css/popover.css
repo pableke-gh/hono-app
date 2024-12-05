@@ -1,0 +1,47 @@
+
+.popover-menu > button {
+    display: flex; align-items: center; justify-content: center; 
+    margin: 0 2px; padding: 4px 8px; min-width: 36px; min-height: 36px;
+    color: inherit; background-color: inherit; cursor: pointer;
+    border-radius: 8px; border-width: 0;
+	anchor-name: --popover-anchor;
+}
+.popover-menu > button:hover {
+	color: #333; background-color: gainsboro;
+}
+.popover-menu > .list {
+	/* anchoring to the button */
+	position: absolute;
+	position-anchor: --popover-anchor;
+
+	margin: 6px 0;
+	inset: auto;
+	top: anchor(--popover-anchor bottom);
+	right: anchor(--popover-anchor right);
+	/*translate: 50% 0;*/
+	position-try-fallbacks: --popover-tr;
+
+    text-wrap: nowrap;
+	box-shadow: 0 0 2px 1px #ccc;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	background-color: #333;
+    list-style: none;
+}
+
+@position-try --popover-tr {
+	margin: 0 6px;
+	inset: auto;
+	top: anchor(top);
+	left: anchor(right);
+}
+
+
+.popover-menu img { display: inline-block; width: 24px; height: auto; }
+.popover-menu a {
+	display: flex; gap: 4px; align-items: center;
+	padding: 4px 8px; color: #ccc; text-decoration: none;
+}
+.popover-menu a:hover {
+	color: #333 !important; background-color: gainsboro;
+}

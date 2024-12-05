@@ -28,14 +28,15 @@ window.initMap = () => {
 	const OPTIONS = place.getOptions();
 	const origen = new google.maps.places.Autocomplete(document.getElementById("origen"), OPTIONS); //Get the autocomplete input
 	const destino = new google.maps.places.Autocomplete(document.getElementById("destino"), OPTIONS); //Get the autocomplete input
-	const distance = new google.maps.DistanceMatrixService(); //Instantiate a distance matrix
+	const distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
+	const placesService = new google.maps.places.PlacesService(); // Create a new instance of the PlacesService
 
 	var p1, p2; // from..to
 	origen.addListener("place_changed", function() { p1 = origen.getPlace(); }); //Get the place details from autocomplete
 	destino.addListener("place_changed", function() { p2 = destino.getPlace(); }); //Get the place details from autocomplete
 
 	//*************** rutas / trayectos - maps ***************//
-	elAddRuta.onclick = ev => {
+	elAddRuta.onclick = async ev => {
 		ev.preventDefault(); // stop event
 		const ruta = dom.getData(); // form data
 		function loadOrigen(place, pais, mask) {
@@ -44,19 +45,29 @@ window.initMap = () => {
 			ruta.mask = mask;
 		}
 
+		dom.closeAlerts().intval("#desp", "errTransporte", "errRequired")
+			.required("#f2", "errDate").required("#h2", "errDate")
+			.required("#f1", "errDate").required("#h1", "errDate")
+			.required("#destino", "errDestino").required("#origen", "errOrigen");
+
 		if (!p1 && rutas.empty()) // primera ruta
 			loadOrigen(place.getPlaceCT(), place.getDefaultCountry(), place.getDefaultMask());
 		else if (p1) // ha seleccionado un origen?
 			loadOrigen(p1, place.getCountry(p1), place.isCartagena(p1) ? 4 : 0);
 		else if (rutas.size() > 0) { //origen = destino anterior
 			const last = rutas.last(); // ultima ruta
-			loadOrigen(last.p2, last.pais2, last.mask);
+			if (last.p2)
+				loadOrigen(last.p2, last.pais2, last.mask);
+			else {
+				OPTIONS.query = last.destino;
+				[err, last.p2] = await globalThis.catchError(placesService.findPlaceFromQuery(OPTIONS));
+				if (err || (response.status !== google.maps.DistanceMatrixStatus.OK)) // status !== "OK"
+					dom.addError("#origen", "No se ha podido obtener el origen del trayecto debido a: " + (err || response.status));
+				else
+					loadOrigen(last.p2, last.pais2, last.mask);
+			}
 		}
 
-		dom.closeAlerts().intval("#desp", "errTransporte", "errRequired")
-			.required("#f2", "errDate").required("#h2", "errDate")
-			.required("#f1", "errDate").required("#h1", "errDate")
-			.required("#destino", "errDestino").required("#origen", "errOrigen");
 		p2 || dom.addError("#destino", "errDestino", "errRequired"); //ha seleccionado un destino
 		p1 || dom.addError("#origen", "errOrigen", "errRequired"); //ha seleccionado un origen
 		if (p1 && p2 && place.isSameLocality(p1, p2))
@@ -82,8 +93,12 @@ window.initMap = () => {
 			destinations: [ruta.destino],
 			travelMode: DRIVING
 		};
-
-		distance.getDistanceMatrix(DISTANCE_OPTIONS, function(res, status) {
+		const [err, response] = await globalThis.catchError(distanceService.getDistanceMatrix(DISTANCE_OPTIONS));
+		if (err || (response.status !== google.maps.DistanceMatrixStatus.OK)) // status !== "OK"
+			return !dom.addError("#origen", "The calculated distance fails due to " + (err || response.status));
+		ruta.km2 = response.rows[0].elements[0].distance.value / 1000; //to km
+		rutas.add(ruta, ruta.km2); // add to table
+		/*distance.getDistanceMatrix(DISTANCE_OPTIONS, function(res, status) {
 			if (status !== google.maps.DistanceMatrixStatus.OK) //status !== "OK"
 				return !dom.addError("#origen", "The calculated distance fails due to " + status);
 			const origins = res.originAddresses;
@@ -96,7 +111,7 @@ window.initMap = () => {
 				}
 			}
 			rutas.add(ruta, ruta.km2);
-		});
+		});*/
 	}
 }
 

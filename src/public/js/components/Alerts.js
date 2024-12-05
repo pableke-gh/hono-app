@@ -102,7 +102,12 @@ function Alerts() {
     // Global handlers
     window.loading = self.loading;
     window.working = self.working;
-
+	globalThis.catchError = promise => {
+		// redefine global catchError with loading / working
+		const fnOk = data => { self.loading(); return [undefined, data]; };
+		return promise.then(fnOk).catch(err => [err]).finally(self.working);
+	}
+	
     this.isLoaded = function(xhr, status, args) { // PF server error xhr
         if (xhr && (status == "success"))
             return true; // status 200
