@@ -1,4 +1,5 @@
 
+import sb from "../../../components/StringBox.js";
 import i18n from "../../../i18n/langs.js";
 
 export default function Partida(presto) {
@@ -71,6 +72,8 @@ export default function Partida(presto) {
 		valid.isKey("acOrgInc", data.idOrgInc, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
 		valid.isKey("idEcoInc", data.idEcoInc, "Debe seleccionar una económica"); // select required number
 		valid.gt0("impInc", data.impInc); // float number > 0
+		if (valid.isOk() && (data.idOrgDec == data.idOrgInc) && sb.starts(sb.getCode(data.idEcoIncOption), sb.getCode(data.idEcoDecOption)))
+			valid.addError("acOrgInc", "notValid", "La partida a incrementar esta dentro del nivel vinculante de la partida a decrementar. Por lo que no es necesario realizar esta operación.");
 		return valid.close("No ha seleccionada correctamente la partida a incrementar.");
     }
 }

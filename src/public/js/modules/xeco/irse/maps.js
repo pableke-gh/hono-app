@@ -5,6 +5,21 @@ import dom from "../../../lib/uae/dom-box.js";
 import place from "./place.js";
 import rutas from "./rutas.js";
 
+/**
+ * TRAVEL_MODE: Used for driving directions, this mode provides driving directions.
+ * ej: https://developers.google.com/maps/documentation/javascript/examples/directions-travel-modes
+ * 
+ * DRIVING: Used for passenger cars, this mode provides driving directions.
+ * WALKING: Used for pedestrians, this mode provides walking directions.
+ * BICYCLING: Used for motorized two-wheelers, this mode provides bicycling directions.
+ * TRANSIT: Used for public transportation, this mode provides transit directions, including bus, train, and subway routes.
+ * There is no FLIGHT travel mode in the Google Maps Javascript API v3.
+*/
+const DRIVING = "DRIVING";
+//const TRAVEL_MODE = [DRIVING, "WALKING", "BICYCLING", "TRANSIT"];
+//const TRAVEL_TYPE = ["Vehículo Propio", "Vehículo Alquiler", "Vehículo Ajeno", "Taxi Interurbano", "Bús Interurbano", "Tren", "Barco", "Avión", "Otros", "Transportes Públicos"]
+//const DRIVING_TYPE = ["1", "2", "3", "4"];
+
 //initialize google maps
 window.initMap = () => {
 	const elAddRuta = $1("#add-ruta"); // html button
@@ -22,75 +37,66 @@ window.initMap = () => {
 	//*************** rutas / trayectos - maps ***************//
 	elAddRuta.onclick = ev => {
 		ev.preventDefault(); // stop event
-		let loc1 = null; //source location
+		const ruta = dom.getData(); // form data
+		function loadOrigen(place, pais, mask) {
+			p1 = place;
+			ruta.pais1 = pais;
+			ruta.mask = mask;
+		}
 
-		if (!p1 && rutas.empty()) { //primera ruta
-			loc1 = new google.maps.LatLng(CT.lat, CT.lng);
-			loc1.pais = CT.pais;
-			loc1.mask = CT.mask;
-		}
-		else if (p1) { //ha seleccionado un origen?
-			loc1 = p1.geometry.location;
-			loc1.pais = place.getCountry(p1);
-			loc1.mask = place.isCartagena(p1) ? 4 : 0;
-		}
-		else if (rutas.size() > 0) { //origen=destino anterior?
-			let last = rutas.last();
-			loc1 = new google.maps.LatLng(last.lat2, last.lng2);
-			loc1.pais = last.pais2;
-			loc1.mask = last.mask;
+		if (!p1 && rutas.empty()) // primera ruta
+			loadOrigen(place.getPlaceCT(), place.getDefaultCountry(), place.getDefaultMask());
+		else if (p1) // ha seleccionado un origen?
+			loadOrigen(p1, place.getCountry(p1), place.isCartagena(p1) ? 4 : 0);
+		else if (rutas.size() > 0) { //origen = destino anterior
+			const last = rutas.last(); // ultima ruta
+			loadOrigen(last.p2, last.pais2, last.mask);
 		}
 
 		dom.closeAlerts().intval("#desp", "errTransporte", "errRequired")
-			.required("#f2", "errDate", "errRequired").required("#h2", "errDate")
-			.required("#f1", "errDate", "errRequired").required("#h1", "errDate")
-			.required("#destino", "errDestino", "errRequired")
-			.required("#origen", "errOrigen", "errRequired");
+			.required("#f2", "errDate").required("#h2", "errDate")
+			.required("#f1", "errDate").required("#h1", "errDate")
+			.required("#destino", "errDestino").required("#origen", "errOrigen");
 		p2 || dom.addError("#destino", "errDestino", "errRequired"); //ha seleccionado un destino
-		loc1 || dom.addError("#origen", "errOrigen", "errRequired"); //ha seleccionado un origen
+		p1 || dom.addError("#origen", "errOrigen", "errRequired"); //ha seleccionado un origen
+		if (p1 && p2 && place.isSameLocality(p1, p2))
+			dom.addError("#origen", "errItinerarioCiudad", "errRequired")
 		if (dom.isError())
 			return false;
 
-		//new place data and read location from loc1 and loc2
-		const ruta = dom.getData();
+		ruta.p2 = p2; // current destination place
 		ruta.dt1 = sb.toIsoDate(ruta.f1, ruta.h1);
 		ruta.dt2 = sb.toIsoDate(ruta.f2, ruta.h2);
-		ruta.lat1 = loc1.lat();
-		ruta.lng1 = loc1.lng();
-		ruta.pais1 = loc1.pais;
-		ruta.lat2 = p2.geometry.location.lat();
-		ruta.lng2 = p2.geometry.location.lng();
 		ruta.pais2 = place.getCountry(p2);
-        ruta.mask = ((loc1.mask & 4) && place.isCartagena(p2)) ? 4 : 0;
+        ruta.mask = ((ruta.mask & 4) && place.isCartagena(p2)) ? 4 : 0;
 
-		//validate data
-		if (ruta.origen == ruta.destino)
-			return !dom.addError("#origen", "errItinerarioCiudad", "errRequired");
-		if (!rutas.valid(ruta))
+		p1 = p2 = null; // re-init. places
+		if (!rutas.valid(ruta)) // extra validations
 			return false;
 
-		if (ruta.desp == "1") //calculate distance
-			distance.getDistanceMatrix({
-				origins: [loc1],
-				destinations: [p2.geometry.location],
-				travelMode: "DRIVING"
-			}, function(res, status) {
-				if (status !== "OK")
-					return !dom.addError("#origen", "The calculated distance fails due to " + status);
-				var origins = res.originAddresses;
-				//var destinations = res.destinationAddresses;
-				for (var i = 0; i < origins.length; i++) {
-					var results = res.rows[i].elements;
-					for (var j = 0; j < results.length; j++) {
-						var element = results[j];
-						ruta.km2 = element.distance.value/1000; //to km
-					}
+		if (ruta.desp != "1") // no calculate distance
+			return rutas.add(ruta, null);
+
+		const DISTANCE_OPTIONS = {
+			origins: [ruta.origen],
+			destinations: [ruta.destino],
+			travelMode: DRIVING
+		};
+
+		distance.getDistanceMatrix(DISTANCE_OPTIONS, function(res, status) {
+			if (status !== google.maps.DistanceMatrixStatus.OK) //status !== "OK"
+				return !dom.addError("#origen", "The calculated distance fails due to " + status);
+			const origins = res.originAddresses;
+			//var destinations = res.destinationAddresses;
+			for (let i = 0; i < origins.length; i++) {
+				const results = res.rows[i].elements;
+				for (let j = 0; j < results.length; j++) {
+					const element = results[j];
+					ruta.km2 = element.distance.value/1000; //to km
 				}
-				rutas.add(ruta, ruta.km2);
-			});
-		else
-			rutas.add(ruta, null);
-		p1 = p2 = null;
+			}
+			rutas.add(ruta, ruta.km2);
+		});
 	}
 }
 

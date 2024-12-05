@@ -11,25 +11,24 @@ import organicas from "./organicas.js";
 
 function IrseRutas() {
 	const self = this; //self instance
-	const CT_LAT = 37.62568269999999;
-	const CT_LNG = -0.9965839000000187;
+	//const CT_LAT = 37.62568269999999;
+	//const CT_LNG = -0.9965839000000187;
+	const CT_NAME = "Cartagena, España";
 	const MIN_DATE = dt.clone().addDays(-365); //1 año antes
 	const MAX_DATE = dt.clone().addDays(180); //6 meses despues
 
 	const MUN = { //default ruta MUN
 		desp: 1, mask: 1, // VP y principal 
-		lat1: CT_LAT, lng1: CT_LNG, pais1: "ES",
-		lat2: CT_LAT, lng2: CT_LNG, pais2: "ES"
+		pais1: "ES", pais2: "ES"
 	};
 	const LOC = { //default ruta AUT/A7J
 		desp: 10, mask: 1, // VP y principal 
-		lat1: CT_LAT, lng1: CT_LNG, pais1: "ES",
-		lat2: CT_LAT, lng2: CT_LNG, pais2: "ES"
+		pais1: "ES", pais2: "ES"
 	};
 	const CT = { //default CT coords
-		desp: 0, mask: 4, lat: CT_LAT, lng: CT_LNG, pais: "ES",
-		origen: "Cartagena, España", lat1: CT_LAT, lng1: CT_LNG, pais1: "ES",
-		destino: "Cartagena, España", lat2: CT_LAT, lng2: CT_LNG, pais2: "ES"
+		desp: 0, mask: 4, pais: "ES",
+		origen: CT_NAME, pais1: "ES",
+		destino: CT_NAME, pais2: "ES"
 	};
 
 	const resume = { sizeOut: 0, sizeVp: 0 };
@@ -51,10 +50,9 @@ function IrseRutas() {
 
 	var rutas, divData, bruto, elImpKm, justifiKm;
 
-	function fmtImpKm(ruta) {
-		return i18n.isoFloat(ruta.km1 * IRSE.gasolina)
-	}
-	function fnSetMain(ruta) {
+	const getLoc = () => perfil.isMun() ? MUN : LOC;
+	const fmtImpKm = ruta => i18n.isoFloat(ruta.km1 * IRSE.gasolina);
+	const fnSetMain = ruta => {
 		rutas.forEach(ruta => { ruta.mask &= ~1; });
 		ruta.mask |= 1;
 	}
@@ -63,9 +61,6 @@ function IrseRutas() {
 	this.getImpKm = () => resume.impKm;
 	this.getTotKm = () => resume.totKm;
 	this.getTotKmCalc = () => resume.totKmCalc;
-
-	this.getLoc = () => perfil.isMun() ? MUN : LOC;
-	this.getCT = () => CT;
 
 	this.getAll = () => rutas;
 	this.getResume = () => resume;
@@ -223,7 +218,7 @@ function IrseRutas() {
 
 		fnResume(); // Actualizo rutas e importes
 		if (perfil.isAutA7j() || perfil.is1Dia()) {
-			const ruta = Object.assign({}, self.getLoc(), rutas[0]);
+			const ruta = Object.assign({}, getLoc(), rutas[0]);
 			rutas[0] = ruta; // Save new data (routes.length = 1)
 
 			form.change(ev => { fnResume(); fnSave(); }) // Any input change => save all rutas
@@ -244,7 +239,7 @@ function IrseRutas() {
 				fnSetMain(ev.detail.data);
 				dom.table("#rutas", rutas, resume, STYLES);
 			}).onRenderTable("#rutas", table => {
-				let last = fnResume().last(rutas) || CT;
+				const last = fnResume().last(rutas) || CT;
 				form.setval("#origen", last.destino).setval("#f1", sb.isoDate(last.dt2)).setval("#h1", sb.isoTimeShort(last.dt2))
 					.setval("#destino").copy("#f2", "#f1").setval("#h2").setval("#principal", "0").setval("#desp")
 					.delAttr("#f1", "max").delAttr("#f2", "min").hide(".grupo-matricula");

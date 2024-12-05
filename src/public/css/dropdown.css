@@ -30,3 +30,49 @@
 .dropdown a:hover {
 	color: #333 !important; background-color: gainsboro;
 }
+
+
+
+.dropdown-menu {
+}
+.dropdown-menu > button {
+    display: flex; align-items: center; justify-content: center; 
+    margin: 0 2px; padding: 4px 8px; min-width: 36px; min-height: 36px;
+    color: inherit; background-color: inherit; cursor: pointer;
+    border-radius: 8px; border-width: 0;
+	anchor-name: --dropdown-button;
+}
+.dropdown-menu > button:hover {
+	color: #333; background-color: gainsboro;
+}
+.dropdown-menu > .list {
+	/* anchoring to the button */
+	position: absolute;
+	position-anchor: --dropdown-button;
+
+	margin: 0;
+	inset: auto;
+	top: anchor(bottom);
+	right: anchor(right);
+	margin-block-start: 6px;
+	position-try-fallbacks: --dropdown-left;
+
+    text-wrap: nowrap; box-shadow: 0 0 2px 1px #ccc; border-radius: 8px; background-color: #333;
+    list-style: none;
+}
+
+@position-try --dropdown-left {
+	inset: auto;
+	top: anchor(top);
+	left: anchor(right);
+}
+
+
+.dropdown-menu img { display: inline-block; width: 24px; height: auto; }
+.dropdown-menu a {
+	display: flex; gap: 4px; align-items: center;
+	padding: 4px 8px; color: #ccc; text-decoration: none;
+}
+.dropdown-menu a:hover {
+	color: #333 !important; background-color: gainsboro;
+}
