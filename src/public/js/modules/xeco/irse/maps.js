@@ -1,4 +1,5 @@
 
+import coll from "../../../components/CollectionHTML.js";
 import sb from "../../../components/StringBox.js";
 import dom from "../../../lib/uae/dom-box.js";
 
@@ -28,16 +29,39 @@ window.initMap = () => {
 	const OPTIONS = place.getOptions();
 	const origen = new google.maps.places.Autocomplete(document.getElementById("origen"), OPTIONS); //Get the autocomplete input
 	const destino = new google.maps.places.Autocomplete(document.getElementById("destino"), OPTIONS); //Get the autocomplete input
+	const placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService
 	const distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
-	const placesService = new google.maps.places.PlacesService(); // Create a new instance of the PlacesService
 
-	var p1, p2; // from..to
+	var p1, p2; // from ... to
 	origen.addListener("place_changed", function() { p1 = origen.getPlace(); }); //Get the place details from autocomplete
 	destino.addListener("place_changed", function() { p2 = destino.getPlace(); }); //Get the place details from autocomplete
+
+	function getPlace(query) { // find a place by query
+		const PLACES_OPTIONS = { query, fields: [ "place_id" ] };
+		return new Promise((resolve, reject) => {
+			placesService.findPlaceFromQuery(PLACES_OPTIONS, (results, status) => {
+				if (status !== google.maps.places.PlacesServiceStatus.OK)
+					return reject(status);
+				const DETAILS_OPTIONS = { placeId: results[0].place_id, fields: [ "address_components" ] };
+				placesService.getDetails(DETAILS_OPTIONS, (place, status) => {
+					if (status !== google.maps.places.PlacesServiceStatus.OK)
+						return reject(status);
+					resolve(place);
+				});
+			});
+		});
+	}
 
 	//*************** rutas / trayectos - maps ***************//
 	elAddRuta.onclick = async ev => {
 		ev.preventDefault(); // stop event
+		dom.closeAlerts().intval("#desp", "errTransporte", "errRequired")
+			.required("#f2", "errDate").required("#h2", "errDate")
+			.required("#f1", "errDate").required("#h1", "errDate")
+			.required("#destino", "errDestino").required("#origen", "errOrigen");
+		if (dom.isError()) // validate inputs
+			return false; // invalid inputs
+
 		const ruta = dom.getData(); // form data
 		function loadOrigen(place, pais, mask) {
 			p1 = place;
@@ -45,33 +69,23 @@ window.initMap = () => {
 			ruta.mask = mask;
 		}
 
-		dom.closeAlerts().intval("#desp", "errTransporte", "errRequired")
-			.required("#f2", "errDate").required("#h2", "errDate")
-			.required("#f1", "errDate").required("#h1", "errDate")
-			.required("#destino", "errDestino").required("#origen", "errOrigen");
-
 		if (!p1 && rutas.empty()) // primera ruta
 			loadOrigen(place.getPlaceCT(), place.getDefaultCountry(), place.getDefaultMask());
 		else if (p1) // ha seleccionado un origen?
 			loadOrigen(p1, place.getCountry(p1), place.isCartagena(p1) ? 4 : 0);
 		else if (rutas.size() > 0) { //origen = destino anterior
 			const last = rutas.last(); // ultima ruta
-			if (last.p2)
-				loadOrigen(last.p2, last.pais2, last.mask);
-			else {
-				OPTIONS.query = last.destino;
-				[err, last.p2] = await globalThis.catchError(placesService.findPlaceFromQuery(OPTIONS));
-				if (err || (response.status !== google.maps.DistanceMatrixStatus.OK)) // status !== "OK"
-					dom.addError("#origen", "No se ha podido obtener el origen del trayecto debido a: " + (err || response.status));
-				else
-					loadOrigen(last.p2, last.pais2, last.mask);
+			if (!last.p2) { // tiene el destino?
+				const [err, aux] = await globalThis.catchError(getPlace(last.destino));
+				last.p2 = err ? null : aux; // valida si hay place
 			}
+			loadOrigen(last.p2, last.pais2, last.mask);
 		}
 
 		p2 || dom.addError("#destino", "errDestino", "errRequired"); //ha seleccionado un destino
 		p1 || dom.addError("#origen", "errOrigen", "errRequired"); //ha seleccionado un origen
 		if (p1 && p2 && place.isSameLocality(p1, p2))
-			dom.addError("#origen", "errItinerarioCiudad", "errRequired")
+			dom.addError("#origen", "errItinerarioCiudad", "errRequired");
 		if (dom.isError())
 			return false;
 
@@ -94,24 +108,10 @@ window.initMap = () => {
 			travelMode: DRIVING
 		};
 		const [err, response] = await globalThis.catchError(distanceService.getDistanceMatrix(DISTANCE_OPTIONS));
-		if (err || (response.status !== google.maps.DistanceMatrixStatus.OK)) // status !== "OK"
-			return !dom.addError("#origen", "The calculated distance fails due to " + (err || response.status));
+		if (err) // error al calcular la distancia
+			return dom.addError("#origen", "The calculated distance fails due to " + err).isOk();
 		ruta.km2 = response.rows[0].elements[0].distance.value / 1000; //to km
 		rutas.add(ruta, ruta.km2); // add to table
-		/*distance.getDistanceMatrix(DISTANCE_OPTIONS, function(res, status) {
-			if (status !== google.maps.DistanceMatrixStatus.OK) //status !== "OK"
-				return !dom.addError("#origen", "The calculated distance fails due to " + status);
-			const origins = res.originAddresses;
-			//var destinations = res.destinationAddresses;
-			for (let i = 0; i < origins.length; i++) {
-				const results = res.rows[i].elements;
-				for (let j = 0; j < results.length; j++) {
-					const element = results[j];
-					ruta.km2 = element.distance.value/1000; //to km
-				}
-			}
-			rutas.add(ruta, ruta.km2);
-		});*/
 	}
 }
 
