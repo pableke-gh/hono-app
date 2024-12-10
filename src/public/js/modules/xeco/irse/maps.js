@@ -26,17 +26,13 @@ window.initMap = () => {
 	const elAddRuta = $1("#add-ruta"); // html button
 	if (!elAddRuta) return true; // readonly mode
 
-	const OPTIONS = place.getOptions();
-	const origen = new google.maps.places.Autocomplete(document.getElementById("origen"), OPTIONS); //Get the autocomplete input
-	const destino = new google.maps.places.Autocomplete(document.getElementById("destino"), OPTIONS); //Get the autocomplete input
-	const placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService
-	const distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
-
 	var p1, p2; // from ... to
-	origen.addListener("place_changed", function() { p1 = origen.getPlace(); }); //Get the place details from autocomplete
-	destino.addListener("place_changed", function() { p2 = destino.getPlace(); }); //Get the place details from autocomplete
+	const distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
+	const placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService
+	place.setAutocomplete($1("#origen"), origen => { p1 = origen.getPlace(); }) // Origen autocomplete input 
+		.setAutocomplete($1("#destino"), destino => { p2 = destino.getPlace(); }); // Destino autocomplete input
 
-	function getPlace(query) { // find a place by query
+	function getPlaceDetails(query) { // find a place by query
 		const PLACES_OPTIONS = { query, fields: [ "place_id" ] };
 		return new Promise((resolve, reject) => {
 			placesService.findPlaceFromQuery(PLACES_OPTIONS, (results, status) => {
@@ -76,7 +72,7 @@ window.initMap = () => {
 		else if (rutas.size() > 0) { //origen = destino anterior
 			const last = rutas.last(); // ultima ruta
 			if (!last.p2) { // tiene el destino?
-				const [err, aux] = await globalThis.catchError(getPlace(last.destino));
+				const [err, aux] = await globalThis.catchError(getPlaceDetails(last.destino));
 				last.p2 = err ? null : aux; // valida si hay place
 			}
 			loadOrigen(last.p2, last.pais2, last.mask);

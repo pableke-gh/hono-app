@@ -5,8 +5,9 @@ import coll from "./CollectionHTML.js";
 import tabs from "./Tabs.js";
 
 function Navigation() {
-	const self = this; //self instance
-	const SCRIPTS = {}; //function container
+	const self = this; // self instance
+	const SCRIPTS = {}; // function container
+	const KEY_THEME = "color-theme"; // Key to store theme mode
 	const main = document.body.children.findBy("main");
 
 	this.ready = coll.ready; // synonym
@@ -16,16 +17,16 @@ function Navigation() {
 
 	this.setTheme = () => self.isDarkMode() ? self.setDarkMode() : self.setLightMode();
 	this.toggleMode = () => self.isDarkMode() ? self.setLightMode() : self.setDarkMode();
-	this.isDarkMode = () => ((localStorage.getItem("color-theme") === "dark") || (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches));
+	this.isDarkMode = () => ((localStorage.getItem(KEY_THEME) === "dark") || (!(KEY_THEME in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches));
 	this.setDarkMode = () => {
 		document.documentElement.classList.add("dark");
-		localStorage.setItem("color-theme", "dark");
+		localStorage.setItem(KEY_THEME, "dark");
 		return self;
 	}
 	this.isLightMode = () => !self.isDarkMode();
 	this.setLightMode = () => {
 		document.documentElement.classList.remove("dark");
-		localStorage.setItem("color-theme", "light");
+		localStorage.setItem(KEY_THEME, "light");
 		return self;
     }
 

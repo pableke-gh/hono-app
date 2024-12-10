@@ -212,8 +212,9 @@ function IrseRutas() {
 			return fnRecalc();
 		}
 		function fnSave() {
-			divData.innerText = JSON.stringify(rutas);
-			form.setval("#etapas", divData.innerText);
+			const fnReplace = (key, value) => ((!value || (key == "p2") || key.endsWith("Option")) ? undefined : value); 
+			divData.innerText = JSON.stringify(rutas, fnReplace); // not to save place
+			form.setval("#etapas", divData.innerText); // load input value
 		}
 
 		fnResume(); // Actualizo rutas e importes

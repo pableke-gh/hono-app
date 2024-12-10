@@ -10,6 +10,6 @@ html.dark {
     .autocomplete .results { background-color: #ccc; }
     .multiselect .options { background-color: #ccc; }
 
-    /*input::-webkit-calendar-picker-indicator { filter: invert(1); } /* white color */
-    input[type="search"]::-webkit-search-cancel-button { filter: invert(1); }
+    input::-webkit-calendar-picker-indicator { filter: invert(1); } /* white color */
+    input[type="search"]::-webkit-search-cancel-button { filter: invert(1); } /* white color */
 }

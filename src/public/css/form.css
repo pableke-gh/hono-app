@@ -80,8 +80,6 @@
 .ui-time-sec, .ui-sm { width: 84px; }
 .ui-date, .ui-md { width: 140px; }
 
-/*input[type="date"]::-webkit-calendar-picker-indicator{ margin: 0px; }*/ /*remove datepiker icon*/
-/*input::-webkit-calendar-picker-indicator { filter: invert(0); } /* black color */
 input[type="time"]::-webkit-calendar-picker-indicator { display: none; } /*remove icon from timer*/
 input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: pointer; }
 
