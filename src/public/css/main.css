@@ -65,13 +65,13 @@ hr.slim { margin: 1px; border-top: 1px solid skyblue; }
 }
 /* Medium devices (tablets, 768px and up) */
 @media screen and (min-width: 768px) and (max-width: 991.98px) {
-	.hide-md, .hide-lg, .show-xs, .show-sm { display: none; }
+	.hide-md, .hide-lg, .show-xs, .show-sm { display: none !important; }
 }
 /* Large devices (desktops, 992px and up) */
 @media screen and (min-width: 992px) and (max-width: 1199.98px) {
-	.hide-lg, .show-xs, .show-sm, .show-md { display: none; }
+	.hide-lg, .show-xs, .show-sm, .show-md { display: none !important; }
 }
 /* Extra large devices (large desktops, 1200px and up) */
 @media screen and (min-width: 1200px) {
-	.hide-xl, .show-xs, .show-sm, .show-md, .show-lg { display: none; }
+	.hide-xl, .show-xs, .show-sm, .show-md, .show-lg { display: none !important; }
 }

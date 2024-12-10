@@ -1,27 +1,22 @@
 
 nav.navbar {
-    position: relative; margin: 0; padding: 4px;
+    position: relative; margin: 0; padding: 4px; max-width: 99.35%;
 	display: flex; gap: 4px; justify-content: space-between; align-items: center;
     color: white; background-color: #333; opacity: .9; z-index: 3;
 }
 nav .separator { flex-grow: 1; }
 nav .nav-title { font-size: 1.5rem; margin: .5rem; }
 
-.menu-toggle {
-	position: absolute;
-	top: 1rem;
-	right: 1rem;
-	display: none;
+.menu-button {
+	display: flex; align-items: center; justify-content: center; gap: 4px;
+	min-width: 36px; min-height: 36px; z-index: 3; /* buttons over menu */
+	color: white; background-color: #333; cursor: pointer;
+	border-radius: 8px; border-width: 0;
 	text-decoration: none;
-	color: white;
-	font-size: 1.5em;
+
+	img { display: inline-block; width: 24px; height: auto; }
 }
-#theme-toggle {
-    margin: 0 .3rem; padding: 4px 8px; min-width: 36px; min-height: 36px;
-    color: inherit; background-color: inherit; cursor: pointer;
-    border-radius: 8px; border-width: 0;
-}
-#theme-toggle:hover {
+.menu-button:hover {
 	color: #333; background-color: gainsboro;
 }
 
@@ -60,20 +55,13 @@ ul.breadcrumb li a:hover { color: #01447e; text-decoration: underline; }
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 575.98px) {
-    /* Menu dropdown UL > LI */
-    /*.menu-main {
-        position: absolute; left: -92%; width: 92%; padding: 1px;
-		flex-direction: column; transition: all 500ms linear;
-		height: calc(100vh - 43px); /* phone nav height  (menu-group outher height = 43px) */
-	/*}
-    .menu-main.active { left: 0; }*/
-	nav.navbar {
-		flex-direction: column;
-        align-items: flex-start;
-	}
-
 	.navbar-menu { display: none; width: 100%; }
-	.navbar-menu.active { display: flex; }
+	.navbar-menu.active {
+		display: flex;
+		position: absolute;
+		top: 50px; left: 0; z-index: 2;
+		background-color: #333;
+	}
 
 	.menu { flex-direction: column; width: 100%; }
 	.menu.active { animation: slideInTop .8s forwards; }
@@ -82,14 +70,6 @@ ul.breadcrumb li a:hover { color: #01447e; text-decoration: underline; }
     .menu .sub-menu.level-3 { top: 0; left: 0; }
     /* Menu dropdown UL > LI */
 
-	.menu-toggle { display: flex; }
-
-    /* Dropdown 
-    nav .dropdown > div {
-        top: auto; bottom: calc(100%); left: max(1px, .1%);
-        box-shadow: -1px -2px 1px 0 #ccc;
-    }
-    /* Dropdown */
 }
 /* Small devices (landscape phones, 576px and up) */
 @media screen and (min-width: 576px) and (max-width: 767.98px) {

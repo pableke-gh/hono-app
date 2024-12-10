@@ -23,31 +23,26 @@
 			<li class="item-menu level-1 item-leaf"><a href="/web/es/index.html" title="Nav Link Inicio" class="link-menu level-1"><span class="label-menu level-1"><i class="icon-left fas fa-home"></i>Home</span></a></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 1" class="link-menu level-1"><span class="label-menu level-1"><i class="icon-left fas fa-euro-sign"></i>Ingresos</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 1" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 1</span></a></li><li class="item-menu level-2 item-parent"><a href="#" title="Sub Nav Link 2" class="link-menu level-2"><span class="label-menu level-2">Sub Nav Link 2</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-3"><li class="item-menu level-3 item-leaf"><a href="#" title="Sub Nav Link 11" class="link-menu level-3 load-main"><span class="label-menu level-3">Sub Nav Link 11</span></a></li><li class="item-menu level-3 item-leaf"><a href="#" title="Sub Nav Link 12" class="link-menu level-3 load-main"><span class="label-menu level-3">Sub Nav Link 12</span></a></li></ul></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 3" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 3</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 4" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 4</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 5" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 5</span></a></li></ul></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 3" class="link-menu level-1"><span class="label-menu level-1">Nav Link 3</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 6" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 6</span></a></li></ul></li><li class="item-menu level-1 item-leaf"><a href="#" title="Nav Link 4" class="link-menu level-1 load-main"><span class="label-menu level-1">Nav Link 4</span></a></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 5" class="link-menu level-1"><span class="label-menu level-1">Nav Link 5</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 8" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 8</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 9" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 9</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 10" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 10</span></a></li></ul></li><li class="item-menu level-1 item-leaf"><a href="#" title="Nav Link About" class="link-menu level-1 load-main"><span class="label-menu level-1"><i class="icon-left fas fa-address-card"></i>Sobre Nosotros</span></a></li>
 			</ul>
 		</div>
-		<button id="theme-toggle" class="hide-sm">
+		<button id="theme-toggle" class="menu-button">
 			<i class="fas fa-moon hide"></i>
 			<i class="fas fa-sun hide"></i>
 		</button>
-		<a href="#" class="menu-toggle"><i class="fas fa-bars"></i></a>
-		<!--<div class="separator"></div>-->
-		<div id="user" class="dropdown">
-			<button id="selected"><i class="fas fa-user"></i></button>
-			<ul class="list">
-				<li class="option"><a href="mailto:#">email@google.com</a></li>
-				<li class="option"><a href="/">Home</a></li>
-				<li class="option"><hr class="slim"/></li>
-				<li class="option"><a href="#">Login</a></li>
-			</ul>
-		</div>
-		<div id="languages" class="dropdown">
-			<button>
-				<img src="/public/img/flags/spain.png">
-				<i class="fas fa-chevron-down"></i>
-			</button>
-			<ul class="list">
-				<li class="option"><a id="es" href="/web/es/index.html?nav=1"><img src="/public/img/flags/spain.png"> ES</a></li>
-				<li class="options"><a id="en" href="/web/en/index.html?nav=1"><img src="/public/img/flags/great_britain.png"> EN</a></li>
-			</ul>
-		</div>
+		<button popovertarget="user-profile" class="menu-button"><i class="fas fa-user"></i></button>
+		<ul id="user-profile" popover="auto" class="popover-menu">
+			<li class="option"><a href="mailto:#">email@google.com</a></li>
+			<li class="option"><a href="/">Home</a></li>
+			<li class="option"><hr class="slim"/></li>
+			<li class="option"><a href="#">Login</a></li>
+		</ul>
+		<button popovertarget="langs-menu" class="menu-button">
+			<img src="/public/img/flags/spain.png">
+			<i class="fas fa-chevron-down"></i>
+		</button>
+		<ul id="langs-menu" popover="auto" class="popover-menu">
+			<li class="option"><a id="es" href="/web/es/index.html?nav=1"><img src="/public/img/flags/spain.png"> ES</a></li>
+			<li class="options"><a id="en" href="/web/en/index.html?nav=1"><img src="/public/img/flags/great_britain.png"> EN</a></li>
+		</ul>
+		<button class="menu-toggle menu-button show-xs"><i class="fas fa-bars"></i></button>
 	</nav>
 	<!-- Menu component -->
 
