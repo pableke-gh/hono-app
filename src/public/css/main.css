@@ -10,6 +10,7 @@ main {
 hr { margin: 15px 0; border-top: 1px solid skyblue; }
 hr.underline { margin-top: 2px; margin-bottom: 15px; border-top: 1px solid skyblue; }
 hr.slim { margin: 1px; border-top: 1px solid skyblue; }
+img.inline { display: inline-block; width: 24px; height: auto; }
 
 /* Actions */
 .action { display: inline-block; margin-right: 6px; text-decoration: none; font-size: 24px; }
@@ -43,8 +44,8 @@ hr.slim { margin: 1px; border-top: 1px solid skyblue; }
 .hide, .print-only { display: none !important; } /* force display none */
 .navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
 
-.link { color: #2196F3; text-decoration-line: underline; }
-.link:hover { text-decoration-line: none; }
+a, .link { color: #2196F3; text-decoration-line: underline; }
+a:hover, .link:hover { text-decoration-line: none; }
 /* Specific styles */
 
 /* Icons */

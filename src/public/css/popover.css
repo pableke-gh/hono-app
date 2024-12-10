@@ -15,7 +15,7 @@
 	/*position-try-order: most-height;*/
 	/* popover-br = anchor(bottom right) */
 	position-try-fallbacks: --popover-tr /*flip-block*/;
-	margin-block: 1ch;
+	margin-block: .5ch;
 
 	text-wrap: nowrap;
 	box-shadow: 0 0 2px 1px #ccc;
@@ -24,20 +24,19 @@
 	background-color: #333;
 	list-style: none;
 
-	img { display: inline-block; width: 24px; height: auto; }
 	a {
 		display: flex; gap: 4px; align-items: center;
 		padding: 4px 8px;
 		color: #ccc; text-decoration: none;
 	}
 	a:hover {
-		color: #333 !important; background-color: gainsboro;
+		color: #333; background-color: gainsboro;
 	}
 }
 
 @position-try --popover-tr {
 	inset: auto;
-	margin-block: 1ch;
+	margin-block: .5ch;
 	/* popover-tr = anchor(top right) */
 	top: anchor(top);
 	left: anchor(right);
