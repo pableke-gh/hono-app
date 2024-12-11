@@ -55,21 +55,15 @@ ul.breadcrumb li a:hover { color: #01447e; text-decoration: underline; }
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 575.98px) {
-	.navbar-menu { display: none; width: 100%; }
-	.navbar-menu.active {
-		display: flex;
-		position: absolute;
-		top: 50px; left: 0; z-index: 2;
+	.menu {
+		position: absolute; top: 50px; left: 0;
+		flex-direction: column; width: 97.4%; z-index: 2;
 		background-color: #333;
 	}
-
-	.menu { flex-direction: column; width: 100%; }
 	.menu.active { animation: slideInTop .8s forwards; }
     .menu .label-menu { flex-grow: 1; }
     .menu .sub-menu { position: relative; border: 1px solid #ccc; box-shadow: none; }
     .menu .sub-menu.level-3 { top: 0; left: 0; }
-    /* Menu dropdown UL > LI */
-
 }
 /* Small devices (landscape phones, 576px and up) */
 @media screen and (min-width: 576px) and (max-width: 767.98px) {

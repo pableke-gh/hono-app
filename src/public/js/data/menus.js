@@ -28,6 +28,7 @@ export default [
         "id":3,
         "tipo":1,
         "nombre":"Privado",
+        "nombre_en":"Private",
         "titulo":"Nav Link Privado",
         "enlace":"#",
         "orden":1,
