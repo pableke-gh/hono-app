@@ -26,7 +26,7 @@ function Menu() {
             return output + "</li>";
         }
         var output = `<li class="item-menu level-${level} item-leaf">`; // leaf item menu (item hoja)
-        output += `<a ${opts.onLink(node)} class="link-menu level-${level} load-main">${label}</a>`;
+        output += `<a ${opts.onLink(node)} class="link-menu level-${level}">${label}</a>`;
         output += children.map(child => preorden(data, child, level + 1)).join("");
         return output + "</li>";
     }
