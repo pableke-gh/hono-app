@@ -102,7 +102,7 @@ function Alerts() {
     // Global handlers
     window.loading = self.loading;
     window.working = self.working;
-	globalThis.catchError = promise => {
+	window.catchError = promise => {
 		self.loading(); // redefine global catchError with loading / working
 		return promise.then(data => [undefined, data]).catch(err => [err]).finally(self.working);
 	}

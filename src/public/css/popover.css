@@ -35,6 +35,23 @@
 	}
 }
 
+/* Is open state */
+[popover]:popover-open {
+	animation: fadeIn .8s forwards;
+}
+/* Exit state */
+[popover] {
+	animation: fadeOut .8s forwards;
+}
+/* Style the backdrop when the popover is open */
+/*[popover]::backdrop {
+}*/
+/* 0. BEFORE-OPEN STATE */
+/*@starting-style {
+	[popover]:popover-open {
+	}
+}*/
+
 @position-try --popover-tr {
 	inset: auto;
 	margin-block: 1ch;

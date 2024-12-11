@@ -10,6 +10,9 @@ nav.ready(() => {
     const langs = $1("[popovertarget='langs-menu']"); // Language button
     const link = langs.nextElementSibling.querySelector("a#" + i18n.get("lang")); // Language selector
     langs.firstElementChild.src = link.firstElementChild.src; // current flag
+	langs.nextElementSibling.addEventListener("beforetoggle", ev => { //ev.newState == "open"/"closed"
+		langs.lastElementChild.toggle("fa-chevron-down").toggle("fa-chevron-up");
+	});
 
     const menuHTML = $1("ul.menu");
     //menuHTML.innerHTML = menuHTML.innerHTML || menu.html(menuTree);
@@ -29,8 +32,8 @@ nav.ready(() => {
     else
         themeToggleBtn.firstElementChild.show(); // dark icon
     themeToggleBtn.addEventListener("click", function() {
-        nav.toggleMode(); // toggle mode light / dark
         themeToggleBtn.children.toggle();  // toggle icons inside button
+        nav.toggleMode(); // toggle mode light / dark
     });
 
     nav.addClick(document);
