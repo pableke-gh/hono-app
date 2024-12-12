@@ -1,34 +1,35 @@
 
 .waves {
-	position: relative;
-	width: 100%;
+	position: absolute;
+	left: 0; bottom: 0;
+	width: 100%; z-index: -1;
 	height: clamp(100px, 15vh, 150px);
 	margin-bottom: -7px; /*Fix for safari gap*/
 }
 
 /* Animation */
 .parallax > use {
-	animation: surf 25s cubic-bezier(.55, .5, .45, .5) infinite;
+	animation: surf 26s cubic-bezier(.55, .5, .45, .5) infinite;
 }
 .parallax > use:nth-child(1) {
 	fill: rgba(162, 217, 255, .7);
 	animation-delay: -2s;
-	animation-duration: 7s;
+	animation-duration: 10s;
 }
 .parallax > use:nth-child(2) {
 	fill: rgba(162, 217, 255, .5);
 	animation-delay: -3s;
-	animation-duration: 10s;
+	animation-duration: 13s;
 }
 .parallax > use:nth-child(3) {
 	fill: rgba(162, 217, 255, .3);
 	animation-delay: -4s;
-	animation-duration: 13s;
+	animation-duration: 16s;
 }
 .parallax > use:nth-child(4) {
 	fill: rgba(162, 217, 255, 1);
 	animation-delay: -5s;
-	animation-duration: 20s;
+	animation-duration: 23s;
 }
 
 @keyframes surf {
@@ -39,6 +40,6 @@
 /* Shrinking for mobile */
 @media (max-width: 768px) {
 	.waves {
-		height: clamp(40px, 40px, 150px);
+		height: clamp(40px, 60px, 80px);
 	}
 }
