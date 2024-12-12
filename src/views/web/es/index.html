@@ -18,9 +18,7 @@
 	<nav class="navbar">
 		<div class="nav-title">Brand Name</div>
 		<div class="separator"></div>
-		<ul class="menu">
-			<li class="item-menu level-1 item-leaf"><a href="/web/es/index.html" title="Nav Link Inicio" class="link-menu level-1"><span class="label-menu level-1"><i class="icon-left fas fa-home"></i>Inicio</span></a></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 1" class="link-menu level-1"><span class="label-menu level-1"><i class="icon-left fas fa-euro-sign"></i>Ingresos</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 1" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 1</span></a></li><li class="item-menu level-2 item-parent"><a href="#" title="Sub Nav Link 2" class="link-menu level-2"><span class="label-menu level-2">Sub Nav Link 2</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-3"><li class="item-menu level-3 item-leaf"><a href="#" title="Sub Nav Link 11" class="link-menu level-3 load-main"><span class="label-menu level-3">Sub Nav Link 11</span></a></li><li class="item-menu level-3 item-leaf"><a href="#" title="Sub Nav Link 12" class="link-menu level-3 load-main"><span class="label-menu level-3">Sub Nav Link 12</span></a></li></ul></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 3" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 3</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 4" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 4</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 5" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 5</span></a></li></ul></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 3" class="link-menu level-1"><span class="label-menu level-1">Nav Link 3</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 6" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 6</span></a></li></ul></li><li class="item-menu level-1 item-leaf"><a href="#" title="Nav Link 4" class="link-menu level-1 load-main"><span class="label-menu level-1">Nav Link 4</span></a></li><li class="item-menu level-1 item-parent"><a href="#" title="Nav Link 5" class="link-menu level-1"><span class="label-menu level-1">Nav Link 5</span><i class="fas fa-caret-right icon-right"></i></a><ul class="sub-menu level-2"><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 8" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 8</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 9" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 9</span></a></li><li class="item-menu level-2 item-leaf"><a href="#" title="Sub Nav Link 10" class="link-menu level-2 load-main"><span class="label-menu level-2">Sub Nav Link 10</span></a></li></ul></li><li class="item-menu level-1 item-leaf"><a href="#" title="Nav Link About" class="link-menu level-1 load-main"><span class="label-menu level-1"><i class="icon-left fas fa-address-card"></i>Sobre Nosotros</span></a></li>
-		</ul>
+		<ul class="menu"></ul>
 		<button id="theme-toggle" class="menu-button">
 			<i class="fas fa-moon hide"></i>
 			<i class="fas fa-sun hide"></i>
@@ -186,6 +184,19 @@
         <script id="index-js" type="module" src="/public/js/modules/web/index.js"></script>
     </main>
 
-    <footer>Page Footer</footer>
+    <footer>
+		Page Footer
+		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+			<defs>
+				<path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+			</defs>
+			<g class="parallax">
+				<use xlink:href="#gentle-wave" x="48" y="0" />
+				<use xlink:href="#gentle-wave" x="48" y="3" />
+				<use xlink:href="#gentle-wave" x="48" y="5" />
+				<use xlink:href="#gentle-wave" x="48" y="7" />
+			</g>
+		</svg>
+	</footer>
 </body>
 </html>

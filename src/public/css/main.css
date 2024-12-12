@@ -1,10 +1,15 @@
 
 html { color-scheme: dark light; font-family: system-ui, sans-serif; }
-body { margin: 0; color: #13151A; background-color: rgb(249 250 251); }
-
+body {
+	display: flex; flex-direction: column; min-height: 100vh; margin: 0;
+	color: #13151A; background-color: rgb(249 250 251);
+}
 main {
-    margin: auto; padding: 1rem;
+    margin: 0 auto; padding: 1rem;
     width: 80%; max-width: calc(100% - 2rem);
+}
+footer{
+	margin-top: auto;
 }
 
 hr { margin: 15px 0; border-top: 1px solid skyblue; }
@@ -44,8 +49,8 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 .hide, .print-only { display: none !important; } /* force display none */
 .navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
 
-a, .link { color: #2196F3; text-decoration-line: underline; }
-a:hover, .link:hover { text-decoration-line: none; }
+.link { color: #2196F3; text-decoration-line: underline; }
+.link:hover { text-decoration-line: none; }
 /* Specific styles */
 
 /* Icons */

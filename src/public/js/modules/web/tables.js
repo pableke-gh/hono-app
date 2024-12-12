@@ -8,7 +8,7 @@ function fnTable() {
     table.set("onRender", (data, status, resume) => {
         return `<tr class="tb-data">
             <td class="text-center hide-xs" data-cell="Nº">${status.count}</td>
-            <td data-cell="Nombre"><a href="#">${data.nombre}</a></td>
+            <td data-cell="Nombre"><a href="#" class="link">${data.nombre}</a></td>
             <td data-cell="Título">${data.titulo}</td>
             <td class="text-center" data-cell="Icono">${data.icono || ""}</td>
             <td class="text-center" data-cell="Acciones">

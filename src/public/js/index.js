@@ -5,15 +5,14 @@ import menus from "./data/menus.js";
 import i18n from "./i18n/langs.js";
 
 nav.ready(() => {
-   // toggle phone menu (media sx)
-   const menuToggleBtn = $1(".menu-toggle");
-   const menuToggleIcon = menuToggleBtn.firstElementChild;
-   menuToggleBtn.addEventListener("click", ev => {
-	   menuHTML.toggle("active"); // animate intro
-	   menuToggleIcon.toggle("fa-bars").toggle("fa-times");
-   });
+	const menuHTML = $1("ul.menu"); // menu UL HTML container
+	const menuToggleBtn = menuHTML.parentNode.lastElementChild; // toggle phone menu (burger)
+	const menuToggleIcon = menuToggleBtn.firstElementChild;
+	menuToggleBtn.addEventListener("click", ev => {
+		menuToggleIcon.toggle("fa-bars").toggle("fa-times");
+		menuHTML.toggle("active"); // animate intro
+	});
 
-	const menuHTML = $1("ul.menu");
 	const menuTree = menus.filter(node => (node.tipo == 1)).sort((a, b) => (a.orden - b.orden));
 	menuHTML.innerHTML = /*menuHTML.innerHTML ||*/ menu.html(menuTree);
 	const fnResize = () => {
