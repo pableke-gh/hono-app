@@ -69,8 +69,8 @@ window.viewIrse = (xhr, status, args, tab) => {
 	rutas.init(formIrse);
 	organicas.init(formIrse);
 
-	tabs.nextTab(tab ?? IRSE.tab); // show next tab
-	pf.showAlerts(xhr, status, args); // always show messages
+	if (pf.showAlerts(xhr, status, args)) // always show messages
+		tabs.nextTab(tab ?? IRSE.tab); // ok => show next tab
 }
 
 //Global IRSE components

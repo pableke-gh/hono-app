@@ -197,7 +197,7 @@
 						<p:commandLink action="#{iris.list.activePaso8(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
 							title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{sol.reactivable}">
+					<c:if test="#{iris.open and sol.reactivable}">
 						<p:commandLink action="#{iris.list.clone(sol)}" onclick="if (!fnClone()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)"
 								title="Subsanar la comunicación salvo cambio de presupuesto">
 							<i class="far fa-edit action text-blue resize"></i></p:commandLink>

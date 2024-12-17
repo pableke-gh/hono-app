@@ -93,6 +93,7 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 .ui-input-icon {
     position: absolute; height: 40px; /* same height than ui-input */
     color: rgb(107 114 128); opacity: .8; /*z-index: 1;*/
+	z-index: 3;
 }
 
 .ui-input-icon.left { top: 30px; left: .5rem; }

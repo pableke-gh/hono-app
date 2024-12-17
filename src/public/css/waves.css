@@ -40,6 +40,6 @@
 /* Shrinking for mobile */
 @media (max-width: 768px) {
 	.waves {
-		height: clamp(40px, 60px, 80px);
+		height: clamp(40px, 10vh, 80px);
 	}
 }
