@@ -6,11 +6,14 @@
 .ui-block-md { min-width: 200px; max-width: 320px; flex-grow: 1; }
 .ui-block-lg { min-width: 200px; max-width: 400px; flex-grow: 1; }
 .ui-block-xl { min-width: 300px; max-width: 600px; flex-grow: 1; }
-.ui-block-box { min-width: 250px; padding: 6px; border: 1px solid black; }
 .ui-block-row { width: 100%; }
 .ui-block-btn { margin-top: 14px; }
 .ui-block-info { margin-top: 8px; }
 .ui-block-break { flex-basis: 100%; }
+.ui-block-box {
+	min-width: 250px; padding: 6px;
+	border: 1px solid #888; box-shadow: .1rem .1rem .1rem #ccc; border-radius: .4rem;
+}
 .ui-block-img {
     width: 200px; height: 200px;
     border: 1px solid #ccc; border-radius: 8px;

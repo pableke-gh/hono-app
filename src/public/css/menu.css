@@ -1,8 +1,8 @@
 
 nav.navbar {
-    position: relative; margin: 0; padding: 4px; max-width: 99.35%;
+    position: relative; margin: 0; padding: 4px; width: 100%;
 	display: flex; gap: 4px; justify-content: space-between; align-items: center;
-    color: white; background-color: #333; opacity: .9; z-index: 3;
+    color: white; background-color: #333; opacity: .95; z-index: 3;
 }
 nav .separator { flex-grow: 1; }
 nav .nav-title { font-size: 1.5rem; margin: .5rem; }
@@ -14,26 +14,26 @@ nav .nav-title { font-size: 1.5rem; margin: .5rem; }
 	border-radius: 8px; border-width: 0;
 	text-decoration: none;
 }
-.menu-button:hover {
-	color: #333; background-color: gainsboro;
-}
+.menu-button:hover { color: #333; background-color: gainsboro; }
+.mr-3 { margin-right: .3rem; }
 
 /* Menu dropdown UL > LI */
 .menu { display: none; margin: 0; padding: 4px; }
 .menu.active { display: flex; animation: slideInRight .8s forwards; }
 .menu-group { display: flex; padding: 4px; }
 .menu li { position: relative; list-style: none; }
+.menu .level-1 { display: flex; }
 .menu .icon-left { margin-right: 8px; }
 .menu .icon-right { margin: 0 8px; transition: .5s; }
 .menu a.link-menu {
     display: flex; align-items: center; padding: 6px 9px;
-    white-space: nowrap; text-decoration: none; color: white; /* override a styles */
+    text-decoration: none; color: white; /* override a styles */
 }
 .menu li:hover > a.link-menu { color: #333; background-color: gainsboro; }
 .menu li:hover > a.link-menu > .icon-right { transform: rotate(90deg); }
 
 .menu .sub-menu {
-    display: none; position: absolute; left: 0; padding: 0;
+    display: none; position: absolute; top: 100%; padding: 0; width: max-content;
     border-left: 2px solid #ccc; box-shadow: 0 0 2px 0 #ccc;
     background-color: #333;
 }
@@ -55,13 +55,17 @@ ul.breadcrumb li a:hover { color: #01447e; text-decoration: underline; }
 @media screen and (max-width: 575.98px) {
 	.menu {
 		position: absolute; top: 50px; left: 0;
-		flex-direction: column; width: 97.4%; z-index: 2;
+		flex-direction: column; width: 99%; z-index: 2;
 		background-color: #333;
 	}
 	.menu.active { animation: slideInTop .8s forwards; }
-    .menu .label-menu { flex-grow: 1; }
-    .menu .sub-menu { position: relative; border: 1px solid #ccc; box-shadow: none; }
-    .menu .sub-menu.level-3 { top: 0; left: 0; }
+	.menu .level-1 { display: inline-block; }
+	.menu .label-menu { flex-grow: 1; }
+	.menu .sub-menu {
+		position: relative; width: 99.4%;
+		border: 1px solid #ccc; box-shadow: none;
+	}
+	.menu .sub-menu.level-3 { top: 0; left: 0; }
 }
 /* Small devices (landscape phones, 576px and up) */
 @media screen and (min-width: 576px) and (max-width: 767.98px) {

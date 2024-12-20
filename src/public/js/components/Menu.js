@@ -7,7 +7,7 @@ function Menu() {
     const opts = {};
     opts.isRoot = node => !node.padre; // is root in tree
     opts.isChild = (node, child) => (node.id == child.padre); // is child from parent
-    opts.onLabel = node => ((node.icono || "") + i18n.strval(node, "nombre")); // render item label menu
+    opts.onLabel = (node, level) => ((node.icono || "") + `<span class="label-menu level-${level}">` + i18n.strval(node, "nombre") + "</span>"); // render item label menu
     opts.onLink = node => `href="${node.enlace}" title="${i18n.strval(node, "titulo")}"`; // render link attributes href, title, etc...
 
     this.set = (name, fn) => {
@@ -18,7 +18,7 @@ function Menu() {
     // Build tree menu as UL > Li > *
     function preorden(data, node, level) {
         const children = data.filter(child => opts.isChild(node, child)); // sub-menu items (children from node)
-        const label = `<span class="label-menu level-${level}">` + opts.onLabel(node) + "</span>"; // item menu label
+        const label = opts.onLabel(node); // item menu label
         if (children.length) {
             var output = `<li class="item-menu level-${level} item-parent">`; // parent item menu (with children)
             output += `<a ${opts.onLink(node)} class="link-menu level-${level}">${label}<i class="fas fa-caret-right icon-right"></i></a>`;

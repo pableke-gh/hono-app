@@ -69,10 +69,16 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 }
 /* Small devices (landscape phones, 576px and up) */
 @media screen and (min-width: 576px) and (max-width: 767.98px) {
+	main { width: 88%; padding: .5rem; }
+	footer > .info { width: 88%; }
+
 	.hide-sm, .hide-md, .hide-lg, .show-xs { display: none !important; }
 }
 /* Medium devices (tablets, 768px and up) */
 @media screen and (min-width: 768px) and (max-width: 991.98px) {
+	main { width: 84%; padding: .6rem; }
+	footer > .info { width: 84%; }
+
 	.hide-md, .hide-lg, .show-xs, .show-sm { display: none !important; }
 }
 /* Large devices (desktops, 992px and up) */

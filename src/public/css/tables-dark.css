@@ -3,13 +3,16 @@
 /* @media (prefers-color-scheme: dark) { } */ /* System dark */
 
 html.dark {
+	table { box-shadow: 0 .4rem .8rem #fff4; }
 	caption { background-color: hsl(0 0% 0%); }
 
-	thead { border-color: black; }
-    th { background-color: hsl(0 0% 0% / .5); }
+	thead {
+		background-color: hsl(207, 90%, 54%, .5);
+		border-bottom: 2px solid #2196F3;
+	}
 
-	tr.tb-data:nth-child(even) { background-color: hsl(0 0% 0% / .1); }
-    tr.tb-data:hover { background-color: rgb(75 85 99)/* gray-600 */; }
+	tr.tb-data:nth-child(odd) { background-color: hsl(0 0% 0% / .1); }
+    tr.tb-data:hover { background-color: rgb(75 85 99 / .6); }
 
-	tfoot { border-top: 1px dashed white; }
+	tfoot { border-top: 1px dashed #ccc; background-color: rgb(108 194 255 / 30%); }
 }

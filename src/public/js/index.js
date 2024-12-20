@@ -18,7 +18,7 @@ nav.ready(() => {
 	const fnResize = () => {
 		menuToggleIcon.classList.add("fa-bars");
 		menuToggleIcon.classList.remove("fa-times");
-		menuHTML.toggle("active", window.screen.width > 575);
+		menuHTML.toggle("active", window.innerWidth > 575);
 	}
 	window.addEventListener("resize", fnResize);
 	fnResize();

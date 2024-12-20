@@ -14,8 +14,8 @@
 .btn-secondary { background-color: #6c757d; border-color: #6c757d; }
 .btn-secondary:hover { background-color: #5a6268; border-color: #545b62; }
 
-.btn-light { color: black; background-color: #f8f9fa; border-color: #f8f9fa; }
-.btn-light:hover { color: black; background-color: #e2e6ea; border-color: #dae0e5; }
+.btn-light { color: black; background-color: #ececec; border-color: #e5e6e7; }
+.btn-light:hover { color: black; background-color: #e6e6e6; border-color: #dae0e5; }
 
 .btn-info { background-color: #2196F3; border-color: #2196F3; }
 .btn-info:hover { background-color: #1976d2; }

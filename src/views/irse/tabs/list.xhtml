@@ -94,21 +94,22 @@
 		<div class="navbar">
 			<a href="#tab-13" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			<p:commandButton id="filter-list" action="#{iris.list.list()}" onclick="loading();" update="xeco-list" oncomplete="showNextTab(xhr, status, args, 14);"
+				<p:commandButton id="filter-list" action="#{iris.list.list()}" onclick="loading();" update="xeco-list" oncomplete="showNextTab(xhr, status, args, 14);"
 					icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
-			<p:commandLink action="#{iris.list.list()}" onclick="onList();" update="xeco-list" oncomplete="working();" 
+				<p:commandButton id="list-all" rendered="#{not iris.otri}" action="#{iris.list.list()}" onclick="onListAll();" update="xeco-list" oncomplete="showNextTab(xhr, status, args, 14);" 
+					icon="far fa-search" styleClass="btn btn-info" value="Ver Todos" tabindex="13"></p:commandButton>
+				<p:commandLink action="#{iris.list.list()}" onclick="onList();" update="xeco-list" oncomplete="working();" 
 					styleClass="btn btn-warn warning-btn" tabindex="14">
 				<i class="ui-button-icon-left ui-icon ui-c far fa-times-circle"></i><span class="ui-button-text ui-c">Limpiar</span>
 			</p:commandLink>
 		</div>
 	</h:form>
 
-	<br class="clear"/>
 	<h:form id="xeco-list" prependId="false" onsubmit="loading();">
 	<table id="solicitudes" class="tb-xeco">
 		<thead>
 			<tr>
-				<th></th>
+				<th class="slim"></th>
 				<th><h:outputText value="#{msg['lbl.codigo']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['lbl.estado']}" escape="false" /></th>
 				<th><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" /></th>
@@ -197,7 +198,7 @@
 						<p:commandLink action="#{iris.list.activePaso8(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
 							title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{iris.open and sol.reactivable}">
+					<c:if test="#{iris.isReactivable(sol)}">
 						<p:commandLink action="#{iris.list.clone(sol)}" onclick="if (!fnClone()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)"
 								title="Subsanar la comunicación salvo cambio de presupuesto">
 							<i class="far fa-edit action text-blue resize"></i></p:commandLink>
