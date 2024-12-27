@@ -4,6 +4,7 @@ import concat from "gulp-concat";
 import uglify from "gulp-uglify";
 import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
+import transform from "gulp-transform";
 
 const VIEW_FILES = "src/views/**/*";
 
@@ -72,8 +73,10 @@ gulp.task("minify-css", done => {
 gulp.task("minify-js", done => {
 	const JS_DEST = "dist/public/js";
 	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/js";
+	const fnRemoveWhitespace = contents => new Buffer(contents.toString().replace(/\s+/g, " "), "utf8"); // remove all whitespace   
+
 	fs.rmSync(JS_DEST, { recursive: true, force: true }); // Remove previous unused files
-	gulp.src(JS_FILES).pipe(uglify()).pipe(gulp.dest(JS_DEST)).on("end", () => {
+	gulp.src(JS_FILES).pipe(uglify()).pipe(transform(fnRemoveWhitespace)).pipe(gulp.dest(JS_DEST)).on("end", () => {
 		deployCV("dist/public/js/**/*.js", CV, done); // deploy JS in Campus Virtual
 	});
 });

@@ -16,7 +16,7 @@ export default function Partida(presto) {
     this.thead = () => {
         const output = presto.isPartidaExt() ? '<th>Prev. Ingresos (A)</th><th>GG &#37; (B)</th><th>Max. Habilitar (C=A-B)</th><th>Crédito Habilitado (D)</th><th>Margen (E=C-D)</th>' : "";
         return `<tr>
-            <th></th>
+            <th class="slim"></th>
             <th>Ej.</th>
             <th>Orgánica</th>
             <th class="hide-sm">Descripción Orgánica</th>
