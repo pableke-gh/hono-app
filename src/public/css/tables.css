@@ -42,6 +42,7 @@ tfoot td { padding: .5rem .6rem; }
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 575.98px) {
 	table.table-xs {
+		thead { border-bottom: 2px solid hsl(207deg 90% 54% / 80%); }
 		thead th { display: none; }
 		tbody tr { display: block; padding: 1rem 0; }
 		td[data-cell]:not(:empty) {

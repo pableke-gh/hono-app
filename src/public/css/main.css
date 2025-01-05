@@ -5,11 +5,14 @@ body {
 	color: #13151A; background-color: rgb(249 250 251);
 }
 main {
-    margin: 0 auto; padding: 1rem;
-    width: 80%; max-width: calc(100% - 2rem);
+	margin: 0 auto; padding: min(1rem, 1%);
+	width: clamp(420px, 90%, 1200px);
 }
 footer { position: relative; margin-top: auto; }
-footer > .info { margin: 0 auto; width: 80%; min-height: 145px }
+footer > .info {
+	margin: 0 auto; padding: min(1rem, 1%);
+	width: clamp(420px, 90%, 1200px); min-height: 145px;
+}
 
 hr { margin: 15px 0; border-top: 1px solid skyblue; }
 hr.underline { margin-top: 2px; margin-bottom: 15px; border-top: 1px solid skyblue; }
@@ -61,24 +64,18 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 575.98px) {
-	main { width: 92%; padding: .4rem; }
-	footer > .info { width: 92%; }
+	main { width: 98%; padding: 4px;}
+	footer > .info { width: 98%; padding: 4px; }
 
 	.hide-xs, .hide-sm, .hide-md, .hide-lg { display: none !important; }
     .action { font-size: large; }
 }
 /* Small devices (landscape phones, 576px and up) */
 @media screen and (min-width: 576px) and (max-width: 767.98px) {
-	main { width: 88%; padding: .5rem; }
-	footer > .info { width: 88%; }
-
 	.hide-sm, .hide-md, .hide-lg, .show-xs { display: none !important; }
 }
 /* Medium devices (tablets, 768px and up) */
 @media screen and (min-width: 768px) and (max-width: 991.98px) {
-	main { width: 84%; padding: .6rem; }
-	footer > .info { width: 84%; }
-
 	.hide-md, .hide-lg, .show-xs, .show-sm { display: none !important; }
 }
 /* Large devices (desktops, 992px and up) */
