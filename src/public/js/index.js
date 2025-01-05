@@ -41,6 +41,4 @@ nav.ready(() => {
 	langs.nextElementSibling.addEventListener("beforetoggle", ev => { //ev.newState == "open"/"closed"
 		langs.lastElementChild.toggle("fa-chevron-down").toggle("fa-chevron-up");
 	});
-
-    nav.addClick(document);
 });
