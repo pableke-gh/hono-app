@@ -46,7 +46,6 @@ details.icon-right[open] summary:after { content: " ▼"; }
 .card-xeco h2, .card-xeco h3 {
 	display: flex; align-items: center; gap: 4px;
 	margin: .4em .2em; padding-bottom: 4px;
-	font-size: clamp(1.8rem, calc(7vw + 1rem), 5rem);
 	color: #1976D2; border-bottom: 1px solid #1976D2;
 }
 .card-xeco h2.wrap, .card-xeco h3.wrap {
