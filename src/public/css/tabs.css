@@ -44,12 +44,12 @@ details.icon-right[open] summary:after { content: " ▼"; }
 	background: #f8f9fa;
 }
 .card-xeco h2, .card-xeco h3 {
-	display: flex; align-items: center; gap: 4px;
+	display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
 	margin: .4em .2em; padding-bottom: 4px;
 	color: #1976D2; border-bottom: 1px solid #1976D2;
 }
-.card-xeco h2.wrap, .card-xeco h3.wrap {
-	flex-wrap: wrap;
+.card-xeco h2 > span, .card-xeco h3 > span {
+	min-width: fit-content;
 }
 
 .card-filter {

@@ -68,28 +68,24 @@ function Navigation() {
 	}
 
 	// Check to see if API is supported
-	if (document.startViewTransition) {
-		const RE_MAIN = /<main[^>]*>([\s\S]*)<\/main>/im;
-		let pathname = location.pathname; // current location
-		// capture all navigation event links
-		window.navigation.addEventListener("navigate", ev => {
-			const url = new URL(ev.destination.url);
-			//console.log(location.pathname, url, ev);
-			if (url.searchParams.get("nav") || self.isDynamic(url.pathname))
-				return; // Desactive View Transition interceptor
-			// Is current location? Important! AJAX NOT to change url
-			if (pathname == url.pathname)
-				return ev.preventDefault(); // Current destination
-			// Si es una pagina externa => ignoramos el evento
-			if (location.origin == url.origin) { // Navegación en el mismo dominio (origin)
-				const fnMain = text => self.setMain(text.match(RE_MAIN)[1]);
-				const fnLoad = () => api.init().text(url.href).then(fnMain);
-				document.startViewTransition(fnLoad); // set transition
-				pathname = url.pathname; // save current location
-				ev.preventDefault(); // avoid navigation
-			}
-		});
-	}
+	const RE_MAIN = /<main[^>]*>([\s\S]*)<\/main>/im;
+	let pathname = location.pathname; // current location
+	// capture all navigation event links
+	window.navigation.addEventListener("navigate", ev => {
+		const url = new URL(ev.destination.url);
+		//console.log(location.pathname, url, ev);
+		if (url.searchParams.get("nav") || self.isDynamic(url.pathname))
+			return; // Desactive View Transition interceptor
+		// Is current location? Important! AJAX NOT to change url
+		if (pathname == url.pathname)
+			return ev.preventDefault(); // Current destination
+		// Si es una pagina externa => ignoramos el evento
+		if (location.origin == url.origin) { // Navegación en el mismo dominio (origin)
+			api.init().text(url.href).then(text => self.setMain(text.match(RE_MAIN)[1]));
+			pathname = url.pathname; // save current location
+			ev.preventDefault(); // avoid navigation
+		}
+	});
 
 	// Init. theme mode light / dark
 	coll.ready(self.setTheme);
