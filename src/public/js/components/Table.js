@@ -66,8 +66,8 @@ export default function(table, opts) {
     this.getCurrentRow = () => tBody.rows[_index];
     this.getLastRow = () => tBody.lastElementChild;
 
-    this.querySelector = selector => table.querySelector(selector); // Child element
-	this.querySelectorAll = selector => table.querySelectorAll(selector); // Children elements
+	this.querySelector = selector => table.querySelector(selector);
+	this.querySelectorAll = selector => table.querySelectorAll(selector);
     this.html = selector => table.querySelector(selector).innerHTML; // read text
 
     function fnRender(data) {

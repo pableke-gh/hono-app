@@ -1,30 +1,17 @@
 
-function oldCopyToClipboard(str) { // deprecated
-	TEXT.value = str;
-	TEXT.select(); //select text
-	document.execCommand("copy");
-}
-function copyToClipboard(str) { // new
-	navigator.clipboard.writeText(str).then(() => {
-		console.log("Text copied to clipboard!");
-	}).catch(err => {
-		console.error("Error copying text to clipboard:", err);
-	});
-}
-
-const divNull = document.createElement("div");
-const TEXT = document.createElement("textarea");
-const fnClipboard = (typeof navigator.clipboard === "undefined") ? oldCopyToClipboard : copyToClipboard;
-
 function DomBox() {
 	const self = this; //self instance
+	const divNull = document.createElement("div");
+
+	this.$1 = (el, selector) => (el && el.querySelector(selector));
+	this.$$ = (el, selector) => (el && el.querySelectorAll(selector));
 
 	this.focus = el => { el && el.focus(); return self; }
-	this.getAttr = (el, name) => el && el.getAttribute(name);
+	this.getAttr = (el, name) => (el && el.getAttribute(name));
 	this.setAttr = (el, name, value) => { el && el.setAttribute(name, value); return self; }
 	this.delAttr = (el, name) => { el && el.removeAttribute(name); return self; }
     this.render = (el, data, i, size) => { el && el.render(data, i, size); return self; }
-	this.empty = el => !el || !el.innerHTML || (el.innerHTML.trim() === "");
+	this.empty = el => (!el || !el.innerHTML || (el.innerHTML.trim() === ""));
 
 	this.setval = (el, value) => { // el must exists
 		if ((el.tagName == "SELECT") && !value)
@@ -57,16 +44,12 @@ function DomBox() {
 	// Events handlers
 	const fnQuery = el => globalThis.isstr(el) ? $1(el) : el;
 	const fnAddEvent = (el, name, fn) => {
-		el.addEventListener(name, ev => fn(ev, el));
+		el && el.addEventListener(name, ev => fn(ev, el));
 		return self; // self instance
 	}
-	const fnAddChange = (el, fn) => fnAddEvent(el, "change", fn);
 
 	this.ready = fn => document.addEventListener("DOMContentLoaded", fn);
-	this.onClick = (el, fn) => {
-		el = fnQuery(el); // search for element
-		return el ? fnAddEvent(el, "click", fn) : self;
-	}
+	this.onClick = (el, fn) => fnAddEvent(fnQuery(el), "click", fn);
 	this.addClick = self.onClick; // synonym
 	this.setClick = (el, fn) => {
 		el = fnQuery(el); // search for element
@@ -75,10 +58,7 @@ function DomBox() {
 		return self;
 	}
 
-    this.onChange = (el, fn) => {
-		el = fnQuery(el); // search for element
-		return el ? fnAddChange(el, fn) : self;
-	}
+    this.onChange = (el, fn) => fnAddEvent(fnQuery(el), "change", fn);
 	this.addChange = this.onChange; // synonym
 	this.setChange = (el, fn) => {
 		el = fnQuery(el); // search for element
@@ -101,17 +81,20 @@ function DomBox() {
 			fn(el, file, reader.result, index);
 			fnLoad(++index);
 		}
-		return fnAddChange(el, () => fnLoad(index));
+		el.addEventListener("change", () => fnLoad(index));
+		return self; // self instance
 	}
 
 	// Helper DOM elements
 	this.getDivNull = () => divNull; // readonly element
-	this.copyToClipboard = fnClipboard; // to clipboard
-	this.ready(() => { // deprecated
-		TEXT.style.position = "absolute";
-		TEXT.style.left = "-9999px";
-		document.body.prepend(TEXT);
-	});
+	this.copyToClipboard = str => { // new 
+		navigator.clipboard.writeText(str).then(() => {
+			console.log("Text copied to clipboard!");
+		}).catch(err => {
+			console.error("Error copying text to clipboard:", err);
+		});
+		return self;
+	}
 }
 
 export default new DomBox();

@@ -31,6 +31,11 @@ export default function(form, opts) {
 	const INPUTS = "input:not([type=hidden]),select,textarea"; // All input fields
 	const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 
+	const $1 = selector => form.querySelector(selector);
+	const $$ = selector => form.querySelectorAll(selector);
+	this.querySelector = $1; // Form child element
+	this.querySelectorAll = $$; // Form children elements
+
 	this.isset = () => form;
 	this.getForm = () => form;
 	this.getElements = () => form.elements;
@@ -40,8 +45,6 @@ export default function(form, opts) {
 	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
 	this.getInput = selector => form.elements.findBy(selector); // find an element
 	this.getInputs = selector => form.elements.query(selector); // filter elements
-	this.querySelector = selector => form.querySelector(selector); // Child element
-	this.querySelectorAll = selector => form.querySelectorAll(selector); // Children elements
 
 	this.setCache = id => { form.dataset.cache = id; return self; }
 	this.isCached = (id, selector) => ((id == form.dataset.cache) || (id == self.getval(selector || "#id")));
@@ -59,21 +62,21 @@ export default function(form, opts) {
 	// Actions to update form view (inputs, texts, ...)
 	const fnContains = (el, name) => el.classList.contains(name);
 	const fnFor = (list, fn) => { list.forEach(fn); return self; }
-	const fnEach = (selector, fn) => fnFor(form.querySelectorAll(selector), fn);
+	const fnEach = (selector, fn) => fnFor($$(selector), fn);
 	const fnUpdate = (selector, fn) => {
 		selector = selector || INPUTS; // Default = inputs type
 		return fnFor(form.elements, el => el.matches(selector) && fn(el));
 	}
 
-	this.html = selector => form.querySelector(selector).innerHTML;
-    this.getText = selector => dom.getText(form.querySelector(selector));
+	this.html = selector => $1(selector).innerHTML;
+    this.getText = selector => dom.getText($1(selector));
     this.setText = (el, text) => { dom.text(el, text); return self; }
-	this.text = (selector, text) => { form.querySelectorAll(selector).text(text); return self; } // Update all texts info in form
-	this.render = (selector, data) => { form.querySelectorAll(selector).render(data); return self; } // HTMLElement.prototype.render
+	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
+	this.render = (selector, data) => { $$(selector).render(data); return self; } // HTMLElement.prototype.render
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard
 
-	this.hide = selector => { form.querySelectorAll(selector).hide(); return self; }
-	this.show = selector => { form.querySelectorAll(selector).show(); return self; }
+	this.hide = selector => { $$(selector).hide(); return self; }
+	this.show = selector => { $$(selector).show(); return self; }
 	this.setVisible = (selector, force) => force ? self.show(selector) : self.hide(selector);
 	this.disabled = (force, selector) => fnUpdate(selector, el => el.setDisabled(force));
 	this.readonly = (force, selector) => fnUpdate(selector, el => el.setReadonly(force));
@@ -151,12 +154,12 @@ export default function(form, opts) {
 	this.copy = (el1, el2) => { dom.setValue(self.getInput(el1), self.getval(el2)); return self; }
 
 	// Inputs helpers
-	this.setTable = (selector, opts) => new Table(form.querySelector(selector), opts); // table
+	this.setTable = (selector, opts) => new Table($1(selector), opts); // table
 	this.stringify = (selector, data) => self.setval(selector, JSON.stringify(data));
 	this.saveTable = (selector, table) => self.stringify(selector, table.getData());
 	this.getOptionText = selector => dom.getOptionText(self.getInput(selector));
-	this.setDatalist = (selector, opts) => new Datalist(form.querySelector(selector), opts); // select / optgroup
-	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox(form.querySelector(selector), opts); // multi select checkbox
+	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
+	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox($1(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(self.getInput(selector), opts); // Input type text / search
 	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => {
 		return self.setAutocomplete(selector, {
@@ -190,10 +193,10 @@ export default function(form, opts) {
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));
 
 	this.addClickAll = (selector, fn) => fnEach(selector, el => el.addClick(fn));
-	this.addClick = (selector, fn) => { dom.addClick(form.querySelector(selector), fn); return self; }
+	this.addClick = (selector, fn) => { dom.addClick($1(selector), fn); return self; }
 	this.setClickAll = (selector, fn) => fnEach(selector, el => el.setClick(fn));
-	this.setClick = (selector, fn) => { dom.setClick(form.querySelector(selector), fn); return self; }
-	this.click = selector => { form.querySelector(selector).click(); return self; } // Fire event only for PF
+	this.setClick = (selector, fn) => { dom.setClick($1(selector), fn); return self; }
+	this.click = selector => { $1(selector).click(); return self; } // Fire event only for PF
 
 	this.onChange = (el, fn) => { dom.onChange(el, fn); return self; }
 	this.onChangeInput = (selector, fn) => self.onChange(self.getInput(selector), fn);
