@@ -1,4 +1,5 @@
 
+import dom from "../../components/DomBox.js";
 import Form from "../../components/Form.js";
 import tabs from "../../components/Tabs.js";
 import modals from "../../components/Modals.js";
@@ -65,6 +66,11 @@ pf.ready(() => { // on load view
 
 	fnAddActions(tableAncladas);
 	fnAddActions(tableRecientes);
+
+	// update colspan on small screens
+	const fnResize = () => dom.setAttr(tableRecientes.getLastRow().cells[0], "colspan", dom.isMediaXs() ? 3 : 4);
+	window.addEventListener("resize", fnResize);
+	fnResize();
 	/************** Buzon de organicas **************/
 
 	/************** Formulario de facturas **************/

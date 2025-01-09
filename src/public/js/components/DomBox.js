@@ -3,6 +3,12 @@ function DomBox() {
 	const self = this; //self instance
 	const divNull = document.createElement("div");
 
+	this.isMediaXs = () => (window.innerWidth < 576);
+	this.ismediaSm = () => (window.innerWidth < 768);
+	this.ismediaMd = () => (window.innerWidth < 992);
+	this.ismediaLg = () => (window.innerWidth < 1200);
+	this.isMediaXl = () => (window.innerWidth > 1199);
+
 	this.$1 = (el, selector) => (el && el.querySelector(selector));
 	this.$$ = (el, selector) => (el && el.querySelectorAll(selector));
 
@@ -12,6 +18,9 @@ function DomBox() {
 	this.delAttr = (el, name) => { el && el.removeAttribute(name); return self; }
     this.render = (el, data, i, size) => { el && el.render(data, i, size); return self; }
 	this.empty = el => (!el || !el.innerHTML || (el.innerHTML.trim() === ""));
+
+	this.addClass = (el, name) => { el && el.classList.add(name); return self; }
+	this.removeClass = (el, name) => { el && el.classList.remove(name); return self; }
 
 	this.setval = (el, value) => { // el must exists
 		if ((el.tagName == "SELECT") && !value)

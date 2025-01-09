@@ -1,5 +1,6 @@
 
 import nav from "./components/Navigation.js";
+import dom from "./components/DomBox.js";
 import menu from "./components/Menu.js";
 import menus from "./data/menus.js";
 import i18n from "./i18n/langs.js";
@@ -18,7 +19,7 @@ nav.ready(() => {
 	const fnResize = () => {
 		menuToggleIcon.classList.add("fa-bars");
 		menuToggleIcon.classList.remove("fa-times");
-		menuHTML.toggle("active", window.innerWidth > 575);
+		menuHTML.toggle("active", dom.isMediaXs());
 	}
 	window.addEventListener("resize", fnResize);
 	fnResize();

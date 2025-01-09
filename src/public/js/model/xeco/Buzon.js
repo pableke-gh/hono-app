@@ -57,7 +57,7 @@ function Buzon() {
         const factura = self.isFacturable() ? '<a href="#buzon" class="action resize text-green row-action" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>' : "";
         const user = /*self.isPermisoUser()*/(1==1) ? '<a href="#users" class="action resize text-purple row-action" title="Gestión de permisos"><i class="fas fa-user"></i></a>' : ""; //TODO: change class for complete link
         return `<tr class="tb-data">
-            <td>${data.oCod}</td><td class="hide-sm">${data.oDesc}</td>
+            <td>${data.oCod}</td><td class="hide-xs">${data.oDesc}</td>
             <td class="text-right">${i18n.isoFloat(data.cd ?? 0)} €</td>
             <td class="text-center">${self.getRol()}</td>
             <td class="text-right">${(data.mask & 2) ? desanclar : anclar}${user}${gastos}${ingresos}${reportProv}${factura}</td>
