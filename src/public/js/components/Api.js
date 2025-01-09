@@ -5,6 +5,8 @@ import alerts from "./Alerts.js";
 function Api() {
 	const self = this; //self instance
     const OPTS = {}; // Call options
+	const HEADER_TOKEN = "x-access-token"; // Token key in header
+	const HEADERS = new Headers({ "x-requested-with": "XMLHttpRequest" }); // AJAX header
 
     function fnError(err) {
         alerts.showError(err);
@@ -14,17 +16,18 @@ function Api() {
     this.set = (name, value) => { OPTS[name] = value; return self; }
     this.init = () => {
         Object.clear(OPTS); // remove previous options
-        OPTS.headers = new Headers({ "x-requested-with": "XMLHttpRequest" }); // AJAX flag
+        OPTS.headers = HEADERS; // set AJAX flag
+		OPTS.headers.delete(HEADER_TOKEN); // remove token
         return self.set("cache", "default"); // Default options
     }
 
     this.getHeaders = () => OPTS.headers;
     this.getHeader = name => OPTS.headers.get(name);
-    this.setHeader = (name, value) => { OPTS.headers.set(name, value); return self; }
-    this.getToken = () => self.getHeader("x-access-token");// || sb.substring(headers["authorization"], 7);
+    //this.setHeader = (name, value) => { OPTS.headers.set(name, value); return self; }
+    this.getToken = () => self.getHeader(HEADER_TOKEN);// || sb.substring(headers["authorization"], 7);
     this.setToken = token => {
         //self.setHeader("authorization", "Bearer " + token);
-        return self.setHeader("x-access-token", token);
+        return self.setHeader(HEADER_TOKEN, token);
     }
 
     this.setMethod = method => self.set("method", method);

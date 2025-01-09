@@ -34,15 +34,6 @@ function Navigation() {
 	this.setScript = (name, fn) => { SCRIPTS[name] = fn; return self; } // save script
 	this.runScript = (name, fn) => { fn(); return self.setScript(name, fn); } // Execute and save handler
 
-	// Capture clicks events to load main via AJAX
-	/*this.addClick = (el, selector) => {
-		selector = selector || "a.load-main";
-		el.querySelectorAll(selector).addClick((ev, link) => {
-			api.init().text(link.href).then(self.setMain); // Load main via AJAX on click
-			ev.preventDefault();
-		});
-		return self;
-	}*/
 	this.setMain = data => {
 		if (!data) // exists changes
 			return self; // Not changes

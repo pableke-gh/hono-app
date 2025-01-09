@@ -1,5 +1,6 @@
 
 import nav from "./components/Navigation.js";
+import api from "./components/Api.js";
 import dom from "./components/DomBox.js";
 import menu from "./components/Menu.js";
 import menus from "./data/menus.js";
@@ -19,7 +20,7 @@ nav.ready(() => {
 	const fnResize = () => {
 		menuToggleIcon.classList.add("fa-bars");
 		menuToggleIcon.classList.remove("fa-times");
-		menuHTML.toggle("active", dom.isMediaXs());
+		menuHTML.toggle("active", !dom.isMediaXs());
 	}
 	window.addEventListener("resize", fnResize);
 	fnResize();
@@ -41,5 +42,11 @@ nav.ready(() => {
     langs.firstElementChild.src = link.firstElementChild.src; // current flag
 	langs.nextElementSibling.addEventListener("beforetoggle", ev => { //ev.newState == "open"/"closed"
 		langs.lastElementChild.toggle("fa-chevron-down").toggle("fa-chevron-up");
+	});
+
+	// Load main tag via AJAX on click event
+	$$("a.load-main").addClick((ev, link) => {
+		api.init().text(link.href).then(nav.setMain);
+		ev.preventDefault();
 	});
 });
