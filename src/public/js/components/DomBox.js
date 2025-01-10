@@ -4,9 +4,9 @@ function DomBox() {
 	const divNull = document.createElement("div");
 
 	this.isMediaXs = () => (window.innerWidth < 576);
-	this.ismediaSm = () => (window.innerWidth < 768);
-	this.ismediaMd = () => (window.innerWidth < 992);
-	this.ismediaLg = () => (window.innerWidth < 1200);
+	this.ismediaSm = () => ((575 < window.innerWidth) && (window.innerWidth < 768));
+	this.ismediaMd = () => ((767 < window.innerWidth) && (window.innerWidth < 992));
+	this.ismediaLg = () => ((991 < window.innerWidth) && (window.innerWidth < 1200));
 	this.isMediaXl = () => (window.innerWidth > 1199);
 
 	this.$1 = (el, selector) => (el && el.querySelector(selector));

@@ -1,7 +1,8 @@
 
 html { color-scheme: dark light; font-family: system-ui, sans-serif; }
 body {
-	display: flex; flex-direction: column; min-height: 100vh; margin: 0;
+	display: flex; flex-direction: column;
+	width: 100%; min-height: 100vh; margin: 0;
 	color: #13151A; background-color: rgb(249 250 251);
 }
 main {

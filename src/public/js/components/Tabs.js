@@ -113,10 +113,36 @@ function Tabs() {
 		return self;
 	}
 
-    this.setActions = el => { // avoid navigation and go to tab x
+    this.closeModal = id => {
+		const modal = $1(id ? ("dialog#" + id) : "dialog[open]");
+        if (modal) { // has modal
+            const scrollY = document.body.style.top;
+            document.body.style.position = "";
+            document.body.style.top = "";
+            window.scrollTo(0, parseInt(scrollY || "0") * -1);
+            modal.close();
+        }
+        alerts.working();
+        return self;
+	}
+    this.showModal = id => { // open modal by id
+        const modal = $1("dialog#" + id); // find modal by id
+        if (fnCallEvent("show", modal)) { // open modal if true
+            document.body.style.top = `-${window.scrollY}px`;
+            document.body.style.position = "fixed";
+
+            modal.showModal(); // show dialog
+            alerts.working(); // hide loading frame
+            fnCallEvent("view", modal); // fire open handler
+        }
+        return self;
+    }
+
+	this.setActions = el => { // set default actions
         el.querySelectorAll("[href^='#tab-']").forEach(link => {
             link.onclick = ev => {
                 const href = link.getAttribute("href");
+				const id = href.substring(href.lastIndexOf("-") + 1);
                 if ((href == "#tab-back") || (href == "#tab-prev"))
                     self.backTab();
                 else if (href == "#tab-next")
@@ -125,12 +151,14 @@ function Tabs() {
                     self.lastTab();
                 else if (href == "#tab-toggle")
                     self.toggle(link); // call toggle handler
-                else if (href == "#tab-action") { // specific action
-                    const fnAction = EVENTS[link.dataset.action];
-                    fnAction(link); // call handler
-                }
+				else if (href.startsWith("#tab-open"))
+					self.showModal(id); // open modal dialog
+				else if (href.startsWith("#tab-close"))
+					self.closeModal(id); // close modal dialog
+                else if (href.startsWith("#tab-action"))
+					EVENTS[link.dataset.action || id](link); // call handler
                 else
-                    self.showTab(href.substring(href.lastIndexOf("-") + 1));
+                    self.showTab(id);
                 ev.preventDefault(); // no navigate
             }
         });
@@ -146,6 +174,8 @@ function Tabs() {
 
     // Init. view and PF navigation (only for CV-UAE)
     self.load(document); // Load all tabs by default
+    window.showModal = (xhr, status, args, selector) => window.showAlerts(xhr, status, args) && self.showModal(selector);
+    window.closeModal = (xhr, status, args) => window.showAlerts(xhr, status, args) && self.closeModal();
     window.showTab = (xhr, status, args, tab) => {
         if (!alerts.isLoaded(xhr, status, args))
             return false; // Server error
@@ -155,6 +185,14 @@ function Tabs() {
             globalThis.isset(tab) ? self.showTab(tab) : self.nextTab();
         alerts.showAlerts(msgs); // Always show alerts after change tab
         return ok;
+    }
+
+	// Listen for keypad event
+    document.onkeydown = ev => {
+        if (ev.key === "Escape")
+            return self.closeModal(); // close current modal
+		if (ev.key === "ArrowLeft")
+			return self.backTab(); // go to previous tab
     }
 }
 

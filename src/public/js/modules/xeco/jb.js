@@ -16,14 +16,14 @@ pf.ready(() => {
 	modals.setViewEvent("cm", acJgCm.reload);
 	modals.set("report", () => {
 		pf.sendId("rcReportCm", acJgCm.getValue());
-		modals.close(); // always close modal
+		modals.closeModal(); // always close modal
 	});
 
     let formDoc; // dinamyc form
     const fnBuildXecoDoc = () => {
         working(); // hide loading frame
         formDoc = new Form("#xeco-doc");
-        modals.addOpenEvent(formDoc.getForm());
+        modals.load(formDoc.getForm());
     }
 
     window.jbSearch = () => formDoc.isCached(acDocContable.getValue()) ? false : loading();

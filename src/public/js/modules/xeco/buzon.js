@@ -2,7 +2,7 @@
 import dom from "../../components/DomBox.js";
 import Form from "../../components/Form.js";
 import tabs from "../../components/Tabs.js";
-import modals from "../../components/Modals.js";
+//import modals from "../../components/Modals.js";
 import pf from "../../components/Primefaces.js";
 import buzon from "../../model/xeco/Buzon.js";
 import bf from "./buzon/facturas.js";
@@ -37,10 +37,10 @@ pf.ready(() => { // on load view
 	const page = formOrganicas.getInput("#pagina");
 	page.onchange = () => fnPaginate(tableRecientes, +page.value);
 	fnLoadTables(formOrganicas, tableAncladas, tableRecientes, organicas);
-	modals.set("report", () => {
+	tabs.setAction("report", () => {
 		const data = buzon.getData(); // current row
 		pf.fetch("report", { id: data.org, ut: formOrganicas.getval("#utProv") });
-		modals.close(); // always close modal
+		tabs.closeModal(); // always close modal
 	});
 
 	function fnAddActions(table) {
@@ -70,7 +70,7 @@ pf.ready(() => { // on load view
 	// update colspan on small screens
 	const fnResize = () => dom.setAttr(tableRecientes.getLastRow().cells[0], "colspan", dom.isMediaXs() ? 3 : 4);
 	window.addEventListener("resize", fnResize);
-	fnResize();
+	fnResize(); // init colspan on load
 	/************** Buzon de organicas **************/
 
 	/************** Formulario de facturas **************/

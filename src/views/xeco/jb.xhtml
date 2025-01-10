@@ -59,10 +59,10 @@
 				</div>
 
 				<!-- modals dialog -->
-				<dialog id="modal-cm" class="dialog-modal">
+				<dialog id="cm" class="dialog-modal">
 					<div class="dialog-header">
 						<h2>Justificantes de Gasto asociados al DC #{jb.doc.numDc}</h2>
-						<a href="#modal-close" class="action text-gray"><i class="fas fa-times"></i></a>
+						<a href="#tab-close-cm" class="action text-gray"><i class="fas fa-times"></i></a>
 					</div>
 					<div class="dialog-body">
 					<div class="ui-blocks">
@@ -79,8 +79,8 @@
 					</div>
 					</div>
 					<div class="dialog-footer">
-						<a href="#modal-close" class="btn btn-info"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
-						<a href="#modal-action" class="btn btn-warn" data-action="report"><i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
+						<a href="#tab-close-cm" class="btn btn-info"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
+						<a href="#tab-action-report" class="btn btn-warn"><i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
 					</div>
 				</dialog>
 			</h:form>
@@ -110,7 +110,7 @@
 										<li><b>(ICM) Informe:</b> <a href="#{jb.getUrlCm()}" target="_blank">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
 									</c:when>
 									<c:otherwise>
-										<li><b>(ICM) Informe:</b> <a href="#modal-open" data-open="cm">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
+										<li><b>(ICM) Informe:</b> <a href="#tab-open-cm">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
 									</c:otherwise>
 									</c:choose>
 								</c:if>

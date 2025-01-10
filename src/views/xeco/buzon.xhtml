@@ -28,51 +28,9 @@
 	<ui:define name="body">
 		<ui:include src="parts/msgs.xhtml"></ui:include>
 
+		<!-- Organicas ancladas y recientes -->
 		<div id="tab-0" class="tab-content active">
-		<h:form id="xeco-organicas" prependId="false" method="post">
-			<div id="organcias-json" class="hide">#{buzon.serializeOrganicas()}</div>
-			<div id="card-ancladas" class="card-xeco hide">
-				<h2>Orgánicas Ancladas</h2>
-				<table id="ancladas" class="tb-xeco">
-					<thead>
-						<tr>
-							<th>Orgánica</th><th class="hide-xs">Descripción</th><th>Crédito Disponible</th>
-							<th>Rol</th><th>Acciones</th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-					<tfoot></tfoot>
-				</table>
-			</div>
-			<div class="card-xeco">
-				<h2>Orgánicas Recientes / Mostrar:<select id="pagina" class="ui-input inline"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select></h2>
-				<table id="recientes" class="tb-xeco">
-					<thead>
-						<tr>
-							<th>Orgánica</th><th class="hide-xs">Descripción</th><th>Crédito Disponible</th>
-							<th>Rol</th><th>Acciones</th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-					<tfoot></tfoot>
-				</table>
-			</div>
-
-			<p:remoteCommand name="anclar" action="#{buzon.anclar()}" oncomplete="loadBuzon(xhr, status, args)" />
-			<p:remoteCommand name="desanclar" action="#{buzon.desanclar()}" oncomplete="loadBuzon(xhr, status, args)" />
-			<p:remoteCommand name="users" action="#{buzon.usuarios()}" oncomplete="loadUsuarios(xhr, status, args)" />
-			<p:remoteCommand name="utProv" action="#{buzon.setUnidadesTramit()}" update="utProv" oncomplete="openModal(xhr, status, args, 'ut')" />
-			<p:remoteCommand name="utFact" action="#{buzon.setUnidadesTramit()}" update="utFact" oncomplete="showTab(xhr, status, args, 1)" />
-			<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="handleReport(xhr, status, args);"/>
-
-			<!-- modals dialog -->
-			<ui:include src="./buzon/modal_ut.xhtml"></ui:include>
-		</h:form>
-
-		<div class="navbar">
-			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			</div>
+			<ui:include src="./buzon/organicas.xhtml"></ui:include>
 		</div>
 
 		<!-- Subida de facturas del tab1 al tab6 -->
@@ -81,6 +39,8 @@
 		</h:form>
 
 		<!-- gastion de permisos tab10 -->
-		<ui:include src="./buzon/usuarios.xhtml"></ui:include>
+		<div id="tab-10" class="tab-content">
+			<ui:include src="./buzon/usuarios.xhtml"></ui:include>
+		</div>
 	</ui:define>
 </ui:composition>
