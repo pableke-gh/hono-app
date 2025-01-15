@@ -2,7 +2,6 @@
 import dom from "../../components/DomBox.js";
 import Form from "../../components/Form.js";
 import tabs from "../../components/Tabs.js";
-//import modals from "../../components/Modals.js";
 import pf from "../../components/Primefaces.js";
 import buzon from "../../model/xeco/Buzon.js";
 import bf from "./buzon/facturas.js";

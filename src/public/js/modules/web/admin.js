@@ -11,9 +11,6 @@ function fnAdmin() { // Script id
             formProfile.send().then(info => { tabs.setActive(0); formProfile.setOk(info); });
         ev.preventDefault();
     });
-
-    // Register handler for navigation
-    nav.setScript("admin-js", fnAdmin);
 }
 
 // Register event on page load and export default handler

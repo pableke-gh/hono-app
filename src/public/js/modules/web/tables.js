@@ -18,9 +18,6 @@ function fnTable() {
     });
     table.set("onFooter", resume => `<tr><td colspan="${resume.columns}">Filas: ${resume.size}</td></tr>`);
     table.render(menus.filter(node => (node.tipo == 1)));
-
-    // Register handler for navigation
-    nav.setScript("table-js", fnTable);
 }
 
 // Register event on page load and export default handler

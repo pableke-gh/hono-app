@@ -56,9 +56,6 @@ function fnIndex() {
             }
         });
     });
-
-    // Register handler for navigation
-    nav.setScript("index-js", fnIndex);
 }
 
 // Register event on page load and export default handler

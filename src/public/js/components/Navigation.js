@@ -8,9 +8,11 @@ function Navigation() {
 	const self = this; // self instance
 	const SCRIPTS = {}; // function container
 	const KEY_THEME = "color-theme"; // Key to store theme mode
+	const NAV_SELECTOR = "a.load-main"; // css selector
 	const main = document.body.children.findBy("main");
 
 	this.ready = coll.ready; // synonym
+	this.getMain = () => main; // main tag container
 	this.isStatic = pathname => pathname.endsWith(".html");
 	this.isDynamic = pathname => !self.isStatic(pathname);
 	this.redirect = pathname => { window.location.href = pathname; }
@@ -34,6 +36,11 @@ function Navigation() {
 	this.setScript = (name, fn) => { SCRIPTS[name] = fn; return self; } // save script
 	this.runScript = (name, fn) => { fn(); return self.setScript(name, fn); } // Execute and save handler
 
+	function fnLoadMain(ev, link) {
+		api.init().text(link.href).then(self.setMain);
+		ev.preventDefault();
+	}
+
 	this.setMain = data => {
 		if (!data) // exists changes
 			return self; // Not changes
@@ -55,6 +62,7 @@ function Navigation() {
 
 		alerts.top(); // go to top view
 		tabs.load(main); // reload tabs events
+		main.querySelectorAll(NAV_SELECTOR).addClick(fnLoadMain);
 		return self;
 	}
 
@@ -78,8 +86,11 @@ function Navigation() {
 		}
 	});
 
-	// Init. theme mode light / dark
-	coll.ready(self.setTheme);
+	// Init. navigation
+	coll.ready(() => {
+		self.setTheme(); // Set theme mode light / dark
+		$$(NAV_SELECTOR).addClick(fnLoadMain);
+	});
 }
 
 export default new Navigation();

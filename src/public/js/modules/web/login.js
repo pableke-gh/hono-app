@@ -10,9 +10,6 @@ function fnLogin() { // Script id
             formSignin.send().then(nav.redirect); // Access allowed
         ev.preventDefault();
     });
-
-    // Register handler for navigation
-    nav.setScript("login-js", fnLogin);
 }
 
 // Register event on page load and export default handler
