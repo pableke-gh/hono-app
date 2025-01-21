@@ -24,7 +24,7 @@ tr.tb-data:hover { background-color: rgb(209 213 219 / .9)/* gray-300 */ }
 tr.active { font-weight: bold; }
 
 tfoot { font-weight: bold; border-top: 1px dashed black; background-color: rgb(226 226 226 / 40%); }
-tfoot td { padding: .5rem .6rem; }
+tfoot td:first-child { padding: .5rem; }
 
 .tb-xeco { box-shadow: none; }
 .tb-xeco tbody.active { animation: fadeIn .8s forwards; }

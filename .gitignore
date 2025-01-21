@@ -11,4 +11,4 @@ node_modules/
 # static files and data
 src/data/**/*.sqlite
 src/public/files/**/*
-src/public/js/modules/xeco/irse/place.js
+src/public/js/modules/irse/place.js
