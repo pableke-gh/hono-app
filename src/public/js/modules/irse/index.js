@@ -6,15 +6,15 @@ import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 import dom from "../../lib/uae/dom-box.js";
 
-import list from "./irse/list.js";
-import uxxiec from "./irse/uxxiec.js";
-import perfil from "./irse/perfil.js";
-import rutas from "./irse/rutas.js";
-import dietas from "./irse/dietas.js";
-import maps from "./irse/maps.js";
-import otri from "./irse/otri.js";
-import organicas from "./irse/organicas.js";
-import { viewTab5, initTab9, initTab12 } from "./irse/tabs.js";
+import list from "./list.js";
+import uxxiec from "./uxxiec.js";
+import perfil from "./perfil.js";
+import rutas from "./rutas.js";
+import dietas from "./dietas.js";
+import maps from "./maps.js";
+import otri from "./otri.js";
+import organicas from "./organicas.js";
+import { viewTab5, initTab9, initTab12 } from "./tabs.js";
 
 const formIrse = new Form("#xeco-irse");
 pf.ready(list.init);

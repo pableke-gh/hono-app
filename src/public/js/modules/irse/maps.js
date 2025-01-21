@@ -1,7 +1,7 @@
 
-import coll from "../../../components/CollectionHTML.js";
-import sb from "../../../components/StringBox.js";
-import dom from "../../../lib/uae/dom-box.js";
+import coll from "../../components/CollectionHTML.js";
+import sb from "../../components/StringBox.js";
+import dom from "../../lib/uae/dom-box.js";
 
 import place from "./place.js";
 import rutas from "./rutas.js";

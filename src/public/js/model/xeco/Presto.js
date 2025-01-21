@@ -33,7 +33,7 @@ class Presto extends Solicitud {
 	isMultipartida() { return (this.isTcr() || this.isFce() || this.isGcr()); }
 	showPartidasInc() { return (this.isMultipartida() && this.isEditable() && (this.partidas.size() < 20)); }
 	isPartidaExt() { return (this.isGcr() || this.isAnt()); }
-	isDisableEjInc() { return (this.isDisabled() || this.isTcr() || this.isFce()); }
+	isDisableEjInc() { return (this.isDisabled() || this.isTcr() /*|| this.isFce()*/); }
 	isAutoLoadImp() { return (this.isL83() || this.isAnt() || this.isAfc()); }
 	isAutoLoadInc() { return (this.isL83() || this.isAnt()); }
 	hasMultipartida() { return (super.mask & 1); }

@@ -35,9 +35,10 @@ function Navigation() {
 	this.getScript = name => SCRIPTS[name];
 	this.setScript = (name, fn) => { SCRIPTS[name] = fn; return self; } // save script
 	this.runScript = (name, fn) => { fn(); return self.setScript(name, fn); } // Execute and save handler
+	this.fetchMain = url => api.init().text(url).then(self.setMain);
 
 	function fnLoadMain(ev, link) {
-		api.init().text(link.href).then(self.setMain);
+		self.fetchMain(link.href);
 		ev.preventDefault();
 	}
 

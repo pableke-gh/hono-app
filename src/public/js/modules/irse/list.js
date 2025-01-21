@@ -1,6 +1,6 @@
 
-import Form from "../../../components/Form.js";
-import i18n from "../../../i18n/langs.js";
+import Form from "../../components/Form.js";
+import i18n from "../../i18n/langs.js";
 
 function List() {
 	const self = this; //self instance

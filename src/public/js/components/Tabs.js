@@ -191,8 +191,8 @@ function Tabs() {
     document.onkeydown = ev => {
         if (ev.key === "Escape")
             return self.closeModal(); // close current modal
-		if (ev.key === "ArrowLeft")
-			return self.backTab(); // go to previous tab
+		//if (ev.key === "ArrowLeft")
+			//return self.backTab(); // go to previous tab
     }
 }
 

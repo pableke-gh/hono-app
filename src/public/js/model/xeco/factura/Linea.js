@@ -24,7 +24,7 @@ export default function Linea(factura) {
         </tr>
         <tr class="${show}">
             <td colspan="2">
-                <label class="ui-blocks">
+                <label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
                 <div class="ui-block-main text-right">IVA:</div>
                 <div class="ui-block">
                     <select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal editable-uae" tabindex="32"></select>

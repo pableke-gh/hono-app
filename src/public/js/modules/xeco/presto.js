@@ -50,8 +50,7 @@ pf.ready(() => {
         p030.autoload(lineas, formPresto.getValue(ev.target)); //importe obligatorio
     });
     formPresto.onChangeInput("#urgente", ev => formPresto.setVisible(".grp-urgente", ev.target.value == "2"))
-            .onChangeInput("#ejDec", ev => { formPresto.setval("#ejInc", ev.target.value); acOrgDec.reset(); })
-            .onChangeInput("#ejInc", acOrgInc.reset);
+            .onChangeInput("#ejInc", acOrgInc.reload);
     pf.uploads(formPresto.querySelectorAll(".pf-upload"));
 
     window.autoloadL83 = (xhr, status, args) => {
@@ -110,6 +109,7 @@ pf.ready(() => {
     			.setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-partida-inc", presto.showPartidasInc())
         	    .setVisible(".show-imp-cd", presto.isImpCd()).setVisible(".show-memoria", !presto.isL83()).setVisible(".grp-urgente", presto.isUrgente())
                 .setVisible(".show-subtipo", presto.isUae() && presto.isGcr()).setVisible(".is-fce", presto.isFce()).setVisible(".link-adjunto", presto.getAdjunto())
+				.onChangeInput("#ejDec", ev => { formPresto.setval("#ejInc", ev.target.value); acOrgDec.reload(); })
                 .text(".filename", "");
         pDec.loadEconomica(args); // cargo las econonomicas a decrementar
         lineas.render(JSON.read(args.data)); // Load table partidas

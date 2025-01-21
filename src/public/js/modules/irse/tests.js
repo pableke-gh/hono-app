@@ -1,5 +1,5 @@
 
-import nav from "../../../components/Navigation.js";
+import nav from "../../components/Navigation.js";
 import place from "./place.js";
 
 window.initMap = function() {
