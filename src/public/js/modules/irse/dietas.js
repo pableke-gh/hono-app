@@ -1,7 +1,7 @@
 
-import coll from "../../../components/CollectionHTML.js";
-import i18n from "../../../i18n/langs.js";
-import dom from "../../../lib/uae/dom-box.js";
+import coll from "../../components/CollectionHTML.js";
+import i18n from "../../i18n/langs.js";
+import dom from "../../lib/uae/dom-box.js";
 import organicas from "./organicas.js";
 
 function IrseDietas() {

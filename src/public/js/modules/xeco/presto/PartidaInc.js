@@ -3,14 +3,14 @@ import pf from "../../../components/Primefaces.js";
 import presto from "../../../model/xeco/Presto.js";
 
 export default function PartidaInc(form) {
-    const self = this; //self instance
-    const partida = presto.getPartida();
-    const partidas = presto.getPartidas();
+	const self = this; //self instance
+	const partida = presto.getPartida();
+	const partidas = presto.getPartidas();
 
-    const acOrgInc = form.setAcItems("#acOrgInc", //selector
-                                        term => window.rcFindOrgInc(pf.param("term", term)), //source
-                                        item => { form.setval("#faInc", item.int & 1); pf.sendId("rcEcoInc", item.value); }, //select
-                                        () => { form.setval("#faInc").setval("#impInc"); pf.sendId("rcEcoInc"); }); //reset
+	const acOrgInc = form.setAcItems("#acOrgInc", //selector
+									term => window.rcFindOrgInc(pf.param("term", term)), //source
+									item => { form.setval("#faInc", item.int & 1); pf.sendId("rcEcoInc", item.value); }, //select
+									() => { form.setval("#faInc").setval("#impInc"); pf.sendId("rcEcoInc"); }); //reset
 
     const lineas = form.setTable("#partidas-inc", {
         msgEmptyTable: "No existen partidas asociadas a la solicitud",
