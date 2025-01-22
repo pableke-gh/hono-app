@@ -5,13 +5,12 @@ import pf from "../../components/Primefaces.js";
 
 import factura from "../../model/xeco/Factura.js";
 import Fiscal from "./factura/Fiscal.js";
-import Lineas from "./factura/Lineas.js";
 import solicitudes from "./xeco.js";
 
 pf.ready(() => {
     const formFact = new Form("#xeco-fact");
-	const lineas = new Lineas(formFact);
-	const fiscal = new Fiscal(formFact, lineas);
+	const fiscal = new Fiscal(formFact);
+	const lineas = fiscal.getLineas();
     solicitudes(factura, formFact); // init. actions
 
 	const fnUpdateFace = face => {

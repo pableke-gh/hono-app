@@ -2,9 +2,11 @@
 import pf from "../../../components/Primefaces.js";
 import factura from "../../../model/xeco/Factura.js";
 import fiscalidad from "../../../data/fiscal.js"
+import Lineas from "./Lineas.js";
 
-export default function Fiscal(form, lineas) {
+export default function Fiscal(form) {
 	const self = this; //self instance
+	const lineas = new Lineas(form);
 
 	const delegaciones = pf.datalist(form, "#delegacion", "#idDelegacion", { emptyOption: "Seleccione una delegación" });
 	const acTercero = form.setAutocomplete("#acTercero", {
@@ -17,6 +19,7 @@ export default function Fiscal(form, lineas) {
 		onReset: delegaciones.reset
 	});
 
+	this.getLineas = () => lineas;
 	this.setTercero = (id, label) => { acTercero.setValue(id, label); return self; }
 	this.setDelegationes = data => { delegaciones.setItems(data); return self; }
 	this.setSujeto = sujeto => {
@@ -32,10 +35,10 @@ export default function Fiscal(form, lineas) {
 		lineas.setIva(data.iva); // actualizo el nuevo iva
 		return self.setSujeto(data.sujeto);
 	}
-	this.update = subtipo => {
+	this.update = (subtipo, tercero) => {
 		factura.setSubtipo(subtipo); // actualizo el nuevo subtipo
         form.setval("#nifTercero", acTercero.getCode()).setVisible(".show-recibo", factura.isRecibo());
-		return fnUpdateFiscalidad(acTercero.getCurrentItem());
+		return fnUpdateFiscalidad(tercero || acTercero.getCurrentItem());
 	}
 	this.load = (tercero, del) => {
 		delegaciones.setItems(del); // cargo las delegaciones
