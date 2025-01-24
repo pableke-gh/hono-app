@@ -8,16 +8,16 @@ export default function Fiscal(form) {
 	const self = this; //self instance
 	const lineas = new Lineas(form);
 
-	const delegaciones = pf.datalist(form, "#delegacion", "#idDelegacion", { emptyOption: "Seleccione una delegación" });
-	const acTercero = form.setAutocomplete("#acTercero", {
-		delay: 500, //milliseconds between keystroke occurs and when a search is performed
-		minLength: 5, //reduce matches
-		source: term => pf.sendTerm("rcFindTercero", term),
-		render: item => item.label,
-		select: item => { pf.sendId("rcDelegaciones", item.value); return item.value },
-		afterSelect: data => self.update(factura.getSubtipo(), data),
-		onReset: delegaciones.reset
-	});
+	const delegaciones = pf.datalist(form, "#delegacion", "#idDelegacion");
+	delegaciones.setEmptyOption("Seleccione una delegación");
+
+	const acTercero = form.setAutocomplete("#acTercero");
+	acTercero.setDelay(500).setMinLength(5)
+			.setSource(term => pf.sendTerm("rcFindTercero", term))
+			.setRender(item => item.label)
+			.setSelect(item => { pf.sendId("rcDelegaciones", item.value); return item.value })
+			.setAfterSelect(data => self.update(factura.getSubtipo(), data))
+			.setReset(delegaciones.reset);
 
 	this.getLineas = () => lineas;
 	this.setTercero = (id, label) => { acTercero.setValue(id, label); return self; }
