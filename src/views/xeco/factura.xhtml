@@ -206,39 +206,7 @@
 				</div>
 			</div>
 
-			<div class="card-xeco">
-				<h2>Detalle por conceptos</h2>
-
-				<div class="ui-blocks insert-only">
-				<label class="ui-block-xl">
-					<div class="label required"><h:outputText value="#{msg['lbl.descripcion']}" escape="false" />:</div>
-					<input id="desc" name="desc" class="ui-input ui-linea" tabindex="30" maxlength="240"/>
-					<div class="ui-errtip"></div>
-				</label>
-				<label class="ui-block">
-					<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
-					<input id="imp" name="imp" class="ui-input ui-float ui-linea" tabindex="31" maxlength="12"/>
-					<div class="ui-errtip"></div> 
-				</label>
-				<div class="ui-block-btn">
-					<a id="add-linea" href="#" class="btn btn-green" tabindex="32"><i class="far fa-plus icon"></i> Añadir</a>
-				</div>
-				</div>
-
-				<h:inputHidden id="lineas-json" value="#{fact.lineas}" />
-				<table id="lineas-fact" class="tb-xeco">
-					<thead>
-						<tr>
-							<th>Nº</th>
-							<th>Detalle de los conceptos a facturar / ingresar</th>
-							<th style="width: 120px;">Importe</th><th></th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-					<tfoot></tfoot>
-				</table>
-			</div>
-
+			<ui:include src="factura/conceptos.xhtml"></ui:include>
 			<div class="navbar">
 				<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="41">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
