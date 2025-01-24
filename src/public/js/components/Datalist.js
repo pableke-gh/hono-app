@@ -21,7 +21,10 @@ export default function(select, opts) {
         return self;
     }
 
-    this.getItems = () => _data;
+    this.set = (name, fn) => { opts[name] = fn; return self; }
+	this.setEmptyOption = text => self.set("emptyOption", text);
+
+	this.getItems = () => _data;
     this.getItem = index => _data[index];
     this.getIndex = () => select.selectedIndex;
 	this.isOptional = () => !select.options[0]?.value;

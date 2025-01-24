@@ -38,7 +38,16 @@ export default function(autocomplete, opts) {
     let _results = EMPTY; // default = empty array
     let _index = -1 // current item position in results
 
-    this.getData = () => _results;
+    this.set = (name, fn) => { opts[name] = fn; return self; }
+	this.setDelay = delay => self.set("delay", delay);
+	this.setMinLength = min => self.set("minLength", min);
+	this.setSource = fn => { opts.source = fn; return self; }
+	this.setRender = fn => { opts.render = fn; return self; }
+	this.setSelect = fn => { opts.select = fn; return self; }
+	this.setAfterSelect = fn => { opts.afterSelect = fn; return self; }
+	this.setReset = fn => { opts.onReset = fn; return self; }
+
+	this.getData = () => _results;
     this.getIndex = () => _index;
     this.getItem = i => _results[i ?? _index];
     this.getCurrentItem = () => _results[_index];
