@@ -1,7 +1,8 @@
 
 const DEFAULT = 0b0000000000011; //default = COM/MUN 
 
-const ACTIVIDADES = { //BD actividades
+//BD actividades
+const ACTIVIDADES = {
     //por cuenta ajena - PAS
     "A,PAS,OTR": 0b1100000000111,
     "A,PAS,xOT": 0b1000000000011, 

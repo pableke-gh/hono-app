@@ -3,6 +3,7 @@
 const DEFAULT = [165.630, 165.630, 91.3500, 91.350]; //Resto Mundo
 const ENGLAND = [239.080, 239.080, 91.3500, 91.350]; //Reino unido
 
+// BD dietas
 const DIETAS = {
 	"ES":    [100.000, 100.000, 53.3400, 53.34], //España
 	"ES-MD": [140.000, 140.000, 53.3400, 53.34], //España (Madrid)
