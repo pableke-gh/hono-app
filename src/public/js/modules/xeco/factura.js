@@ -31,8 +31,8 @@ pf.ready(() => {
 	});
 
     window.loadDelegaciones = (xhr, status, args) => {
-        if (pf.showAlerts(xhr, status, args))
-            fiscal.setDelegationes(JSON.read(args.delegaciones));
+		if (pf.showAlerts(xhr, status, args))
+			fiscal.setDelegationes(JSON.read(args.delegaciones));
     }
 
 	window.viewFactura = (xhr, status, args) => {

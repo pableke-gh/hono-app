@@ -161,12 +161,14 @@ export default function(form, opts) {
 	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
 	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox($1(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(self.getInput(selector), opts); // Input type text / search
-	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => {
-		return self.setAutocomplete(selector)
-					.setMinLength(4).setSource(fnSource)
-					.setRender(item => item.label).setSelect(item => item.value)
-					.setAfterSelect(fnSelect).setReset(fnReset);
-	}
+	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => self.setAutocomplete(selector, {
+			minLength: 4,
+			source: fnSource,
+			render: item => item.label,
+			select: item => item.value,
+			afterSelect: fnSelect,
+			onReset: fnReset
+	});
 
 	// Events handlers
 	const fnEvent = (el, name, fn) => { el.addEventListener(name, fn); return self; }

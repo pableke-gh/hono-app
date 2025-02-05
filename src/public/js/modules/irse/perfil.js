@@ -5,13 +5,11 @@ import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 import dom from "../../lib/uae/dom-box.js";
 
-import actividades from "../../data/irse/actividades.js"
+import getActividad from "../../data/irse/actividades.js"
 //import tribunales from "../../../data/irse/tribunales.js"
 
 function IrsePerfil() {
 	const self = this; //self instance
-	const ACTIVIDAD = 0b0000000000011; //default = COM/MUN 
-
 	const resume = {};
 	const STYLES = { remove: "removeOrg", imp: i18n.isoFloat, resp: sb.lopd, fCache: i18n.isoDate };
 
@@ -67,7 +65,7 @@ function IrsePerfil() {
 
 	function fnUpdatePerfil() {
 		eFin.value = fnCalcFinanciacion(); //recalculo la financiacion
-		dom.select(eAct, actividades[eRol.value + "," + eCol.innerText + "," + eFin.value] || ACTIVIDAD)
+		dom.select(eAct, getActividad(eRol.value, eCol.innerText, eFin.value))
 			.select(eTramit, (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
 			.hide(".fin-info").show(".fin-" + eFin.value);
 		return self;

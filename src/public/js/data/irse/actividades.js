@@ -1,5 +1,7 @@
 
-export default { //BD actividades
+const DEFAULT = 0b0000000000011; //default = COM/MUN 
+
+const ACTIVIDADES = { //BD actividades
     //por cuenta ajena - PAS
     "A,PAS,OTR": 0b1100000000111,
     "A,PAS,xOT": 0b1000000000011, 
@@ -49,4 +51,6 @@ export default { //BD actividades
     "A,ALU,x83": 0b0011000001010, 
     "A,ALU,ACA": 0b0011000001010,
     "A,ALU,xAC": 0b0011000001010
-};
+}
+
+export default (rol, col, fin) => ACTIVIDADES[rol + "," + col + "," + fin] || DEFAULT;
