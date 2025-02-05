@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%><%@ page isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
+<script type="text/javascript" src="/uae/resources/js/modules/xeco/fiscal.js"></script>
+
+<h1>Certificado de Retenciones de Comisiones de Servicio</h1>
+<div class="alerts">
+	<div class="alert alert-success hide">
+		<div class="alert-icon"><i class="fas fa-check-circle fa-3x"></i></div>
+		<div class="alert-text">${msgOk}</div>
+		<div class="alert-close">&times;</div>
+	</div>
+	<div class="alert alert-info hide">
+		<div class="alert-icon"><i class="fas fa-info fa-3x"></i></div>
+		<div class="alert-text">${msgInfo}</div>
+		<div class="alert-close">&times;</div>
+	</div>
+	<div class="alert alert-warn hide">
+		<div class="alert-icon"><i class="fas fa-exclamation-triangle fa-3x"></i></div>
+		<div class="alert-text">${msgWarn}</div>
+		<div class="alert-close">&times;</div>
+	</div>
+	<div class="alert alert-danger hide">
+		<div class="alert-icon"><i class="fas fa-exclamation fa-3x"></i></div>
+		<div class="alert-text">${msgErr}</div>
+		<div class="alert-close">&times;</div>
+	</div>
+</div>
+
+<html:form styleId="xeco" action="fiscalAction.do" onsubmit="MostrarProgreso();">
+	<html:hidden styleId="op" property="op" value=""/>
+	<html:hidden styleId="op2" property="op2" value=""/>
+	<html:hidden styleId="id" property="id" value=""/>
+	
+	<table id="certificados" class="tb-xeco">
+		<thead>
+			<tr>
+				<th width="15%">Ejercicio</th>
+				<th width="15%">Certificado</th>
+				<th width="15%">Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${certificados}" var="cert">
+			<tr class="tb-data">
+				<td>${cert.ejercicio}</td>
+				<c:choose>
+					<c:when test="${cert.callable}">
+						<td><span>Certificado de retenciones por comisiones de servicio</span></td>
+						<td><a href="report" op2="${cert.ejercicio}" class="imgbtn" title="Ver certificado de retenciones"><img src="uxxiportal/images/portlets/pdf_icon.gif"/></a></td>
+					</c:when>
+					<c:otherwise>
+						<td><span>No hay certificado disponible</span></td>
+						<td><b>-</b></td>
+					</c:otherwise>
+				</c:choose>
+			</tr>
+			</c:forEach>
+		</tbody>
+		<tbody class="hide no-data">
+			<tr><td colspan="3"><p class="textc">No existen certificados disponibles.</p></td></tr>
+		</tbody>
+		<tfoot>
+			<tr><td colspan="3">Filas: ${fn:length(certificados)}</td></tr>
+		</tfoot>
+	</table>
+
+	<br class="clear"/><br/>
+	<c:if test="${isAdmin}">
+		<a href="list" class="linkAnexar" title="Certificados de retenciones para externos">Generar certificados externos</a>
+	</c:if>
+</html:form>
+
+<br class="clear"/>
+<iframe id="m190" width="750" height="600" src="data:application/pdf;base64,${cert190}" class="${empty cert190 ? 'hide' : ''}"></iframe>
+<br class="clear"/><br/>
