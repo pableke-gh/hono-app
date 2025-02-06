@@ -6,7 +6,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
-<script type="text/javascript" src="/uae/resources/js/modules/xeco/fiscal.js"></script>
+<script type="module" src="/uae/resources/js/modules/xeco/fiscal.js"></script>
 
 <h1>Certificado de Retenciones de Comisiones de Servicio</h1>
 <div class="alerts">
@@ -31,8 +31,14 @@
 		<div class="alert-close">&times;</div>
 	</div>
 </div>
+<div class="loading">
+	<b class="far fa-circle-notch fa-3x fa-spin loading-content"></b>
+</div>
+<a id="back-to-top" href="#top" class="hide back-to-top">
+	<i class="fas fa-arrow-alt-up"></i>
+</a>
 
-<html:form styleId="xeco" action="fiscalAction.do" onsubmit="MostrarProgreso();">
+<html:form styleId="xeco" action="fiscalAction.do">
 	<html:hidden styleId="op" property="op" value=""/>
 	<html:hidden styleId="op2" property="op2" value=""/>
 	<html:hidden styleId="id" property="id" value=""/>
@@ -40,23 +46,23 @@
 	<table id="certificados" class="tb-xeco">
 		<thead>
 			<tr>
-				<th width="15%">Ejercicio</th>
-				<th width="15%">Certificado</th>
-				<th width="15%">Acciones</th>
+				<th>Ejercicio</th>
+				<th>Certificado</th>
+				<th>Acciones</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${certificados}" var="cert">
 			<tr class="tb-data">
-				<td>${cert.ejercicio}</td>
+				<td class="text-center">${cert.ejercicio}</td>
 				<c:choose>
 					<c:when test="${cert.callable}">
 						<td><span>Certificado de retenciones por comisiones de servicio</span></td>
-						<td><a href="report" op2="${cert.ejercicio}" class="imgbtn" title="Ver certificado de retenciones"><img src="uxxiportal/images/portlets/pdf_icon.gif"/></a></td>
+						<td class="text-center"><a name="nav" href="report" op2="${cert.ejercicio}" class="imgbtn" title="Ver certificado de retenciones"><img src="uxxiportal/images/portlets/pdf_icon.gif"/></a></td>
 					</c:when>
 					<c:otherwise>
 						<td><span>No hay certificado disponible</span></td>
-						<td><b>-</b></td>
+						<td class="text-center"><b>-</b></td>
 					</c:otherwise>
 				</c:choose>
 			</tr>
@@ -69,13 +75,5 @@
 			<tr><td colspan="3">Filas: ${fn:length(certificados)}</td></tr>
 		</tfoot>
 	</table>
-
-	<br class="clear"/><br/>
-	<c:if test="${isAdmin}">
-		<a href="list" class="linkAnexar" title="Certificados de retenciones para externos">Generar certificados externos</a>
-	</c:if>
 </html:form>
-
-<br class="clear"/>
-<iframe id="m190" width="750" height="600" src="data:application/pdf;base64,${cert190}" class="${empty cert190 ? 'hide' : ''}"></iframe>
-<br class="clear"/><br/>
+<iframe id="m190" width="99%" height="600" src="data:application/pdf;base64,${cert190}" class="${empty cert190 ? 'hide' : ''}"></iframe>

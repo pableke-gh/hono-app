@@ -9,5 +9,6 @@ nav.ready(() => {
 		form.setval("#op", "report").setval("#op2", link.getAttribute("op2")).setval("#id", link.id);
 		form.getForm().submit();
 		ev.preventDefault();
+		window.loading();
 	});
 });
