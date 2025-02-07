@@ -23,8 +23,11 @@ function NumberBox() {
             return null; // nada que parsear
         const sign = ((str.charAt(0) == "-") ? "-" : ""); // Get sign number + or -
         const num = parseInt(sign + str.replace(/\D+/g, "")); // Integer number
-        return isNaN(num) ? null : num;
+        return isNaN(num) ? null : num; // validate int instance
     }
+	this.intval = str => {
+		return self.toInt(str) ?? 0; // native int
+	}
     this.isoInt = (num, lang) => { // Int to String formated
         return isnum(num) ? num.toLocaleString(lang) : null;
     }
@@ -42,8 +45,11 @@ function NumberBox() {
         const whole = (separator < 0) ? str : str.substr(0, separator); //extract whole part
         const decimal = (separator < 0) ? "" : ("." + str.substr(separator + 1)); //decimal part
         const num = parseFloat(sign + whole.replace(/\D+/g, "") + decimal); //float value
-        return isNaN(num) ? null : num;
+        return isNaN(num) ? null : num; // validate float instance
     }
+	this.floatval = (str, d) => {
+		return self.toFloat(str, d) ?? 0; // native float
+	}
     this.isoFloat = (num, n, lang) => { // Float to String formated
         n = n ?? 2; // 2 decimals by default
         options.minimumFractionDigits = n;

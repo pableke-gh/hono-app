@@ -6,7 +6,7 @@ import user from "../../model/web/User.js";
 
 function fnAdmin() { // Script id
     const formProfile = new Form("#profile"); // instance
-    formProfile.submit(ev => {
+    formProfile.onSubmit(ev => {
         if (formProfile.isValid(user.validateProfile))
             formProfile.send().then(info => { tabs.setActive(0); formProfile.setOk(info); });
         ev.preventDefault();

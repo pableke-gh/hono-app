@@ -28,6 +28,7 @@ function IrseDietas() {
 
 	this.render = tab6 => { // Build table step 7
 		const bruto = tab6.querySelector("#imp-bruto");
+		const impDietas = tab6.querySelector("#imp-dietas") || coll.getDivNull();
 		const divData = tab6.querySelector("#dietas-data") || coll.getDivNull();
 		const gasolina = tab6.querySelector("#imp-gasolina-km") || coll.getDivNull();
 		gasolina.innerHTML = i18n.isoFloat(IRSE.gasolina);
@@ -39,11 +40,11 @@ function IrseDietas() {
 			dieta.imp1 = +resume.element.value;
 
 			divData.innerText = JSON.stringify(manutenciones);
-			dom.tfoot(table, resume, STYLES)
-				.setText(tr.cells[9], i18n.isoFloat(dieta.reducido) + " €")
-				.setText(tr.cells[10], i18n.isoFloat(dieta.percibir) + " €")
-				.setHtml("#imp-dietas", i18n.isoFloat(resume.percibir) + " €")
-				.setValue("#gastos-dietas", divData.innerText);
+			dom.tfoot(table, resume, STYLES).setValue("#gastos-dietas", divData.innerText);
+
+			impDietas.innerHTML = i18n.isoFloat(resume.percibir) + " €";
+			tr.cells[9].innerHTML = i18n.isoFloat(dieta.reducido) + " €";
+			tr.cells[10].innerHTML = i18n.isoFloat(dieta.percibir) + " €";
 			bruto.innerHTML = organicas.getTotalFmt();
 		}).onRenderTable("#manutenciones", table => {
 			let size = coll.size(manutenciones);
@@ -101,8 +102,8 @@ function IrseDietas() {
 			bruto.innerHTML = organicas.getTotalFmt();
 		});
 
-		dom.table("#manutenciones", manutenciones, resume, STYLES)
-			.setHtml("#imp-dietas", i18n.isoFloat(resume.percibir) + " €");
+		dom.table("#manutenciones", manutenciones, resume, STYLES);
+		impDietas.innerHTML = i18n.isoFloat(resume.percibir) + " €";
 		bruto.innerHTML = organicas.getTotalFmt();
 		return self;
 	}

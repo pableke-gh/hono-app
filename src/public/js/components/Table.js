@@ -52,6 +52,7 @@ export default function(table, opts) {
 	this.setFooter = fn => { opts.onFooter = fn; return self; }
 	this.setAfterRender = fn => { opts.afterRender = fn; return self; }
 	this.setSortBy = (column, fn) => self.set("sort-" + column, fn);
+	this.setChange = (field, fn) => self.set(field + "Change", fn);
 	this.setRemove = fn => { opts.onRemove = fn; return self; }
 
     this.getData = () => _rows;

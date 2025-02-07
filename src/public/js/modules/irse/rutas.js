@@ -212,7 +212,7 @@ function IrseRutas() {
 			return fnRecalc();
 		}
 		function fnSave() {
-			const fnReplace = (key, value) => ((!value || (key == "p2") || key.endsWith("Option")) ? undefined : value); 
+			const fnReplace = (key, value) => (((key == "p2") || key.endsWith("Option")) ? undefined : value); 
 			divData.innerText = JSON.stringify(rutas, fnReplace); // not to save place
 			form.setval("#etapas", divData.innerText); // load input value
 		}
@@ -222,7 +222,7 @@ function IrseRutas() {
 			const ruta = Object.assign({}, getLoc(), rutas[0]);
 			rutas[0] = ruta; // Save new data (routes.length = 1)
 
-			form.change(ev => { fnResume(); fnSave(); }) // Any input change => save all rutas
+			form.afterChange(ev => { fnResume(); fnSave(); }) // Any input change => save all rutas
 				.setVisible(".grupo-matricula", ruta.desp == 1) // grupo asociado al vehiculo propio
 				.setField("#origen", ruta.origen, ev => { ruta.origen = ruta.destino = ev.target.value; })
 				.setField("#desp", ruta.desp, ev => { ruta.desp = +ev.target.value; })
@@ -256,7 +256,7 @@ function IrseRutas() {
 			dom.onChangeTable("#vp", table => {
 				const ruta = resume.data;
 				resume.element.value = i18n.fmtFloat(resume.element.value);
-				ruta.km1 = i18n.toFloat(resume.element.value);
+				ruta.km1 = i18n.floatval(resume.element.value);
 
 				fnRecalc(); fnSave();
 				dom.tfoot(table, resume, STYLES);

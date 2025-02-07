@@ -5,7 +5,7 @@ import user from "../../model/web/User.js";
 
 function fnLogin() { // Script id
     const formSignin = new Form("#signin"); // instance
-    formSignin.submit(ev => {
+    formSignin.onSubmit(ev => {
         if (formSignin.isValid(user.validateLogin))
             formSignin.send().then(nav.redirect); // Access allowed
         ev.preventDefault();

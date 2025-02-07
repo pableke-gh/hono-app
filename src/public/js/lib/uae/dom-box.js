@@ -76,7 +76,7 @@ function DomBox(opts) {
 			el.value = value || ""; // String
 		return self;
 	}
-	function fnSetText(el, value) {
+	/*function fnSetText(el, value) {
 		el.classList.toggle(CONFIG.classHide, !value);
 		el.innerText = value;
 		return self;
@@ -84,17 +84,17 @@ function DomBox(opts) {
 	this.setText = function(el, value, parent) {
 		el = fnQuery(el, parent); //find element
 		return el ? fnSetText(el, value ?? EMPTY) : self;
-	}
+	}*/
 
 	function fnSetHtml(el, value) {
 		el.classList.toggle(CONFIG.classHide, !value);
 		el.innerHTML = value;
 		return self;
 	}
-	this.setHtml = function(el, value, parent) {
+	/*this.setHtml = function(el, value, parent) {
 		el = fnQuery(el, parent); //find element
 		return el ? fnSetHtml(el, value ?? EMPTY) : self;
-	}
+	}*/
 	this.html = function(list, value) {
 		value = value ?? EMPTY; // define value as string
 		return self.each(list, el => fnSetHtml(el, value));

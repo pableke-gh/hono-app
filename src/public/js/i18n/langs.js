@@ -61,15 +61,18 @@ function Langs() {
 	this.strval = (data, name) => data[name + "_" + _lang.lang] || data[name];
 
 	// Float formats
-	en.toFloat = str => nb.toFloat(str, ".");  // String to Float
+	en.toFloat = str => nb.toFloat(str, ".");  // String to Float instance
+	en.floatval = str => nb.floatval(str, ".");  // String to native float
 	en.isoFloat = (num, n) => nb.isoFloat(num, n, _lang.lang); // Float to String formated
 	en.fmtFloat = (str, n) => nb.fmtFloat(str, ".", n, _lang.lang); // String to EN String formated
 
-	es.toFloat = str => nb.toFloat(str, ",");  // String to Float
+	es.toFloat = str => nb.toFloat(str, ",");  // String to Float instance
+	es.floatval = str => nb.floatval(str, ",");  // String to native float
 	es.isoFloat = (num, n) => nb.isoFloat(num, n, _lang.lang); // Float to String formated
 	es.fmtFloat = (str, n) => nb.fmtFloat(str, ",", n, _lang.lang); // String to ES String formated
 
 	this.toFloat = str => _lang.toFloat(str);
+	this.floatval = str => _lang.floatval(str);
 	this.isoFloat = num => _lang.isoFloat(num);
 	this.isoFloat1 = num => _lang.isoFloat(num, 1);
 	this.isoFloat2 = num => _lang.isoFloat(num);
@@ -80,7 +83,8 @@ function Langs() {
 	this.fmtFloat3 = str => _lang.fmtFloat(str, 3);
 
 	// Int formats
-	this.toInt = nb.toInt; // String to Int
+	this.toInt = nb.toInt; // String to Int instance
+	this.intval = nb.intval; // String to navite integer
 	this.isoInt = num => nb.isoInt(num, _lang.lang); // Int to String formated
 	this.fmtInt = str => nb.fmtInt(str, _lang.lang); // String to EN String formated
 
