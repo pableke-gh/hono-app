@@ -67,7 +67,7 @@ function DomBox() {
 		return self;
 	}
 
-    this.onChange = (el, fn) => fnAddEvent(fnQuery(el), "change", fn);
+    this.onChange = (el, fn) => fnAddEvent(el, "change", fn);
 	this.addChange = this.onChange; // synonym
 	this.setChange = (el, fn) => {
 		el = fnQuery(el); // search for element

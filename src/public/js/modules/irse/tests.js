@@ -9,7 +9,7 @@ window.initMap = function() {
 	place.setAutocomplete(inputOrigen, origen => {
         const placeMaps = origen.getPlace();
         divAddress.render(place.toObject(placeMaps)).show();
-        console.log("CT =", place.isCartagena(placeMaps), placeMaps);
+        console.log("CT =", place.isPlace(placeMaps) && place.isCartagena(placeMaps), placeMaps); 
 	});
 
     const fnVisible = () => {

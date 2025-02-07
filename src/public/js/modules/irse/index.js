@@ -56,9 +56,6 @@ window.saveTab = () => formIrse.showOk(i18n.get("saveOk")).working();
 window.showNextTab = window.showTab;
 window.viewTab = tabs.showTab;
 window.viewIrse = (xhr, status, args, tab) => {
-	if (!pf.showAlerts(xhr, status, args))
-		return; // server error => do nothing
-
 	tabs.load(document); // load new tabs
 	Object.assign(IRSE, coll.parse(args.data)); // update server info
 
@@ -69,6 +66,7 @@ window.viewIrse = (xhr, status, args, tab) => {
 	rutas.init(formIrse);
 	organicas.init(formIrse);
 	tabs.nextTab(tab ?? IRSE.tab); // go to next tab
+	pf.showAlerts(xhr, status, args); // show alerts
 }
 
 //Global IRSE components

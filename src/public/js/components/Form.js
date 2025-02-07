@@ -184,8 +184,9 @@ export default function(form, opts) {
 		return self;
 	}
 
-	this.change = fn => fnChange(form, fn);
-	this.submit = fn => fnEvent(form, "submit", fn);
+	this.afterChange = fn => fnChange(form, fn);
+	this.onSubmit = fn => fnEvent(form, "submit", fn);
+	this.fireSubmit = () => { form.submit(); return self; }
 	this.fireReset = () => { form.reset(); return self; }
 	this.beforeReset = fn => fnEvent(form, "reset", fn);
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));

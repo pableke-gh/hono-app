@@ -7,8 +7,7 @@ nav.ready(() => {
 
 	form.querySelectorAll("a[href='report']").addClick((ev, link) => {
 		form.setval("#op", "report").setval("#op2", link.getAttribute("op2")).setval("#id", link.id);
-		form.getForm().submit();
+		form.fireSubmit().loading();
 		ev.preventDefault();
-		window.loading();
 	});
 });
