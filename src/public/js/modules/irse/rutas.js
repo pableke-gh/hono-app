@@ -71,25 +71,8 @@ function IrseRutas() {
 	this.last = () => coll.last(rutas);
 	this.start = () => (self.size() && sb.toDate(self.first().dt1));
 	this.end = () => (self.size() && sb.toDate(self.last().dt2));
-	//this.inRange = fecha => (self.size() && (sb.isoDate(self.first().dt1) <= fecha) && (fecha <= sb.isoDate(self.last().dt2)));
-	this.isSalidaTemprana = () => (self.size() && (sb.getHours(rutas[0].dt1) < 14));
-	this.isSalidaTardia = () => (self.size() && (sb.getHours(rutas[0].dt1) > 21));
-	this.isLlegadaTemprana = () => (self.size() && (sb.getHours(self.last().dt2) < 14));
-	this.isLlegadaTardia = () => (self.size() && (sb.getHours(self.last().dt2) < 5));
-	this.isLlegadaCena = () => (self.size() && (sb.getHours(self.last().dt2) > 21));
 	this.getNumRutasVp = () => resume.sizeVp;
 	this.getNumRutasOut = () => resume.sizeOut;
-	/*this.getRuta = f1 => { // Ruta asociada a f1
-		let aux = dt.clone(f1); // f1 = readonly
-		dt.addHours(aux, 29); // 5h del dia siguiente
-		let fMax = aux.toJSON(); // Stringify date
-		let ruta = self.first(); // Ruta de salida
-		rutas.forEach(aux => { // rutas ordenadas por fecha
-			// Ultima fecha de llegada mas proxima a fMax
-			ruta = (aux.dt2 < fMax) ? aux : ruta;
-		});
-		return ruta;
-	}*/
 
 	this.valid = function(ruta) {
 		dom.closeAlerts();
