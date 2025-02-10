@@ -2,6 +2,11 @@
 import i18n from "../../i18n/langs.js";
 
 function Dieta() {
+	// nueva dieta => tipo 7 = dieta, subtipo = (1, 2 ó 3) (tipo de dia)
+	this.createDiaInicial = () => ({ tipo: 7, subtipo: 1, periodo: i18n.get("firstDay") });
+	this.createDiaIntermedio = () => ({ tipo: 7, subtipo: 2, periodo: i18n.get("medDay") });
+	this.createDiaFinal = () => ({ tipo: 7, subtipo: 3, periodo: i18n.get("lastDay") });
+
 	this.beforeRender = resume => {
 		resume.dias = resume.impMax = resume.reducido = resume.percibir =  0;
 	}
