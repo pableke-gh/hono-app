@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h2 class="load-data">Otros Datos de la Solicitud @codigo;</h2>
+	<div class="ui-blocks">
+	<label class="ui-block-row show-memoria">
+		<div class="label required">Memoria Justificativa:</div>
+		<h:inputTextarea id="memo" value="#{presto.solicitud.memoriaView}" tabindex="14" styleClass="ui-input ui-ta" />
+		<div class="ui-errtip"></div>
+	</label>
+	<label class="ui-block">
+		<div class="label">#{uae.getMsg('lblUrg')}:</div>
+		<h:selectOneMenu id="urgente" value="#{presto.urgente}" styleClass="ui-input ui-select" tabindex="15">
+			<f:selectItem itemValue="1" itemLabel="#{uae.getMsg('lblNormal')}" />
+			<f:selectItem itemValue="2" itemLabel="#{uae.getMsg('lblUrgente')}" />
+		</h:selectOneMenu>
+	</label>
+	<label class="ui-block grp-urgente">
+		<div class="label required">#{uae.getMsg('lblFechaUrg')}:</div>
+		<h:inputText id="fMax" value="#{presto.solicitud.isoDateMax}" size="10" maxlength="10" tabindex="16" styleClass="ui-input ui-date"/>
+	</label>
+	<label class="ui-block-row grp-urgente">
+		<div class="label required">#{uae.getMsg('lblMotivoUrg')}:</div>
+		<h:inputTextarea id="extra" value="#{presto.solicitud.extraView}" styleClass="ui-input ui-ta" tabindex="17"/>
+		<div class="ui-errtip"></div>
+	</label>
+	</div>
+
+	<div class="ui-blocks">
+	<label class="ui-block show-subtipo">
+		<div class="label required">Clasificación de la operación:</div>
+		<h:selectOneMenu id="subtipo" value="#{presto.solicitud.subtipoView}" tabindex="18" styleClass="ui-input ui-select editable-uae">
+			<f:selectItem itemValue="1" itemLabel="Por ingreso"/>
+			<f:selectItem itemValue="2" itemLabel="Por compromiso de ingreso"/>
+		</h:selectOneMenu>
+	</label>
+	<p:outputPanel styleClass="ui-block-row link-adjunto update-presto">
+		<a href="#{presto.linkAdjunto}" class="btn btn-info" target="_blank" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
+	</p:outputPanel>
+	<div class="ui-block-row insert-only">
+		<p:fileUpload id="fileGasto" label="" value="#{presto.uploadAdjunto}" fileUploadListener="#{presto.uploadAdjunto}" mode="advanced" auto="true" styleClass="hide"/>
+		<a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Adjuntar Documentación</a>
+		<span class="filename"></span>
+		<div class="notice notice-info">Formato preferente: PDF; Tamaño máximo 6 MB; Nombre de archivo breve; Evitar símbolos y caracteres especiales.</div>
+		<div class="notice notice-warn is-fce"><b>Advertencia:</b> es especialmente importante en caso que se requiera la utilización de fondos propios de la universidad adjuntar la documentación explicativa.</div>
+	</div>
+	</div>
+</html>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<label class="ui-block-xl autocomplete">
+		<div class="label required">Tercero (CIF / NIF / Nombre):</div>
+		<p:remoteCommand name="rcFindTercero" action="#{fact.findTercero()}" oncomplete="loadItems(xhr, status, args)" />
+		<input type="search" id="acTercero" name="acTercero" class="ui-input ui-autocomplete" tabindex="1" />
+		<h:inputText id="idTercero" value="#{fact.solicitud.idTerceroView}" styleClass="ui-input ui-number hide" />
+		<ul role="list" class="results"></ul>
+		<div class="ui-errtip"></div> 
+	</label>
+	<label class="ui-block">
+		<div class="label required">Delegación:</div>
+		<select id="delegacion" name="delegacion" class="ui-input ui-select ui-number" tabindex="2"></select>
+		<h:inputText id="idDelegacion" value="#{fact.solicitud.delegacion}" styleClass="ui-input ui-number hide" />
+		<p:remoteCommand name="rcDelegaciones" action="#{fact.findDelegaciones()}" oncomplete="loadDelegaciones(xhr, status, args)" />
+		<div class="ui-errtip"></div> 
+	</label>
+</html>

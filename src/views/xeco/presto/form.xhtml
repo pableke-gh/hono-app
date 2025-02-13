@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:form id="xeco-presto" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+	<h:inputText id="id" value="#{presto.solicitud.id}" styleClass="ui-input ui-number hide" />
+
+	<h2 class="load-data">@titulo; @codigo;</h2>
+	<div class="card-xeco show-partida-dec">
+		<ui:include src="./partida_dec.xhtml"></ui:include>
+	</div>
+
+	<div class="card-xeco">
+		<ui:include src="./partida_inc.xhtml"></ui:include>
+	</div>
+
+	<div class="card-xeco">
+		<ui:include src="./form_info.xhtml"></ui:include>
+	</div>
+
+	<div class="navbar">
+		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="20">
+			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+		<p:commandLink action="#{presto.save()}" onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 0)"
+				styleClass="btn btn-green insert-only" tabindex="21" title="Pone la solicitud a la firma">
+			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></p:commandLink>
+		<p:commandLink id="save030" action="#{presto.save030()}" oncomplete="showTab(xhr, status, args, 1)" styleClass="hide"></p:commandLink>
+		<p:commandLink action="#{presto.firmar()}" onclick="if (!fnFirmar()) return false;" oncomplete="updateList(xhr, status, args);"
+				styleClass="btn btn-green firmable-only" tabindex="22" title="#{msg['tit.btn.firmar']}">
+			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</p:commandLink>
+		<a href="#tab-11" class="tab-action btn btn-error rechazable-only" tabindex="23" title="#{msg['tit.btn.rechazar']}">
+			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+	</div>
+	<ui:include src="./firmas.xhtml"></ui:include>
+</h:form>
+</html>
