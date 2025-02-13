@@ -3,7 +3,7 @@ import eut from "./eut.js";
 import rd from "./rd.js";
 import upct from "./upct.js"; 
 
-function Dietas() {
+function Pernoctas() {
 	//const self = this; //self instance
 	const fnPernocta = (dieta, grupo) => dieta[grupo - 1];
 	this.getImporte = (tipo, pais, grupo) => {
@@ -15,4 +15,4 @@ function Dietas() {
 	}
 }
 
-export default new Dietas();
+export default new Pernoctas();

@@ -1,6 +1,6 @@
 
 import tb from "../../components/TemporalBox.js";
-import dietas from "../../data/irse/dietas/importes.js";  
+import dietas from "../../data/irse/dietas/dietas.js";  
 import dieta from "../../model/irse/Dieta.js";
 import rutas from "./rutas.js";
 
