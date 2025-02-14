@@ -44,7 +44,7 @@ export const LoginTabs = (props: any) => {
         <>
             <LoginTab active={props.login} msgs={props.msgs} />
             <RememberTab active={props.remember} msgs={props.msgs} />
-            <script id="login-js" type="module" src="/public/js/modules/web/login.js"></script>
+            <script id="login-js" type="module" src="/public/js/web/login.js"></script>
         </>
     );
 }

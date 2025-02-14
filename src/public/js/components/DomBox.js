@@ -46,8 +46,16 @@ function DomBox() {
         return self;
     }
 
-	this.getOptionText = select => { // get current option text from select-box
-        return select && select.options[select.selectedIndex]?.innerHTML;
+	this.getOption = select => select && select.options[select.selectedIndex]; // get current option element
+	this.getOptionText = select => self.getHtml(self.getOption(select)); // get current option text
+	this.select = function(el, mask) {
+		if (el && el.options) {
+			const option = self.getOption(el); //get current option
+			el.options.mask(mask); // update all options class
+			if (option && !option.isHidden()) // contains hide class
+				el.selectedIndex = el.options.findIndexBy(":not(.hide)");
+		}
+		return self;
 	}
 
 	// Events handlers

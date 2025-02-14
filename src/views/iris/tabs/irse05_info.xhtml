@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<c:if test="#{iris.perfil.tab8}"><div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab5.msg.extra']}" escape="false" /></div></c:if>
+	<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab5.msg.info.1']}" escape="false" /><br/><h:outputText value="#{msg['uae.irse.tab5.msg.info.2']}" escape="false" /></div>
+	<div class="notice notice-info rutas-gt-1">
+		<h:outputText value="#{msg['uae.irse.tab5.msg.sube']}" escape="false" />
+		<a id="msgs" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
+		<ol class="info-msgs hide">
+			<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.1']}" escape="false" /></li>
+			<c:choose>
+			<c:when test="#{iris.form.isu}">
+				<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.2']}" escape="false" /></li>
+			</c:when>
+			<c:otherwise>
+				<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.3']}" escape="false" /></li>
+			</c:otherwise>
+			</c:choose>
+			<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.4']}" escape="false" /></li>
+			<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.5']}" escape="false" /></li>
+			<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.6']}" escape="false" /></li>
+			<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.7']}" escape="false" /></li>
+			<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.8']}" escape="false" /></li>
+			<li><h:outputText value="#{msg['uae.irse.tab5.msg.sube.9']}" escape="false" /></li>
+		</ol>
+	</div>
+
+	<div class="navbar rutas-gt-1">
+		<a href="https://view.genial.ly/63847df0accdf60018f1dbbd/guide-guia-documentacion-comisiones-de-servicio-upct" target="_blank"><h:outputText value="#{msg['uae.irse.guia.doc']}" escape="false" /><i class="fas fa-share icon"></i></a>
+	</div>
+	<div class="navbar rutas-gt-1">
+		<a id="itinerario" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['uae.irse.tab5.msg.itinerario']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
+		<table id="rutas-read" class="tb-xeco rutas-maps info-itinerario hide table-xs">
+			<thead>
+				<tr>
+					<th>Nº</th>
+					<th><h:outputText value="#{msg['lbl.origen.etapa']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.fecha.salida']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.hora.salida']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.destino.etapa']}" escape="false" /> <span class="text-warn">(<h:outputText value="#{msg['lbl.principal']}" escape="false" /> <i class="fal fa-flag-checkered"></i>)</span></th>
+					<th><h:outputText value="#{msg['lbl.fecha.llegada']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.hora.llegada']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></th>
+					<th>Km.</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="@id;" class="tb-data tb-data-tc">
+					<td data-cell="Nº">@count;</td>
+					<td data-cell="#{msg['lbl.origen.etapa']}">@origen;</td>
+					<td data-cell="#{msg['lbl.fecha.salida']}">@f1;</td>
+					<td data-cell="#{msg['lbl.hora.salida']}">@h1;</td>
+					<td data-cell="#{msg['lbl.destino.etapa']}"><div>@destino; @principal;</div></td>
+					<td data-cell="#{msg['lbl.fecha.llegada']}">@f2;</td>
+					<td data-cell="#{msg['lbl.hora.llegada']}">@h2;</td>
+					<td data-cell="#{msg['lbl.medio.trans']}">@desp;</td>
+					<td data-cell="Km.">@km2;</td>
+				</tr>
+			</tbody>
+			<tbody class="hide">
+				<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></td></tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="8"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @size;</td>
+					<td class="tb-data-tc hide-xs">@totKmCalc;</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</html>

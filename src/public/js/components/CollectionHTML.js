@@ -20,7 +20,8 @@ HTMLCollection.prototype.findBy = function(selector) { return this.find(el => el
 HTMLCollection.prototype.findIndexBy = function(selector) { return this.findIndex(el => el.matches(selector)); }
 HTMLCollection.prototype.query = function(selector) { return this.filter(el => el.matches(selector)); }
 HTMLCollection.prototype.render = function(data) { this.forEach((el, i) => el.render(data, i, this.length)); return this; }
-HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerHTML = text; }); return this; }
+HTMLCollection.prototype.html = function(text) { this.forEach(el => { el.innerHTML = text; }); return this; }
+HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerText = text; }); return this; }
 HTMLCollection.prototype.addClick = function(fn) { this.forEach(el => el.addClick(fn)); };
 HTMLCollection.prototype.setClick = function(fn) { this.forEach(el => el.setClick(fn)); };
 HTMLCollection.prototype.hide = function() { this.forEach(fnHide); return this; }
@@ -44,10 +45,13 @@ NodeList.prototype.map = Array.prototype.map;
 NodeList.prototype.find = Array.prototype.find;
 NodeList.prototype.filter = Array.prototype.filter;
 NodeList.prototype.eachPrev = Array.prototype.eachPrev;
+NodeList.prototype.findIndex = HTMLCollection.prototype.findIndex;
+NodeList.prototype.findLastIndex = HTMLCollection.prototype.findLastIndex;
 NodeList.prototype.findBy = HTMLCollection.prototype.findBy;
 NodeList.prototype.findIndexBy = HTMLCollection.prototype.findIndexBy;
 NodeList.prototype.query = HTMLCollection.prototype.query;
 NodeList.prototype.render = HTMLCollection.prototype.render;
+NodeList.prototype.html = HTMLCollection.prototype.html;
 NodeList.prototype.text = HTMLCollection.prototype.text;
 NodeList.prototype.addClick = HTMLCollection.prototype.addClick;
 NodeList.prototype.setClick = HTMLCollection.prototype.setClick;

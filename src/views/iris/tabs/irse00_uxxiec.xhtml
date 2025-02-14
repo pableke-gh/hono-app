@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="card-xeco">
+		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab0.msg.tit.a']}" escape="false" /></h2>
+		<p class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab0.msg.int']}" escape="false" /></p>
+
+		<h:inputHidden id="rol" value="#{iris.perfil.rol}" />
+		<label class="ui-blocks">
+			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
+			<div class="ui-block-xl autocomplete">
+				<i class="fas fa-search ui-input-icon left inline"></i>
+				<h:inputText id="interesado" value="#{iris.perfil.acInteresado}" tabindex="1" styleClass="ui-input ui-autocomplete #{iris.form.cssEditableP0}" />
+				<h:inputHidden id="nif-interesado" value="#{iris.perfil.nifInteresado}" />
+				<ul role="list" class="results"></ul>
+				<div class="ui-errtip"></div> 
+			</div>
+			<div class="hide ui-block-info">[<span id="colectivo" class="icon">#{iris.perfil.colectivo}</span>]<a href="mailto:#{iris.perfil.usuEmail}" title="#{msg['tit.enviar.correo']}"><i class="fa fa-regular fa-envelope fa-lg icon"></i></a></div>
+		</label>
+
+		<label id="add-org" class="ui-blocks #{iris.form.cssVisibleP0}">
+			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.ppto']}" escape="false" />:</div>
+			<div class="ui-block-xl autocomplete">
+				<i class="fas fa-search ui-input-icon left inline"></i>
+				<h:inputText id="organica" value="#{iris.perfil.acOrganica}" tabindex="4" styleClass="ui-input ui-autocomplete" title="#{msg['uae.irse.index.msg.cd']}" />
+				<h:inputHidden id="id-organica" value="#{iris.perfil.idOrganica}" />
+				<ul role="list" class="results"></ul>
+				<div class="ui-errtip"></div> 
+			</div>
+			<div class="ui-block">
+				<a href="#" onclick="return ip.addOrganica();" class="btn btn-green" tabindex="5">
+					<i class="ui-button-icon-right ui-icon ui-c fas fa-plus"></i><h:outputText value="#{msg['lbl.add.tabla']}" escape="false" /></a>
+			</div>
+		</label>
+
+		<div class="navbar">
+		<div id="org-data" class="hide">#{iris.perfil.organicasJson}</div>
+		<h:inputHidden id="presupuesto" value="#{iris.perfil.presupuesto}" />
+		<table id="organicas" class="tb-xeco table-xs">
+			<thead>
+				<tr>
+					<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
+					<c:if test="#{iris.form.editable}"><th class="msg-cd"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /> @lblA; @fCache.d;</th></c:if>
+					<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
+					<th>#{msg['lbl.responsable.gasto']}</th><th>#{msg['lbl.nombre.apellidos']}</th>
+					<th class="no-print"></th>
+				</tr>
+			</thead>
+			<tbody class="hide">
+				<tr class="tb-data tb-data-tc">
+					<td data-cell="#{msg['lbl.organica']}">@o;</td>
+					<c:if test="#{iris.form.editable}"><td data-cell="Crédito Disp.">@imp;</td></c:if>
+					<td data-cell="#{msg['lbl.descripcion']}">@dOrg;</td>
+					<td data-cell="#{msg['lbl.responsable.gasto']}">@resp;</td>
+					<td data-cell="#{msg['lbl.nombre.apellidos']}">@r;</td>
+					<td class="no-print" data-cell="Acciones"><c:if test="#{iris.form.editableP0}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
+				</tr>
+			</tbody>
+			<tbody>
+				<tr><td class="no-data" colspan="99"><h:outputText value="#{msg['lbl.organicas.not.found']}" escape="false" /></td></tr>
+			</tbody>
+			<tfoot class="hide">
+				<tr><td colspan="99"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />: @size;</td></tr>
+			</tfoot>
+		</table>
+		</div>
+
+		<div class="hide">
+			<label for="financiacion" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.fin']}" escape="false" />:</label>
+			<h:inputHidden id="financiacion" value="#{iris.perfil.financiacion}" />
+		</div>
+		<div class="fin-info fin-xSU notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
+		<div class="fin-info fin-ISU notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
+		<div class="fin-info fin-x83 notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
+		<div class="fin-info fin-A83 notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
+		<div class="notice notice-error"><h:outputText value="#{msg['uae.irse.tab0.org.info']}" escape="false" /></div>
+
+		<label class="ui-blocks">
+			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" />:</div>
+			<div class="ui-block">
+			<h:selectOneMenu id="actividad" value="#{iris.perfil.actividad}" styleClass="ui-input ui-select #{iris.form.cssEditableP0}" tabindex="7">
+				<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
+				<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
+				<f:selectItem itemValue="MES" itemLabel="#{msg['uae.irse.tab0.act.mes']}" itemEscaped="false"/>
+				<f:selectItem itemValue="IAE" itemLabel="#{msg['uae.irse.tab0.act.iae']}" itemEscaped="false"/>
+				<f:selectItem itemValue="ATR" itemLabel="#{msg['uae.irse.tab0.act.atr']}" itemEscaped="false"/>
+				<f:selectItem itemValue="IAE+ATR" itemLabel="#{msg['uae.irse.tab0.act.iae.atr']}" itemEscaped="false"/>
+				<f:selectItem itemValue="AFO" itemLabel="#{msg['uae.irse.tab0.act.afo']}" itemEscaped="false"/>
+				<f:selectItem itemValue="IAE+AFO" itemLabel="#{msg['uae.irse.tab0.act.iae.afo']}" itemEscaped="false"/>
+				<f:selectItem itemValue="ACS" itemLabel="#{msg['uae.irse.tab0.act.acs']}" itemEscaped="false"/>
+				<f:selectItem itemValue="OCE" itemLabel="#{msg['uae.irse.tab0.act.col']}" itemEscaped="false"/>
+				<f:selectItem itemValue="IAE+OCE" itemLabel="#{msg['uae.irse.tab0.act.iae.col']}" itemEscaped="false"/>
+				<f:selectItem itemValue="A7J" itemLabel="#{msg['uae.irse.tab0.act.a7j']}" itemEscaped="false"/>
+				<f:selectItem itemValue="MOV" itemLabel="#{msg['uae.irse.tab0.act.mov']}" itemEscaped="false"/>
+			</h:selectOneMenu>
+			</div>
+		</label>
+
+		<label class="ui-blocks">
+			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" />:</div>
+			<div class="ui-block">
+			<h:selectOneMenu id="tramite" value="#{iris.perfil.tramite}" styleClass="ui-input ui-select #{iris.form.cssEditableP0}" tabindex="8">
+				<f:selectItem itemValue="AyL" itemLabel="#{msg['uae.irse.tab0.tramit.ayl']}" itemEscaped="false"/>
+				<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
+				<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
+			</h:selectOneMenu>
+			</div>
+		</label>
+	</div>
+</html>

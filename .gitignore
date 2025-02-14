@@ -1,5 +1,6 @@
 # build output
 dist/
+docs/
 
 # dependencies
 node_modules/
@@ -11,4 +12,4 @@ node_modules/
 # static files and data
 src/data/**/*.sqlite
 src/public/files/**/*
-src/public/js/modules/irse/place.js
+src/public/js/irse/modules/place.js 

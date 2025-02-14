@@ -16,8 +16,7 @@ const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
 const JS_SRC = [ "src/*.js", "src/dao/**/*", "src/data/**/*", "src/i18n/**/*", "src/lib/**/*", "src/routes/**/*" ];
 const JS_DIST = [ "dist", "dist/dao", "dist/data", "dist/i18n", "dist/lib", "dist/routes" ];
 const SYM_LINKS = [
-	"dist", "dist/controllers", "dist/dao", "dist/data", "dist/lib",
-	"dist/public/js", "dist/public/js/i18n", "dist/public/js/model"
+	"dist", "dist/controllers", "dist/dao", "dist/data", "dist/lib", "dist/public/js", "dist/public/js/i18n"
 ];
 
 function deployCV(src, dest, done) {
@@ -52,8 +51,12 @@ gulp.task("minify-views", done => {
 	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest("dist/views")).on("end", () => {
 		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
 		deployCV("dist/views/xeco/**/*", CV_XECO, () => {}); // deploy xeco XHTML in Campus Virtual
+
 		const CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
 		deployCV("dist/views/irse/**/*", CV_IRSE, done); // deploy irse XHTML in Campus Virtual
+
+		const CV_IRIS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/iris";
+		deployCV("dist/views/iris/**/*", CV_IRIS, done); // deploy irse XHTML in Campus Virtual
 	});
 });
 

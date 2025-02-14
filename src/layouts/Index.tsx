@@ -72,7 +72,7 @@ export const IndexTabs = (props: any) => {
         <>
             <IndexTab0 msgs={props.msgs}/>
             <IndexTab1 msgs={props.msgs}/>
-            <script id="index-js" type="module" src="/public/js/modules/web/index.js"></script>
+            <script id="index-js" type="module" src="/public/js/web/index.js"></script>
         </>
     );
 }
