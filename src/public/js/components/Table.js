@@ -1,4 +1,5 @@
 
+import dom from "./DomBox.js";
 import coll from "./CollectionHTML.js";
 import i18n from "../i18n/langs.js";
 
@@ -83,7 +84,7 @@ export default function(table, opts) {
 
 	this.querySelector = selector => table.querySelector(selector);
 	this.querySelectorAll = selector => table.querySelectorAll(selector);
-    this.html = selector => table.querySelector(selector).innerHTML; // read text
+    this.getText = selector => dom.getText(table.querySelector(selector)); // read text
 
 	function fnChangeEvent(data, el, tr, i) {
 		const fnChange = opts[el.name + "Change"];

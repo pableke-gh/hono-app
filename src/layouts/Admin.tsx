@@ -39,7 +39,7 @@ export const AdminTabs = (props: any) => {
         <>
             <ActionsTab active={props.actions}/>
             <ProfileTab active={props.profile} user={props.user}/>
-            <script id="admin-js" type="module" src="/public/js/modules/web/admin.js"></script>
+            <script id="admin-js" type="module" src="/public/js/web/admin.js"></script>
         </>
     );
 }

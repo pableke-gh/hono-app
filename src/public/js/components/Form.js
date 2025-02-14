@@ -68,7 +68,9 @@ export default function(form, opts) {
 		return fnFor(form.elements, el => el.matches(selector) && fn(el));
 	}
 
-	this.html = selector => $1(selector).innerHTML;
+	this.getHtml = selector => dom.getHtml($1(selector));
+    this.setHtml = (el, text) => { dom.html(el, text); return self; }
+	this.html = (selector, text) => { $$(selector).html(text); return self; } // Update all texts info in form
     this.getText = selector => dom.getText($1(selector));
     this.setText = (el, text) => { dom.text(el, text); return self; }
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
@@ -110,6 +112,8 @@ export default function(form, opts) {
 	}
 	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
 	this.setval = (selector, value) => self.setValue(self.getInput(selector), value);
+	this.setStrValue = (el, value) => el ? fnValue(el, value) : self; 
+	this.setStrval = (selector, value) => self.setStrValue(self.getInput(selector), value);
 	this.values = (selector, value) => fnUpdate(selector, el => fnSetValue(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
 
@@ -158,6 +162,7 @@ export default function(form, opts) {
 	this.stringify = (selector, data) => self.setval(selector, JSON.stringify(data));
 	this.saveTable = (selector, table) => self.stringify(selector, table.getData());
 	this.getOptionText = selector => dom.getOptionText(self.getInput(selector));
+	this.select = (selector, mask) => { dom.select(self.getInput(selector), mask); return self; }
 	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
 	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox($1(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(self.getInput(selector), opts); // Input type text / search
