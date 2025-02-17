@@ -22,14 +22,14 @@ function DomBox() {
 	this.addClass = (el, name) => { el && el.classList.add(name); return self; }
 	this.removeClass = (el, name) => { el && el.classList.remove(name); return self; }
 
-	this.setval = (el, value) => { // el must exists
+	const fnSetValue = (el, value) => { // el must exists
 		if ((el.tagName == "SELECT") && !value)
 			el.selectedIndex = 0;
 		else
 			el.value = value || ""; // String
 		return self;
 	}
-    this.setValue = (el, value) => el ? self.setval(el, value) : self;
+    this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
     this.getValue = el => el?.value;
 
     this.getText = el => el?.innerText;
@@ -46,13 +46,14 @@ function DomBox() {
         return self;
     }
 
+	this.isSelect = el => el && el.options;
 	this.getOption = select => select && select.options[select.selectedIndex]; // get current option element
 	this.getOptionText = select => self.getHtml(self.getOption(select)); // get current option text
 	this.select = function(el, mask) {
-		if (el && el.options) {
+		if (self.isSelect(el)) {
 			const option = self.getOption(el); //get current option
 			el.options.mask(mask); // update all options class
-			if (option && !option.isHidden()) // contains hide class
+			if (option && option.isHidden()) // contains hide class
 				el.selectedIndex = el.options.findIndexBy(":not(.hide)");
 		}
 		return self;

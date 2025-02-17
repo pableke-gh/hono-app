@@ -30,7 +30,7 @@ function StringBox() {
     this.size = fnSize;
     this.insertAt = insertAt;
     this.replaceAt = replaceAt;
-	this.empty = str => (fnSize(str) < 1); // length > 0
+	this.isEmpty = str => (fnSize(str) < 1); // length > 0
 
     this.unescape = str => str ? str.replace(/&#(\d+);/g, (key, num) => String.fromCharCode(num)) : null;
     this.escape = str => str ? str.trim().replace(ESCAPE_HTML, (matched) => ESCAPE_MAP[matched]) : null;

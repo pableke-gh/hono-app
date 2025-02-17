@@ -65,7 +65,7 @@ window.initMap = () => {
 			ruta.mask = mask;
 		}
 
-		if (!p1 && rutas.empty()) // primera ruta
+		if (!p1 && rutas.isEmpty()) // primera ruta
 			loadOrigen(place.getPlaceCT(), place.getDefaultCountry(), place.getDefaultMask());
 		else if (p1) // ha seleccionado un origen?
 			loadOrigen(p1, place.getCountry(p1), place.isCartagena(p1) ? 4 : 0);

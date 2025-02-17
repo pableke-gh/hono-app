@@ -11,7 +11,7 @@
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab0.msg.tit.p']}" escape="false" /></h2>
 		<div class="autocomplete hide">
 			<h:inputHidden id="rol" value="#{iris.perfil.rol}" />
-			<h:inputText id="interesado" value="#{iris.perfil.acInteresado}" tabindex="2" styleClass="ui-input ui-autocomplete ui-state-disabled" />
+			<h:inputText id="interesado" value="#{iris.perfil.acInteresado}" tabindex="2" styleClass="ui-input ui-autocomplete #{iris.form.cssEditableP0}" />
 			<h:inputHidden id="nif-interesado" value="#{iris.perfil.nifInteresado}" />
 			<span>[<span id="colectivo">#{iris.perfil.colectivo}</span>]</span>
 			<div class="ui-errtip"></div>

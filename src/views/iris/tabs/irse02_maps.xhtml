@@ -85,35 +85,8 @@
 					<th class="no-print"></th>
 				</tr>
 			</thead>
-			<tbody class="hide">
-				<tr id="@id;" class="tb-data tb-data-tc">
-					<td class="hide-sm" data-cell="Nº">@count;</td>
-					<td data-cell="Origen">@origen;</td>
-					<td data-cell="#{msg['lbl.fecha.salida']}">@f1;</td>
-					<td data-cell="#{msg['lbl.hora.salida']}">@h1;</td>
-					<td data-cell="Destino">
-					<c:choose>
-						<c:when test="#{iris.form.editable}"><a href="#find">@destino; @principal;</a></c:when>
-						<c:otherwise><div>@destino; @principal;</div></c:otherwise>
-					</c:choose>
-					</td>
-					<td data-cell="#{msg['lbl.fecha.llegada']}">@f2;</td>
-					<td data-cell="#{msg['lbl.hora.llegada']}">@h2;</td>
-					<td data-cell="#{msg['lbl.medio.trans']}">@desp;</td>
-					<td class="hide-sm" data-cell="Km.">@km2;</td>
-					<td class="no-print" data-cell="Acciones"><c:if test="#{iris.form.editable}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
-				</tr>
-			</tbody>
-			<tbody class="hide">
-				<tr><td class="no-data" colspan="99"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></td></tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="8"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @size;</td>
-					<td class="tb-data-tc hide-xs hide-sm">@totKmCalc;</td>
-					<td class="hide-sm no-print"></td>
-				</tr>
-			</tfoot>
+			<tbody></tbody>
+			<tfoot></tfoot>
 		</table>
 		<br/>
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab2.info.principal']}" escape="false" /></div>

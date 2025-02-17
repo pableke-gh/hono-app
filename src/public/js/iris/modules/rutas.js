@@ -1,15 +1,11 @@
 
+import coll from "../../components/CollectionHTML.js";
 import tb from "../../components/TemporalBox.js";
 import ruta from "../model/Ruta.js";
 
 function Rutas() {
 	const self = this; //self instance
 	let _rutas; // itinerario
-
-	this.setRutas = data => {
-		_rutas = data;
-		return self;
-	}
 
 	this.getPaisSalida = () => ruta.getPaisSalida(_rutas[0]);
 	this.salida = () => ruta.salida(_rutas[0]);
@@ -37,9 +33,13 @@ function Rutas() {
 		return "ES";
 	}
 
-	this.render = (tab2, form) => {
+	this.init = form => {
+		_rutas = coll.parse(form.getText("#rutas-data"));
+
 		const table = form.setTable("#rutas");
-		table.render(_rutas);
+		table.setMsgEmpty("Aún no has añadido ninguna ETAPA a esta Comunicación.") // #{msg['msg.no.etapas']}
+			.setBeforeRender(ruta.beforRender).setRender(ruta.row).setFooter(ruta.tfoot)
+			.render(_rutas).setAfterRender(resume => { resume.changed = true; });
 		return self;
 	}
 }

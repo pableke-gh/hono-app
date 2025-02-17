@@ -1,14 +1,15 @@
 
 import coll from "../../components/Collection.js";
-import sb from "../../components/StringBox.js";
 import pf from "../../components/Primefaces.js";
+import i18n from "../../i18n/langs.js";
 
+import organica from "../model/Organica.js"
 import getActividad from "../data/actividades.js"
 //import tribunales from "../data/irse/tribunales.js"
 
 export default function Perfil(form) {
 	const self = this; //self instance
-	let _tblOrganicas; // table organicas
+	let _eColectivo, _tblOrganicas;
 
 	this.getRol = () => form.getval("#rol");
 	this.getActividad = () => form.getval("#actividad");
@@ -33,7 +34,13 @@ export default function Perfil(form) {
 	this.isAutA7j = () => (self.isAut() || self.isA7j());
 
 	this.getColectivo = () => form.getText("#colectivo");
-	this.setColectivo = val => { form.setText("#colectivo", val); return self; }
+	this.setColectivo = (colectivo, email) => {
+		// Show mailto icon and update href attribute
+		_eColectivo.nextElementSibling.setVisible(email).setAttribute("href", "mailto:" + email);
+		_eColectivo.parentNode.setVisible(colectivo);
+		_eColectivo.innerText = colectivo;
+		return self.update();
+	}
 
 	//this.getTribunales = () => tribunales;
 	//this.getTribunal = (name) => tribunales["at" + name] || 0;
@@ -44,55 +51,80 @@ export default function Perfil(form) {
 	this.isACA = () => (self.getFinanciacion() == "ACA") || (self.getFinanciacion() == "xAC");
 	this.isOTR = () => (self.getFinanciacion() == "OTR") || (self.getFinanciacion() == "xOT");
 
-	function fnCalcFinanciacion() {
-		let result = "OTR"; //default fin.
-		if (_tblOrganicas.size() > 0) {
-			const ORG_300518 = "300518";
-			_tblOrganicas.getData().forEach(org => {
-				result = (sb.starts(org.o, ORG_300518) && ((org.mask & 8) == 8)) ? "ISU" : result; //apli=642
-				result = (sb.starts(org.o, ORG_300518) && ((org.mask & 16) == 16) && (result != "ISU")) ? "A83" : result; //apli=643
-				result = ((sb.starts(org.o, "300906") || sb.starts(org.o, "300920")) && (result == "OTR")) ? "ACA" : result; //TTPP o Master
-			});
-			if (_tblOrganicas.size() > 1) {
-				if (result == "ISU") return "xSU"; 
-				if (result == "A83") return "x83"; 
-				if (result == "ACA") return "xAC"; 
-				return "xOT";
-			}
-		}
-		return result;
-	}
-	function fnUpdatePerfil() {
-		form.setStrval("#financiacion", fnCalcFinanciacion()) //recalculo la financiacion
+	this.update = () => {
+		form.setStrval("#financiacion", organica.getFinanciacion(_tblOrganicas.getData())) //recalculo la financiacion
 			.select("#actividad", getActividad(self.getRol(), self.getColectivo(), self.getFinanciacion()))
 			.select("#tramite", (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
-			.hide(".fin-info").show(".fin-" + self.getFinanciacion());
+			.hide(".fin-info").show(".fin-" + self.getFinanciacion())
+			.setVisible("#add-org", _tblOrganicas.isEmpty()).closeAlerts().setval("#organica")
+			.saveTable("#presupuesto", _tblOrganicas);
+		const elMsgCd = form.querySelector(".msg-cd");
+		if (elMsgCd) { // hay mensaje a mostrar?
+			const org = _tblOrganicas.getFirst();
+			elMsgCd.render(org).setVisible(org);
+		}
 		return self;
 	}
 
 	this.init = () => {
+		_eColectivo = form.querySelector("#colectivo");
 		_tblOrganicas = form.setTable("#organicas");
-		_tblOrganicas.render(coll.parse(form.getText("#org-data")));
+		_tblOrganicas.setMsgEmpty("No existen orgánicas asociadas a la comunicación.") // #{msg['lbl.organicas.not.found']}
+					.setRender(organica.row).setFooter(organica.tfoot)
+					.render(coll.parse(form.getText("#org-data")))
+					.setAfterRender(self.update);
+
+		const acOrganiaca = form.setAutocomplete("#organica", {
+			minLength: 4,
+			source: term => pf.sendTerm("rcFindOrg", term),
+			render: item => item.o + " - " + item.dOrg,
+			select: item => {
+				if (!IRSE.uxxiec)
+					_tblOrganicas.render([item]);
+				return item.id;
+			},
+			onReset: () => form.hide(".msg-cd")
+		});
+		form.addClick("a[href='#add-org']", () => {
+			const current = acOrganiaca.getCurrentItem();
+			if (current && !_tblOrganicas.getData().find(org => (org.id==current.id)))
+				_tblOrganicas.push(current);
+		});
 
 		const acInteresado = form.setAutocomplete("#interesado", {
 			delay: 500, //milliseconds between keystroke occurs and when a search is performed
 			minLength: 5, //reduce matches
 			source: term => pf.sendTerm("rcFindInteresado", term),
-			render: item => item.nif + " - " + item.nombre,
-			select: item => {
-				const email = item.email;
-				const mailto = eCol.nextElementSibling.setVisible(email); // Show icon
-				form.setAttribute(mailto, "href", "mailto:" + email); // update href
-				self.setColectivo(item.ci).update(); //actualizo colectivo + tramite
-				eCol.parentNode.show(); //muestro el colectivo
-				return item.nif;
-			},
-			onReset: () => eCol.parentNode.hide()
+			render: item => (item.nif + " - " + item.nombre),
+			select: item => { self.setColectivo(item.ci, item.email); return item.nif; },
+			onReset: () => self.setColectivo()
 		});
 		const fnSource = term => pf.sendTerm("rcFindPersonal", term);
 		form.setAcItems("#promotor", fnSource);
 		form.setAcItems("#tribunal", fnSource);
 		form.setAcItems("#mesa", fnSource);
-		return fnUpdatePerfil();
+
+		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
+		form.setClick("a#reg-externo", () => form.copyToClipboard(url));
+
+		_eColectivo.parentNode.setVisible(acInteresado.isLoaded());
+		form.onChangeInput("#actividad", self.update);
+		return self.update();
 	}
+
+    this.validate = data => {
+		const valid = i18n.getValidators();
+		if (!data.interesado)
+        	valid.addRequired("interesado", "errPerfil");
+		if (_tblOrganicas.isEmpty())
+			valid.addRequired("organica", "errOrganicas");
+		return valid.isOk();
+    }
+
+	form.afterReset(() => {
+		_tblOrganicas.reset();
+		_eColectivo.parentNode.hide();
+		form.hide(".msg-cd");
+		self.update();
+	});
 }
