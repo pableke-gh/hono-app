@@ -5,6 +5,7 @@ import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 import dom from "../../lib/uae/dom-box.js";
 
+import organica from "../model/Organica.js"
 import getActividad from "../data/actividades.js"
 //import tribunales from "../data/irse/tribunales.js"
 
@@ -39,24 +40,6 @@ function IrsePerfil() {
 	//this.getTribunales = () => tribunales;
 	//this.getTribunal = (name) => tribunales["at" + name] || 0;
 
-	function fnCalcFinanciacion() {
-		let result = "OTR"; //default fin.
-		if (coll.size(organicas) > 0) {
-			const ORG_300518 = "300518";
-			organicas.forEach(org => {
-				result = (sb.starts(org.o, ORG_300518) && ((org.mask & 8) == 8)) ? "ISU" : result; //apli=642
-				result = (sb.starts(org.o, ORG_300518) && ((org.mask & 16) == 16) && (result != "ISU")) ? "A83" : result; //apli=643
-				result = ((sb.starts(org.o, "300906") || sb.starts(org.o, "300920")) && (result == "OTR")) ? "ACA" : result; //TTPP o Master
-			});
-			if (organicas.length > 1) {
-				if (result == "ISU") return "xSU"; 
-				if (result == "A83") return "x83"; 
-				if (result == "ACA") return "xAC"; 
-				return "xOT";
-			}
-		}
-		return result;
-	}
 	this.getFinanciacion = () => eFin.value;
 	this.isIsu = () => (eFin.value == "ISU") || (eFin.value == "xSU");
 	this.isA83 = () => (eFin.value == "A83") || (eFin.value == "x83");
@@ -64,7 +47,7 @@ function IrsePerfil() {
 	this.isOTR = () => (eFin.value == "OTR") || (eFin.value == "xOT");
 
 	function fnUpdatePerfil() {
-		eFin.value = fnCalcFinanciacion(); //recalculo la financiacion
+		eFin.value = organica.getFinanciacion(organicas); //recalculo la financiacion
 		dom.select(eAct, getActividad(eRol.value, eCol.innerText, eFin.value))
 			.select(eTramit, (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
 			.hide(".fin-info").show(".fin-" + eFin.value);
@@ -77,7 +60,7 @@ function IrsePerfil() {
 	this.setColectivo = val => { eCol.innerText = val; return self; }
 
 	this.getOrganicas = () => organicas;
-	this.empty = () => coll.empty(organicas);
+	this.isEmpty = () => coll.isEmpty(organicas);
 	this.getNumOrganicas = () => coll.size(organicas);
 	this.isMultiorganica = () => coll.size(organicas) > 1;
 	this.getOrganica = id => organicas.find(org => org.id == id); //get organica by id
@@ -91,7 +74,7 @@ function IrsePerfil() {
 
 	this.valid = () => {
 		dom.closeAlerts().required("#perfil-financiacion", "errPerfil");
-		self.empty(organicas) && dom.required("#organica", "errOrganicas");
+		self.isEmpty(organicas) && dom.required("#organica", "errOrganicas");
 		return dom.required("#tramitador", "errPerfil").required("#interesado", "errPerfil").isOk();
 	}
 

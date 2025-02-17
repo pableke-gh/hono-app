@@ -21,7 +21,7 @@ function Collection() {
 
     this.isset = isset;
     this.size = sb.size;
-	this.empty = sb.empty;
+	this.isEmpty = sb.isEmpty;
     this.parse = fnParse;
 	this.split = sb.split;
     this.eachPrev = fnEachPrev;

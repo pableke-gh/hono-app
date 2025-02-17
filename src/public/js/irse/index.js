@@ -16,6 +16,7 @@ import otri from "./modules/otri.js";
 import organicas from "./modules/organicas.js";
 import { viewTab5, initTab9, initTab12 } from "./modules/tabs.js";
 
+window.IRSE = {}; // global IRSE info
 const formIrse = new Form("#xeco-irse");
 pf.ready(list.init);
 
@@ -46,7 +47,7 @@ tabs.setViewEvent("uxxiec", uxxiec.load);
 window.fnFirmar = () => i18n.confirm("msgFirmar") && loading();
 window.fnRechazar = () => dom.closeAlerts().required("#rechazo", "Debe indicar un motivo para el rechazo de la solicitud.").isOk() && i18n.confirm("msgRechazar");
 window.fnIntegrar = link => i18n.confirm("msgIntegrar") && loading() && link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");
-window.isCached = (id, tab) => formIrse.isCached(id) && !perfil.empty() && tabs.showTab(tab); // if cached avoid navegation
+window.isCached = (id, tab) => formIrse.isCached(id) && !perfil.isEmpty() && tabs.showTab(tab); // if cached avoid navegation
 window.fnRemove = () => i18n.confirm("removeCom") && loading();
 window.fnUnlink = () => i18n.confirm("unlink") && loading();
 window.fnClone = () => i18n.confirm("reactivar") && loading();
@@ -61,7 +62,7 @@ window.viewIrse = (xhr, status, args, tab) => {
 
 	// Init IRSE form
 	dom.setTables(formIrse.getForm()).setInputs(formIrse.getElements()); // Update tables and inputs
-	formIrse.update().render(".i18n-tr-h1").readonly(true, ".ui-state-disabled").setCache(IRSE.id); // current cache id
+	formIrse.update().render(".i18n-tr-h1").setCache(IRSE.id); // current cache id
 	perfil.init(formIrse);
 	rutas.init(formIrse);
 	organicas.init(formIrse);

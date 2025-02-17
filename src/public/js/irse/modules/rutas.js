@@ -1,6 +1,5 @@
 
 import coll from "../../components/CollectionHTML.js";
-import dt from "../../components/DateBox.js";
 import nb from "../../components/NumberBox.js";
 import sb from "../../components/StringBox.js";
 import i18n from "../../i18n/langs.js";
@@ -8,14 +7,13 @@ import dom from "../../lib/uae/dom-box.js";
 
 import perfil from "./perfil.js";
 import organicas from "./organicas.js";
+import ruta from "../model/Ruta.js"
 
 function IrseRutas() {
 	const self = this; //self instance
 	//const CT_LAT = 37.62568269999999;
 	//const CT_LNG = -0.9965839000000187;
 	const CT_NAME = "Cartagena, España";
-	const MIN_DATE = dt.clone().addDays(-365); //1 año antes
-	const MAX_DATE = dt.clone().addDays(180); //6 meses despues
 
 	const MUN = { //default ruta MUN
 		desp: 1, mask: 1, // VP y principal 
@@ -66,7 +64,7 @@ function IrseRutas() {
 	this.getResume = () => resume;
 	this.getStyles = () => STYLES;
 	this.size = () => coll.size(rutas);
-	this.empty = () => coll.empty(rutas);
+	this.isEmpty = () => coll.isEmpty(rutas);
 	this.first = () => rutas[0];
 	this.last = () => coll.last(rutas);
 	this.start = () => (self.size() && sb.toDate(self.first().dt1));
@@ -74,27 +72,16 @@ function IrseRutas() {
 	this.getNumRutasVp = () => resume.sizeVp;
 	this.getNumRutasOut = () => resume.sizeOut;
 
-	this.valid = function(ruta) {
-		dom.closeAlerts();
-		if (!ruta.origen)
-			dom.addError("#origen", "errOrigen", "errRequired");
-		if (ruta.desp == 1)
-			dom.required("#matricula", "errMatricula");
-		if (!dt.inRange(new Date(ruta.dt1), MIN_DATE, MAX_DATE))
-			return dom.addError("#f1", "errFechasRuta").isOk();
-		if (ruta.dt1 > ruta.dt2)
-			return dom.addError("#f1", "errFechasOrden").isOk();
-		return dom.isOk();
-	}
+	this.valid = ruta.valid;
 	this.validAll = function() {
-		if (self.empty())
+		if (self.isEmpty())
 			return dom.closeAlerts().addError("#origen", "errItinerario").isOk();
 		let r1 = rutas[0];
-		if (!self.valid(r1))
+		if (!ruta.valid(r1))
 			return false;
 		for (let i = 1; i < rutas.length; i++) {
 			let r2 = rutas[i];
-			if (!self.valid(r2))
+			if (!ruta.valid(r2))
 				return false; //stop
 			if (!r1.pais2.startsWith(r2.pais1.substring(0, 2)))
 				return dom.addError("#destino", "errItinerarioPaises").isOk();

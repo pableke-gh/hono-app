@@ -1,9 +1,16 @@
 
 function TemporalBox() {
 	const self = this; //self instance
+	//const sysdate = Temporal.Now.plainDateTimeISO();
 
 	this.parse = str => Temporal.PlainDate.from(str);
-	this.trunc = date => date.set({ hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+	this.trunc = date => { date.set({ hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }); return self; }
+	this.clone = date => Temporal.PlainDateTime.from(date || sysdate);
+
+	this.addMonths = (date, months) => { date.add({ months }); return self; }
+	this.addDays = (date, days) => { date.add({ days }); return self; }
+	this.addHours = (date, hours) => { date.add({ hours }); return self; }
+	this.addMinutes = (date, minutes) => { date.add({ minutes }); return self; }
 
 	this.cmp = (f1, f2) => Temporal.PlainDate.compare(f1, f2);
 	this.gt = (f1, f2) => (self.cmp(f1, f2) > 0);

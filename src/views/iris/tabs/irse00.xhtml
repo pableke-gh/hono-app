@@ -19,7 +19,7 @@
 			<button type="reset" class="btn btn-light" title="#{msg['tit.btn.limpiar']}" tabindex="13">
 				<i class="far fa-broom btn-icon-left"></i>#{msg['lbl.btn.limpiar']}</button>
 			<p:commandButton action="#{iris.form.paso0()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" icon="fas fa-caret-right" iconPos="right" 
-				value="#{msg['lbl.btn.empezar']}" styleClass="btn btn-green success-btn" onclick="if (!ip.valid()) return false;" title="#{msg['tit.btn.empezar']}" tabindex="13"/>
+				value="#{msg['lbl.btn.empezar']}" styleClass="btn btn-green success-btn" onclick="if (!validateP0()) return false;" title="#{msg['tit.btn.empezar']}" tabindex="13"/>
 		</c:when>
 		<c:otherwise>
 			<a href="#tab-next" class="btn btn-green success-btn" title="#{msg['lbl.btn.empezar']}" tabindex="13">

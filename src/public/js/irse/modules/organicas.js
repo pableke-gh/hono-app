@@ -80,7 +80,7 @@ function IrseOrganicas() {
 		return false;
 	}
 	this.build = function() {
-		if (perfil.empty())
+		if (perfil.isEmpty())
 			return dom.addError("#imp1-org", "errImputacion").isOk();
 		if (perfil.isMultiorganica())
 			return self.validAll();

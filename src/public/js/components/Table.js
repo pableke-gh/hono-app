@@ -46,6 +46,7 @@ export default function(table, opts) {
     this.set = (name, fn) => { opts[name] = fn; return self; }
 
 	this.setRowEmpty = html => self.set("rowEmptyTable", html);
+	this.setMsgEmpty = msg => self.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.get(msg)}</td></tr>`);
 	this.setBeforeRender = fn => { opts.beforeRender = fn; return self; }
 	this.setHeader = fn => { opts.onHeader = fn; return self; }
 	this.setRender = fn => { opts.onRender = fn; return self; }
@@ -66,6 +67,7 @@ export default function(table, opts) {
     this.next = () => { _index = fnMove(_index + 1); return self; }
     this.last = () => { _index = fnMove(_rows.length); return self; }
 
+    this.getFirst = () => _rows[0];
     this.getItem = i => _rows[i ?? _index];
     this.isItem = () => (_index > -1) && (_index < _rows.length);
     this.getCurrentItem = () => _rows[_index];

@@ -85,12 +85,17 @@ export default function(form, opts) {
 	this.eachInput = (selector, fn) => fnUpdate(selector, fn);
 
 	// Value property
+	const isSelect = el => (el.tagName == "SELECT");
+	const isCheckbox = el => (el.type == "checkbox");
 	const fnNumber = (el, value) => {
 		el.value = value || EMPTY; // Show formatted value and style
 		el.classList.toggle(opts.negativeNumClass, el.value.startsWith("-"));
 	}
-	function fnValue(el, value) {
-		dom.setval(el, value);
+	function fnSetval(el, value) {
+		if (isSelect(el) && !value)
+			el.selectedIndex = 0;
+		else
+			el.value = value || EMPTY; // String
 		return self;
 	}
 	function fnSetValue(el, value) {
@@ -102,17 +107,17 @@ export default function(form, opts) {
 			fnNumber(el, i18n.isoInt(value));
 		else if (fnContains(el, opts.boolClass))
 			el.value = i18n.boolval(value);
-		else if (el.type === "checkbox") // Array type
+		else if (isCheckbox(el)) // Array type
 			el.checked = value && value.includes(el.value);
 		else if (el.type === "radio")
 			el.checked = (el.value == value);
 		else
-			fnValue(el, value)
+			fnSetval(el, value)
 		return self;
 	}
 	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
 	this.setval = (selector, value) => self.setValue(self.getInput(selector), value);
-	this.setStrValue = (el, value) => el ? fnValue(el, value) : self; 
+	this.setStrValue = (el, value) => { dom.setValue(el, value); return self; } 
 	this.setStrval = (selector, value) => self.setStrValue(self.getInput(selector), value);
 	this.values = (selector, value) => fnUpdate(selector, el => fnSetValue(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
@@ -122,8 +127,6 @@ export default function(form, opts) {
 	this.setAttr = (selector, name, value) => self.setAttribute(self.getInput(selector), name, value);
 	this.delAttr = (selector, name) => { dom.delAttr(self.getInput(selector), name); return self; }
 
-	const isSelect = el => (el.tagName == "SELECT");
-	const isCheckbox = el => (el.type == "checkbox");
 	function fnParseValue(el) {
 		if (fnContains(el, opts.floatFormatClass))
 			return i18n.toFloat(el.value); // Float
@@ -153,13 +156,13 @@ export default function(form, opts) {
 		return data;
 	}
 
-	this.reset = selector => fnUpdate(selector, el => fnValue(el)); // reset inputs value (hidden to)
-	this.restart = selector => { const el = self.getInput(selector); el.focus(); return fnValue(el); } // remove value + focus
+	this.reset = selector => fnUpdate(selector, el => fnSetval(el)); // reset inputs value (hidden to)
+	this.restart = selector => { const el = self.getInput(selector); el.focus(); return fnSetval(el); } // remove value + focus
 	this.copy = (el1, el2) => { dom.setValue(self.getInput(el1), self.getval(el2)); return self; }
 
 	// Inputs helpers
 	this.setTable = (selector, opts) => new Table($1(selector), opts); // table
-	this.stringify = (selector, data) => self.setval(selector, JSON.stringify(data));
+	this.stringify = (selector, data) => self.setStrval(selector, JSON.stringify(data));
 	this.saveTable = (selector, table) => self.stringify(selector, table.getData());
 	this.getOptionText = selector => dom.getOptionText(self.getInput(selector));
 	this.select = (selector, mask) => { dom.select(self.getInput(selector), mask); return self; }
