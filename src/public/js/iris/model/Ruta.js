@@ -12,6 +12,10 @@ function Ruta() {
 	this.llegada = ruta => tb.parse(ruta.dt2);
 
 	this.isVehiculoPropio = ruta => (ruta.desp == 1);
+	this.isVehiculoAlquiler = ruta => (ruta.desp == 2);
+	this.isVehiculoAjeno = ruta => (ruta.desp == 3);
+	this.isTaxiInterurbano = ruta => (ruta.desp == 4);
+	this.isAsociableGasto = ruta => (!self.isVehiculoPropio(ruta) && !self.isVehiculoAjeno(ruta)); //rutas a las que se le puede asignar un gasto
 
 	this.isSalidaTemprana = ruta => (sb.getHours(ruta.dt1) < 14);
 	this.isSalidaTardia = ruta => (sb.getHours(ruta.dt1) > 21);
@@ -61,11 +65,14 @@ function Ruta() {
 			<td class="no-print" data-cell="Acciones">${remove}</td>
 		</tr>`;
 	}
-    this.tfoot = resume => `<tr>
-		<td colspan="8">Etapas: ${resume.size}</td>
-		<td class="tb-data-tc hide-xs hide-sm">${i18n.isoFloat(resume.totKmCalc)}</td>
-		<td class="hide-sm no-print"></td>
-	</tr>`;
+    this.tfoot = resume => {
+		const totKmCalc = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
+		return `<tr>
+			<td colspan="8">Etapas: ${resume.size}</td>
+			<td class="tb-data-tc hide-xs hide-sm">${totKmCalc}</td>
+			<td class="hide-sm no-print"></td>
+		</tr>`;
+	}
 }
 
 export default new Ruta();
