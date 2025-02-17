@@ -29,11 +29,16 @@ function Collection() {
 	this.last = arr => arr ? arr.last() : null;
     this.reset = arr => arr ? fnReset(arr) : [];
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
+	this.findIndex = (arr, fn) => arr ? arr.findIndex(fn) : -1;
 	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
+    this.distinct = (arr, field) => arr.filter((obj, index) => (arr.findIndex(o => (o[field] === obj[field])) === index));
 
-    this.distinct = function(arr, field) {
-        arr.filter((obj, index, self) => (self.findIndex(o => (o[field] === obj[field])) === index));
-    }
+	this.remove = (arr, fn) => {
+		let i = self.findIndex(arr, fn);
+		(i < 0) || this.splice(i, 1);
+		return self;
+	}
+
     this.multisort = function(arr, fnSorts, dirs) {
 		dirs = dirs || []; // directions
 		arr.sort((a, b) => {
