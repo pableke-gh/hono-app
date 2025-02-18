@@ -2,7 +2,11 @@
 import tb from "../../components/TemporalBox.js";
 import dietas from "../data/dietas/dietas.js";  
 import dieta from "../model/Dieta.js";
+<<<<<<< HEAD
 import rutas from "./rutas.js";
+=======
+import rutas from "./Rutas.js";
+>>>>>>> 5fbffcc64af7f854d428e84e299beb7051d41005
 
 function Dietas() {
 	const self = this; //self instance
