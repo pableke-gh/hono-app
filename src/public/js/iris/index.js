@@ -8,11 +8,7 @@ import pf from "../components/Primefaces.js";
 import list from "./modules/list.js";
 import uxxiec from "./modules/uxxiec.js";
 import Perfil from "./modules/Perfil.js";
-<<<<<<< HEAD
-import Rutas from "./modules/rutas.js";
-=======
 import Rutas from "./modules/Rutas.js";
->>>>>>> 5fbffcc64af7f854d428e84e299beb7051d41005
 import validators from "./modules/tabs.js";
 
 window.IRSE = {}; // global IRSE info
