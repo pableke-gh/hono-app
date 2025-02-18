@@ -2,7 +2,7 @@
 import tb from "../../components/TemporalBox.js";
 import dietas from "../data/dietas/dietas.js";  
 import dieta from "../model/Dieta.js";
-import rutas from "./rutas.js";
+import rutas from "./Rutas.js";
 
 function Dietas() {
 	const self = this; //self instance
