@@ -31,13 +31,13 @@ function Collection() {
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
 	this.findIndex = (arr, fn) => arr ? arr.findIndex(fn) : -1;
 	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
-    this.distinct = (arr, field) => arr.filter((obj, index) => (arr.findIndex(o => (o[field] === obj[field])) === index));
+    this.distinct = (arr, fn) => arr.filter((o1, index, $this) => ($this.findIndex(o2 => fn(o2, o1)) === index));
 
-	this.remove = (arr, fn) => {
+	/*this.remove = (arr, fn) => {
 		let i = self.findIndex(arr, fn);
 		(i < 0) || this.splice(i, 1);
 		return self;
-	}
+	}*/
 
     this.multisort = function(arr, fnSorts, dirs) {
 		dirs = dirs || []; // directions
@@ -99,9 +99,8 @@ function Collection() {
 globalThis.void = fnVoid;
 globalThis.isset = isset;
 globalThis.none = () => "";
-globalThis.catchError = promise => {
-    return promise.then(data => [undefined, data]).catch(err => [err]);
-}
+globalThis.catchError = promise => promise.then(data => [undefined, data]).catch(err => [err]);
+globalThis.catchPromise = fn => globalThis.catchError(new Promise(fn));
 
 // Mute JSON
 JSON.size = sb.size;

@@ -42,8 +42,9 @@ export default function(table, opts) {
     let _rows = EMPTY; // default = empty array
     let _index = -1; // current item position in data
 
-    this.clear = () => { _index = -1; return self; }
+    this.get = name => opts[name];
     this.set = (name, fn) => { opts[name] = fn; return self; }
+    this.clear = () => { _index = -1; return self; }
 
 	this.setRowEmpty = html => self.set("rowEmptyTable", html);
 	this.setMsgEmpty = msg => self.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.get(msg)}</td></tr>`);

@@ -61,22 +61,26 @@ function DomBox() {
 
 	// Events handlers
 	const fnQuery = el => globalThis.isstr(el) ? $1(el) : el;
-	const fnAddEvent = (el, name, fn) => {
-		el && el.addEventListener(name, ev => fn(ev, el));
-		return self; // self instance
-	}
-
 	this.ready = fn => document.addEventListener("DOMContentLoaded", fn);
-	this.onClick = (el, fn) => fnAddEvent(fnQuery(el), "click", fn);
+	this.addAction = (el, fn) => {
+		if (el) // checks if element exists
+			el.addEventListener("click", ev => fn(ev, el));
+		return self;
+	}
+	this.onClick = (el, fn) => self.addAction(fnQuery(el), fn);
 	this.addClick = self.onClick; // synonym
-	this.setClick = (el, fn) => {
-		el = fnQuery(el); // search for element
+	this.setAction = (el, fn) => {
 		if (el) // checks if element exists
 			el.onclick = ev => fn(ev, el);
 		return self;
 	}
+	this.setClick = (el, fn) => self.setAction(fnQuery(el), fn);
 
-    this.onChange = (el, fn) => fnAddEvent(el, "change", fn);
+    this.onChange = (el, fn) => {
+		if (el) // checks if element exists
+			el.addEventListener("change", ev => fn(ev, el));
+		return self; // self instance
+	}
 	this.addChange = this.onChange; // synonym
 	this.setChange = (el, fn) => {
 		el = fnQuery(el); // search for element

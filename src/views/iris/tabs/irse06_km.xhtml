@@ -31,36 +31,8 @@
 					<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /> (<span id="imp-gasolina-km"></span> €/km)</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr class="tb-data tb-data-tc">
-					<td data-cell="#{msg['lbl.origen.etapa']}">@origen;</td>
-					<td data-cell="#{msg['lbl.fecha.salida']}">@f1;</td>
-					<td data-cell="#{msg['lbl.hora.salida']}">@h1;</td>
-					<td data-cell="#{msg['lbl.destino.etapa']}">@destino;</td>
-					<td data-cell="#{msg['lbl.fecha.llegada']}">@f2;</td>
-					<td data-cell="#{msg['lbl.hora.llegada']}">@h2;</td>
-					<td data-cell="#{msg['lbl.medio.trans']}">@desp;</td>
-					<td data-cell="Google km">@km2;</td>
-					<td data-cell="#{msg['lbl.tus.km']}">
-					<c:choose>
-						<c:when test="#{iris.form.editableP6}"><input type="text" value="@km1;" tabindex="100" class="ui-float tc"/></c:when>
-						<c:otherwise>@km1;</c:otherwise>
-					</c:choose>
-					</td>
-					<td data-cell="#{msg['lbl.importe']}">@impKm; €</td>
-				</tr>
-			</tbody>
-			<tbody class="hide">
-				<tr><td class="no-data" colspan="99"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></td></tr>
-			</tbody>
-			<tfoot id="footer-vp">
-				<tr>
-					<td colspan="7"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @sizeVp;</td>
-					<td class="tb-data-tc hide-xs">@totKmCalc;</td>
-					<td class="tb-data-tc hide-xs">@totKm;</td>
-					<td class="tb-data-tc hide-xs">@impKm; €</td>
-				</tr>
-			</tfoot>
+			<tbody></tbody>
+			<tfoot></tfoot>
 		</table>
 
 		<label class="ui-blocks justifi-km #{iris.gastos.cssJustifiKm}">

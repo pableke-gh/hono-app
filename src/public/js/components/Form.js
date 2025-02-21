@@ -46,9 +46,11 @@ export default function(form, opts) {
 	this.getInput = selector => form.elements.findBy(selector); // find an element
 	this.getInputs = selector => form.elements.query(selector); // filter elements
 
-	this.setCache = id => { form.dataset.cache = id; return self; }
-	this.isCached = (id, selector) => ((id == form.dataset.cache) || (id == self.getval(selector || "#id")));
-	this.resetCache = selector => { delete form.dataset.cache; return self.setval(selector || "#id"); }
+    this.get = name => opts[name];
+    this.set = (name, fn) => { opts[name] = fn; return self; }
+	this.setCache = id => { opts.cache = id; return self; }
+	this.isCached = (id, selector) => ((id == opts.cache) || (id == self.getval(selector || "#id")));
+	this.resetCache = selector => { delete opts.cache; return self.setStrval(selector || "#id"); }
 
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
@@ -162,8 +164,8 @@ export default function(form, opts) {
 
 	// Inputs helpers
 	this.setTable = (selector, opts) => new Table($1(selector), opts); // table
-	this.stringify = (selector, data) => self.setStrval(selector, JSON.stringify(data));
-	this.saveTable = (selector, table) => self.stringify(selector, table.getData());
+	this.stringify = (selector, data, replacer) => self.setStrval(selector, JSON.stringify(data, replacer));
+	this.saveTable = (selector, table, replacer) => self.stringify(selector, table.getData(), replacer);
 	this.getOptionText = selector => dom.getOptionText(self.getInput(selector));
 	this.select = (selector, mask) => { dom.select(self.getInput(selector), mask); return self; }
 	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
@@ -200,9 +202,9 @@ export default function(form, opts) {
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));
 
 	this.addClickAll = (selector, fn) => fnEach(selector, el => el.addClick(fn));
-	this.addClick = (selector, fn) => { dom.addClick($1(selector), fn); return self; }
+	this.addClick = (selector, fn) => { dom.addAction($1(selector), fn); return self; }
 	this.setClickAll = (selector, fn) => fnEach(selector, el => el.setClick(fn));
-	this.setClick = (selector, fn) => { dom.setClick($1(selector), fn); return self; }
+	this.setClick = (selector, fn) => { dom.setAction($1(selector), fn); return self; }
 	this.click = selector => { $1(selector).click(); return self; } // Fire event only for PF
 
 	this.onChange = (el, fn) => { dom.onChange(el, fn); return self; }

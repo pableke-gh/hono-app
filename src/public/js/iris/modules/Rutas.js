@@ -2,12 +2,20 @@
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/StringBox.js";
 import tb from "../../components/TemporalBox.js";
+
+import maps from "./maps.js";
+import RutasMun from "./RutasMun.js";
 import ruta from "../model/Ruta.js";
+import i18n from "../../i18n/langs.js";
+import { CT } from "../data/rutas.js";
 
 export default function Rutas(form) {
 	const self = this; //self instance
-	let _rutas, _tblRutas; // itinerario
+	const perfil = form.get("perfil");
+	const rutasMun = new RutasMun(form);
+	let _rutas, _tblRutas, _tblReadOnly, _tblRutasVp; // itinerario
 
+	this.getRutas = () => _rutas;
 	this.size = () => coll.size(_rutas);
 	this.isEmpty = () => coll.isEmpty(_rutas);
 	this.getSalida = () => _rutas[0]; // primera ruta
@@ -42,36 +50,86 @@ export default function Rutas(form) {
 		return "ES";
 	}
 
-	const fnSetMain = ruta => {
-		_rutas.forEach(ruta => { ruta.mask &= ~1; });
-		ruta.mask |= 1;
-	}
-	this.validate = rutas => { 
-		if (self.isEmpty())
-			return dom.closeAlerts().addError("#origen", "errItinerario").isOk();
+	function validateItinerario(rutas) { 
+		const valid = i18n.getValidators();
+		if (coll.isEmpty(rutas))
+			return valid.addError("origen", "errItinerario").isOk();
 		let r1 = rutas[0];
 		if (!ruta.valid(r1))
-			return false;
+			return false; // salida erronea
+		const origen = ruta.getOrigen(r1);
 		for (let i = 1; i < rutas.length; i++) {
-			let r2 = rutas[i];
-			if (!ruta.valid(r2))
+			const r2 = rutas[i];
+			if (!ruta.validRutas(r1, r2))
 				return false; //stop
-			if (!r1.pais2.startsWith(r2.pais1.substring(0, 2)))
-				return dom.addError("#destino", "errItinerarioPaises").isOk();
-			if (r1.dt2 > r2.dt1) //rutas ordenadas
-				return dom.addError("#destino", "errItinerarioFechas").isOk();
-			if (rutas[0].origen == r2.origen)
-				return dom.addError("#destino", "errMulticomision").isOk();
+			if (origen == r2.origen)
+				return valid.addError("destino", "errMulticomision").isOk();
 			r1 = r2; //go next route
 		}
-		return dom.isOk();
+		return valid.isOk();
 	}
-	this.add = (ruta, dist) => {
-		const temp = _rutas.concat(ruta);
+	this.validateP1 = data => {
+		const valid = i18n.getValidators();
+		if (!data.objeto)
+        	valid.addRequired("objeto", "errObjeto");
+		return valid.isOk();
+	}
+	this.validateMun = data => {
+		const ok = self.validateP1(data) && validateItinerario(_rutas);
+		if (ok && form.get("saveRutas")) // compruebo si hay cambios y si las rutas son validas
+			form.saveTable("#etapas", _tblRutas, fnReplace).set("saveRutas", false);
+		return ok;
+	}
+	this.validate = data => {
+		let ok = self.validateP1(data) && validateItinerario(_rutas);
+		ok = (ok && (self.size() > 1)) ? ok : i18n.getValidators().addError("destino", "errMinRutas").isOk();
+		if (ok && form.get("saveRutas")) { // compruebo si hay cambios y si las rutas son validas
+			_tblReadOnly.render(_rutas); // actualizo la tabla resumen
+			_tblRutasVp.render(self.getRutasVeiculoPropio()); // actualizo la tabla de vehiculos propio
+			const fnReplace = (key, value) => (((key == "p2") || key.endsWith("Option")) ? undefined : value);
+			form.saveTable("#etapas", _tblRutas, fnReplace).set("saveRutas", false); // guardo los cambios en las rutas
+		}
+		return ok;
+	}
+
+	const fnSetMain = data => {
+		_rutas.forEach(ruta.setOrdinaria);
+		ruta.setPrincipal(data);
+	}
+
+	function fnUpdateForm() {
+		const last = _rutas.last() || CT;
+		form.setval("#origen", last.destino).setval("#f1", sb.isoDate(last.dt2)).setval("#h1", sb.isoTimeShort(last.dt2))
+			.setval("#destino").copy("#f2", "#f1").setval("#h2").setval("#principal", "0").setval("#desp")
+			.delAttr("#f1", "max").delAttr("#f2", "min").hide(".grupo-matricula");
+		if (!last.dt1)
+			form.setFocus("#f1");
+		else if (last.mask & 1) // es ruta principal?
+			form.restart("#h1");
+		else
+			form.setFocus("#destino");
+	}
+	function fnAfterRender(resume) {
+		ruta.afterRender(resume);
+		form.set("justifi", resume.justifi).set("updateDietas", resume.updateDietas).set("saveRutas", true);
+	}
+	async function fnAddRuta(ev) {
+		ev.preventDefault(); // stop event
+		const data = form.validate(maps.validateFields);
+		if (!data || !maps.validatePlaces(data, self) || !ruta.valid(data))
+			return false; // maps validation error
+
+		const temp = _rutas.concat(data);
 		// reordeno todas las rutas por fecha de salida
 		temp.sort((a, b) => sb.cmp(a.dt1, b.dt1));
-		if (!self.validate(temp)) // check if all routes are valid
-			return self; // no se agrega la ruta
+		if (!validateItinerario(temp)) // check if all routes are valid
+			return false; // no se agrega la nueva ruta
+		if (ruta.isVehiculoPropio(data)) { // calcula distancia
+			const dist = await maps.getDistance(data.origen, data.destino);
+			data.km1 = data.km2 = dist; // actualiza las distancias
+			if (!dist || i18n.getValidation().isError())
+				return false; // invalid distance
+		}
 
 		_rutas = temp; // nuevo contenedor de rutas
 		// calculo la ruta principal del itinerario
@@ -86,18 +144,36 @@ export default function Rutas(form) {
 		}
 
 		fnSetMain(principal); // nueva ruta principal
-		ruta.km1 = ruta.km2 = dist; // actualiza las distancias
-		window.IRSE.matricula = form.getval("#matricula"); //update from input
 		_tblRutas.render(_rutas); // dibuja la nueva tabla
-		return self;
+		return true; // ruta agregada correctamente
 	}
 
+	form.set("rutas", self);
 	this.init = () => {
+		const msgRutasEmpty = "Aún no has añadido ninguna ETAPA a esta Comunicación."; // #{msg['msg.no.etapas']}
 		_rutas = coll.parse(form.getText("#rutas-data"));
+
 		_tblRutas = form.setTable("#rutas");
-		_tblRutas.setMsgEmpty("Aún no has añadido ninguna ETAPA a esta Comunicación.") // #{msg['msg.no.etapas']}
-			.setBeforeRender(ruta.beforRender).setRender(ruta.row).setFooter(ruta.tfoot)
-			.render(_rutas).setAfterRender(resume => { resume.changed = true; });
+		_tblRutas.setMsgEmpty(msgRutasEmpty).set("#main", fnSetMain)
+				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot).render(_rutas)
+				.setAfterRender(resume => { fnUpdateForm(); fnAfterRender(resume); });
+
+		if (perfil.isRutaUnica())
+			rutasMun.init();
+		else {
+			if (window.IRSE.editable) {
+				_tblReadOnly = form.setTable("#rutas-read");
+				_tblReadOnly.setMsgEmpty(msgRutasEmpty).setBeforeRender(ruta.beforeRender).setRender(ruta.rowReadOnly).setFooter(ruta.tfoot).render(_rutas);
+			}
+			_tblRutasVp = form.setTable("#vp");
+			_tblRutasVp.setMsgEmpty(msgRutasEmpty).setRender(ruta.rowVehiculoPropio).setFooter(ruta.tfootVehiculoPropio).render(self.getRutasVeiculoPropio());
+			form.setClick("#add-ruta", fnAddRuta);
+			fnUpdateForm();
+		}
+
+		form.onChangeInput("#f1", ev => form.setval("#f2", ev.target.value)).setDateRange("#f1", "#f2") // Rango de fechas
+			.onChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))
+			.onChangeInput("#matricula", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
 		return self;
 	}
 }

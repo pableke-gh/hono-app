@@ -5,11 +5,18 @@ import i18n from "../../i18n/langs.js";
 
 import organica from "../model/Organica.js"
 import getActividad from "../data/actividades.js"
-//import tribunales from "../data/irse/tribunales.js"
 
 export default function Perfil(form) {
 	const self = this; //self instance
 	let _eColectivo, _tblOrganicas;
+
+	this.size = () => _tblOrganicas.size(); 
+	this.isEmpty = () => (!_eColectivo.innerText || _tblOrganicas.isEmpty());
+
+	this.getTipoDieta = () => _tblOrganicas.getFirst().tipo;
+	this.isRD = () => (self.getTipoDieta() == 1);
+	this.isEUT = () => (self.getTipoDieta() == 2);
+	this.isUPCT = () => (self.getTipoDieta() == 9);
 
 	this.getRol = () => form.getval("#rol");
 	this.getActividad = () => form.getval("#actividad");
@@ -32,6 +39,7 @@ export default function Perfil(form) {
 	this.getTramite = () => form.getval("#tramite");
 	this.isAut = () => (self.getTramite() == "AUT");
 	this.isAutA7j = () => (self.isAut() || self.isA7j());
+	this.isRutaUnica = () => (self.isAutA7j() || self.is1Dia());
 
 	this.getColectivo = () => form.getText("#colectivo");
 	this.setColectivo = (colectivo, email) => {
@@ -41,9 +49,6 @@ export default function Perfil(form) {
 		_eColectivo.innerText = colectivo;
 		return self.update();
 	}
-
-	//this.getTribunales = () => tribunales;
-	//this.getTribunal = (name) => tribunales["at" + name] || 0;
 
 	this.getFinanciacion = () => form.getval("#financiacion");
 	this.isIsu = () => (self.getFinanciacion() == "ISU") || (self.getFinanciacion() == "xSU");
@@ -66,20 +71,40 @@ export default function Perfil(form) {
 		return self;
 	}
 
+	form.set("perfil", self);
+	form.afterReset(() => {
+		_tblOrganicas.reset();
+		self.setColectivo();
+	});
+
+    this.validate = data => {
+		const valid = i18n.getValidators();
+		if (!data.interesado)
+        	valid.addRequired("interesado", "errPerfil");
+		if (_tblOrganicas.isEmpty())
+			valid.addRequired("organica", "errOrganicas");
+		return valid.isOk();
+    }
+
+	function fnUpdateOrganicas(resume) {
+		self.update();
+		organica.afterRender(resume);
+		form.set("updateDietas", resume.updateDietas);
+	}
 	this.init = () => {
 		_eColectivo = form.querySelector("#colectivo");
 		_tblOrganicas = form.setTable("#organicas");
 		_tblOrganicas.setMsgEmpty("No existen orgánicas asociadas a la comunicación.") // #{msg['lbl.organicas.not.found']}
 					.setRender(organica.row).setFooter(organica.tfoot)
 					.render(coll.parse(form.getText("#org-data")))
-					.setAfterRender(self.update);
+					.setAfterRender(fnUpdateOrganicas);
 
 		const acOrganiaca = form.setAutocomplete("#organica", {
 			minLength: 4,
 			source: term => pf.sendTerm("rcFindOrg", term),
 			render: item => item.o + " - " + item.dOrg,
 			select: item => {
-				if (!IRSE.uxxiec)
+				if (!window.IRSE.uxxiec)
 					_tblOrganicas.render([item]);
 				return item.id;
 			},
@@ -111,20 +136,4 @@ export default function Perfil(form) {
 		form.onChangeInput("#actividad", self.update);
 		return self.update();
 	}
-
-    this.validate = data => {
-		const valid = i18n.getValidators();
-		if (!data.interesado)
-        	valid.addRequired("interesado", "errPerfil");
-		if (_tblOrganicas.isEmpty())
-			valid.addRequired("organica", "errOrganicas");
-		return valid.isOk();
-    }
-
-	form.afterReset(() => {
-		_tblOrganicas.reset();
-		_eColectivo.parentNode.hide();
-		form.hide(".msg-cd");
-		self.update();
-	});
 }

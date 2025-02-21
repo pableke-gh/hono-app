@@ -2,10 +2,11 @@
 import tb from "../../components/TemporalBox.js";
 import dietas from "../data/dietas/dietas.js";  
 import dieta from "../model/Dieta.js";
-import rutas from "./Rutas.js";
 
-function Dietas() {
+export default function Dietas(form) {
 	const self = this; //self instance
+	const perfil = form.get("perfil");
+	const rutas = form.get("rutas");
 	let _dietas; // container
 
 	this.setDietas = data => {
@@ -36,7 +37,7 @@ function Dietas() {
 		while (tb.lt(fDieta, fMax)) {
 			const row = dieta.createDiaIntermedio();
 			row.pais = rutas.getPaisPernocta(fDieta);
-			row.imp1 = dietas.getImporte(1, pais, 1);
+			row.imp1 = dietas.getImporte(perfil.getTipo(), pais, 1);
 			fDieta = fDieta.add({ days: 1 });
 			_dietas.push(row);
 		}
@@ -49,11 +50,9 @@ function Dietas() {
 		return self;
 	}
 
-	this.render = (tab6, form) => {
-		const table = form.setTable("#manutenciones");
-		table.render(_dietas);
+	this.init = () => {
+		const tblDietas = form.setTable("#manutenciones");
+		tblDietas.render(_dietas);
 		return self;
 	}
 }
-
-export default new Dietas();

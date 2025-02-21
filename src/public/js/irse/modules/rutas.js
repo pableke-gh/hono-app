@@ -8,27 +8,10 @@ import dom from "../../lib/uae/dom-box.js";
 import perfil from "./perfil.js";
 import organicas from "./organicas.js";
 import ruta from "../model/Ruta.js"
+import { MUN, LOC, CT } from "../data/rutas.js"
 
 function IrseRutas() {
 	const self = this; //self instance
-	//const CT_LAT = 37.62568269999999;
-	//const CT_LNG = -0.9965839000000187;
-	const CT_NAME = "Cartagena, España";
-
-	const MUN = { //default ruta MUN
-		desp: 1, mask: 1, // VP y principal 
-		pais1: "ES", pais2: "ES"
-	};
-	const LOC = { //default ruta AUT/A7J
-		desp: 10, mask: 1, // VP y principal 
-		pais1: "ES", pais2: "ES"
-	};
-	const CT = { //default CT coords
-		desp: 0, mask: 4, pais: "ES",
-		origen: CT_NAME, pais1: "ES",
-		destino: CT_NAME, pais2: "ES"
-	};
-
 	const resume = { sizeOut: 0, sizeVp: 0 };
 	const STYLES = {
 		remove: "removeRuta",
@@ -50,10 +33,7 @@ function IrseRutas() {
 
 	const getLoc = () => perfil.isMun() ? MUN : LOC;
 	const fmtImpKm = ruta => i18n.isoFloat(ruta.km1 * IRSE.gasolina);
-	const fnSetMain = ruta => {
-		rutas.forEach(ruta => { ruta.mask &= ~1; });
-		ruta.mask |= 1;
-	}
+	const fnSetMain = data => { rutas.forEach(ruta.setOrdinaria); ruta.setPrincipal(data); }
 
 	//necesario para recalculo de dietas
 	this.getImpKm = () => resume.impKm;
@@ -79,15 +59,12 @@ function IrseRutas() {
 		let r1 = rutas[0];
 		if (!ruta.valid(r1))
 			return false;
+		const origen = ruta.getOrigen(r1);
 		for (let i = 1; i < rutas.length; i++) {
-			let r2 = rutas[i];
-			if (!ruta.valid(r2))
+			const r2 = rutas[i];
+			if (!ruta.validRutas(r1, r2))
 				return false; //stop
-			if (!r1.pais2.startsWith(r2.pais1.substring(0, 2)))
-				return dom.addError("#destino", "errItinerarioPaises").isOk();
-			if (r1.dt2 > r2.dt1) //rutas ordenadas
-				return dom.addError("#destino", "errItinerarioFechas").isOk();
-			if (rutas[0].origen == r2.origen)
+			if (origen == r2.origen)
 				return dom.addError("#destino", "errMulticomision").isOk();
 			r1 = r2; //go next route
 		}
@@ -97,14 +74,7 @@ function IrseRutas() {
 	const isValidObjeto = () => dom.closeAlerts().required("#objeto", "errObjeto").isOk();
 	this.paso1 = () => isValidObjeto() && loading();
 	this.paso1Col = () => isValidObjeto() && dom.past("#fAct", "errDateLe").gt0("#impAc", "errGt0").isOk();
-	this.validItinerario = function() {
-		if (isValidObjeto() && self.validAll()) {
-			let numPrincipales = 0;
-			rutas.forEach(ruta => { numPrincipales += ruta.mask & 1; });
-			return (numPrincipales == 1) || dom.addError("#destino", "errMainRuta").isOk();
-		}
-		return false;
-	}
+	this.validItinerario = () => (isValidObjeto() && self.validAll());
 
 	this.add = function(ruta, dist) {
 		ruta.temp = true;

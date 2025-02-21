@@ -68,11 +68,9 @@
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-2" styleClass="tab-content update-irse #{iris.perfil.cssTab2}">
-		<c:if test="#{iris.perfil.tab2}"> <!-- evita la colision de id's de matricula -->
 			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</c:if>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-3" styleClass="tab-content update-irse #{iris.perfil.cssTab3}">

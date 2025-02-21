@@ -55,11 +55,11 @@
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
 		<c:when test="#{iris.form.editable}">
-			<p:commandLink action="#{iris.form.paso1()}" onclick="if (!ir.validItinerario()) return false;" oncomplete="showNextTab(xhr, status, args);"
+			<p:commandLink action="#{iris.form.paso1()}" onclick="if (!validateMun()) return false;loading();" oncomplete="showNextTab(xhr, status, args);"
 					styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="58">
 				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
 			</p:commandLink>
-			<p:commandButton action="#{iris.form.save1()}" onclick="if (!ir.paso1()) return false;" oncomplete="saveTab();" icon="far fa-save" 
+			<p:commandButton action="#{iris.form.save1()}" onclick="if (!validateMun()) return false;" oncomplete="saveTab();" icon="far fa-save" 
 				styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="59" />
 		</c:when>
 		<c:otherwise>

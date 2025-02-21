@@ -107,7 +107,13 @@ export default class Validators extends Msgs {
 	isTime(name, value, msg) {
 		if (!value) // iso date validation
 			return this.addRequired(name, msg); // required
-		const ok = /[0-2]\d:[0-5]\d:[0-5]\d[\.\d{1,3}]?$/.test(value); // RE_TIME format
+		const ok = /[0-2]\d:[0-5]\d:[0-5]\d(\.\d{1,3})?$/.test(value); // RE_TIME format
+		return ok ? this : this.addDateError(name, msg);
+	}
+	isTimeShort(name, value, msg) {
+		if (!value) // iso date validation
+			return this.addRequired(name, msg); // required
+		const ok = /[0-2]\d:[0-5]\d(:[0-5]\d\.\d{1,3})?$/.test(value); // RE_TIME format
 		return ok ? this : this.addDateError(name, msg);
 	}
 	isDateTime(name, value, msg) {

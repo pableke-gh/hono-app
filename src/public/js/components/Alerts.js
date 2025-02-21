@@ -106,6 +106,7 @@ function Alerts() {
 		self.loading(); // redefine global catchError with loading / working
 		return promise.then(data => [undefined, data]).catch(err => [err]).finally(self.working);
 	}
+	window.catchPromise = fn => window.catchError(new Promise(fn));
 	
     this.isLoaded = function(xhr, status, args) { // PF server error xhr
         if (xhr && (status == "success"))
