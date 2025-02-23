@@ -31,7 +31,7 @@
 		<div class="navbar">
 			<a href="#tab-13" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="btn-icon-left fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			<p:commandButton id="filter-list-isu" action="#{iris.isu.list()}" onclick="loading()" update="xeco-list-isu" oncomplete="showNextTab(xhr, status, args, 16);"
+			<p:commandButton id="filter-list-isu" action="#{iris.isu.list()}" onclick="loading()" update="xeco-list-isu" oncomplete="showTab(xhr, status, args, 16);"
 					icon="far fa-search" value="Buscar" tabindex="13" styleClass="btn btn-info"></p:commandButton>
 		</div>
 	</h:form>

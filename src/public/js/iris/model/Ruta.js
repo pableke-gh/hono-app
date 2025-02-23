@@ -35,6 +35,9 @@ function Ruta() {
 		return self.isLlegadaTardia(ruta) ? self.getPaisllegada(ruta) : self.getPaisSalida(ruta);
 	}
 
+	this.link = (ruta, id) => { ruta.g = id; return self; }
+	this.unlink = ruta => { delete ruta.g; return self; }
+
 	this.valid = (ruta) => {
 		const valid = i18n.getValidators(); //i18n.getValidation();
 		if (!ruta.origen || !ruta.pais1)
@@ -58,6 +61,7 @@ function Ruta() {
 		return valid.isOk();
 	}
 
+	// table renders
 	function fnAccumulate(ruta, resume) {
 		resume.totKm += self.isVehiculoPropio(ruta) ? ruta.km1 : 0;
 		resume.totKmCalc += self.isVehiculoPropio(ruta) ? ruta.km2 : 0;
@@ -107,6 +111,24 @@ function Ruta() {
 			<td class="hide-sm no-print"></td>
 		</tr>`;
 	}
+	this.rowRutasGasto = (ruta, status, resume) => {
+		fnAccumulate(ruta, resume);
+		const flag = self.isPrincipal(ruta) ? principal : "";
+		return `<tr class="tb-data tb-data-tc">
+			<td class="hide-sm" data-cell="Nº">${status.count}</td>
+			<td data-cell="Origen">${ruta.origen}</td>
+			<td data-cell="#{msg['lbl.fecha.salida']}">${i18n.isoDate(ruta.dt1)}</td>
+			<td data-cell="#{msg['lbl.hora.salida']}">${i18n.isoTimeShort(ruta.dt1)}</td>
+			<td data-cell="Destino">${ruta.destino}${flag}</td>
+			<td data-cell="#{msg['lbl.fecha.llegada']}">${i18n.isoDate(ruta.dt2)}</td>
+			<td data-cell="#{msg['lbl.hora.llegada']}">${i18n.isoTimeShort(ruta.dt2)}</td>
+			<td data-cell="#{msg['lbl.medio.trans']}">${i18n.getItem("tiposDesp", ruta.desp)}</td>
+			<td data-cell="Asociar Etapa"><input type="checkbox" value="${ruta.id}" class="link-ruta" /></td>
+		</tr>`;
+	}
+    this.tfootRutasGasto = resume => {
+		return `<tr><td colspan="99">Etapas: ${resume.size}</td></tr>`;
+	}
 	this.rowVehiculoPropio = (ruta, status, resume) => {
 		fnAccumulate(ruta, resume);
 		const impKm = ruta.km1 * window.IRSE.gasolina;
@@ -136,10 +158,9 @@ function Ruta() {
 		</tr>`;
 	}
 	this.afterRender = resume => {
-		resume.km1 = resume.totKm; //synonym
+		//resume.km1 = resume.totKm; //synonym
 		resume.impKm = resume.totKm * window.IRSE.gasolina;
 		resume.justifi = (resume.totKmCalc + .01) < resume.totKm;
-		resume.updateDietas = true;
 	}
 }
 

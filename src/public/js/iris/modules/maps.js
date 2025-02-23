@@ -44,10 +44,10 @@ export function Maps() {
 	this.validateFields = data => {
 		const valid = i18n.getValidators();
 		valid.isDate("f2", data.f2).isTimeShort("h2", data.h2)
-			.isDate("f1", data.f1).isTimeShort("h1", data.h1).isKey("desp", data.desp)
+			.isDate("f1", data.f1).isTimeShort("h1", data.h1).le10("desp", data.desp)
 			.size("destino", data.destino).size("origen", data.origen);
 		if ((data.desp == 1) && !data.matricula) // vehiculo propio sin matricula
-			valid.addRequired("matricula", "Debe indicar la matrícula del vehículo.");
+			valid.addRequired("matricula", "errMatricula");
 		window.IRSE.matricula = data.matricula; // current value
 		return valid.isOk();
 	}

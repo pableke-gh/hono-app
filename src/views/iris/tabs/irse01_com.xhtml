@@ -16,7 +16,7 @@
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
 		<c:when test="#{iris.form.editable}">
-			<p:commandLink action="#{iris.form.paso1Com()}" onclick="if (!validateP1()) return false;loading();" oncomplete="showNextTab(xhr, status, args);"
+			<p:commandLink action="#{iris.form.paso1Com()}" onclick="if (!validateP1()) return false;loading();" oncomplete="showTab(xhr, status, args);"
 					styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="58">
 				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
 			</p:commandLink>

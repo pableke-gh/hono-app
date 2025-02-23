@@ -94,9 +94,9 @@
 		<div class="navbar">
 			<a href="#tab-13" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-				<p:commandButton id="filter-list" action="#{iris.list.list()}" onclick="loading();" update="xeco-list" oncomplete="showNextTab(xhr, status, args, 14);"
+				<p:commandButton id="filter-list" action="#{iris.list.list()}" onclick="loading();" update="xeco-list" oncomplete="showTab(xhr, status, args, 14);"
 					icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
-				<p:commandButton id="list-all" rendered="#{not iris.otri}" action="#{iris.list.list()}" onclick="onListAll();" update="xeco-list" oncomplete="showNextTab(xhr, status, args, 14);" 
+				<p:commandButton id="list-all" rendered="#{not iris.otri}" action="#{iris.list.list()}" onclick="onListAll();" update="xeco-list" oncomplete="showTab(xhr, status, args, 14);" 
 					icon="far fa-search" styleClass="btn btn-info" value="Ver Todos" tabindex="13"></p:commandButton>
 				<p:commandLink action="#{iris.list.list()}" onclick="onList();" update="xeco-list" oncomplete="working();" 
 					styleClass="btn btn-warn warning-btn" tabindex="14">

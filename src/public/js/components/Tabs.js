@@ -106,12 +106,23 @@ function Tabs() {
 	this.prevTab = self.backTab; // Synonym to go back to previous tab
 	this.lastTab = () => fnShowTab(_lastTab);
 	this.toggle = el => {
+		const fnAction = EVENTS[el.dataset.action]; // search handler
+		if (fnAction && !el.dataset.off)  { // is hide
+			el.dataset.off = "1"; // avoid to call action again
+			fnAction(el); // call handler before show element
+		}
+		else
+			delete el.dataset.off; // allow to call action again
 		const icon = el.querySelector(el.dataset.icon || "i"); // icon indicator
 		const fnToggle = el => { el.classList.toggle("hide") || autofocus(el); }; // toggle and set focus
 		$$(el.dataset.target || (".info-" + el.id)).eachPrev(fnToggle);
 		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
 		return self;
 	}
+	this.resetToggleAction = () => {
+		$$("a[href='#tab-toggle'][data-off]").forEach(self.toggle); 
+		return self;
+	} 
 
     this.closeModal = id => {
 		const modal = $1(id ? ("dialog#" + id) : "dialog[open]");

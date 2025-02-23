@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<p:commandButton action="#{iris.list.firmar()}" onclick="if (!fnFirmar()) return false;" update="xeco-list" oncomplete="showNextTab(xhr, status, args, 14);" 
+	<p:commandButton action="#{iris.list.firmar()}" onclick="if (!fnFirmar()) return false;" update="xeco-list" oncomplete="showTab(xhr, status, args, 14);" 
 		icon="far fa-file-signature" styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.firmar']}" tabindex="133" title="#{msg['tit.btn.firmar']}" />
 	<a href="#tab-reject" class="btn btn-error danger-btn" tabindex="134" title="#{msg['tit.btn.rechazar']}">
 		<i class="fas fa-times-circle btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.rechazar']}" escape="false" /></a>

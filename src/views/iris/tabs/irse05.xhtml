@@ -100,16 +100,29 @@
 				<div class="ui-block-btn grupo-gasto hide">
 					<h:inputHidden id="trayectos" value="#{iris.input.etapas}" />
 					<p:commandButton id="uploadGasto"
-						onclick="if (!fnPaso5()) return false;" action="#{iris.form.uploadGasto()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);"
+						onclick="if (!validateGasto()) return false;loading();" action="#{iris.form.uploadGasto()}" oncomplete="updateGastos(xhr, status, args);"
 						icon="fas fa-arrow-alt-down" iconPos="right" value="Añadir" styleClass="btn btn-green success-btn" tabindex="104" />
 				</div>
 			</div>
 			<br class="clear"/>
 		</c:if>
 
-		<div class="navbar">
-			<ui:include src="./irse05_table.xhtml"></ui:include>
-		</div>
+		<!--<h:inputHidden id="gastos-json" value="" styleClass="ui-json" />-->
+		<div id="gastos-data" class="hide">#{iris.gastos.gastosJson}</div>
+		<table id="tbl-gastos" class="tb-xeco table-xs">
+			<thead>
+				<tr>
+					<th>Nº</th>
+					<th><h:outputText value="#{msg['lbl.tipo.gasto']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.adjunto']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /></th>
+					<th class="no-print"></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot></tfoot>
+		</table>
 		<div class="navbar">
 		<c:if test="#{iris.rutas.numRutas gt 1}">
 			<p>* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: #{iris.rutas.numTrayectosOut}; <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: #{iris.gastos.nochesPendientes}; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>

@@ -4,7 +4,7 @@ import sb from "../../components/StringBox.js";
 import tb from "../../components/TemporalBox.js";
 
 import maps from "./maps.js";
-import RutasMun from "./RutasMun.js";
+import RutasTabs from "./RutasTabs.js";
 import ruta from "../model/Ruta.js";
 import i18n from "../../i18n/langs.js";
 import { CT } from "../data/rutas.js";
@@ -12,8 +12,8 @@ import { CT } from "../data/rutas.js";
 export default function Rutas(form) {
 	const self = this; //self instance
 	const perfil = form.get("perfil");
-	const rutasMun = new RutasMun(form);
-	let _rutas, _tblRutas, _tblReadOnly, _tblRutasVp; // itinerario
+	const rutasTabs = new RutasTabs(form.set("rutas", self));
+	let _rutas, _tblRutas; // itinerario
 
 	this.getRutas = () => _rutas;
 	this.size = () => coll.size(_rutas);
@@ -77,15 +77,13 @@ export default function Rutas(form) {
 	this.validateMun = data => {
 		const ok = self.validateP1(data) && validateItinerario(_rutas);
 		if (ok && form.get("saveRutas")) // compruebo si hay cambios y si las rutas son validas
-			form.saveTable("#etapas", _tblRutas, fnReplace).set("saveRutas", false);
+			form.saveTable("#etapas", _tblRutas).set("saveRutas", false);
 		return ok;
 	}
 	this.validate = data => {
 		let ok = self.validateP1(data) && validateItinerario(_rutas);
 		ok = (ok && (self.size() > 1)) ? ok : i18n.getValidators().addError("destino", "errMinRutas").isOk();
 		if (ok && form.get("saveRutas")) { // compruebo si hay cambios y si las rutas son validas
-			_tblReadOnly.render(_rutas); // actualizo la tabla resumen
-			_tblRutasVp.render(self.getRutasVeiculoPropio()); // actualizo la tabla de vehiculos propio
 			const fnReplace = (key, value) => (((key == "p2") || key.endsWith("Option")) ? undefined : value);
 			form.saveTable("#etapas", _tblRutas, fnReplace).set("saveRutas", false); // guardo los cambios en las rutas
 		}
@@ -95,6 +93,7 @@ export default function Rutas(form) {
 	const fnSetMain = data => {
 		_rutas.forEach(ruta.setOrdinaria);
 		ruta.setPrincipal(data);
+		_tblRutas.render(_rutas); // dibuja la nueva tabla
 	}
 
 	function fnUpdateForm() {
@@ -108,10 +107,11 @@ export default function Rutas(form) {
 			form.restart("#h1");
 		else
 			form.setFocus("#destino");
+		form.set("render-rutas-read", true).set("render-rutas-vp", true);
 	}
 	function fnAfterRender(resume) {
 		ruta.afterRender(resume);
-		form.set("justifi", resume.justifi).set("updateDietas", resume.updateDietas).set("saveRutas", true);
+		form.set("justifi", resume.justifi).set("saveRutas", true);
 	}
 	async function fnAddRuta(ev) {
 		ev.preventDefault(); // stop event
@@ -143,30 +143,21 @@ export default function Rutas(form) {
 			}
 		}
 
-		fnSetMain(principal); // nueva ruta principal
-		_tblRutas.render(_rutas); // dibuja la nueva tabla
-		return true; // ruta agregada correctamente
+		fnSetMain(principal); // recalculo cual es la ruta principal
+		return form.set("updateDietas", true); // ruta agregada correctamente
 	}
 
-	form.set("rutas", self);
 	this.init = () => {
-		const msgRutasEmpty = "Aún no has añadido ninguna ETAPA a esta Comunicación."; // #{msg['msg.no.etapas']}
 		_rutas = coll.parse(form.getText("#rutas-data"));
-
 		_tblRutas = form.setTable("#rutas");
-		_tblRutas.setMsgEmpty(msgRutasEmpty).set("#main", fnSetMain)
+		_tblRutas.setMsgEmpty("msgRutasEmpty")
+				.set("#main", fnSetMain).setRemove(() => form.set("updateDietas", true))
 				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot).render(_rutas)
 				.setAfterRender(resume => { fnUpdateForm(); fnAfterRender(resume); });
 
 		if (perfil.isRutaUnica())
-			rutasMun.init();
+			rutasTabs.mun();
 		else {
-			if (window.IRSE.editable) {
-				_tblReadOnly = form.setTable("#rutas-read");
-				_tblReadOnly.setMsgEmpty(msgRutasEmpty).setBeforeRender(ruta.beforeRender).setRender(ruta.rowReadOnly).setFooter(ruta.tfoot).render(_rutas);
-			}
-			_tblRutasVp = form.setTable("#vp");
-			_tblRutasVp.setMsgEmpty(msgRutasEmpty).setRender(ruta.rowVehiculoPropio).setFooter(ruta.tfootVehiculoPropio).render(self.getRutasVeiculoPropio());
 			form.setClick("#add-ruta", fnAddRuta);
 			fnUpdateForm();
 		}

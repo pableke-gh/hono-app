@@ -32,14 +32,23 @@ export default class Validators extends Msgs {
 	get personId() { return this.#personId; }
 	get banks() { return this.#banks; }
 
-	gt(name, value, min, msgtip, msg) { return (value && (value > min)) ? this : this.addError(name, msgtip, msg); } // required gt min
+	gt(name, value, min, msgtip, msg) { // required gt min
+		if (!globalThis.isset(value))
+			return this.addRequired(name, msg);
+		return (value > min) ? this : this.addError(name, msgtip || "notAllowed", msg); 
+	}
 	gt1(name, value, msgtip, msg) { return this.gt(name, value, 1, msgtip, msg); } // required gt1
 	gt0(name, value, msg) { return this.gt(name, value, 0, "errGt0", msg); } // required gt0
 	ge(name, value, min, msgtip, msg) { return (!value || (value >= min)) ? this : this.addError(name, msgtip, msg); } // optional or ge min
 	ge1(name, value, msgtip, msg) { return this.ge(name, value, 1, msgtip, msg); } // optional or ge1
 	ge0(name, value, msg) { return this.ge(name, value, 0, "errGt0", msg); } // optional or ge0
 	max(name, value, max, msg) { return (!value || (value.length <= max)) ? this : this.addError(name, "errMaxlength", msg); } // optional or length <= max
-	le(name, value, max, msgtip, msg) { return (value && (value > 0) && (value <= max)) ? this : this.addError(name, msgtip, msg); } // required gt0 and le max
+
+	le(name, value, max, msgtip, msg) { // required gt0 and le max
+		if (!globalThis.isset(value))
+			return this.addRequired(name, msg);
+		return ((value > 0) && (value <= max)) ? this : this.addError(name, msgtip || "notAllowed", msg);
+	}
 	le10(name, value, msgtip, msg) { return this.le(name, value, 10, msgtip, msg); } // required gt0 and le 10
 	le20(name, value, msgtip, msg) { return this.le(name, value, 20, msgtip, msg); } // required gt0 and le 20
 	le25(name, value, msgtip, msg) { return this.le(name, value, 25, msgtip, msg); } // required gt0 and le 25

@@ -53,9 +53,6 @@ window.fnUnlink = () => i18n.confirm("unlink") && loading();
 window.fnClone = () => i18n.confirm("reactivar") && loading();
 window.saveTab = () => formIrse.showOk(i18n.get("saveOk")).working();
 
-// Handle errors or parse server messages
-window.showNextTab = window.showTab;
-window.viewTab = tabs.showTab;
 window.viewIrse = (xhr, status, args, tab) => {
 	tabs.load(document); // load new tabs
 	Object.assign(IRSE, coll.parse(args.data)); // update server info

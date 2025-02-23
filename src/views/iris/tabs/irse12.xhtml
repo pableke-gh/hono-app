@@ -20,24 +20,8 @@
 					<th><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></th><th></th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr id="@id;" class="tb-data tb-data-tc">
-					<td>@count;</td>
-					<td>@origen;</td><td>@f1;</td><td>@h1;</td>
-					<td>@destino; @principal;</td>
-					<td>@f2;</td><td>@h2;</td>
-					<td>@desp;</td>
-					<td>
-						<input type="checkbox" value="@id;" class="link-ruta" />
-					</td>
-				</tr>
-			</tbody>
-			<tbody class="hide">
-				<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></td></tr>
-			</tbody>
-			<tfoot>
-				<tr><td colspan="9"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @sizeOut;</td></tr>
-			</tfoot>
+			<tbody></tbody>
+			<tfoot></tfoot>
 		</table>
 
 		<div class="navbar" style="display: flex; justify-content: end;">

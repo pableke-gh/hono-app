@@ -47,7 +47,7 @@
 	<c:choose>
 	<c:when test="#{iris.form.editable}">
 		<p:commandLink
-				onclick="if (!ir.paso6()) return false;" action="#{iris.form.paso6()}" oncomplete="showNextTab(xhr, status, args);" 
+				onclick="if (!ir.paso6()) return false;" action="#{iris.form.paso6()}" oncomplete="showTab(xhr, status, args);" 
 				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
 		</p:commandLink>

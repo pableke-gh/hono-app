@@ -55,7 +55,7 @@
 		<p:remoteCommand name="rcFindPersonal" action="#{iris.form.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:outputPanel id="tab-1" styleClass="tab-content update-irse">
 			<h2>#{iris.perfil.nombre} <i>#{iris.form.codigo}</i><hr class="underline"/></h2>
-			<h:inputHidden id="etapas" value="#{iris.input.rutas}" />
+			<h:inputHidden id="etapas" value="#{iris.input.rutas}" styleClass="ui-json" />
 			<div id="rutas-data" class="hide">#{iris.rutas.rutasJson}</div>
 
 			<c:choose>

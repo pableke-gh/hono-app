@@ -16,7 +16,9 @@ export default {
 	errItinerarioCiudad: "La ciudad de origen y de destino deben de ser distintas.",
 	errMulticomision: "No puede solicitar multicomisiones para esta comunicación.",
 	errTransporte: "Medio de Transporte incorrecto.",
-	errMatricula: "Debe indicar la matricual del vehiculo privado.",
+	errMatricula: "Debe indicar la matricula del vehiculo privado.",
+	msgRutasEmpty: "Aún no has añadido ninguna ETAPA a esta Comunicación.",
+	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta Comunicación.",
 
 	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
 	docMovilidad: "Documentación acreditativa del programa de movilidad",
