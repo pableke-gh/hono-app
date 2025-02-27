@@ -9,12 +9,12 @@
 
 	<div class="card-xeco">
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab2.msg.tit.maps']}" escape="false" /></span></h2>
-		<c:if test="#{iris.form.editable}">
+		<c:if test="#{irse.form.editable}">
 			<ui:include src="./irse02_info.xhtml"></ui:include>
 			<div class="ui-blocks no-print">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.sali']}" escape="false" />:</div>
-				<input type="search" id="origen" name="origen" class="ui-input ui-autocomplete" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
+				<input type="search" id="origen" name="origen" class="ui-input ui-autocomplete" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{irse.getMsg('ph.ubicacion')}" />
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
@@ -29,7 +29,7 @@
 
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.llegue']}" escape="false" />:</div>
-				<input type="search" id="destino" name="destino" class="ui-input ui-autocomplete" tabindex="33" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}"/>
+				<input type="search" id="destino" name="destino" class="ui-input ui-autocomplete" tabindex="33" title="#{msg['tit.ubicacion']}" placeholder="#{irse.getMsg('ph.ubicacion')}"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
@@ -46,21 +46,21 @@
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
 				<select id="desp" name="desp" class="ui-input ui-select" tabindex="37" title="#{msg['tit.medio.trans']}">
 					<option value=""></option>
-					<option value="1">#{iris.rutas.getMsgDesp(1)}</option>
-					<option value="8">#{iris.rutas.getMsgDesp(8)}</option>
-					<option value="6">#{iris.rutas.getMsgDesp(6)}</option>
-					<option value="2">#{iris.rutas.getMsgDesp(2)}</option>
-					<option value="3">#{iris.rutas.getMsgDesp(3)}</option>
-					<option value="4">#{iris.rutas.getMsgDesp(4)}</option>
-					<option value="5">#{iris.rutas.getMsgDesp(5)}</option>
-					<option value="7">#{iris.rutas.getMsgDesp(7)}</option>
-					<option value="9">#{iris.rutas.getMsgDesp(9)}</option>
+					<option value="1">#{irse.rutas.getMsgDesp(1)}</option>
+					<option value="8">#{irse.rutas.getMsgDesp(8)}</option>
+					<option value="6">#{irse.rutas.getMsgDesp(6)}</option>
+					<option value="2">#{irse.rutas.getMsgDesp(2)}</option>
+					<option value="3">#{irse.rutas.getMsgDesp(3)}</option>
+					<option value="4">#{irse.rutas.getMsgDesp(4)}</option>
+					<option value="5">#{irse.rutas.getMsgDesp(5)}</option>
+					<option value="7">#{irse.rutas.getMsgDesp(7)}</option>
+					<option value="9">#{irse.rutas.getMsgDesp(9)}</option>
 				</select>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block hide grupo-matricula">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
-				<h:inputText id="matricula" value="#{iris.gastos.matricula}" maxlength="10" tabindex="38" styleClass="ui-input ui-short #{iris.form.cssDisabled}"/>
+				<h:inputText id="matricula" value="#{irse.gastos.matricula}" maxlength="10" tabindex="38" styleClass="ui-input ui-short #{irse.form.cssDisabled}"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn">
@@ -93,7 +93,7 @@
 					<td data-cell="#{msg['lbl.hora.salida']}">@h1;</td>
 					<td data-cell="Destino">
 					<c:choose>
-						<c:when test="#{iris.form.editable}"><a href="#find">@destino; @principal;</a></c:when>
+						<c:when test="#{irse.form.editable}"><a href="#find">@destino; @principal;</a></c:when>
 						<c:otherwise><div>@destino; @principal;</div></c:otherwise>
 					</c:choose>
 					</td>
@@ -101,7 +101,7 @@
 					<td data-cell="#{msg['lbl.hora.llegada']}">@h2;</td>
 					<td data-cell="#{msg['lbl.medio.trans']}">@desp;</td>
 					<td class="hide-sm" data-cell="Km.">@km2;</td>
-					<td class="no-print" data-cell="Acciones"><c:if test="#{iris.form.editable}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
+					<td class="no-print" data-cell="Acciones"><c:if test="#{irse.form.editable}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
 				</tr>
 			</tbody>
 			<tbody class="hide">
@@ -122,10 +122,10 @@
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="57">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
-		<c:when test="#{iris.form.editable}">
-			<p:commandButton action="#{iris.form.paso2()}" onclick="if (!ir.paso2()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args);"
+		<c:when test="#{irse.form.editable}">
+			<p:commandButton action="#{irse.form.paso2()}" onclick="if (!ir.paso2()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args);"
 				icon="fas fa-caret-right" iconPos="right" styleClass="btn btn-info" value="#{msg['lbl.btn.siguiente']}" title="#{msg['tit.btn.siguiente']}" tabindex="58" />
-			<p:commandButton action="#{iris.form.save2()}" onclick="if (!ir.paso2()) return false;" oncomplete="saveTab();"
+			<p:commandButton action="#{irse.form.save2()}" onclick="if (!ir.paso2()) return false;" oncomplete="saveTab();"
 				icon="far fa-save" styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="59" />
 		</c:when>
 		<c:otherwise>
@@ -134,7 +134,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="#{iris.form.firmable}">
+	<c:if test="#{irse.form.firmable}">
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</c:if>
 </html>

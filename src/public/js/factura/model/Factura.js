@@ -3,7 +3,7 @@ import i18n from "../../i18n/langs.js";
 import Solicitud from "../../xeco/model/Solicitud.js";
 import Lineas from "./Lineas.js";
 
-const titulos = [ "-", "Factura", "Abono", "Carta de Pago", "Recibo de Alumno" ];
+const titulos = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso" ];
 
 class Factura extends Solicitud {
     #lineas = new Lineas(this);
@@ -22,15 +22,17 @@ class Factura extends Solicitud {
 	isFactura() { return (super.tipo == 1); }
     //isAbono() { return (super.tipo == 2); }
 	isCartaPago() { return (super.tipo == 3); }
-	isReciboCV() { return (super.tipo == 4); }
-	isFacturable() { return (this.isFactura() || this.isReciboCV()); }
+	isReciboCV() { return (super.tipo == 4); } // viene de CV
+	isCongresoCV() { return (super.tipo == 5); } // viene de CV
+	isFacturable() { return (this.isFactura() || this.isReciboCV() || this.isCongresoCV()); }
 	isFirmaGaca() { return this.isReciboCV() && this.isTtpp() && (super.mask & 2); }
 
 	isTtpp() { return (super.getSubtipo() == 3); }
 	isTituloOficial() { return (super.getSubtipo() == 4); }
 	isExtension() { return (super.getSubtipo() == 9); }
 	isDeportes() { return (super.getSubtipo() == 10); }
-	isRecibo() { return (this.isTtpp() || this.isTituloOficial() || this.isExtension()); }
+	isCongresoGdi() { return (super.getSubtipo() == 24); }
+	isRecibo() { return (this.isTtpp() || this.isTituloOficial() || this.isExtension() || this.isCongresoGdi()); }
 	setSujeto(val) { return this.set("sujeto", val); }
 	isExento() { return !super.get("sujeto"); }
 
@@ -57,7 +59,7 @@ class Factura extends Solicitud {
 
         return `<tr class="tb-data">
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
-            <td class="hide-sm">${data.titulo}</td>
+            <td class="hide-sm text-upper1">${data.titulo}</td>
             <td class="${self.getStyleByEstado()} estado-${data.id}">${self.getDescEstado()}</td>
             <td class="text-center">${self.getFirma().myFlag(data.fmask, data.info)}</td>
             <td class="hide-sm">${data.sig || ""}</td>

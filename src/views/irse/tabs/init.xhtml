@@ -10,23 +10,23 @@
 	<h:form id="xeco-init" prependId="false" onsubmit="loading();">
 	<div class="navbar">
 		<c:choose>
-		<c:when test="#{iris.open}">
+		<c:when test="#{irse.open}">
 			<h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
 			<ul>
 				<li>
-					<p:commandLink action="#{iris.form.create()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)">
+					<p:commandLink action="#{irse.form.create()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)">
 						<h:outputText value="#{msg['uae.irse.index.msg.new.comunicacion']}" escape="false" />
 					</p:commandLink>
 				</li>
 				<li>
 					<a href="#" onclick="clickList();"><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></a >
 				</li>
-				<c:if test="#{iris.uae}">
+				<c:if test="#{irse.uae}">
 					<li>
 						<a href="#" onclick="clickVinc();"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a>
 					</li>
 				</c:if>
-				<c:if test="#{iris.uae or iris.otri}">
+				<c:if test="#{irse.uae or irse.otri}">
 					<li>
 						<a href="#tab-16">Informe ISU</a>
 					</li>
@@ -41,7 +41,7 @@
 				<li>
 					<a href="#" onclick="clickList();"><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></a >
 				</li>
-				<c:if test="#{iris.uae}">
+				<c:if test="#{irse.uae}">
 					<li>
 						<a href="#" onclick="clickVinc();"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a>
 					</li>

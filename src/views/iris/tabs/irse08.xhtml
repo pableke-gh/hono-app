@@ -11,7 +11,7 @@
 	<h3>
 	<a id="p6-extra" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
 		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.5']}" escape="false" />:
-		<b class="text-green">#{iris.gastos.totExtraI18n} €</b>
+		<b class="text-green">#{irse.gastos.totExtraI18n} €</b>
 	</a>
 	</h3>
 	<table id="gastos" class="info-p6-extra hide tb-xeco table-xs">
@@ -25,23 +25,23 @@
 		</tr>
 		</thead>
 		<tbody>
-			<c:if test="#{empty iris.gastos.gastosExtras}">
+			<c:if test="#{empty irse.gastos.gastosExtras}">
 				<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['msg.no.gastos.extra']}" escape="false" /></td></tr>
 			</c:if>
-			<c:forEach items="#{iris.gastos.gastosExtras}" var="g" varStatus="loop">
+			<c:forEach items="#{irse.gastos.gastosExtras}" var="g" varStatus="loop">
 				<tr id="#{g.idGasto}" class="tb-data tb-data-tc">
 					<td data-cell="Nº">#{loop.count}</td>
-					<td data-cell="#{msg['lbl.tipo.gasto']}">#{iris.gastos.getSubtipoDesc(g)}</td>
+					<td data-cell="#{msg['lbl.tipo.gasto']}">#{irse.gastos.getSubtipoDesc(g)}</td>
 					<td data-cell="#{msg['lbl.desc.obsev']}">#{g.descripcion}</td>
 					<td data-cell="#{msg['lbl.adjunto']}">#{g.nombre}</td>
-					<td data-cell="#{msg['lbl.importe']}">#{iris.gastos.getGastoImporte(g)} €</td>
+					<td data-cell="#{msg['lbl.importe']}">#{irse.gastos.getGastoImporte(g)} €</td>
 				</tr>
 			</c:forEach>
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="4"><h:outputText value="#{msg['lbl.gastos.extra']}" escape="false" />: #{iris.gastos.numExtras}</td>
-				<td class="tb-data-tc hide-xs">#{iris.gastos.totExtraI18n} €</td>
+				<td colspan="4"><h:outputText value="#{msg['lbl.gastos.extra']}" escape="false" />: #{irse.gastos.numExtras}</td>
+				<td class="tb-data-tc hide-xs">#{irse.gastos.totExtraI18n} €</td>
 			</tr>
 		</tfoot>
 	</table>

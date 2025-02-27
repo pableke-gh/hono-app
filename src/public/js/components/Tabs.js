@@ -4,7 +4,6 @@ import coll from "./CollectionHTML.js";
 
 // Classes Configuration
 const TAB_CLASS = "tab-content";
-const TAB_NONE = "tab-excluded";
 const ACTIVE_CLASS = "active";
 //const PROGRESS_BAR = "progress-bar";
 const fnTrue = () => true; // always true
@@ -62,6 +61,7 @@ function Tabs() {
 	this.setShowEvent = (tab, fn) => fnSet("show-tab-" + tab, fn);
 	this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
 	this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
+	this.setActiveEvent = (tab, fn) => fnSet("active-tab-" + tab, fn);
 
 	// Alerts helpers
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
@@ -70,30 +70,20 @@ function Tabs() {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 
-	const fnIsExcluded = tab => tab.classList.contains(TAB_NONE);
-	this.isExcluded = tab => fnIsExcluded(self.getTab(tab)); // tab id
-	this.exclude = id => {
-        if (globalThis.isset(id)) // 0 is valid
-            self.getTab(id).classList.add(TAB_NONE);
-        else
-            tabs.forEach(tab => tab.classList.remove(TAB_NONE));
-        return self;
-    }
-
     function fnShowTab(i) { //show tab by index
         i = (i < 0) ? 0 : Math.min(i, _lastTab);
         const tab = tabs[i]; // get next tab
         if (_tabIndex < i) { // go agead
-            if (fnIsExcluded(tab)) // is current tab excluded
-                return fnShowTab(i + 1); // recursive search for next tab index not excluded
+			if (!fnCallEvent("active", tab)) // is current tab active
+                return fnShowTab(i + 1); // recursive search for next active tab
             if (fnCallEvent("show", tab)) { // Validate event before change tab
                 tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
                 fnSetTab(tab, i); // set current tab
             }
         }
         else { // go back
-			if (fnIsExcluded(tab)) // is current tab excluded
-				return fnShowTab(i - 1); // recursive search for prev tab index not excluded
+			if (!fnCallEvent("active", tab)) // is current tab active
+				return fnShowTab(i - 1); // recursive search for prev active tab
 			fnSetTab(tab, i); // set current tab
         }
         alerts.working().top(); // go up

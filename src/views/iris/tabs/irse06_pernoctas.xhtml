@@ -7,10 +7,10 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="#{iris.gastos.cssPernoctas}">
+	<div class="#{irse.gastos.cssPernoctas}">
 		<h3>
 		<a id="p6-aloja" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
-			<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.3']}" escape="false" />: <b class="text-green">#{iris.gastos.minPernoctasI18n} €</b>
+			<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.3']}" escape="false" />: <b class="text-green">#{irse.gastos.minPernoctasI18n} €</b>
 		</a>
 		</h3>
 		<table id="pernoctas" class="info-p6-aloja hide tb-xeco table-xs">
@@ -28,17 +28,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="#{iris.gastos.pernoctas}" var="g" varStatus="loop">
+				<c:forEach items="#{irse.gastos.pernoctas}" var="g" varStatus="loop">
 				<tr id="#{g.idGasto}" class="tb-data tb-data-tc">
 					<td data-cell="Nº">#{loop.count}</td>
 					<td data-cell="#{msg['lbl.pais']}">#{g.descripcion}</td>
-					<td data-cell="#{msg['lbl.fecha.inicio']}">#{iris.gastos.getGastoF1(g)}</td>
-					<td data-cell="#{msg['lbl.fecha.fin']}">#{iris.gastos.getGastoF2(g)}</td>
+					<td data-cell="#{msg['lbl.fecha.inicio']}">#{irse.gastos.getGastoF1(g)}</td>
+					<td data-cell="#{msg['lbl.fecha.fin']}">#{irse.gastos.getGastoF2(g)}</td>
 					<td data-cell="#{msg['lbl.noches']}">#{g.num}</td>
-					<td data-cell="#{msg['lbl.imp.noche']}">#{iris.gastos.getGastoImpCalc(g)} €</td>
-					<td data-cell="#{msg['lbl.imp.tot']}">#{iris.gastos.getImpCalcPernoctaI18n(g)} €</td>
-					<td data-cell="#{msg['lbl.imp.justifi']}">#{iris.gastos.getGastoImporte(g)} €</td>
-					<td data-cell="#{msg['lbl.imp.percibir']}">#{iris.form.getMinPernoctaI18n(g)} €</td>
+					<td data-cell="#{msg['lbl.imp.noche']}">#{irse.gastos.getGastoImpCalc(g)} €</td>
+					<td data-cell="#{msg['lbl.imp.tot']}">#{irse.gastos.getImpCalcPernoctaI18n(g)} €</td>
+					<td data-cell="#{msg['lbl.imp.justifi']}">#{irse.gastos.getGastoImporte(g)} €</td>
+					<td data-cell="#{msg['lbl.imp.percibir']}">#{irse.form.getMinPernoctaI18n(g)} €</td>
 				</tr>
 				</c:forEach>
 			</tbody>
@@ -47,12 +47,12 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4"><h:outputText value="#{msg['lbl.alojamientos']}" escape="false" />: #{iris.gastos.numPernoctas}</td>
-					<td class="tb-data-tc hide-xs">#{iris.gastos.numNoches}</td>
+					<td colspan="4"><h:outputText value="#{msg['lbl.alojamientos']}" escape="false" />: #{irse.gastos.numPernoctas}</td>
+					<td class="tb-data-tc hide-xs">#{irse.gastos.numNoches}</td>
 					<td class="hide-xs"></td>
-					<td class="tb-data-tc hide-xs">#{iris.gastos.maxPernoctasI18n} €</td>
-					<td class="tb-data-tc hide-xs">#{iris.gastos.impPernoctasI18n} €</td>
-					<td class="tb-data-tc hide-xs">#{iris.gastos.minPernoctasI18n} €</td>
+					<td class="tb-data-tc hide-xs">#{irse.gastos.maxPernoctasI18n} €</td>
+					<td class="tb-data-tc hide-xs">#{irse.gastos.impPernoctasI18n} €</td>
+					<td class="tb-data-tc hide-xs">#{irse.gastos.minPernoctasI18n} €</td>
 				</tr>
 			</tfoot>
 		</table>

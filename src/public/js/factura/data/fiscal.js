@@ -49,6 +49,10 @@ export default {
     c2epes3: NP_010, c2noes3: NP_010, c2noue3: NP_206, c2nozz3: NP_010, 
     c3epes3: NP_010, c3noes3: NP_010, c3noue3: NP_206, c3nozz3: NP_010,
 
+    c1epes24: NP_010, c1noes24: NP_010, c1noue24: NP_010, c1nozz24: NP_010, 
+    c2epes24: NP_010, c2noes24: NP_010, c2noue24: NP_010, c2nozz24: NP_010, 
+    c3epes24: NP_010, c3noes24: NP_010, c3noue24: NP_010, c3nozz24: NP_010,
+
     c2epes15: C2T15, c2noes15: C2T15, c2noue15: C2TUE15, c2nozz15: C2T15, 
     c3epes15: C2T15, c3noes15: C2T15, c3noue15: C2TUE15, c3nozz15: C2T15,
 

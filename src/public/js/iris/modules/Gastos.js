@@ -3,19 +3,32 @@ import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/StringBox.js";
 import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
+
+import iris from "./iris.js";
+import rutas from "./rutas.js";
 import gasto from "../model/Gasto.js";
 import pernoctas from "../data/pernoctas/pernoctas.js";  
 
-export default function Gastos(form) {
+function Gastos() {
 	const self = this; //self instance
-	const rutas = form.get("rutas");
+	const form = iris.getForm(); // form component
 	let _gastos, _tblGastos; // container
 
+	this.getGastos = () => _gastos;
 	this.getFacturas = () => _gastos.filter(gasto.isFactura);
+	this.getTickets = () => _gastos.filter(gasto.isTicket);
+	this.getTransporte = () => _gastos.filter(gasto.isTransporte);
+	this.getPernoctas = () => _gastos.filter(gasto.isPernocta);
 	this.getDietas = () => _gastos.filter(gasto.isDieta);
 	this.getPaso5 = () => _gastos.filter(gasto.isPaso5);
 
-	form.set("gastos", self);
+	this.updateGastos = (tipo, data) => {
+		_gastos = _gastos.filter(gasto => (gasto.tipo != tipo)).concat(data);
+		return self;
+	}
+	this.updateFacturas = data => self.updateGastos(1, data);
+	this.updateDietas = data => self.updateGastos(7, data);
+
 	this.init = () => {
 		_gastos = coll.parse(form.getText("#gastos-data")) || [];
 		_tblGastos = form.setTable("#tbl-gastos");
@@ -68,14 +81,16 @@ export default function Gastos(form) {
 		return self;
 	}
 
+	this.validateGasto = data => {
+		const valid = i18n.getValidators();
+		return valid.isOk();
+	}
 	this.validate = data => {
 		const valid = i18n.getValidators();
 		return valid.isOk();
 	}
-	window.validateGasto = data => {
-		const valid = i18n.getValidators();
-		return valid.isOk();
-	}
+	window.validateGasto = () => form.validate(self.validateGasto);
+	window.validateP5 = () => form.validate(self.validate);
 	window.updateGastos = (xhr, status, args) => {
 		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
@@ -83,3 +98,5 @@ export default function Gastos(form) {
 		//_tblGastos.render(gastos);
 	}
 }
+
+export default new Gastos();

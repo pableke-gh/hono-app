@@ -4,6 +4,7 @@ function Gasto() {
 
 	this.isFactura = gasto => (gasto.tipo == 1);
 	this.isTicket = gasto => (gasto.tipo == 2);
+	this.isTransporte = gasto => (self.isFactura(gasto) || self.isTicket(gasto));
 	this.isPernocta = gasto => (gasto.tipo == 6);
 	this.isDieta = gasto => (gasto.tipo == 7);
 	this.isExtra = gasto => (gasto.tipo == 8);

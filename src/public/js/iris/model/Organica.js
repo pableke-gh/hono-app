@@ -39,7 +39,7 @@ function Organica() {
 		</tr>`;
 	}
     this.tfoot = resume => `<tr><td colspan="99">Filas: ${resume.size}</td></tr>`;
-	this.afterRender = resume => { resume.updateDietas = true; }
+	//this.afterRender = resume => { resume.updateDietas = true; }
 }
 
 export default new Organica();

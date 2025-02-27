@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h2>Partida que Disminuye</h2>
+	<div class="ui-blocks">
+	<label class="ui-block">
+		<div class="label">Ejercicio:</div>
+		<h:selectOneMenu id="ejDec" value="#{presto2.solicitud.ejOrgDec}" styleClass="ui-input ui-select update-presto" tabindex="5">
+			<f:selectItems value="#{presto2.ejercicios}" />
+		</h:selectOneMenu>
+	</label>
+	<label class="ui-block-xl autocomplete">
+		<div class="label required">Orgánica:</div>
+		<p:remoteCommand name="rcFindOrgDec" action="#{presto2.form.filterOrganicas()}" oncomplete="loadItems(xhr, status, args)" />
+		<input type="search" id="acOrgDec" name="acOrgDec" class="ui-input ui-autocomplete" tabindex="6" />
+		<h:inputText id="idOrgDec" value="#{presto2.solicitud.idOrganicaDec}" styleClass="ui-input ui-number hide" />
+		<ul role="list" class="results"></ul>
+		<div class="ui-errtip"></div> 
+	</label>
+	<label class="ui-block">
+		<div class="label" title="Orgánica afectada">FA:</div>
+		<h:inputText id="faDec" value="#{presto2.solicitud.faDec}" class="ui-input ui-bool disabled" tabindex="-1" title="Orgánica afectada" />
+	</label>
+	<label class="ui-block">
+		<div class="label required">Económica:</div>
+		<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number" tabindex="7"></select>
+		<h:inputText id="idEcoDecPF" value="#{presto2.solicitud.idEconomicaDec}" styleClass="ui-input ui-number hide" />
+		<p:remoteCommand name="rcEcoDec" action="#{presto2.form.filterEconomicas()}" oncomplete="loadEconomicasDec(xhr, status, args)" />
+		<p:commandButton id="autoload-l83" action="#{presto2.form.autoloadL83()}" oncomplete="autoloadL83(xhr, status, args)" styleClass="hide" />
+		<p:commandButton id="autoload-ant" action="#{presto2.form.autoloadAnt()}" oncomplete="autoloadAnt(xhr, status, args)" styleClass="hide" />
+		<div class="ui-errtip"></div>
+	</label>
+	<label class="ui-block">
+		<div class="label required">Importe:</div>
+		<input type="text" id="impDec" name="impDec" value="#{presto2.solicitud.importe}" maxlength="12" tabindex="8" class="ui-input ui-float"/> €
+		<div class="ui-errtip"></div>
+	</label>
+	<label class="ui-block show-imp-cd">
+		<div class="label required">Importe Disponible:</div>
+		<input type="text" id="cd" name="cd" tabindex="-1" class="ui-input ui-float disabled"/> €
+		<div class="ui-errtip"></div>
+	</label>
+	</div>
+</html>

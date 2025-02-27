@@ -10,14 +10,14 @@
 	<div class="card-xeco">
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab6.tit']}" escape="false" /></h2>
 
-		<div class="#{iris.gastos.cssAc}">
-			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.ac']}" escape="false" />: <b class="text-green">#{iris.gastos.totAcI18n} €</b></h3>
+		<div class="#{irse.gastos.cssAc}">
+			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.ac']}" escape="false" />: <b class="text-green">#{irse.gastos.totAcI18n} €</b></h3>
 		</div>
 
 		<c:choose>
-			<c:when test="#{iris.form.mun}">
+			<c:when test="#{irse.form.mun}">
 				<div class="navbar">
-					<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green">#{iris.gastos.kmCalcI18n} €</b></h3>
+					<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green">#{irse.gastos.kmCalcI18n} €</b></h3>
 				</div>
 			</c:when>
 			<c:otherwise>
@@ -28,15 +28,15 @@
 		<ui:include src="irse06_transporte.xhtml"></ui:include>
 		<ui:include src="irse06_pernoctas.xhtml"></ui:include>
 
-		<div class="#{iris.perfil.cssTab7}">
+		<div class="#{irse.perfil.cssTab7}">
 			<ui:include src="irse07.xhtml"></ui:include>
 		</div>
 
-		<c:if test="#{iris.perfil.tab8}">
+		<c:if test="#{irse.perfil.tab8}">
 			<ui:include src="irse08.xhtml"></ui:include>
 		</c:if>
 
-		<div class="#{iris.form.cssIrpf}">
+		<div class="#{irse.form.cssIrpf}">
 			<ui:include src="irse06_irpf.xhtml"></ui:include>
 		</div>
 	</div>
@@ -45,13 +45,13 @@
 	<a href="#tab-5" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="130">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
-	<c:when test="#{iris.form.editable}">
+	<c:when test="#{irse.form.editable}">
 		<p:commandLink
-				onclick="if (!ir.paso6()) return false;" action="#{iris.form.paso6()}" oncomplete="showTab(xhr, status, args);" 
+				onclick="if (!ir.paso6()) return false;" action="#{irse.form.paso6()}" oncomplete="showTab(xhr, status, args);" 
 				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
 		</p:commandLink>
-		<p:commandButton onclick="if (!ir.paso6()) return false;" action="#{iris.form.save6()}" oncomplete="saveTab();"
+		<p:commandButton onclick="if (!ir.paso6()) return false;" action="#{irse.form.save6()}" oncomplete="saveTab();"
 			styleClass="btn btn-green success-btn" icon="far fa-save" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="132" />
 	</c:when>
 	<c:otherwise>
@@ -60,10 +60,10 @@
 	</c:otherwise>
 	</c:choose>
 
-	<c:if test="#{iris.form.firmable}">
+	<c:if test="#{irse.form.firmable}">
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</c:if>
-	<c:if test="#{iris.form.cancelable}">
+	<c:if test="#{irse.form.cancelable}">
 		<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="134" title="#{msg['tit.btn.cancelar']}">
 			<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
 	</c:if>

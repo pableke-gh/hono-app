@@ -12,25 +12,33 @@ function Dieta() {
 	}
 	this.row = (dieta, status, resume) => {
 		console.log('dieta: ', dieta);
-		resume.dias += dieta.num;
-		resume.impMax += dieta.impMax;
-		resume.reducido += dieta.reducido;
-		resume.percibir += dieta.percibir;
 		const editable = window.IRSE.editable;
-		const dietas = editable ? `<select tabindex="111">@dietas;</select` : i18n.isoInt(dieta.imp1); 
+		const dietas = editable ? `<select tabindex="111">@dietas;</select` : i18n.isoInt(dieta.imp1);
+
+		const isFirst = (status.index == 0);
+		const isLast = (status.count == resume.size);
+		const maxDietas = (isFirst || isLast) ? (dieta.estado / 2) : dieta.num;
+		const impMax = dieta.imp2 * maxDietas;
+		const reducido = isLast ? (dieta.imp1 ? 0 : impMax) : ((dieta.num - dieta.imp1) * dieta.imp2);
+		const percibir = impMax - reducido; 
+
+		resume.dias += dieta.num;
+		resume.impMax += impMax;
+		resume.reducido += reducido;
+		resume.percibir += percibir;
 
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="#{msg['lbl.dia.periodo']}">${i18n.get("medDay")}</td>
-			<td data-cell="#{msg['lbl.pais']}">@nombre;</td>
-			<td data-cell="#{msg['lbl.fecha.inicio']}">@f1;</td>
-			<td data-cell="#{msg['lbl.fecha.fin']}">@f2;</td>
-			<td data-cell="#{msg['lbl.dias']}">@num;</td>
-			<td data-cell="#{msg['lbl.dietas.propuestas']}">@maxDietas;</td>
-			<td data-cell="#{msg['lbl.imp.dieta']}">@imp2; €</td>
-			<td data-cell="#{msg['lbl.imp.propuesto']}">${i18n.isoFloat(dieta.impMax)} €</td>
+			<td data-cell="#{msg['lbl.dia.periodo']}">${dieta.desc}</td>
+			<td data-cell="#{msg['lbl.pais']}">${dieta.nombre}</td>
+			<td data-cell="#{msg['lbl.fecha.inicio']}">${i18n.isoDate(dieta.f1)}</td>
+			<td data-cell="#{msg['lbl.fecha.fin']}">${i18n.isoDate(dieta.f2)}</td>
+			<td data-cell="#{msg['lbl.dias']}">${i18n.isoInt(dieta.num)}</td>
+			<td data-cell="#{msg['lbl.dietas.propuestas']}">${i18n.isoFloat1(maxDietas)}</td>
+			<td data-cell="#{msg['lbl.imp.dieta']}">${i18n.isoFloat(dieta.imp2)} €</td>
+			<td data-cell="#{msg['lbl.imp.propuesto']}">${i18n.isoFloat(impMax)} €</td>
 			<td data-cell="#{msg['lbl.tus.dietas']}">${dietas}</td>
-			<td data-cell="#{msg['lbl.imp.reduccion']}">@reducido; €</td>
-			<td data-cell="#{msg['lbl.imp.tot']}">@percibir; €</td>
+			<td data-cell="#{msg['lbl.imp.reduccion']}">${i18n.isoFloat(reducido)} €</td>
+			<td data-cell="#{msg['lbl.imp.tot']}">${i18n.isoFloat(percibir)} €</td>
 		</tr>`;
 	}
 	this.tfoot = resume => {
@@ -41,8 +49,8 @@ function Dieta() {
 		<td></td>
 		<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.impMax)} €</td>
 		<td></td>
-		<td class="tb-data-tc hide-xs">@reducido; €</td>
-		<td class="tb-data-tc" data-cell="#{msg['lbl.imp.tot']}">@percibir; €</td>
+		<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.reducido)} €</td>
+		<td class="tb-data-tc" data-cell="#{msg['lbl.imp.tot']}">${i18n.isoFloat(resume.percibir)} €</td>
 	</tr>`;
 	}
 }

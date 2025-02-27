@@ -7,31 +7,31 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-<div class="update-irse #{iris.form.cssFirmas}">
+<div class="update-irse #{iris.firmas.cssFirmas}">
 	<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
 	<div class="ui-blocks">
-	<c:forEach items="#{iris.form.firmas}" var="f">
+	<c:forEach items="#{iris.firmas.firmas}" var="f">
 		<div class="ui-block-box">
 			<p>#{f.cargo}</p>
 			<p>#{f.fullName}</p>
 			<p>
 			<c:choose>
 				<c:when test="#{f.aceptada}">
-					<i class="fas fa-flag-alt text-green icon" title="Firma aceptada"></i>#{iris.getMsg('lblAceptada')} #{iris.getFechaFirma(f)}
+					<i class="fas fa-flag-alt text-green icon" title="Firma aceptada"></i>#{irse.getMsg('lblAceptada')} #{irse.getFechaFirma(f)}
 				</c:when>
 				<c:when test="#{f.rechazada}">
-					<i class="fas fa-flag-alt text-error icon" title="#{f.info}"></i>#{iris.getMsg('lblRechazada')} #{iris.getFechaFirma(f)}
+					<i class="fas fa-flag-alt text-error icon" title="#{f.info}"></i>#{irse.getMsg('lblRechazada')} #{irse.getFechaFirma(f)}
 				</c:when>
 				<c:otherwise>
-					<i class="fas fa-flag-alt text-warn icon" title="Pendiente de firma"></i>#{iris.getMsg('lblPendiente')}
+					<i class="fas fa-flag-alt text-warn icon" title="Pendiente de firma"></i>#{irse.getMsg('lblPendiente')}
 				</c:otherwise>
 			</c:choose>
 			</p>
 		</div>
 	</c:forEach>
 	</div>
-	<c:if test="#{iris.form.rechazada}">
-		<p class="notice notice-error"><h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (#{iris.form.nameRechazo}) #{iris.form.infoRechazo}</p>
+	<c:if test="#{iris.rechazada}">
+		<p class="notice notice-error"><h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (#{irse.form.nameRechazo}) #{irse.form.infoRechazo}</p>
 	</c:if>
 	<ui:include src="leyenda_firmas.xhtml"></ui:include>
 </div>

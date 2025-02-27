@@ -16,12 +16,12 @@
 		<div class="ui-blocks">
 			<label class="ui-block-row">
 				<div class="label required inline"><h:outputText value="#{msg['lbl.fecha.act']}" escape="false" />:</div>
-				<h:inputText id="fAct" value="#{iris.gastos.f1Ac}" maxlength="10" tabindex="46" styleClass="ui-input ui-date #{iris.form.cssDisabled}"/>
+				<h:inputText id="fAct" value="#{irse.gastos.f1Ac}" maxlength="10" tabindex="46" styleClass="ui-input ui-date #{irse.form.cssDisabled}"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-row">
 				<div class="label required inline"><h:outputText value="#{msg['lbl.imp.tot']}" escape="false" /></div>
-				<h:inputText id="impAc" value="#{iris.gastos.impAc}" tabindex="47" styleClass="ui-input ui-float #{iris.form.cssDisabled}"/>
+				<h:inputText id="impAc" value="#{irse.gastos.impAc}" tabindex="47" styleClass="ui-input ui-float #{irse.form.cssDisabled}"/>
 				<span class="ui-block-info">€</span>
 				<div class="ui-errtip"></div>
 			</label>
@@ -31,12 +31,12 @@
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="57">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
-		<c:when test="#{iris.form.editable}">
-			<p:commandLink action="#{iris.form.paso1Col()}" onclick="if (!ir.paso1Col()) return false;" oncomplete="showTab(xhr, status, args);"
+		<c:when test="#{irse.form.editable}">
+			<p:commandLink action="#{irse.form.paso1Col()}" onclick="if (!ir.paso1Col()) return false;" oncomplete="showTab(xhr, status, args);"
 					styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="58">
 				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
 			</p:commandLink>
-			<p:commandButton action="#{iris.form.save1Col()}" onclick="if (!ir.paso1Col()) return false;" oncomplete="saveTab();" icon="far fa-save"
+			<p:commandButton action="#{irse.form.save1Col()}" onclick="if (!ir.paso1Col()) return false;" oncomplete="saveTab();" icon="far fa-save"
 				styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="59" />
 		</c:when>
 		<c:otherwise>
@@ -45,7 +45,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="#{iris.form.firmable}">
+	<c:if test="#{irse.form.firmable}">
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</c:if>
 </html>

@@ -8,17 +8,17 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<c:choose>
-		<c:when test="#{iris.uxxiec}"><ui:include src="./irse00_uxxiec.xhtml"></ui:include></c:when>
+		<c:when test="#{irse.uxxiec}"><ui:include src="./irse00_uxxiec.xhtml"></ui:include></c:when>
 		<c:otherwise><ui:include src="./irse00_pdi.xhtml"></ui:include></c:otherwise>
 	</c:choose>
 
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="12">
 		<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 	<c:choose>
-		<c:when test="#{iris.form.editableP0}">
+		<c:when test="#{irse.form.editableP0}">
 			<button type="reset" class="btn btn-light" title="#{msg['tit.btn.limpiar']}" tabindex="13">
 				<i class="far fa-broom btn-icon-left"></i>#{msg['lbl.btn.limpiar']}</button>
-			<p:commandButton action="#{iris.form.paso0()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" icon="fas fa-caret-right" iconPos="right" 
+			<p:commandButton action="#{irse.form.paso0()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" icon="fas fa-caret-right" iconPos="right" 
 				value="#{msg['lbl.btn.empezar']}" styleClass="btn btn-green success-btn" onclick="if (!ip.valid()) return false;" title="#{msg['tit.btn.empezar']}" tabindex="13"/>
 		</c:when>
 		<c:otherwise>
@@ -27,20 +27,20 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="#{iris.form.resumable}">
+	<c:if test="#{irse.form.resumable}">
 		<a href="#tab-6" class="btn btn-info" title="#{msg['tit.btn.resumen']}" tabindex="14">
 			<h:outputText value="#{msg['lbl.btn.resumen']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 	</c:if>
 
-	<c:if test="#{iris.form.removable}">
-		<p:commandButton action="#{iris.list.remove()}" onclick="if (!fnRemove()) return false;" update="xeco-list" oncomplete="showTab(xhr, status, args, 14);" 
+	<c:if test="#{irse.form.removable}">
+		<p:commandButton action="#{irse.list.remove()}" onclick="if (!fnRemove()) return false;" update="xeco-list" oncomplete="showTab(xhr, status, args, 14);" 
 			icon="fal fa-trash-alt" styleClass="btn btn-error danger-btn" value="Eliminar" tabindex="14" title="Borra la solicitud del sistema" />
 	</c:if>
 	<c:choose>
-		<c:when test="#{iris.form.firmable}">
+		<c:when test="#{irse.form.firmable}">
 			<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 		</c:when>
-		<c:when test="#{iris.form.cancelable}">
+		<c:when test="#{irse.form.cancelable}">
 			<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="14" title="#{msg['tit.btn.cancelar']}">
 				<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
 		</c:when>

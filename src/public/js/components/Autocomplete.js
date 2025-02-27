@@ -100,12 +100,13 @@ export default function(autocomplete, opts) {
     this.reset = () => {
         if (inputValue.value) // is selected data
             opts.onReset(self); // Fire event onFinish
-        return fnClear(); // Reset previous values
+		return fnClear(); // Reset previous values
     }
     this.reload = () => {
-        autocomplete.value = ""; // Clear input
-        autocomplete.focus(); // Set focus
-        return self.reset(); // Reset all data
+    	self.reset(); // 1º Reset all data
+		autocomplete.value = ""; // Clear input
+    	autocomplete.focus(); // Set focus
+    	return self;
     }
     this.render = data => {
         fnClear(); // clear previous results

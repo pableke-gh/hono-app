@@ -19,21 +19,21 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:if test="#{iris.gastos.numPaso5 le 0}">
+		<c:if test="#{irse.gastos.numPaso5 le 0}">
 			<tr><td class="no-data" colspan="99"><h:outputText value="#{msg['msg.no.docs']}" escape="false" /></td></tr>
 		</c:if>
-		<c:forEach items="#{iris.gastos.paso5}" var="g" varStatus="loop">
+		<c:forEach items="#{irse.gastos.paso5}" var="g" varStatus="loop">
 			<tr class="tb-data tb-data-tc">
 				<td data-cell="Nº">#{loop.count}</td>
-				<td data-cell="#{msg['lbl.tipo.gasto']}">#{iris.gastos.getSubtipoDesc(g)}</td>
-				<td data-cell="#{msg['lbl.desc.obsev']}">#{iris.gastos.getDescGasto(g)}</td>
+				<td data-cell="#{msg['lbl.tipo.gasto']}">#{irse.gastos.getSubtipoDesc(g)}</td>
+				<td data-cell="#{msg['lbl.desc.obsev']}">#{irse.gastos.getDescGasto(g)}</td>
 				<td data-cell="#{msg['lbl.adjunto']}">#{g.nombre}</td>
-				<td data-cell="#{msg['lbl.importe']}">#{iris.gastos.getGastoImporte(g)} €</td>
+				<td data-cell="#{msg['lbl.importe']}">#{irse.gastos.getGastoImporte(g)} €</td>
 				<td class="no-print" data-cell="Acciones">
 					<span>
 					<a href="#{g.fref}" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>
-					<c:if test="#{iris.form.editable}">
-						<p:commandLink action="#{iris.form.unloadGasto(g)}" 
+					<c:if test="#{irse.form.editable}">
+						<p:commandLink action="#{irse.form.unloadGasto(g)}" 
 								onclick="if (!fnUnlink()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);"
 								title="Desasociar ticket de la solicitud">
 							<i class="fas fa-times action text-red resize"></i>
@@ -45,7 +45,7 @@
 		</c:forEach>
 		</tbody>
 		<tfoot>
-			<tr><td colspan="99"><h:outputText value="#{msg['lbl.docs']}" escape="false" />: #{iris.gastos.numPaso5}</td></tr>
+			<tr><td colspan="99"><h:outputText value="#{msg['lbl.docs']}" escape="false" />: #{irse.gastos.numPaso5}</td></tr>
 		</tfoot>
 	</table>
 </html>

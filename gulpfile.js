@@ -52,6 +52,9 @@ gulp.task("minify-views", done => {
 		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
 		deployCV("dist/views/xeco/**/*", CV_XECO, () => {}); // deploy xeco XHTML in Campus Virtual
 
+		const CV_PRESTO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/presto";
+		deployCV("dist/views/presto/**/*", CV_PRESTO, () => {}); // deploy presto XHTML in Campus Virtual
+
 		const CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
 		deployCV("dist/views/irse/**/*", CV_IRSE, done); // deploy irse XHTML in Campus Virtual
 

@@ -12,13 +12,13 @@
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-				<h:selectOneMenu value="#{iris.input.ejercicio}" styleClass="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
-					<f:selectItems value="#{iris.input.ejercicios}" />
+				<h:selectOneMenu value="#{iris.list.ejercicio}" styleClass="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
+					<f:selectItems value="#{iris.list.ejercicios}" />
 				</h:selectOneMenu>
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.estado']}" escape="false" />:</div>
-				<h:selectOneMenu id="estado" value="#{iris.input.estado}" styleClass="ui-input ui-select ui-filter" tabindex="2" title="#{msg['tit.estado']}">
+				<h:selectOneMenu id="estado" value="#{iris.list.estado}" styleClass="ui-input ui-select ui-filter" tabindex="2" title="#{msg['tit.estado']}">
 					<f:selectItem itemValue="" itemLabel="" />
 					<f:selectItem itemValue="6" itemLabel="#{msg['uae.irse.filter.estado.6']}" itemEscaped="false"/>
 					<f:selectItem itemValue="5" itemLabel="#{msg['uae.irse.filter.estado.5']}" itemEscaped="false"/>
@@ -31,25 +31,25 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
-				<h:selectOneMenu id="firma" value="#{iris.input.firma}" styleClass="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
+				<h:selectOneMenu id="firma" value="#{iris.list.firma}" styleClass="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
 					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="5" itemLabel="#{iris.getMsg('lblPendiente')}" />
-					<f:selectItem itemValue="1" itemLabel="#{iris.getMsg('lblAceptada')}" />
-					<f:selectItem itemValue="2" itemLabel="#{iris.getMsg('lblRechazada')}" />
+					<f:selectItem itemValue="5" itemLabel="#{irse.getMsg('lblPendiente')}" />
+					<f:selectItem itemValue="1" itemLabel="#{irse.getMsg('lblAceptada')}" />
+					<f:selectItem itemValue="2" itemLabel="#{irse.getMsg('lblRechazada')}" />
 				</h:selectOneMenu>
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<h:inputText value="#{iris.input.codigo}" styleClass="ui-input ui-code ui-filter" tabindex="4" />
+				<h:inputText value="#{irse.input.codigo}" styleClass="ui-input ui-code ui-filter" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" />:</div>
-				<h:inputText value="#{iris.input.organica}" styleClass="ui-input ui-code ui-filter" tabindex="5" />
+				<h:inputText value="#{irse.input.organica}" styleClass="ui-input ui-code ui-filter" tabindex="5" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<h:inputText id="f-min" value="#{iris.input.FMin}" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
-				<h:inputText id="f-max" value="#{iris.input.FMax}" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
+				<h:inputText id="f-min" value="#{irse.input.FMin}" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
+				<h:inputText id="f-max" value="#{irse.input.FMax}" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
 			</label>
 		</div>
 
@@ -59,11 +59,11 @@
 			</div>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
-				<h:inputText value="#{iris.input.interesado}" styleClass="ui-input ui-text ui-filter" tabindex="8" />
+				<h:inputText value="#{irse.input.interesado}" styleClass="ui-input ui-text ui-filter" tabindex="8" />
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" /></div>
-				<h:selectOneMenu id="filtro-actividad" value="#{iris.input.actividad}" class="ui-input ui-select ui-filter" tabindex="10">
+				<h:selectOneMenu id="filtro-actividad" value="#{irse.input.actividad}" class="ui-input ui-select ui-filter" tabindex="10">
 					<f:selectItem itemValue="" itemLabel="" />
 					<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
 					<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
@@ -82,7 +82,7 @@
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" /></div>
-				<h:selectOneMenu id="filtro-tramite" value="#{iris.input.tramite}" class="ui-input ui-select ui-filter" tabindex="11">
+				<h:selectOneMenu id="filtro-tramite" value="#{irse.input.tramite}" class="ui-input ui-select ui-filter" tabindex="11">
 					<f:selectItem itemValue="" itemLabel="" />
 					<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
 					<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
@@ -96,7 +96,7 @@
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 				<p:commandButton id="filter-list" action="#{iris.list.list()}" onclick="loading();" update="xeco-list" oncomplete="showTab(xhr, status, args, 14);"
 					icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
-				<p:commandButton id="list-all" rendered="#{not iris.otri}" action="#{iris.list.list()}" onclick="onListAll();" update="xeco-list" oncomplete="showTab(xhr, status, args, 14);" 
+				<p:commandButton id="list-all" rendered="#{not iris.user.otri}" action="#{irse.list.list()}" onclick="onListAll();" update="xeco-list" oncomplete="showTab(xhr, status, args, 14);" 
 					icon="far fa-search" styleClass="btn btn-info" value="Ver Todos" tabindex="13"></p:commandButton>
 				<p:commandLink action="#{iris.list.list()}" onclick="onList();" update="xeco-list" oncomplete="working();" 
 					styleClass="btn btn-warn warning-btn" tabindex="14">
@@ -123,25 +123,25 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:if test="#{empty iris.solicitudes}">
+			<c:if test="#{empty iris.list.solicitudes}">
 				<tr><td class="no-data" colspan="99">No se han encontrado comunicaciones asociadas al filtro seleccionado</td></tr>
 			</c:if>
-			<c:forEach items="#{iris.solicitudes}" var="sol">
+			<c:forEach items="#{iris.list.solicitudes}" var="sol">
 			<tr id="#{sol.idIrse}" class="tb-data">
 				<td class="text-center text-red text-xl">
 					<c:if test="#{sol.urgente}">
 						<c:choose>
-							<c:when test="#{iris.uae}">
-								<span class="texterr textbig textuc" title="#{iris.list.getMsgUrgencia(sol)}">&#33;</span>
+							<c:when test="#{iris.user.uae}">
+								<span class="texterr textbig textuc" title="#{irse.list.getMsgUrgencia(sol)}">&#33;</span>
 							</c:when>
 							<c:otherwise>
-								<span class="texterr textbig textuc" title="#{iris.list.getMsgUrgenciaShort(sol)}">&#33;</span>
+								<span class="texterr textbig textuc" title="#{irse.list.getMsgUrgenciaShort(sol)}">&#33;</span>
 							</c:otherwise>
 						</c:choose>
 					</c:if>
 				</td>
 				<td>
-					<p:commandLink action="#{iris.list.view(sol)}" onclick="if (isCached('#{sol.idIrse}', '#{iris.form.getPaso(sol)}'))return false;loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)"
+					<p:commandLink action="#{iris.view(sol)}" onclick="if (isCached('#{sol.idIrse}', '#{irse.form.getPaso(sol)}'))return false;loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)"
 							title="#{sol.codigo}: #{sol.fullName}">#{sol.codigoNum}</p:commandLink>
 				</td>
 				<td>
@@ -186,51 +186,51 @@
 					</c:choose>
 				</td>
 				<td><span class="hide-sm">#{sol.sigFirma}</span></td>
-				<td class="hide-xs">#{iris.list.getFCreacion(sol)}</td>
+				<td class="hide-xs">#{irse.list.getFCreacion(sol)}</td>
 				<td>#{sol.organica}<span class="hide-sm"> #{sol.descOrganica}</span><c:if test="#{sol.multipartida}"><span> (y otras)</span></c:if></td>
 				<td>#{sol.fullNameInteresado}</td>
 				<td><span class="hide-sm">#{sol.memoria}</span></td>
-				<td class="text-right">#{iris.list.getImporte(sol)} €</td>
+				<td class="text-right">#{irse.list.getImporte(sol)} €</td>
 				<td class="text-right no-print">
-					<p:commandLink action="#{iris.list.view(sol)}" onclick="if (isCached('#{sol.idIrse}', '#{iris.form.getPaso(sol)}'))return false;loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" title="Acceso a la comunicación">
+					<p:commandLink action="#{iris.view(sol)}" onclick="if (isCached('#{sol.idIrse}', '#{irse.form.getPaso(sol)}'))return false;loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" title="Acceso a la comunicación">
 							<i class="fas fa-search action text-blue resize"></i></p:commandLink>
-					<c:if test="#{sol.editable and iris.uae}">
-						<p:commandLink action="#{iris.list.activePaso8(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
+					<c:if test="#{sol.editable and iris.user.uae}">
+						<p:commandLink action="#{irse.list.activePaso8(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
 							title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{iris.isReactivable(sol)}">
-						<p:commandLink action="#{iris.list.clone(sol)}" onclick="if (!fnClone()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)"
+					<c:if test="#{irse.isReactivable(sol)}">
+						<p:commandLink action="#{irse.list.clone(sol)}" onclick="if (!fnClone()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)"
 								title="Subsanar la comunicación salvo cambio de presupuesto">
 							<i class="far fa-edit action text-blue resize"></i></p:commandLink>
 					</c:if>
 					<c:if test="#{sol.firmable}">
-						<p:commandLink action="#{iris.list.firmar(sol)}" onclick="if (!fnFirmar()) return false;loading();" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Firmar rolicitud"><i class="fas fa-check action text-green resize"></i></p:commandLink>
-						<p:commandLink action="#{iris.list.confirm(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'reject');" title="Ir al motivo de rechazo"><i class="fas fa-times action text-red resize"></i></p:commandLink>
+						<p:commandLink action="#{irse.list.firmar(sol)}" onclick="if (!fnFirmar()) return false;loading();" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Firmar rolicitud"><i class="fas fa-check action text-green resize"></i></p:commandLink>
+						<p:commandLink action="#{irse.list.confirm(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'reject');" title="Ir al motivo de rechazo"><i class="fas fa-times action text-red resize"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{sol.ejecutable}">
-						<p:commandLink action="#{iris.list.report(sol)}" onclick="loading();" oncomplete="handleReport(xhr, status, args)" title="#{msg['tit.btn.informe']}">
+					<c:if test="#{sol.pendiente or sol.ejecutable}">
+						<p:commandLink action="#{irse.list.report(sol)}" onclick="loading();" oncomplete="handleReport(xhr, status, args)" title="#{msg['tit.btn.informe']}">
 							<i class="fal fa-file-pdf action text-red resize"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{iris.admin and iris.isIntegrable(sol)}">
-						<p:commandLink action="#{iris.list.rptFinalizar(sol)}" onclick="loading();" oncomplete="openHtml(xhr, status, args, 'Informe IRIS')" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></p:commandLink>
-						<p:commandLink action="#{iris.list.integrar(sol)}" onclick="if(!fnIntegrar(this)) return false;" oncomplete="showAlerts(xhr, status, args)" title="Lanza el proceso de integración con la capa SOA"><i class="far fa-save action resize text-blue"></i></p:commandLink>
+					<c:if test="#{iris.user.admin and irse.isIntegrable(sol)}">
+						<p:commandLink action="#{irse.list.rptFinalizar(sol)}" onclick="loading();" oncomplete="openHtml(xhr, status, args, 'Informe IRIS')" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></p:commandLink>
+						<p:commandLink action="#{irse.list.integrar(sol)}" onclick="if(!fnIntegrar(this)) return false;" oncomplete="showAlerts(xhr, status, args)" title="Lanza el proceso de integración con la capa SOA"><i class="far fa-save action resize text-blue"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{iris.isEjecutable(sol) and (iris.isUae() or sol.isFirmaGestor())}">
-						<p:commandLink action="#{iris.list.uxxi(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'uxxiec');" title="Expediente asociado a la solicitud"><i class="fal fa-cog action text-blue resize"></i></p:commandLink>
+					<c:if test="#{irse.isEjecutable(sol) and (irse.isUae() or sol.isFirmaGestor())}">
+						<p:commandLink action="#{irse.list.uxxi(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'uxxiec');" title="Expediente asociado a la solicitud"><i class="fal fa-cog action text-blue resize"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{iris.admin}">
-						<p:commandLink action="#{iris.list.emails(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" title="Envia una prueba de cada tipo de correo al administrador"><i class="fal fa-mail-bulk action text-blue resize"></i></p:commandLink>
-						<p:commandLink action="#{iris.list.recalc(sol)}" onclick="if (!fnFirmar()) return false;loading();" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Recalcula las firmas asociadas a la comunicación"><i class="far fa-file-signature action text-green resize"></i></p:commandLink>
+					<c:if test="#{iris.user.admin}">
+						<p:commandLink action="#{irse.list.emails(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" title="Envia una prueba de cada tipo de correo al administrador"><i class="fal fa-mail-bulk action text-blue resize"></i></p:commandLink>
+						<p:commandLink action="#{irse.list.recalc(sol)}" onclick="if (!fnFirmar()) return false;loading();" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Recalcula las firmas asociadas a la comunicación"><i class="far fa-file-signature action text-green resize"></i></p:commandLink>
 					</c:if>
-					<c:if test="#{iris.form.isRemovable(sol)}">
-						<p:commandLink action="#{iris.list.remove(sol.idIrse)}" onclick="if (!fnRemove()) return false;" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Borra la comunicación del sistema"><i class="fal fa-trash-alt action text-red resize"></i></p:commandLink>
+					<c:if test="#{irse.form.isRemovable(sol)}">
+						<p:commandLink action="#{irse.list.remove(sol.idIrse)}" onclick="if (!fnRemove()) return false;" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Borra la comunicación del sistema"><i class="fal fa-trash-alt action text-red resize"></i></p:commandLink>
 					</c:if>
 				</td>
 			</tr>
 			</c:forEach>
 		</tbody>
 		<tfoot>
-			<tr><td colspan="11"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{iris.numSolicitudes}</td></tr>
+			<tr><td colspan="11"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{irse.numSolicitudes}</td></tr>
 		</tfoot>
 	</table>
 	</h:form>

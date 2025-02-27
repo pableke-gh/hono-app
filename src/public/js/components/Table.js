@@ -3,7 +3,6 @@ import dom from "./DomBox.js";
 import coll from "./CollectionHTML.js";
 import i18n from "../i18n/langs.js";
 
-const EMPTY = [];
 const fnTrue = () => true;
 
 export default function(table, opts) {
@@ -39,7 +38,7 @@ export default function(table, opts) {
 	const tBody = table.tBodies[0] || table.createTBody(); //body element
 	const tFoot = table.tFoot || table.createTFoot(); //footer element
 
-    let _rows = EMPTY; // default = empty array
+    let _rows = []; // default = empty array
     let _index = -1; // current item position in data
 
     this.get = name => opts[name];
@@ -134,7 +133,7 @@ export default function(table, opts) {
 	}
 
 	this.render = fnRender;
-	this.reset = () => fnRender(EMPTY);
+	this.reset = () => fnRender();
 	this.reload = () => fnRender(_rows);
 	this.push = row => { _rows.push(row); return fnRender(_rows); } // Push data and render
 	this.add = row => { delete row.id; return self.push(row); } // Force insert => remove PK

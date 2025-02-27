@@ -146,12 +146,12 @@ function Ruta() {
 			<td data-cell="#{msg['lbl.medio.trans']}">${i18n.getItem("tiposDesp", ruta.desp)}</td>
 			<td data-cell="Google km">${i18n.isoFloat(ruta.km2) || "-"}</td>
 			<td data-cell="#{msg['lbl.tus.km']}">${cell}</td>
-			<td data-cell="#{msg['lbl.importe']}">${impKm} €</td>
+			<td data-cell="#{msg['lbl.importe']}">${i18n.isoFloat(impKm)} €</td>
 		</tr>`;
 	}
     this.tfootVehiculoPropio = resume => {
 		return `<tr>
-			<td colspan="8">Etapas: ${resume.size}</td>
+			<td colspan="7">Etapas: ${resume.size}</td>
 			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.totKmCalc)}</td>
 			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.totKm)}</td>
 			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.impKm)} €</td>

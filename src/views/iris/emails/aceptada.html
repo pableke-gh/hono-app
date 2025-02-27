@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<div class="ui-g ui-fluid notice_content">
+	<div class="ui-g-9">
+		<i class="fal fa-fw fa-inbox-in mr-1"></i>
+		<b><span th:text="${notice.title}"/></b>.
+	</div>
+	<div class="ui-g-3 text-right">
+		<a th:href="${notice.urlAction}"><span th:utext="${notice.urlText}"/></a>
+	</div>
+	<div class="ui-g-12">
+		<ul>
+			<th:block th:each="detalle : ${detalleResoluciones}">
+				<li>
+					Le comunicamos que, con fecha <span th:utext="${#dates.format(detalle.ayuResoluciones.fechaPubTablon, 'dd/MM/yyyy')}"/>, ha sido publicada 
+					en el Tablón Oficial Electrónico de la Universidad, la
+					<span th:if="${detalle.ayuConsultaSolicitud.ayuAyudas.tipo ==  T(es.upct.portal.modules.ayuso.AyusoConstants).AYUDAS_SOCIALES}">
+						<span th:if="${detalle.ayuConsultaSolicitud.ayuAyudas.caracter ==  T(es.upct.portal.modules.ayuso.AyusoConstants).CARACTER_ORDINARIO}">
+							<span th:if="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> Resolución <span th:utext="${detalle.ayuResoluciones.numResolucion}"/> </span>
+							<span th:unless="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> propuesta de la Gerencia </span>
+							de concesión de ayudas sociales 
+						</span>
+						<span th:if="${detalle.ayuConsultaSolicitud.ayuAyudas.caracter ==  T(es.upct.portal.modules.ayuso.AyusoConstants).CARACTER_EXTRAORDINARIO}">
+							<span th:if="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> Resolución <span th:utext="${detalle.ayuResoluciones.numResolucion}"/> </span>
+							<span th:unless="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> propuesta de la Comisión de </span>
+							Ayudas Sociales	de concesión de ayudas sociales	de carácter extraordinario 
+						</span>
+					</span>
+					<span th:if="${detalle.ayuConsultaSolicitud.ayuAyudas.tipo ==  T(es.upct.portal.modules.ayuso.AyusoConstants).BECAS_ESTUDIO}">
+						<span th:if="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> Resolución <span th:utext="${detalle.ayuResoluciones.numResolucion}"/> </span>
+						<span th:unless="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> propuesta de </span>
+						de concesión de la Comisión de Becas de Estudio 
+					</span>
+					para el personal que presta servicios en la Universidad Politécnica de Cartagena, habiendo resultado 
+					<span th:if="${detalle.ayuConsultaSolicitud.estado ==  T(es.upct.portal.modules.ayuso.AyusoConstants).AYU_ESTADO_ACEPTADO}"><u>Aceptada</u></span> 
+					<span th:if="${detalle.ayuConsultaSolicitud.estado ==  T(es.upct.portal.modules.ayuso.AyusoConstants).AYU_ESTADO_DENEGADO}"><u>Denegada</u></span>
+					<span th:if="${detalle.ayuConsultaSolicitud.estado ==  T(es.upct.portal.modules.ayuso.AyusoConstants).AYU_ESTADO_DESISTIDA}"><u>Desistida</u></span>
+					la ayuda número <b><span th:utext="${detalle.id.codSolicitud}"/></b> por usted solicitada.
+
+					<div th:if="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}">
+						<p>De conformidad con lo dispuesto en el artículo 6.4 de la Ley 6/2001, de 21 de diciembre, de Universidades, modificada por la Ley Orgánica 4/2007, de 12 de abril, la citada Resolución pone fin a la vía administrativa y, al amparo del artículo 116.1 de la Ley 30/1992, de 26 de noviembre, de Régimen Jurídico de las Administraciones Públicas y del Procedimiento Administrativo Común, contra la misma cabe interponer recurso potestativo de reposición ante el mismo órgano que dictó el acto, en el plazo de un mes, contado desde el día siguiente de la fecha de la publicación de la presente Resolución, o en su caso recurso contencioso-administrativo ante el Juzgado Contencioso Administrativo en el plazo de dos meses, contando desde el día siguiente de la fecha de la publicación de la Resolución de referencia.</p>
+					</div>
+					<div th:unless="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}">
+						<p>Asimismo, le informamos que el plazo de reclamaciones es de diez días hábiles contados a partir del <span th:utext="${#dates.format(detalle.ayuResoluciones.fechaIniRecla, 'dd/MM/yyyy')}"/>, día hábil siguiente al de la publicación en el Tablón Oficial Electrónico.</p>
+					</div>
+				</li>
+			</th:block>
+		</ul>
+	</div>
+</div>

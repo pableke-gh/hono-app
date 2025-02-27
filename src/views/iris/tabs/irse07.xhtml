@@ -9,14 +9,14 @@
 
 	<h3>
 	<a id="p7-dietas" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
-		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.4']}" escape="false" />: <b id="imp-dietas" class="text-green">#{iris.gastos.impManutencionI18n} €</b>
+		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.4']}" escape="false" />: <b id="imp-dietas" class="text-green">#{irse.gastos.impManutencionI18n} €</b>
 	</a>
 	</h3>
 	<div class="info-p7-dietas hide">
 		<p class="notice notice-info">​<h:outputText value="#{msg['msg.google']}" escape="false" /></p>
 
-		<div id="dietas-data" class="hide">#{iris.gastos.manutencionesJson}</div>
-		<h:inputHidden id="gastos-dietas" value="#{iris.input.dietas}" />
+		<div id="dietas-data" class="hide">#{irse.gastos.manutencionesJson}</div>
+		<h:inputHidden id="gastos-dietas" value="#{irse.input.dietas}" />
 		<table id="manutenciones" class="tb-xeco table-xs">
 			<thead>
 				<tr>
@@ -45,7 +45,7 @@
 					<td data-cell="#{msg['lbl.imp.propuesto']}">@impMax; €</td>
 					<td data-cell="#{msg['lbl.tus.dietas']}">
 					<c:choose>
-						<c:when test="#{iris.form.editableP6}"><select tabindex="111">@dietas;</select></c:when>
+						<c:when test="#{irse.form.editableP6}"><select tabindex="111">@dietas;</select></c:when>
 						<c:otherwise>@imp1;</c:otherwise>
 					</c:choose>
 					</td>

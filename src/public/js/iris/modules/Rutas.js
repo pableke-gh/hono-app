@@ -3,39 +3,36 @@ import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/StringBox.js";
 import tb from "../../components/TemporalBox.js";
 
+import iris from "./iris.js";
+import perfil from "./perfil.js";
 import maps from "./maps.js";
-import RutasTabs from "./RutasTabs.js";
+import rtabs from "./rutasTabs.js";
+import dietas from "./dietas.js";
 import ruta from "../model/Ruta.js";
 import i18n from "../../i18n/langs.js";
 import { CT } from "../data/rutas.js";
 
-export default function Rutas(form) {
+function Rutas() {
 	const self = this; //self instance
-	const perfil = form.get("perfil");
-	const rutasTabs = new RutasTabs(form.set("rutas", self));
-	let _rutas, _tblRutas; // itinerario
+	const form = iris.getForm(); // form component
+	let _tblRutas; // itinerario
 
-	this.getRutas = () => _rutas;
-	this.size = () => coll.size(_rutas);
-	this.isEmpty = () => coll.isEmpty(_rutas);
-	this.getSalida = () => _rutas[0]; // primera ruta
-	this.getLlegada = () => _rutas.at(-1); // ultima ruta
+	this.getRutas = rtabs.getRutas;
+	this.size = rtabs.size;
+	this.isEmpty = rtabs.isEmpty;
 
-	this.getPaisSalida = () => ruta.getPaisSalida(self.getSalida());
-	this.salida = () => ruta.salida(self.getSalida());
-	this.llegada = () => ruta.llegada(self.getLlegada());
-	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(self.getLlegada());
-
-	this.getRutasVeiculoPropio = () => _rutas.filter(ruta.isVehiculoPropio);
-	this.getRutasSinGastos = () => _rutas.filter(data => (ruta.isAsociableGasto(data) && !data.g));
+	this.getPaisSalida = () => ruta.getPaisSalida(rtabs.getSalida());
+	this.salida = () => ruta.salida(rtabs.getSalida());
+	this.llegada = () => ruta.llegada(rtabs.getLlegada());
+	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(rtabs.getLlegada());
 
 	this.getRuta = fecha => { // Ruta asociada a fecha
-		if (!_rutas)
+		if (rtabs.isEmpty())
 			return null; // itinerario vacio
 		let current = rutas[0]; // Ruta de salida
 		if (!fecha) return current; // ruta por defecto
 		const fMax = fecha.add({ hours: 29 }); // 5h del dia siguiente
-		_rutas.forEach(aux => { // rutas ordenadas por fecha
+		rtabs.getRutas().forEach(aux => { // rutas ordenadas por fecha
 			// Ultima fecha de llegada mas proxima a fMax
 			current = tb.lt(ruta.llegada(aux), fMax) ? aux : current;
 		});
@@ -75,29 +72,33 @@ export default function Rutas(form) {
 		return valid.isOk();
 	}
 	this.validateMun = data => {
-		const ok = self.validateP1(data) && validateItinerario(_rutas);
+		const ok = self.validateP1(data) && validateItinerario(rtabs.getRutas());
 		if (ok && form.get("saveRutas")) // compruebo si hay cambios y si las rutas son validas
-			form.saveTable("#etapas", _tblRutas).set("saveRutas", false);
+			form.saveTable("#rutas-json", _tblRutas).set("saveRutas", false);
 		return ok;
 	}
 	this.validate = data => {
-		let ok = self.validateP1(data) && validateItinerario(_rutas);
+		let ok = self.validateP1(data) && validateItinerario(rtabs.getRutas());
 		ok = (ok && (self.size() > 1)) ? ok : i18n.getValidators().addError("destino", "errMinRutas").isOk();
 		if (ok && form.get("saveRutas")) { // compruebo si hay cambios y si las rutas son validas
 			const fnReplace = (key, value) => (((key == "p2") || key.endsWith("Option")) ? undefined : value);
-			form.saveTable("#etapas", _tblRutas, fnReplace).set("saveRutas", false); // guardo los cambios en las rutas
+			form.saveTable("#rutas-json", _tblRutas, fnReplace).set("saveRutas", false); // guardo los cambios en las rutas
 		}
+		if (ok && dietas.isUpdateDietas())
+			dietas.build(); // recalculo las dietas
 		return ok;
 	}
+	window.validateP1 = () => form.validate(self.validateP1);
+	window.validateMun = () => form.validate(self.validateMun);
+	window.validateP2 = () => form.validate(self.validate);
 
 	const fnSetMain = data => {
-		_rutas.forEach(ruta.setOrdinaria);
-		ruta.setPrincipal(data);
-		_tblRutas.render(_rutas); // dibuja la nueva tabla
+		rtabs.setRutaPrincipal(data); // recalculo la ruta principal
+		_tblRutas.render(rtabs.getRutas()); // dibuja la nueva tabla
 	}
 
 	function fnUpdateForm() {
-		const last = _rutas.last() || CT;
+		const last = rtabs.getLlegada() || CT;
 		form.setval("#origen", last.destino).setval("#f1", sb.isoDate(last.dt2)).setval("#h1", sb.isoTimeShort(last.dt2))
 			.setval("#destino").copy("#f2", "#f1").setval("#h2").setval("#principal", "0").setval("#desp")
 			.delAttr("#f1", "max").delAttr("#f2", "min").hide(".grupo-matricula");
@@ -107,7 +108,7 @@ export default function Rutas(form) {
 			form.restart("#h1");
 		else
 			form.setFocus("#destino");
-		form.set("render-rutas-read", true).set("render-rutas-vp", true);
+		rtabs.setRenderRutasRead().setRenderRutasVp();
 	}
 	function fnAfterRender(resume) {
 		ruta.afterRender(resume);
@@ -119,7 +120,7 @@ export default function Rutas(form) {
 		if (!data || !maps.validatePlaces(data, self) || !ruta.valid(data))
 			return false; // maps validation error
 
-		const temp = _rutas.concat(data);
+		const temp = rtabs.getRutas().concat(data);
 		// reordeno todas las rutas por fecha de salida
 		temp.sort((a, b) => sb.cmp(a.dt1, b.dt1));
 		if (!validateItinerario(temp)) // check if all routes are valid
@@ -131,32 +132,21 @@ export default function Rutas(form) {
 				return false; // invalid distance
 		}
 
-		_rutas = temp; // nuevo contenedor de rutas
-		// calculo la ruta principal del itinerario
-		let diff = 0; // diferencia en milisegundos
-		let principal = self.getSalida(); // primera ruta
-		for (let i = 1; i < _rutas.length; i++) { //itero el itinerario
-			const aux = sb.diffDate(_rutas[i].dt1, _rutas[i - 1].dt2);
-			if (diff < aux) { // ruta en la que paso mas tiempo
-				diff = aux;
-				principal = _rutas[i - 1];
-			}
-		}
-
-		fnSetMain(principal); // recalculo cual es la ruta principal
-		return form.set("updateDietas", true); // ruta agregada correctamente
+		// nuevo contenedor de rutas + recalculo de la ruta principal
+		fnSetMain(rtabs.setRutas(temp).getRutaPrincipal());
+		return dietas.setUpdateDietas(); // ruta agregada correctamente
 	}
 
 	this.init = () => {
-		_rutas = coll.parse(form.getText("#rutas-data"));
-		_tblRutas = form.setTable("#rutas");
+		rtabs.init();
+		_tblRutas = form.setTable("#tbl-rutas");
 		_tblRutas.setMsgEmpty("msgRutasEmpty")
-				.set("#main", fnSetMain).setRemove(() => form.set("updateDietas", true))
-				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot).render(_rutas)
+				.set("#main", fnSetMain).setRemove(dietas.setUpdateDietas) 
+				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot).render(rtabs.getRutas())
 				.setAfterRender(resume => { fnUpdateForm(); fnAfterRender(resume); });
 
 		if (perfil.isRutaUnica())
-			rutasTabs.mun();
+			rtabs.mun();
 		else {
 			form.setClick("#add-ruta", fnAddRuta);
 			fnUpdateForm();
@@ -168,3 +158,5 @@ export default function Rutas(form) {
 		return self;
 	}
 }
+
+export default new Rutas();

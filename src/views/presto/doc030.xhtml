@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:form id="xeco-030" prependId="false" method="post" onsubmit="loading();">
+        <h2 class="load-data">@titulo; @codigo;</h2>
+        <div class="card-xeco">
+            <h2>Datos del Documento 080</h2>
+            <ul>
+                <li class="info-080"><b>Ejercicio:</b> @ej;</li>
+                <li class="info-080"><b>Organica:</b> @o; - @dOrg;</li>
+                <li class="info-080"><b>Económica:</b> @e; - @dEco;</li>
+                <li class="info-080"><b>Importe:</b> @imp080; €</li>
+            </ul>
+            <h2>Datos del Documento 030</h2>
+            <div class="ui-blocks">
+                <div class="ui-block">
+                    <div class="label">Ejercicio:</div>
+                    <h:selectOneMenu id="ej030" value="#{presto2.solicitud.ejOrgDec}" readonly="readonly" styleClass="ui-input ui-select update-presto disabled">
+                        <f:selectItems value="#{presto2.ejercicios}" />
+                    </h:selectOneMenu>
+                </div>
+                <label class="ui-block-xl autocomplete">
+                    <div class="label required">Orgánica 030:</div>
+                    <p:remoteCommand name="rcFindOrg030" action="#{presto2.partidas.find030()}" oncomplete="loadItems(xhr, status, args)" />
+                    <input type="search" id="acOrg030" name="acOrg030" class="ui-input ui-autocomplete" tabindex="1" />
+                    <input type="text" id="idOrg030" name="idOrg030" class="hide ui-number" />
+                    <ul role="list" class="results"></ul>
+                    <div class="ui-errtip"></div>
+                </label>
+                <label class="ui-block">
+                    <div class="label required">Económica 030:</div>
+                    <h:selectOneMenu id="idEco030" styleClass="ui-input ui-select ui-number update-presto" tabindex="2">
+                        <f:selectItems value="#{presto2.economicasIng}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
+                    </h:selectOneMenu>
+                    <div class="ui-errtip"></div>
+                </label>
+                <label class="ui-block">
+                    <div class="label required">Importe 030:</div>
+                    <input type="text" id="imp030" name="imp030" maxlength="12" tabindex="3" class="ui-input ui-float"/> €
+                    <div class="ui-errtip"></div>
+                </label>
+            </div>
+            <p id="memo-030" class="notice notice-info">#{presto2.solicitud.memoria}</p>
+        </div>
+
+        <div class="navbar">
+            <a href="#tab-back" class="btn btn-info" tabindex="13" title="Volver al formulario de la solicitud">
+                <i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+            <a id="save-030" href="#save030" class="btn btn-success save-030" tabindex="14" title="Guarda los cambios del 030">
+                <i class="fas fa-save btn-icon-left"></i>Guardar</a>
+        </div>
+    </h:form>
+</html>
