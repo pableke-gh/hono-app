@@ -10,7 +10,7 @@
 <div class="update-irse #{iris.firmas.cssFirmas}">
 	<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
 	<div class="ui-blocks">
-	<c:forEach items="#{iris.firmas.firmas}" var="f">
+	<c:forEach items="#{iris.firmas.principales}" var="f">
 		<div class="ui-block-box">
 			<p>#{f.cargo}</p>
 			<p>#{f.fullName}</p>

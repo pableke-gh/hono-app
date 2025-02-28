@@ -16,14 +16,18 @@ import otri from "./modules/otri.js";
 window.IRSE = {}; // global IRSE info
 pf.ready(list.init);
 
+/*********** Paso 1 ***********/
+tabs.setActiveEvent("com", perfil.isTrayectos);
+tabs.setActiveEvent("mun", perfil.isMun);
+
 /*********** Google Maps API ***********/
-tabs.setActiveEvent(2, perfil.isTrayectos);
-tabs.setInitEvent(2, maps.init);
-tabs.setViewEvent(2, tabs.resetToggleAction);
+tabs.setActiveEvent("maps", perfil.isTrayectos);
+tabs.setInitEvent("maps", maps.init);
+tabs.setViewEvent("maps", tabs.resetToggleAction);
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
-tabs.setActiveEvent(3, perfil.isIsu);
-tabs.setInitEvent(3, otri.init);
+tabs.setActiveEvent("isu", perfil.isIsu);
+tabs.setInitEvent("isu", otri.init);
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
 tabs.setViewEvent(5, gastos.initTab5);

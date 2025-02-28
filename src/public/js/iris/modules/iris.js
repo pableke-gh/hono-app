@@ -10,6 +10,8 @@ function Iris() {
 	this.getForm = () => form;
 	this.init = () => {
 		form.update().render(".i18n-tr-h1").setCache(window.IRSE.id); // current cache id
+		form.onChangeInputs("[name='objeto-temp']", ev => form.setStrval("#objeto", ev.target.value));
+		form.onChangeInputs("[name='matricula-vp']", ev => form.setStrval("#matricula", ev.target.value));
 		return self;
 	}
 	this.update = () => {

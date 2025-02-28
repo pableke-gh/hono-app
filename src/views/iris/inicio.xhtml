@@ -52,28 +52,28 @@
 		</p:outputPanel>
 
 		<!-- Itinerarios rutas de tab1 y tab2 -->
-		<p:remoteCommand name="rcFindPersonal" action="#{iris.perfil.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
+		<h:inputHidden id="objeto" value="#{iris.form.objeto}" />
+		<h:inputHidden id="matricula" value="#{irse.gastos.matricula}" />
+		<p:remoteCommand name="rcFindPersonal" action="#{iris.firmas.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:outputPanel id="tab-1" styleClass="tab-content update-irse">
 			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
 			<h:inputHidden id="rutas-json" value="#{iris.rutas.rutas}" styleClass="ui-json" />
 			<div id="rutas-data" class="hide">#{iris.rutas.stringify()}</div>
-
-			<c:choose>
-				<c:when test="#{irse.form.mun}"><ui:include src="tabs/irse01_mun.xhtml"></ui:include></c:when>
-				<c:when test="#{irse.form.colExt}"><ui:include src="tabs/irse01_col.xhtml"></ui:include></c:when>
-				<c:when test="#{irse.form.actividad1Dia}"><ui:include src="tabs/irse01_dia.xhtml"></ui:include></c:when>
-				<c:otherwise><ui:include src="tabs/irse01_com.xhtml"></ui:include></c:otherwise>
-			</c:choose>
+			<ui:include src="tabs/irse01_com.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
-
-		<p:outputPanel id="tab-2" styleClass="tab-content update-irse">
+		<p:outputPanel id="tab-mun" styleClass="tab-content update-irse">
+			<ui:include src="tabs/irse01_mun.xhtml"></ui:include>
+			<ui:include src="parts/firmas.xhtml"></ui:include>
+		</p:outputPanel>
+		<!-- Itinerarios de google maps tab2 -->
+		<p:outputPanel id="tab-maps" styleClass="tab-content update-irse">
 			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
-		<p:outputPanel id="tab-3" styleClass="tab-content update-irse">
+		<p:outputPanel id="tab-isu" styleClass="tab-content update-irse">
 			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse03.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>

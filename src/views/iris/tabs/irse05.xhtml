@@ -9,7 +9,7 @@
 
 	<div class="card-xeco">
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab5.msg.tit']}" escape="false" />​</span></h2>
-		<c:if test="#{irse.form.editable}">
+		<c:if test="#{iris.form.editable}">
 			<ui:include src="./irse05_info.xhtml"></ui:include>
 			<div class="ui-blocks">
 				<div class="ui-block-btn">
@@ -135,7 +135,7 @@
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="110">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
-	<c:when test="#{irse.form.editable}">
+	<c:when test="#{iris.form.editable}">
 		<p:commandLink action="#{irse.form.paso5()}" onclick="loading();" oncomplete="updateIrse(xhr, status, args);"
 				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="111">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></p:commandLink>
@@ -148,7 +148,7 @@
 	</c:otherwise>
 	</c:choose>
 
-	<c:if test="#{irse.form.firmable}">
+	<c:if test="#{iris.form.firmable}">
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</c:if>
 </html>

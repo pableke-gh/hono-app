@@ -11,7 +11,7 @@
 	<div id="gastos-org" class="hide">#{irse.gastos.organicasJson}</div>
 	<div class="#{irse.form.cssGastosOrganica}">
 		<h2><h:outputText value="#{msg['lbl.multiorganica']}" escape="false" /></h2>
-		<c:if test="#{irse.form.editable}">
+		<c:if test="#{iris.form.editable}">
 			<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.multiorganicas']}" escape="false" /></div>
 			<div class="ui-blocks">
 			<label class="ui-block">
@@ -41,7 +41,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
-				<input type="text" id="imp1-org" name="imp1" maxlength="12" tabindex="187" class="ui-input ui-float #{irse.form.cssDisabled}"/><span class="icon">€</span>
+				<input type="text" id="imp1-org" name="imp1" maxlength="12" tabindex="187" class="ui-input ui-float #{iris.form.cssDisabled}"/><span class="icon">€</span>
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn">
@@ -71,7 +71,7 @@
 					<td data-cell="#{msg['lbl.economica']}">@nombre;</td>
 					<td data-cell="#{msg['lbl.importe']}">@imp1; €</td>
 					<td data-cell="#{msg['lbl.descripcion']}">@desc;</td>
-					<td data-cell="Acciones"><c:if test="#{irse.form.editable}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
+					<td data-cell="Acciones"><c:if test="#{iris.form.editable}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
 				</tr>
 			</tbody>
 			<tbody class="hide">

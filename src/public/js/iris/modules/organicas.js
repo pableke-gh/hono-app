@@ -33,6 +33,8 @@ function Organicas() {
 			const org = _tblOrganicas.getFirst();
 			elMsgCd.render(org).setVisible(org);
 		}
+		const responsables = _tblOrganicas.getData().map(org => org.r).join(", ");
+		form.text("span#responsables", " " + responsables);
 		dietas.setUpdateDietas();
 		return self;
 	}

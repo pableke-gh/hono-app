@@ -89,7 +89,6 @@ function DomBox() {
 		return self;
 	}
 	this.onChangeFile = (el, fn) => {
-		el = fnQuery(el); // search for element
         if (!el) // checks if element exists
             return self; // not exists
 

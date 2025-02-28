@@ -45,7 +45,7 @@
 	<a href="#tab-5" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="130">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
-	<c:when test="#{irse.form.editable}">
+	<c:when test="#{iris.form.editable}">
 		<p:commandLink
 				onclick="if (!ir.paso6()) return false;" action="#{irse.form.paso6()}" oncomplete="showTab(xhr, status, args);" 
 				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
@@ -60,7 +60,7 @@
 	</c:otherwise>
 	</c:choose>
 
-	<c:if test="#{irse.form.firmable}">
+	<c:if test="#{iris.form.firmable}">
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</c:if>
 	<c:if test="#{irse.form.cancelable}">

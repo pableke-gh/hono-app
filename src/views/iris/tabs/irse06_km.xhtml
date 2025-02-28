@@ -14,7 +14,7 @@
 	</a>
 	</h3>
 	<div class="info-p6-km hide">
-		<c:if test="#{irse.form.editableP6}"><div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab6.msg.km']}" escape="false" /></div></c:if>
+		<c:if test="#{iris.form.editableP6}"><div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab6.msg.km']}" escape="false" /></div></c:if>
 
 		<table id="vp" class="tb-xeco table-xs">
 			<thead>
@@ -38,7 +38,7 @@
 		<label class="ui-blocks justifi-km #{irse.gastos.cssJustifiKm}">
 			<div class="label required"><h:outputText value="#{msg['lbl.justifi.km']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="justifiKm" value="#{irse.gastos.justifiKm}" styleClass="ui-input ui-ta rows-2 #{irse.form.cssDisabled}" tabindex="108"/>
+				<h:inputTextarea id="justifiKm" value="#{irse.gastos.justifiKm}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="108"/>
 				<div class="ui-errtip"></div>
 			</div>
 		</label>

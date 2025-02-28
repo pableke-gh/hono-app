@@ -28,7 +28,7 @@ export default function(form, opts) {
 
 	const self = this; //self instance
 	const EMPTY = ""; // Empty string
-	const INPUTS = "input:not([type=hidden]),select,textarea"; // All input fields
+	const INPUTS = "input,select,textarea"; // All input fields
 	const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 
 	const $1 = selector => form.querySelector(selector);
@@ -62,6 +62,7 @@ export default function(form, opts) {
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 
 	// Actions to update form view (inputs, texts, ...)
+	const fnQueryInput = el => globalThis.isstr(el) ? self.getInput(el) : el;
 	const fnContains = (el, name) => el.classList.contains(name);
 	const fnFor = (list, fn) => { list.forEach(fn); return self; }
 	const fnEach = (selector, fn) => fnFor($$(selector), fn);
@@ -118,16 +119,15 @@ export default function(form, opts) {
 		return self;
 	}
 	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
-	this.setval = (selector, value) => self.setValue(self.getInput(selector), value);
-	this.setStrValue = (el, value) => { dom.setValue(el, value); return self; } 
-	this.setStrval = (selector, value) => self.setStrValue(self.getInput(selector), value);
+	this.setval = (selector, value) => self.setValue(fnQueryInput(selector), value);
+	this.setStrval = (selector, value) => { dom.setValue(fnQueryInput(selector), value); return self; } 
 	this.values = (selector, value) => fnUpdate(selector, el => fnSetValue(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
 
-	this.getAttr = (selector, name) => dom.getAttr(self.getInput(selector), name);
+	this.getAttr = (selector, name) => dom.getAttr(fnQueryInput(selector), name);
 	this.setAttribute = (el, name, value) => { dom.setAttr(el, name, value); return self;}
-	this.setAttr = (selector, name, value) => self.setAttribute(self.getInput(selector), name, value);
-	this.delAttr = (selector, name) => { dom.delAttr(self.getInput(selector), name); return self; }
+	this.setAttr = (selector, name, value) => self.setAttribute(fnQueryInput(selector), name, value);
+	this.delAttr = (selector, name) => { dom.delAttr(fnQueryInput(selector), name); return self; }
 
 	function fnParseValue(el) {
 		if (fnContains(el, opts.floatFormatClass))
@@ -170,23 +170,21 @@ export default function(form, opts) {
 	this.select = (selector, mask) => { dom.select(self.getInput(selector), mask); return self; }
 	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
 	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox($1(selector), opts); // multi select checkbox
-	this.setAutocomplete = (selector, opts) => new Autocomplete(self.getInput(selector), opts); // Input type text / search
-	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => self.setAutocomplete(selector, {
-			minLength: 4,
-			source: fnSource,
-			render: item => item.label,
-			select: item => item.value,
-			afterSelect: fnSelect,
-			onReset: fnReset
-	});
+	this.setAutocomplete = (selector, opts) => new Autocomplete(fnQueryInput(selector), opts); // Input type text / search
+
+	const fnAcOptions = (fnSource, fnSelect, fnReset) => {
+		return { minLength: 4, source: fnSource, render: item => item.label, select: item => item.value, afterSelect: fnSelect, onReset: fnReset };
+	}
+	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => self.setAutocomplete(selector, fnAcOptions(fnSource, fnSelect, fnReset));
+	this.loadAcItems = (selector, fnSource, fnSelect, fnReset) => fnUpdate(selector, el => new Autocomplete(el, fnAcOptions(fnSource, fnSelect, fnReset)));
 
 	// Events handlers
 	const fnEvent = (el, name, fn) => { el.addEventListener(name, fn); return self; }
 	const fnChange = (el, fn) => fnEvent(el, "change", fn);
 
 	this.setDateRange = (f1, f2) => {
-		f1 = globalThis.isstr(f1) ? self.getInput(f1) : f1;
-		f2 = globalThis.isstr(f2) ? self.getInput(f2) : f2;
+		f1 = fnQueryInput(f1);
+		f2 = fnQueryInput(f2);
 		if (f1 && f2) { // check if fields exist
 			fnEvent(f1, "blur", ev => f2.setAttribute("min", f1.value));
 			fnEvent(f2, "blur", ev => f1.setAttribute("max", f2.value));
@@ -208,10 +206,11 @@ export default function(form, opts) {
 	this.click = selector => { $1(selector).click(); return self; } // Fire event only for PF
 
 	this.onChange = (el, fn) => { dom.onChange(el, fn); return self; }
-	this.onChangeInput = (selector, fn) => self.onChange(self.getInput(selector), fn);
-	this.onChangeFile = (selector, fn) => { dom.onChangeFile(self.getInput(selector),fn); return self; }
+	this.onChangeInput = (selector, fn) => self.onChange(fnQueryInput(selector), fn);
+	this.onChangeInputs = (selector, fn) => fnUpdate(selector, el => fnChange(el, fn));
+	this.onChangeFile = (selector, fn) => { dom.onChangeFile(fnQueryInput(selector), fn); return self; }
 	this.setField = (selector, value, fn) => {
-		const el = self.getInput(selector);
+		const el = fnQueryInput(selector);
 		if (el) { // Exists element?
 			fnChange(el, fn);
 			fnSetValue(el, value);

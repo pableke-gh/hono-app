@@ -47,7 +47,7 @@ function Rutas() {
 		return "ES";
 	}
 
-	function validateItinerario(rutas) { 
+	function validateItinerario(rutas) {
 		const valid = i18n.getValidators();
 		if (coll.isEmpty(rutas))
 			return valid.addError("origen", "errItinerario").isOk();
@@ -68,7 +68,7 @@ function Rutas() {
 	this.validateP1 = data => {
 		const valid = i18n.getValidators();
 		if (!data.objeto)
-        	valid.addRequired("objeto", "errObjeto");
+        	valid.addRequired("objeto-temp", "errObjeto");
 		return valid.isOk();
 	}
 	this.validateMun = data => {

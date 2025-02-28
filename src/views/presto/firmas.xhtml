@@ -10,7 +10,7 @@
 <p:outputPanel styleClass="update-presto #{presto2.firmas.cssFirmas}">
 	<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
 	<div class="ui-blocks">
-	<c:forEach items="#{iris.firmas.principales}" var="firma">
+	<c:forEach items="#{presto2.firmas.principales}" var="firma">
 		<div class="ui-block-box">
 			<p>#{firma.cargo}</p>
 			<p>#{firma.fullName}</p>
@@ -31,7 +31,7 @@
 	</c:forEach>
 	</div>
 	<c:if test="#{presto2.rechazada}">
-		<p class="notice notice-error"><h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (#{presto2.nameRechazo}) #{presto2.infoRechazo}</p>
+		<p class="notice notice-error"><h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (#{presto2.firmas.nameRechazo}) #{presto2.firmas.infoRechazo}</p>
 	</c:if>
 	<ui:include src="leyenda_firmas.xhtml"></ui:include>
 </p:outputPanel>

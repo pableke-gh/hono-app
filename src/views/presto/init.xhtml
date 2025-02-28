@@ -61,6 +61,11 @@
                 <a href="#tab-2" class="tab-action" title="Asociacia solicitudes PRESTO con sus operaciones en UXXI-EC">Consulta de Formación de Expediente</a>
             </li>
         </c:if>
+        <c:if test="#{presto2.user.uae or presto2.user.otri}">
+            <li>
+                <a href="#tab-otri" class="tab-action" title="Asociacia solicitudes PRESTO con sus operaciones en UXXI-EC">Consulta GCR  para la OTRI</a>
+            </li>
+        </c:if>
         </ul>
     </h:form>
 </html>
