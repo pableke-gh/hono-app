@@ -1,6 +1,6 @@
 
 import tabs from "../../components/Tabs.js";
-import Form from "../../components/Form.js";
+import Form from "../../components/forms/Form.js";
 import nav from "../../components/Navigation.js";
 import user from "../../model/web/User.js";
 

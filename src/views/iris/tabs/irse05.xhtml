@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<div class="card-xeco">
-		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab5.msg.tit']}" escape="false" />​</span></h2>
+		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @numPasos;</span><span><h:outputText value="#{msg['uae.irse.tab5.msg.tit']}" escape="false" />​</span></h2>
 		<c:if test="#{iris.form.editable}">
 			<ui:include src="./irse05_info.xhtml"></ui:include>
 			<div class="ui-blocks">
@@ -106,8 +106,7 @@
 			<br class="clear"/>
 		</c:if>
 
-		<h:inputHidden id="gastos-json" value="#{iris.gastos.gastos}" styleClass="ui-json" />
-		<div id="gastos-data" class="hide">#{iris.gastos.stringify()}</div>
+		<h:inputHidden id="gastos-json" value="#{iris.gastos.gastos}" />
 		<table id="tbl-gastos" class="tb-xeco table-xs">
 			<thead>
 				<tr>

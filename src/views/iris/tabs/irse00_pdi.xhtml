@@ -29,8 +29,7 @@
 			<div class="msg-cd hide ui-block-info"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" />: $imp; €</div>
 		</label>
 
-		<h:inputHidden id="org-json" value="#{iris.perfil.presupuesto}" styleClass="ui-json" />
-		<div id="org-data" class="hide">#{irse.getOrganicasJson()}</div>
+		<h:inputHidden id="org-json" value="#{iris.perfil.organicas}" />
 		<table id="tbl-organicas" class="hide"></table>
 
 		<div class="hide">

@@ -1,6 +1,6 @@
 
 import api from "../components/Api.js";
-import Form from "../components/Form.js";
+import Form from "../components/forms/Form.js";
 import nav from "../components/Navigation.js";
 import sb from "../components/StringBox.js";
 import excel from "../components/Excel.js";

@@ -1,6 +1,6 @@
 
 import coll from "../components/Collection.js";
-import Form from "../components/Form.js";
+import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
 import pf from "../components/Primefaces.js";
 import i18n from "../i18n/langs.js";

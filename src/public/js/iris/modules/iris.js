@@ -1,5 +1,5 @@
 
-import Form from "../../components/Form.js";
+import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import i18n from "../../i18n/langs.js";
 
@@ -8,15 +8,14 @@ function Iris() {
 	const form = new Form("#xeco-irse");
 
 	this.getForm = () => form;
-	this.init = () => {
-		form.update().render(".i18n-tr-h1").setCache(window.IRSE.id); // current cache id
-		form.onChangeInputs("[name='objeto-temp']", ev => form.setStrval("#objeto", ev.target.value));
-		form.onChangeInputs("[name='matricula-vp']", ev => form.setStrval("#matricula", ev.target.value));
+	this.update = () => {
+		form.reset("input[id$='-json']"); // update fields
 		return self;
 	}
-	this.update = () => {
-		form.reset(".ui-json"); // clean inputs
-		return self;
+	this.init = () => {
+		form.update().setCache(window.IRSE.id); // current cache id
+		form.onChangeInputs("[name='matricula-vp']", ev => form.setStrval("#matricula", ev.target.value));
+		return self.update();
 	}
 
 	/*********** View Actions ***********/

@@ -2,31 +2,34 @@
 import coll from "../../components/CollectionHTML.js";
 import tabs from "../../components/Tabs.js";
 import sb from "../../components/StringBox.js";
-import i18n from "../../i18n/langs.js";
 
 import iris from "./iris.js";
-import perfil from "./perfil.js";
+import dietas from "./dietas.js";
 import ruta from "../model/Ruta.js";
-import { MUN, LOC } from "../data/rutas.js";
 
 function RutasMun() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
-	let _rutas, _tblReadOnly, _tblRutasGasto, _tblRutasVp; // itinerario
-	let _renderRutasRead, _renderRutasVp; // bool indicator
+	let _rutas, _tblRutas, _tblReadOnly, _tblRutasGasto, _tblRutasVp; // itinerario
+	let _saveRutas, _renderRutasRead, _renderRutasVp; // bool indicator
 
+	this.getForm = () => form;
 	this.getRutas = () => _rutas;
-	this.setRutas = data => { _rutas = data; return self; }
+	this.getTable = () => _tblRutas;
 	this.size = () => coll.size(_rutas);
 	this.isEmpty = () => coll.isEmpty(_rutas);
 
 	this.getSalida = () => _rutas[0]; // primera ruta
 	this.getLlegada = () => _rutas.at(-1); // ultima ruta
 
-	this.isRenderRutasRead = () => _renderRutasRead;
-	this.setRenderRutasRead = () => { _renderRutasRead = true; return self; }
-	this.isRenderRutasVp = () => _renderRutasVp;
-	this.setRenderRutasVp = () => { _renderRutasVp = true; return self; }
+	//this.isRenderRutasRead = () => _renderRutasRead;
+	//this.setRenderRutasRead = () => { _renderRutasRead = true; return self; }
+	//this.isRenderRutasVp = () => _renderRutasVp;
+	//this.setRenderRutasVp = () => { _renderRutasVp = true; return self; }
+	this.setSaveRutas = () => {
+		_saveRutas = _renderRutasRead = _renderRutasVp = true;
+		return self;
+	}
 
 	this.getRutasVeiculoPropio = () => _rutas.filter(ruta.isVehiculoPropio);
 	this.getRutasSinGastos = () => _rutas.filter(data => (ruta.isAsociableGasto(data) && !data.g));
@@ -42,9 +45,26 @@ function RutasMun() {
 		}
 		return principal;
 	}
+
 	this.setRutaPrincipal = data => {
 		_rutas.forEach(ruta.setOrdinaria);
 		ruta.setPrincipal(data);
+		_tblRutas.render(_rutas);
+		return self;
+	}
+	this.setRutas = data => {
+		_rutas = data;
+		_tblRutas.render(_rutas);
+		_saveRutas = false;
+		return self;
+	}
+	this.saveRutas = () => {
+		if (!_saveRutas)
+			return self; // no hay cambios
+		const fnReplace = (key, value) => (((key == "p2") || key.endsWith("Option")) ? undefined : value);
+		form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
+		_saveRutas = false;
+		dietas.build();
 		return self;
 	}
 
@@ -60,7 +80,9 @@ function RutasMun() {
 	tabs.setAction("show-rutas-vp", () => {
 		if (!_tblRutasVp) {
 			_tblRutasVp = form.setTable("#vp");
-			_tblRutasVp.setMsgEmpty("msgRutasEmpty").setBeforeRender(ruta.beforeRender).setRender(ruta.rowVehiculoPropio).setFooter(ruta.tfootVehiculoPropio);
+			_tblRutasVp.setMsgEmpty("msgRutasEmpty")
+					.setBeforeRender(ruta.beforeRender).setRender(ruta.rowVehiculoPropio).setFooter(ruta.tfootVehiculoPropio)
+					.setAfterRender(resume => { ruta.afterRender(resume); form.setVisible("#justifi-km", resume.justifi); });
 		}
 		if (_renderRutasVp)
 			_tblRutasVp.render(self.getRutasVeiculoPropio());
@@ -87,26 +109,9 @@ function RutasMun() {
 	});
 	/*********** ASOCIACIÖN ENTRE RUTAS / GASTOS ***********/ 
 
-	this.mun = () => {
-		const ruta1Dia = Object.assign({}, perfil.isMun() ? MUN : LOC, _rutas[0]);
-		_rutas[0] = ruta1Dia; // Save new data (routes.length = 1)
-
-		form.afterChange(ev => { form.set("saveRutas", true); }) // Any input change => save all rutas
-			.setVisible(".grupo-matricula", ruta.isVehiculoPropio(ruta1Dia)) // grupo asociado al vehiculo propio
-			.setField("#origen", ruta1Dia.origen, ev => { ruta1Dia.origen = ruta1Dia.destino = ev.target.value; })
-			.setField("#desp", ruta1Dia.desp, ev => { ruta1Dia.desp = +ev.target.value; })
-			.setField("#dist", ruta1Dia.km1, ev => { ruta1Dia.km1 = ruta1Dia.km2 = i18n.toFloat(ev.target.value); })
-			.setField("#f2", ruta1Dia.dt2, ev => { ruta1Dia.dt2 = sb.endDay(ev.target.value); })
-			.setField("#f1", ruta1Dia.dt1, ev => {
-				ruta1Dia.dt1 = ev.target.value;
-				//si no hay f2 considero el dia completo de f1 => afecta a las validaciones
-				ruta1Dia.dt2 = form.getInput("#f2") ? ruta1Dia.dt2 : sb.endDay(ruta1Dia.dt1);
-			});
-		return self;
-	}
-
 	this.init = () => {
-		return self.setRutas(coll.parse(form.getText("#rutas-data")));
+		_tblRutas = form.setTable("#tbl-rutas");
+		return self;
 	}
 }
 

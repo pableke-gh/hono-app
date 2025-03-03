@@ -1,5 +1,4 @@
 
-import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/StringBox.js";
 import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
@@ -28,12 +27,16 @@ function Gastos() {
 	}
 	this.updateFacturas = data => self.updateGastos(1, data);
 	this.updateDietas = data => self.updateGastos(7, data);
+	this.setGastos = gastos => {
+		_gastos = gastos;
+		_tblGastos.render(self.getPaso5());
+		return self;
+	}
 
 	this.init = () => {
-		_gastos = coll.parse(form.getText("#gastos-data")) || [];
 		_tblGastos = form.setTable("#tbl-gastos");
 		_tblGastos.setMsgEmpty("msgGastosEmpty")  //#{msg['msg.no.docs']}
-				.setRender(gasto.row).setFooter(gasto.tfoot).render(self.getPaso5());
+				.setRender(gasto.row).setFooter(gasto.tfoot);
 		return self;
 	}
 	this.initTab5 = tab => {

@@ -2,14 +2,13 @@
 import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 
-import iris from "./iris.js";
-import dietas from "./dietas.js";
-import actividad from "./actividad.js";
 import organicas from "./organicas.js";
+import perfiles from "../data/perfiles.js"; 
 
 function Perfil() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = organicas.getForm(); // form component
+	const actividad = organicas.getActividad();
 
 	this.size = organicas.size;
 	this.isEmpty = () => (actividad.isEmpty() || organicas.isEmpty());
@@ -22,10 +21,19 @@ function Perfil() {
 	this.isTrayectos = actividad.isTrayectos;
 	this.isRutaUnica = actividad.isRutaUnica;
 
-	this.update = () => {
-		organicas.update(); // 1º update financiacion
-		actividad.update(); // 2º update actividad + tramite
+	this.getPerfil = () => {
+		return perfiles(actividad.getRol(), actividad.getColectivo(), actividad.getActividad(), actividad.getTramite(), actividad.getFinanciacion());
+	}
+	const fnUpdateView = () => {
+		// actualizo la vista del perfil para el formulario
+		i18n.set("numPasos", 2 + self.isTrayectos() + self.isIsu())
+			.set("titulo", self.getPerfil()).set("codigo", window.IRSE.codigo);
+		form.render(".i18n-tr-h1").render(".titulo-perfil"); // render texts
 		return self;
+	}
+	this.setOrganicas = data => {
+		organicas.setOrganicas(data); // update financiacion
+		return fnUpdateView(); // update view
 	}
 
 	form.afterReset(() => {
@@ -39,15 +47,13 @@ function Perfil() {
         	valid.addRequired("interesado", "errPerfil");
 		if (organicas.isEmpty())
 			valid.addRequired("organica", "errOrganicas");
-		if (dietas.isUpdateDietas() && valid.isOk())
-			dietas.build();
-		return valid.isOk();
+		return valid.isOk() && organicas.save();
     }
 	window.validateP0 = () => form.validate(self.validate);
 
 	this.init = () => {
 		actividad.init();
-		organicas.init().getTable().setAfterRender(self.update);
+		organicas.init();
 
 		form.setAutocomplete("#interesado", {
 			delay: 500, //milliseconds between keystroke occurs and when a search is performed
@@ -63,7 +69,7 @@ function Perfil() {
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));
-		return self.update();
+		return fnUpdateView();
 	}
 }
 

@@ -1,5 +1,5 @@
 
-import dom from "./DomBox.js";
+import dom from "./forms/DomBox.js";
 import coll from "./CollectionHTML.js";
 import i18n from "../i18n/langs.js";
 

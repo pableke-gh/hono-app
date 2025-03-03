@@ -1,5 +1,5 @@
 
-import sb from "./StringBox.js";
+import sb from "../StringBox.js";
 
 const EMPTY = [];
 const fnParam = param => param

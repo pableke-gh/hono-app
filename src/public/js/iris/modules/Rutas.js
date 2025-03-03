@@ -2,24 +2,21 @@
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/StringBox.js";
 import tb from "../../components/TemporalBox.js";
+import i18n from "../../i18n/langs.js";
 
-import iris from "./iris.js";
 import perfil from "./perfil.js";
 import maps from "./maps.js";
 import rtabs from "./rutasTabs.js";
-import dietas from "./dietas.js";
 import ruta from "../model/Ruta.js";
-import i18n from "../../i18n/langs.js";
-import { CT } from "../data/rutas.js";
+import { CT, MUN, LOC } from "../data/rutas.js";
 
 function Rutas() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
-	let _tblRutas; // itinerario
+	const form = rtabs.getForm(); // form component
 
-	this.getRutas = rtabs.getRutas;
 	this.size = rtabs.size;
 	this.isEmpty = rtabs.isEmpty;
+	this.getRutas = rtabs.getRutas;
 
 	this.getPaisSalida = () => ruta.getPaisSalida(rtabs.getSalida());
 	this.salida = () => ruta.salida(rtabs.getSalida());
@@ -46,6 +43,10 @@ function Rutas() {
 		}
 		return "ES";
 	}
+	this.setRutas = rutas => {
+		rtabs.setRutas(rutas);
+		return self;
+	}
 
 	function validateItinerario(rutas) {
 		const valid = i18n.getValidators();
@@ -69,33 +70,17 @@ function Rutas() {
 		const valid = i18n.getValidators();
 		if (!data.objeto)
         	valid.addRequired("objeto-temp", "errObjeto");
+		if (valid.isOk() && perfil.isMun()) // valida la ruta unica
+			return validateItinerario(rtabs.getRutas()) && rtabs.saveRutas();
 		return valid.isOk();
 	}
-	this.validateMun = data => {
-		const ok = self.validateP1(data) && validateItinerario(rtabs.getRutas());
-		if (ok && form.get("saveRutas")) // compruebo si hay cambios y si las rutas son validas
-			form.saveTable("#rutas-json", _tblRutas).set("saveRutas", false);
-		return ok;
-	}
-	this.validate = data => {
+	this.validate = data => { // validaciones para los mapas
 		let ok = self.validateP1(data) && validateItinerario(rtabs.getRutas());
 		ok = (ok && (self.size() > 1)) ? ok : i18n.getValidators().addError("destino", "errMinRutas").isOk();
-		if (ok && form.get("saveRutas")) { // compruebo si hay cambios y si las rutas son validas
-			const fnReplace = (key, value) => (((key == "p2") || key.endsWith("Option")) ? undefined : value);
-			form.saveTable("#rutas-json", _tblRutas, fnReplace).set("saveRutas", false); // guardo los cambios en las rutas
-		}
-		if (ok && dietas.isUpdateDietas())
-			dietas.build(); // recalculo las dietas
-		return ok;
+		return ok && rtabs.saveRutas(); // guardo los cambios y recalculo las dietas
 	}
 	window.validateP1 = () => form.validate(self.validateP1);
-	window.validateMun = () => form.validate(self.validateMun);
 	window.validateP2 = () => form.validate(self.validate);
-
-	const fnSetMain = data => {
-		rtabs.setRutaPrincipal(data); // recalculo la ruta principal
-		_tblRutas.render(rtabs.getRutas()); // dibuja la nueva tabla
-	}
 
 	function fnUpdateForm() {
 		const last = rtabs.getLlegada() || CT;
@@ -108,11 +93,7 @@ function Rutas() {
 			form.restart("#h1");
 		else
 			form.setFocus("#destino");
-		rtabs.setRenderRutasRead().setRenderRutasVp();
-	}
-	function fnAfterRender(resume) {
-		ruta.afterRender(resume);
-		form.set("justifi", resume.justifi).set("saveRutas", true);
+		rtabs.setSaveRutas();
 	}
 	async function fnAddRuta(ev) {
 		ev.preventDefault(); // stop event
@@ -133,26 +114,37 @@ function Rutas() {
 		}
 
 		// nuevo contenedor de rutas + recalculo de la ruta principal
-		fnSetMain(rtabs.setRutas(temp).getRutaPrincipal());
-		return dietas.setUpdateDietas(); // ruta agregada correctamente
+		rtabs.setRutaPrincipal(rtabs.setRutas(temp).getRutaPrincipal());
+		return true; // ruta agregada correctamente
 	}
 
+	this.mun = () => {
+		const arrRutas = rtabs.getRutas();
+		const ruta1Dia = Object.assign({}, perfil.isMun() ? MUN : LOC, arrRutas[0]);
+		arrRutas[0] = ruta1Dia; // Save new data (routes.length = 1)
+
+		form.afterChange(rtabs.setSaveRutas) // Any input change => save all rutas
+			.setVisible(".grupo-matricula", ruta.isVehiculoPropio(ruta1Dia)) // grupo asociado al vehiculo propio
+			.setField("#origen", ruta1Dia.origen, ev => { ruta1Dia.origen = ruta1Dia.destino = ev.target.value; })
+			.setField("#desp", ruta1Dia.desp, ev => { ruta1Dia.desp = +ev.target.value; })
+			.setField("#dist", ruta1Dia.km1, ev => { ruta1Dia.km1 = ruta1Dia.km2 = i18n.toFloat(ev.target.value); })
+			.setField("#f2", ruta1Dia.dt2, ev => { ruta1Dia.dt2 = sb.endDay(ev.target.value); })
+			.setField("#f1", ruta1Dia.dt1, ev => {
+				ruta1Dia.dt1 = ev.target.value;
+				//si no hay f2 considero el dia completo de f1 => afecta a las validaciones
+				ruta1Dia.dt2 = form.getInput("#f2") ? ruta1Dia.dt2 : sb.endDay(ruta1Dia.dt1);
+			});
+		return self;
+	}
 	this.init = () => {
-		rtabs.init();
-		_tblRutas = form.setTable("#tbl-rutas");
-		_tblRutas.setMsgEmpty("msgRutasEmpty")
-				.set("#main", fnSetMain).setRemove(dietas.setUpdateDietas) 
-				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot).render(rtabs.getRutas())
-				.setAfterRender(resume => { fnUpdateForm(); fnAfterRender(resume); });
+		rtabs.init()
+				.getTable().setMsgEmpty("msgRutasEmpty")
+				.set("#main", rtabs.setRutaPrincipal)
+				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot)
+				.setAfterRender(fnUpdateForm);
 
-		if (perfil.isRutaUnica())
-			rtabs.mun();
-		else {
-			form.setClick("#add-ruta", fnAddRuta);
-			fnUpdateForm();
-		}
-
-		form.onChangeInput("#f1", ev => form.setval("#f2", ev.target.value)).setDateRange("#f1", "#f2") // Rango de fechas
+		form.setClick("#add-ruta", fnAddRuta).setDateRange("#f1", "#f2") // Rango de fechas
+			.onChangeInput("#f1", ev => form.setval("#f2", ev.target.value)) // copy value to f2
 			.onChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))
 			.onChangeInput("#matricula", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
 		return self;

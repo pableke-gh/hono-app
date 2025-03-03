@@ -1,6 +1,6 @@
 
 import nav from "./components/Navigation.js";
-import dom from "./components/DomBox.js";
+import dom from "./components/forms/DomBox.js";
 import menu from "./components/Menu.js";
 import menus from "./web/data/menus.js";
 import i18n from "./i18n/langs.js";

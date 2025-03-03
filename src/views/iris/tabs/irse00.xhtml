@@ -15,16 +15,16 @@
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="12">
 		<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 	<c:choose>
-		<c:when test="#{iris.form.editable}">
-			<button type="reset" class="btn btn-light" title="#{msg['tit.btn.limpiar']}" tabindex="13">
-				<i class="far fa-broom btn-icon-left"></i>#{msg['lbl.btn.limpiar']}</button>
-			<p:commandButton action="#{iris.form.paso0()}" onclick="if (!validateP0()) return false;" oncomplete="showTab(xhr, status, args, 1)"
-				icon="fas fa-caret-right" iconPos="right" value="#{msg['lbl.btn.empezar']}" styleClass="btn btn-green success-btn" title="#{msg['tit.btn.empezar']}" tabindex="13"/>
-		</c:when>
-		<c:otherwise>
-			<a href="#tab-next" class="btn btn-green success-btn" title="#{msg['lbl.btn.empezar']}" tabindex="13">
-				<h:outputText value="#{msg['lbl.btn.empezar']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-		</c:otherwise>
+	<c:when test="#{iris.form.editable}">
+		<button type="reset" class="btn btn-light" title="#{msg['tit.btn.limpiar']}" tabindex="13">
+			<i class="far fa-broom btn-icon-left"></i>#{msg['lbl.btn.limpiar']}</button>
+		<p:commandButton action="#{iris.form.paso0()}" onclick="if (!validateP0()) return false;" oncomplete="updateIrse(xhr, status, args)"
+			icon="fas fa-caret-right" iconPos="right" value="#{msg['lbl.btn.empezar']}" styleClass="btn btn-green success-btn" title="#{msg['tit.btn.empezar']}" tabindex="13"/>
+	</c:when>
+	<c:otherwise>
+		<a href="#tab-next" class="btn btn-green success-btn" title="#{msg['lbl.btn.empezar']}" tabindex="13">
+			<h:outputText value="#{msg['lbl.btn.empezar']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
+	</c:otherwise>
 	</c:choose>
 
 	<c:if test="#{iris.form.resumable}">

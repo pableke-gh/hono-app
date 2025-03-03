@@ -54,6 +54,7 @@ function Actividad() {
 	this.update = () => { // actualizo la actividad y el tramite
 		form.select("#actividad", actividades(self.getRol(), self.getColectivo(), self.getFinanciacion()))
 			.select("#tramite", (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
+			.setVisible(".ui-mun", self.isMun())
 			.closeAlerts();
 		return self;
 	}

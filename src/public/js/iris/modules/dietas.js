@@ -13,10 +13,6 @@ function Dietas() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
 	let _tblDietas; // mapa de dietas
-	let _updateDietas; // bool indicator
-
-	this.isUpdateDietas = () => _updateDietas;
-	this.setUpdateDietas = () => { _updateDietas = true; return self; }
 
 	const fnCreateDiaIntermedio = (fecha, tipo, grupo) => {
 		const row = dieta.createDiaIntermedio();
@@ -28,13 +24,12 @@ function Dietas() {
 	const fnUpdateDietas = data => {
 		gastos.updateDietas(data);
 		_tblDietas.render(data);
-		_updateDietas = false;
 		return self;
 	}
 	this.build = () => {
 		const temp = []; // mapped array
-		if (perfil.isEmpty() || rutas.isEmpty())
-			return fnUpdateDietas(temp); // nada a calcular
+		if (perfil.isEmpty() || perfil.isRutaUnica() || rutas.isEmpty())
+			return fnUpdateDietas(temp); // tabla vacia
 		return self;
 
 		const tipo = perfil.getTipoDieta();

@@ -1,5 +1,5 @@
 
-import Form from "../../components/Form.js";
+import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import pf from "../../components/Primefaces.js";
 import buzon from "../model/Buzon.js";

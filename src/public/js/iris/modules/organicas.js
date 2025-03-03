@@ -1,20 +1,21 @@
 
-import coll from "../../components/Collection.js";
 import pf from "../../components/Primefaces.js";
-
 import iris from "./iris.js";
 import dietas from "./dietas.js";
+import actividad from "./actividad.js";
 import organica from "../model/Organica.js"
 
 function Organicas() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
 	let _tblOrganicas; // tabla de organicas
+	let _saveOrganicas; // bool indicator
 
-	this.getTable = () => _tblOrganicas;
+	this.getForm = () => form;
+	this.getActividad = () => actividad;
 	this.size = () => _tblOrganicas.size(); 
 	this.isEmpty = () => _tblOrganicas.isEmpty();
-	this.reset = () => _tblOrganicas.reset();
+	this.reset = () => self.setOrganicas();
 	this.getFinanciacion = () => organica.getFinanciacion(_tblOrganicas.getData());
 
 	this.getGrupoDieta = () => form.getval("#grupo-dieta"); 
@@ -23,27 +24,45 @@ function Organicas() {
 	this.isEUT = () => (self.getTipoDieta() == 2);
 	this.isUPCT = () => (self.getTipoDieta() == 9);
 
-	this.update = () => {
-		const financiacion = self.getFinanciacion(); // 1º recalculo la financiacion
-		form.setStrval("#financiacion", financiacion).setVisible("#add-org", _tblOrganicas.isEmpty()).saveTable("#org-json", _tblOrganicas)
+	const fnUpdateview = () => {
+		// 1º recalculo la financiacion
+		const financiacion = self.getFinanciacion();
+		form.setStrval("#financiacion", financiacion)
+			.setVisible("#add-org", _tblOrganicas.isEmpty())
 			.hide(".fin-info").show(".fin-" + financiacion);
-		// actualizo la información del crédito disp.
+		const org = _tblOrganicas.getFirst();
+		// 2º actualizo la información del crédito disp.
 		const elMsgCd = form.querySelector(".msg-cd");
-		if (elMsgCd) { // hay mensaje a mostrar?
-			const org = _tblOrganicas.getFirst();
+		if (elMsgCd) // hay mensaje a mostrar?
 			elMsgCd.render(org).setVisible(org);
+		if (org) { // actualizo los responsables
+			const responsables = _tblOrganicas.getData().map(org => org.r).join(", ");
+			form.text("span#responsables", " " + responsables);
 		}
-		const responsables = _tblOrganicas.getData().map(org => org.r).join(", ");
-		form.text("span#responsables", " " + responsables);
-		dietas.setUpdateDietas();
+		else
+			form.text("span#responsables", "");
+		actividad.update(); // 3º update actividad + tramite
+		_saveOrganicas = true;
+		return self;
+	}
+	this.setOrganicas = organicas => {
+		_tblOrganicas.render(organicas);
+		_saveOrganicas = false;
+		return self;
+	}
+	this.save = () => {
+		if (!_saveOrganicas)
+			return self; // no hay cambios
+		form.saveTable("#org-json", _tblOrganicas);
+		_saveOrganicas = false;
+		dietas.build();
 		return self;
 	}
 
 	this.init = () => {
 		_tblOrganicas = form.setTable("#tbl-organicas");
 		_tblOrganicas.setMsgEmpty("No existen orgánicas asociadas a la comunicación.") // #{msg['lbl.organicas.not.found']}
-					.setRender(organica.row).setFooter(organica.tfoot)
-					.render(coll.parse(form.getText("#org-data")));
+					.setRender(organica.row).setFooter(organica.tfoot).setAfterRender(fnUpdateview);
 
 		const acOrganiaca = form.setAutocomplete("#organica", {
 			minLength: 4,
@@ -57,8 +76,9 @@ function Organicas() {
 			onReset: () => form.hide(".msg-cd")
 		});
 		form.addClick("a[href='#add-org']", ev => {
+			const organicas = _tblOrganicas.getData();
 			const current = acOrganiaca.getCurrentItem();
-			if (current && !_tblOrganicas.getData().find(org => (org.id==current.id)))
+			if (current && !organicas.find(org => (org.id == current.id)))
 				_tblOrganicas.push(current);
 			acOrganiaca.reload();
 			ev.preventDefault();

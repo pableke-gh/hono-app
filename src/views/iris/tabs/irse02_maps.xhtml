@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<div class="card-xeco">
-		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab2.msg.tit.maps']}" escape="false" /></span></h2>
+		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @numPasos;</span><span><h:outputText value="#{msg['uae.irse.tab2.msg.tit.maps']}" escape="false" /></span></h2>
 		<c:if test="#{iris.form.editable or iris.perfil.tab2}"> <!-- evita la colision de id's de matricula, origen, etc. -->
 			<ui:include src="./irse02_info.xhtml"></ui:include>
 			<div class="ui-blocks no-print">
@@ -60,7 +60,7 @@
 			</label>
 			<label class="ui-block hide grupo-matricula">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
-				<input type="text" name="matricula-vp" value="#{irse.gastos.matricula}" class="ui-input ui-code #{iris.form.cssDisabled}" maxlength="10" tabindex="48"/>
+				<input type="text" name="matricula-vp" value="#{iris.form.matricula}" class="ui-input ui-code #{iris.form.cssDisabled}" maxlength="10" tabindex="48"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn">
@@ -95,9 +95,9 @@
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
 		<c:when test="#{iris.form.editable}">
-			<p:commandButton action="#{irse.form.paso2()}" onclick="if (!validateP2()) return false;loading();" oncomplete="showTab(xhr, status, args);"
+			<p:commandButton action="#{irse.form.paso2()}" onclick="if (!validateP2()) return false;loading();" oncomplete="updateIrse(xhr, status, args);"
 				icon="fas fa-caret-right" iconPos="right" styleClass="btn btn-info" value="#{msg['lbl.btn.siguiente']}" title="#{msg['tit.btn.siguiente']}" tabindex="58" />
-			<p:commandButton action="#{irse.form.save2()}" onclick="if (!validateP2()) return false;" oncomplete="saveTab();"
+			<p:commandButton action="#{irse.form.save2()}" onclick="if (!validateP2()) return false;" oncomplete="updateIrse(xhr, status, args, 'maps');"
 				icon="far fa-save" styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="59" />
 		</c:when>
 		<c:otherwise>

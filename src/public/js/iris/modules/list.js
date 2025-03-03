@@ -1,5 +1,5 @@
 
-import Form from "../../components/Form.js";
+import Form from "../../components/forms/Form.js";
 
 function List() {
 	const self = this; //self instance

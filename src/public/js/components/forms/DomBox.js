@@ -1,4 +1,6 @@
 
+import input from "./InputBox.js";
+
 function DomBox() {
 	const self = this; //self instance
 	const divNull = document.createElement("div");
@@ -22,11 +24,8 @@ function DomBox() {
 	this.addClass = (el, name) => { el && el.classList.add(name); return self; }
 	this.removeClass = (el, name) => { el && el.classList.remove(name); return self; }
 
-	const fnSetValue = (el, value) => { // el must exists
-		if ((el.tagName == "SELECT") && !value)
-			el.selectedIndex = 0;
-		else
-			el.value = value || ""; // String
+	const fnSetValue = (el, value) => {
+		input.setValue(el, value); // el must exists
 		return self;
 	}
     this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
@@ -64,7 +63,7 @@ function DomBox() {
 	this.ready = fn => document.addEventListener("DOMContentLoaded", fn);
 	this.addAction = (el, fn) => {
 		if (el) // checks if element exists
-			el.addEventListener("click", ev => fn(ev, el));
+			input.addClick(el, fn);
 		return self;
 	}
 	this.onClick = (el, fn) => self.addAction(fnQuery(el), fn);
@@ -78,7 +77,7 @@ function DomBox() {
 
     this.onChange = (el, fn) => {
 		if (el) // checks if element exists
-			el.addEventListener("change", ev => fn(ev, el));
+			input.addChange(el, fn);
 		return self; // self instance
 	}
 	this.addChange = this.onChange; // synonym
@@ -88,23 +87,9 @@ function DomBox() {
 			el.onchange = ev => fn(ev, el);
 		return self;
 	}
-	this.onChangeFile = (el, fn) => {
-        if (!el) // checks if element exists
-            return self; // not exists
 
-        let file, index = 0; // file, position;
-		const reader = new FileReader();
-		const fnLoad = i => {
-			file = el.files[i]; // multifile
-			file && reader.readAsArrayBuffer(file); //reader.readAsText(file, "UTF-8");
-		}
-		reader.onload = ev => { // event on load file
-			fn(el, file, reader.result, index);
-			fnLoad(++index);
-		}
-		el.addEventListener("change", () => fnLoad(index));
-		return self; // self instance
-	}
+	this.onChangeFile = (el, fn) => { el && input.onChangeFile(el, fn); return self; }
+	this.onChangeFiles = (data, fn) => { data.forEach(el => input.onChangeFile(el, fn)); return self; }
 
 	// Helper DOM elements
 	this.getDivNull = () => divNull; // readonly element

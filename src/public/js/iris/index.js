@@ -10,15 +10,12 @@ import perfil from "./modules/perfil.js";
 import maps from "./modules/maps.js";
 import rutas from "./modules/rutas.js";
 import gastos from "./modules/gastos.js"; 
-import dietas from "./modules/dietas.js";
+import dietas from "./modules/dietas.js"; 
+import firmas from "./modules/firmas.js";
 import otri from "./modules/otri.js";
 
 window.IRSE = {}; // global IRSE info
 pf.ready(list.init);
-
-/*********** Paso 1 ***********/
-tabs.setActiveEvent("com", perfil.isTrayectos);
-tabs.setActiveEvent("mun", perfil.isMun);
 
 /*********** Google Maps API ***********/
 tabs.setActiveEvent("maps", perfil.isTrayectos);
@@ -31,6 +28,9 @@ tabs.setInitEvent("isu", otri.init);
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
 tabs.setViewEvent(5, gastos.initTab5);
+
+/*********** Tablas de resumen ***********/
+tabs.setInitEvent(6, dietas.init); 
 
 /*********** Expediente UXXI-EC ***********/
 tabs.setInitEvent("uxxiec", uxxiec.init);
@@ -45,10 +45,10 @@ window.viewIrse = (xhr, status, args, tab) => {
 	IRSE.editable = !IRSE.id || (IRSE.estado == 6); // solicitud editable
 
 	// Init IRSE form
-	perfil.init();
-	rutas.init();
-	gastos.init();
-	dietas.init();
+	perfil.init().setOrganicas(coll.parse(args.organicas));
+	rutas.init().setRutas(coll.parse(args.rutas) || []);
+	gastos.init(coll.parse(args.gastos));
+	firmas.init(coll.parse(args.firmas));
 	//organicas.init();
 	iris.init();
 	tabs.nextTab(tab ?? IRSE.tab); // go to next tab
@@ -58,6 +58,14 @@ window.updateIrse = (xhr, status, args, tab) => {
 		return; // show alerts
 
 	// update IRSE form
+	let data = coll.parse(args.organicas);
+	data && perfil.setOrganicas(data);
+	data = coll.parse(args.firmas);
+	data && firmas.setFirmas(data);
 	iris.update(); // update inputs
-	tabs.nextTab(tab); // go to next tab
+	if (tab && tabs.isActive(tab))
+		window.saveTab(); // show ok msg
+	else
+		tabs.nextTab(tab); // go to next tab
+	return true;
 }
