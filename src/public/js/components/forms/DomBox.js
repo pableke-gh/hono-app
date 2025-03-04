@@ -1,6 +1,4 @@
 
-import input from "./InputBox.js";
-
 function DomBox() {
 	const self = this; //self instance
 	const divNull = document.createElement("div");
@@ -25,7 +23,10 @@ function DomBox() {
 	this.removeClass = (el, name) => { el && el.classList.remove(name); return self; }
 
 	const fnSetValue = (el, value) => {
-		input.setValue(el, value); // el must exists
+		if ((el.tagName == "SELECT") && !value)
+			el.selectedIndex = 0; // first option
+		else
+			el.value = value || ""; // force String
 		return self;
 	}
     this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
@@ -60,12 +61,12 @@ function DomBox() {
 
 	// Events handlers
 	const fnQuery = el => globalThis.isstr(el) ? $1(el) : el;
+	const fnAddEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return self; }
+	const fnAddChange = (el, fn) => fnAddEvent(el, "change", fn);
+	const fnAddClick = (el, fn) => fnAddEvent(el, "click", fn);
+
 	this.ready = fn => document.addEventListener("DOMContentLoaded", fn);
-	this.addAction = (el, fn) => {
-		if (el) // checks if element exists
-			input.addClick(el, fn);
-		return self;
-	}
+	this.addAction = (el, fn) => el ? fnAddClick(el, fn) : self;
 	this.onClick = (el, fn) => self.addAction(fnQuery(el), fn);
 	this.addClick = self.onClick; // synonym
 	this.setAction = (el, fn) => {
@@ -75,11 +76,7 @@ function DomBox() {
 	}
 	this.setClick = (el, fn) => self.setAction(fnQuery(el), fn);
 
-    this.onChange = (el, fn) => {
-		if (el) // checks if element exists
-			input.addChange(el, fn);
-		return self; // self instance
-	}
+    this.onChange = (el, fn) => el ? fnAddChange(el, fn) : self;
 	this.addChange = this.onChange; // synonym
 	this.setChange = (el, fn) => {
 		el = fnQuery(el); // search for element
@@ -87,9 +84,6 @@ function DomBox() {
 			el.onchange = ev => fn(ev, el);
 		return self;
 	}
-
-	this.onChangeFile = (el, fn) => { el && input.onChangeFile(el, fn); return self; }
-	this.onChangeFiles = (data, fn) => { data.forEach(el => input.onChangeFile(el, fn)); return self; }
 
 	// Helper DOM elements
 	this.getDivNull = () => divNull; // readonly element

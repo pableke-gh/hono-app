@@ -1,6 +1,6 @@
 
 import coll from "../../components/Collection.js";
-import sb from "../../components/StringBox.js";
+import sb from "../../components/types/StringBox.js";
 
 function Organica() {
 	this.getFinanciacion = organicas => {

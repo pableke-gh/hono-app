@@ -5,7 +5,7 @@ import cp from "child_process"; //system calls
 import sharp from "sharp"; // Image handler
 import jwt from "jsonwebtoken"; // JSON web token
 import mimetypes from "../data/mime-types.json" assert { type: "json" };
-import sb from "#client/components/StringBox.js";
+import sb from "#client/components/types/StringBox.js";
 import config from "../config.js"; // Configurations
 
 function Util() {

@@ -1,5 +1,5 @@
 
-import sb from "./StringBox.js";
+import sb from "./types/StringBox.js";
 
 const fnVoid = () => {}
 const fnParse = data => data && JSON.parse(data); //JSON parse

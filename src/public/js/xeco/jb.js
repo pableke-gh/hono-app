@@ -22,6 +22,9 @@ pf.ready(() => {
     let formDoc; // dinamyc form
     const fnBuildXecoDoc = () => {
         formDoc = new Form("#xeco-doc");
+		const ulAdjuntos = formDoc.querySelector("ul#adjuntos");
+		if (ulAdjuntos && !ulAdjuntos.children.length)
+			ulAdjuntos.outerText = " -";
         window.working(); // hide loading frame
     }
 

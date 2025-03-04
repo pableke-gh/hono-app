@@ -1,7 +1,7 @@
 
 import alerts from "../Alerts.js";
 import coll from "../CollectionHTML.js";
-import sb from "../StringBox.js";
+import sb from "../types/StringBox.js";
 
 const EMPTY = [];
 const fnEmpty = () => EMPTY;

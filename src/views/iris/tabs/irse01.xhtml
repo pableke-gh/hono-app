@@ -69,40 +69,40 @@
 		</label>
 		</c:if>
 	
-		<hr class="ui-mun"/>
-		<div class="ui-blocks ui-mun">
+		<hr class="block-mun"/>
+		<div class="ui-blocks block-mun">
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
 				<div class="ui-block-xl">
-					<input type="text" id="origen" name="origen" class="ui-input ui-text #{iris.form.cssDisabled}" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
+					<input type="text" class="ui-input ui-text ui-mun #{iris.form.cssDisabled}" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
 					<div class="ui-errtip"></div>
 				</div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select id="desp" name="desp" class="ui-input ui-select #{iris.form.cssDisabled}" tabindex="47">
+				<select class="ui-input ui-select ui-mun #{iris.form.cssDisabled}" tabindex="47">
 					<option value="1">#{irse.rutas.getMsgDesp(1)}</option>
 					<option value="10">#{irse.rutas.getMsgDesp(10)}</option>
 				</select>
 			</label>
-			<label class="ui-block grupo-matricula">
+			<label class="ui-block grupo-matricula-mun">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
 				<div>
 					<input type="text" name="matricula-vp" value="#{iris.form.matricula}" class="ui-input ui-code #{iris.form.cssDisabled}" maxlength="10" tabindex="48"/>
 					<div class="ui-errtip"></div>
 				</div>
 			</label>
-			<label class="ui-block grupo-matricula">
+			<label class="ui-block grupo-matricula-mun">
 				<div class="label required">km:</div>
 				<div>
-					<input type="text" id="dist" name="km1" maxlength="10" tabindex="49" class="ui-input ui-float #{iris.form.cssDisabled}"/>
+					<input type="text" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun #{iris.form.cssDisabled}"/>
 					<div class="ui-errtip"></div>
 				</div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
 				<div>
-					<input type="date" id="f1" name="f1" class="ui-input ui-date #{iris.form.cssDisabled}" tabindex="50" />
+					<input type="date" class="ui-input ui-date ui-mun #{iris.form.cssDisabled}" tabindex="50" />
 					<div class="ui-errtip"></div>
 				</div>
 			</label>

@@ -1,5 +1,5 @@
 
-import sb from "../../components/StringBox.js";
+import sb from "../../components/types/StringBox.js";
 import pf from "../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 
@@ -78,8 +78,8 @@ function Gastos() {
 		eTipoGasto.value = ""; // clear selection
 		eTipoGasto.onchange = fnChange; // Change event
 		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
-				.setval("#fAloMin", start).setAttr("#fAloMin", "min", start).setAttr("#fAloMin", "max", end)
-				.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end).text(".filename", "");
+				.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start).setAttr("#fMinGasto", "max", end)
+				.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "min", start).setAttr("#fMaxGasto", "max", end).text(".filename", "");
 		pf.uploads(tab.querySelectorAll(".pf-upload"), fnChange);
 		return self;
 	}
@@ -97,8 +97,7 @@ function Gastos() {
 	window.updateGastos = (xhr, status, args) => {
 		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
-		//const gastos = coll.parse(args.data);
-		//_tblGastos.render(gastos);
+		self.setGastos(coll.parse(args.gastos));
 	}
 }
 

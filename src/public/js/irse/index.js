@@ -21,9 +21,12 @@ const formIrse = new Form("#xeco-irse");
 pf.ready(list.init);
 
 /*********** Google Maps API ***********/
+const fnTabActive = tab => !tab.classList.contains("tab-excluded")
+tabs.setActiveEvent(2, fnTabActive);
 tabs.setInitEvent(2, maps);
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
+tabs.setActiveEvent(3, fnTabActive);
 tabs.setInitEvent(3, () => otri.init(formIrse));
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/

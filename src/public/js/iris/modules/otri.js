@@ -1,7 +1,7 @@
 
 import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
-import dt from "../../components/DateBox.js";
+import dt from "../../components/types/DateBox.js";
 import pf from "../../components/Primefaces.js";
 import excel from "../../components/Excel.js";
 import dom from "../../lib/uae/dom-box.js";

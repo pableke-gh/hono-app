@@ -1,7 +1,7 @@
 
 import coll from "../../components/CollectionHTML.js";
-import nb from "../../components/NumberBox.js";
-import sb from "../../components/StringBox.js";
+import nb from "../../components/types/NumberBox.js";
+import sb from "../../components/types/StringBox.js";
 import i18n from "../../i18n/langs.js";
 import dom from "../../lib/uae/dom-box.js";
 
@@ -152,7 +152,7 @@ function IrseRutas() {
 			return fnRecalc();
 		}
 		function fnSave() {
-			const fnReplace = (key, value) => (((key == "p2") || key.endsWith("Option")) ? undefined : value); 
+			const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
 			divData.innerText = JSON.stringify(rutas, fnReplace); // not to save place
 			form.setval("#etapas", divData.innerText); // load input value
 		}

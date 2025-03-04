@@ -7,7 +7,6 @@ import iris from "./modules/iris.js";
 import list from "./modules/list.js";
 import uxxiec from "./modules/uxxiec.js";
 import perfil from "./modules/perfil.js";
-import maps from "./modules/maps.js";
 import rutas from "./modules/rutas.js";
 import gastos from "./modules/gastos.js"; 
 import dietas from "./modules/dietas.js"; 
@@ -17,9 +16,13 @@ import otri from "./modules/otri.js";
 window.IRSE = {}; // global IRSE info
 pf.ready(list.init);
 
+/*********** PERFIL MUN tab-1 ***********/ 
+tabs.setInitEvent(1, rutas.mun);
+tabs.setInitEvent(1, tab => { tab.querySelectorAll(".block-mun").toggle("hide", !perfil.isMun()); });
+
 /*********** Google Maps API ***********/
 tabs.setActiveEvent("maps", perfil.isTrayectos);
-tabs.setInitEvent("maps", maps.init);
+tabs.setInitEvent("maps", rutas.maps);
 tabs.setViewEvent("maps", tabs.resetToggleAction);
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
@@ -47,7 +50,7 @@ window.viewIrse = (xhr, status, args, tab) => {
 	// Init IRSE form
 	perfil.init().setOrganicas(coll.parse(args.organicas));
 	rutas.init().setRutas(coll.parse(args.rutas) || []);
-	gastos.init(coll.parse(args.gastos));
+	gastos.init().setGastos(coll.parse(args.gastos));
 	firmas.init(coll.parse(args.firmas));
 	//organicas.init();
 	iris.init();
@@ -60,6 +63,8 @@ window.updateIrse = (xhr, status, args, tab) => {
 	// update IRSE form
 	let data = coll.parse(args.organicas);
 	data && perfil.setOrganicas(data);
+	data = coll.parse(args.gastos);
+	data && gastos.setGastos(data);
 	data = coll.parse(args.firmas);
 	data && firmas.setFirmas(data);
 	iris.update(); // update inputs

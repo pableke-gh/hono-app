@@ -103,7 +103,7 @@
 						<li><b>Importe:</b> #{jb.importe} €</li>
 						<li><b>F. Pago:</b> #{jb.fechaPago}</li>
 						<li><b>Documentación:</b>
-							<ul>
+							<ul id="adjuntos">
 								<c:if test="#{jb.doc.cm}">
 									<c:choose>
 									<c:when test="#{jb.doc.monoJgCm}">
@@ -117,9 +117,6 @@
 								<c:choose>
 								<c:when test="#{jb.adjunto}">
 									<li><b>(ZIP) Adjunto:</b> <a href="#{jb.getUrlAdjunto()}" target="_blank">Ver documentación del pago<i class="fas fa-arrow-alt-down icon"></i></a></li>
-								</c:when>
-								<c:when test="#{empty jb.adjuntos}">
-									<li>-</li>
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="#{jb.adjuntos}" var="adjunto" varStatus="loop">

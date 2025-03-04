@@ -2,7 +2,7 @@
 import api from "../components/Api.js";
 import Form from "../components/forms/Form.js";
 import nav from "../components/Navigation.js";
-import sb from "../components/StringBox.js";
+import sb from "../components/types/StringBox.js";
 import excel from "../components/Excel.js";
 import menus from "./data/menus.js";
 

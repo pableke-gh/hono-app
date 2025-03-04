@@ -1,6 +1,6 @@
 
 import coll from "../../components/CollectionHTML.js";
-import sb from "../../components/StringBox.js";
+import sb from "../../components/types/StringBox.js";
 import dom from "../../lib/uae/dom-box.js";
 
 import place from "./place.js";
@@ -58,7 +58,7 @@ window.initMap = () => {
 		if (dom.isError()) // validate inputs
 			return false; // invalid inputs
 
-		const ruta = dom.getData(); // form data
+		const ruta = dom.getData(".ui-ruta"); // form data
 		function loadOrigen(place, pais, mask) {
 			p1 = place;
 			ruta.pais1 = pais;

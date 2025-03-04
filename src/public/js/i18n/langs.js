@@ -2,8 +2,8 @@
 import en from "./langs/en.js";
 import es from "./langs/es.js";
 import Validators from "./validators.js";
-import nb from "../components/NumberBox.js";
-import sb from "../components/StringBox.js";
+import nb from "../components/types/NumberBox.js";
+import sb from "../components/types/StringBox.js";
 
 function Langs() {
 	const self = this; //self instance

@@ -3,7 +3,6 @@ import api from "../Api.js";
 import alerts from "../Alerts.js";
 import dom from "./DomBox.js";
 import Table from "../Table.js";
-import input from "./InputBox.js";
 import Datalist from "./Datalist.js";
 import Autocomplete from "./Autocomplete.js";
 import MultiSelectCheckbox from "./MultiSelectCheckbox.js";
@@ -34,18 +33,30 @@ export default function(form, opts) {
 
 	const $1 = selector => form.querySelector(selector);
 	const $$ = selector => form.querySelectorAll(selector);
+
 	this.querySelector = $1; // Form child element
 	this.querySelectorAll = $$; // Form children elements
+	this.getInput = selector => form.elements.findBy(selector); // find an element
+	this.getInputs = selector => form.elements.query(selector); // filter elements
+
+	// Actions to update form view (inputs, texts, ...)
+	const fnQueryInput = el => globalThis.isstr(el) ? self.getInput(el) : el;
+	const fnAction = (el, fn) => { el = fnQueryInput(el); el && fn(el); return self; }
+	const fnContains = (el, name) => el.classList.contains(name);
+	const fnFor = (list, fn) => { list.forEach(fn); return self; }
+	const fnEach = (selector, fn) => fnFor($$(selector), fn);
+	const fnUpdate = (selector, fn) => {
+		selector = selector || INPUTS; // Default = inputs type
+		return fnFor(form.elements, el => el.matches(selector) && fn(el));
+	}
 
 	this.isset = () => form;
 	this.getForm = () => form;
 	this.getElements = () => form.elements;
 	//this.getId = () => form.id.value;
 	this.focus = el => { dom.focus(el); return self; }
-	this.setFocus = selector => self.focus(self.getInput(selector));
+	this.setFocus = selector => fnAction(selector, el => el.focus());
 	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
-	this.getInput = selector => form.elements.findBy(selector); // find an element
-	//this.getInputs = selector => form.elements.query(selector); // filter elements
 
     this.get = name => opts[name];
     this.set = (name, fn) => { opts[name] = fn; return self; }
@@ -61,16 +72,6 @@ export default function(form, opts) {
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
-
-	// Actions to update form view (inputs, texts, ...)
-	const fnQueryInput = el => globalThis.isstr(el) ? self.getInput(el) : el;
-	const fnContains = (el, name) => el.classList.contains(name);
-	const fnFor = (list, fn) => { list.forEach(fn); return self; }
-	const fnEach = (selector, fn) => fnFor($$(selector), fn);
-	const fnUpdate = (selector, fn) => {
-		selector = selector || INPUTS; // Default = inputs type
-		return fnFor(form.elements, el => el.matches(selector) && fn(el));
-	}
 
 	this.getHtml = selector => dom.getHtml($1(selector));
     this.setHtml = (el, text) => { dom.html(el, text); return self; }
@@ -96,7 +97,10 @@ export default function(form, opts) {
 		el.classList.toggle(opts.negativeNumClass, el.value.startsWith("-"));
 	}
 	function fnSetval(el, value) {
-		input.setValue(el, value); // el must exists
+		if ((el.tagName == "SELECT") && !value)
+			el.selectedIndex = 0; // first option
+		else
+			el.value = value || ""; // force String
 		return self;
 	}
 	function fnSetValue(el, value) {
@@ -117,8 +121,8 @@ export default function(form, opts) {
 		return self;
 	}
 	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
-	this.setval = (selector, value) => self.setValue(fnQueryInput(selector), value);
-	this.setStrval = (selector, value) => { dom.setValue(fnQueryInput(selector), value); return self; } 
+	this.setval = (selector, value) => fnAction(selector, el => fnSetValue(el, value));
+	this.setStrval = (selector, value) => fnAction(selector, el => fnSetval(el, value));
 	this.values = (selector, value) => fnUpdate(selector, el => fnSetValue(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
 
@@ -156,9 +160,9 @@ export default function(form, opts) {
 		return data;
 	}
 
-	this.reset = selector => fnUpdate(selector, el => fnSetval(el)); // reset inputs value, hidden to! use:not(:hidden) selector
-	this.restart = selector => { const el = fnQueryInput(selector); el.focus(); return fnSetval(el); } // remove value + focus
-	this.copy = (el1, el2) => { dom.setValue(fnQueryInput(el1), self.getval(el2)); return self; }
+	this.reset = selector => fnUpdate(selector, el => fnSetval(el)); // reset inputs value, hidden to! use :not([type=hidden]) selector
+	this.restart = selector => fnAction(selector, el => { el.focus(); fnSetval(el); }); // remove value + focus
+	this.copy = (el1, el2) => fnAction(el1, el => fnSetval(el, self.getval(el2)));
 
 	// Inputs helpers
 	this.setTable = (selector, opts) => new Table($1(selector), opts); // table
@@ -177,7 +181,7 @@ export default function(form, opts) {
 	this.loadAcItems = (selector, fnSource, fnSelect, fnReset) => fnUpdate(selector, el => new Autocomplete(el, fnAcOptions(fnSource, fnSelect, fnReset)));
 
 	// Events handlers
-	const fnEvent = (el, name, fn) => { input.addEvent(el, name, fn); return self; }
+	const fnEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return self; }
 	const fnChange = (el, fn) => fnEvent(el, "change", fn);
 
 	this.setDateRange = (f1, f2) => {
@@ -186,6 +190,8 @@ export default function(form, opts) {
 		if (f1 && f2) { // check if fields exist
 			fnEvent(f1, "blur", ev => f2.setAttribute("min", f1.value));
 			fnEvent(f2, "blur", ev => f1.setAttribute("max", f2.value));
+			f1.setAttribute("max", f2.value);
+			f2.setAttribute("min", f1.value);
 		}
 		return self;
 	}
@@ -203,27 +209,33 @@ export default function(form, opts) {
 	this.setClick = (selector, fn) => { dom.setAction($1(selector), fn); return self; }
 	this.click = selector => { $1(selector).click(); return self; } // Fire event only for PF
 
-	this.onChange = (el, fn) => { dom.onChange(el, fn); return self; }
-	this.onChangeInput = (selector, fn) => self.onChange(fnQueryInput(selector), fn);
+	this.onChange = (selector, fn) => fnAction(selector, el => fnChange(el, fn));
+	this.onChangeInput = self.onChange;
 	this.onChangeInputs = (selector, fn) => fnUpdate(selector, el => fnChange(el, fn));
-	this.onChangeFile = (selector, fn) => { dom.onChangeFile(fnQueryInput(selector), fn); return self; }
-	this.onChangeFiles = (selector, fn) => fnUpdate(selector, el => input.onChangeFile(el, fn));
-	this.setField = (selector, value, fn) => {
-		const el = fnQueryInput(selector);
-		if (el) { // Exists element?
-			fnChange(el, fn);
-			fnSetValue(el, value);
+
+	const fnChangeFile = (el, fn) => {
+		let file, index = 0; // file, position;
+		const reader = new FileReader();
+		const fnLoad = i => {
+			file = el.files[i]; // multifile
+			file && reader.readAsArrayBuffer(file); //reader.readAsText(file, "UTF-8");
 		}
-		return self;
+		reader.onload = ev => { // event on load file
+			fn(el, file, reader.result, index);
+			fnLoad(++index);
+		}
+		el.addEventListener("change", () => fnLoad(index));
+		return self; // self instance
 	}
+	this.onChangeFile = (selector, fn) => fnAction(selector, el => fnChangeFile(el, fn));
+	this.onChangeFiles = (selector, fn) => fnUpdate(selector, el => fnChangeFile(el, fn));
+	this.setField = (selector, value, fn) => fnAction(selector, el => { fnChange(el, fn); fnSetValue(el, value); }); 
 
 	// Form Validator
 	const fnSetError = (el, tip) => {
 		if (!tip) return; // no message
 		el.focus(); // set focus on error
 		el.classList.add(opts.inputErrorClass);
-		//const block = el.closest(opts.groupSelector) || coll.getDivNull(); // label tag container
-		//block.getElementsByClassName(opts.tipErrorClass).text(i18n.get(tip)); // field message
 		dom.text(el.next("." + opts.tipErrorClass), i18n.get(tip));
 	}
 	this.closeAlerts = () => {
@@ -232,11 +244,6 @@ export default function(form, opts) {
 		form.getElementsByClassName(opts.tipErrorClass).text(EMPTY);
 		return self;
 	}
-	/*this.setError = (el, msg, tip) => {
-		el = isstr(el) ? self.getInput(el) : el;
-		fnSetError(el, tip); // Set input error
-		return self.showError(msg); // Show error message
-	}*/
 	this.setErrors = messages => {
 		if (globalThis.isstr(messages)) // simple message text
 			return self.showError(messages);
@@ -245,8 +252,8 @@ export default function(form, opts) {
 		form.elements.eachPrev(el => fnSetError(el, messages[el.name]));
 		return self.showError(messages.msgError || opts.defaultMsgError);
 	}
-	this.validate = fnValidator => {
-		const data = self.closeAlerts().getData(); // current form data
+	this.validate = (fnValidator, selector) => {
+		const data = self.closeAlerts().getData(selector); // current form data
 		return fnValidator(data) ? data : !self.setErrors(); // model preserve this
 	}
 

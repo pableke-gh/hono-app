@@ -1,5 +1,5 @@
 
-import tb from "../../components/TemporalBox.js";
+import tb from "../../components/types/TemporalBox.js";
 
 import iris from "./iris.js";
 import perfil from "./perfil.js";

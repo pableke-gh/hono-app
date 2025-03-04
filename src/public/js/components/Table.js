@@ -88,6 +88,11 @@ export default function(table, opts) {
 	this.querySelectorAll = selector => table.querySelectorAll(selector);
     this.getText = selector => dom.getText(table.querySelector(selector)); // read text
 
+	this.renderFooter = () => {
+		tFoot.innerHTML = opts.onFooter(RESUME); // update table footer
+		opts.afterRender(RESUME); // After body and footer is rendered
+		return self;
+	}
 	function fnChangeEvent(data, el, tr, i) {
 		const fnChange = opts[el.name + "Change"];
 		fnChange && fnChange(data, el, tr, i);
@@ -104,8 +109,7 @@ export default function(table, opts) {
 		tBody.innerHTML = RESUME.size // has data
 						? (coll.render(_rows, opts.onRender, RESUME) + opts.onLastRow(RESUME))
 						: opts.rowEmptyTable; // specific empty row
-		tFoot.innerHTML = opts.onFooter(RESUME); // update table footer
-		opts.afterRender(RESUME); // After body and footer is rendered
+		self.renderFooter(); // update table footer
 		tBody.classList.add(opts.activeClass); // Add styles (animation)
 
 		// Row listeners for change, find and remove items in body

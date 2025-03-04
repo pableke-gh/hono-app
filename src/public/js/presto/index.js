@@ -88,6 +88,7 @@ pf.ready(() => {
     window.fnAddPartidaInc = () => formPresto.validate(partida.validate);
     window.loadPartidaInc = (xhr, status, args) => {
         const partidaInc = JSON.read(args.data);
+console.log(partidaInc);
         formPresto.closeAlerts().hide(".link-adjunto");
         if (partidas.setData(lineas).validatePartida(partidaInc))
             pInc.add(partidaInc);
@@ -102,7 +103,7 @@ pf.ready(() => {
         const data = JSON.read(args.presto);
         presto.setData(data); // Load data-model before view
         ecoInc.reset(); // cargo las econonomicas a incrementar
-        formPresto.closeAlerts().resetCache().setData(data)
+        formPresto.closeAlerts().resetCache().setData(data, ":not([type=hidden])")
 				.readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
 				.setVisible(".insert-only", presto.isEditable()).setVisible(".update-only", presto.isDisabled())
 				.setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())

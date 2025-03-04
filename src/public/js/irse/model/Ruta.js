@@ -1,5 +1,5 @@
 
-import dt from "../../components/DateBox.js";
+import dt from "../../components/types/DateBox.js";
 import dom from "../../lib/uae/dom-box.js";
 
 function Ruta() {
