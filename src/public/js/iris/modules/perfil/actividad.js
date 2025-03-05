@@ -1,6 +1,6 @@
 
-import iris from "./iris.js";
-import actividades from "../data/actividades.js"
+import iris from "../iris.js";
+import actividades from "../../data/perfiles/actividades.js"
 
 function Actividad() {
 	const self = this; //self instance

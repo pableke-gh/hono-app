@@ -39,7 +39,7 @@ export default function Partida030() {
     this.load = row => { // load tab view 3
         row.ej030 = row.ej; // Ejercicio de la partida a añadir
         row.imp080 = i18n.isoFloat(row.imp); // formated float
-        form.render(".info-080", row).setData(row).setVisible("#memo-030", presto.getMemo())
+        form.render(".info-080", row).setData(row, ":not([type=hidden])").setVisible("#memo-030", presto.getMemo())
             .setVisible("#save-030", !presto.isReadOnly()).text("#memo-030", presto.getMemo());
         acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
         tabs.showTab(3);

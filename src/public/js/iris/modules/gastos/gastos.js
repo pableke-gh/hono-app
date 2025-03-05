@@ -1,17 +1,20 @@
 
-import sb from "../../components/types/StringBox.js";
-import pf from "../../components/Primefaces.js";
-import i18n from "../../i18n/langs.js";
+import coll from "../../../components/CollectionHTML.js";
+import sb from "../../../components/types/StringBox.js";
+import pf from "../../../components/Primefaces.js";
+import i18n from "../../../i18n/langs.js";
 
-import iris from "./iris.js";
-import rutas from "./rutas.js";
-import gasto from "../model/Gasto.js";
-import pernoctas from "../data/pernoctas/pernoctas.js";  
+import iris from "../iris.js";
+import transportes from "./transportes.js"; 
+import pernoctas from "./pernoctas.js"; 
+import rutas from "../rutas/rutas.js";
+import gasto from "../../model/gasto/Gasto.js";
 
 function Gastos() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
 	let _gastos, _tblGastos; // container
+	let _isPasoUpdate6; // bool indicator
 
 	this.getGastos = () => _gastos;
 	this.getFacturas = () => _gastos.filter(gasto.isFactura);
@@ -21,12 +24,10 @@ function Gastos() {
 	this.getDietas = () => _gastos.filter(gasto.isDieta);
 	this.getPaso5 = () => _gastos.filter(gasto.isPaso5);
 
-	this.updateGastos = (tipo, data) => {
-		_gastos = _gastos.filter(gasto => (gasto.tipo != tipo)).concat(data);
-		return self;
-	}
-	this.updateFacturas = data => self.updateGastos(1, data);
-	this.updateDietas = data => self.updateGastos(7, data);
+	const fnUpdateGastos = (data, fn) => { _gastos = _gastos.filter(fn).concat(data); return self; }
+	this.updatePaso5 = data => fnUpdateGastos(data, gasto.isPaso5);
+	this.updateTransporte = data => fnUpdateGastos(data, gasto.isTransporte);
+	this.updateDietas = data => fnUpdateGastos(data, gasto.isDieta);
 	this.setGastos = gastos => {
 		_gastos = gastos;
 		_tblGastos.render(self.getPaso5());
@@ -34,9 +35,12 @@ function Gastos() {
 	}
 
 	this.init = () => {
+		transportes.init();
+		pernoctas.init();
+		const fnUnload = data => { i18n.confirm("remove") && pf.sendId("rcUnloadGasto", data.id); };
+
 		_tblGastos = form.setTable("#tbl-gastos");
-		_tblGastos.setMsgEmpty("msgGastosEmpty")  //#{msg['msg.no.docs']}
-				.setRender(gasto.row).setFooter(gasto.tfoot);
+		_tblGastos.setMsgEmpty("msgGastosEmpty").setRender(gasto.row).setFooter(gasto.tfoot).set("#rcUnloadGasto", fnUnload);
 		return self;
 	}
 	this.initTab5 = tab => {
@@ -88,16 +92,36 @@ function Gastos() {
 		const valid = i18n.getValidators();
 		return valid.isOk();
 	}
-	this.validate = data => {
-		const valid = i18n.getValidators();
-		return valid.isOk();
+	this.validate = () => {
+		//const valid = i18n.getValidators();
+		if (_isPasoUpdate6) {
+			transportes.setTransportes(self.getTransporte());
+			pernoctas.setPernoctas(self.getPernoctas());
+			_isPasoUpdate6 = false;
+		}
+		return true;
 	}
+
 	window.validateGasto = () => form.validate(self.validateGasto);
 	window.validateP5 = () => form.validate(self.validate);
-	window.updateGastos = (xhr, status, args) => {
+	window.addGasto = (xhr, status, args) => {
 		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
-		self.setGastos(coll.parse(args.gastos));
+		const data = coll.parse(args.gasto);
+		if (!data || !data.id || !data.fref)
+			return !form.showError("Error al adjuntar el gasto a la comunicación.");
+		_gastos.push(data); // añadir gasto a lista
+		// todo: actualizar rutas si el gasto esta asociado a estas
+		_tblGastos.render(self.getPaso5());
+		_isPasoUpdate6 = true;
+	}
+	window.unloadGasto = (xhr, status, args) => {
+		if (!window.showAlerts(xhr, status, args))
+			return false; // Server error
+		const data = _tblGastos.getCurrentItem();
+		_gastos = _gastos.filter(gasto => (gasto.id != data.id));
+		_tblGastos.removeCurrent(); // remove and reload
+		_isPasoUpdate6 = true;
 	}
 }
 

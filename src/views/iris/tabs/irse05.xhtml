@@ -14,8 +14,8 @@
 			<div class="ui-blocks">
 				<div class="ui-block-btn">
 					<a href="#open-file-gasto" class="btn btn-green success-btn pf-upload" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
-					<p:fileUpload id="fileGasto" value="#{irse.input.fileGasto}" fileUploadListener="#{irse.input.uploadFileGasto}" mode="advanced" auto="true" styleClass="hide" />
-					<h:inputHidden id="tipoGasto" value="#{irse.input.tipoGasto}" />
+					<p:fileUpload id="fileGasto" value="#{iris.gastos.fileGasto}" fileUploadListener="#{iris.gastos.uploadFileGasto}" mode="advanced" auto="true" styleClass="hide" />
+					<h:inputHidden id="tipoGasto" value="#{iris.gastos.tipoGasto}" />
 					<div class="filename" style="position: absolute; margin: 0 4px;"></div>
 				</div>
 				<label class="ui-block grupo-gasto hide">
@@ -83,23 +83,24 @@
 				</label>
 				<label class="ui-block grupo-gasto hide">
 					<div for="impGasto" class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
-					<h:inputText id="impGasto" value="#{irse.input.impGasto}" maxlength="12" tabindex="101" styleClass="ui-input ui-float" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
+					<h:inputText id="impGasto" value="#{iris.gastos.impGasto}" maxlength="12" tabindex="101" styleClass="ui-input ui-float" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
 					<div class="ui-errtip"></div>
 				</label>
 				<label class="ui-block grupo-gasto hide">
 					<div class="label required label-text-gasto"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
-					<h:inputText id="txtGasto" value="#{irse.input.txtGasto}" maxlength="300" tabindex="102" styleClass="ui-input ui-text"/>
+					<h:inputText id="txtGasto" value="#{iris.gastos.txtGasto}" maxlength="300" tabindex="102" styleClass="ui-input ui-text"/>
 					<div class="ui-errtip"></div>
 				</label>
 				<label class="ui-block grupo-gasto hide">
 					<div class="label required"><h:outputText value="#{msg['lbl.check.in.out']}" escape="false" />:</div>
-					<h:inputText id="fMinGasto" value="#{irse.input.FMinGasto}" tabindex="102" styleClass="ui-input ui-date ui-pernocta" title="Límite inferior del rango de fechas"/> ...
-					<h:inputText id="fMaxGasto" value="#{irse.input.FMaxGasto}" tabindex="103" styleClass="ui-input ui-date ui-pernocta" title="Límite superior del rango de fechas"/>
+					<h:inputText id="fMinGasto" value="#{iris.gastos.FMinGasto}" tabindex="102" styleClass="ui-input ui-date ui-pernocta" title="Límite inferior del rango de fechas"/> ...
+					<h:inputText id="fMaxGasto" value="#{iris.gastos.FMaxGasto}" tabindex="103" styleClass="ui-input ui-date ui-pernocta" title="Límite superior del rango de fechas"/>
 					<div class="ui-errtip"></div>
 				</label>
 				<div class="ui-block-btn grupo-gasto hide">
+					<p:remoteCommand name="rcUnloadGasto" action="#{iris.gastos.unload()}" oncomplete="unloadGasto(xhr, status, args)" />
 					<p:commandButton id="uploadGasto"
-						onclick="if (!validateGasto()) return false;loading();" action="#{iris.gastos.upload()}" oncomplete="updateGastos(xhr, status, args);"
+						onclick="if (!validateGasto()) return false;loading();" action="#{iris.gastos.upload()}" oncomplete="addGasto(xhr, status, args);"
 						icon="fas fa-arrow-alt-down" iconPos="right" value="Añadir" styleClass="btn btn-green success-btn" tabindex="104" />
 				</div>
 			</div>
@@ -135,10 +136,10 @@
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
 	<c:when test="#{iris.form.editable}">
-		<p:commandLink action="#{irse.form.paso5()}" onclick="loading();" oncomplete="updateIrse(xhr, status, args);"
+		<p:commandLink action="#{iris.form.paso5()}" onclick="if (!validateP5()) return false;loading();" oncomplete="updateIrse(xhr, status, args);"
 				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="111">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></p:commandLink>
-		<p:commandButton action="#{irse.form.save5()}" onclick="loading();" oncomplete="saveTab();" icon="far fa-save" 
+		<p:commandButton action="#{iris.form.paso5()}" onclick="if (!validateP5()) return false;" oncomplete="updateIrse(xhr, status, args, 5);" icon="far fa-save" 
 			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="112" title="#{msg['tit.btn.no.enviar']}" />
 	</c:when>
 	<c:otherwise>

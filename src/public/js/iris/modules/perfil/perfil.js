@@ -1,9 +1,9 @@
 
-import pf from "../../components/Primefaces.js";
-import i18n from "../../i18n/langs.js";
+import pf from "../../../components/Primefaces.js";
+import i18n from "../../../i18n/langs.js";
 
 import organicas from "./organicas.js";
-import perfiles from "../data/perfiles.js"; 
+import perfiles from "../../data/perfiles/perfiles.js"; 
 
 function Perfil() {
 	const self = this; //self instance

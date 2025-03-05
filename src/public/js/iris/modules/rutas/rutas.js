@@ -1,13 +1,13 @@
 
-import coll from "../../components/CollectionHTML.js";
-import sb from "../../components/types/StringBox.js";
-import tb from "../../components/types/TemporalBox.js";
-import i18n from "../../i18n/langs.js";
+import coll from "../../../components/CollectionHTML.js";
+import sb from "../../../components/types/StringBox.js";
+import tb from "../../../components/types/TemporalBox.js";
+import i18n from "../../../i18n/langs.js";
 
-import perfil from "./perfil.js";
+import perfil from "../perfil/perfil.js";
 import maps from "./maps.js";
 import rtabs from "./rutasTabs.js";
-import ruta from "../model/Ruta.js";
+import ruta from "../../model/ruta/Ruta.js";
 
 function Rutas() {
 	const self = this; //self instance

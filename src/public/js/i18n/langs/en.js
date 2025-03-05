@@ -19,6 +19,8 @@ export default {
 	errMatricula: "Debe indicar la matricula del vehiculo privado.",
 	msgRutasEmpty: "Aún no has añadido ninguna ETAPA a esta Comunicación.",
 	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta Comunicación.",
+	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta Comunicación.",
+	msgPernoctasEmpty: "No hay pernoctas asociadas a esta Comunicación.",
 
 	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
 	docMovilidad: "Documentación acreditativa del programa de movilidad",

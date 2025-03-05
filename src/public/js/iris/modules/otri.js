@@ -7,7 +7,7 @@ import excel from "../../components/Excel.js";
 import dom from "../../lib/uae/dom-box.js";
 
 import iris from "./iris.js";
-import rutas from "./rutas.js";
+import rutas from "./rutas/rutas.js";
 
 function Otri() {
 	const self = this; //self instance

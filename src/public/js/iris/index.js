@@ -6,10 +6,10 @@ import pf from "../components/Primefaces.js";
 import iris from "./modules/iris.js";
 import list from "./modules/list.js";
 import uxxiec from "./modules/uxxiec.js";
-import perfil from "./modules/perfil.js";
-import rutas from "./modules/rutas.js";
-import gastos from "./modules/gastos.js"; 
-import dietas from "./modules/dietas.js"; 
+import perfil from "./modules/perfil/perfil.js";
+import rutas from "./modules/rutas/rutas.js";
+import gastos from "./modules/gastos/gastos.js"; 
+import dietas from "./modules/gastos/dietas.js"; 
 import firmas from "./modules/firmas.js";
 import otri from "./modules/otri.js";
 

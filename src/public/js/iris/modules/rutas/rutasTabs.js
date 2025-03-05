@@ -1,13 +1,13 @@
 
-import coll from "../../components/CollectionHTML.js";
-import tabs from "../../components/Tabs.js";
-import sb from "../../components/types/StringBox.js";
-import i18n from "../../i18n/langs.js";
+import coll from "../../../components/CollectionHTML.js";
+import tabs from "../../../components/Tabs.js";
+import sb from "../../../components/types/StringBox.js";
+import i18n from "../../../i18n/langs.js";
 
-import iris from "./iris.js";
-import dietas from "./dietas.js";
-import ruta from "../model/Ruta.js";
-import { CT, MUN } from "../data/rutas.js";
+import iris from "../iris.js";
+import dietas from "../gastos/dietas.js";
+import ruta from "../../model/ruta/Ruta.js";
+import { CT, MUN } from "../../data/rutas.js";
 
 function RutasTabs() {
 	const self = this; //self instance

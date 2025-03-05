@@ -145,6 +145,7 @@ export default function(table, opts) {
 	this.update = data => { Object.assign(_rows[_index], data); return fnRender(_rows); }
 	this.save = (row, id) => (id ? self.insert(row, id) : self.update(row)); // Insert or update
 	this.remove = index => { _rows.splice(index, 1); return fnRender(_rows); } // remove a row and reload table
+	this.removeCurrent = () => self.remove(_index) // remove current row and reload table
 	this.removeRow = () => {
 		i18n.confirm(opts.msgConfirmRemove) // force confirm
 				&& opts.onRemove(_rows[_index]) // call event

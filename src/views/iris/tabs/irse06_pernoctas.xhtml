@@ -27,34 +27,8 @@
 					<th><h:outputText value="#{msg['lbl.imp.percibir']}" escape="false" /></th>
 				</tr>
 			</thead>
-			<tbody>
-				<c:forEach items="#{irse.gastos.pernoctas}" var="g" varStatus="loop">
-				<tr id="#{g.idGasto}" class="tb-data tb-data-tc">
-					<td data-cell="Nº">#{loop.count}</td>
-					<td data-cell="#{msg['lbl.pais']}">#{g.descripcion}</td>
-					<td data-cell="#{msg['lbl.fecha.inicio']}">#{irse.gastos.getGastoF1(g)}</td>
-					<td data-cell="#{msg['lbl.fecha.fin']}">#{irse.gastos.getGastoF2(g)}</td>
-					<td data-cell="#{msg['lbl.noches']}">#{g.num}</td>
-					<td data-cell="#{msg['lbl.imp.noche']}">#{irse.gastos.getGastoImpCalc(g)} €</td>
-					<td data-cell="#{msg['lbl.imp.tot']}">#{irse.gastos.getImpCalcPernoctaI18n(g)} €</td>
-					<td data-cell="#{msg['lbl.imp.justifi']}">#{irse.gastos.getGastoImporte(g)} €</td>
-					<td data-cell="#{msg['lbl.imp.percibir']}">#{irse.form.getMinPernoctaI18n(g)} €</td>
-				</tr>
-				</c:forEach>
-			</tbody>
-			<tbody class="hide">
-				<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['msg.no.pernoctas']}" escape="false" /></td></tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="4"><h:outputText value="#{msg['lbl.alojamientos']}" escape="false" />: #{irse.gastos.numPernoctas}</td>
-					<td class="tb-data-tc hide-xs">#{irse.gastos.numNoches}</td>
-					<td class="hide-xs"></td>
-					<td class="tb-data-tc hide-xs">#{irse.gastos.maxPernoctasI18n} €</td>
-					<td class="tb-data-tc hide-xs">#{irse.gastos.impPernoctasI18n} €</td>
-					<td class="tb-data-tc hide-xs">#{irse.gastos.minPernoctasI18n} €</td>
-				</tr>
-			</tfoot>
+			<tbody></tbody>
+			<tfoot></tfoot>
 		</table>
 	</div>
 </html>

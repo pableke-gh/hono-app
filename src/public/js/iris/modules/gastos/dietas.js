@@ -1,13 +1,13 @@
 
-import tb from "../../components/types/TemporalBox.js";
+import tb from "../../../components/types/TemporalBox.js";
 
-import iris from "./iris.js";
-import perfil from "./perfil.js";
-import rutas from "./rutas.js";
+import iris from "../iris.js";
+import perfil from "../perfil/perfil.js";
+import rutas from "../rutas/rutas.js";
 import gastos from "./gastos.js";
 
-import dieta from "../model/Dieta.js";
-import dietas from "../data/dietas/dietas.js";  
+import dieta from "../../model/gasto/Dieta.js";
+import dietas from "../../data/dietas/dietas.js";  
 
 function Dietas() {
 	const self = this; //self instance

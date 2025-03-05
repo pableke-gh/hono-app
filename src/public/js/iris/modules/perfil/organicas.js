@@ -1,9 +1,9 @@
 
-import pf from "../../components/Primefaces.js";
-import iris from "./iris.js";
-import dietas from "./dietas.js";
+import pf from "../../../components/Primefaces.js";
+import iris from "../iris.js";
+import dietas from "../gastos/dietas.js";
 import actividad from "./actividad.js";
-import organica from "../model/Organica.js"
+import organica from "../../model/Organica.js"
 
 function Organicas() {
 	const self = this; //self instance

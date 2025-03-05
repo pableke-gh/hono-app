@@ -1,7 +1,7 @@
 
-import coll from "../../components/CollectionHTML.js";
-import sb from "../../components/types/StringBox.js";
-import i18n from "../../i18n/langs.js";
+import coll from "../../../components/CollectionHTML.js";
+import sb from "../../../components/types/StringBox.js";
+import i18n from "../../../i18n/langs.js";
 import place from "./place.js";
 
 /**

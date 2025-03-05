@@ -13,7 +13,7 @@
 			<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.2']}" escape="false" />: <b class="text-green">#{irse.gastos.impTransporteI18n} €</b>
 		</a>
 		</h3>
-		<table id="gastos" class="info-p6-trans hide tb-xeco table-xs">
+		<table id="transportes" class="info-p6-trans hide tb-xeco table-xs">
 			<thead>
 			<tr>
 				<th>Nº</th>
@@ -23,26 +23,8 @@
 				<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /></th>
 			</tr>
 			</thead>
-			<tbody>
-			<c:forEach items="#{irse.gastos.transporte}" var="g" varStatus="loop">
-				<tr id="#{g.idGasto}" class="tb-data tb-data-tc">
-					<td data-cell="Nº">#{loop.count}</td>
-					<td data-cell="#{msg['lbl.tipo.gasto']}">#{irse.gastos.getSubtipoDesc(g)}</td>
-					<td data-cell="#{msg['lbl.desc.obsev']}">#{irse.gastos.getDescGasto(g)}</td>
-					<td data-cell="#{msg['lbl.adjunto']}">#{g.nombre}</td>
-					<td data-cell="#{msg['lbl.importe']}">#{irse.gastos.getGastoImporte(g)} €</td>
-				</tr>
-			</c:forEach>
-			</tbody>
-			<tbody class="hide">
-				<tr><td class="no-data" colspan="5"><h:outputText value="#{msg['msg.no.fac.tickets']}" escape="false" /></td></tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="4"><h:outputText value="#{msg['lbl.fac.tickets']}" escape="false" />: #{irse.gastos.numTransporte}</td>
-					<td class="tb-data-tc hide-xs">#{irse.gastos.impTransporteI18n} €</td>
-				</tr>
-			</tfoot>
+			<tbody></tbody>
+			<tfoot></tfoot>
 		</table>
 	</div>
 </html>
