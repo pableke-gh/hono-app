@@ -18,7 +18,6 @@ pf.ready(list.init);
 
 /*********** PERFIL MUN tab-1 ***********/ 
 tabs.setInitEvent(1, rutas.mun);
-tabs.setInitEvent(1, tab => { tab.querySelectorAll(".block-mun").toggle("hide", !perfil.isMun()); });
 
 /*********** Google Maps API ***********/
 tabs.setActiveEvent("maps", perfil.isTrayectos);
@@ -63,6 +62,8 @@ window.updateIrse = (xhr, status, args, tab) => {
 	// update IRSE form
 	let data = coll.parse(args.organicas);
 	data && perfil.setOrganicas(data);
+	data = coll.parse(args.rutas);
+	data && rutas.setRutas(data);
 	data = coll.parse(args.gastos);
 	data && gastos.setGastos(data);
 	data = coll.parse(args.firmas);

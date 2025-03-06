@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<div class="card-xeco">
-		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @numPasos;</span><span><h:outputText value="#{msg['uae.irse.tab5.msg.tit']}" escape="false" />​</span></h2>
+		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab5.msg.tit']}" escape="false" />​</span></h2>
 		<c:if test="#{iris.form.editable}">
 			<ui:include src="./irse05_info.xhtml"></ui:include>
 			<div class="ui-blocks">
@@ -22,41 +22,22 @@
 					<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
 					<select id="tipo-gasto" class="ui-input ui-select" tabindex="100">
 						<option value=""></option>
-						<c:if test="#{irse.form.verTrayectosPendientes() and ((irse.gastos.nochesPendientes gt 0) or (irse.rutas.numTrayectosOut gt 0))}">
-							<optgroup label="Factura a nombre del comisionado">
-							<c:if test="#{irse.gastos.nochesPendientes gt 0}">
-								<option value="9"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
-							</c:if>
-							<c:if test="#{irse.rutas.numTrayectosOut gt 0}">
-								<option value="8"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
-							</c:if>
-							</optgroup>
-						</c:if>
-						<c:if test="#{irse.form.facturaUpct}">
-							<optgroup label="Tickets por transporte">
-								<c:choose>
-									<c:when test="#{irse.form.isu}">
-										<option value="1">#{irse.gastos.getMsgTicket(1)}</option>
-										<option value="2">#{irse.gastos.getMsgTicket(2)}</option>
-										<option value="3">#{irse.gastos.getMsgTicket(3)}</option>
-										<option value="4">#{irse.gastos.getMsgTicket(4)}</option>
-										<option value="5">#{irse.gastos.getMsgTicket(5)}</option>
-										<option value="6">#{irse.gastos.getMsgTicket(6)}</option>
-										<option value="7">#{irse.gastos.getMsgTicket(7)}</option>
-									</c:when>
-									<c:otherwise>
-										<option value="10">#{irse.gastos.getMsgTicket(10)}</option>
-									</c:otherwise>
-								</c:choose>
-							</optgroup>
-						</c:if>
+						<optgroup label="Factura a nombre del comisionado" class="ui-gastos-pendientes">
+							<option value="9" class="ui-noches-pendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
+							<option value="8" class="ui-rutas-pendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
+						</optgroup>
+						<optgroup label="Tickets por transporte" class="ui-factura-upct">
+							<option value="1" class="ui-isu">#{irse.gastos.getMsgTicket(1)}</option>
+							<option value="2" class="ui-isu">#{irse.gastos.getMsgTicket(2)}</option>
+							<option value="3" class="ui-isu">#{irse.gastos.getMsgTicket(3)}</option>
+							<option value="4" class="ui-isu">#{irse.gastos.getMsgTicket(4)}</option>
+							<option value="5" class="ui-isu">#{irse.gastos.getMsgTicket(5)}</option>
+							<option value="6" class="ui-isu">#{irse.gastos.getMsgTicket(6)}</option>
+							<option value="7" class="ui-isu">#{irse.gastos.getMsgTicket(7)}</option>
+							<option value="10" class="ui-no-isu">#{irse.gastos.getMsgTicket(10)}</option>
+						</optgroup>
 						<optgroup label="Otra Documentación">
-							<c:if test="#{irse.form.facturaUpct}">
-								<option value="201"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
-							</c:if>
-							<c:if test="#{irse.form.docProgramaMov}">
-								<option value="206"><h:outputText value="#{msg['lbl.doc.movilidad']}" escape="false" /></option>
-							</c:if>
+							<option value="201" class="ui-factura-upct"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
 							<option value="202"><h:outputText value="#{msg['lbl.doc.otra']}" escape="false" /></option>
 						</optgroup>
 						<c:if test="#{irse.form.extAlu and irse.form.iaeExt}">
@@ -64,7 +45,7 @@
 								<option value="203"><h:outputText value="#{msg['lbl.justifi.dietas']}" escape="false" /></option>
 							</optgroup>
 						</c:if>
-						<c:if test="#{irse.perfil.tab8}">
+						<c:if test="#{iris.perfil.tab8}">
 							<optgroup label="Gasto Extraordinario">
 								<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
 								<c:if test="#{not irse.form.mun}">
@@ -122,13 +103,8 @@
 			<tbody></tbody>
 			<tfoot></tfoot>
 		</table>
-		<div class="navbar">
-		<c:if test="#{irse.rutas.numRutas gt 1}">
-			<p>* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: #{irse.rutas.numTrayectosOut}; <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: #{irse.gastos.nochesPendientes}; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>
-		</c:if>
-		<c:if test="#{irse.form.extAlu and irse.perfil.tab7}">
-			<p>* <h:outputText value="#{msg['lbl.imp.dietas.prop']}" escape="false" />: #{irse.gastos.impManutencionI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.justifi']}" escape="false" />: #{irse.gastos.impJustifiI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.no.justifi']}" escape="false" />: #{irse.gastos.impNoJustifiI18n} €​</p>
-		</c:if>
+		<div class="navbar rutas-gt-1">
+			<p id="info-rutas-gastos">* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @numRutasOut; <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @numNochesPendientes; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>
 		</div>
 	</div>
 

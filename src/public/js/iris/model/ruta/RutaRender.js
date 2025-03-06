@@ -1,9 +1,9 @@
 
 import i18n from "../../../i18n/langs.js";
+import rvp from "./RutaVehiculoPropio.js";
 
 function RutaRender() {
 	const self = this; //self instance
-	const GASOLINA = .26; //euros/kilometro
 	const principal = ' <span class="text-warn icon"> <i class="fal fa-flag-checkered"></i></span>';
 
 	// tipos de rutas
@@ -18,7 +18,8 @@ function RutaRender() {
 	this.isTaxiInterurbano = ruta => (ruta.desp == 4);
 	this.isAsociableGasto = ruta => (!self.isVehiculoPropio(ruta) && !self.isVehiculoAjeno(ruta)); //rutas a las que se le puede asignar un gasto
 
-	this.getImpKm = ruta => (ruta.km1 * GASOLINA);
+	this.getImpGasolina = rvp.getImpGasolina;
+	this.getImpKm = rvp.getImpKm;
 
 	// table renders
 	function fnAccumulate(ruta, resume) {
@@ -26,7 +27,7 @@ function RutaRender() {
 		resume.totKmCalc += self.isVehiculoPropio(ruta) ? ruta.km2 : 0;
 	}
 	this.beforeRender = resume => {
-		resume.impKm = resume.totKm = resume.totKmCalc = 0;
+		rvp.beforeRender(resume);
 	}
 
 	this.row = (ruta, status, resume) => {
@@ -94,35 +95,12 @@ function RutaRender() {
 
 	this.rowVehiculoPropio = (ruta, status, resume) => {
 		fnAccumulate(ruta, resume);
-		const impKm = self.getImpKm(ruta);
-		resume.impKm += impKm;
-		const km1 = i18n.isoFloat(ruta.km1);
-		const editable = window.IRSE.editable;
-		const cell = editable ? `<input type="text" name="km1" value="${km1}" tabindex="100" class="ui-float tc"/>` : km1;
-		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="#{msg['lbl.origen.etapa']}">${ruta.origen}</td>
-			<td data-cell="#{msg['lbl.fecha.salida']}">${i18n.isoDate(ruta.dt1)}</td>
-			<td data-cell="#{msg['lbl.hora.salida']}">${i18n.isoTimeShort(ruta.dt1)}</td>
-			<td data-cell="#{msg['lbl.destino.etapa']}">${ruta.destino}</td>
-			<td data-cell="#{msg['lbl.fecha.llegada']}">${i18n.isoDate(ruta.dt2)}</td>
-			<td data-cell="#{msg['lbl.hora.llegada']}">${i18n.isoTimeShort(ruta.dt2)}</td>
-			<td data-cell="#{msg['lbl.medio.trans']}">${i18n.getItem("tiposDesp", ruta.desp)}</td>
-			<td data-cell="Google km">${i18n.isoFloat(ruta.km2) || "-"}</td>
-			<td data-cell="#{msg['lbl.tus.km']}">${cell}</td>
-			<td data-cell="#{msg['lbl.importe']}">${i18n.isoFloat(impKm)} €</td>
-		</tr>`;
+		return rvp.row(ruta, status, resume);
 	}
-    this.tfootVehiculoPropio = resume => {
-		return `<tr>
-			<td colspan="7">Etapas: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.totKmCalc)}</td>
-			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.totKm)}</td>
-			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.impKm)} €</td>
-		</tr>`;
-	}
+    this.tfootVehiculoPropio = rvp.tfoot;
+
 	this.afterRender = resume => {
-		resume.impKm = resume.totKm * GASOLINA;
-		resume.justifi = (resume.totKmCalc + .01) < resume.totKm;
+		rvp.afterRender(resume);
 	}
 }
 

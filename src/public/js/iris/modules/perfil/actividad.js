@@ -41,6 +41,7 @@ function Actividad() {
 	this.isRutaUnica = () => (self.isAutA7j() || self.is1Dia());
 	this.isLocalizaciones = () => (self.isMun() || self.isAutA7j());
 	this.isTrayectos = () => (!self.isLocalizaciones() && !self.is1Dia());
+	this.FacturaUpct = () => true; // TODO: ver si es necesario
 
 	this.getColectivo = () => form.getText("#colectivo");
 	this.setColectivo = (colectivo, email) => {
@@ -51,18 +52,22 @@ function Actividad() {
 		return self.update();
 	}
 
+	const fnUpdateView = () => {
+		form.setVisible(".block-mun", self.isMun());
+		return self
+	}
 	this.update = () => { // actualizo la actividad y el tramite
 		form.select("#actividad", actividades(self.getRol(), self.getColectivo(), self.getFinanciacion()))
 			.select("#tramite", (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
 			.closeAlerts();
-		return self;
+		return fnUpdateView();
 	}
 
 	this.init = () => {
 		_eColectivo = form.querySelector("#colectivo");
 		_eColectivo.parentNode.setVisible(!self.isEmpty());
 		form.onChangeInput("#actividad", self.update);
-		return self;
+		return fnUpdateView();
 	}
 }
 

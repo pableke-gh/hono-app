@@ -10,6 +10,7 @@ function Pernoctas() {
 
 	this.setPernoctas = pernoctas => {
 		_tblPernoctas.render(pernoctas);
+		form.setVisible(".block-pernoctas", _tblPernoctas.size() > 0);
 		return self;
 	}
 	this.init = () => {

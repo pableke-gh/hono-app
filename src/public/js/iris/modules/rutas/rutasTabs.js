@@ -5,6 +5,7 @@ import sb from "../../../components/types/StringBox.js";
 import i18n from "../../../i18n/langs.js";
 
 import iris from "../iris.js";
+import rvp from "./rutasVehiculoPropio.js";
 import dietas from "../gastos/dietas.js";
 import ruta from "../../model/ruta/Ruta.js";
 import { CT, MUN } from "../../data/rutas.js";
@@ -12,8 +13,8 @@ import { CT, MUN } from "../../data/rutas.js";
 function RutasTabs() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
-	let _rutas, _tblRutas, _tblReadOnly, _tblRutasGasto, _tblRutasVp; // itinerario
-	let _saveRutas, _renderRutasRead, _renderRutasVp; // bool indicator
+	let _rutas, _tblRutas, _tblReadOnly, _tblRutasGasto; // itinerario
+	let _saveRutas, _renderRutasRead; // bool indicator
 
 	this.getForm = () => form;
 	this.getRutas = () => _rutas;
@@ -23,17 +24,9 @@ function RutasTabs() {
 	this.getSalida = () => _rutas[0]; // primera ruta
 	this.getLlegada = () => _rutas.at(-1); // ultima ruta
 
-	//this.isRenderRutasRead = () => _renderRutasRead;
-	//this.setRenderRutasRead = () => { _renderRutasRead = true; return self; }
-	//this.isRenderRutasVp = () => _renderRutasVp;
-	//this.setRenderRutasVp = () => { _renderRutasVp = true; return self; }
-	this.setSaveRutas = () => {
-		_saveRutas = _renderRutasRead = _renderRutasVp = true;
-		return self;
-	}
-
 	this.getRutasVeiculoPropio = () => _rutas.filter(ruta.isVehiculoPropio);
 	this.getRutasSinGastos = () => _rutas.filter(data => (ruta.isAsociableGasto(data) && !data.g));
+	this.getNumRutasSinGastos = () => _rutas.reduce((num, row) => (num + (ruta.isAsociableGasto(row) && !row.g)), 0);
 	this.getRutaPrincipal = () => { // calculo la ruta principal del itinerario
 		let diff = 0; // diferencia en milisegundos
 		let principal = _rutas[0]; // primera ruta
@@ -46,17 +39,28 @@ function RutasTabs() {
 		}
 		return principal;
 	}
-
 	this.setRutaPrincipal = data => {
 		_rutas.forEach(ruta.setOrdinaria);
 		ruta.setPrincipal(data);
 		_tblRutas.render(_rutas);
 		return self;
 	}
+
+	const fnUpdateView = () => {
+		form.setVisible(".rutas-gt-1", self.size() > 1); 
+		rvp.render(self.getRutasVeiculoPropio());
+		_saveRutas = false;
+		dietas.build();
+		return self;
+	}
+	this.reload = data => {
+		_rutas = data;
+		return self;
+	}
 	this.setRutas = data => {
 		_rutas = data;
 		_tblRutas.render(_rutas);
-		_saveRutas = false;
+		fnUpdateView();
 		return self.mun();
 	}
 	this.saveRutas = () => {
@@ -64,9 +68,7 @@ function RutasTabs() {
 			return self; // no hay cambios
 		const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
 		form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
-		_saveRutas = false;
-		dietas.build();
-		return self;
+		return fnUpdateView();
 	}
 
 	tabs.setAction("show-rutas-read", () => {
@@ -78,25 +80,8 @@ function RutasTabs() {
 			_tblReadOnly.render(_rutas);
 		_renderRutasRead = false;
 	});
-	const fnChangeKm = (data, el, tr) => {
-		ruta.recalcKm(_tblRutasVp.getResume(), data, i18n.toFloat(el.value));
-		tr.cells[9].innerText = i18n.isoFloat(ruta.getImpKm(data)) + " €";
-		_tblRutasVp.renderFooter();
-	}
-	tabs.setAction("show-rutas-vp", () => {
-		if (!_tblRutasVp) {
-			_tblRutasVp = form.setTable("#vp");
-			_tblRutasVp.setMsgEmpty("msgRutasEmpty")
-					.setBeforeRender(ruta.beforeRender).setRender(ruta.rowVehiculoPropio).setFooter(ruta.tfootVehiculoPropio)
-					.setAfterRender(resume => { ruta.afterRender(resume); form.setVisible("#justifi-km", resume.justifi); })
-					.setChange("km1", fnChangeKm); 
-		}
-		if (_renderRutasVp)
-			_tblRutasVp.render(self.getRutasVeiculoPropio());
-		_renderRutasVp = false;
-	});
 
-	/*********** ASOCIACIÖN ENTRE RUTAS / GASTOS ***********/ 
+	/*********** ASOCIACIÖN ENTRE RUTAS / GASTOS ***********/
 	tabs.setInitEvent(12, tab12 => {
 		_tblRutasGasto = form.setTable("#rutas-out");
 		_tblRutasGasto.setMsgEmpty("msgRutasEmpty").setRender(ruta.rowRutasGasto).setFooter(ruta.tfootRutasGasto); 
@@ -116,13 +101,14 @@ function RutasTabs() {
 	});
 	/*********** ASOCIACIÖN ENTRE RUTAS / GASTOS ***********/ 
 
+	const fnSetSaveRutas = () => { _saveRutas = _renderRutasRead = true; }
 	this.mun = () => {
 		const SELECTOR = ".grupo-matricula-mun";
 		const ruta1Dia = Object.assign({}, MUN, _rutas[0]);
 		_rutas[0] = ruta1Dia; // Save new data (routes.length = 1)
 
 		const fields = form.getInputs(".ui-mun");
-		form.afterChange(self.setSaveRutas) // Any input change => save all rutas
+		form.afterChange(fnSetSaveRutas) // Any input change => save all rutas
 			.setVisible(SELECTOR, ruta.isVehiculoPropio(ruta1Dia)) // grupo asociado al vehiculo propio
 			.setField(fields[0], ruta1Dia.origen, ev => { ruta1Dia.origen = ruta1Dia.destino = ev.target.value; })
 			.setField(fields[1], ruta1Dia.desp, ev => { ruta1Dia.desp = +ev.target.value; form.setVisible(SELECTOR, ruta1Dia.desp == 1); })
@@ -145,9 +131,10 @@ function RutasTabs() {
 			form.restart("#h1");
 		else
 			form.setFocus("#destino");
-		self.setSaveRutas();
+		fnSetSaveRutas();
 	}
 	this.init = () => {
+		rvp.init();
 		_tblRutas = form.setTable("#tbl-rutas");
 		_tblRutas.setMsgEmpty("msgRutasEmpty")
 				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot)

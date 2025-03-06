@@ -20,20 +20,23 @@ function Perfil() {
 	this.is1Dia = actividad.is1Dia;
 	this.isTrayectos = actividad.isTrayectos;
 	this.isRutaUnica = actividad.isRutaUnica;
+	this.isFacturaUpct = actividad.isFacturaUpct;
 
 	this.getPerfil = () => {
 		return perfiles(actividad.getRol(), actividad.getColectivo(), actividad.getActividad(), actividad.getTramite(), actividad.getFinanciacion());
 	}
-	const fnUpdateView = () => {
-		// actualizo la vista del perfil para el formulario
-		i18n.set("numPasos", 2 + self.isTrayectos() + self.isIsu())
-			.set("titulo", self.getPerfil()).set("codigo", window.IRSE.codigo);
-		form.render(".i18n-tr-h1").render(".titulo-perfil"); // render texts
-		return self;
-	}
 	this.setOrganicas = data => {
 		organicas.setOrganicas(data); // update financiacion
-		return fnUpdateView(); // update view
+		// actualizo la vista del perfil para el formulario
+		const pasos = form.querySelectorAll(".i18n-tr-h1");
+		pasos[0].classList.add("active");
+		pasos[1].classList.toggle("active", self.isTrayectos()); 
+		pasos[2].classList.toggle("active", self.isIsu()); 
+		pasos[3].classList.add("active");
+
+		i18n.set("titulo", self.getPerfil()).set("codigo", window.IRSE.codigo);
+		form.render(".i18n-tr-h1.active").render(".titulo-perfil"); // render texts
+		return self; // update view
 	}
 
 	form.afterReset(() => {
@@ -69,7 +72,7 @@ function Perfil() {
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));
-		return fnUpdateView();
+		return self;
 	}
 }
 

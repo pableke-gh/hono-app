@@ -24,8 +24,13 @@ function Organicas() {
 	this.isEUT = () => (self.getTipoDieta() == 2);
 	this.isUPCT = () => (self.getTipoDieta() == 9);
 
-	const fnUpdateview = () => {
-		// 1º recalculo la financiacion
+	const fnUpdateView = () => {
+		const isIsu = actividad.isIsu(); // actualizo la vista
+		form.setVisible(".ui-isu", isIsu).setVisible(".ui-no-isu", !isIsu);
+		return self
+	}
+	const fnUpdateTab = () => {
+			// 1º recalculo la financiacion
 		const financiacion = self.getFinanciacion();
 		form.setStrval("#financiacion", financiacion)
 			.setVisible("#add-org", _tblOrganicas.isEmpty())
@@ -56,13 +61,13 @@ function Organicas() {
 		form.saveTable("#org-json", _tblOrganicas);
 		_saveOrganicas = false;
 		dietas.build();
-		return self;
+		return fnUpdateView();
 	}
 
 	this.init = () => {
 		_tblOrganicas = form.setTable("#tbl-organicas");
 		_tblOrganicas.setMsgEmpty("No existen orgánicas asociadas a la comunicación.") // #{msg['lbl.organicas.not.found']}
-					.setRender(organica.row).setFooter(organica.tfoot).setAfterRender(fnUpdateview);
+					.setRender(organica.row).setFooter(organica.tfoot).setAfterRender(fnUpdateTab);
 
 		const acOrganiaca = form.setAutocomplete("#organica", {
 			minLength: 4,
@@ -83,7 +88,7 @@ function Organicas() {
 			acOrganiaca.reload();
 			ev.preventDefault();
 		});
-		return self;
+		return fnUpdateView();
 	}
 }
 

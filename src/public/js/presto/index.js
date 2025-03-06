@@ -103,7 +103,7 @@ console.log(partidaInc);
         const data = JSON.read(args.presto);
         presto.setData(data); // Load data-model before view
         ecoInc.reset(); // cargo las econonomicas a incrementar
-        formPresto.closeAlerts().resetCache().setData(data, ":not([type=hidden])")
+        formPresto.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])")
 				.readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
 				.setVisible(".insert-only", presto.isEditable()).setVisible(".update-only", presto.isDisabled())
 				.setVisible(".firmable-only", presto.isFirmable()).setVisible(".rechazable-only", presto.isRechazable())

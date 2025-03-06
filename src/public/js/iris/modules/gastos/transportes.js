@@ -9,6 +9,7 @@ function Transportes() {
 
 	this.setTransportes = transportes => {
 		_tblTransporte.render(transportes);
+		form.setVisible(".block-transportes", _tblTransporte.size() > 0);
 		return self;
 	}
 	this.init = () => {

@@ -40,6 +40,7 @@ export default function(form, opts) {
 	this.getInputs = selector => form.elements.query(selector); // filter elements
 
 	// Actions to update form view (inputs, texts, ...)
+	const fnQuery = el => globalThis.isstr(el) ? $1(el) : el;
 	const fnQueryInput = el => globalThis.isstr(el) ? self.getInput(el) : el;
 	const fnAction = (el, fn) => { el = fnQueryInput(el); el && fn(el); return self; }
 	const fnContains = (el, name) => el.classList.contains(name);
@@ -73,11 +74,11 @@ export default function(form, opts) {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 
-	this.getHtml = selector => dom.getHtml($1(selector));
-    this.setHtml = (el, text) => { dom.html(el, text); return self; }
+	this.getHtml = selector => dom.getHtml(fnQuery(selector));
+    this.setHtml = (selector, text) => { dom.html(fnQuery(selector), text); return self; }
 	this.html = (selector, text) => { $$(selector).html(text); return self; } // Update all texts info in form
-    this.getText = selector => dom.getText($1(selector));
-    this.setText = (el, text) => { dom.text(el, text); return self; }
+    this.getText = selector => dom.getText(fnQuery(selector));
+    this.setText = (selector, text) => { dom.text(fnQuery(selector), text); return self; }
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
 	this.render = (selector, data) => { $$(selector).render(data); return self; } // HTMLElement.prototype.render
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard

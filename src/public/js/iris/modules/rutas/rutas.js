@@ -23,6 +23,8 @@ function Rutas() {
 	this.salida = () => ruta.salida(rtabs.getSalida());
 	this.llegada = () => ruta.llegada(rtabs.getLlegada());
 	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(rtabs.getLlegada());
+	this.getNumRutasSinGastos = rtabs.getNumRutasSinGastos;
+	this.getRutasSinGastos = rtabs.getRutasSinGastos;
 
 	this.getRuta = fecha => { // Ruta asociada a fecha
 		if (rtabs.isEmpty())
@@ -44,10 +46,9 @@ function Rutas() {
 		}
 		return "ES";
 	}
-	this.setRutas = rutas => {
-		rtabs.setRutas(rutas);
-		return self;
-	}
+
+	this.reload = rutas => { rtabs.reload(rutas); return self; }
+	this.setRutas = rutas => { rtabs.setRutas(rutas); return self; }
 
 	function validateItinerario(rutas) {
 		const valid = i18n.getValidators();
