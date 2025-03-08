@@ -5,6 +5,7 @@ import sb from "../../../components/types/StringBox.js";
 import i18n from "../../../i18n/langs.js";
 
 import iris from "../iris.js";
+import resumen from "../resumen.js";
 import ruta from "../../model/ruta/Ruta.js";
 import { CT, MUN } from "../../data/rutas.js";
 
@@ -65,6 +66,7 @@ function RutasTabs() {
 			return self; // no hay cambios
 		const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
 		form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
+		resumen.setUpdatable();
 		return fnUpdateView();
 	}
 

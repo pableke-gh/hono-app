@@ -1,6 +1,6 @@
 
 import Msgs from "../msgs.js";
-import { BankNames, IbanCodeLengths } from "../../data/banks.js";
+import { BankNames, IbanCodeLengths } from "../../data/bancos.js";
 
 // RegEx for Cards Numbers
 /*const RE_VISA = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;

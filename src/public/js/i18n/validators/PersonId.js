@@ -7,20 +7,32 @@ function fnLetraDni(value) { // private function
 	return (letra == value.charAt(8));
 }
 
-export default class PersonId extends Msgs {
-	isDni(name, value) {
+export default function PersonId(lang) {
+	const self = this; //self instance
+	const msgs = new Msgs(lang); // messages container
+
+	this.isOk = msgs.isOk;
+	this.isError = msgs.isError;
+	this.getMsgs = msgs.getMsgs;
+
+	this.reset = () => { msgs.reset(); return self; }
+	this.addError = (name, msgtip, msg) => { msgs.addError(name, msgtip, msg); return self; }
+	this.addRequired = (name, msg) => { msgs.addRequired(name, msg); return self; }
+
+	this.isDni = (name, value) => {  
 		if (!value)
-			return this.addRequired(name);
+			return self.addRequired(name);
 		if (!/^(\d{8})([A-Z])$/.test(value) || !fnLetraDni(value)) // RE_DNI
-			return this.addError(name, "errNif");
-		return this;
+			return self.addError(name, "errNif");
+		return self;
 	}
-	isCif(name, value) {
+
+	this.isCif = (name, value) => {
 		if (!value)
-			return this.addRequired(name);
+			return self.addRequired(name);
 		const match = value.match(/^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/); // RE_CIF
 		if (!match || (match.length < 2))
-			return this.addError(name, "errNif");
+			return self.addError(name, "errNif");
 
 		var letter = match[1];
 		var number  = match[2];
@@ -44,20 +56,22 @@ export default class PersonId extends Msgs {
 		var ok = letter.match(/[ABEH]/) ? (control == control_digit) //Control must be a digit
 								: letter.match(/[KPQS]/) ? (control == control_letter) //Control must be a letter
 								: ((control == control_digit) || (control == control_letter)); //Can be either
-		return ok ? this : this.addError(name, "errNif");
+		return ok ? self : self.addError(name, "errNif");
 	}
-	isNie(name, value) {
+
+	this.isNie = (name, value) => {
 		if (!value) // RE_NIE = /^[XYZ]\d{7,8}[A-Z]$/;
-			return this.addRequired(name);
+			return self.addRequired(name);
 		const prefix = value.charAt(0); //Change the initial letter for the corresponding number and validate as DNI
 		let p0 = (prefix == "X") ? 0 : ((prefix == "Y") ? 1 : ((prefix == "Z") ? 2 : prefix));
-		return fnLetraDni(p0 + value.substr(1)) ? this : this.addError(name, "errNif");
+		return fnLetraDni(p0 + value.substr(1)) ? self : self.addError(name, "errNif");
 	}
-	isPersonId(name, value) {
-		if (this.isDni(name, value).isOk())
-			return this;
-		if (this.isCif(name, value).isOk())
-			return this;
-		return this.isNie(name, value);
+
+	this.isPersonId = (name, value) => {
+		if (self.isDni(name, value).isOk())
+			return self;
+		if (self.isCif(name, value).isOk())
+			return self;
+		return self.isNie(name, value);
 	}
 }

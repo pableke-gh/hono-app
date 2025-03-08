@@ -13,14 +13,21 @@ import i18n from "../../i18n/langs.js";
 function Resumen() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
+	let _isUpdatableTab = true; // bool indicator
+
+	this.isUpdatable = () => _isUpdatableTab;
+	this.setUpdatable = () => { _isUpdatableTab = true; return self; }
 
 	this.upodate = () => {
 		const importe = rvp.getImporte() + transportes.getImporte() + pernoctas.getImporte() + dietas.getImporte();
 		form.setText("#imp-bruto", i18n.isoFloat(importe) + " €");
+		_isUpdatableTab = false;
 		return self;
 	}
 
 	this.view = () => {
+		if (!_isUpdatableTab)
+			return self; // no changes
 		rvp.setRutas(rutas.getRutasVeiculoPropio());
 		transportes.setTransportes(gastos.getTransporte());
 		pernoctas.setPernoctas(gastos.getPernoctas());

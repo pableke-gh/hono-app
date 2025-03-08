@@ -13,8 +13,8 @@ export default function Validators(lang) {
 	const msgs = new Msgs(lang); // messages container
 	const sysdate = (new Date()).toISOString();
 
-	const personId = new PersonId(this);
-	const banks = new Banks(this);
+	const personId = new PersonId(self);
+	const banks = new Banks(self);
 
 	// read only instance validators
 	this.getPersonId = () => personId;
@@ -26,6 +26,9 @@ export default function Validators(lang) {
 	this.isOk = msgs.isOk;
 	this.isError = msgs.isError;
 	this.getMsgs = msgs.getMsgs;
+	this.setException = msgs.setException;
+	this.close = msgs.close;
+
 	this.reset = () => { msgs.reset(); return self; }
 	this.addError = (name, msgtip, msg) => { msgs.addError(name, msgtip, msg); return self; }
 	this.addRequired = (name, msg) => { msgs.addRequired(name, msg); return self; }

@@ -30,10 +30,7 @@ function Langs() {
 
 	this.getDefault = () => DEFAULT;
 	this.getIsoLang = () => _lang.lang;
-	this.isDefault = lang => {
-		lang = lang || self.getIsoLang();
-		return (DEFAULT == lang);
-	}
+	this.isDefault = lang => (!lang || (DEFAULT == lang));
 
 	this.getIsoLangs = () => Object.keys(_langs);
 	this.getNavLang = () => navigator.language || navigator.userLanguage; // default browser language
@@ -43,8 +40,7 @@ function Langs() {
 
 	this.getValidation = () => valid; // Current validators
 	this.getValidators = () => valid.reset(); // Init. messages
-	this.createValidators = () => new Validators(_lang); // Create instance
-	this.resetValidators = self.getValidators; // Reset lang instance
+	this.createValidators = lang => new Validators(self.getI18n(lang)); // Create instance
 
 	this.get = msg => _lang[msg] || msg || "";
 	this.getItem = (msg, index) => _lang[msg][index];

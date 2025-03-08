@@ -246,17 +246,16 @@ export default function(form, opts) {
 	}
 	this.setErrors = messages => {
 		if (globalThis.isstr(messages)) // simple message text
-			return self.showError(messages);
+			return self.showError(messages); // show error message
 		const valid = self.getValidators(); // get form validators
 		// Style error inputs and set focus on first error
 		messages = messages || valid.getMsgs(); // default messages
 		form.elements.eachPrev(el => fnSetError(el, messages[el.name]));
 		self.showError(messages.msgError || opts.defaultMsgError);
-		valid.reset(); // reset for nex validation
+		valid.reset(); // reset for next validation
 		return self;
 	}
 	this.validate = (fnValidator, selector) => {
-		i18n.resetValidators(); // reset lang for validators
 		const data = self.closeAlerts().getData(selector); // current form data
 		return fnValidator(data) ? data : !self.setErrors(); // model preserve this
 	}

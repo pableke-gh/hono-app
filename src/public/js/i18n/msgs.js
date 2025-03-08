@@ -48,11 +48,11 @@ export default function Msgs(lang) {
 	this.addFormatError = (name, msg) => self.addError(name, "errFormat", msg);
 	this.addDateError = (name, msg) => self.addError(name, "errDate", msg);
 
-    this.setException = err => {
-        console.error(err); // Show log error
-        const msg = err.message || err; // Main message
-        return self.addError(err.field, err.tiperr, msg);
-    }
+	this.setException = err => {
+		console.error(err); // Show log error
+		const msg = err.message || err; // Main message
+		return self.addError(err.field, err.tiperr, msg);
+	}
 
     this.close = msg => {
         if (self.isOk())
