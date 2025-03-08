@@ -18,13 +18,20 @@ function Rutas() {
 	this.getRutas = rtabs.getRutas;
 	this.getSalida = rtabs.getSalida;
 	this.getLlegada = rtabs.getLlegada;
+	this.getKm = rtabs.getKm;
+
+	this.getRutasVeiculoPropio = rtabs.getRutasVeiculoPropio;
+	this.getNumRutasSinGastos = rtabs.getNumRutasSinGastos;
+	this.getRutasSinGastos = rtabs.getRutasSinGastos;
 
 	this.getPaisSalida = () => ruta.getPaisSalida(rtabs.getSalida());
 	this.salida = () => ruta.salida(rtabs.getSalida());
 	this.llegada = () => ruta.llegada(rtabs.getLlegada());
 	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(rtabs.getLlegada());
-	this.getNumRutasSinGastos = rtabs.getNumRutasSinGastos;
-	this.getRutasSinGastos = rtabs.getRutasSinGastos;
+
+	const fnDiffDias = () => tb.getDays(tb.trunc(self.salida()), self.llegada());
+	this.getNumNoches = () => (self.isEmpty() ? 0 : Math.floor(fnDiffDias()));
+	this.getNumDias = () => (self.isEmpty() ? 0 : Math.ceil(fnDiffDias()));
 
 	this.getRuta = fecha => { // Ruta asociada a fecha
 		if (rtabs.isEmpty())
@@ -51,7 +58,7 @@ function Rutas() {
 	this.setRutas = rutas => { rtabs.setRutas(rutas); return self; }
 
 	function validateItinerario(rutas) {
-		const valid = i18n.getValidators();
+		const valid = form.getValidators();
 		if (coll.isEmpty(rutas))
 			return !valid.addError("origen", "errItinerario");
 		let r1 = rutas[0];
@@ -69,7 +76,7 @@ function Rutas() {
 		return valid.isOk();
 	}
 	this.validateP1 = data => {
-		const valid = i18n.getValidators();
+		const valid = form.getValidators();
 		if (!data.objeto)
         	valid.addRequired("objeto", "errObjeto");
 		if (valid.isOk() && perfil.isMun()) // valida la ruta unica
@@ -79,7 +86,7 @@ function Rutas() {
 	this.validate = data => { // validaciones para los mapas
 		let ok = self.validateP1(data) && validateItinerario(rtabs.getRutas());
 		if (ok && (self.size() < 2)) // validate min rutas = 2
-			return !i18n.getValidators().addRequired("destino", "errMinRutas");
+			return !form.getValidators().addRequired("destino", "errMinRutas");
 		return ok && rtabs.saveRutas(); // guardo los cambios y recalculo las dietas
 	}
 	window.validateP1 = () => form.validate(self.validateP1);
@@ -87,7 +94,7 @@ function Rutas() {
 
 	async function fnAddRuta(ev) {
 		ev.preventDefault(); // stop event
-		const data = form.validate(maps.validateFields, ".ui-rutas");
+		const data = form.validate(maps.validateFields, ".ui-ruta");
 		if (!data || !maps.validatePlaces(data, self) || !ruta.valid(data))
 			return false; // maps validation error
 

@@ -1,7 +1,8 @@
 
 import coll from "../../../components/CollectionHTML.js";
 import sb from "../../../components/types/StringBox.js";
-import i18n from "../../../i18n/langs.js";
+
+import iris from "../iris.js";
 import place from "./place.js";
 
 /**
@@ -42,7 +43,7 @@ window.initMap = () => {
 
 export function Maps() {
 	this.validateFields = data => {
-		const valid = i18n.getValidators();
+		const valid = iris.getValidators();
 		valid.isDate("f2", data.f2).isTimeShort("h2", data.h2)
 			.isDate("f1", data.f1).isTimeShort("h1", data.h1).le10("desp", data.desp)
 			.size("destino", data.destino).size("origen", data.origen);
@@ -53,7 +54,7 @@ export function Maps() {
 	}
 
 	this.validatePlaces = async (data, rutas) => {
-		const valid = i18n.getValidators();
+		const valid = iris.getValidators();
 		function loadOrigen(place, pais, mask) {
 			p1 = place;
 			data.pais1 = pais;
@@ -89,7 +90,8 @@ export function Maps() {
 		const DISTANCE_OPTIONS = { origins: [origen], destinations: [destino], travelMode: DRIVING };
 		const [err, response] = await globalThis.catchError(_distanceService.getDistanceMatrix(DISTANCE_OPTIONS));
 		if (err || !response.rows) { // error al calcular la distancia
-			i18n.getValidators().addRequired("destino", "The calculated distance fails due to " + err);
+			const valid = iris.getValidators(); // get form validators
+			valid.addRequired("destino", "The calculated distance fails due to " + err);
 			return null;
 		}
 		return ((response.rows[0].elements[0].distance.value) / 1000); //to km

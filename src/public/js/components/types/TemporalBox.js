@@ -1,4 +1,6 @@
 
+//import { Temporal } from "@js-temporal/polyfill";
+
 function TemporalBox() {
 	const self = this; //self instance
 	//const sysdate = Temporal.Now.plainDateTimeISO();
@@ -21,6 +23,9 @@ function TemporalBox() {
 	this.isBetween = (date, minDate, endDate) => {
 		return (self.le(minDate, date) && self.ge(endDate, date));
 	}
+
+	this.getHours = (f1, f2) => f1.since(f2).hours;
+	this.getDays = (f1, f2) => f1.until(f2, { largestUnit: "day" }).days;
 }
 
 export default new TemporalBox();

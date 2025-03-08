@@ -4,12 +4,12 @@ import tabs from "../components/Tabs.js";
 import pf from "../components/Primefaces.js";
 
 import iris from "./modules/iris.js";
+import resumen from "./modules/resumen.js"; 
 import list from "./modules/list.js";
 import uxxiec from "./modules/uxxiec.js";
 import perfil from "./modules/perfil/perfil.js";
 import rutas from "./modules/rutas/rutas.js";
 import gastos from "./modules/gastos/gastos.js"; 
-import dietas from "./modules/gastos/dietas.js"; 
 import firmas from "./modules/firmas.js";
 import otri from "./modules/otri.js";
 
@@ -32,7 +32,8 @@ tabs.setInitEvent("isu", otri.init);
 tabs.setViewEvent(5, gastos.initTab5);
 
 /*********** Tablas de resumen ***********/
-tabs.setInitEvent(6, dietas.init); 
+tabs.setInitEvent("resumen", resumen.init); 
+tabs.setViewEvent("resumen", resumen.view); 
 
 /*********** Expediente UXXI-EC ***********/
 tabs.setInitEvent("uxxiec", uxxiec.init);
@@ -49,7 +50,7 @@ window.viewIrse = (xhr, status, args, tab) => {
 	// Init IRSE form
 	perfil.init().setOrganicas(coll.parse(args.organicas));
 	rutas.init().setRutas(coll.parse(args.rutas) || []);
-	gastos.init().setGastos(coll.parse(args.gastos));
+	gastos.init().setGastos(coll.parse(args.gastos) || []);
 	firmas.init(coll.parse(args.firmas));
 	//organicas.init();
 	iris.init();

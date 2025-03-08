@@ -21,6 +21,7 @@ export default {
 	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta Comunicación.",
 	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta Comunicación.",
 	msgPernoctasEmpty: "No hay pernoctas asociadas a esta Comunicación.",
+	msgDietasEmpty: "No hay dietas / manutenciones asociadas a esta Comunicación.",
 
 	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
 	docMovilidad: "Documentación acreditativa del programa de movilidad",
@@ -45,7 +46,7 @@ export default {
 	errCongreso: "Debe justificar la fecha de inicio/fin del congreso respoecto a la del viaje.",
 	errEstimaciones: "Debe asociar al menos una estimación a la comunicación.",
 	errFechasAloja: "No ha seleccionadas correctamente el periodo de fechas del alojamiento.",
-	errRangoAloja: "El periodo de fechas del gasto de alojamiento, esta fuera del rango de la solicitud.",
+	errRangoAloja: "El periodo del alojamiento, esta fuera del rango de la solicitud.",
 	errDoc: "Debe asociar la documentación obligatoria",
 
 	errImputacion: "Error al generar la imputación asocuada a la comunicación.",

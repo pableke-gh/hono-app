@@ -5,8 +5,6 @@ import sb from "../../../components/types/StringBox.js";
 import i18n from "../../../i18n/langs.js";
 
 import iris from "../iris.js";
-import rvp from "./rutasVehiculoPropio.js";
-import dietas from "../gastos/dietas.js";
 import ruta from "../../model/ruta/Ruta.js";
 import { CT, MUN } from "../../data/rutas.js";
 
@@ -23,6 +21,7 @@ function RutasTabs() {
 
 	this.getSalida = () => _rutas[0]; // primera ruta
 	this.getLlegada = () => _rutas.at(-1); // ultima ruta
+	this.getKm = () => _tblRutas.getResume().totKm;
 
 	this.getRutasVeiculoPropio = () => _rutas.filter(ruta.isVehiculoPropio);
 	this.getRutasSinGastos = () => _rutas.filter(data => (ruta.isAsociableGasto(data) && !data.g));
@@ -48,9 +47,7 @@ function RutasTabs() {
 
 	const fnUpdateView = () => {
 		form.setVisible(".rutas-gt-1", self.size() > 1); 
-		rvp.render(self.getRutasVeiculoPropio());
 		_saveRutas = false;
-		dietas.build();
 		return self;
 	}
 	this.reload = data => {
@@ -134,7 +131,6 @@ function RutasTabs() {
 		fnSetSaveRutas();
 	}
 	this.init = () => {
-		rvp.init();
 		_tblRutas = form.setTable("#tbl-rutas");
 		_tblRutas.setMsgEmpty("msgRutasEmpty")
 				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot)

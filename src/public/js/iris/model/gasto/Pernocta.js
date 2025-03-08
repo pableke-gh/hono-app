@@ -1,4 +1,6 @@
 
+import i18n from "../../../i18n/langs.js";
+
 function Pernocatas() {
 
 	this.beforeRender = resume => {
@@ -8,9 +10,9 @@ function Pernocatas() {
 		resume.numNoches += data.num;
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>
-			<td data-cell="#{msg['lbl.pais']}">#{g.descripcion}</td>
-			<td data-cell="#{msg['lbl.fecha.inicio']}">#{irse.gastos.getGastoF1(g)}</td>
-			<td data-cell="#{msg['lbl.fecha.fin']}">#{irse.gastos.getGastoF2(g)}</td>
+			<td data-cell="#{msg['lbl.pais']}">${data.desc}</td>
+			<td data-cell="#{msg['lbl.fecha.inicio']}">${i18n.isoDate(data.f1)}</td>
+			<td data-cell="#{msg['lbl.fecha.fin']}">${i18n.isoDate(data.f2)}</td>
 			<td data-cell="#{msg['lbl.noches']}">${data.num}</td>
 			<td data-cell="#{msg['lbl.imp.noche']}">#{irse.gastos.getGastoImpCalc(g)} €</td>
 			<td data-cell="#{msg['lbl.imp.tot']}">#{irse.gastos.getImpCalcPernoctaI18n(g)} €</td>
@@ -21,7 +23,7 @@ function Pernocatas() {
 	this.tfoot = resume => {
 		return `<tr>
 			<td colspan="4">Alojamientos: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs">#{irse.gastos.numNoches}</td>
+			<td class="tb-data-tc hide-xs">${resume.numNoches}</td>
 			<td class="hide-xs"></td>
 			<td class="tb-data-tc hide-xs">#{irse.gastos.maxPernoctasI18n} €</td>
 			<td class="tb-data-tc hide-xs">#{irse.gastos.impPernoctasI18n} €</td>

@@ -29,10 +29,10 @@ function Perfil() {
 		organicas.setOrganicas(data); // update financiacion
 		// actualizo la vista del perfil para el formulario
 		const pasos = form.querySelectorAll(".i18n-tr-h1");
-		pasos[0].classList.add("active");
+		//pasos[0].classList.add("active");
 		pasos[1].classList.toggle("active", self.isTrayectos()); 
 		pasos[2].classList.toggle("active", self.isIsu()); 
-		pasos[3].classList.add("active");
+		//pasos[3].classList.add("active");
 
 		i18n.set("titulo", self.getPerfil()).set("codigo", window.IRSE.codigo);
 		form.render(".i18n-tr-h1.active").render(".titulo-perfil"); // render texts
@@ -45,7 +45,7 @@ function Perfil() {
 	});
 
     this.validate = data => {
-		const valid = i18n.getValidators();
+		const valid = form.getValidators();
 		if (!data.interesado)
         	valid.addRequired("interesado", "errPerfil");
 		if (organicas.isEmpty())

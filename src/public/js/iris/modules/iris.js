@@ -8,6 +8,8 @@ function Iris() {
 	const form = new Form("#xeco-irse");
 
 	this.getForm = () => form;
+	this.getValidators = form.getValidators;
+
 	this.update = () => {
 		form.reset("input[id$='-json']"); // update fields
 		return self;

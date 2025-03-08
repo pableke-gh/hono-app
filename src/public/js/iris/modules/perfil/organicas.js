@@ -1,7 +1,6 @@
 
 import pf from "../../../components/Primefaces.js";
 import iris from "../iris.js";
-import dietas from "../gastos/dietas.js";
 import actividad from "./actividad.js";
 import organica from "../../model/Organica.js"
 
@@ -30,7 +29,7 @@ function Organicas() {
 		return self
 	}
 	const fnUpdateTab = () => {
-			// 1º recalculo la financiacion
+		// 1º recalculo la financiacion
 		const financiacion = self.getFinanciacion();
 		form.setStrval("#financiacion", financiacion)
 			.setVisible("#add-org", _tblOrganicas.isEmpty())
@@ -60,7 +59,6 @@ function Organicas() {
 			return self; // no hay cambios
 		form.saveTable("#org-json", _tblOrganicas);
 		_saveOrganicas = false;
-		dietas.build();
 		return fnUpdateView();
 	}
 

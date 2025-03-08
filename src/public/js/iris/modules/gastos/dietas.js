@@ -14,6 +14,8 @@ function Dietas() {
 	const form = iris.getForm(); // form component
 	let _tblDietas; // mapa de dietas
 
+	this.getImporte = () => _tblDietas.getResume().percibir;
+
 	const fnCreateDiaIntermedio = (fecha, tipo, grupo) => {
 		const row = dieta.createDiaIntermedio();
 		row.pais = rutas.getPaisPernocta(fecha);
@@ -62,9 +64,23 @@ function Dietas() {
 		return fnUpdateDietas(temp);
 	}
 
+	this.setDietas = data => {
+		_tblDietas.render(data);
+		return self;
+	}
+
+	const fnAfterDietas = resume => {
+		form.setVisible(".block-dietas", resume.size > 0);
+	}
+	const fnChangeDietas = data => {
+		console.log(data);
+	}
+
 	this.init = () => {
-		_tblDietas = form.setTable("#manutenciones");
-		_tblDietas.setBeforeRender(dieta.beforeRender).setRender(dieta.row).setFooter(dieta.tfoot).render(gastos.getDietas());
+		_tblDietas = form.setTable("#tbl-dietas");
+		_tblDietas.setMsgEmpty("msgDietasEmpty")
+				.setBeforeRender(dieta.beforeRender).setRender(dieta.row).setFooter(dieta.tfoot)
+				.setAfterRender(fnAfterDietas).setChange("dietas", fnChangeDietas);
 		return self;
 	}
 }

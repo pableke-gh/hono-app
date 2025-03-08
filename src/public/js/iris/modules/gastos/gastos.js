@@ -5,10 +5,9 @@ import pf from "../../../components/Primefaces.js";
 import i18n from "../../../i18n/langs.js";
 
 import iris from "../iris.js";
-import transportes from "./transportes.js"; 
-import pernoctas from "./pernoctas.js"; 
 import perfil from "../perfil/perfil.js"; 
 import rutas from "../rutas/rutas.js";
+import pernoctas from "./pernoctas.js";
 import gasto from "../../model/gasto/Gasto.js";
 
 function Gastos() {
@@ -16,7 +15,6 @@ function Gastos() {
 	const form = iris.getForm(); // form component
 	let _gastos, _tblGastos; // container
 	let _eTipoGasto, _grpGasto; // upload fields
-	let _isPasoUpdate6; // bool indicator
 
 	this.getGastos = () => _gastos;
 	this.getFacturas = () => _gastos.filter(gasto.isFactura);
@@ -31,6 +29,11 @@ function Gastos() {
 	this.updateTransporte = data => fnUpdateGastos(data, gasto.isTransporte);
 	this.updateDietas = data => fnUpdateGastos(data, gasto.isDieta);
 
+	this.getNochesPendientes = () => {
+		const numNochesPendientes = _gastos.reduce((num, row) => (num + (gasto.isPernocta(row) ? row.num : 0)), 0);
+		return rutas.getNumNoches() - numNochesPendientes;
+	}
+
 	const fnUpdateTab = () => {
 		const numNochesPendientes = 0;
 		const numRutasOut = rutas.getNumRutasSinGastos();
@@ -39,11 +42,6 @@ function Gastos() {
 			.setVisible(".ui-rutas-pendientes", numRutasOut > 0)
 			.render("#info-rutas-gastos", { numRutasOut, numNochesPendientes });
 		return self;
-	}
-	const fnUpdateTab6 = () => {
-		transportes.setTransportes(self.getTransporte());
-		pernoctas.setPernoctas(self.getPernoctas());
-		_isPasoUpdate6 = false;
 	}
 	const fnResetForm = () => {
 		_grpGasto.mask(0);
@@ -59,22 +57,30 @@ function Gastos() {
 	this.setGastos = gastos => {
 		_gastos = gastos;
 		_tblGastos.render(self.getPaso5());
-		return fnUpdateTab6();
+		return self;
 	}
 
 	this.validateGasto = data => {
-		const valid = i18n.getValidators();
+console.log(data);
+		const valid = form.getValidators();
+		valid.gt0("impGasto", data.impGasto);
+		if (data.tipoGasto == "9")
+			return pernoctas.validate(data);
+		// todo: validate campos grupo-gastos
 		return valid.isOk();
 	}
-	this.validate = () => {
-		//const valid = i18n.getValidators();
-		_isPasoUpdate6 && fnUpdateTab6();
-		return true;
+	this.validate = data => {
+		data.totKm = rutas.getKm();
+console.log(data);
+		const valid = form.getValidators();
+		// todo: validacion de 250 km
+		return valid.isOk();
 	}
 
 	this.initTab5 = tab => {
 		if (!window.IRSE.editable)
 			return self; // modo solo consulta
+
 		_eTipoGasto = form.getInput("#tipo-gasto");
 		_grpGasto = form.querySelectorAll(".grupo-gasto");
 
@@ -106,9 +112,6 @@ function Gastos() {
 		return fnResetForm();
 	}
 	this.init = () => {
-		transportes.init();
-		pernoctas.init();
-
 		_eTipoGasto = _grpGasto = null;
 		_tblGastos = form.setTable("#tbl-gastos");
 		const fnUnload = data => { i18n.confirm("remove") && pf.sendId("rcUnloadGasto", data.id); };

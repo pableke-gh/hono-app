@@ -15,8 +15,9 @@ function RutaVehiculoPropio() {
 	this.row = (ruta, status, resume) => {
 		const impKm = self.getImpKm(ruta);
 		resume.impKm += impKm;
+		const km1 = i18n.isoFloat(ruta.km1);
 		const editable = window.IRSE.editable;
-		const cell = editable ? `<input type="text" name="km1" value="${ruta.km1}" tabindex="100" class="ui-float tc"/>` : i18n.isoFloat(ruta.km1);
+		const cell = editable ? `<input type="text" name="km1" value="${km1}" tabindex="100" class="ui-float tc"/>` : km1;
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="#{msg['lbl.origen.etapa']}">${ruta.origen}</td>
 			<td data-cell="#{msg['lbl.fecha.salida']}">${i18n.isoDate(ruta.dt1)}</td>

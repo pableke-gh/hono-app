@@ -83,7 +83,7 @@ export default (model, formModel) => {
     solicitudes.render(JSON.read(divSolicitudes?.innerHTML)); // preload data
     formModel.resetCache(); // initialize cache
 
-    window.onList = () => formFilter.setData({ fMiFirma: "5" }).loading();
+    window.onList = () => formFilter.setData({ fMiFirma: "5" }, ":not([type=hidden])").loading();
     window.fnFirmar = () => i18n.confirm("msgFirmar") && window.loading();
     window.fnRechazar = () => formReject.validate(model.validateReject) && i18n.confirm("msgRechazar") && window.loading();
 

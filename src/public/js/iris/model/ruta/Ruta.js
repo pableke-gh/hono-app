@@ -1,7 +1,6 @@
 
 import sb from "../../../components/types/StringBox.js";
 import tb from "../../../components/types/TemporalBox.js";
-import i18n from "../../../i18n/langs.js";
 import rr from "./RutaRender.js";
 
 function Ruta() {
@@ -56,7 +55,7 @@ function Ruta() {
 	this.unlink = ruta => { delete ruta.g; return self; }
 
 	this.valid = (ruta) => {
-		const valid = i18n.getValidators(); //i18n.getValidation();
+		const valid = form.getValidators();
 		if (!ruta.origen || !ruta.pais1)
 			valid.addRequired("origen", "errOrigen");
 		// OJO! descomentar validacion matricula y fechas
@@ -71,7 +70,7 @@ function Ruta() {
 	this.validRutas = (r1, r2) => {
 		if (!self.valid(r2))
 			return false; //stop
-		const valid = i18n.getValidation();
+		const valid = form.getValidators();
 		if (!r1.pais2.startsWith(r2.pais1.substring(0, 2)))
 			return valid.addError("destino", "errItinerarioPaises").isOk();
 		if (r1.dt2 > r2.dt1) //rutas ordenadas

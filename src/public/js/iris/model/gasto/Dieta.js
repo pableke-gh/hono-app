@@ -13,7 +13,7 @@ function Dieta() {
 	this.row = (dieta, status, resume) => {
 		console.log('dieta: ', dieta);
 		const editable = window.IRSE.editable;
-		const dietas = editable ? `<select tabindex="111">@dietas;</select` : i18n.isoInt(dieta.imp1);
+		const dietas = editable ? `<select name="dietas">@dietas;</select` : i18n.isoInt(dieta.imp1);
 
 		const isFirst = (status.index == 0);
 		const isLast = (status.count == resume.size);

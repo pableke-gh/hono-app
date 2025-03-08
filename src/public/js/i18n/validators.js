@@ -8,156 +8,169 @@ import PersonId from "./validators/PersonId.js";
 const RE_IPv6 = /^([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}$/;
 const RE_URL = /(http|fttextp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;*/
 
-function fnSize(valid, name, value, max, msg) {
-	if (!value) // String length validations
-		return !valid.addRequired(name, msg);
-	if (value.length > max)
-		 !valid.addError(name, "errMaxlength", msg);
-	return true;
-}
-function fnDate(valid, name, value, msg) {
-	if (!value) // iso date validation
-		return !valid.addRequired(name, msg); // required
-	const ok = /^\d{4}-[01]\d-[0-3]\d/.test(value); // RE_DATE format
-	return ok || !valid.addDateError(name, msg);
-}
+export default function Validators(lang) {
+	const self = this; //self instance
+	const msgs = new Msgs(lang); // messages container
+	const sysdate = (new Date()).toISOString();
 
-export default class Validators extends Msgs {
-	static #sysdate = (new Date()).toISOString();
-
-	#personId = new PersonId(this);
-	#banks = new Banks(this);
+	const personId = new PersonId(this);
+	const banks = new Banks(this);
 
 	// read only instance validators
-	get personId() { return this.#personId; }
-	get banks() { return this.#banks; }
+	this.getPersonId = () => personId;
+	this.getBanks = () => banks;
 
-	gt(name, value, min, msgtip, msg) { // required gt min
-		if (!globalThis.isset(value))
-			return this.addRequired(name, msg);
-		return (value > min) ? this : this.addError(name, msgtip || "notAllowed", msg); 
-	}
-	gt1(name, value, msgtip, msg) { return this.gt(name, value, 1, msgtip, msg); } // required gt1
-	gt0(name, value, msg) { return this.gt(name, value, 0, "errGt0", msg); } // required gt0
-	ge(name, value, min, msgtip, msg) { return (!value || (value >= min)) ? this : this.addError(name, msgtip, msg); } // optional or ge min
-	ge1(name, value, msgtip, msg) { return this.ge(name, value, 1, msgtip, msg); } // optional or ge1
-	ge0(name, value, msg) { return this.ge(name, value, 0, "errGt0", msg); } // optional or ge0
-	max(name, value, max, msg) { return (!value || (value.length <= max)) ? this : this.addError(name, "errMaxlength", msg); } // optional or length <= max
+	this.getLang = msgs.getLang;
+	this.setLang = lang => { msgs.setLang(lang); return self; }
 
-	le(name, value, max, msgtip, msg) { // required gt0 and le max
+	this.isOk = msgs.isOk;
+	this.isError = msgs.isError;
+	this.getMsgs = msgs.getMsgs;
+	this.reset = () => { msgs.reset(); return self; }
+	this.addError = (name, msgtip, msg) => { msgs.addError(name, msgtip, msg); return self; }
+	this.addRequired = (name, msg) => { msgs.addRequired(name, msg); return self; }
+	this.addDateError = (name, msg) => { msgs.addDateError(name, msg); return self; }
+	this.addFormatError = (name, msg) => { msgs.addFormatError(name, msg); return self; }
+
+	this.gt = (name, value, min, msgtip, msg) => { // required gt min
 		if (!globalThis.isset(value))
-			return this.addRequired(name, msg);
-		return ((value > 0) && (value <= max)) ? this : this.addError(name, msgtip || "notAllowed", msg);
+			return self.addRequired(name, msg); // required
+		return (value > min) ? self : self.addError(name, msgtip || "notAllowed", msg); 
 	}
-	le10(name, value, msgtip, msg) { return this.le(name, value, 10, msgtip, msg); } // required gt0 and le 10
-	le20(name, value, msgtip, msg) { return this.le(name, value, 20, msgtip, msg); } // required gt0 and le 20
-	le25(name, value, msgtip, msg) { return this.le(name, value, 25, msgtip, msg); } // required gt0 and le 25
-	le50(name, value, msgtip, msg) { return this.le(name, value, 50, msgtip, msg); } // required gt0 and le 50
-	isKey(name, value, msg) { // Required DB-key
+	this.gt1 = (name, value, msgtip, msg) => self.gt(name, value, 1, msgtip, msg); // required gt1
+	this.gt0 = (name, value, msg) => self.gt(name, value, 0, "errGt0", msg); // required gt0
+	this.ge = (name, value, min, msgtip, msg) => (!value || (value >= min)) ? self : self.addError(name, msgtip, msg); // optional or ge min
+	this.ge1 = (name, value, msgtip, msg) => self.ge(name, value, 1, msgtip, msg); // optional or ge1
+	this.ge0 = (name, value, msg) => self.ge(name, value, 0, "errGt0", msg); // optional or ge0
+	this.max = (name, value, max, msg) => (!value || (value.length <= max)) ? self : self.addError(name, "errMaxlength", msg); // optional or length <= max 
+
+	this.le = (name, value, max, msgtip, msg) => { // required gt0 and le max
+		if (!globalThis.isset(value))
+			return self.addRequired(name, msg);
+		return ((value > 0) && (value <= max)) ? self : self.addError(name, msgtip || "notAllowed", msg);
+	}
+	this.le10 = (name, value, msgtip, msg) => self.le(name, value, 10, msgtip, msg); // required gt0 and le 10
+	this.le20 = (name, value, msgtip, msg) => self.le(name, value, 20, msgtip, msg); // required gt0 and le 20
+	this.le25 = (name, value, msgtip, msg) => self.le(name, value, 25, msgtip, msg); // required gt0 and le 25
+	this.le50 = (name, value, msgtip, msg) => self.le(name, value, 50, msgtip, msg); // required gt0 and le 50
+	this.isKey = (name, value, msg) => { // Required DB-key
 		if (!value)
-			return this.addRequired(name, msg);
-		return (value > 0) ? this : this.addError(name, "notFound", msg);
+			return self.addRequired(name, msg);
+		return (value > 0) ? self : self.addError(name, "notFound", msg);
 	}
 
 	// required and length <= max (Default max size == 1000)
-	size(name, value, msg, max) { fnSize(this, name, value, max ?? 1000, msg); return this; }
-	size20(name, value, msg) { fnSize(this, name, value, 20, msg); return this; }
-	size50(name, value, msg) { fnSize(this, name, value, 50, msg); return this; }
-	size100(name, value, msg) { fnSize(this, name, value, 100, msg); return this; }
-	size200(name, value, msg) { fnSize(this, name, value, 200, msg); return this; }
-	size250(name, value, msg) { fnSize(this, name, value, 250, msg); return this; }
-	size500(name, value, msg) { fnSize(this, name, value, 500, msg); return this; }
+	function fnSize(name, value, max, msg) {
+		if (!value) // String length validations
+			return !self.addRequired(name, msg);
+		if (value.length > max)
+			return !self.addError(name, "errMaxlength", msg);
+		return true;
+	}
+	this.size = (name, value, msg, max) => { fnSize(name, value, max ?? 1000, msg); return self; }
+	this.size20 = (name, value, msg) => { fnSize(name, value, 20, msg); return self; }
+	this.size50 = (name, value, msg) => { fnSize(name, value, 50, msg); return self; }
+	this.size100 = (name, value, msg) => { fnSize(name, value, 100, msg); return self; }
+	this.size200 = (name, value, msg) => { fnSize(name, value, 200, msg); return self; }
+	this.size250 = (name, value, msg) => { fnSize(name, value, 250, msg); return self; }
+	this.size500 = (name, value, msg) => { fnSize(name, value, 500, msg); return self; }
 
-	isEmail(name, value, msg) {
-		if (!fnSize(this, name, value, 200, msg))
-			return this; // size message error
+	this.isEmail = (name, value, msg) => {
+		if (!fnSize(name, value, 200, msg))
+			return self; // size message error
 		const ok = /\w+[^\s@]+@[^\s@]+\.[^\s@]+/.test(value); // RE_MAIL format
-		return ok ? this : this.addError(name, "errCorreo", msg);
+		return ok ? self : self.addError(name, "errCorreo", msg);
 	}
-	isLogin(name, value, msg) { // Loggin / Password / Code
-		if (!fnSize(this, name, value, 200, msg))
-			return this; // size message error
+	this.isLogin = (name, value, msg) => { // Loggin / Password / Code
+		if (!fnSize(name, value, 200, msg))
+			return self; // size message error
 		if (value.length < 8)
-			return this.addError(name, "errMinlength8", msg); // min length
+			return self.addError(name, "errMinlength8", msg); // min length
 		const ok = /^[\w#@&°!§%;:=\^\/\(\)\?\*\+\~\.\,\-\$]{6,}$/.test(value); // RE_LOGIN format
-		return ok ? this : this.addFormatError(name, msg);
+		return ok ? self : self.addFormatError(name, msg);
 	}
 
-	word(name, value, msg) {
-		if (!fnSize(this, name, value, 50, msg))
-			return this; // size message error
+	this.word = (name, value, msg) => {
+		if (!fnSize(name, value, 50, msg))
+			return self; // size message error
 		const ok = /\w+/.test(value); // RE_WORD format
-		return ok ? this : this.addFormatError(name, msg);
+		return ok ? self : self.addFormatError(name, msg);
 	}
-	words(name, value, msg) {
-		if (!fnSize(this, name, value, 200, msg))
-			return this; // size message error
+	this.words = (name, value, msg) => {
+		if (!fnSize(name, value, 200, msg))
+			return self; // size message error
 		const ok = /^\w+(,\w+)*$/.test(value); // RE_WORDS format
-		return ok ? this : this.addFormatError(name, msg);
+		return ok ? self : self.addFormatError(name, msg);
 	}
-	digits(name, value, msg) {
-		if (!fnSize(this, name, value, 20, msg))
-			return this; // size message error
+	this.digits = (name, value, msg) => {
+		if (!fnSize(name, value, 20, msg))
+			return self; // size message error
 		const ok = /^[1-9]\d*$/.test(value); // RE_DIGITS format
-		return ok ? this : this.addFormatError(name, msg);
+		return ok ? self : self.addFormatError(name, msg);
 	}
-	numbers(name, value, msg) {
-		if (!fnSize(this, name, value, 200, msg))
-			return this; // size message error
+	this.numbers = (name, value, msg) => {
+		if (!fnSize(name, value, 200, msg))
+			return self; // size message error
 		const ok = /^\d+(,\d+)*$/.test(value); // RE_NUMBERS format
-		return ok ? this : this.addFormatError(name, msg);
+		return ok ? self : self.addFormatError(name, msg);
 	}
 
 	// Date validations in string iso format (ej: "2022-05-11T12:05:01")
-	isDate(name, value, msg) {
-		fnDate(this, name, value, msg);
-		return this;
-	}
-	isTime(name, value, msg) {
+	function fnDate(name, value, msg) {
 		if (!value) // iso date validation
-			return this.addRequired(name, msg); // required
+			return !self.addRequired(name, msg); // required
+		const ok = /^\d{4}-[01]\d-[0-3]\d/.test(value); // RE_DATE format
+		return ok || !self.addDateError(name, msg);
+	}
+	this.isDate = (name, value, msg) => {
+		fnDate(name, value, msg);
+		return self;
+	}
+	this.isTime = (name, value, msg) => {
+		if (!value) // iso date validation
+			return self.addRequired(name, msg); // required
 		const ok = /[0-2]\d:[0-5]\d:[0-5]\d(\.\d{1,3})?$/.test(value); // RE_TIME format
-		return ok ? this : this.addDateError(name, msg);
+		return ok ? self : self.addDateError(name, msg);
 	}
-	isTimeShort(name, value, msg) {
+	this.isTimeShort = (name, value, msg) => {
 		if (!value) // iso date validation
-			return this.addRequired(name, msg); // required
+			return self.addRequired(name, msg); // required
 		const ok = /[0-2]\d:[0-5]\d(:[0-5]\d\.\d{1,3})?$/.test(value); // RE_TIME format
-		return ok ? this : this.addDateError(name, msg);
+		return ok ? self : self.addDateError(name, msg);
 	}
-	isDateTime(name, value, msg) {
+	this.isDateTime = (name, value, msg) => {
 		if (!value) // iso date validation
-			return this.addRequired(name, msg); // required
+			return self.addRequired(name, msg); // required
 		const ok = /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d{1,3}Z$/.test(value); // RE_DATE_TIME format
-		return ok ? this : this.addDateError(name, msg);
+		return ok ? self : self.addDateError(name, msg);
 	}
-	past(name, value, msg) {
-		if (!fnDate(this, name, value, msg))
-			return this; // format message error
-		if (value.substring(0, 19) > Validators.#sysdate.substring(0, 19)) //yyyy-mm-ddThh:MM:ss
-			return this.addError(name, "errDateLt", msg); // not in time
-		return this;
+	this.past = (name, value, msg) => {
+		if (!fnDate(name, value, msg))
+			return self; // format message error
+		if (value.substring(0, 19) > sysdate.substring(0, 19)) //yyyy-mm-ddThh:MM:ss
+			return self.addError(name, "errDateLt", msg); // not in time
+		return self;
 	}
-	leToday(name, value, msg) {
-		if (!fnDate(this, name, value, msg))
-			return this; // format message error
-		if (value.substring(0, 10) > Validators.#sysdate.substring(0, 10))
-			return this.addError(name, "errDateLe", msg); // not in time
-		return this;
+	this.leToday = (name, value, msg) => {
+		if (!fnDate(name, value, msg))
+			return self; // format message error
+		if (value.substring(0, 10) > sysdate.substring(0, 10))
+			return self.addError(name, "errDateLe", msg); // not in time
+		return self;
 	}
-	geToday(name, value, msg) {
-		if (!fnDate(this, name, value, msg))
-			return this; // format message error
-		if (value.substring(0, 10) < Validators.#sysdate.substring(0, 10))
-			return this.addError(name, "errDateGe", msg); // not in time
-		return this;
+	this.geToday = (name, value, msg) => {
+		if (!fnDate(name, value, msg))
+			return self; // format message error
+		if (value.substring(0, 10) < sysdate.substring(0, 10))
+			return self.addError(name, "errDateGe", msg); // not in time
+		return self;
 	}
 
-	generatePassword(size, charSet) {
+	this.generatePassword = (size, charSet) => {
 		charSet = charSet || "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_#@&°!§%;:=^/()?*+~.,-$";
 		return Array.apply(null, Array(size || 10)).map(() => charSet.charAt(Math.random() * charSet.length)).join(""); 
 	}
-	testPassword(pass) {
+	this.testPassword = pass => { 
 		let strength = 0;
 		//Check each group independently
 		strength += /[A-Z]+/.test(pass) ? 1 : 0;

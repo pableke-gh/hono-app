@@ -23,8 +23,8 @@ export const init = (ctx: ContextMsgs, next: Next) => {
         session.set("lang", i18n.getAcceptLanguage(ctx.req.header("Accept-Language")));
     // Set ContextMsgs helpers
     const lang = session.get("lang"); // current lang
-    ctx.getMsgs = () => i18n.resetValidators(lang);
-    ctx.getValidators = () => i18n.createValidators(lang);
+    ctx.getMsgs = () => i18n.resetValidators();
+    ctx.getValidators = () => i18n.createValidators();
     ctx.xhr = () => (ctx.req.header("x-requested-with") == "XMLHttpRequest"); // Is AJAX call
     ctx.getLang = () => lang;
     return next();

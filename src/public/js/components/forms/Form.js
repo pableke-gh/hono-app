@@ -23,7 +23,6 @@ export default function(form, opts) {
 	opts.numberFormatClass = opts.numberFormatClass || "ui-number"; // Number type
 	opts.inputErrorClass = opts.inputErrorClass || "ui-error"; // Input error styles
 	opts.tipErrorClass = opts.tipErrorClass || "ui-errtip"; // Tip error style
-	//opts.groupSelector = opts.groupSelector || "label"; // Parent container (ej: .ui-group)
 	opts.negativeNumClass = opts.negativeNumClass || "text-red"; // Negative numbers styles
 
 	const self = this; //self instance
@@ -37,7 +36,7 @@ export default function(form, opts) {
 	this.querySelector = $1; // Form child element
 	this.querySelectorAll = $$; // Form children elements
 	this.getInput = selector => form.elements.findBy(selector); // find an element
-	this.getInputs = selector => form.elements.query(selector); // filter elements
+	this.getInputs = selector => form.elements.filterBy(selector); // filter elements
 
 	// Actions to update form view (inputs, texts, ...)
 	const fnQuery = el => globalThis.isstr(el) ? $1(el) : el;
@@ -54,7 +53,6 @@ export default function(form, opts) {
 	this.isset = () => form;
 	this.getForm = () => form;
 	this.getElements = () => form.elements;
-	//this.getId = () => form.id.value;
 	this.focus = el => { dom.focus(el); return self; }
 	this.setFocus = selector => fnAction(selector, el => el.focus());
 	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
@@ -73,6 +71,7 @@ export default function(form, opts) {
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
+	this.getValidators = i18n.getValidation;
 
 	this.getHtml = selector => dom.getHtml(fnQuery(selector));
     this.setHtml = (selector, text) => { dom.html(fnQuery(selector), text); return self; }
@@ -248,12 +247,16 @@ export default function(form, opts) {
 	this.setErrors = messages => {
 		if (globalThis.isstr(messages)) // simple message text
 			return self.showError(messages);
+		const valid = self.getValidators(); // get form validators
 		// Style error inputs and set focus on first error
-		messages = messages || i18n.getValidation().getMsgs(); // default messages
+		messages = messages || valid.getMsgs(); // default messages
 		form.elements.eachPrev(el => fnSetError(el, messages[el.name]));
-		return self.showError(messages.msgError || opts.defaultMsgError);
+		self.showError(messages.msgError || opts.defaultMsgError);
+		valid.reset(); // reset for nex validation
+		return self;
 	}
 	this.validate = (fnValidator, selector) => {
+		i18n.resetValidators(); // reset lang for validators
 		const data = self.closeAlerts().getData(selector); // current form data
 		return fnValidator(data) ? data : !self.setErrors(); // model preserve this
 	}

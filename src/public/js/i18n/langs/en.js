@@ -21,6 +21,7 @@ export default {
 	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta Comunicación.",
 	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta Comunicación.",
 	msgPernoctasEmpty: "No hay pernoctas asociadas a esta Comunicación.",
+	msgDietasEmpty: "No hay dietas / manutenciones asociadas a esta Comunicación.",
 
 	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
 	docMovilidad: "Documentación acreditativa del programa de movilidad",

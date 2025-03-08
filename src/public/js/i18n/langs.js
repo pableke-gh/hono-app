@@ -8,6 +8,7 @@ import sb from "../components/types/StringBox.js";
 function Langs() {
 	const self = this; //self instance
 	const DEFAULT = "en"; // Default iso lang
+	const valid = new Validators(en); // instance
 
 	let _langs = { en, es }; // All langs
 	let _lang = en; // Default language
@@ -18,6 +19,7 @@ function Langs() {
 	this.getI18n = lang => _langs[lang] || _langs[sb.substring(lang, 0, 2)] || _lang;
 	this.setLang = lang => { // Load especific language by key
 		_lang = self.getI18n(lang);
+		valid.setLang(_lang);
 		return self;
 	}
 
@@ -28,18 +30,21 @@ function Langs() {
 
 	this.getDefault = () => DEFAULT;
 	this.getIsoLang = () => _lang.lang;
+	this.isDefault = lang => {
+		lang = lang || self.getIsoLang();
+		return (DEFAULT == lang);
+	}
+
 	this.getIsoLangs = () => Object.keys(_langs);
 	this.getNavLang = () => navigator.language || navigator.userLanguage; // default browser language
 	this.getLanguage = () => document.documentElement.getAttribute("lang") || self.getNavLang() || DEFAULT;
 	this.getAcceptLanguage = list => self.setLang(sb.substring(list, 0, 5)).getIsoLang(); // server header Accept-Language
 	this.setLanguage = () => self.setLang(self.getLanguage()); // Set language object
 
-	en.validators = new Validators(en); // constant
-	es.validators = new Validators(es); // constant
-	this.getValidation = () => _lang.validators; // Current validators
-	this.getValidators = () => _lang.validators.reset(); // Initialize messages
-	this.resetValidators = lang => self.setLang(lang).getValidators(); // Reset lang instance
+	this.getValidation = () => valid; // Current validators
+	this.getValidators = () => valid.reset(); // Init. messages
 	this.createValidators = () => new Validators(_lang); // Create instance
+	this.resetValidators = self.getValidators; // Reset lang instance
 
 	this.get = msg => _lang[msg] || msg || "";
 	this.getItem = (msg, index) => _lang[msg][index];
