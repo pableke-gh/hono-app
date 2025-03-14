@@ -10,8 +10,8 @@
 
 	<ui:define name="metadata">
 		<f:metadata>
-            <f:viewParam name="lang" value="#{uae.lang}" />
-            <f:viewAction action="#{uae.initLang()}" />
+            <f:viewParam name="lang" value="#{fact.lang}" />
+            <f:viewAction action="#{fact.initLang()}" />
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
@@ -45,7 +45,7 @@
 		</div>
 
 		<!-- vinculación con uxxiec -->
-		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
+		<div id="tab-15" class="tab-content" data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}">
 			<ui:include src="./uxxiec.xhtml"></ui:include>
 		</div>
 

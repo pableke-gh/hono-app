@@ -10,8 +10,8 @@
 
 	<ui:define name="metadata">
 		<f:metadata>
-            <f:viewParam name="lang" value="#{uae.lang}" />
-            <f:viewAction action="#{uae.initLang()}" />
+            <f:viewParam name="lang" value="#{presto.lang}" />
+            <f:viewAction action="#{presto.initLang()}" />
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
@@ -50,7 +50,7 @@
 		</h:form>
 
 		<!-- vinculación con uxxiec -->
-		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
+		<div id="tab-15" class="tab-content" data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}">
 			<ui:include src="uxxiec.xhtml"></ui:include>
 		</div>
 

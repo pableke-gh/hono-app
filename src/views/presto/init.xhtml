@@ -54,16 +54,16 @@
         </c:choose>
         <ul>
         <li>
-            <a href="#tab-2" class="tab-action" title="Solicitudes pendientes de firma">Consulta de Solicitudes</a>
+            <a href="#tab-2" title="Solicitudes pendientes de firma">Consulta de Solicitudes</a>
         </li>
         <c:if test="#{presto.user.uae}">
             <li>
-                <a href="#tab-2" class="tab-action" title="Asociacia solicitudes PRESTO con sus operaciones en UXXI-EC">Consulta de Formación de Expediente</a>
+                <a href="#tab-2" title="Asociacia solicitudes PRESTO con sus operaciones en UXXI-EC">Consulta de Formación de Expediente</a>
             </li>
         </c:if>
-        <c:if test="#{presto.user.uae or presto.user.otri}">
+        <c:if test="#{presto.user.admin}">
             <li>
-                <a href="#tab-otri" class="tab-action" title="Asociacia solicitudes PRESTO con sus operaciones en UXXI-EC">Consulta GCR  para la OTRI</a>
+                <a href="#tab-otri" title="Asociacia solicitudes PRESTO con sus operaciones en UXXI-EC">Consulta GCR  para la OTRI</a>
             </li>
         </c:if>
         </ul>

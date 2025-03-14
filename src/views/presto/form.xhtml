@@ -30,7 +30,7 @@
 		<p:commandLink action="#{presto.firmas.firmar()}" onclick="if (!fnFirmar()) return false;" oncomplete="updateList(xhr, status, args);"
 				styleClass="btn btn-green #{presto.form.cssFirmable}" tabindex="22" title="#{msg['tit.btn.firmar']}">
 			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</p:commandLink>
-		<a href="#tab-11" class="tab-action btn btn-error #{presto.form.cssRechazable}" tabindex="23" title="#{msg['tit.btn.rechazar']}">
+		<a href="#tab-11" class="btn btn-error #{presto.form.cssRechazable}" tabindex="23" title="#{msg['tit.btn.rechazar']}">
 			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
 	</p:outputPanel>
 	<ui:include src="./firmas.xhtml"></ui:include>
