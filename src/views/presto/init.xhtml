@@ -9,23 +9,23 @@
 
     <h:form id="xeco-init" prependId="false" onsubmit="loading();">
         <c:choose>
-        <c:when test="#{presto2.user.open}">
+        <c:when test="#{presto.user.open}">
             <h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
             <ul>
                 <li>Nueva Solicitud:<ul>
-                    <li><p:commandLink action="#{presto2.createTcr()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código TCR">Transferencia de Crédito</p:commandLink></li>
-                    <li><p:commandLink action="#{presto2.createFce()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código FCE">Fondo de Cobertura</p:commandLink></li>
-                    <c:if test="#{presto2.user.uae or presto2.user.otri}">
-                        <li><p:commandLink action="#{presto2.createL83()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código L83">Liquidación de Contrato de Art. 83</p:commandLink></li>
+                    <li><p:commandLink action="#{presto.createTcr()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código TCR">Transferencia de Crédito</p:commandLink></li>
+                    <li><p:commandLink action="#{presto.createFce()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código FCE">Fondo de Cobertura</p:commandLink></li>
+                    <c:if test="#{presto.user.uae or presto.user.otri}">
+                        <li><p:commandLink action="#{presto.createL83()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código L83">Liquidación de Contrato de Art. 83</p:commandLink></li>
                     </c:if>
-                    <c:if test="#{presto2.user.hasGcr()}">
-                        <li><p:commandLink action="#{presto2.createGcr()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código GCR">Generación de Crédito (A83, Cátedras, Subvenciones y otras FA)</p:commandLink></li>
+                    <c:if test="#{presto.user.hasGcr()}">
+                        <li><p:commandLink action="#{presto.createGcr()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código GCR">Generación de Crédito (A83, Cátedras, Subvenciones y otras FA)</p:commandLink></li>
                     </c:if>
-                    <c:if test="#{presto2.user.hasAnt()}">
-                        <li><p:commandLink action="#{presto2.createAnt()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código ANT">Anticipos sobre Recaudación A83, TTPP y Cátedras</p:commandLink></li>
+                    <c:if test="#{presto.user.hasAnt()}">
+                        <li><p:commandLink action="#{presto.createAnt()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código ANT">Anticipos sobre Recaudación A83, TTPP y Cátedras</p:commandLink></li>
                     </c:if>
-                    <c:if test="#{presto2.user.hasAfc()}">
-                        <li><p:commandLink action="#{presto2.createAfc()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código AFC">Traspaso al FC</p:commandLink></li>
+                    <c:if test="#{presto.user.hasAfc()}">
+                        <li><p:commandLink action="#{presto.createAfc()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args);" title="Código AFC">Traspaso al FC</p:commandLink></li>
                     </c:if>
                 </ul></li>
             </ul>
@@ -36,16 +36,16 @@
             <ul>
                 <li>Nueva Solicitud:<ul>
                     <li>Transferencia de Crédito</li>
-                    <c:if test="#{presto2.user.uae or presto2.user.otri}">
+                    <c:if test="#{presto.user.uae or presto.user.otri}">
                         <li>Fondo de Cobertura</li>
                     </c:if>
-                    <c:if test="#{presto2.user.hasGcr()}">
+                    <c:if test="#{presto.user.hasGcr()}">
                         <li>Generación de Crédito (A83, Cátedras, Subvenciones y otras FA)</li>
                     </c:if>
-                    <c:if test="#{presto2.user.hasAnt()}">
+                    <c:if test="#{presto.user.hasAnt()}">
                         <li>Anticipos sobre Recaudación A83, TTPP y Cátedras</li>
                     </c:if>
-                    <c:if test="#{presto2.user.hasAfc()}">
+                    <c:if test="#{presto.user.hasAfc()}">
                         <li>Traspaso al FC</li>
                     </c:if>
                 </ul></li>
@@ -56,12 +56,12 @@
         <li>
             <a href="#tab-2" class="tab-action" title="Solicitudes pendientes de firma">Consulta de Solicitudes</a>
         </li>
-        <c:if test="#{presto2.user.uae}">
+        <c:if test="#{presto.user.uae}">
             <li>
                 <a href="#tab-2" class="tab-action" title="Asociacia solicitudes PRESTO con sus operaciones en UXXI-EC">Consulta de Formación de Expediente</a>
             </li>
         </c:if>
-        <c:if test="#{presto2.user.uae or presto2.user.otri}">
+        <c:if test="#{presto.user.uae or presto.user.otri}">
             <li>
                 <a href="#tab-otri" class="tab-action" title="Asociacia solicitudes PRESTO con sus operaciones en UXXI-EC">Consulta GCR  para la OTRI</a>
             </li>

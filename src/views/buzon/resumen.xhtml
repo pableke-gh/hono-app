@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <div id="resumen" class="card-xeco">
+        <h2>Resumen de la Solicitud</h2>
+        <p><b>¿A quién se va a pagar la factura?:</b> <span id="type-name">TYPE-NAME</span></p>
+        <p><b>Archivos que se van a enviar:</b> <span id="file-name">NAME-XXX</span></p>
+        <p><b>Partida presupuestaria para la factura:</b> <span id="org-desc">ORG-XXX</span></p>
+        <p><b>Unidad que va a tramitar la factura:</b> <span id="ut-desc">UT-XXX</span></p>
+        <p class="show-cesionario"><b>Cuenta bancaria:</b> <span id="iban">IBAN-XXX</span></p>
+        <p id="msg-gestor"><b>Observaciones para el gestor:</b> <span id="desc-gestor">DESC</span></p>
+    </div>
+    <div>
+        <a href="#tab-prev" class="btn btn-info" tabindex="20"><i class="fas fa-caret-left"></i></a>
+        <p:commandLink action="#{buzon.facturas.upload()}" onclick="loading();" oncomplete="factUpload(xhr, status, args)" 
+            styleClass="btn btn-green">Enviar <i class="fas fa-paper-plane btn-icon-right"></i></p:commandLink>
+    </div>
+</html>

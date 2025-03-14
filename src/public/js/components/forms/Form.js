@@ -12,6 +12,7 @@ export default function(form, opts) {
 	form = globalThis.isstr(form) ? document.forms.findBy(form) : form; // Find by name
 
 	opts = opts || {}; // default options
+	opts.idSelector = opts.idSelector || "#id"; // id field selector
 	opts.defaultMsgOk = opts.defaultMsgOk || "saveOk"; // default key for message ok
 	opts.defaultMsgError = opts.defaultMsgError || "errForm"; // default key error
 
@@ -60,8 +61,8 @@ export default function(form, opts) {
     this.get = name => opts[name];
     this.set = (name, fn) => { opts[name] = fn; return self; }
 	this.setCache = id => { opts.cache = id; return self; }
-	this.isCached = (id, selector) => ((id == opts.cache) || (id == self.getval(selector || "#id")));
-	this.resetCache = selector => { delete opts.cache; return self.setStrval(selector || "#id"); }
+	this.isCached = (id, selector) => ((id == opts.cache) || (id == self.getval(selector || opts.idSelector)));
+	this.resetCache = selector => { delete opts.cache; return self.setStrval(selector || opts.idSelector); }
 
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame

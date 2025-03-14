@@ -5,23 +5,17 @@ import pf from "../../components/Primefaces.js";
 import buzon from "../model/Buzon.js";
 import i18n from "../../i18n/langs.js";
 
-function BuzonFacturas() {
+function Facturas() {
 	const self = this; //self instance
     const form = new Form("#xeco-factura");
 	const elTipo = form.getInput("#tipo");
 	const fileNames = form.querySelectorAll(".filename");
-	let _unidadTramit, _isActiveTab5; // bool indicators
-
-    this.getForm = () => form;
-	this.setChangeTipo = fn => {
-		elTipo.onchange = fn; // update event
-		return self;
-	}
+	let _isActiveTab5; // bool indicators
 
     this.init = (cod, desc, ut) => {
 		fileNames.forEach(el => { el.innerHTML = ""; });
 		form.setval("#buzon-cod-org", cod).text("#org-desc", desc);
-		_unidadTramit = ut;
+		form.setval("#utFact", ut) // default ut
 		return self;
 	}
     this.setFactuaOrganica = data => {
@@ -42,22 +36,20 @@ function BuzonFacturas() {
 			.setVisible("#file-jp", buzon.isJustPagoRequired())
 			.setVisible(".show-cesionario", buzon.isPagoCesionario())
 			.text("#type-name", form.getOptionText("#tipo"));
+		elTipo.onchange = self.setFactuaOtros; // update event
 		_isActiveTab5 = true; // show tab otros
 		return self;
     }
 
-    this.validateJustPago = () => {
+    const fnShowTab2 = () => { // tab fichero factura
+        const fileName = form.querySelector(".filename").innerHTML;
+        return fileName || !form.showError("Debe seleccionar una factura.");
+    }
+    const fnValidateJustPago = () => {
         const files = fileNames.filter(el => el.innerHTML);
         if (buzon.isJustPagoRequired() && (files.length < 2))
             return !form.showError("Debe seleccionar Justificante de pago.");
-        if (buzon.isFacturaOtros())
-            return form.setval("#utFact", _unidadTramit) // default ut
         return true;
-    }
-
-    this.showTab2 = () => { // tab fichero factura
-        const fileName = form.querySelector(".filename").innerHTML;
-        return fileName || !form.showError("Debe seleccionar una factura.");
     }
 
 	// Tab resumen
@@ -68,8 +60,8 @@ function BuzonFacturas() {
 		const msgs = "Debe detallar las observaciones para el gestor.";
 		return valid.size("desc", data.desc, msgs).isOk();
 	}
-	this.showTab6 = () => (self.validateJustPago() && form.validate(fnValidateTab5));
-	this.viewTab6 = () => {
+	const fnShowTab6 = () => (fnValidateJustPago() && form.validate(fnValidateTab5));
+	const fnViewTab6 = () => {
 		const desc = form.getval("#desc");
 		const names = fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);
 		form.text("#ut-desc", form.getOptionText("#utFact")).text("#file-name", names.join(", "))
@@ -80,8 +72,10 @@ function BuzonFacturas() {
 	// Init. form factura
     pf.uploads(form.querySelectorAll(".pf-upload"));
 	form.getInput("#fileFactura_input").setAttribute("accept", "application/pdf"); // PDF only
-	tabs.setActiveEvent(4, buzon.isMultigrupo);
-	tabs.setActiveEvent(5, () => _isActiveTab5);
+	tabs.setShowEvent(2, fnShowTab2); // tab fichero factura
+	tabs.setActiveEvent(4, buzon.isActiveTab4).setShowEvent(4, fnValidateJustPago);
+	tabs.setActiveEvent(5, () => _isActiveTab5).setShowEvent(5, fnValidateJustPago);
+	tabs.setShowEvent(6, fnShowTab6).setViewEvent(6, fnViewTab6); // tab resumen
 }
 
-export default new BuzonFacturas();
+export default new Facturas();

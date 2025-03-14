@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="alerts">
+		<div class="alert alert-success">
+			<div class="alert-icon"><i class="fas fa-check-circle fa-2x"></i></div>
+			<div class="alert-text">#{uae.msgOk}</div>
+			<div class="alert-close"><i class="fas fa-times"></i></div>
+		</div>
+		<div class="alert alert-info">
+			<div class="alert-icon"><i class="fas fa-info fa-3x"></i></div>
+			<div class="alert-text">#{uae.msgInfo}</div>
+			<div class="alert-close"><i class="fas fa-times"></i></div>
+		</div>
+		<div class="alert alert-warn">
+			<div class="alert-icon"><i class="fas fa-exclamation-triangle fa-2x"></i></div>
+			<div class="alert-text">#{uae.msgWarn}</div>
+			<div class="alert-close"><i class="fas fa-times"></i></div>
+		</div>
+		<div class="alert alert-error">
+			<div class="alert-icon"><i class="fas fa-exclamation fa-3x"></i></div>
+			<div class="alert-text"><h:outputText value="#{uae.msgErr}" escape="false" /></div>
+			<div class="alert-close"><i class="fas fa-times"></i></div>
+		</div>
+	</div>
+	<div class="loading">
+		<b class="far fa-circle-notch fa-3x fa-spin loading-content"></b>
+	</div>
+	<a id="back-to-top" href="#top" class="hide back-to-top">
+		<i class="fas fa-arrow-alt-up"></i>
+	</a>
+</html>

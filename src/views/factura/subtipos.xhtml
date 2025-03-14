@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<label class="ui-block-xl">
+		<div class="label required">Tipos de Ingreso:</div>
+		<h:selectOneMenu id="subtipo" value="#{fact.solicitud.subtipoView}" styleClass="ui-input ui-select ui-number" tabindex="4">
+			<f:selectItem itemValue="14" itemLabel="MATRÍCULAS ENSEÑANZA OFICIAL - CONVENIOS EDUCATIVOS (SUBV. PRECIO)" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="4" itemLabel="MATRÍCULA ENSEÑANZA OFICIAL" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="3" itemLabel="TÍTULOS PROPIOS (INCLUYE IDIOMAS, EXTRANJEROS, CAP, …)" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="15" itemLabel="TÍTULOS PROPIOS CON CANON" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="9" itemLabel="CURSOS DE EXTENSIÓN (VERANO, MAYORES, OTROS)" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="16" itemLabel="PATROCINIOS DE TÍTULOS PROPIOS" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="17" itemLabel="PATROCINIOS DE CURSOS DE VERANO" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="18" itemLabel="PATROCINIOS DE OTRAS ACTIVIDADES DE EXTENSIÓN" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="5" itemLabel="SAIT PRESTACIONES DE SERVICIOS" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="19" itemLabel="SAIT ENTREGAS DE IMPRESIONES 3D, PIEZAS, PROTOTIPOS Y OTROS BIENES" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="1" itemLabel="CONTRATO DE I+D+I" itemEscaped="false" itemDisabled="true" styleClass="show-factura" />
+			<f:selectItem itemValue="20" itemLabel="PRESTACIONES DE SERVICIOS DEL CPCD" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="21" itemLabel="PRESTAMO INTERBIBLIOTECARIO" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="22" itemLabel="VENTA DE LIBROS EN PAPEL" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="23" itemLabel="VENTA DE LIBROS ELECTRÓNICOS" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="6" itemLabel="ALQUILER DE ESPACIOS" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="2" itemLabel="LICENCIAS SOBRE PATENTES" itemEscaped="false" itemDisabled="true" styleClass="show-factura" />
+			<f:selectItem itemValue="11" itemLabel="OTROS (CANARIAS/CEUTA/MELILLA, MOOCs, DEPORTES, SYMPOSIUM, CENTROS ADSCRITOS, FOTOCOPIAS, CONCESIONES, ENAJENACIÓN DE BIENES)" itemEscaped="false" styleClass="show-factura" />
+			<f:selectItem itemValue="24" itemLabel="ASISTENCIA A CONGRESOS" itemEscaped="false" itemDisabled="true" styleClass="show-factura" />
+			<f:selectItem itemValue="12" itemLabel="RED DE CÁTEDRAS" itemEscaped="false" itemDisabled="true" styleClass="show-cp" />
+			<f:selectItem itemValue="13" itemLabel="OTROS" itemEscaped="false" styleClass="show-cp" />
+		</h:selectOneMenu>
+	</label>
+	<label class="autocomplete ui-block-md show-recibo">
+		<div class="label required">Recibo asociado a la factura:</div>
+		<p:remoteCommand name="rcFindRecibo" action="#{fact.form.findRecibo()}" oncomplete="loadItems(xhr, status, args)" />
+		<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" />
+		<h:inputText id="idRecibo" value="#{fact.solicitud.reciboView}" styleClass="ui-input hide" />
+		<ul role="list" class="results"></ul>
+		<div class="ui-errtip"></div> 
+	</label>
+</html>

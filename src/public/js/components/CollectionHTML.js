@@ -85,7 +85,7 @@ HTMLElement.prototype.setDisabled = function(force) { // Update attribute and st
 }
 HTMLElement.prototype.setReadonly = function(force) { // Update attribute and style
     // The attribute readonly is not supported or relevant to <select> or input types file, checkbox, radio, range...
-    if ([ "file", "checkbox", "radio", "range" ].includes(this.type))
+    if ([ "file", "checkbox", "radio", "range", "color", "button" ].includes(this.type))
         return this.setDisabled(force); // Force disabled attribute
     this.classList.toggle("readonly", this.toggleAttribute("readonly", force));
     return this;

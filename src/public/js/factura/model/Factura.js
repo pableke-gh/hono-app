@@ -61,7 +61,7 @@ class Factura extends Solicitud {
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
             <td class="hide-sm text-upper1">${data.titulo}</td>
             <td class="${self.getStyleByEstado()} estado-${data.id}">${self.getDescEstado()}</td>
-            <td class="text-center">${self.getFirma().myFlag(data.fmask, data.info)}</td>
+            <td class="text-center">${self.getFirma().myFlag(data)}</td>
             <td class="hide-sm">${data.sig || ""}</td>
             <td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
             <td class="text-right">${i18n.isoFloat(data.imp)} €</td>

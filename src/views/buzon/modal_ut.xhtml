@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <dialog id="ut" class="dialog-modal">
+        <div class="dialog-header">
+            <h2>Unidades Tramitadoras</h2>
+            <a href="#tab-close-ut" class="action text-gray"><i class="fas fa-times"></i></a>
+        </div>
+        <div class="dialog-body ui-blocks">
+            <label id="unidades-tramit" class="ui-block-xl">
+                <div class="label required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</div>
+                <h:selectOneMenu id="utProv" value="#{buzon.facturas.idUnidadTramit}" styleClass="ui-input ui-select ui-number" tabindex="2">
+                    <f:selectItems value="#{buzon.facturas.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
+                </h:selectOneMenu>
+                <div class="ui-errtip"></div>
+            </label>
+        </div>
+        <div class="dialog-footer">
+            <a href="#tab-close-ut" class="btn btn-info"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
+            <a href="#tab-action-report" class="btn btn-warn"><i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
+        </div>
+    </dialog>
+</html>

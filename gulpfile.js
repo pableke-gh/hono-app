@@ -55,6 +55,12 @@ gulp.task("minify-views", done => {
 		const CV_PRESTO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/presto";
 		deployCV("dist/views/presto/**/*", CV_PRESTO, () => {}); // deploy presto XHTML in Campus Virtual
 
+		const CV_FACT = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/factura";
+		deployCV("dist/views/factura/**/*", CV_FACT, () => {}); // deploy presto XHTML in Campus Virtual 
+
+		const CV_BUZON = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/buzon";
+		deployCV("dist/views/buzon/**/*", CV_BUZON, () => {}); // deploy presto XHTML in Campus Virtual 
+
 		const CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
 		deployCV("dist/views/irse/**/*", CV_IRSE, done); // deploy irse XHTML in Campus Virtual
 

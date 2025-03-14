@@ -3,6 +3,7 @@ import i18n from "../../i18n/langs.js";
 
 function Uxxiec() {
 	const self = this; //self instance
+	const msgEmptyTable = "No se han encontrado documentos de UXXI-EC asociadas a la solicitud";
 
     let _data; // Current presto data type
     this.getData = () => _data;
@@ -23,7 +24,10 @@ function Uxxiec() {
         </tr>`;
     }
     this.tfoot = resume => `<tr><td colspan="99">Operaciones: ${resume.size}</td></tr>`;
-    this.autocomplete = item => (item.num + " - " + item.uxxi + "<br>" + item.desc);
+    this.getTable = () => ({ msgEmptyTable, onRender: self.row, onFooter: self.tfoot });
+
+	const fnRender = item => (item.num + " - " + item.uxxi + "<br>" + item.desc);
+    this.getAutocomplete = () => ({ minLength: 4, render: fnRender, select: item => item.id });
 }
 
 export default new Uxxiec();

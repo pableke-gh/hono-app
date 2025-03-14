@@ -2,25 +2,32 @@
 import sb from "../../../components/types/StringBox.js";
 import tb from "../../../components/types/TemporalBox.js";
 import i18n from "../../../i18n/langs.js";
-import rr from "./RutaRender.js";
+
+import rm from "./RutaMaps.js";
+import rg from "./RutaGasto.js";
+import rvp from "./RutaVehiculoPropio.js";
+import rro from "./RutaReadOnly.js";
 
 function Ruta() {
 	const self = this; //self instance
 	//const MIN_DATE = tb.now().add({ years: -1 }); //1 año antes
 	//const MAX_DATE = tb.now().add({ days: 180 }); //6 meses despues 
+	const principal = ' <span class="text-warn icon"> <i class="fal fa-flag-checkered"></i></span>';
 
 	this.salida = ruta => tb.parse(ruta.dt1);
 	this.llegada = ruta => tb.parse(ruta.dt2);
 
-	this.isPrincipal = rr.isPrincipal;
-	this.setPrincipal = rr.setPrincipal;
-	this.setOrdinaria = rr.setOrdinaria;
+	// tipos de rutas
+	this.isPrincipal = ruta => ((ruta.mask & 1) == 1);
+	this.setPrincipal = ruta => { ruta.mask |= 1; return self; }
+	this.setOrdinaria = ruta => { ruta.mask &= ~1; return self; }
 
-	this.isVehiculoPropio = rr.isVehiculoPropio;
-	this.isVehiculoAlquiler = rr.isVehiculoAlquiler;
-	this.isVehiculoAjeno = rr.isVehiculoAjeno;
-	this.isTaxiInterurbano = rr.isTaxiInterurbano;
-	this.isAsociableGasto = rr.isAsociableGasto;
+	// tipos de desplazamiento
+	this.isVehiculoPropio = ruta => (ruta.desp == 1);
+	this.isVehiculoAlquiler = ruta => (ruta.desp == 2);
+	this.isVehiculoAjeno = ruta => (ruta.desp == 3);
+	this.isTaxiInterurbano = ruta => (ruta.desp == 4);
+	this.isAsociableGasto = ruta => (!self.isVehiculoPropio(ruta) && !self.isVehiculoAjeno(ruta)); //rutas a las que se le puede asignar un gasto
 
 	this.isSalidaTemprana = ruta => (sb.getHours(ruta.dt1) < 14);
 	this.isSalidaTardia = ruta => (sb.getHours(ruta.dt1) > 21);
@@ -35,27 +42,13 @@ function Ruta() {
 		return self.isLlegadaTardia(ruta) ? self.getPaisllegada(ruta) : self.getPaisSalida(ruta);
 	}
 
-	this.getImpKm = rr.getImpKm;
-	this.substractKm = (resume, ruta) => {
-		resume.totKm -= ruta.km1;
-		resume.impKm -= rr.getImpKm(ruta);
-		return self;
-	}
-	this.addKm = (resume, ruta) => {
-		resume.totKm += ruta.km1;
-		resume.impKm += rr.getImpKm(ruta);
-		return self;
-	}
-	this.recalcKm = (resume, ruta, km) => { 
-		self.substractKm(resume, ruta, km);
-		ruta.km1 = km;
-		return self.addKm(resume, ruta);
-	}
+	this.getImpKm = rvp.getImpKm;
+	this.getImpGasolina = rvp.getImpGasolina;
+	this.recalcKm = rvp.recalcKm;
+	//this.link = (ruta, id) => { ruta.g = id; return self; }
+	//this.unlink = ruta => { delete ruta.g; return self; }
 
-	this.link = (ruta, id) => { ruta.g = id; return self; }
-	this.unlink = ruta => { delete ruta.g; return self; }
-
-	this.valid = (ruta) => {
+	this.valid = ruta => {
 		const valid = i18n.getValidation();
 		if (!ruta.origen || !ruta.pais1)
 			valid.addRequired("origen", "errOrigen");
@@ -79,16 +72,38 @@ function Ruta() {
 		return valid.isOk();
 	}
 
-	// tipos de visualizacion
-	this.beforeRender = rr.beforeRender;
-	this.row = rr.row;
-    this.tfoot = rr.tfoot;
-	this.rowReadOnly = rr.rowReadOnly;
-	this.rowRutasGasto = rr.rowRutasGasto;
-    this.tfootRutasGasto = rr.tfootRutasGasto;
-	this.rowVehiculoPropio = rr.rowVehiculoPropio;
-    this.tfootVehiculoPropio = rr.tfootVehiculoPropio;
-	this.afterRender = rr.afterRender;
+	// table renders
+	this.beforeRender = rvp.beforeRender;
+	function fnAccumulate(data, resume) {
+		resume.totKm += self.isVehiculoPropio(data) ? data.km1 : 0;
+		resume.totKmCalc += self.isVehiculoPropio(data) ? data.km2 : 0;
+		resume.flag = self.isPrincipal(data) ? principal : "";
+	}
+
+	this.row = (data, status, resume) => {
+		fnAccumulate(data, resume);
+		return rm.row(data, status, resume);
+	}
+    this.tfoot = rm.tfoot;
+
+	this.rowReadOnly = (ruta, status, resume) => {
+		fnAccumulate(ruta, resume);
+		return rro.row(ruta, status, resume);
+	}
+
+	this.rowRutasGasto = (ruta, status, resume) => {
+		fnAccumulate(ruta, resume);
+		return rg.row(ruta, status, resume);
+	}
+    this.tfootRutasGasto = rg.tfoot;
+
+	this.rowVehiculoPropio = (ruta, status, resume) => {
+		fnAccumulate(ruta, resume);
+		return rvp.row(ruta, status, resume);
+	}
+    this.tfootVehiculoPropio = rvp.tfoot;
+
+	this.afterRender = rvp.afterRender;
 }
 
 export default new Ruta();

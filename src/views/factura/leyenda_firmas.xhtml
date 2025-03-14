@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div><hr/>
+		<span><i class="fas fa-flag-alt icon icon-warn"></i><h:outputText value="#{msg['lbl.firma.pendiente']}" escape="false" /></span> 
+		<span><i class="fas fa-flag-alt icon icon-green"></i><h:outputText value="#{msg['lbl.firma.aceptada']}" escape="false" /></span>
+		<span><i class="fas fa-flag-alt icon icon-red"></i><h:outputText value="#{msg['lbl.firma.rechazada']}" escape="false" /></span>
+	</div>
+</html>

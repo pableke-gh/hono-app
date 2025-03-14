@@ -1,68 +1,33 @@
 
-import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
 import pf from "../components/Primefaces.js";
-
-import factura from "./model/Factura.js";
-import Fiscal from "./modules/Fiscal.js";
-import solicitudes from "../xeco/xeco.js";
+import facturas from "./modules/facturas.js";
+import fiscal from "./modules/fiscal.js";
+import lineas from "./modules/lineas.js";
 
 pf.ready(() => {
-    const formFact = new Form("#xeco-fact");
-	const fiscal = new Fiscal(formFact);
-	const lineas = fiscal.getLineas();
-    solicitudes(factura, formFact); // init. actions
-
-	const fnUpdateFace = face => {
-		factura.setFace(face);
-		formFact.text(".grupo-gestor > .label", factura.isPlataforma() ? "Nombre de la plataforma:" : "Órgano Gestor:")
-				.setVisible(".grupo-face", factura.isFace()).setVisible(".grupo-gestor", factura.isFace() || factura.isPlataforma());
-	}
-
-	const acOrganica = formFact.setAcItems("#acOrganica", term => pf.sendTerm("rcFindOrganica", term));
-	const acRecibo = formFact.setAcItems("#acRecibo", term => pf.sendTerm("rcFindRecibo", term));
-	formFact.onChangeInput("#subtipo", ev => fiscal.update(+ev.target.value))
-			.onChangeInput("#sujeto", ev => fiscal.setSujeto(+ev.target.value))
-			.onChangeInput("#face", ev => fnUpdateFace(+ev.target.value));
-
-	formFact.addClick("a#add-linea", ev => {
-		lineas.addLinea();
-		ev.preventDefault();
-	});
-
-    window.loadDelegaciones = (xhr, status, args) => {
-		if (pf.showAlerts(xhr, status, args))
-			fiscal.setDelegationes(JSON.read(args.delegaciones));
-    }
+	facturas.init();
+	fiscal.init();
+	lineas.init();
 
 	window.viewFactura = (xhr, status, args) => {
     	if (!pf.showAlerts(xhr, status, args))
 			return false; // Server error
-
-		const data = JSON.read(args.fact);
-        factura.setData(data); // Load data-model before view
-		formFact.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])")
-				.setval("#nifTercero", data.nif).readonly(factura.isDisabled())
-				.setVisible(".insert-only", factura.isEditable()).setVisible(".update-only", factura.isDisabled())
-				.setVisible(".firmable-only", factura.isFirmable()).setVisible(".rechazable-only", factura.isRechazable())
-				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFacturable()).setVisible(".show-cp", factura.isCartaPago())
-				.setVisible(".show-factura-uae", factura.isUae() && factura.isFacturable()).setVisible(".show-uae", factura.isUae())
-				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace())
-				.setVisible(".show-gaca", factura.isFirmaGaca());
+		const data = JSON.read(args.fact); // Read factura data
+		lineas.setLineas(JSON.read(args.data)); // Load conceptos and iva input
+		facturas.view(data, JSON.read(args.firmas)); // Load data-model before view
 		// cargo los datos del tercero y de las delegaciones
 		fiscal.load(JSON.read(args.tercero), JSON.read(args.delegaciones))
 				.setTercero(data.idTer, data.nif + " - " + data.tercero)
-				.setSujeto(data.sujeto); // update sujeto / exento
-		lineas.render(JSON.read(args.data)); // Load conceptos and iva input
-		formFact.readonly(!factura.isEditableUae(), ".editable-uae"); // disable iva input
-        acOrganica.setValue(data.idOrg, data.org + " - " + data.descOrg);
-        acRecibo.setValue(data.idRecibo, data.acRecibo);
-
-		fnUpdateFace(data.face); // update face inputs group
-        tabs.render(".load-data", data).showTab(1); // show form tab
+				.setSujeto(data.sujeto) // update sujeto / exento
+				.setFace(data.face); // update face inputs group
+		tabs.setActions(document).showTab(1); // show form tab
 	}
-	window.fnSend = () => {
-		lineas.setLineas(); // actualizo los conceptos
-		return formFact.validate(factura.validate) && lineas.save().confirm();
+
+	window.updateFact = (xhr, status, args, tab) => {
+        if (!pf.showAlerts(xhr, status, args))
+			return false; // Server error
+		facturas.update(JSON.read(args.firmas)); // firmas asociadas
+		tabs.setActions(document).showTab(tab); // navego al tab
 	}
 });

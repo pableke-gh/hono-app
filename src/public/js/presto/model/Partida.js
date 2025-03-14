@@ -13,6 +13,7 @@ export default function Partida(presto) {
     this.isExcedida = partida => ((presto.isAnt() || (partida.e == "642")) && Number.isNumber(partida.ih) && ((partida.ih + .01) < partida.imp));
     this.isAfectada = mask => (mask & 1); // Es afectada? Si/No
 
+	this.beforeRender = resume => { resume.imp = 0; }
     this.thead = () => {
         const output = presto.isPartidaExt() ? '<th>Prev. Ingresos (A)</th><th>GG &#37; (B)</th><th>Max. Habilitar (C=A-B)</th><th>Crédito Habilitado (D)</th><th>Margen (E=C-D)</th>' : "";
         return `<tr>
@@ -66,6 +67,7 @@ export default function Partida(presto) {
             <td class="text-right">${i18n.isoFloat(resume.imp)} €</td><td></td>
         </tr>`;
     }
+	this.getTable = () => ({ beforeRender: self.beforeRender, onHeader: self.thead, onRender: self.row, onFooter: self.tfoot });
 
     this.validate = data => {
 		const valid = i18n.getValidators();

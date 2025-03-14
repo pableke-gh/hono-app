@@ -7,7 +7,23 @@ function RutaVehiculoPropio() {
 
 	this.getImpGasolina = () => GASOLINA;
 	this.getImpKm = ruta => (ruta.km1 * GASOLINA);
+	this.substractKm = (resume, ruta) => {
+		resume.totKm -= ruta.km1;
+		resume.impKm -= self.getImpKm(ruta);
+		return self;
+	}
+	this.addKm = (resume, ruta) => {
+		resume.totKm += ruta.km1;
+		resume.impKm += self.getImpKm(ruta);
+		return self;
+	}
+	this.recalcKm = (resume, ruta, km) => { 
+		self.substractKm(resume, ruta, km);
+		ruta.km1 = km;
+		return self.addKm(resume, ruta);
+	}
 
+	// render tables
 	this.beforeRender = resume => {
 		resume.impKm = resume.totKm = resume.totKmCalc = 0;
 	}

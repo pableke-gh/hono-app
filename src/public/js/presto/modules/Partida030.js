@@ -5,7 +5,7 @@ import pf from "../../components/Primefaces.js";
 import presto from "../model/Presto.js";
 import i18n from "../../i18n/langs.js";
 
-export default function Partida030() {
+function Partida030() {
 	const self = this; //self instance
     const partida = presto.getPartida();
     const form = new Form("#xeco-030");
@@ -46,14 +46,16 @@ export default function Partida030() {
         return self;
     }
 
-    this.autoload = (lineas, imp) => {
-        const partidas = lineas.getData();
+    this.autoload = (partidas, imp) => {
+        //const partidas = lineas.getData();
         if (presto.isAutoLoadImp() && partidas.length) {
             const partida = partidas[0]; // unique row
             partida.imp = imp; //importe obligatorio
             partida.imp030 = partida.imp; // update imp 030
-            lineas.render(partidas);
+            //lineas.render(partidas);
         }
         return self;
     }
 }
+
+export default new Partida030();

@@ -13,13 +13,13 @@
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-				<h:selectOneMenu value="#{presto2.list.filtro.ej}" styleClass="ui-input ui-select" tabindex="1" title="#{msg['tit.ejercicio']}">
+				<h:selectOneMenu value="#{presto.list.filtro.ej}" styleClass="ui-input ui-select" tabindex="1" title="#{msg['tit.ejercicio']}">
 					<f:selectItems value="#{uae.ejercicios}" />
 				</h:selectOneMenu>
 			</label>
 			<label class="ui-block">
 				<div class="label">Tipo:</div>
-				<h:selectOneMenu value="#{presto2.list.filtro.tipoView}" styleClass="ui-input ui-select" tabindex="2">
+				<h:selectOneMenu value="#{presto.list.filtro.tipoView}" styleClass="ui-input ui-select" tabindex="2">
 					<f:selectItem itemValue="0" itemLabel=""/>
 					<f:selectItem itemValue="1" itemLabel="TCR" itemEscaped="false"/>
 					<f:selectItem itemValue="6" itemLabel="FCE" itemEscaped="false"/>
@@ -32,7 +32,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.estado']}" escape="false" />:</div>
-				<h:selectOneMenu id="fEstado" value="#{presto2.list.filtro.estadoView}" styleClass="ui-input ui-select ui-number" tabindex="2" title="#{msg['tit.estado']}">
+				<h:selectOneMenu id="fEstado" value="#{presto.list.filtro.estadoView}" styleClass="ui-input ui-select ui-number" tabindex="2" title="#{msg['tit.estado']}">
 					<f:selectItem itemValue="0" itemLabel="" />
 					<f:selectItem itemValue="5" itemLabel="En Proceso" itemEscaped="false"/>
 					<f:selectItem itemValue="1" itemLabel="Aceptada" itemEscaped="false"/>
@@ -41,7 +41,7 @@
 					<f:selectItem itemValue="4" itemLabel="Integrada" itemEscaped="false"/>
 					<f:selectItem itemValue="7" itemLabel="Cancelada" itemEscaped="false"/>
 					<f:selectItem itemValue="8" itemLabel="Caducada" itemEscaped="false"/>
-					<c:if test="#{presto2.user.uae}">
+					<c:if test="#{presto.user.uae}">
 						<f:selectItem itemValue="" itemLabel="-------------------" itemDisabled="true"/>
 						<f:selectItem itemValue="9" itemLabel="Error Capa SOA" itemEscaped="false"/>
 						<f:selectItem itemValue="10" itemLabel="Error Crédito Vinculante" itemEscaped="false"/>
@@ -50,7 +50,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
-				<h:selectOneMenu id="fMiFirma" value="#{presto2.list.filtro.miFirma}" styleClass="ui-input ui-select ui-number" tabindex="3" title="#{msg['lbl.mi.firma']}">
+				<h:selectOneMenu id="fMiFirma" value="#{presto.list.filtro.miFirma}" styleClass="ui-input ui-select ui-number" tabindex="3" title="#{msg['lbl.mi.firma']}">
 					<f:selectItem itemValue="0" itemLabel="" />
 					<f:selectItem itemValue="5" itemLabel="Pendiente" itemEscaped="false" />
 					<f:selectItem itemValue="1" itemLabel="Aceptada" itemEscaped="false" />
@@ -59,31 +59,31 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<h:inputText value="#{presto2.list.filtro.codigoView}" styleClass="ui-input ui-code" tabindex="4" />
+				<h:inputText value="#{presto.list.filtro.codigoView}" styleClass="ui-input ui-code" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.organica']}" escape="false" />:</div>
-				<h:inputText value="#{presto2.list.filtro.orgInc}" styleClass="ui-input ui-code" tabindex="5" />
+				<h:inputText value="#{presto.list.filtro.orgInc}" styleClass="ui-input ui-code" tabindex="5" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<h:inputText value="#{presto2.list.filtro.f1}" tabindex="6" styleClass="ui-input ui-date"/> ...
-				<h:inputText value="#{presto2.list.filtro.f2}" tabindex="7" styleClass="ui-input ui-date"/>
+				<h:inputText value="#{presto.list.filtro.f1}" tabindex="6" styleClass="ui-input ui-date"/> ...
+				<h:inputText value="#{presto.list.filtro.f2}" tabindex="7" styleClass="ui-input ui-date"/>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label">Solicitante:</div>
-				<h:inputText value="#{presto2.list.filtro.solicitante}" styleClass="ui-input" tabindex="8" />
+				<h:inputText value="#{presto.list.filtro.solicitante}" styleClass="ui-input" tabindex="8" />
 			</label>
 		</div>
 
 		<div class="navbar">
-			<c:if test="#{presto2.user.uxxiec}">
+			<c:if test="#{presto.user.uxxiec}">
 				<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 			</c:if>
-			<p:commandButton action="#{presto2.list.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args);" 
+			<p:commandButton action="#{presto.list.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args);" 
 				value="Buscar" icon="far fa-search" styleClass="btn btn-info" tabindex="13"/>
-			<p:commandLink action="#{presto2.list.relist()}" onclick="onList();" oncomplete="loadFiltro(xhr, status, args);" styleClass="btn btn-warn" tabindex="14">
+			<p:commandLink action="#{presto.list.relist()}" onclick="onList();" oncomplete="loadFiltro(xhr, status, args);" styleClass="btn btn-warn" tabindex="14">
 				<i class="far fa-times-circle btn-icon-left"></i>Limpiar</p:commandLink>
 		</div>
 
@@ -111,18 +111,18 @@
 			</tfoot>
 		</table>
 
-		<div id="solicitudes-json" class="hide">#{presto2.list.stringify()}</div>
-		<p:remoteCommand name="rcView" action="#{presto2.view()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args)" />
-		<p:remoteCommand name="rcFirmar" action="#{presto2.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
-		<p:remoteCommand name="rcFirmas" action="#{presto2.firmas()}" update="@(.update-presto)" oncomplete="showTab(xhr, status, args, 11)" />
-		<p:remoteCommand name="rcReport" action="#{presto2.report()}" oncomplete="handleReport(xhr, status, args)" />
-		<p:remoteCommand name="rcIntegrar" action="#{presto2.ws()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcUxxiec" action="#{presto2.uxxiec.view()}" update="@(.update-presto)" oncomplete="loadUxxiec(xhr, status, args)" />
-		<p:remoteCommand name="rcEmails" action="#{presto2.emails()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcRemove" action="#{presto2.remove()}" oncomplete="showAlerts(xhr, status, args)" />
+		<div id="solicitudes-json" class="hide">#{presto.list.stringify()}</div>
+		<p:remoteCommand name="rcView" action="#{presto.view()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args)" />
+		<p:remoteCommand name="rcFirmar" action="#{presto.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
+		<p:remoteCommand name="rcFirmas" action="#{presto.firmas()}" update="@(.update-presto)" oncomplete="updatePresto(xhr, status, args, 11)" />
+		<p:remoteCommand name="rcReport" action="#{presto.report()}" oncomplete="handleReport(xhr, status, args)" />
+		<p:remoteCommand name="rcIntegrar" action="#{presto.ws()}" oncomplete="showAlerts(xhr, status, args)" />
+		<p:remoteCommand name="rcUxxiec" action="#{presto.uxxiec.view()}" update="@(.update-presto)" oncomplete="loadUxxiec(xhr, status, args)" />
+		<p:remoteCommand name="rcEmails" action="#{presto.emails()}" oncomplete="showAlerts(xhr, status, args)" />
+		<p:remoteCommand name="rcRemove" action="#{presto.remove()}" oncomplete="showAlerts(xhr, status, args)" />
 	</h:form>
 
-	<c:if test="#{presto2.user.uxxiec}">
+	<c:if test="#{presto.user.uxxiec}">
 		<a href="#tab-0" class="btn btn-info" title="Volver a la consulta de solicitudes" tabindex="13">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 	</c:if>

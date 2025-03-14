@@ -112,7 +112,7 @@ console.log(data);
 		return fnResetForm();
 	}
 	this.init = () => {
-		_eTipoGasto = _grpGasto = null;
+		//_eTipoGasto = _grpGasto = null;
 		_tblGastos = form.setTable("#tbl-gastos");
 		const fnUnload = data => { i18n.confirm("remove") && pf.sendId("rcUnloadGasto", data.id); };
 		_tblGastos.setMsgEmpty("msgGastosEmpty").setRender(gasto.row).setFooter(gasto.tfoot).set("#rcUnloadGasto", fnUnload);

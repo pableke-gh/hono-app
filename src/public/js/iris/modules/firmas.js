@@ -11,8 +11,7 @@ function Firmas() {
 		const blocks = form.querySelectorAll(".ui-firmantes");
 		if (firmas)
 			blocks.html(coll.render(firmas, firma.render));
-		else
-			blocks.forEach(block => block.parentNode.hide());
+		blocks.forEach(block => block.parentNode.toggle("hide", !firmas));
 		return self;
 	}
 	this.init = self.setFirmas;

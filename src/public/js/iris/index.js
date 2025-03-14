@@ -16,9 +16,6 @@ import otri from "./modules/otri.js";
 window.IRSE = {}; // global IRSE info
 pf.ready(list.init);
 
-/*********** PERFIL MUN tab-1 ***********/ 
-tabs.setInitEvent(1, rutas.mun);
-
 /*********** Google Maps API ***********/
 tabs.setActiveEvent("maps", perfil.isTrayectos);
 tabs.setInitEvent("maps", rutas.maps);

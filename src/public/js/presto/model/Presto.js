@@ -71,7 +71,7 @@ class Presto extends Solicitud {
             <td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
             <td class="hide-sm">${data.titulo}</td>
             <td class="${self.getStyleByEstado(data)} estado-${data.id}">${self.getDescEstado()}</td>
-            <td class="text-center">${self.getFirma().myFlag(data.fmask, data.info)}</td>
+            <td class="text-center">${self.getFirma().myFlag(data)}</td>
             <td class="hide-sm">${data.sig || ""}</td>
             <td title="${data.oIncDesc}">${data.orgInc}${otras}</td>
             <td class="text-center" title="${data.eIncDesc}">${data.ecoInc}</td>

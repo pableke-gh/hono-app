@@ -4,6 +4,9 @@ const ECO_323003 = "323003";
 const ECO_131600 = "131600";
 const ECO_133001 = "133001";
 
+const DEFAULT    = { economica: "", sujeto: 0, exento: 0, m349: 0, iban:  0, iva: 0 }; // Default values
+const CARTA_PAGO = { economica: "", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 0 } // Cartas de pago
+
 const NP_010  = { economica: ECO_323003, sujeto: 0, exento: 1, m349: 0, iban:  0, iva:  0 };
 const NP_206  = { economica: ECO_323003, sujeto: 2, exento: 0, m349: 6, iban:  0, iva:  0 };
 const C2T14   = { economica: "131004",   sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
@@ -37,7 +40,7 @@ const C1T6    = { economica: "154000",   sujeto: 0, exento: 0, m349: 0, iban: 10
 const C2T2    = { economica: "155100",   sujeto: 0, exento: 0, m349: 0, iban:  4, iva: 21 };
 const C2UET2  = { economica: "155100",   sujeto: 2, exento: 0, m349: 6, iban:  4, iva:  0 };
 
-export default {
+const FISCALIDAD = {
     c1epes4: NP_010, c1noes4: NP_010, c1noue4: NP_010, c1nozz4: NP_010,
     c2epes4: NP_010, c2noes4: NP_010, c2noue4: NP_206, c2nozz4: NP_010, 
     c3epes4: NP_010, c3noes4: NP_010, c3noue4: NP_206, c3nozz4: NP_010,
@@ -100,8 +103,10 @@ export default {
     c3epes6: C1T6, c3noes6: C1T6, c3noue6: C1T6, c3nozz6: C1T6,
 
     c2epes2: C2T2, c2noes2: C2T2, c2noue2: C2UET2, c2nozz2: C2T2, 
-    c3epes2: C2T2, c3noes2: C2T2, c3noue2: C2UET2, c3nozz2: C2T2,
+    c3epes2: C2T2, c3noes2: C2T2, c3noue2: C2UET2, c3nozz2: C2T2
+}
 
-    cp13:    { economica: "", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 0 }, // Cartas de pago
-    default: { economica: "",  sujeto: 0, exento: 0, m349: 0, iban:  0, iva:  0 } // Default values
+export default {
+	getCartaPago: () => CARTA_PAGO,
+	get: (key, subtipo) => (FISCALIDAD[key + subtipo] || DEFAULT)
 }

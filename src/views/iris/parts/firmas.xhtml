@@ -10,8 +10,8 @@
 <div>
 	<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
 	<div class="ui-blocks ui-firmantes"></div>
-	<c:if test="#{iris.rechazada}">
-		<p class="notice notice-error"><h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (#{iris.form.nameRechazo}) #{iris.form.infoRechazo}</p>
+	<c:if test="#{iris.form.rechazada}">
+		<p class="notice notice-error"><h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (#{iris.firmas.nameRechazo}) #{iris.firmas.infoRechazo}</p>
 	</c:if>
 	<ui:include src="leyenda_firmas.xhtml"></ui:include>
 </div>

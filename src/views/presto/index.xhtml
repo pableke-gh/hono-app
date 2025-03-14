@@ -45,9 +45,9 @@
 		</div>
 
 		<!-- form 030 -->
-		<div id="tab-3" class="tab-content">
+		<h:form id="xeco-030" prependId="false" method="post" onsubmit="loading();">
 			<ui:include src="doc030.xhtml"></ui:include>
-		</div>
+		</h:form>
 
 		<!-- vinculación con uxxiec -->
 		<div id="tab-15" class="tab-content" data-nif="#{uae.nif}" data-grupo="#{uae.idGrupo}">
@@ -60,8 +60,10 @@
 		</div>
 
 		<!-- formulario de GCR para la OTRI -->
-		<div id="tab-otri" class="tab-content">
-			<ui:include src="otri.xhtml"></ui:include>
-		</div>
+		<c:if test="#{presto.user.admin}">
+			<div id="tab-otri" class="tab-content">
+				<ui:include src="otri.xhtml"></ui:include>
+			</div>
+		</c:if>
 	</ui:define>
 </ui:composition>

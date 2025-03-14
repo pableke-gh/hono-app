@@ -1,10 +1,12 @@
 
 import i18n from "../../i18n/langs.js";
 import pf from "../../components/Primefaces.js";
-import factura from "../model/Factura.js"; 
+import facturas from "./facturas.js";
+import factura from "../model/Factura.js";
 
-export default function Lineas(form) {
+function Lineas() {
 	const self = this; //self instance
+	const form = facturas.getForm();
 
 	const linea = factura.getLinea();
 	const lineas = form.setTable("#lineas-fact", {
@@ -31,14 +33,24 @@ export default function Lineas(form) {
 		return self.setImporteIva(resume.imp, iva);
 	}
 
-	this.setLineas = () => { factura.setLineas(lineas); return self; }
-	this.addLinea = () => {
-		const data = form.validate(linea.validate);
-		if (data)
-			form.restart("#desc").setval("#imp").setval("#memo", lineas.push(data).getItem(0).desc);
-		return self;
-	}
-	this.render = data => { lineas.render(data); return self; }
+	this.setLineas = data => { lineas.render(data); return self; }
 	this.save = () => { form.saveTable("#lineas-json", lineas); return self; }
 	this.confirm = () => i18n.confirm("msgSend") && loading();
+
+	this.init = () => {
+		form.addClick("a#add-linea", ev => {
+			const data = form.validate(linea.validate);
+			if (data)
+				form.restart("#desc").setval("#imp").setval("#memo", lineas.push(data).getItem(0).desc);
+			ev.preventDefault();
+		});
+		return self;
+	}
+
+	window.fnSend = () => {
+		factura.setLineas(lineas); // actualizo los conceptos
+		return form.validate(factura.validate) && self.save().confirm();
+	}
 }
+
+export default new Lineas();

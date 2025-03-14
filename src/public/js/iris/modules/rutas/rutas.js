@@ -4,42 +4,43 @@ import sb from "../../../components/types/StringBox.js";
 import tb from "../../../components/types/TemporalBox.js";
 import i18n from "../../../i18n/langs.js";
 
+import iris from "../iris.js";
 import perfil from "../perfil/perfil.js";
 import maps from "./maps.js";
-import rtabs from "./rutasTabs.js";
+import rmaps from "./rutasMaps.js";
 import ruta from "../../model/ruta/Ruta.js";
 
 function Rutas() {
 	const self = this; //self instance
-	const form = rtabs.getForm(); // form component
+	const form = iris.getForm(); // form component
 
-	this.size = rtabs.size;
-	this.isEmpty = rtabs.isEmpty;
-	this.getRutas = rtabs.getRutas;
-	this.getSalida = rtabs.getSalida;
-	this.getLlegada = rtabs.getLlegada;
-	this.getKm = rtabs.getKm;
+	this.size = rmaps.size;
+	this.isEmpty = rmaps.isEmpty;
+	this.getRutas = rmaps.getRutas;
+	this.getSalida = rmaps.getSalida;
+	this.getLlegada = rmaps.getLlegada;
+	this.getKm = rmaps.getKm;
 
-	this.getRutasVeiculoPropio = rtabs.getRutasVeiculoPropio;
-	this.getNumRutasSinGastos = rtabs.getNumRutasSinGastos;
-	this.getRutasSinGastos = rtabs.getRutasSinGastos;
+	this.getRutasVeiculoPropio = rmaps.getRutasVeiculoPropio;
+	this.getNumRutasSinGastos = rmaps.getNumRutasSinGastos;
+	this.getRutasSinGastos = rmaps.getRutasSinGastos;
 
-	this.getPaisSalida = () => ruta.getPaisSalida(rtabs.getSalida());
-	this.salida = () => ruta.salida(rtabs.getSalida());
-	this.llegada = () => ruta.llegada(rtabs.getLlegada());
-	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(rtabs.getLlegada());
+	this.getPaisSalida = () => ruta.getPaisSalida(rmaps.getSalida());
+	this.salida = () => ruta.salida(rmaps.getSalida());
+	this.llegada = () => ruta.llegada(rmaps.getLlegada());
+	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(rmaps.getLlegada());
 
 	const fnDiffDias = () => tb.getDays(tb.trunc(self.salida()), self.llegada());
 	this.getNumNoches = () => (self.isEmpty() ? 0 : Math.floor(fnDiffDias()));
 	this.getNumDias = () => (self.isEmpty() ? 0 : Math.ceil(fnDiffDias()));
 
 	this.getRuta = fecha => { // Ruta asociada a fecha
-		if (rtabs.isEmpty())
+		if (rmaps.isEmpty())
 			return null; // itinerario vacio
 		let current = rutas[0]; // Ruta de salida
 		if (!fecha) return current; // ruta por defecto
 		const fMax = fecha.add({ hours: 29 }); // 5h del dia siguiente
-		rtabs.getRutas().forEach(aux => { // rutas ordenadas por fecha
+		self.getRutas().forEach(aux => { // rutas ordenadas por fecha
 			// Ultima fecha de llegada mas proxima a fMax
 			current = tb.lt(ruta.llegada(aux), fMax) ? aux : current;
 		});
@@ -54,8 +55,8 @@ function Rutas() {
 		return "ES";
 	}
 
-	this.reload = rutas => { rtabs.reload(rutas); return self; }
-	this.setRutas = rutas => { rtabs.setRutas(rutas); return self; }
+	this.reload = rutas => { rmaps.reload(rutas); return self; }
+	this.setRutas = rutas => { rmaps.setRutas(rutas); return self; }
 
 	function validateItinerario(rutas) {
 		const valid = form.getValidators();
@@ -80,14 +81,14 @@ function Rutas() {
 		if (!data.objeto)
         	valid.addRequired("objeto", "errObjeto");
 		if (valid.isOk() && perfil.isMun()) // valida la ruta unica
-			return validateItinerario(rtabs.getRutas()) && rtabs.saveRutas();
+			return validateItinerario(self.getRutas()) && rmaps.saveRutas();
 		return valid.isOk();
 	}
 	this.validate = data => { // validaciones para los mapas
-		let ok = self.validateP1(data) && validateItinerario(rtabs.getRutas());
+		let ok = self.validateP1(data) && validateItinerario(self.getRutas());
 		if (ok && (self.size() < 2)) // validate min rutas = 2
 			return !form.getValidators().addRequired("destino", "errMinRutas");
-		return ok && rtabs.saveRutas(); // guardo los cambios y recalculo las dietas
+		return ok && rmaps.saveRutas(); // guardo los cambios y recalculo las dietas
 	}
 	window.validateP1 = () => form.validate(self.validateP1);
 	window.validateP2 = () => form.validate(self.validate);
@@ -98,7 +99,7 @@ function Rutas() {
 		if (!data || !maps.validatePlaces(data, self) || !ruta.valid(data))
 			return false; // maps validation error
 
-		const temp = rtabs.getRutas().concat(data);
+		const temp = self.getRutas().concat(data);
 		// reordeno todas las rutas por fecha de salida
 		temp.sort((a, b) => sb.cmp(a.dt1, b.dt1));
 		if (!validateItinerario(temp)) // check if all routes are valid
@@ -111,11 +112,10 @@ function Rutas() {
 		}
 
 		// nuevo contenedor de rutas + recalculo de la ruta principal
-		rtabs.setRutaPrincipal(rtabs.setRutas(temp).getRutaPrincipal());
+		rmaps.setRutaPrincipal(rmaps.setRutas(temp).getRutaPrincipal());
 		return true; // ruta agregada correctamente
 	}
 
-	this.mun = rtabs.mun;
 	this.maps = () => {
 		maps.init();
 		form.setClick("#add-ruta", fnAddRuta).setDateRange("#f1", "#f2") // Rango de fechas
@@ -125,7 +125,7 @@ function Rutas() {
 		return self;
 	}
 	this.init = () => {
-		rtabs.init();
+		rmaps.init();
 		return self;
 	}
 }
