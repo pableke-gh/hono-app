@@ -2,6 +2,7 @@
 import iris from "../iris.js";
 import resumen from "../resumen.js";
 import ruta from "../../model/ruta/Ruta.js";
+import rutas from "../../model/ruta/Rutas.js";
 import i18n from "../../../i18n/langs.js";
 
 function RutasVehiculoPropio() {
@@ -10,6 +11,7 @@ function RutasVehiculoPropio() {
 	let _tblRutasVp; // itinerario
 
 	this.getImporte = () => _tblRutasVp.getResume().impKm;
+	this.render = () => { _tblRutasVp.render(rutas.getRutasVehiculoPropio()); return self; }
 
 	const fnChangeKm = (data, el, tr) => {
 		ruta.recalcKm(_tblRutasVp.getResume(), data, i18n.toFloat(el.value));
@@ -32,12 +34,7 @@ function RutasVehiculoPropio() {
 		return valid.isOk();
 	}
 	window.validateP6 = () => form.validate(self.validate);
-
-	this.setRutas = rutas	=> {
-		_tblRutasVp.render(rutas);
-		return self;
-	}
-
+ 
 	this.init = () => {
 		_tblRutasVp = form.setTable("#tbl-rutas-vp");
 		_tblRutasVp.setMsgEmpty("msgRutasEmpty")

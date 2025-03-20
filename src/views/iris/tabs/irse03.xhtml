@@ -7,8 +7,12 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="card-xeco">
-		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><span class="text-warn i18n-tr-h1">@lblPaso; @count; @lblDe; @size;</span><span><h:outputText value="#{msg['uae.irse.tab3.msg.sub.tit2']}" escape="false" /></span></h2>
+	<p:outputPanel styleClass="card-xeco update-irse">
+		<h2>
+			<img src="/uae/resources/images/speaker.png" width="30px"/>
+			<span class="text-warn i18n-tr-h1" data-refresh="is-isu" data-toggle="active">@lblPaso; @count; @lblDe; @size;</span>
+			<span><h:outputText value="#{msg['uae.irse.tab3.msg.sub.tit2']}" escape="false" /></span>
+		</h2>
 
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.justifi']}" escape="false" />:</div>
@@ -91,8 +95,9 @@
 				</div>
 			</label>
 		</div>
-	</div>
+	</p:outputPanel>
 
+	<p:outputPanel styleClass="navbar update-irse">
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="70">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
@@ -113,4 +118,5 @@
 	<c:if test="#{iris.form.firmable}">
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</c:if>
+	</p:outputPanel>
 </html>

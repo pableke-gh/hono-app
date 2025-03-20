@@ -5,11 +5,11 @@ function Uxxiec() {
 	const self = this; //self instance
 	const msgEmptyTable = "No se han encontrado documentos de UXXI-EC asociadas a la solicitud";
 
-    let _data; // Current presto data type
-    this.getData = () => _data;
-    this.get = name => _data[name];
-    this.setData = documentos => { _data = documentos; return self; }
-    this.set = (name, value) => { _data[name] = value; return self; }
+	/*let _data; // Current presto data type
+	this.getData = () => _data;
+	this.get = name => _data[name];
+	this.setData = documentos => { _data = documentos; return self; }
+	this.set = (name, value) => { _data[name] = value; return self; }*/
 
     this.row = data => {
         return `<tr class="tb-data">

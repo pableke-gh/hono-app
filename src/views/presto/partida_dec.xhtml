@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="card-xeco show-partida-dec">
+	<div class="card-xeco" data-refresh="show-partida-dec">
 		<h2>Partida que Disminuye</h2>
 		<div class="ui-blocks">
 		<label class="ui-block">
@@ -42,7 +42,7 @@
 			<input type="text" id="impDec" name="impDec" value="#{presto.solicitud.importe}" maxlength="12" tabindex="8" class="ui-input ui-float #{presto.form.cssReadOnly}"/> €
 			<div class="ui-errtip"></div>
 		</label>
-		<label class="ui-block show-imp-cd">
+		<label class="ui-block" data-refresh="show-imp-cd">
 			<div class="label required">Importe Disponible:</div>
 			<input type="text" id="cd" name="cd" tabindex="-1" class="ui-input ui-float disabled" readonly /> €
 			<div class="ui-errtip"></div>

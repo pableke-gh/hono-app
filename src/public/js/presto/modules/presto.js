@@ -9,22 +9,26 @@ function Presto() {
 
 	this.getForm = xeco.getForm;
 	this.getValidators = form.getValidators;
+	//this.getPresto = () => presto;
 
 	this.init = () => {
 		xeco.init(); // init. actions
-		tabs.setActive(presto.isUxxiec() ? 0 : 2);
+		tabs.setActive(presto.isUxxiec() ? "init" : "list");
+		form.set("show-partida-dec", presto.isPartidaDec).set("show-imp-cd", presto.isImpCd)
+			.set("show-partida-inc", presto.showPartidasInc);
 		return self;
 	}
+
 	this.view = (data, firmas) => {
+		data.titulo = presto.getTitulo(data.tipo); // set title for views
 		xeco.view(data, firmas); // load data-model before view
-		form.reset("input[id$='-json']")
-				.readonly(presto.isDisabled()).readonly(!presto.isEditableUae(), ".editable-uae")
-    			.setVisible(".show-partida-dec", presto.isPartidaDec()).setVisible(".show-imp-cd", presto.isImpCd())
-				.setVisible(".show-partida-inc", presto.showPartidasInc());
+		form.reset("input[id$='-json']");
 		return self;
 	}
-	this.update = firmas => {
-		xeco.update(firmas); // firmas asociadas
+
+	this.setFirmas = (data, firmas) => {
+		data.titulo = presto.getTitulo(data.tipo); // set title for views
+		xeco.setFirmas(data, firmas); // Update firmas blocks
 		return self;
 	}
 }

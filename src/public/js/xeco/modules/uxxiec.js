@@ -1,10 +1,9 @@
 
 import Form from "../../components/forms/Form.js";
 import pf from "../../components/Primefaces.js";
-import tabs from "../../components/Tabs.js";
 
 import uxxiec from "../model/Uxxiec.js";
-import Solicitud from "../model/Solicitud.js";
+import model from "../model/Solicitud.js";
 
 function Uxxiec() {
     const form = new Form("#xeco-uxxi");
@@ -15,6 +14,7 @@ function Uxxiec() {
 	this.getForm = () => form;
 	this.isCached = form.isCached;
 	this.init = () => {
+		form.set("is-notificable", model.isNotificable);
 		form.addClick("a#add-uxxi", () => {
 			const doc = acUxxi.getCurrentItem();
 			doc && tblUxxiec.add(doc); // Add and remove PK autocalculated in v_*_uxxiec
@@ -22,21 +22,18 @@ function Uxxiec() {
 		});
 	}
 
-	this.load = data => {
+	this.view = data => {
         acUxxi.reload(); // Reload autocomplete
-		const model = Solicitud.self();
-		const isEjecutable = model.setData(data).isEjecutable();
-		form.setCache(data.id).setVisible(".show-ejecutable", isEjecutable); // Update view
+		model.setData(data); // update model
+		form.setCache(data.id).refresh(data); // Update form cache and view
 	}
+    this.save = () => {
+        form.saveTable("#docs-json", tblUxxiec);
+    }
 
 	window.loadUxxiec = (xhr, status, args) => {
-        if (!window.showTab(xhr, status, args, 15))
-			return false; // Server error
-		tabs.setActions(document); // update links
-		tblUxxiec.render(JSON.read(args.operaciones)); // Load uxxi-docs
-    }
-    window.saveUxxiec = (xhr, status, args) => {
-        form.saveTable("#docs-json", tblUxxiec).loading();
+        if (window.showTab(xhr, status, args, "uxxiec"))
+			tblUxxiec.render(JSON.read(args.operaciones)); // Load uxxi-docs
     }
 }
 

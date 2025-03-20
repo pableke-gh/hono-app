@@ -9,9 +9,8 @@
 
 	<h:form id="xeco-uxxi" prependId="false" onsubmit="loading();">
 		<h2>Consulta de Formación de Expediente<hr class="underline"/></h2>
-		<p:outputPanel styleClass="update-presto">
-			<p class="notice notice-info">#{presto.form.codigo}: #{presto.solicitud.memoria}</p>
-		</p:outputPanel>
+		<p class="notice notice-info" data-refresh="text-render">@codigo;: @memo;</p>
+
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required">Ejercicio:</div>
@@ -50,15 +49,15 @@
 		</table>
 
 		<div class="navbar">
-			<a href="#tab-2" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+			<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-			<p:commandLink action="#{presto.firmas.ejecutar()}" styleClass="btn btn-green" onclick="saveUxxiec();" oncomplete="showAlerts(xhr, status, args)" 
-				tabindex="14" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
-				<i class="far fa-save btn-icon-left"></i>Guardar</p:commandLink>
-			<p:commandLink action="#{presto.firmas.notificar()}" styleClass="btn btn-green show-ejecutable" onclick="saveUxxiec();" oncomplete="showAlerts(xhr, status, args)" 
-				tabindex="15" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
-				<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</p:commandLink>
-			<a href="#tab-11" class="table-action btn btn-error" tabindex="16" title="#{msg['tit.btn.rechazar']}">
+			<a href="#tab-action" class="btn btn-green" data-action="ejecutar" tabindex="14" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
+				<i class="far fa-save btn-icon-left"></i>Guardar</a>
+			<p:commandLink action="#{presto.firmas.ejecutar()}" oncomplete="showAlerts(xhr, status, args)" styleClass="hide"/>
+			<a href="#tab-action" class="btn btn-green" data-refresh="is-notificable" data-action="notificar" tabindex="15" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
+				<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</a>
+			<p:commandLink action="#{presto.firmas.notificar()}" oncomplete="showAlerts(xhr, status, args)" styleClass="hide"/>
+			<a href="#tab-action-reject" class="table-action btn btn-error" tabindex="16" title="#{msg['tit.btn.rechazar']}">
 				<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
 		</div>
 	</h:form>

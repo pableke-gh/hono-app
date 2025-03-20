@@ -3,13 +3,13 @@ import coll from "../../components/CollectionHTML.js";
 import alerts from "../../components/Alerts.js";
 import pf from "../../components/Primefaces.js";
 
-import mpresto from "./presto.js";
 import pInc from "./partidaInc.js";
 import presto from "../model/Presto.js";
+import xeco from "../../xeco/xeco.js";
 
 function PartidaDec() {
 	const self = this; //self instance
-	const form = mpresto.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	const partidas = pInc.getPartidas();
 
 	const fnSelectOrgDec = item => {

@@ -1,25 +1,20 @@
 
-import i18n from "../../i18n/langs.js";
 import pf from "../../components/Primefaces.js";
-import facturas from "./facturas.js";
+import i18n from "../../i18n/langs.js";
+
 import factura from "../model/Factura.js";
+import xeco from "../../xeco/xeco.js";
 
 function Lineas() {
 	const self = this; //self instance
-	const form = facturas.getForm();
+	const form = xeco.getForm();
 
 	const linea = factura.getLinea();
-	const lineas = form.setTable("#lineas-fact", {
-        msgEmptyTable: "No existen conceptos asociados a la solicitud",
-        beforeRender: resume => { resume.imp = 0; resume.iva = factura.getIva(); },
-        onRender: linea.row,
-        onFooter: linea.tfoot,
-		afterRender: resume => {
-			const opts = { onChange: self.setIva };
-			pf.datalist(form, "#iva", "#ivaPF", opts).setLabels([0, 4, 10, 21]).setValue(resume.iva);
-		}
-		//ivaChange: el => self.setIva(+el.value)
-    });
+	const lineas = form.setTable("#lineas-fact", linea.getTable());
+	lineas.setAfterRender(resume => {
+		const opts = { onChange: self.setIva };
+		pf.datalist(form, "#iva", "#ivaPF", opts).setLabels([0, 4, 10, 21]).setValue(resume.iva);
+	});
 
 	this.setImporteIva = (imp, iva) => {
 		factura.setIva(iva);
@@ -34,22 +29,20 @@ function Lineas() {
 	}
 
 	this.setLineas = data => { lineas.render(data); return self; }
-	this.save = () => { form.saveTable("#lineas-json", lineas); return self; }
-	this.confirm = () => i18n.confirm("msgSend") && loading();
+	this.validate = () => {
+		factura.setLineas(lineas); // actualizo los conceptos
+		return form.validate(factura.validate) && form.saveTable("#lineas-json", lineas);
+	}
 
 	this.init = () => {
-		form.addClick("a#add-linea", ev => {
+		xeco.setValidator(self.validate); // define validate action
+		form.addClick("a#add-linea", ev => { // add linea action
 			const data = form.validate(linea.validate);
 			if (data)
 				form.restart("#desc").setval("#imp").setval("#memo", lineas.push(data).getItem(0).desc);
 			ev.preventDefault();
 		});
 		return self;
-	}
-
-	window.fnSend = () => {
-		factura.setLineas(lineas); // actualizo los conceptos
-		return form.validate(factura.validate) && self.save().confirm();
 	}
 }
 

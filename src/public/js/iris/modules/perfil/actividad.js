@@ -52,22 +52,18 @@ function Actividad() {
 		return self.update();
 	}
 
-	const fnUpdateView = () => {
-		form.setVisible(".block-mun", self.isMun());
-		return self
-	}
 	this.update = () => { // actualizo la actividad y el tramite
 		form.select("#actividad", actividades(self.getRol(), self.getColectivo(), self.getFinanciacion()))
 			.select("#tramite", (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
 			.closeAlerts();
-		return fnUpdateView();
+		return self;
 	}
 
 	this.init = () => {
 		_eColectivo = form.querySelector("#colectivo");
 		_eColectivo.parentNode.setVisible(!self.isEmpty());
 		form.onChangeInput("#actividad", self.update);
-		return fnUpdateView();
+		return self;
 	}
 }
 

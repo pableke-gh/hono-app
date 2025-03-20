@@ -6,9 +6,9 @@ import i18n from "../../../i18n/langs.js";
 
 import iris from "../iris.js";
 import perfil from "../perfil/perfil.js"; 
-import rutas from "../rutas/rutas.js";
 import pernoctas from "./pernoctas.js";
 import gasto from "../../model/gasto/Gasto.js";
+import rutas from "../../model/ruta/Rutas.js";
 
 function Gastos() {
 	const self = this; //self instance

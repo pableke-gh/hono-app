@@ -1,8 +1,8 @@
 
 import tabs from "../../../components/Tabs.js";
 import iris from "../iris.js";
-import rutas from "./rutas.js";
 import ruta from "../../model/ruta/Ruta.js";
+import rutas from "../../model/ruta/Rutas.js";
 
 function RutasGasto() {
 	const self = this; //self instance

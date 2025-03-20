@@ -29,35 +29,35 @@
 		<ui:include src="msgs.xhtml"></ui:include>
 
 		<!-- Home tab -->
-		<div id="tab-0" class="tab-content">
+		<div id="tab-init" class="tab-content">
 			<ui:include src="init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
-		<div id="tab-2" class="tab-content">
+		<div id="tab-list" class="tab-content">
 			<ui:include src="list.xhtml"></ui:include>
 			<ui:include src="leyenda_firmas.xhtml"></ui:include>
 		</div>
 
-		<!-- Form PRESTO -->
-		<div id="tab-1" class="tab-content">
-			<ui:include src="form.xhtml"></ui:include>
-		</div>
-
-		<!-- form 030 -->
-		<h:form id="xeco-030" prependId="false" method="post" onsubmit="loading();">
-			<ui:include src="doc030.xhtml"></ui:include>
-		</h:form>
-
 		<!-- vinculación con uxxiec -->
-		<div id="tab-15" class="tab-content" data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}">
+		<div id="tab-uxxiec" class="tab-content" data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}">
 			<ui:include src="uxxiec.xhtml"></ui:include>
 		</div>
 
-		<!-- formulario de rechazo/cancelacion -->
-		<div id="tab-11" class="tab-content">
-			<ui:include src="reject.xhtml"></ui:include>
-		</div>
+		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+			<!-- Form PRESTO -->
+			<div id="tab-form" class="tab-content">
+				<ui:include src="form.xhtml"></ui:include>
+			</div>
+			<!-- form 030 -->
+			<div id="tab-030" class="tab-content">
+				<ui:include src="doc030.xhtml"></ui:include>
+			</div>
+			<!-- formulario de rechazo/cancelacion -->
+			<div id="tab-reject" class="tab-content">
+				<ui:include src="reject.xhtml"></ui:include>
+			</div>
+		</h:form>
 
 		<!-- formulario de GCR para la OTRI -->
 		<c:if test="#{presto.user.admin}">

@@ -78,7 +78,7 @@
 
 		<div class="navbar">
 			<c:if test="#{presto.user.uxxiec}">
-				<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+				<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 					<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 			</c:if>
 			<p:commandButton action="#{presto.list.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args);" 
@@ -114,16 +114,16 @@
 		<div id="solicitudes-json" class="hide">#{presto.list.stringify()}</div>
 		<p:remoteCommand name="rcView" action="#{presto.view()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{presto.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
-		<p:remoteCommand name="rcFirmas" action="#{presto.firmas()}" update="@(.update-presto)" oncomplete="updatePresto(xhr, status, args, 11)" />
+		<p:remoteCommand name="rcReject" action="#{presto.firmas.reject()}" oncomplete="loadFirmas(xhr, status, args)" />
 		<p:remoteCommand name="rcReport" action="#{presto.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{presto.ws()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcUxxiec" action="#{presto.uxxiec.view()}" update="@(.update-presto)" oncomplete="loadUxxiec(xhr, status, args)" />
+		<p:remoteCommand name="rcUxxiec" action="#{presto.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />
 		<p:remoteCommand name="rcEmails" action="#{presto.emails()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcRemove" action="#{presto.remove()}" oncomplete="showAlerts(xhr, status, args)" />
 	</h:form>
 
 	<c:if test="#{presto.user.uxxiec}">
-		<a href="#tab-0" class="btn btn-info" title="Volver a la consulta de solicitudes" tabindex="13">
+		<a href="#tab-init" class="btn btn-info" title="Volver a la consulta de solicitudes" tabindex="13">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 	</c:if>
 </html>

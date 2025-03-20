@@ -46,10 +46,6 @@ function Tabs() {
     this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
     this.setActive = id => fnSetTab(self.getTab(id)); // Force active class whithot events and alerts
     this.isActive = id => fnActive(self.getTab(id)); // is current tab active
-	this.render = (selector, data) => { // HTMLElement.prototype.render is implemented in Collection
-        tabs.forEach(tab => tab.querySelectorAll(selector).render(data));
-		return self;
-	}
 
     // Set events on tabs actions
     const fnCallEvent = (name, tab) => {
@@ -84,6 +80,11 @@ function Tabs() {
         else { // go back
 			if (!fnCallEvent("active", tab)) // is current tab active
 				return fnShowTab(i - 1); // recursive search for prev active tab
+			const currentTab = self.getCurrent();
+			if (currentTab) { // auto toggle off links actions
+				const toggleOff = "a[href='#tab-toggle'][data-off]";
+				currentTab.querySelectorAll(toggleOff).forEach(self.toggle);
+			}
 			fnSetTab(tab, i); // set current tab
         }
         alerts.working().top(); // go up
@@ -109,10 +110,10 @@ function Tabs() {
 		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
 		return self;
 	}
-	this.resetToggleAction = () => {
-		$$("a[href='#tab-toggle'][data-off]").forEach(self.toggle); 
+	/*this.resetToggleAction = () => {
+		$$("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
 		return self;
-	} 
+	}*/
 
     this.closeModal = id => {
 		const modal = $1(id ? ("dialog#" + id) : "dialog[open]");

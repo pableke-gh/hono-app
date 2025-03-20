@@ -7,6 +7,11 @@ const HIDE_CLASS = "hide";
 const fnHide = el => el.classList.add(HIDE_CLASS);
 const fnShow = el => el.classList.remove(HIDE_CLASS);
 const fnVisible = el => (el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+const fnRender = (el, data, opts) => {
+    el.dataset.template = el.dataset.template || el.innerHTML; // save current template
+    el.innerHTML = i18n.render(el.dataset.template, data, opts); // display new data
+	el.classList.toggle(HIDE_CLASS, !opts.matches); // hide if empty
+}
 
 // Extends HTMLCollection prototype
 HTMLCollection.prototype.map = Array.prototype.map;
@@ -19,7 +24,11 @@ HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
 HTMLCollection.prototype.findBy = function(selector) { return this.find(el => el.matches(selector)); }
 HTMLCollection.prototype.findIndexBy = function(selector) { return this.findIndex(el => el.matches(selector)); }
 HTMLCollection.prototype.filterBy = function(selector) { return this.filter(el => el.matches(selector)); }
-HTMLCollection.prototype.render = function(data) { this.forEach((el, i) => el.render(data, i, this.length)); return this; }
+HTMLCollection.prototype.render = function(data) {
+	const opts = { size: this.length }; // array length
+	this.forEach((el, i) => { opts.index = i; fnRender(el, data, opts); });
+	return this;
+}
 HTMLCollection.prototype.html = function(text) { this.forEach(el => { el.innerHTML = text; }); return this; }
 HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerText = text; }); return this; }
 HTMLCollection.prototype.addClick = function(fn) { this.forEach(el => el.addClick(fn)); };
@@ -73,9 +82,8 @@ HTMLElement.prototype.isHidden = function() { return this.classList.contains(HID
 HTMLElement.prototype.isVisible = function(selector) {
     return fnVisible(this) && (selector ? this.matches(selector) : true);
 }
-HTMLElement.prototype.render = function(data, i, size) {
-    this.dataset.template = this.dataset.template || this.innerHTML; // save current template
-    this.innerHTML = i18n.render(this.dataset.template, data, i, size); // display new data
+HTMLElement.prototype.render = function(data, opts) {
+	fnRender(this, data, opts || {});
     return this;
 }
 

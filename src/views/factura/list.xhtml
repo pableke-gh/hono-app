@@ -73,7 +73,7 @@
 		</div>
 
 		<div class="navbar">
-			<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 			<p:commandButton action="#{fact.list.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args)" 
 				value="Buscar" icon="far fa-search" styleClass="btn btn-info" tabindex="13"/>
@@ -101,14 +101,14 @@
 		<div id="solicitudes-json" class="hide">#{fact.list.stringify()}</div>
 		<p:remoteCommand name="rcView" action="#{fact.view()}" update="@(.update-fact)" oncomplete="viewFactura(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{fact.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
-		<p:remoteCommand name="rcFirmas" action="#{fact.firmas()}" update="@(.update-fact)" oncomplete="updateFact(xhr, status, args, 11)" />
+		<p:remoteCommand name="rcReject" action="#{fact.firmas.reject()}" oncomplete="loadFirmas(xhr, status, args)" />
 		<p:remoteCommand name="rcReport" action="#{fact.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{fact.ws()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcUxxiec" action="#{fact.uxxiec.view()}" update="@(.update-fact)" oncomplete="loadUxxiec(xhr, status, args)" />
+		<p:remoteCommand name="rcUxxiec" action="#{fact.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />
 		<p:remoteCommand name="rcEmails" action="#{fact.emails()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcRemove" action="#{fact.remove()}" oncomplete="showAlerts(xhr, status, args)" />
 	</h:form>
 
-	<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 		<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 </html>

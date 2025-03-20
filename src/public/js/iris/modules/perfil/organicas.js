@@ -23,11 +23,6 @@ function Organicas() {
 	this.isEUT = () => (self.getTipoDieta() == 2);
 	this.isUPCT = () => (self.getTipoDieta() == 9);
 
-	const fnUpdateView = () => {
-		const isIsu = actividad.isIsu(); // actualizo la vista
-		form.setVisible(".ui-isu", isIsu).setVisible(".ui-no-isu", !isIsu);
-		return self
-	}
 	const fnUpdateTab = () => {
 		// 1º recalculo la financiacion
 		const financiacion = self.getFinanciacion();
@@ -59,7 +54,7 @@ function Organicas() {
 			return self; // no hay cambios
 		form.saveTable("#org-json", _tblOrganicas);
 		_saveOrganicas = false;
-		return fnUpdateView();
+		return self
 	}
 
 	this.init = () => {
@@ -86,7 +81,7 @@ function Organicas() {
 			acOrganiaca.reload();
 			ev.preventDefault();
 		});
-		return fnUpdateView();
+		return self
 	}
 }
 

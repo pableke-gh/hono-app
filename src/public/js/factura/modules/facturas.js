@@ -2,6 +2,7 @@
 import pf from "../../components/Primefaces.js";
 import factura from "../model/Factura.js";
 import xeco from "../../xeco/xeco.js";
+import lineas from "./lineas.js";
 
 function Facturas() {
 	const self = this; //self instance
@@ -12,23 +13,30 @@ function Facturas() {
 	this.getForm = xeco.getForm;
 	this.init = () => {
 		xeco.init(); // init. actions
+		lineas.init(); // init. las lineas de la factura
+
+		const fnShowGestor = () => factura.isFace() || factura.isPlataforma();
+		const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
+		form.set("show-recibo", factura.isRecibo).set("show-factura-uae", fnShowFactUae).set("show-uae", factura.isUae)
+			.set("show-gestor", fnShowGestor).set("show-face", factura.isFace).set("show-gaca", factura.isFirmaGaca)
+			.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago)
+			.onChangeInput("[name=subtipo]", ev => { form.setStrval("#subtipoPF", ev.target.value); });
 		return self;
 	}
-	this.view = (data, firmas) => {
-		xeco.view(data, firmas); // load data-model before view
-		form.setval("#nifTercero", data.nif)
-				.readonly(factura.isDisabled()).readonly(!factura.isEditableUae(), ".editable-uae") // disable iva input
-				.setVisible(".show-recibo", factura.isRecibo()).setVisible(".show-factura", factura.isFacturable()).setVisible(".show-cp", factura.isCartaPago())
-				.setVisible(".show-factura-uae", factura.isUae() && factura.isFacturable()).setVisible(".show-uae", factura.isUae())
-				.setVisible(".show-gestor", factura.isFace() || factura.isPlataforma()).setVisible(".show-face", factura.isFace())
-				.setVisible(".show-gaca", factura.isFirmaGaca());
 
+	this.view = (data, conceptos, firmas) => {
+		data.nifTercero = data.nif; // set field
+		data.titulo = factura.getTitulo(data.tipo); // set title for views
+		lineas.setLineas(conceptos); // Load conceptos and iva input
+		xeco.view(data, firmas); // load data-model before view
 		acOrganica.setValue(data.idOrg, data.org + " - " + data.descOrg);
 		acRecibo.setValue(data.idRecibo, data.acRecibo);
 		return self;
 	}
-	this.update = firmas => {
-		xeco.update(firmas); // firmas asociadas
+
+	this.setFirmas = (data, firmas) => {
+		data.titulo = factura.getTitulo(data.tipo); // set title for views
+		xeco.setFirmas(data, firmas); // Update firmas blocks
 		return self;
 	}
 }

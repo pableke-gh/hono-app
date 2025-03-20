@@ -2,13 +2,13 @@
 import tabs from "../../components/Tabs.js";
 import pf from "../../components/Primefaces.js";
 
-import mpresto from "./presto.js";
 import p030 from "./partida030.js";
 import presto from "../model/Presto.js";
+import xeco from "../../xeco/xeco.js";
 
 function PartidaInc() {
 	const self = this; //self instance
-	const form = mpresto.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	const partida = presto.getPartida();
 	const partidas = presto.getPartidas();
 
@@ -22,7 +22,7 @@ function PartidaInc() {
 	_partidasInc.setAfterRender(resume => {
 		partidas.setData(_partidasInc);
 		const readonly = resume.size > 0;
-		form.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc").setVisible(".show-partida-inc", presto.showPartidasInc());
+		form.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc").refresh(presto.getData());
 	});
 
     this.getOrganica = () => _acOrgInc;
@@ -47,30 +47,28 @@ function PartidaInc() {
 		if (!form.validate(presto.validate))
 			return false; // Errores al validar las partidas
 		partidas.setPrincipal(); //marco la primera como principal
-		form.saveTable("#partidas-json", _partidasInc); // save data to send to server
-		return self;
+		return form.saveTable("#partidas-json", _partidasInc); // save data to send to server
     }
 
 	this.init = () => {
 		_ecoInc.reset(); // init. form presto
+		xeco.setValidator(self.validate); // define validate action
+		_partidasInc.set("#doc030", p030.load); // init. form 030
 		form.onChangeInput("#urgente", ev => form.setVisible(".grp-urgente", ev.target.value == "2"))
 			.onChangeInput("#ejInc", _acOrgInc.reload);
-
-		// init. form 030
-		const form030 = p030.getForm();
-		_partidasInc.set("#doc030", p030.load);
-		form030.addClick("#save-030", ev => { // Init. save 030 event
-			partida.setData(_partidasInc.getCurrentItem()); // partida actual
-			if (!form030.validate(p030.validate)) // valida entrada
-				return false; // Errores al validar el 030
-			form.saveTable("#partidas-json", _partidasInc); // save data to send to server
-			if (presto.isFinalizada())
-				form.click("#save030"); // actualizo los datos a integrar
-			else
-				tabs.backTab().showOk("Datos del documento 030 asociados correctamente."); // Back to presto view
-		});
 		return self;
 	}
+
+	tabs.setAction("save030", () => {
+		partida.setData(_partidasInc.getCurrentItem()); // partida actual
+		if (!form030.validate(p030.validate)) // valida entrada
+			return false; // Errores al validar el 030
+		form.saveTable("#partidas-json", _partidasInc); // save data to send to server
+		if (presto.isFinalizada())
+			form.click("#save030"); // actualizo los datos a integrar
+		else
+			tabs.backTab().showOk("Datos del documento 030 asociados correctamente."); // Back to presto view
+	});
 
 	//****** tabla de partidas a incrementar ******//
 	window.fnAddPartidaInc = () => form.validate(partida.validate);

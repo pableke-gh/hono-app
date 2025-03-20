@@ -3,7 +3,7 @@ import tb from "../../../components/types/TemporalBox.js";
 
 import iris from "../iris.js";
 import perfil from "../perfil/perfil.js";
-import rutas from "../rutas/rutas.js";
+import rutas from "../../model/ruta/Rutas.js";
 
 import pernocta from "../../model/gasto/Pernocta.js";
 import pernoctas from "../../data/pernoctas/pernoctas.js";

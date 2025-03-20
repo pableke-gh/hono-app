@@ -1,9 +1,7 @@
 
 import iris from "./iris.js";
 
-import rutas from "./rutas/rutas.js";
 import rvp from "./rutas/rutasVehiculoPropio.js";
-
 import gastos from "./gastos/gastos.js"; 
 import transportes from "./gastos/transportes.js"; 
 import pernoctas from "./gastos/pernoctas.js"; 
@@ -28,7 +26,7 @@ function Resumen() {
 	this.view = () => {
 		if (!_isUpdatableTab)
 			return self; // no changes
-		rvp.setRutas(rutas.getRutasVeiculoPropio());
+		rvp.render();
 		transportes.setTransportes(gastos.getTransporte());
 		pernoctas.setPernoctas(gastos.getPernoctas());
 		dietas.setDietas(gastos.getDietas());

@@ -15,9 +15,9 @@ footer > .info {
 	width: clamp(420px, 90%, 1200px); min-height: 145px;
 }
 
-h1 { font-size: clamp(.8rem, calc(3vw + .8rem), 1.8rem); }
-h2 { font-size: clamp(.6rem, calc(2vw + .6rem), 1.6rem); }
-h3 { font-size: clamp(.4rem, calc(2vw + .4rem), 1.4rem); }
+h1 { font-size: clamp(.8rem, calc(3vw + .8rem), 1.5rem); }
+h2 { font-size: clamp(.6rem, calc(2vw + .6rem), 1.4rem); }
+h3 { font-size: clamp(.4rem, calc(2vw + .4rem), 1.3rem); }
 h4 { font-size: clamp(.2rem, calc(1vw + .2rem), 1.2rem); }
 
 hr { margin: 15px 0; border-top: 1px solid skyblue; }

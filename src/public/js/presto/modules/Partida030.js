@@ -1,19 +1,20 @@
 
-import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import pf from "../../components/Primefaces.js";
-import presto from "../model/Presto.js";
 import i18n from "../../i18n/langs.js";
+
+import presto from "../model/Presto.js";
+import xeco from "../../xeco/xeco.js";
 
 function Partida030() {
 	const self = this; //self instance
+    const form = xeco.getForm();
     const partida = presto.getPartida();
-    const form = new Form("#xeco-030");
     const acOrg030 = form.setAcItems("#acOrg030", //selector
                                     term => window.rcFindOrg030(pf.param("term", term)), //source
                                     item => form.setval("#idEco030", item.imp)); //select
 
-    this.getForm = () => form;
+	//this.getForm = () => form;
     this.validate = data030 => {
         const data = partida.getData();
         const valid = i18n.getValidators();
@@ -38,11 +39,10 @@ function Partida030() {
 
     this.load = row => { // load tab view 3
         row.ej030 = row.ej; // Ejercicio de la partida a añadir
-        row.imp080 = i18n.isoFloat(row.imp); // formated float
-        form.render(".info-080", row).setData(row, ":not([type=hidden])").setVisible("#memo-030", presto.getMemo())
-            .setVisible("#save-030", !presto.isReadOnly()).text("#memo-030", presto.getMemo());
+		const data = Object.assign({}, presto.getData(), row);
+        form.setData(row, ".ui-030").refresh(data);
         acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
-        tabs.showTab(3);
+        tabs.showTab("030");
         return self;
     }
 
@@ -52,7 +52,6 @@ function Partida030() {
             const partida = partidas[0]; // unique row
             partida.imp = imp; //importe obligatorio
             partida.imp030 = partida.imp; // update imp 030
-            //lineas.render(partidas);
         }
         return self;
     }

@@ -9,31 +9,32 @@
 
 	<label class="ui-block-xl">
 		<div class="label required">Tipos de Ingreso:</div>
-		<h:selectOneMenu id="subtipo" value="#{fact.solicitud.subtipoView}" styleClass="ui-input ui-select ui-number" tabindex="4">
-			<f:selectItem itemValue="14" itemLabel="MATRÍCULAS ENSEÑANZA OFICIAL - CONVENIOS EDUCATIVOS (SUBV. PRECIO)" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="4" itemLabel="MATRÍCULA ENSEÑANZA OFICIAL" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="3" itemLabel="TÍTULOS PROPIOS (INCLUYE IDIOMAS, EXTRANJEROS, CAP, …)" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="15" itemLabel="TÍTULOS PROPIOS CON CANON" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="9" itemLabel="CURSOS DE EXTENSIÓN (VERANO, MAYORES, OTROS)" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="16" itemLabel="PATROCINIOS DE TÍTULOS PROPIOS" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="17" itemLabel="PATROCINIOS DE CURSOS DE VERANO" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="18" itemLabel="PATROCINIOS DE OTRAS ACTIVIDADES DE EXTENSIÓN" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="5" itemLabel="SAIT PRESTACIONES DE SERVICIOS" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="19" itemLabel="SAIT ENTREGAS DE IMPRESIONES 3D, PIEZAS, PROTOTIPOS Y OTROS BIENES" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="1" itemLabel="CONTRATO DE I+D+I" itemEscaped="false" itemDisabled="true" styleClass="show-factura" />
-			<f:selectItem itemValue="20" itemLabel="PRESTACIONES DE SERVICIOS DEL CPCD" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="21" itemLabel="PRESTAMO INTERBIBLIOTECARIO" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="22" itemLabel="VENTA DE LIBROS EN PAPEL" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="23" itemLabel="VENTA DE LIBROS ELECTRÓNICOS" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="6" itemLabel="ALQUILER DE ESPACIOS" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="2" itemLabel="LICENCIAS SOBRE PATENTES" itemEscaped="false" itemDisabled="true" styleClass="show-factura" />
-			<f:selectItem itemValue="11" itemLabel="OTROS (CANARIAS/CEUTA/MELILLA, MOOCs, DEPORTES, SYMPOSIUM, CENTROS ADSCRITOS, FOTOCOPIAS, CONCESIONES, ENAJENACIÓN DE BIENES)" itemEscaped="false" styleClass="show-factura" />
-			<f:selectItem itemValue="24" itemLabel="ASISTENCIA A CONGRESOS" itemEscaped="false" itemDisabled="true" styleClass="show-factura" />
-			<f:selectItem itemValue="12" itemLabel="RED DE CÁTEDRAS" itemEscaped="false" itemDisabled="true" styleClass="show-cp" />
-			<f:selectItem itemValue="13" itemLabel="OTROS" itemEscaped="false" styleClass="show-cp" />
-		</h:selectOneMenu>
+		<h:inputText id="subtipoPF" value="#{fact.solicitud.subtipoView}" styleClass="ui-number hide" />
+		<select name="subtipo" value="#{fact.solicitud.subtipoView}" class="ui-input ui-select ui-number" tabindex="4">
+			<option value="14" data-refresh="show-factura">MATRÍCULAS ENSEÑANZA OFICIAL - CONVENIOS EDUCATIVOS (SUBV. PRECIO)</option>
+			<option value="4"  data-refresh="show-factura">MATRÍCULA ENSEÑANZA OFICIAL</option>
+			<option value="3"  data-refresh="show-factura">TÍTULOS PROPIOS (INCLUYE IDIOMAS, EXTRANJEROS, CAP, …)</option>
+			<option value="15" data-refresh="show-factura">TÍTULOS PROPIOS CON CANON</option>
+			<option value="9"  data-refresh="show-factura">CURSOS DE EXTENSIÓN (VERANO, MAYORES, OTROS)</option>
+			<option value="16" data-refresh="show-factura">PATROCINIOS DE TÍTULOS PROPIOS</option>
+			<option value="17" data-refresh="show-factura">PATROCINIOS DE CURSOS DE VERANO</option>
+			<option value="18" data-refresh="show-factura">PATROCINIOS DE OTRAS ACTIVIDADES DE EXTENSIÓN</option>
+			<option value="5"  data-refresh="show-factura">SAIT PRESTACIONES DE SERVICIOS</option>
+			<option value="19" data-refresh="show-factura">SAIT ENTREGAS DE IMPRESIONES 3D, PIEZAS, PROTOTIPOS Y OTROS BIENES</option>
+			<option value="1"  data-refresh="show-factura" disabled>CONTRATO DE I+D+I</option>
+			<option value="20" data-refresh="show-factura">PRESTACIONES DE SERVICIOS DEL CPCD</option>
+			<option value="21" data-refresh="show-factura">PRESTAMO INTERBIBLIOTECARIO</option>
+			<option value="22" data-refresh="show-factura">VENTA DE LIBROS EN PAPEL</option>
+			<option value="23" data-refresh="show-factura">VENTA DE LIBROS ELECTRÓNICOS</option>
+			<option value="6"  data-refresh="show-factura">ALQUILER DE ESPACIOS</option>
+			<option value="2"  data-refresh="show-factura" disabled>LICENCIAS SOBRE PATENTES</option>
+			<option value="11" data-refresh="show-factura">OTROS (CANARIAS/CEUTA/MELILLA, MOOCs, DEPORTES, SYMPOSIUM, CENTROS ADSCRITOS, FOTOCOPIAS, CONCESIONES, ENAJENACIÓN DE BIENES)</option>
+			<option value="24" data-refresh="show-factura" disabled>ASISTENCIA A CONGRESOS</option>
+			<option value="12" data-refresh="show-cp" disabled>RED DE CÁTEDRAS</option>
+			<option value="13" data-refresh="show-cp">OTROS</option>
+		</select>
 	</label>
-	<label class="autocomplete ui-block-md show-recibo">
+	<label class="autocomplete ui-block-md" data-refresh="show-recibo">
 		<div class="label required">Recibo asociado a la factura:</div>
 		<p:remoteCommand name="rcFindRecibo" action="#{fact.form.findRecibo()}" oncomplete="loadItems(xhr, status, args)" />
 		<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" />

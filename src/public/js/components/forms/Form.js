@@ -12,7 +12,6 @@ export default function(form, opts) {
 	form = globalThis.isstr(form) ? document.forms.findBy(form) : form; // Find by name
 
 	opts = opts || {}; // default options
-	opts.idSelector = opts.idSelector || "#id"; // id field selector
 	opts.defaultMsgOk = opts.defaultMsgOk || "saveOk"; // default key for message ok
 	opts.defaultMsgError = opts.defaultMsgError || "errForm"; // default key error
 
@@ -60,9 +59,9 @@ export default function(form, opts) {
 
     this.get = name => opts[name];
     this.set = (name, fn) => { opts[name] = fn; return self; }
+	this.isCached = id => (id == opts.cache);
 	this.setCache = id => { opts.cache = id; return self; }
-	this.isCached = (id, selector) => ((id == opts.cache) || (id == self.getval(selector || opts.idSelector)));
-	this.resetCache = selector => { delete opts.cache; return self.setStrval(selector || opts.idSelector); }
+	this.resetCache = () => { delete opts.cache; return self; } 
 
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
@@ -74,21 +73,39 @@ export default function(form, opts) {
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 	this.getValidators = i18n.getValidation;
 
+	this.copyToClipboard = dom.copyToClipboard; // to clipboard
 	this.getHtml = selector => dom.getHtml(fnQuery(selector));
     this.setHtml = (selector, text) => { dom.html(fnQuery(selector), text); return self; }
 	this.html = (selector, text) => { $$(selector).html(text); return self; } // Update all texts info in form
     this.getText = selector => dom.getText(fnQuery(selector));
     this.setText = (selector, text) => { dom.text(fnQuery(selector), text); return self; }
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
-	this.render = (selector, data) => { $$(selector).render(data); return self; } // HTMLElement.prototype.render
-	this.copyToClipboard = dom.copyToClipboard; // to clipboard
+	this.render = (selector, data) => { $$(selector).render(data || opts); return self; } // HTMLElement.prototype.render
+	this.refresh = data => {
+		data = data || opts; // render contents
+		$$("[data-refresh]").forEach(el => {
+			if (el.dataset.refresh == "text-render")
+				return el.render(data); // render contents only
+			const name = el.dataset.toggle || "hide"; // class name
+			const fnRefresh = opts[el.dataset.refresh]; // visibility function
+			el.classList.toggle(name, el.dataset.toggle ? fnRefresh(el) : !fnRefresh(el));
+		});
+		return self;
+	}
 
 	this.hide = selector => { $$(selector).hide(); return self; }
 	this.show = selector => { $$(selector).show(); return self; }
 	this.setVisible = (selector, force) => force ? self.show(selector) : self.hide(selector);
 	this.disabled = (force, selector) => fnUpdate(selector, el => el.setDisabled(force));
 	this.readonly = (force, selector) => fnUpdate(selector, el => el.setReadonly(force));
-	this.eachInput = (selector, fn) => fnUpdate(selector, fn);
+	//this.eachInput = (selector, fn) => fnUpdate(selector, fn);
+	/*this.setEditable = selector => fnUpdate(selector, el => {
+		const value = el.dataset.readonly;
+		if (value == "manual")
+			return; // skip evaluation
+		const fnEditable = self.get(value) || self.get("is-editable");
+		el.setReadonly(!fnEditable(el)); // recalc. attribute by handler
+	});*/
 
 	// Value property
 	const isSelect = el => (el.tagName == "SELECT");
@@ -124,7 +141,6 @@ export default function(form, opts) {
 	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
 	this.setval = (selector, value) => fnAction(selector, el => fnSetValue(el, value));
 	this.setStrval = (selector, value) => fnAction(selector, el => fnSetval(el, value));
-	this.values = (selector, value) => fnUpdate(selector, el => fnSetValue(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
 
 	this.getAttr = (selector, name) => dom.getAttr(fnQueryInput(selector), name);

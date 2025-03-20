@@ -1,7 +1,5 @@
 
 import pf from "../../../components/Primefaces.js";
-import i18n from "../../../i18n/langs.js";
-
 import organicas from "./organicas.js";
 import perfiles from "../../data/perfiles/perfiles.js"; 
 
@@ -27,15 +25,15 @@ function Perfil() {
 	}
 	this.setOrganicas = data => {
 		organicas.setOrganicas(data); // update financiacion
-		// actualizo la vista del perfil para el formulario
-		const pasos = form.querySelectorAll(".i18n-tr-h1");
-		//pasos[0].classList.add("active");
-		pasos[1].classList.toggle("active", self.isTrayectos()); 
-		pasos[2].classList.toggle("active", self.isIsu()); 
-		//pasos[3].classList.add("active");
-
-		i18n.set("titulo", self.getPerfil()).set("codigo", window.IRSE.codigo);
-		form.render(".i18n-tr-h1.active").render(".titulo-perfil"); // render texts
+		form.set("titulo", self.getPerfil()).set("codigo", window.IRSE.codigo).render(".titulo-perfil"); // render titles
+		return self; // update view
+	}
+	this.update = organicas => {
+		organicas && this.setOrganicas(organicas);
+		return self; // update view
+	}
+	this.refresh = () => {
+		form.refresh().render(".i18n-tr-h1.active"); // render steps
 		return self; // update view
 	}
 
@@ -67,8 +65,8 @@ function Perfil() {
 			onReset: () => actividad.setColectivo()
 		});
 
-		const fnSource = term => pf.sendTerm("rcFindPersonal", term);
-		form.loadAcItems(".ui-personal", fnSource);
+		form.loadAcItems(".ui-personal", term => pf.sendTerm("rcFindPersonal", term));
+		form.set("is-isu", actividad.isIsu).set("is-maps", actividad.isTrayectos);
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));

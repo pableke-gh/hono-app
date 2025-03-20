@@ -1,8 +1,6 @@
 
 import coll from "../components/CollectionHTML.js";
-import tabs from "../components/Tabs.js";
 import pf from "../components/Primefaces.js";
-import i18n from "../i18n/langs.js";
 
 import presto from "./modules/presto.js";
 import pDec from "./modules/partidaDec.js"
@@ -24,21 +22,17 @@ pf.ready(() => {
 	window.viewPresto = (xhr, status, args) => {
 		if (!pf.showAlerts(xhr, status, args))
 			return false; // Server error
-		const data = coll.parse(args.presto);
+		const data = coll.parse(args.presto); // get presto data
 		presto.view(data, coll.parse(args.firmas)); // udate inputs view
 		// cargo los datos de la partida a decrementar e incrementar + firmas
         pDec.setEconomica(coll.parse(args.economicas)).setOrganica(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);
 		pInc.setPartidas(coll.parse(args.data)); // Load table partidas
-		tabs.setActions(document).showTab(1);
 	}
 
-	window.updatePresto = (xhr, status, args, tab) => {
+	window.loadFirmas = (xhr, status, args) => {
         if (!pf.showAlerts(xhr, status, args))
 			return false; // Server error
-		presto.update(coll.parse(args.firmas)); // firmas asociadas
-		tabs.setActions(document).showTab(tab);
+		const data = coll.parse(args.presto); // get presto data
+		presto.setFirmas(data, JSON.read(args.firmas)); // update tab
 	}
-
-	/****** Guardar datos de la solicitud ******/
-	window.fnSend = () => pInc.validate() && i18n.confirm("msgSend");
 });

@@ -7,79 +7,69 @@ const CSS_ESTADOS = [
     "text-warn", "text-green", "text-error", "text-green", "text-green", "text-warn", "text-warn", "text-error", "text-error", "text-error", "text-error"
 ];
 
-let _instance; // private singleton
-export default class Solicitud {
-	#data; #nif; #grupo;
+function Solicitud() {
+	const self = this; //self instance
+	let _data, _nif, _grupo;
 
-	constructor() {
-		_instance = this;
-	}
+	this.getData = () => _data;
+	this.get  = name => _data[name]; 
+	this.setData = data => { _data = data; return self; } 
+	this.set = (name, value) => { _data[name] = value; return self; } 
 
-	static get instance() { return _instance; } // property access
-	static self() { return _instance; } // function getter access
+	this.getNif = () => _nif;
+	this.setNif = val => { self._nif = val; return self; } 
+	this.isAdmin = () => ("23024374V" == self._nif);
+	this.getFirma = () => firma;
 
-	get data() { return this.#data; }
-	getData() { return this.#data; }
-	get(name) { return this.#data[name]; }
-	//set data(value) { this.#data = value; } // set the property value
-	setData(data) { this.#data = data; return this; }
-	set(name, value) { this.#data[name] = value; return this; }
+	this.setGrupo = val => { _grupo = val; return self; }
+	this.setUser = data => self.setNif(data.nif).setGrupo(data.grupo);
+	this.isUsuEc = () => !!_grupo;
+	this.isUxxiec = self.isUsuEc;
 
-	getFirma() { return firma; } 
-	getNif() { return this.#nif; }
-	setNif(val) { this.#nif = val; return this; }
-	isAdmin() { return ("23024374V" == this.#nif); }
+	this.getTipo = () => _data.tipo;
+	this.getSubtipo = () => _data.subtipo;
+	this.setSubtipo = value => { _data.subtipo = value; return self; }
+	this.getEstado = () => _data.estado;
+	this.getMask = () => _data.mask;
 
-	setGrupo(val) { this.#grupo = val; return this; }
-	setUser(data) { return this.setNif(data.nif).setGrupo(data.grupo); }
-	isUsuEc() { return !!this.#grupo; }
-	isUxxiec = this.isUsuEc;
+	this.isDisabled = () => !self.isEditable();
+	this.isEditable = () => (!_data.id || (_data.estado == 6));
+	this.isPendiente = () => (_data.estado == 5); // Pendiente de las firmas
+	this.isAceptada = () => (_data.estado == 1); // Aceptada por todos los firmantes
+	this.isRechazada = () => (_data.estado == 2); // Rechazada no llega a estado finalizada
+	this.isEjecutada = () => (_data.estado == 3); // Documentos creados en uxxiec y asociados a la solicitud
+	this.isIntegrada = () => (_data.estado == 4); // Solicitud integrada en uxxiec y notificada a los firmantes
+	this.isCancelada = () => (_data.estado == 7); // Solicitud cancelada por la UAE
+	this.isCaducada = () => (_data.estado == 8); // Solicitud caducada por expiración
+	this.isErronea = () => ((_data.estado == 9) || (_data.estado == 10)); // estado de error
+	this.isFinalizada = () => [1, 3, 4, 9, 10].includes(_data.estado); // Aceptada, Ejecutada, Notificada ó Erronea
+	this.isFirmada = () => (self.isAceptada() || self.isEjecutada());
+	this.isValidada = () => (self.isFirmada() || self.isIntegrada());
+	this.isAnulada = () => (self.isRechazada() || self.isCancelada() || self.isCaducada());
+	this.isReadOnly = () => (self.isAnulada() || self.isIntegrada());
 
-	get tipo() { return this.data.tipo; }
-	getTipo() { return this.data.tipo; }
-	getSubtipo() { return this.data.subtipo; }
-	setSubtipo(value) { this.data.subtipo = value; return this; }
-	getEstado() { return this.data.estado; }
-	get mask() { return this.data.mask; }
-	getMask() { return this.data.mask; }
+	this.isUae = () => (_grupo == "2"); // UAE
+	this.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") || (_grupo == "284")); // OTRI / UITT / UCCT / Catedras
+	//this.isUtec = () => (_grupo == "6");
+	//this.isGaca = () => (_grupo == "54");
+	//this.isEut = () => (_grupo == "253");
+	//this.isEstudiantes = () => (_grupo == "9");
+	//this.isContratacion = () => (_grupo == "68");
 
-	isPendiente() { return (this.data.estado == 5); }
-	isAceptada() { return (this.data.estado == 1); } // Aceptada por todos los firmantes
-	isRechazada() { return (this.data.estado == 2); } // Rechazada no llega a estado finalizada
-	isIntegrada() { return (this.data.estado == 4); } // Solicitud integrada en uxxiec
-	isCancelada() { return (this.data.estado == 7); } // Solicitud cancelada por la UAE
-	isCaducada() { return (this.data.estado == 8); } // Solicitud caducada por expiración
-	isErronea() { return ((this.data.estado == 9) || (this.data.estado == 10)); } // estado de error
-	isFinalizada() { return [1, 3, 4, 9, 10].includes(this.data.estado); } // Aceptada, Ejecutada, Notificada ó Erronea
-	isAnulada() { return (this.isRechazada() || this.isCancelada() || this.isCaducada()); }
-	isReadOnly() { return (this.isAnulada() || this.isIntegrada()); }
+	this.isFirmable = () => (self.isPendiente() && firma.isFirmable(_data.fmask));
+	this.isCancelable = () => (self.isUae() && self.isValidada());
+	this.isRechazable = () => (_data.id && (self.isFirmable() || self.isCancelable()));
+	this.isEditableUae = () => (self.isEditable() || (self.isUae() && self.isFirmable()));
+	this.isEjecutable = () => (self.isUae() && [1, 3, 4, 5, 9, 10].includes(_data.estado)); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
+	this.isNotificable = () => [1, 3, 9, 10].includes(_data.estado); // Aceptada, Ejecutada ó Erronea
+	this.isIntegrable = () => (self.isUae() && self.isNotificable()); // Requiere uae + estado notificable
+	this.isUrgente = () => (_data.fMax && _data.extra); //solicitud urgente?
 
-	isUae() { return (this.#grupo == "2"); } // UAE
-	isOtri() { return ((this.#grupo == "8") || (this.#grupo == "286") || (this.#grupo == "134") || (this.#grupo == "284")); } // OTRI / UITT / UCCT / Catedras
-	//isUtec() { return (this.#grupo == "6"); }
-	//isGaca() { return (this.#grupo == "54"); }
-	//isEut() { return (this.#grupo == "253"); }
-	//isEstudiantes() { return (this.#grupo == "9"); }
-	//isContratacion() { return (this.#grupo == "68"); }
-
-	isDisabled() { return this.data.id; }
-	isEditable() { return !this.data.id; }
-	isFirmable() { return (this.isPendiente() && firma.isFirmable(this.data.fmask)); }
-	isRechazable() { return (this.data.id && (this.isUae() || this.isFirmable())); }
-	isEditableUae() { return (this.isEditable() || (this.isUae() && this.isFirmable())); }
-	isEjecutable() { return (this.isUae() && this.isFinalizada()); } // Requiere uae + estado finalizada
-	isNotificable() { return [1, 3, 9, 10].includes(this.data.estado); } // Aceptada, Ejecutada ó Erronea
-	isIntegrable() { return (this.isUae() && this.isNotificable()); } // Requiere uae + estado notificable
-	isUrgente() { return (this.data.fMax && this.data.extra); } //solicitud urgente?
-
-	getDescEstado() { return i18n.getItem("descEstados", this.data.estado); }
-	getStyleByEstado() { return CSS_ESTADOS[this.data.estado] || "text-warn"; }
-
-	// Language validators pre-initialized in CollectionHTML
-	validate() { return i18n.getValidators(); }
-	validateReject(data) {
-		const valid = i18n.getValidators();
-		const msg = "Debe indicar un motivo para el rechazo de la solicitud.";
-		return valid.size("rechazo", data.rechazo, msg).isOk(); // Required string
-	}
+	this.getCodigo = () => _data.codigo;
+	this.getMemoria = () => _data.memo;
+	this.getDescEstado = () => i18n.getItem("descEstados", _data.estado);
+	this.getStyleByEstado = () => (CSS_ESTADOS[_data.estado] || "text-warn");
+	this.validate = globalThis.void; // abstract validator => redefine in child classes
 }
+
+export default new Solicitud();

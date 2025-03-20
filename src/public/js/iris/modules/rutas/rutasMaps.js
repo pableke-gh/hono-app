@@ -1,47 +1,32 @@
 
-import coll from "../../../components/CollectionHTML.js";
 import sb from "../../../components/types/StringBox.js";
-
 import iris from "../iris.js";
 import resumen from "../resumen.js";
 import rro from "./rutasReadOnly.js";
 import ruta from "../../model/ruta/Ruta.js";
+import rutas from "../../model/ruta/Rutas.js";
 import { CT } from "../../data/rutas.js";
 
-function RutasTabs() {
+function RutasMaps() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
-	let _rutas, _tblRutas; // itinerario
+	let _tblRutas; // itinerario
 	let _saveRutas; // bool indicator
 
-	this.getRutas = () => _rutas;
-	this.size = () => coll.size(_rutas);
-	this.isEmpty = () => coll.isEmpty(_rutas);
+	this.getRutas = rutas.getRutas;
+	this.size = rutas.size;
+	this.isEmpty = rutas.isEmpty;
 	this.setSaveRutas = () => { _saveRutas = true; }
 
-	this.getSalida = () => _rutas[0]; // primera ruta
-	this.getLlegada = () => _rutas.at(-1); // ultima ruta
+	this.getSalida = rutas.getSalida;
+	this.getLlegada = rutas.getLlegada;
 	this.getKm = () => _tblRutas.getResume().totKm;
 
-	this.getRutasVeiculoPropio = () => _rutas.filter(ruta.isVehiculoPropio);
-	this.getRutasSinGastos = () => _rutas.filter(data => (ruta.isAsociableGasto(data) && !data.g));
-	this.getNumRutasSinGastos = () => _rutas.reduce((num, row) => (num + (ruta.isAsociableGasto(row) && !row.g)), 0);
-	this.getRutaPrincipal = () => { // calculo la ruta principal del itinerario
-		let diff = 0; // diferencia en milisegundos
-		let principal = _rutas[0]; // primera ruta
-		for (let i = 1; i < _rutas.length; i++) { //itero el itinerario
-			const aux = sb.diffDate(_rutas[i].dt1, _rutas[i - 1].dt2);
-			if (diff < aux) { // ruta en la que paso mas tiempo
-				diff = aux;
-				principal = _rutas[i - 1];
-			}
-		}
-		return principal;
-	}
+	this.getNumRutasSinGastos = rutas.getNumRutasSinGastos;
+	this.getRutaPrincipal = rutas.getRutaPrincipal;
 	this.setRutaPrincipal = data => {
-		_rutas.forEach(ruta.setOrdinaria);
-		ruta.setPrincipal(data);
-		_tblRutas.render(_rutas);
+		rutas.setRutaPrincipal(data);
+		_tblRutas.render(rutas.getRutas());
 		return self;
 	}
 
@@ -51,12 +36,12 @@ function RutasTabs() {
 		return self;
 	}
 	this.reload = data => {
-		_rutas = data;
+		rutas.setRutas(data);
 		return self;
 	}
 	this.setRutas = data => {
-		_rutas = data;
-		_tblRutas.render(_rutas);
+		rutas.setRutas(data);
+		_tblRutas.render(data);
 		fnUpdateView();
 		return self;
 	}
@@ -88,8 +73,9 @@ function RutasTabs() {
 		_tblRutas.setMsgEmpty("msgRutasEmpty")
 				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot)
 				.setAfterRender(fnUpdateForm).set("#main", self.setRutaPrincipal);
+		rutas.setResumen(_tblRutas.getResume());
 		return self;
 	}
 }
 
-export default  new RutasTabs();
+export default  new RutasMaps();

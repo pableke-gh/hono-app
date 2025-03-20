@@ -7,140 +7,136 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h:form id="xeco-model" prependId="false" onsubmit="loading();">
-		<h:inputText id="id" value="#{fact.solicitud.id}" styleClass="ui-input ui-number hide" />
-		<h:inputText id="ivaPF" value="#{fact.solicitud.ivaView}" styleClass="ui-input ui-number hide" />
-		<h:inputText id="nifTercero" value="#{fact.solicitud.nifTerceroView}" styleClass="ui-input hide" />
+	<h:inputText id="id" value="#{fact.solicitud.id}" styleClass="ui-input ui-number hide" />
+	<h:inputText id="ivaPF" value="#{fact.solicitud.ivaView}" styleClass="ui-input ui-number hide" />
+	<h:inputText id="nifTercero" value="#{fact.solicitud.nifTerceroView}" styleClass="ui-input hide" />
 
-		<div class="card-xeco">
-			<p:outputPanel styleClass="update-fact">
-				<h2>Solicitud de emisión de #{fact.form.descCodigo} #{fact.form.codigo}</h2>
-			</p:outputPanel>
-		
-			<div class="ui-blocks">
-				<ui:include src="./tercero.xhtml"></ui:include>
-			</div>
-			<div class="ui-blocks">
-				<label class="ui-block-xl autocomplete">
-					<div class="label required">Cual es la orgánica para la factura:</div>
-					<p:remoteCommand name="rcFindOrganica" action="#{fact.form.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
-					<input type="search" id="acOrganica" name="acOrganica" class="ui-input ui-autocomplete" tabindex="3" />
-					<h:inputText id="idOrganica" value="#{fact.solicitud.organica}" styleClass="ui-input ui-number hide" />
-					<ul role="list" class="results"></ul>
-					<div class="ui-errtip"></div> 
-				</label>
-			</div>
-			<div class="ui-blocks">
-				<ui:include src="./subtipos.xhtml"></ui:include>
-			</div>
+	<div class="card-xeco">
+		<h2 data-refresh="text-render">Solicitud de emisión de @titulo; @codigo;</h2>
 
-			<div class="ui-blocks show-factura-uae">
-				<label class="ui-block">
-					<div class="label">Causas de no sujeción a IVA:</div>
-					<h:selectOneMenu id="sujeto" value="#{fact.solicitud.sujetoView}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="5">
-						<f:selectItem itemValue="0" itemLabel="Seleccione una causa de no sujeción" itemEscaped="false" />
-						<f:selectItem itemValue="2" itemLabel="TAI Reglas Localización." itemEscaped="false" />
-						<f:selectItem itemValue="1" itemLabel="Art. 7, 14, otros." itemEscaped="false" />
-					</h:selectOneMenu>
-				</label>
-				<label class="ui-block grupo-exento">
-					<div class="label">Causas de exención en IVA:</div>
-					<h:selectOneMenu id="exento" value="#{fact.solicitud.exentoView}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="6">
-						<f:selectItem itemValue="0" itemLabel="Seleccione una causa de exención" itemEscaped="false" />
-						<f:selectItem itemValue="1" itemLabel="E1 Exenta por el artículo 20." itemEscaped="false" />
-						<f:selectItem itemValue="2" itemLabel="E2 Exenta por el artículo 21." itemEscaped="false" />
-						<f:selectItem itemValue="3" itemLabel="E3 Exenta por el artículo 22." itemEscaped="false" />
-						<f:selectItem itemValue="4" itemLabel="E4 Exenta por el artículo 23 y 24." itemEscaped="false" />
-						<f:selectItem itemValue="5" itemLabel="E5 Exenta por el artículo 25." itemEscaped="false" />
-						<f:selectItem itemValue="6" itemLabel="E6 Exenta por Otros." itemEscaped="false" />
-					</h:selectOneMenu>
-				</label>
-				<label class="ui-block-row show-factura-uae">
-					<div class="label">Modelo fiscal 349:</div>
-					<h:selectOneMenu id="m349" value="#{fact.solicitud.m349View}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
-						<f:selectItem itemValue="0" itemLabel="No" itemEscaped="false" />
-						<f:selectItem itemValue="1" itemLabel="D - Devoluciones de bienes desde otro Estado miembro al que previamente fueron enviados desde el TAI en el marco de acuerdos de ventas de bienes en consigna" itemEscaped="false" />
-						<f:selectItem itemValue="2" itemLabel="E - Entregas intracomunitarias" itemEscaped="false" />
-						<f:selectItem itemValue="3" itemLabel="H - Entr. intr. post. a una imp. exenta efect. por el represent." itemEscaped="false" />
-						<f:selectItem itemValue="4" itemLabel="M - Entregas intracomunitarias posteriores a una imp. exenta" itemEscaped="false" />
-						<f:selectItem itemValue="5" itemLabel="R - Transferencias de bienes efectuadas en el marco de acuerdos de ventas de bienes en consigna" itemEscaped="false" />
-						<f:selectItem itemValue="6" itemLabel="S - Prestaciones intracomunitarias de servicios" itemEscaped="false" />
-						<f:selectItem itemValue="7" itemLabel="T - Operaciones Triangulares" itemEscaped="false" />
-					</h:selectOneMenu>
-				</label>
-			</div>
-
-			<div class="ui-blocks show-uae">
-				<label class="ui-block-xl">
-					<div class="label">Económica:</div>
-					<h:selectOneMenu id="economica" value="#{fact.solicitud.economica}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
-						<f:selectItem itemValue="" itemLabel="Seleccione una económica" itemEscaped="false" />
-						<f:selectItems value="#{fact.form.economicas}" var="eco" itemValue="#{eco.value}" itemLabel="#{eco.label}" />
-					</h:selectOneMenu>
-					<div class="ui-errtip"></div> 
-				</label>
-				<label class="ui-block-xl">
-					<div class="label">IBAN:</div>
-					<h:selectOneMenu id="iban" value="#{fact.solicitud.iban}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
-						<f:selectItem itemValue="" itemLabel="Seleccione un IBAN" itemEscaped="false" />
-						<f:selectItems value="#{fact.form.getCuentasUpct()}" var="item" itemValue="#{item.value}" itemLabel="#{item.label}" itemEscaped="false" />
-					</h:selectOneMenu>
-				</label>
-			</div>
-
-			<div class="ui-blocks show-factura">
-				<label class="ui-block">
-					<div class="label">Factura electrónica:</div>
-					<h:selectOneMenu id="face" value="#{fact.solicitud.faceView}" styleClass="ui-input ui-select" tabindex="8">
-						<f:selectItem itemValue="0" itemLabel="" itemEscaped="false" />
-						<f:selectItem itemValue="1" itemLabel="FACe" itemEscaped="false" />
-						<f:selectItem itemValue="2" itemLabel="Otras" itemEscaped="false" />
-					</h:selectOneMenu>
-				</label>
-				<label class="grupo-gestor ui-block-md show-gestor">
-					<div class="label required">Órgano Gestor:</div>
-					<h:inputText id="og" value="#{fact.solicitud.gestor}" maxlength="20" tabindex="9" styleClass="ui-input" />
-					<div class="ui-errtip"></div> 
-				</label>
-				<label class="grupo-face ui-block-md show-face">
-					<div class="label">Oficina Contable:</div>
-					<h:inputText id="oc" value="#{fact.solicitud.contable}" maxlength="20" tabindex="10" styleClass="ui-input" />
-					<div class="ui-errtip"></div> 
-				</label>
-				<label class="grupo-face ui-block-md show-face">
-					<div class="label">Unidad Tramitadora:</div>
-					<h:inputText id="ut" value="#{fact.solicitud.tramit}" maxlength="20" tabindex="11" styleClass="ui-input" />
-					<div class="ui-errtip"></div> 
-				</label>
-				<label class="grupo-face ui-block-md show-face">
-					<div class="label">Órgano Proponente:</div>
-					<h:inputText id="op" value="#{fact.solicitud.prop}" maxlength="20" tabindex="12" styleClass="ui-input" />
-					<div class="ui-errtip"></div> 
-				</label>
-			</div>
-
-			<div class="ui-blocks show-gaca">
-			<label class="ui-block-row">
-				<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
-				<h:inputTextarea id="memo" value="#{fact.solicitud.memoriaView}" styleClass="ui-input ui-ta" tabindex="13" maxlength="600" title="Observaciones de la factura" />
-				<div class="ui-errtip"></div>
+		<div class="ui-blocks">
+			<ui:include src="./tercero.xhtml"></ui:include>
+		</div>
+		<div class="ui-blocks">
+			<label class="ui-block-xl autocomplete">
+				<div class="label required">Cual es la orgánica para la factura:</div>
+				<p:remoteCommand name="rcFindOrganica" action="#{fact.form.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
+				<input type="search" id="acOrganica" name="acOrganica" class="ui-input ui-autocomplete" tabindex="3" />
+				<h:inputText id="idOrganica" value="#{fact.solicitud.organica}" styleClass="ui-input ui-number hide" />
+				<ul role="list" class="results"></ul>
+				<div class="ui-errtip"></div> 
 			</label>
-			</div>
+		</div>
+		<div class="ui-blocks">
+			<ui:include src="./subtipos.xhtml"></ui:include>
 		</div>
 
-		<ui:include src="./conceptos.xhtml"></ui:include>
-		<p:outputPanel styleClass="navbar update-fact">
-			<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="41">
-				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-			<p:commandLink action="#{fact.form.save()}" styleClass="btn btn-green #{fact.form.cssEditable}" tabindex="42" title="Pone la solicitud a la firma"
-				onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 0);">
-				#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></p:commandLink>
-			<p:commandLink action="#{fact.firmas.firmar()}" styleClass="btn btn-green #{fact.form.cssFirmable}" tabindex="43" title="#{msg['tit.btn.firmar']}"
-				onclick="if (!fnFirmar()) return false;" oncomplete="updateList(xhr, status, args);">
-				<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</p:commandLink>
-			<a href="#tab-11" class="btn btn-error #{fact.form.cssRechazable}" tabindex="23" title="#{msg['tit.btn.rechazar']}">
-				<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
-		</p:outputPanel>
-		<ui:include src="./firmas.xhtml"></ui:include>
-	</h:form>
+		<div class="ui-blocks" data-refresh="show-factura-uae">
+			<label class="ui-block">
+				<div class="label">Causas de no sujeción a IVA:</div>
+				<h:selectOneMenu id="sujeto" value="#{fact.solicitud.sujetoView}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="5">
+					<f:selectItem itemValue="0" itemLabel="Seleccione una causa de no sujeción" itemEscaped="false" />
+					<f:selectItem itemValue="2" itemLabel="TAI Reglas Localización." itemEscaped="false" />
+					<f:selectItem itemValue="1" itemLabel="Art. 7, 14, otros." itemEscaped="false" />
+				</h:selectOneMenu>
+			</label>
+			<label class="ui-block grupo-exento">
+				<div class="label">Causas de exención en IVA:</div>
+				<h:selectOneMenu id="exento" value="#{fact.solicitud.exentoView}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="6">
+					<f:selectItem itemValue="0" itemLabel="Seleccione una causa de exención" itemEscaped="false" />
+					<f:selectItem itemValue="1" itemLabel="E1 Exenta por el artículo 20." itemEscaped="false" />
+					<f:selectItem itemValue="2" itemLabel="E2 Exenta por el artículo 21." itemEscaped="false" />
+					<f:selectItem itemValue="3" itemLabel="E3 Exenta por el artículo 22." itemEscaped="false" />
+					<f:selectItem itemValue="4" itemLabel="E4 Exenta por el artículo 23 y 24." itemEscaped="false" />
+					<f:selectItem itemValue="5" itemLabel="E5 Exenta por el artículo 25." itemEscaped="false" />
+					<f:selectItem itemValue="6" itemLabel="E6 Exenta por Otros." itemEscaped="false" />
+				</h:selectOneMenu>
+			</label>
+			<label class="ui-block-row" data-refresh="show-factura-uae">
+				<div class="label">Modelo fiscal 349:</div>
+				<h:selectOneMenu id="m349" value="#{fact.solicitud.m349View}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
+					<f:selectItem itemValue="0" itemLabel="No" itemEscaped="false" />
+					<f:selectItem itemValue="1" itemLabel="D - Devoluciones de bienes desde otro Estado miembro al que previamente fueron enviados desde el TAI en el marco de acuerdos de ventas de bienes en consigna" itemEscaped="false" />
+					<f:selectItem itemValue="2" itemLabel="E - Entregas intracomunitarias" itemEscaped="false" />
+					<f:selectItem itemValue="3" itemLabel="H - Entr. intr. post. a una imp. exenta efect. por el represent." itemEscaped="false" />
+					<f:selectItem itemValue="4" itemLabel="M - Entregas intracomunitarias posteriores a una imp. exenta" itemEscaped="false" />
+					<f:selectItem itemValue="5" itemLabel="R - Transferencias de bienes efectuadas en el marco de acuerdos de ventas de bienes en consigna" itemEscaped="false" />
+					<f:selectItem itemValue="6" itemLabel="S - Prestaciones intracomunitarias de servicios" itemEscaped="false" />
+					<f:selectItem itemValue="7" itemLabel="T - Operaciones Triangulares" itemEscaped="false" />
+				</h:selectOneMenu>
+			</label>
+		</div>
+
+		<div class="ui-blocks" data-refresh="show-uae">
+			<label class="ui-block-xl">
+				<div class="label">Económica:</div>
+				<h:selectOneMenu id="economica" value="#{fact.solicitud.economica}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
+					<f:selectItem itemValue="" itemLabel="Seleccione una económica" itemEscaped="false" />
+					<f:selectItems value="#{fact.form.economicas}" var="eco" itemValue="#{eco.value}" itemLabel="#{eco.label}" />
+				</h:selectOneMenu>
+				<div class="ui-errtip"></div> 
+			</label>
+			<label class="ui-block-xl">
+				<div class="label">IBAN:</div>
+				<h:selectOneMenu id="iban" value="#{fact.solicitud.iban}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
+					<f:selectItem itemValue="" itemLabel="Seleccione un IBAN" itemEscaped="false" />
+					<f:selectItems value="#{fact.form.getCuentasUpct()}" var="item" itemValue="#{item.value}" itemLabel="#{item.label}" itemEscaped="false" />
+				</h:selectOneMenu>
+			</label>
+		</div>
+
+		<div class="ui-blocks" data-refresh="show-factura">
+			<label class="ui-block">
+				<div class="label">Factura electrónica:</div>
+				<h:selectOneMenu id="face" value="#{fact.solicitud.faceView}" styleClass="ui-input ui-select" tabindex="8">
+					<f:selectItem itemValue="0" itemLabel="" itemEscaped="false" />
+					<f:selectItem itemValue="1" itemLabel="FACe" itemEscaped="false" />
+					<f:selectItem itemValue="2" itemLabel="Otras" itemEscaped="false" />
+				</h:selectOneMenu>
+			</label>
+			<label class="ui-block-md" data-refresh="show-gestor">
+				<div class="label required">Órgano Gestor:</div>
+				<h:inputText id="og" value="#{fact.solicitud.gestor}" maxlength="20" tabindex="9" styleClass="ui-input" />
+				<div class="ui-errtip"></div> 
+			</label>
+			<label class="ui-block-md" data-refresh="show-face">
+				<div class="label">Oficina Contable:</div>
+				<h:inputText id="oc" value="#{fact.solicitud.contable}" maxlength="20" tabindex="10" styleClass="ui-input" />
+				<div class="ui-errtip"></div> 
+			</label>
+			<label class="ui-block-md" data-refresh="show-face">
+				<div class="label">Unidad Tramitadora:</div>
+				<h:inputText id="ut" value="#{fact.solicitud.tramit}" maxlength="20" tabindex="11" styleClass="ui-input" />
+				<div class="ui-errtip"></div> 
+			</label>
+			<label class="ui-block-md" data-refresh="show-face">
+				<div class="label">Órgano Proponente:</div>
+				<h:inputText id="op" value="#{fact.solicitud.prop}" maxlength="20" tabindex="12" styleClass="ui-input" />
+				<div class="ui-errtip"></div> 
+			</label>
+		</div>
+
+		<div class="ui-blocks" data-refresh="show-gaca">
+		<label class="ui-block-row">
+			<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
+			<h:inputTextarea id="memo" value="#{fact.solicitud.memoriaView}" styleClass="ui-input ui-ta" tabindex="13" maxlength="600" title="Observaciones de la factura" />
+			<div class="ui-errtip"></div>
+		</label>
+		</div>
+	</div>
+
+	<ui:include src="./conceptos.xhtml"></ui:include>
+	<div class="navbar">
+		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="41">
+			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+		<a href="#tab-action" class="btn btn-green" data-refresh="is-editable" data-action="send" tabindex="42" title="Poner solicitud a la firma">
+			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
+		<p:commandLink action="#{fact.form.save()}" oncomplete="showTab(xhr, status, args, 0);" styleClass="hide"/>
+		<a href="#tab-action" class="btn btn-green" data-refresh="is-firmable" data-action="firmar" tabindex="43" title="#{msg['tit.btn.firmar']}">
+			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>
+		<p:commandLink action="#{fact.firmas.firmar()}" oncomplete="updateList(xhr, status, args);" styleClass="hide"/>
+		<a href="#tab-reject" class="btn btn-error" data-refresh="is-rechazable" tabindex="44" title="#{msg['tit.btn.rechazar']}">
+			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+	</div>
+	<ui:include src="./firmas.xhtml"></ui:include>
 </html>

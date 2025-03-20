@@ -90,28 +90,27 @@ function Langs() {
 	this.fmtInt = str => nb.fmtInt(str, _lang.lang); // String to EN String formated
 
 	// Render styled string
-	const STATUS = {};
 	const RE_VAR = /[@$](\w+)(\.\w+)?;/g;
-	this.render = function(str, data, i, size) {
+	this.render = function(str, data, opts) {
 		if (!str) // has string
 			return str;
-		i = i || 0;
-		STATUS.index = i;
-		STATUS.matches = 0;
-		STATUS.count = i + 1;
-		STATUS.size = size || 1;
+		opts = opts || {};
+		opts.size = opts.size || 1;
+		opts.index = opts.index || 0;
+		opts.count = opts.index + 1;
+		opts.matches = opts.keys = 0;
 		data = data || _lang; // default lang
 		return str.replace(RE_VAR, (m, k, t) => { // remplace function
-			STATUS.matches++; // increment matches
+			const value = data[k] ?? _lang[k];
+			opts.keys++; // always increment keys
+			opts.matches += globalThis.isset(value); // increment matches 
 			if (m.startsWith("$") || (t == ".f")) // float
-				return self.isoFloat(data[k]);
+				return self.isoFloat(value);
 			if (t == ".d") // Date in ISO string format
-				return self.isoDate(data[k]); // substring = 0, 10
-			/*if (t == ".s") { // data styled by function
-				const fnStyle = data[m] || _lang[m]; // handler
-				return fnStyle(data[k], STATUS); // restyle data
-			}*/
-			return (data[k] ?? _lang[k] ?? STATUS[k] ?? ""); // Default = String
+				return self.isoDate(value); // substring = 0, 10
+			//if ((t == ".s") && (typeof value === "function")) // data styled by function 
+				//return value(data, opts); // restyle data
+			return (value ?? opts[k] ?? ""); // Default = String
         });
     }
 }

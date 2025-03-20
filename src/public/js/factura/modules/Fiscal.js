@@ -28,8 +28,8 @@ function Fiscal() {
 	}
 	this.setFace = face => {
 		factura.setFace(face);
-		form.text(".grupo-gestor > .label", factura.isPlataforma() ? "Nombre de la plataforma:" : "Órgano Gestor:")
-				.setVisible(".grupo-face", factura.isFace()).setVisible(".grupo-gestor", factura.isFace() || factura.isPlataforma());
+		const lbl = factura.isPlataforma() ? "Nombre de la plataforma:" : "Órgano Gestor:";
+		form.text("[data-refresh='show-gestor'] > .label", lbl).refresh(factura.getData());
 		return self;
 	}
 
@@ -52,7 +52,7 @@ function Fiscal() {
 	}
 	this.update = (subtipo, tercero) => {
 		factura.setSubtipo(subtipo); // actualizo el nuevo subtipo
-        form.setval("#nifTercero", acTercero.getCode()).setVisible(".show-recibo", factura.isRecibo());
+        form.setval("#nifTercero", acTercero.getCode()).refresh(factura.getData());
 		return fnUpdateFiscalidad(tercero || acTercero.getCurrentItem());
 	}
 	this.load = (tercero, del) => {
@@ -61,7 +61,7 @@ function Fiscal() {
 	}
 
 	this.init = () => {
-		form.onChangeInput("#subtipo", ev => self.update(+ev.target.value))
+		form.onChangeInput("[name=subtipo]", ev => self.update(+ev.target.value))
 			.onChangeInput("#sujeto", ev => self.setSujeto(+ev.target.value))
 			.onChangeInput("#face", ev => self.setFace(+ev.target.value));
 		return self;

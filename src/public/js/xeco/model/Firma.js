@@ -10,7 +10,7 @@ function Firma() {
 	this.isFirmable = mask => (mask & 64); //puesto a la firma?
 
 	this.myFlag = firma => {
-		if (self.isAceptada(firma.mask))
+		if (self.isAceptada(firma))
 			return '<i class="fas fa-flag-alt text-green icon" title="Solicitud firmada"></i>';
 		if (self.isRechazada(firma))
 			return '<i class="fas fa-flag-alt text-error icon" title="Solicitud rechazada"></i>';
@@ -23,6 +23,12 @@ function Firma() {
 		const pendiente = '<i class="fas fa-flag-alt text-warn icon" title="Pendiente de firma"></i>Pendiente';
 		const firma = self.isAceptada(data) ? aceptada : (self.isRechazada(data) ? rechazada : pendiente);
 		return `<div class="ui-block-box"><p>${data.cargo}</p><p>${name}</p><p>${firma}</p></div>`;
+	}
+
+	this.validate = data => {
+		const valid = i18n.getValidators();
+		const msg = "Debe indicar un motivo para el rechazo de la solicitud.";
+		return valid.size("rechazo", data.rechazo, msg).isOk(); // Required string
 	}
 }
 

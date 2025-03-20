@@ -29,29 +29,30 @@
 		<ui:include src="./msgs.xhtml"></ui:include>
 
 		<!-- Home tab -->
-		<div id="tab-0" class="tab-content active">
+		<div id="tab-init" class="tab-content active">
 			<ui:include src="./init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
-		<div id="tab-2" class="tab-content">
+		<div id="tab-list" class="tab-content">
 			<ui:include src="./list.xhtml"></ui:include>
 			<ui:include src="./leyenda_firmas.xhtml"></ui:include>
 		</div>
 
-		<!-- Form factura -->
-		<div id="tab-1" class="tab-content">
-			<ui:include src="./form.xhtml"></ui:include>
-		</div>
-
 		<!-- vinculación con uxxiec -->
-		<div id="tab-15" class="tab-content" data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}">
+		<div id="tab-uxxiec" class="tab-content" data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}">
 			<ui:include src="./uxxiec.xhtml"></ui:include>
 		</div>
 
-		<!-- formulario de rechazo/cancelacion -->
-		<div id="tab-11" class="tab-content">
-			<ui:include src="./reject.xhtml"></ui:include>
-		</div>
+		<h:form id="xeco-model" prependId="false" onsubmit="loading();">
+			<!-- Form factura -->
+			<div id="tab-form" class="tab-content">
+				<ui:include src="./form.xhtml"></ui:include>
+			</div>
+			<!-- formulario de rechazo/cancelacion -->
+			<div id="tab-reject" class="tab-content">
+				<ui:include src="./reject.xhtml"></ui:include>
+			</div>
+		</h:form>
 	</ui:define>
 </ui:composition>

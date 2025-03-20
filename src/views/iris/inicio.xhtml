@@ -45,69 +45,66 @@
 		<!-- Tab0 = perfil PAS / PDI -->
 		<p:remoteCommand name="rcFindInteresado" action="#{iris.perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:remoteCommand name="rcFindOrg" action="#{iris.perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
-		<p:outputPanel id="tab-0" styleClass="tab-content update-irse">
+		<div id="tab-0" class="tab-content">
 			<h2 class="titulo-perfil">@titulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse00.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
 		<!-- Itinerarios rutas de tab1 y tab2 -->
 		<p:remoteCommand name="rcFindPersonal" action="#{iris.firmas.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
-		<p:outputPanel id="tab-1" styleClass="tab-content update-irse">
+		<div id="tab-1" class="tab-content">
 			<h2 class="titulo-perfil">@titulo; <i>@codigo;</i><hr class="underline"/></h2>
-			<h:inputHidden id="matricula" value="#{iris.form.matricula}" />
-			<h:inputHidden id="rutas-json" value="#{iris.rutas.rutas}" />
-
 			<ui:include src="tabs/irse01.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 		<!-- Itinerarios de google maps tab2 -->
-		<p:outputPanel id="tab-maps" styleClass="tab-content update-irse">
+		<div id="tab-maps" class="tab-content">
 			<h2 class="titulo-perfil">@titulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-isu" styleClass="tab-content update-irse">
+		<div id="tab-isu" class="tab-content">
 			<h2 class="titulo-perfil">@titulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse03.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-5" styleClass="tab-content update-irse">
+		<div id="tab-5" class="tab-content">
 			<h2 class="titulo-perfil">@titulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse05.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-resumen" styleClass="tab-content update-irse">
+		<div id="tab-resumen" class="tab-content">
 			<h2 class="titulo-perfil">@titulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse06.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-9" styleClass="tab-content update-irse">
+		<div id="tab-9" class="tab-content">
 			<h2 class="titulo-perfil">@titulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse09.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-12" styleClass="tab-content update-irse">
+		<div id="tab-12" class="tab-content">
 			<h2 class="titulo-perfil">@titulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse12.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
 		<!-- vinculación con uxxiec -->
-		<p:outputPanel id="tab-uxxiec" styleClass="tab-content update-irse">
+		<div id="tab-uxxiec" class="tab-content">
 			<ui:include src="tabs/uxxiec.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
 		<!-- formulario de rechazo/cancelacion -->
-		<p:outputPanel id="tab-reject" styleClass="tab-content update-irse">
+		<div id="tab-reject" class="tab-content">
 			<ui:include src="tabs/reject.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 		</h:form>
 
 		<!-- listado ISU para la OTRI -->
