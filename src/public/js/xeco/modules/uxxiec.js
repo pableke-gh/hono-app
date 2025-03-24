@@ -1,6 +1,6 @@
 
 import Form from "../../components/forms/Form.js";
-import pf from "../../components/Primefaces.js";
+import tabs from "../../components/Tabs.js";
 
 import uxxiec from "../model/Uxxiec.js";
 import model from "../model/Solicitud.js";
@@ -9,11 +9,14 @@ function Uxxiec() {
     const form = new Form("#xeco-uxxi");
 	const tblUxxiec = form.setTable("#docs-uxxi", uxxiec.getTable());
     const acUxxi = form.setAutocomplete("#uxxi", uxxiec.getAutocomplete());
-	acUxxi.setSource(term => window.rcFindUxxi(pf.param("term", term)));
+	acUxxi.setSource(() => window.rcFindUxxi());
 
 	this.getForm = () => form;
 	this.isCached = form.isCached;
 	this.init = () => {
+		const tabUxxi = tabs.getTab("uxxiec");
+		model.setUser(tabUxxi.dataset);
+
 		form.set("is-notificable", model.isNotificable);
 		form.addClick("a#add-uxxi", () => {
 			const doc = acUxxi.getCurrentItem();

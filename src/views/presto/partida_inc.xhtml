@@ -12,9 +12,7 @@
 		<div class="ui-blocks" data-refresh="show-partida-inc">
 		<label class="ui-block">
 			<div class="label">Ejercicio:</div>
-			<h:selectOneMenu id="ejInc" value="#{presto.solicitud.ejOrgDec}" styleClass="ui-input ui-select" tabindex="10">
-				<f:selectItems value="#{presto.ejercicios}" />
-			</h:selectOneMenu>
+			<select id="ejInc" name="ejInc" class="ui-input ui-select ui-ej" tabindex="10"></select>
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
@@ -26,7 +24,7 @@
 		</label>
 		<label class="ui-block">
 			<div class="label" title="Orgánica afectada">FA:</div>
-			<input type="text" id="faInc" name="faInc" class="ui-input ui-bool disabled" tabindex="-1" title="Orgánica afectada" />
+			<input type="text" id="faInc" name="faInc" class="ui-input ui-bool disabled" tabindex="-1" disabled title="Orgánica afectada" />
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>

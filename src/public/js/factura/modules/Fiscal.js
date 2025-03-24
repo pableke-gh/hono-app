@@ -12,13 +12,10 @@ function Fiscal() {
 	const delegaciones = pf.datalist(form, "#delegacion", "#idDelegacion");
 	delegaciones.setEmptyOption("Seleccione una delegación");
 
-	const acTercero = form.setAutocomplete("#acTercero");
-	acTercero.setDelay(500).setMinLength(5)
-			.setSource(term => pf.sendTerm("rcFindTercero", term))
-			.setRender(item => item.label)
-			.setSelect(item => { pf.sendId("rcDelegaciones", item.value); return item.value })
-			.setAfterSelect(data => self.update(factura.getSubtipo(), data))
-			.setReset(delegaciones.reset);
+	const fnSource = () => window.rcFindTercero();
+	const fnSelect = data => { form.loading(); window.rcDelegaciones(); self.update(factura.getSubtipo(), data); }
+	const acTercero = form.setAcItems("#acTercero", fnSource, fnSelect, delegaciones.reset);
+	acTercero.setDelay(500).setMinLength(5);
 
 	this.setTercero = (id, label) => { acTercero.setValue(id, label); return self; }
 	this.setSujeto = sujeto => {

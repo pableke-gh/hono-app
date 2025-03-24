@@ -36,7 +36,7 @@ HTMLCollection.prototype.setClick = function(fn) { this.forEach(el => el.setClic
 HTMLCollection.prototype.hide = function() { this.forEach(fnHide); return this; }
 HTMLCollection.prototype.show = function() { this.forEach(fnShow); return this; }
 HTMLCollection.prototype.toggle = function(name, force) {
-    name = name || HIDE_CLASS; // Toggle class name
+    //name = name || HIDE_CLASS; // Toggle class name
     this.forEach(el => el.classList.toggle(name, force));
     return this;
 }

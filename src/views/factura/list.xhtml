@@ -99,7 +99,7 @@
 		</table>
 
 		<div id="solicitudes-json" class="hide">#{fact.list.stringify()}</div>
-		<p:remoteCommand name="rcView" action="#{fact.view()}" update="@(.update-fact)" oncomplete="viewFactura(xhr, status, args)" />
+		<p:remoteCommand name="rcView" action="#{fact.view()}" oncomplete="viewFactura(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{fact.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
 		<p:remoteCommand name="rcReject" action="#{fact.firmas.reject()}" oncomplete="loadFirmas(xhr, status, args)" />
 		<p:remoteCommand name="rcReport" action="#{fact.report()}" oncomplete="handleReport(xhr, status, args)" />

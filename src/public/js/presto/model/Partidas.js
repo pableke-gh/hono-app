@@ -1,11 +1,10 @@
 
 import coll from "../../components/Collection.js";
 import i18n from "../../i18n/langs.js";
-import Partida from "./Partida.js";
+import partida from "./Partida.js";
 
-export default function Partidas(presto) {
+function Partidas() {
 	const self = this; //self instance
-    const partida = new Partida(presto);
 
     let data, resume; // Current data table
     this.getData = () => data;
@@ -42,3 +41,5 @@ export default function Partidas(presto) {
         return true;
     }
 }
+
+export default new Partidas();

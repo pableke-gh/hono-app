@@ -1,19 +1,24 @@
 
 import i18n from "../../i18n/langs.js";
 import solicitud from "../../xeco/model/Solicitud.js";
-import Partidas from "./Partidas.js";
+import firma from "../../xeco/model/Firma.js";
+import partidas from "./Partidas.js";
 
 function Presto() {
 	const self = this; //self instance
-    const partidas = new Partidas(this);
 
 	this.getData = solicitud.getData;
 	this.isUxxiec = solicitud.isUxxiec;
+	this.isUae = solicitud.isUae;
 	this.isEditable = solicitud.isEditable;
 	this.isDisabled = solicitud.isDisabled;
 	this.isEditableUae = solicitud.isEditableUae;
+	this.isFinalizada = solicitud.isFinalizada;
 	this.getCodigo = solicitud.getCodigo;
 	this.getTitulo = tipo => i18n.getItem("descTipos", tipo - 1);
+	this.getMemoria = solicitud.getMemoria;
+	this.isUrgente = solicitud.isUrgente;
+	//this.setUrgente = solicitud.setUrgente;
 
 	this.getPartidas = () => partidas;
     this.getPartida = partidas.getPartida;
@@ -43,7 +48,10 @@ function Presto() {
 	this.isExcedida = () => (solicitud.mask & 8);
 
 	this.row = data => {
-		solicitud.setData(data);
+		let acciones = solicitud.rowActions(data);
+		if (!solicitud.isEditable())
+			acciones += '<a href="#rcReport" class="row-action"><i class="fal fa-file-pdf action resize text-red"></i></a>';
+
 		let info = '<td></td>';
 		if (solicitud.isUrgente())
 			info = `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>`;
@@ -52,27 +60,14 @@ function Presto() {
 		if ((solicitud.isUae() || solicitud.isOtri()) && self.isExcedida())
 			info = '<td class="text-center text-warn text-xl" title="La cantidad solicitada excede el margen registrado por el Buzón de Ingresos">&#9888;</td>';
 
-		let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
-		if (solicitud.isFirmable())
-			acciones += `<a href="#rcFirmar" class="row-action resize firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
-						<a href="#tab-reject" class="row-action resize firma-${data.id}"><i class="fas fa-times action resize text-red"></i></a>`;
-		if (!solicitud.isEditable())
-			acciones += '<a href="#rcReport" class="row-action"><i class="fal fa-file-pdf action resize text-red"></i></a>';
-		if (solicitud.isIntegrable())
-			acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
-		if (solicitud.isEjecutable())
-			acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
-		if (solicitud.isAdmin())
-			acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
-
 		const titulo = self.getTitulo(data.tipo);
 		const otras = self.hasMultipartida() ? "<span> (y otras)</span>" : "";
 		return `<tr class="tb-data">
 			${info}
 			<td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
 			<td class="hide-sm">${titulo}</td>
-			<td class="${solicitud.getStyleByEstado(data)} estado-${data.id}">${solicitud.getDescEstado()}</td>
-			<td class="text-center">${solicitud.getFirma().myFlag(data)}</td>
+			<td class="${solicitud.getStyleByEstado()} estado-${data.id}">${solicitud.getDescEstado()}</td>
+			<td class="text-center">${firma.myFlag(data)}</td>
 			<td class="hide-sm">${data.sig || ""}</td>
 			<td title="${data.oIncDesc}">${data.orgInc}${otras}</td>
 			<td class="text-center" title="${data.eIncDesc}">${data.ecoInc}</td>

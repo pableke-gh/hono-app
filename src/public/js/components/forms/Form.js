@@ -86,9 +86,11 @@ export default function(form, opts) {
 		$$("[data-refresh]").forEach(el => {
 			if (el.dataset.refresh == "text-render")
 				return el.render(data); // render contents only
-			const name = el.dataset.toggle || "hide"; // class name
-			const fnRefresh = opts[el.dataset.refresh]; // visibility function
-			el.classList.toggle(name, el.dataset.toggle ? fnRefresh(el) : !fnRefresh(el));
+			const fnRefresh = opts[el.dataset.refresh]; // handler
+			if (el.dataset.toggle) // toggle specific style class
+				el.classList.toggle(el.dataset.toggle, fnRefresh(el));
+			else // show / hide
+				el.setVisible(fnRefresh(el));
 		});
 		return self;
 	}
@@ -98,7 +100,7 @@ export default function(form, opts) {
 	this.setVisible = (selector, force) => force ? self.show(selector) : self.hide(selector);
 	this.disabled = (force, selector) => fnUpdate(selector, el => el.setDisabled(force));
 	this.readonly = (force, selector) => fnUpdate(selector, el => el.setReadonly(force));
-	//this.eachInput = (selector, fn) => fnUpdate(selector, fn);
+	this.eachInput = (selector, fn) => fnUpdate(selector, fn);
 	/*this.setEditable = selector => fnUpdate(selector, el => {
 		const value = el.dataset.readonly;
 		if (value == "manual")
@@ -188,14 +190,15 @@ export default function(form, opts) {
 	this.getOptionText = selector => dom.getOptionText(self.getInput(selector));
 	this.select = (selector, mask) => { dom.select(fnQueryInput(selector), mask); return self; }
 	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
+	this.setItems = (selector, items, emptyOption) => fnUpdate(selector, el => dom.setItems(el, items, emptyOption));
+	//this.setOptions = (selector, data, emptyOption) => fnUpdate(selector, el => dom.setData(el, data, emptyOption));
+	this.setLabels = (selector, labels, emptyOption) => fnUpdate(selector, el => dom.setLabels(el, labels, emptyOption));
 	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox($1(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(fnQueryInput(selector), opts); // Input type text / search
 
-	const fnAcOptions = (fnSource, fnSelect, fnReset) => {
-		return { minLength: 4, source: fnSource, render: item => item.label, select: item => item.value, afterSelect: fnSelect, onReset: fnReset };
-	}
-	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => self.setAutocomplete(selector, fnAcOptions(fnSource, fnSelect, fnReset));
-	this.loadAcItems = (selector, fnSource, fnSelect, fnReset) => fnUpdate(selector, el => new Autocomplete(el, fnAcOptions(fnSource, fnSelect, fnReset)));
+	const fnItems = (source, afterSelect, onReset) => ({ minLength: 4, source, render: item => item.label, select: item => item.value, afterSelect, onReset });
+	this.loadAcItems = (selector, fnSource, fnSelect, fnReset) => fnUpdate(selector, el => new Autocomplete(el, fnItems(fnSource, fnSelect, fnReset)));
+	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => self.setAutocomplete(selector, fnItems(fnSource, fnSelect, fnReset));
 
 	// Events handlers
 	const fnEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return self; }

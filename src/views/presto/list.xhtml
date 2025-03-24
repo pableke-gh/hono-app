@@ -112,7 +112,7 @@
 		</table>
 
 		<div id="solicitudes-json" class="hide">#{presto.list.stringify()}</div>
-		<p:remoteCommand name="rcView" action="#{presto.view()}" update="@(.update-presto)" oncomplete="viewPresto(xhr, status, args)" />
+		<p:remoteCommand name="rcView" action="#{presto.view()}" oncomplete="viewPresto(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{presto.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
 		<p:remoteCommand name="rcReject" action="#{presto.firmas.reject()}" oncomplete="loadFirmas(xhr, status, args)" />
 		<p:remoteCommand name="rcReport" action="#{presto.report()}" oncomplete="handleReport(xhr, status, args)" />

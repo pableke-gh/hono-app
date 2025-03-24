@@ -87,7 +87,6 @@ export default function(autocomplete, opts) {
         }
     }
     function fnSearch() {
-        _searching = true; // Avoid new searchs
         alerts.loading(); // Show loading frame
         window.loadItems = (xhr, status, args) => { // Only PF
             window.loadItems = globalThis.void; // Avoid extra loads
@@ -97,12 +96,14 @@ export default function(autocomplete, opts) {
         _searching = false; // restore sarches
     }
 
-    this.reset = () => {
-        if (inputValue.value) // is selected data
-            opts.onReset(self); // Fire event onFinish
-		return fnClear(); // Reset previous values
-    }
-    this.reload = () => {
+	this.reset = () => {
+		if (inputValue.value) // is selected data
+			opts.onReset(fnClear()); // Fire event onFinish
+		else
+			fnClear(); // Reset previous values
+		return self;
+	}
+	this.reload = () => {
     	self.reset(); // 1º Reset all data
 		autocomplete.value = ""; // Clear input
     	autocomplete.focus(); // Set focus
@@ -123,31 +124,34 @@ export default function(autocomplete, opts) {
         return self;
     }
 
-     // Event fired before char is writen in text
-    autocomplete.onkeydown = ev => {
-        const TAB = 9;
-        const UP = 38;
-        const DOWN = 40;
-        const ENTER = 13;
+		// Event fired before char is writen in text
+	autocomplete.onkeydown = ev => {
+		const TAB = 9;
+		const UP = 38;
+		const DOWN = 40;
+		const ENTER = 13;
 
-        if (ev.keyCode == UP)
-            return activeItem(_index - 1);
-        if (ev.keyCode == DOWN)
-            return activeItem(_index + 1);
-        if ((ev.keyCode == TAB))
-            return selectItem(self.getCurrentOption(), _index);
-        if (ev.keyCode == ENTER) {
-            ev.preventDefault(); // Avoid fire submit event
-            selectItem(self.getCurrentOption(), _index);
-        }
-    }
+		if (ev.keyCode == UP)
+			return activeItem(_index - 1);
+		if (ev.keyCode == DOWN)
+			return activeItem(_index + 1);
+		if ((ev.keyCode == TAB))
+			return selectItem(self.getCurrentOption(), _index);
+		if (ev.keyCode == ENTER) {
+			ev.preventDefault(); // Avoid fire submit event
+			selectItem(self.getCurrentOption(), _index);
+		}
+	}
     // Event fired when value changes, ignore ctrl, alt, etc...
     // also occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
     autocomplete.oninput = ev => {
+		if (_searching) // Avoid new searchs
+			return ev.preventDefault();
         const size = coll.size(autocomplete.value);
         if (size < opts.minLength)
             return self.reset(); // Min legnth required
-        if ((size < opts.maxLength) && !_searching) { // Reduce server calls
+        if (size < opts.maxLength) { // Reduce server calls
+			_searching = true; // Avoid new searchs
             clearTimeout(_time); // Clear previous searches
             _time = setTimeout(fnSearch, opts.delay);
         }
@@ -157,11 +161,11 @@ export default function(autocomplete, opts) {
         autocomplete.value || self.reset();
     }*/
     // Event fired before onblur only when text changes
-    autocomplete.onchange = ev => {
-        if (!autocomplete.value)
-            self.reset();
-        else // Delay reset event after click on list
-            setTimeout(() => { inputValue.value || opts.onReset(self); }, 270);
+	autocomplete.onchange = ev => {
+		if (!autocomplete.value)
+			self.reset();
+		//else // Delay reset event after click on list
+		//	setTimeout(() => { self.isLoaded() || opts.onReset(self); }, 270);
     }
     autocomplete.onblur = ev => {
         setTimeout(removeList, 280);

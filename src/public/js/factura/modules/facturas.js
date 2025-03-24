@@ -7,8 +7,8 @@ import lineas from "./lineas.js";
 function Facturas() {
 	const self = this; //self instance
 	const form = xeco.getForm();
-	const acOrganica = form.setAcItems("#acOrganica", term => pf.sendTerm("rcFindOrganica", term));
-	const acRecibo = form.setAcItems("#acRecibo", term => pf.sendTerm("rcFindRecibo", term));
+	const acOrganica = form.setAcItems("#acOrganica", () => window.rcFindOrganica());
+	const acRecibo = form.setAcItems("#acRecibo", () => window.rcFindRecibo());
 
 	this.getForm = xeco.getForm;
 	this.init = () => {
@@ -27,8 +27,8 @@ function Facturas() {
 	this.view = (data, conceptos, firmas) => {
 		data.nifTercero = data.nif; // set field
 		data.titulo = factura.getTitulo(data.tipo); // set title for views
-		lineas.setLineas(conceptos); // Load conceptos and iva input
 		xeco.view(data, firmas); // load data-model before view
+		lineas.setLineas(conceptos); // Load conceptos and iva input
 		acOrganica.setValue(data.idOrg, data.org + " - " + data.descOrg);
 		acRecibo.setValue(data.idRecibo, data.acRecibo);
 		return self;

@@ -9,7 +9,7 @@ const CSS_ESTADOS = [
 
 function Solicitud() {
 	const self = this; //self instance
-	let _data, _nif, _grupo;
+	let _data, _nif, _grupo, _admin;
 
 	this.getData = () => _data;
 	this.get  = name => _data[name]; 
@@ -18,11 +18,11 @@ function Solicitud() {
 
 	this.getNif = () => _nif;
 	this.setNif = val => { self._nif = val; return self; } 
-	this.isAdmin = () => ("23024374V" == self._nif);
-	this.getFirma = () => firma;
+	this.isAdmin = () => _admin;
+	this.setAdmin = val => { _admin = val; return self; }
 
 	this.setGrupo = val => { _grupo = val; return self; }
-	this.setUser = data => self.setNif(data.nif).setGrupo(data.grupo);
+	this.setUser = ({ nif, grupo, admin }) => self.setNif(nif).setGrupo(grupo).setAdmin("1" == admin);
 	this.isUsuEc = () => !!_grupo;
 	this.isUxxiec = self.isUsuEc;
 
@@ -45,7 +45,8 @@ function Solicitud() {
 	this.isFinalizada = () => [1, 3, 4, 9, 10].includes(_data.estado); // Aceptada, Ejecutada, Notificada ó Erronea
 	this.isFirmada = () => (self.isAceptada() || self.isEjecutada());
 	this.isValidada = () => (self.isFirmada() || self.isIntegrada());
-	this.isAnulada = () => (self.isRechazada() || self.isCancelada() || self.isCaducada());
+	this.isInvalidada = () => (self.isRechazada() || self.isCancelada());
+	this.isAnulada = () => (self.isInvalidada() || self.isCaducada());
 	this.isReadOnly = () => (self.isAnulada() || self.isIntegrada());
 
 	this.isUae = () => (_grupo == "2"); // UAE
@@ -64,12 +65,28 @@ function Solicitud() {
 	this.isNotificable = () => [1, 3, 9, 10].includes(_data.estado); // Aceptada, Ejecutada ó Erronea
 	this.isIntegrable = () => (self.isUae() && self.isNotificable()); // Requiere uae + estado notificable
 	this.isUrgente = () => (_data.fMax && _data.extra); //solicitud urgente?
+	//this.setUrgente = ({ fMax, extra }) => { _data.fMax = fMax; _data.extra = extra; return self; }
 
 	this.getCodigo = () => _data.codigo;
 	this.getMemoria = () => _data.memo;
 	this.getDescEstado = () => i18n.getItem("descEstados", _data.estado);
 	this.getStyleByEstado = () => (CSS_ESTADOS[_data.estado] || "text-warn");
 	this.validate = globalThis.void; // abstract validator => redefine in child classes
+
+	this.rowActions = data => {
+		self.setData(data); // initialize 
+		let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
+		if (self.isFirmable())
+			acciones += `<a href="#rcFirmar" class="row-action resize firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
+						<a href="#tab-reject" class="row-action resize firma-${data.id}"><i class="fas fa-times action resize text-red"></i></a>`;
+		if (self.isEjecutable())
+			acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
+		if (self.isIntegrable())
+			acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
+		if (self.isAdmin())
+			acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
+		return acciones;
+	}
 }
 
 export default new Solicitud();

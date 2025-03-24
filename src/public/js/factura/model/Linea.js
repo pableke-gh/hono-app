@@ -1,7 +1,8 @@
 
 import i18n from "../../i18n/langs.js";
+import factura from "./Factura.js";
 
-export default function Linea(factura) {
+function Linea() {
 	const self = this; //self instance
 	const msgEmptyTable = "No existen conceptos asociados a la solicitud";
 
@@ -23,6 +24,7 @@ export default function Linea(factura) {
 	this.tfoot = resume => {
 		const iva = factura.getIva();
 		const show = factura.isFacturable() ? "" : "hide";
+		const readonly = factura.isEditable() ? 'tabindex="30"' : "disabled";
 		return `<tr>
 			<td colspan="2">Conceptos: ${resume.size}</td>
 			<td class="text-right">${i18n.isoFloat(resume.imp)} €</td>
@@ -33,7 +35,7 @@ export default function Linea(factura) {
 				<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
 				<div class="ui-block-main text-right">IVA:</div>
 				<div class="ui-block">
-					<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal editable-uae" tabindex="32"></select>
+					<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal editable-uae" ${readonly}></select>
 				</div>
 				</label>
 			</td>
@@ -56,3 +58,5 @@ export default function Linea(factura) {
 		return valid.close("El concepto indicado no es válido!"); // Main form message
 	}
 }
+
+export default new Linea();

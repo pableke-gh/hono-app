@@ -99,17 +99,19 @@ function Langs() {
 		opts.index = opts.index || 0;
 		opts.count = opts.index + 1;
 		opts.matches = opts.keys = 0;
-		data = data || _lang; // default lang
-		return str.replace(RE_VAR, (m, k, t) => { // remplace function
-			const value = data[k] ?? _lang[k];
-			opts.keys++; // always increment keys
+		data = data || _lang; // default data = lang
+		return str.replace(RE_VAR, (m, k, t) => { // replacer
+			opts.keys++; // always increment keys matches
+			/*if (t == ".s") { // data styled by function
+				opts.matches++; // is a valid matches
+				return opts[k](data, opts); // restyle data by handler
+			}*/
+			const value = data[k] ?? _lang[k]; // value to replace
 			opts.matches += globalThis.isset(value); // increment matches 
 			if (m.startsWith("$") || (t == ".f")) // float
 				return self.isoFloat(value);
 			if (t == ".d") // Date in ISO string format
 				return self.isoDate(value); // substring = 0, 10
-			//if ((t == ".s") && (typeof value === "function")) // data styled by function 
-				//return value(data, opts); // restyle data
 			return (value ?? opts[k] ?? ""); // Default = String
         });
     }

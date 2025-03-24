@@ -1,13 +1,13 @@
 
 import i18n from "../../i18n/langs.js";
 import solicitud from "../../xeco/model/Solicitud.js";
-import Lineas from "./Lineas.js";
+import firma from "../../xeco/model/Firma.js";
+import lineas from "./Lineas.js";
 
 const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso" ];
 
 function Factura() {
 	const self = this; //self instance
-	const lineas = new Lineas(this);
 
 	this.getData = solicitud.getData;
 	this.isUae = solicitud.isUae;
@@ -48,24 +48,13 @@ function Factura() {
 	this.setFace = val => { solicitud.set("face", val); return self; } // update plataforma
 
 	this.row = data => {
-		solicitud.setData(data); // initialize 
-		let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
-		if (solicitud.isFirmable())
-			acciones += `<a href="#rcFirmar" class="row-action resize firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
-						<a href="#tab-reject" class="row-action resize firma-${data.id}"><i class="fas fa-times action resize text-red"></i></a>`;
-		if (solicitud.isIntegrable())
-			acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
-		if (solicitud.isEjecutable())
-			acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
-		if (solicitud.isAdmin())
-			acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
-
+		const acciones = solicitud.rowActions(data);
 		const titulo = self.getTitulo(data.tipo);
 		return `<tr class="tb-data">
 			<td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
 			<td class="hide-sm text-upper1">${titulo}</td>
 			<td class="${solicitud.getStyleByEstado()} estado-${data.id}">${solicitud.getDescEstado()}</td>
-			<td class="text-center">${solicitud.getFirma().myFlag(data)}</td>
+			<td class="text-center">${firma.myFlag(data)}</td>
 			<td class="hide-sm">${data.sig || ""}</td>
 			<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
 			<td class="text-right">${i18n.isoFloat(data.imp)} €</td>

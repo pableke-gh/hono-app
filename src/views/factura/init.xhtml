@@ -13,8 +13,8 @@
             <h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
             <ul>
                 <li>Nueva solicitud de emisión factura o carta de pago:<ul>
-                    <li><p:commandLink action="#{fact.createFactura()}" update="@(.update-fact)" oncomplete="viewFactura(xhr, status, args);">Solicitud Emisión de Factura</p:commandLink></li>
-                    <li><p:commandLink action="#{fact.createCartaPago()}" update="@(.update-fact)" oncomplete="viewFactura(xhr, status, args);">Solicitud Emisión de Carta de Pago</p:commandLink></li>
+                    <li><p:commandLink action="#{fact.createFactura()}" oncomplete="viewFactura(xhr, status, args);">Solicitud Emisión de Factura</p:commandLink></li>
+                    <li><p:commandLink action="#{fact.createCartaPago()}" oncomplete="viewFactura(xhr, status, args);">Solicitud Emisión de Carta de Pago</p:commandLink></li>
                 </ul></li>
             </ul>
         </c:when>

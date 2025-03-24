@@ -12,21 +12,20 @@
 		<div class="ui-blocks">
 		<label class="ui-block">
 			<div class="label">Ejercicio:</div>
-			<h:selectOneMenu id="ejDec" value="#{presto.solicitud.ejOrgDec}" styleClass="ui-input ui-select update-presto" tabindex="5">
-				<f:selectItems value="#{presto.ejercicios}" />
-			</h:selectOneMenu>
+			<h:inputText id="ej" value="#{presto.solicitud.ejOrgDec}" styleClass="ui-ej hide" />
+			<select id="ejDec" name="ejDec" class="ui-input ui-select ui-ej" tabindex="5"></select>
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
 			<p:remoteCommand name="rcFindOrgDec" action="#{presto.form.filterOrganicas()}" oncomplete="loadItems(xhr, status, args)" />
-			<input type="search" id="acOrgDec" name="acOrgDec" class="ui-input ui-autocomplete #{presto.form.cssReadOnly}" tabindex="6" /> 
+			<input type="search" id="acOrgDec" name="acOrgDec" class="ui-input ui-autocomplete" tabindex="6" /> 
 			<h:inputText id="idOrgDec" value="#{presto.solicitud.idOrganicaDec}" styleClass="ui-input ui-number hide" />
 			<ul role="list" class="results"></ul>
 			<div class="ui-errtip"></div> 
 		</label>
 		<label class="ui-block">
 			<div class="label" title="Orgánica afectada">FA:</div>
-			<h:inputText id="faDec" value="#{presto.solicitud.faDec}" class="ui-input ui-bool disabled" tabindex="-1" title="Orgánica afectada" />
+			<input id="faDec" name="faDec" class="ui-input ui-bool disabled" tabindex="-1" disabled title="Orgánica afectada" />
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
@@ -39,12 +38,12 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Importe:</div>
-			<input type="text" id="impDec" name="impDec" value="#{presto.solicitud.importe}" maxlength="12" tabindex="8" class="ui-input ui-float #{presto.form.cssReadOnly}"/> €
+			<input type="text" id="impDec" name="impDec" maxlength="12" tabindex="8" class="ui-input ui-float #{presto.form.cssReadOnly}"/> €
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block" data-refresh="show-imp-cd">
 			<div class="label required">Importe Disponible:</div>
-			<input type="text" id="cd" name="cd" tabindex="-1" class="ui-input ui-float disabled" readonly /> €
+			<input type="text" id="cd" name="cd" tabindex="-1" class="ui-input ui-float disabled" disabled /> €
 			<div class="ui-errtip"></div>
 		</label>
 		</div>

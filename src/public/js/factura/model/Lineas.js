@@ -1,10 +1,9 @@
 
 import i18n from "../../i18n/langs.js";
-import Linea from "./Linea.js";
+import linea from "./Linea.js";
 
-export default function Lineas(factura) {
+function Lineas() {
 	const self = this; //self instance
-    const linea = new Linea(factura);
 
     let data; // Current presto data type
     this.getData = () => data;
@@ -23,3 +22,5 @@ export default function Lineas(factura) {
         return data.length ? valid : !valid.addError("desc", "errRequired", msg);
     }
 }
+
+export default new Lineas();

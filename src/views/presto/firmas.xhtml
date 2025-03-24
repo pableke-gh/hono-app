@@ -7,12 +7,12 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-<div>
-	<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
-	<div class="ui-blocks ui-firmantes"></div>
-	<p:outputPanel styleClass="update-presto #{presto.firmas.cssRechazada}">
-		<p class="notice notice-error"><h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (#{presto.firmas.nameRechazo}) #{presto.firmas.infoRechazo}</p>
-	</p:outputPanel>
-	<ui:include src="leyenda_firmas.xhtml"></ui:include>
-</div>
+	<div class="navbar" data-refresh="has-firmas">
+		<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
+		<div class="ui-blocks ui-firmantes"></div>
+		<p class="notice notice-error" data-refresh="is-rechazada">
+			<h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (@rejectedBy;) @info;
+		</p>
+		<ui:include src="leyenda_firmas.xhtml"></ui:include>
+	</div>
 </html>

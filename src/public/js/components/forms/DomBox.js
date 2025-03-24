@@ -59,6 +59,24 @@ function DomBox() {
 		return self;
 	}
 
+	const fnEmpty = emptyOption => (emptyOption ? `<option>${emptyOption}</option>` : ""); 
+	this.setItems = (select, items, emptyOption) => {
+		const fnItem = item => `<option value="${item.value}">${item.label}</option>`; // Item list
+        select.innerHTML = fnEmpty(emptyOption) + items.map(fnItem).join(""); // Render items
+		return self;
+	}
+    this.setData = (select, data, emptyOption) => {
+		select.innerHTML = fnEmpty(emptyOption);
+        for (const k in data) // Iterate over all keys
+            select.innerHTML += `<option value="${k}">${data[k]}</option>`;
+		return self;
+    }
+	this.setLabels = (select, labels, emptyOption) => {
+		const fnLabel = label => `<option value="${label}">${label}</option>`; // label list
+        select.innerHTML = fnEmpty(emptyOption) + labels.map(fnLabel).join(""); // Render labels
+		return self;
+	}
+
 	// Events handlers
 	const fnQuery = el => globalThis.isstr(el) ? $1(el) : el;
 	const fnAddEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return self; }
