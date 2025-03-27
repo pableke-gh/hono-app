@@ -1,4 +1,5 @@
 
+import tabs from "../../../components/Tabs.js";
 import sb from "../../../components/types/StringBox.js";
 import i18n from "../../../i18n/langs.js";
 
@@ -16,11 +17,12 @@ function Rutas() {
 
 	this.reload = rutas => { rmaps.reload(rutas); return self; }
 	this.setRutas = rutas => { rmaps.setRutas(rutas); return self; }
+	this.update = rutas => { rutas && self.setRutas(rutas); return self; }
 
 	this.validateP1 = data => {
 		const valid = form.getValidators();
-		if (!data.objeto)
-        	valid.addRequired("objeto", "errObjeto");
+		if (!data.memo)
+        	valid.addRequired("memo", "errObjeto");
 		if (valid.isOk() && perfil.isMun()) // valida la ruta unica
 			return rutas.validate() && rmaps.saveRutas();
 		return valid.isOk();
@@ -31,8 +33,11 @@ function Rutas() {
 			return !form.getValidators().addRequired("destino", "errMinRutas");
 		return ok && rmaps.saveRutas(); // guardo los cambios y recalculo las dietas
 	}
-	window.validateP1 = () => form.validate(self.validateP1);
-	window.validateP2 = () => form.validate(self.validate);
+
+	tabs.setAction("paso1", () => { form.validate(self.validateP1) && form.invoke(window.rcPaso1); });
+	tabs.setAction("save1", () => { form.validate(self.validateP1) && form.invoke(window.rcSave1, 1); });
+	tabs.setAction("paso2", () => { form.validate(self.validate) && form.invoke(window.rcPaso2); });
+	tabs.setAction("save2", () => { form.validate(self.validate) && form.invoke(window.rcSave2, "maps"); }); 
 
 	async function fnAddRuta(ev) {
 		ev.preventDefault(); // stop event
@@ -69,6 +74,11 @@ function Rutas() {
 		rmaps.init();
 		return self;
 	}
+
+	/*********** Google Maps API ***********/
+	tabs.setActiveEvent("maps", perfil.isTrayectos);
+	tabs.setInitEvent("maps", self.maps);
+	//tabs.setViewEvent("maps", tabs.resetToggleAction);
 }
 
 export default new Rutas();

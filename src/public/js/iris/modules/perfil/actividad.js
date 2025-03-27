@@ -1,10 +1,11 @@
 
-import iris from "../iris.js";
+import iris from "../../model/Iris.js";
+import xeco from "../../../xeco/xeco.js";
 import actividades from "../../data/perfiles/actividades.js"
 
 function Actividad() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	let _eColectivo; // span element
 
 	this.isEmpty = () => (!_eColectivo.innerText);
@@ -41,14 +42,14 @@ function Actividad() {
 	this.isRutaUnica = () => (self.isAutA7j() || self.is1Dia());
 	this.isLocalizaciones = () => (self.isMun() || self.isAutA7j());
 	this.isTrayectos = () => (!self.isLocalizaciones() && !self.is1Dia());
-	this.FacturaUpct = () => true; // TODO: ver si es necesario
+	this.isFacturaUpct = () => true; // TODO: ver si es necesario
 
 	this.getColectivo = () => form.getText("#colectivo");
 	this.setColectivo = (colectivo, email) => {
 		// Show mailto icon and update href attribute
 		_eColectivo.nextElementSibling.setVisible(email).setAttribute("href", "mailto:" + email);
 		_eColectivo.parentNode.setVisible(colectivo);
-		_eColectivo.innerText = colectivo;
+		_eColectivo.innerText = colectivo || "";
 		return self.update();
 	}
 
@@ -56,14 +57,15 @@ function Actividad() {
 		form.select("#actividad", actividades(self.getRol(), self.getColectivo(), self.getFinanciacion()))
 			.select("#tramite", (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
 			.closeAlerts();
+		iris.setPerfil(self.getRol(), self.getColectivo(), self.getActividad(), self.getTramite(), self.getFinanciacion());
 		return self;
 	}
 
 	this.init = () => {
 		_eColectivo = form.querySelector("#colectivo");
-		_eColectivo.parentNode.setVisible(!self.isEmpty());
-		form.onChangeInput("#actividad", self.update);
-		return self;
+		const fnUpdatePf = ev => { ev.target.previousElementSibling.value = ev.target.value; };
+		form.onChangeInput("#actividad", self.update).onChangeInputs(".ui-pf", fnUpdatePf);
+		form.set("is-mun", self.isMun).set("is-tribunal", self.isTribunal).set("is-mesa", globalThis.void);
 	}
 }
 

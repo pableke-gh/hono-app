@@ -59,6 +59,10 @@ function Gastos() {
 		_tblGastos.render(self.getPaso5());
 		return self;
 	}
+	this.update = gastos => {
+		gastos && self.setGastos(gastos);
+		return self;
+	}
 
 	this.validateGasto = data => {
 console.log(data);

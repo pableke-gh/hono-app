@@ -1,5 +1,6 @@
 
 import api from "../Api.js";
+import tabs from "../Tabs.js";
 import alerts from "../Alerts.js";
 import dom from "./DomBox.js";
 import Table from "../Table.js";
@@ -29,6 +30,7 @@ export default function(form, opts) {
 	const EMPTY = ""; // Empty string
 	const INPUTS = "input,select,textarea"; // All input fields
 	const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
+	let _isChanged; // bool indicator
 
 	const $1 = selector => form.querySelector(selector);
 	const $$ = selector => form.querySelectorAll(selector);
@@ -62,6 +64,8 @@ export default function(form, opts) {
 	this.isCached = id => (id == opts.cache);
 	this.setCache = id => { opts.cache = id; return self; }
 	this.resetCache = () => { delete opts.cache; return self; } 
+	this.isChanged = () => _isChanged;
+	this.setChanged = val => { _isChanged = val; return self; }
 
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
@@ -71,8 +75,21 @@ export default function(form, opts) {
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
-	this.getValidators = i18n.getValidation;
+	this.nextTab = tab => {
+		if (tab && tabs.isActive(tab)) // same tab
+			return self.showOk("saveOk"); // show ok msg
+		tabs.nextTab(tab); // go to next tab
+		return self;
+	}
+	this.invoke = (fnInvoke, tab) => {
+		if (!self.isChanged())
+			return self.nextTab(tab);
+		self.loading().setChanged();
+		fnInvoke(); // invoke action
+		return self;
+	}
 
+	this.getValidators = i18n.getValidation; // validator object
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard
 	this.getHtml = selector => dom.getHtml(fnQuery(selector));
     this.setHtml = (selector, text) => { dom.html(fnQuery(selector), text); return self; }
@@ -311,8 +328,8 @@ export default function(form, opts) {
 		return self.autofocus();
 	}
 
-	if (form) { // Form initialization
-		form.setAttribute("novalidate", "1");
-		self.update().beforeReset(ev => self.closeAlerts().autofocus());
-	}
+	// Form initialization
+	form.setAttribute("novalidate", "1");
+	self.update().afterChange(() => { _isChanged = true; })
+		.beforeReset(ev => self.closeAlerts().autofocus());
 }

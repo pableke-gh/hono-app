@@ -2,6 +2,7 @@
 import coll from "../../components/Collection.js";
 import sb from "../../components/types/StringBox.js";
 import i18n from "../../i18n/langs.js";
+import iris from "./Iris.js";
 
 function Organica() {
 	//const self = this; //self instance
@@ -26,9 +27,8 @@ function Organica() {
 	}
 
 	this.row = row => {
-		const editable = window.IRSE.editable;
-		const cd = editable ? `<td data-cell="Crédito Disp.">${i18n.isoFloat(row.imp)}</td>` : ""; // #{iris.form.editable}
-		const remove = editable ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
+		const cd = iris.isEditable() ? `<td data-cell="Crédito Disp.">${i18n.isoFloat(row.imp)}</td>` : ""; // #{iris.form.editable}
+		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="#{msg['lbl.organica']}">${row.o}</td>
 			${cd}

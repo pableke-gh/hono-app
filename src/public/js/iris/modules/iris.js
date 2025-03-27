@@ -1,29 +1,29 @@
 
-import Form from "../../components/forms/Form.js";
-import tabs from "../../components/Tabs.js";
-import i18n from "../../i18n/langs.js";
+import iris from "../model/Iris.js";
+import xeco from "../../xeco/xeco.js";
 
 function Iris() {
-	const self = this; //self instance
-	const form = new Form("#xeco-irse");
+	//const self = this; //self instance
+	const form = xeco.getForm();
 
 	this.getForm = () => form;
 	this.getValidators = form.getValidators;
 
-	this.update = () => {
-		form.reset("input[id$='-json']"); // update fields
-		return self;
-	}
 	this.init = () => {
-		form.update().setCache(window.IRSE.id); // current cache id
+		xeco.init(); // init. actions
+		form.set("is-disabled", iris.isDisabled).set("is-cancelable", iris.isCancelable).set("is-resumable", iris.isResumable);
 		form.onChangeInputs("[name='matricula-vp']", ev => form.setStrval("#matricula", ev.target.value));
-		return self.update();
 	}
 
-	/*********** View Actions ***********/
-	window.fnRemove = () => i18n.confirm("removeCom") && loading();
-	window.isCached = (id, tab) => (form.isCached(id) && tabs.showTab(tab)); // if cached avoid navegation
-	window.saveTab = () => form.showOk(i18n.get("saveOk")).working();
+	this.view = (data, firmas) => {
+		form.reset("input[id$='-json']"); // update fields
+		xeco.view(data, firmas); // load data-model before view
+	}
+
+	this.update = (data, firmas, tab) => {
+		form.reset("input[id$='-json']"); // update fields
+		xeco.update(data, firmas, tab); // Update firmas blocks
+	}
 }
 
 export default new Iris();

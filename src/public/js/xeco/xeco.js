@@ -48,37 +48,40 @@ function XecoForm() {
 		solicitudes.set("#rcEmails", data => fnSend("rcEmails", data));
 		solicitudes.set("#rcRemove", data => fnSend("rcRemove", data));
 		solicitudes.set("#rcIntegrar", (data, link, tr) => {
-			tr.querySelectorAll(".estado").text("Procesando...");
+			list.updateRow();  // avoid reclick
 			fnSend("rcIntegrar", data); // llamada al servidor
-			link.hide(); // avoid reclick
 		});
 	}
 
 	this.view = (data, principales) => {
-		model.setData(data); // 1º carga los datos de la solicitud
+		model.setData(data).update(data); // 1º carga los datos de la solicitud
 		firmas.view(principales); // 2º cargo la vista de firmas asociadas
 		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])")//.setEditable()
 			.readonly(model.isDisabled(), ":not(.readonly-manual)").readonly(!model.isEditableUae(), ".editable-uae")
 			.refresh(data); // 3º update form views
 		tabs.showTab("form"); // navego al tab form
 	}
-	this.setFirmas = (data, principales) => {
-		model.setData(data); // 1º carga los datos de la solicitud
-		firmas.view(principales); // 2º cargo la vista de firmas asociadas
-		form.refresh(data); // 3º update form views
-		tabs.showTab("reject"); // navego al tab reject
+	this.update = (data, principales, tab) => {
+		data = data || model.getData(); // default = current data
+		model.setData(data).update(data); // 1º carga los datos de la solicitud
+		principales && firmas.view(principales); // 2º actualizo la vista de firmas asociadas
+		form.refresh(data).nextTab(tab); // 3º update form views
 	}
 
 	/*** Init. actions for model form ***/
 	const fnClickNext = link => { link.nextElementSibling.click(); window.loading(); };
 	form.set("is-editable", model.isEditable).set("is-editable-uae", model.isEditableUae)
-		.set("is-firmable", model.isFirmable).set("is-rechazable", model.isRechazable); 
+		.set("is-firmable", model.isFirmable).set("is-rechazable", model.isRechazable)
+		.set("is-removable", model.isRemovable);
 	tabs.setAction("send", link => { model.validate() && i18n.confirm("msgSend") && fnClickNext(link); });
 	tabs.setAction("firmar", link => { i18n.confirm("msgFirmar") && fnClickNext(link); });
 	tabs.setAction("reject", () => { fnReject(list.getCurrentItem()); });
 	tabs.setAction("ejecutar", link => { uxxiec.save(); fnClickNext(link); });
 	tabs.setAction("notificar", link => { uxxiec.save(); fnClickNext(link); });
-	/*** Init. actions for model form ***/
+	tabs.setAction("remove", link => {
+		const msg = link.dataset.confirm || "remove";
+		i18n.confirm(msg) && fnSend("rcRemove", list.getCurrentItem());
+	});
 }
 
 export default new XecoForm();

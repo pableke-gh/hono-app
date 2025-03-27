@@ -1,7 +1,7 @@
 
 import i18n from "../../i18n/langs.js";
-import solicitud from "../../xeco/model/Solicitud.js";
 import firma from "../../xeco/model/Firma.js";
+import solicitud from "../../xeco/model/Solicitud.js";
 import lineas from "./Lineas.js";
 
 const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso" ];
@@ -18,6 +18,10 @@ function Factura() {
 	this.setSubtipo = solicitud.setSubtipo;
 	this.getCodigo = solicitud.getCodigo;
 	this.getTitulo = tipo => TITULOS[tipo] || TITULOS[1];
+	this.update = solicitud.update = data => { // update parent
+		data.titulo = self.getTitulo(data.tipo); // set title for views
+		return self;
+	}
 
 	this.getLineas = () => lineas;
 	this.setLineas = table => { lineas.setData(table.getData()); return self; }
@@ -53,7 +57,7 @@ function Factura() {
 		return `<tr class="tb-data">
 			<td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
 			<td class="hide-sm text-upper1">${titulo}</td>
-			<td class="${solicitud.getStyleByEstado()} estado-${data.id}">${solicitud.getDescEstado()}</td>
+			<td class="${solicitud.getStyleByEstado()} estado">${solicitud.getDescEstado()}</td>
 			<td class="text-center">${firma.myFlag(data)}</td>
 			<td class="hide-sm">${data.sig || ""}</td>
 			<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>

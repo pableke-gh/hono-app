@@ -79,13 +79,8 @@ HTMLElement.prototype.addClick = function(fn) { this.addEventListener("click", e
 HTMLElement.prototype.setClick = function(fn) { this.onclick = ev => fn(ev, this); return this; }
 HTMLElement.prototype.setVisible = function(force) { return force ? this.show() : this.hide(); }
 HTMLElement.prototype.isHidden = function() { return this.classList.contains(HIDE_CLASS); } // has class hide
-HTMLElement.prototype.isVisible = function(selector) {
-    return fnVisible(this) && (selector ? this.matches(selector) : true);
-}
-HTMLElement.prototype.render = function(data, opts) {
-	fnRender(this, data, opts || {});
-    return this;
-}
+HTMLElement.prototype.isVisible = function(selector) { return fnVisible(this) && (selector ? this.matches(selector) : true); }
+HTMLElement.prototype.render = function(data, opts) { fnRender(this, data, opts || {}); return this; }
 
 HTMLElement.prototype.setDisabled = function(force) { // Update attribute and style
     this.classList.toggle("disabled", this.toggleAttribute("disabled", force));

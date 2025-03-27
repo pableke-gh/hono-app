@@ -26,13 +26,11 @@ function Presto() {
 
 	this.view = (data, ejercicios, firmas) => {
 		form.reset("input[id$='-json']").setLabels("select.ui-ej", ejercicios); // update field values
-		data.titulo = presto.getTitulo(data.tipo); // set title for views
 		xeco.view(data, firmas); // load data-model before view
 	}
 
-	this.setFirmas = (data, firmas) => {
-		data.titulo = presto.getTitulo(data.tipo); // set title for views
-		xeco.setFirmas(data, firmas); // Update firmas blocks
+	this.update = (data, firmas, tab) => {
+		xeco.update(data, firmas, tab); // Update firmas blocks
 	}
 }
 

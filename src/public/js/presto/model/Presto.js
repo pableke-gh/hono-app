@@ -1,7 +1,7 @@
 
 import i18n from "../../i18n/langs.js";
-import solicitud from "../../xeco/model/Solicitud.js";
 import firma from "../../xeco/model/Firma.js";
+import solicitud from "../../xeco/model/Solicitud.js";
 import partidas from "./Partidas.js";
 
 function Presto() {
@@ -19,6 +19,11 @@ function Presto() {
 	this.getMemoria = solicitud.getMemoria;
 	this.isUrgente = solicitud.isUrgente;
 	//this.setUrgente = solicitud.setUrgente;
+	this.update = solicitud.update = data => { // update parent
+		data.ej = data.ejDec; // sync ejercicios
+		data.titulo = self.getTitulo(data.tipo); // set title for views
+		return self;
+	}
 
 	this.getPartidas = () => partidas;
     this.getPartida = partidas.getPartida;
@@ -66,7 +71,7 @@ function Presto() {
 			${info}
 			<td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
 			<td class="hide-sm">${titulo}</td>
-			<td class="${solicitud.getStyleByEstado()} estado-${data.id}">${solicitud.getDescEstado()}</td>
+			<td class="${solicitud.getStyleByEstado()} estado">${solicitud.getDescEstado()}</td>
 			<td class="text-center">${firma.myFlag(data)}</td>
 			<td class="hide-sm">${data.sig || ""}</td>
 			<td title="${data.oIncDesc}">${data.orgInc}${otras}</td>

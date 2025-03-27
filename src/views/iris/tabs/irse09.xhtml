@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<p:outputPanel styleClass="card-xeco update-irse">
+	<div class="card-xeco">
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab9.tit']}" escape="false" />​</h2>
 
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuentas']}" escape="false" /></div>
@@ -82,17 +82,17 @@
 				</div>
 			</label>
 		</div>
-	</p:outputPanel>
+	</div>
 
 	<ui:include src="./irse09_org.xhtml"></ui:include>
-	<p:outputPanel styleClass="navbar update-irse">
-	<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="190"><i class="fas fa-arrow-to-left"></i></a>
+	<div class="navbar">
+	<a href="#tab-form" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="190"><i class="fas fa-arrow-to-left"></i></a>
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:if test="#{iris.form.editable}">
 		<p:commandButton action="#{irse.form.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="showAlerts(xhr, status, args);" icon="far fa-save" 
 			styleClass="btn btn warn warning-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="192" title="#{msg['lbl.btn.no.enviar']}" />
-		<p:commandButton action="#{irse.list.send()}" onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 13);" icon="far fa-file-signature" 
+		<p:commandButton action="#{irse.list.send()}" onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 'init');" icon="far fa-file-signature" 
 			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.enviar']}" tabindex="193" title="#{msg['tit.btn.firmar.enviar']}" />
 	</c:if>
 	<c:choose>
@@ -107,5 +107,5 @@
 		</c:otherwise>
 	</c:choose>
 	<ui:include src="../parts/btn_doc.xhtml"></ui:include>
-	</p:outputPanel>
+	</div>
 </html>

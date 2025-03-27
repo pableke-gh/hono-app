@@ -1,12 +1,24 @@
 
+import tabs from "../../../components/Tabs.js";
 import pf from "../../../components/Primefaces.js";
+
+import iris from "../iris.js";
 import organicas from "./organicas.js";
-import perfiles from "../../data/perfiles/perfiles.js"; 
+import actividad from "./actividad.js";
 
 function Perfil() {
 	const self = this; //self instance
-	const form = organicas.getForm(); // form component
-	const actividad = organicas.getActividad();
+	const form = iris.getForm(); // form component
+
+	const fnRender = (nif, nombre) => (nif + " - " + nombre);
+	const _acInteresado = form.setAutocomplete("#interesado", {
+		delay: 500, //milliseconds between keystroke occurs and when a search is performed
+		minLength: 5, //reduce matches
+		source: term => pf.sendTerm("rcFindInteresado", term),
+		render: item => fnRender(item.nif, item.nombre),
+		select: item => { actividad.setColectivo(item.ci, item.email); return item.nif; },
+		onReset: () => actividad.setColectivo()
+	});
 
 	this.size = organicas.size;
 	this.isEmpty = () => (actividad.isEmpty() || organicas.isEmpty());
@@ -18,29 +30,7 @@ function Perfil() {
 	this.is1Dia = actividad.is1Dia;
 	this.isTrayectos = actividad.isTrayectos;
 	this.isRutaUnica = actividad.isRutaUnica;
-	this.isFacturaUpct = actividad.isFacturaUpct;
-
-	this.getPerfil = () => {
-		return perfiles(actividad.getRol(), actividad.getColectivo(), actividad.getActividad(), actividad.getTramite(), actividad.getFinanciacion());
-	}
-	this.setOrganicas = data => {
-		organicas.setOrganicas(data); // update financiacion
-		form.set("titulo", self.getPerfil()).set("codigo", window.IRSE.codigo).render(".titulo-perfil"); // render titles
-		return self; // update view
-	}
-	this.update = organicas => {
-		organicas && this.setOrganicas(organicas);
-		return self; // update view
-	}
-	this.refresh = () => {
-		form.refresh().render(".i18n-tr-h1.active"); // render steps
-		return self; // update view
-	}
-
-	form.afterReset(() => {
-		organicas.reset();
-		actividad.setColectivo();
-	});
+	//this.isFacturaUpct = actividad.isFacturaUpct;
 
     this.validate = data => {
 		const valid = form.getValidators();
@@ -50,27 +40,31 @@ function Perfil() {
 			valid.addRequired("organica", "errOrganicas");
 		return valid.isOk() && organicas.save();
     }
-	window.validateP0 = () => form.validate(self.validate);
+
+	form.afterReset(() => { _acInteresado.setValue(); actividad.setColectivo(); organicas.reset(); });
+	tabs.setAction("paso0", () => { form.validate(self.validate) && form.invoke(window.rcPaso0, 1); });
+	tabs.setViewEvent(1, () => form.render(".i18n-tr-h1.active")); // render steps
 
 	this.init = () => {
 		actividad.init();
 		organicas.init();
-
-		form.setAutocomplete("#interesado", {
-			delay: 500, //milliseconds between keystroke occurs and when a search is performed
-			minLength: 5, //reduce matches
-			source: term => pf.sendTerm("rcFindInteresado", term),
-			render: item => (item.nif + " - " + item.nombre),
-			select: item => { actividad.setColectivo(item.ci, item.email); return item.nif; },
-			onReset: () => actividad.setColectivo()
-		});
 
 		form.loadAcItems(".ui-personal", term => pf.sendTerm("rcFindPersonal", term));
 		form.set("is-isu", actividad.isIsu).set("is-maps", actividad.isTrayectos);
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));
-		return self;
+	}
+
+	this.view = (data, interesado, orgs) => {
+		organicas.setOrganicas(orgs); // update financiacion
+		_acInteresado.setValue(data.nifInt, fnRender(data.nifInt, data.interesado));
+		actividad.setColectivo(data.colectivo, data.emailInt);
+		self.update(interesado);
+	}
+
+	this.update = interesado => {
+		interesado && form.render(".dir-interesado", interesado);
 	}
 }
 

@@ -7,8 +7,6 @@ const fnTrue = () => true;
 
 export default function(table, opts) {
 	table = globalThis.isstr(table) ? $1(table) : table;
-	if (!table)
-		return; // Table element not found
 
 	opts = opts || {}; // default options
 	opts.sortClass = opts.sortClass || "sort";
@@ -40,6 +38,7 @@ export default function(table, opts) {
 
     let _rows = []; // default = empty array
     let _index = -1; // current item position in data
+	let _isChanged; // bool indicator
 
     this.get = name => opts[name];
     this.set = (name, fn) => { opts[name] = fn; return self; }
@@ -74,6 +73,8 @@ export default function(table, opts) {
     this.getLastItem = () => _rows.at(-1);
     this.isEmpty = () => !_rows.length;
     this.size = () => _rows.length;
+	this.isChanged = () => _isChanged;
+	this.setChanged = val => { _isChanged = val; return self; }
 
     this.getTable = () => table;
     this.getHeader = () => tHead;
@@ -111,6 +112,7 @@ export default function(table, opts) {
 						: opts.rowEmptyTable; // specific empty row
 		self.renderFooter(); // update table footer
 		tBody.classList.add(opts.activeClass); // Add styles (animation)
+		_isChanged = true; // rendered force indicator
 
 		// Row listeners for change, find and remove items in body
 		tBody.rows.forEach((tr, i) => {

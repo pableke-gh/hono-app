@@ -1,5 +1,6 @@
 
 import Form from "../../components/forms/Form.js";
+import tabs from "../../components/Tabs.js";
 import model from "../model/Solicitud.js";
 
 function List() {
@@ -17,23 +18,37 @@ function List() {
 		tblSolicitudes.render(data);
 		return self;
 	}
-	this.update = id => {
-		tblSolicitudes.querySelectorAll(".firma-" + id).hide();
-		tblSolicitudes.querySelectorAll(".estado-" + id).text("Procesando...");
-		return self;
+	this.updateRow = () => { // avoid reclicks
+		const tr = tblSolicitudes.getCurrentRow();
+		tr.querySelectorAll(".once-action").hide();
+		tr.querySelectorAll(".estado").text("Procesando...");
 	}
 	this.load = () => {
 		const divSolicitudes = form.querySelector("#solicitudes-json");
 		return self.setSolicitudes(JSON.read(divSolicitudes?.innerHTML)); // preload data
 	}
 
-	window.onList = () => form.setData({ fMiFirma: "5" }, ":not([type=hidden])").loading();
+	const fnList = (estado, firma) => {
+		form.reset(".ui-filter").setStrval("#estado", estado).setStrval("#fMiFirma", firma);
+		setTimeout(form.loading, 1); // show loading after go new tab
+		window.rcList();
+	}
+	tabs.setInitEvent("list", () => (tblSolicitudes.isEmpty() && fnList("", "5")));
+	tabs.setAction("list", () => { form.loading(); window.rcList(); });
+	tabs.setAction("list-all", () => { form.reset(".ui-filter").loading(); window.rcList(); });
+	tabs.setAction("relist", () => fnList("", "5"));
+	tabs.setAction("vinc", () => {
+		if ("1" == form.getval("#estado"))
+			tabs.showTab("list");
+		else
+			fnList("1");
+	});
+
 	window.loadFiltro = (xhr, status, args) => {
 		window.showTab(xhr, status, args, "list") && self.setSolicitudes(JSON.read(args.data));
 	}
 	window.updateList = (xhr, status, args) => {
-		if (window.showTab(xhr, status, args, "list"))
-			self.update(args.id); // update list
+		window.showTab(xhr, status, args, "list") && self.updateRow(); // update list
 	}
 }
 

@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<p:outputPanel styleClass="card-xeco update-irse">
+	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
 			<span class="text-warn i18n-tr-h1 active">@lblPaso; @count; @lblDe; @size;</span>
@@ -109,9 +109,9 @@
 		<div class="navbar rutas-gt-1">
 			<p id="info-rutas-gastos">* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @numRutasOut; <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @numNochesPendientes; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>
 		</div>
-	</p:outputPanel>
+	</div>
 
-	<p:outputPanel styleClass="navbar update-irse">
+	<div class="navbar">
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="110">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
@@ -131,5 +131,5 @@
 	<c:if test="#{iris.form.firmable}">
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</c:if>
-	</p:outputPanel>
+	</div>
 </html>

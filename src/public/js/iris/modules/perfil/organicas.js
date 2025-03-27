@@ -1,17 +1,15 @@
 
 import pf from "../../../components/Primefaces.js";
-import iris from "../iris.js";
 import actividad from "./actividad.js";
+import xeco from "../../../xeco/xeco.js";
+import iris from "../../model/Iris.js";
 import organica from "../../model/Organica.js"
 
 function Organicas() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	let _tblOrganicas; // tabla de organicas
-	let _saveOrganicas; // bool indicator
 
-	this.getForm = () => form;
-	this.getActividad = () => actividad;
 	this.size = () => _tblOrganicas.size(); 
 	this.isEmpty = () => _tblOrganicas.isEmpty();
 	this.reset = () => self.setOrganicas();
@@ -41,19 +39,15 @@ function Organicas() {
 		else
 			form.text("span#responsables", "");
 		actividad.update(); // 3º update actividad + tramite
-		_saveOrganicas = true;
 		return self;
 	}
 	this.setOrganicas = organicas => {
-		_tblOrganicas.render(organicas);
-		_saveOrganicas = false;
-		return self;
+		_tblOrganicas.render(organicas).setChanged();
 	}
 	this.save = () => {
-		if (!_saveOrganicas)
-			return self; // no hay cambios
-		form.saveTable("#org-json", _tblOrganicas);
-		_saveOrganicas = false;
+		if (_tblOrganicas.isChanged())
+			form.saveTable("#org-json", _tblOrganicas).setChanged(true);
+		_tblOrganicas.setChanged(); // changed saved
 		return self
 	}
 
@@ -67,7 +61,7 @@ function Organicas() {
 			source: term => pf.sendTerm("rcFindOrg", term),
 			render: item => item.o + " - " + item.dOrg,
 			select: item => {
-				if (!window.IRSE.uxxiec)
+				if (!iris.isUxxiec())
 					_tblOrganicas.render([item]);
 				return item.id;
 			},
@@ -81,7 +75,6 @@ function Organicas() {
 			acOrganiaca.reload();
 			ev.preventDefault();
 		});
-		return self
 	}
 }
 

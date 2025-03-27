@@ -31,17 +31,12 @@
         </c:choose>
         <ul>
             <li>
-                <p:commandLink action="#{fact.list.relist()}" onclick="onList();" oncomplete="loadFiltro(xhr, status, args)" 
-                    title="Solicitudes pendientes de firma">
-                    Consulta de Solicitudes</p:commandLink>
+				<a href="#tab-list" title="Consulta de Solicitudes pendientes de firma">Consulta de Solicitudes</a>
             </li>
             <c:if test="#{fact.user.uae}">
-                <li>
-                    <p:commandLink action="#{fact.list.relist()}" onclick="onList();" oncomplete="loadFiltro(xhr, status, args);" 
-                        title="Asociación entre las solicitudes de factura y operaciones de UXXI-EC">
-                        Consulta de Formación de Expediente
-                    </p:commandLink>
-                </li>
+            <li>
+				<a href="#tab-list" title="Asociación entre las solicitudes de factura y operaciones de UXXI-EC">Consulta de Formación de Expediente</a>
+            </li>
             </c:if>
         </ul>
     </h:form>

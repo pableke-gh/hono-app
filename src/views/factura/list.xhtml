@@ -13,13 +13,13 @@
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-				<h:selectOneMenu value="#{fact.list.filtro.ej}" styleClass="ui-input ui-select" tabindex="1" title="#{msg['tit.ejercicio']}">
+				<h:selectOneMenu value="#{fact.list.filtro.ej}" styleClass="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
 					<f:selectItems value="#{uae.ejercicios}" />
 				</h:selectOneMenu>
 			</label>
 			<label class="ui-block">
 				<div class="label">Tipo:</div>
-				<h:selectOneMenu value="#{fact.list.filtro.tipoView}" styleClass="ui-input ui-select" tabindex="2">
+				<h:selectOneMenu value="#{fact.list.filtro.tipoView}" styleClass="ui-input ui-select ui-filter" tabindex="2">
 					<f:selectItem itemValue="0" itemLabel=""/>
 					<f:selectItem itemValue="1" itemLabel="Factura" itemEscaped="false"/>
 					<f:selectItem itemValue="3" itemLabel="Carta de pago" itemEscaped="false"/>
@@ -29,7 +29,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.estado']}" escape="false" />:</div>
-				<h:selectOneMenu id="fEstado" value="#{fact.list.filtro.estadoView}" styleClass="ui-input ui-select ui-number" tabindex="2" title="#{msg['tit.estado']}">
+				<h:selectOneMenu id="fEstado" value="#{fact.list.filtro.estadoView}" styleClass="ui-input ui-select ui-number ui-filter" tabindex="2" title="#{msg['tit.estado']}">
 					<f:selectItem itemValue="0" itemLabel="" />
 					<f:selectItem itemValue="5" itemLabel="En Proceso" itemEscaped="false"/>
 					<f:selectItem itemValue="1" itemLabel="Aceptada" itemEscaped="false"/>
@@ -46,7 +46,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
-				<h:selectOneMenu id="fMiFirma" value="#{fact.list.filtro.miFirma}" styleClass="ui-input ui-select ui-number" tabindex="3" title="#{msg['lbl.mi.firma']}">
+				<h:selectOneMenu id="fMiFirma" value="#{fact.list.filtro.miFirma}" styleClass="ui-input ui-select ui-number ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
 					<f:selectItem itemValue="0" itemLabel="" />
 					<f:selectItem itemValue="5" itemLabel="Pendiente" itemEscaped="false" />
 					<f:selectItem itemValue="1" itemLabel="Aceptada" itemEscaped="false" />
@@ -55,30 +55,29 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<h:inputText value="#{fact.list.filtro.codigoView}" styleClass="ui-input ui-code" tabindex="4" />
+				<h:inputText value="#{fact.list.filtro.codigoView}" styleClass="ui-input ui-code ui-filter" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.organica']}" escape="false" />:</div>
-				<h:inputText value="#{fact.list.filtro.organicaView}" tabindex="5"  styleClass="ui-input ui-code"/>
+				<h:inputText value="#{fact.list.filtro.organicaView}" tabindex="5"  styleClass="ui-input ui-code ui-filter"/>
 			</label>
 			<label class="ui-block">
 				<div class="fInicio"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<h:inputText value="#{fact.list.filtro.f1}" tabindex="6" styleClass="ui-input ui-date"/> ...
-				<h:inputText value="#{fact.list.filtro.f2}" tabindex="7" styleClass="ui-input ui-date"/>
+				<h:inputText value="#{fact.list.filtro.f1}" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
+				<h:inputText value="#{fact.list.filtro.f2}" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label">Solicitante:</div>
-				<h:inputText value="#{fact.list.filtro.solicitante}" styleClass="ui-input" tabindex="8" />
+				<h:inputText value="#{fact.list.filtro.solicitante}" styleClass="ui-input ui-filter" tabindex="8" />
 			</label>
 		</div>
 
 		<div class="navbar">
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-			<p:commandButton action="#{fact.list.list()}" onclick="loading();" oncomplete="loadFiltro(xhr, status, args)" 
-				value="Buscar" icon="far fa-search" styleClass="btn btn-info" tabindex="13"/>
-			<p:commandLink action="#{fact.list.relist()}" onclick="onList();" oncomplete="loadFiltro(xhr, status, args)" styleClass="btn btn-warn" tabindex="14">
-				<i class="far fa-times-circle btn-icon-left"></i>Limpiar</p:commandLink>
+			<a href="#tab-action-list" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
+			<a href="#tab-action-relist" class="btn btn-warn" tabindex="14"><i class="far fa-times-circle btn-icon-left"></i>Limpiar</a>
+			<p:remoteCommand name="rcList" action="#{fact.list.list()}" oncomplete="loadFiltro(xhr, status, args)" />
 		</div>
 
 		<table id="solicitudes" class="tb-xeco">
@@ -101,7 +100,7 @@
 		<div id="solicitudes-json" class="hide">#{fact.list.stringify()}</div>
 		<p:remoteCommand name="rcView" action="#{fact.view()}" oncomplete="viewFactura(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{fact.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
-		<p:remoteCommand name="rcReject" action="#{fact.firmas.reject()}" oncomplete="loadFirmas(xhr, status, args)" />
+		<p:remoteCommand name="rcReject" action="#{fact.firmas.reject()}" oncomplete="updateFactura(xhr, status, args, 'reject')" />
 		<p:remoteCommand name="rcReport" action="#{fact.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{fact.ws()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcUxxiec" action="#{fact.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />
@@ -109,6 +108,6 @@
 		<p:remoteCommand name="rcRemove" action="#{fact.remove()}" oncomplete="showAlerts(xhr, status, args)" />
 	</h:form>
 
-	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 		<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 </html>

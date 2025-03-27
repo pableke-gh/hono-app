@@ -7,7 +7,9 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="notice notice-info"><h:outputText value="#{msg['lbl.domicilio']}" escape="false" />: #{iris.perfil.usuFullDir}, #{iris.perfil.usuCp}, #{iris.perfil.usuMunloc}, #{iris.perfil.usuProvincia} (#{iris.perfil.usuCodResidencia})</div>
+	<div class="notice notice-info dir-interesado">
+		<h:outputText value="#{msg['lbl.domicilio']}" escape="false" />: @dir;, @cp;, @municipio;, @provincia; (@residencia;)
+	</div>
 	<div class="notice notice-info">
 		<h:outputText value="#{msg['uae.irse.tab2.msg.ruta']}" escape="false" />
 		<a id="msgs" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>

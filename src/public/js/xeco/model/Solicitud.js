@@ -12,9 +12,10 @@ function Solicitud() {
 	let _data, _nif, _grupo, _admin;
 
 	this.getData = () => _data;
-	this.get  = name => _data[name]; 
-	this.setData = data => { _data = data; return self; } 
-	this.set = (name, value) => { _data[name] = value; return self; } 
+	this.get  = name => _data[name];
+	this.setData = data => { _data = data; return self; }
+	this.set = (name, value) => { _data[name] = value; return self; }
+	this.update = data => self;
 
 	this.getNif = () => _nif;
 	this.setNif = val => { self._nif = val; return self; } 
@@ -48,6 +49,7 @@ function Solicitud() {
 	this.isInvalidada = () => (self.isRechazada() || self.isCancelada());
 	this.isAnulada = () => (self.isInvalidada() || self.isCaducada());
 	this.isReadOnly = () => (self.isAnulada() || self.isIntegrada());
+	this.isRemovable = () => ((_data.estado == 6) || self.isAdmin());
 
 	this.isUae = () => (_grupo == "2"); // UAE
 	this.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") || (_grupo == "284")); // OTRI / UITT / UCCT / Catedras
@@ -77,12 +79,12 @@ function Solicitud() {
 		self.setData(data); // initialize 
 		let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
 		if (self.isFirmable())
-			acciones += `<a href="#rcFirmar" class="row-action resize firma-${data.id}" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
-						<a href="#tab-reject" class="row-action resize firma-${data.id}"><i class="fas fa-times action resize text-red"></i></a>`;
+			acciones += `<a href="#rcFirmar" class="row-action resize once-action" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
+						<a href="#tab-reject" class="row-action resize once-action"><i class="fas fa-times action resize text-red"></i></a>`;
 		if (self.isEjecutable())
 			acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
 		if (self.isIntegrable())
-			acciones += '<a href="#rcIntegrar" class="row-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
+			acciones += '<a href="#rcIntegrar" class="row-action once-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
 		if (self.isAdmin())
 			acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 		return acciones;

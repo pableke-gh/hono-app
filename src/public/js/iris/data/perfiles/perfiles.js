@@ -1,6 +1,8 @@
 
 import i18n from "../../../i18n/langs.js";
 
+const DEFAULT = "P,PDI-FU,COM,AyL,OTR"; // titulo = 0
+
 // Titles for language
 const TITULOS = {
 	es: [
@@ -103,7 +105,18 @@ const PERFILES = {
 	"A,PAS,COM,AUT,ACA": 2, "A,PAS,COM,AUT,xAC": 2,
 }
 
-export default function(rol, colectivo, actividad, tramite, financiacion) {
-	const perfil = rol + "," + colectivo + "," + actividad + "," + tramite + "," + financiacion;
-	return TITULOS[i18n.getIsoLang()][PERFILES[perfil] || 0];
+function Perfiles() {
+	const self = this; //self instance
+
+	this.getPerfil = (rol, colectivo, actividad, tramite, financiacion) => {
+		const perfil = rol + "," + colectivo + "," + actividad + "," + tramite + "," + financiacion;
+		return PERFILES[perfil] || 0; // default = 0
+	}
+
+	this.getTitulo = (rol, colectivo, actividad, tramite, financiacion) => {
+		const perfil = self.getPerfil(rol, colectivo, actividad, tramite, financiacion);
+		return TITULOS[i18n.getIsoLang()][perfil];
+	}
 }
+
+export default new Perfiles();
