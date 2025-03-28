@@ -63,7 +63,7 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 /* Specific styles */
 
 /* Icons */
-.icon { margin: 0 3px; }
+.icon { margin: 0 4px; }
 .icon-green, .icon-success { color: green; }
 .icon-yellow, .icon-warn { color: rgb(253 224 71)/* yellow-300 */; }
 .icon-red, .icon-error { color: red; }

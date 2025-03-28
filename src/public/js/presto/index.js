@@ -1,19 +1,17 @@
 
 import coll from "../components/CollectionHTML.js";
-import pf from "../components/Primefaces.js";
-
 import presto from "./modules/presto.js";
 import pDec from "./modules/partidaDec.js"
 import pInc from "./modules/partidaInc.js"
 
-pf.ready(() => {
+coll.ready(() => {
 	presto.init();
 	pDec.init();
 	pInc.init();
 });
 
 window.viewPresto = (xhr, status, args) => {
-	if (!pf.showAlerts(xhr, status, args))
+	if (!window.showAlerts(xhr, status, args))
 		return false; // Server error
 	const data = coll.parse(args.presto); // get presto data
 	data.adjunto = args.adjunto; // set url adjunto
@@ -24,7 +22,7 @@ window.viewPresto = (xhr, status, args) => {
 }
 
 window.updatePresto = (xhr, status, args, tab) => {
-	if (!pf.showAlerts(xhr, status, args))
+	if (!window.showAlerts(xhr, status, args))
 		return false; // Server error
 	const data = coll.parse(args.presto); // get presto data
 	presto.update(data, JSON.read(args.firmas), tab); // update tab

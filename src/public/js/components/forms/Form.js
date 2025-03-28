@@ -75,19 +75,14 @@ export default function(form, opts) {
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
-	this.nextTab = tab => {
+	this.nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
-			return self.showOk("saveOk"); // show ok msg
+			return self.showOk(opts.defaultMsgOk); // show ok msg
 		tabs.nextTab(tab); // go to next tab
 		return self;
 	}
-	this.invoke = (fnInvoke, tab) => {
-		if (!self.isChanged())
-			return self.nextTab(tab);
-		self.loading().setChanged();
-		fnInvoke(); // invoke action
-		return self;
-	}
+	this.invoke = fnInvoke => { self.loading().setChanged(); fnInvoke(); return self; } // invoke action
+	this.sendTab = (fnInvoke, tab) => (self.isChanged() ? self.invoke(fnInvoke) : self.nextTab(tab));
 
 	this.getValidators = i18n.getValidation; // validator object
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard
@@ -160,7 +155,7 @@ export default function(form, opts) {
 	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
 	this.setval = (selector, value) => fnAction(selector, el => fnSetValue(el, value));
 	this.setStrval = (selector, value) => fnAction(selector, el => fnSetval(el, value));
-	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name]));
+	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name])).setChanged(); // force changed = false
 
 	this.getAttr = (selector, name) => dom.getAttr(fnQueryInput(selector), name);
 	this.delAttr = (selector, name) => { dom.delAttr(fnQueryInput(selector), name); return self; }

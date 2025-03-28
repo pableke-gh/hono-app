@@ -34,10 +34,10 @@ function Rutas() {
 		return ok && rmaps.saveRutas(); // guardo los cambios y recalculo las dietas
 	}
 
-	tabs.setAction("paso1", () => { form.validate(self.validateP1) && form.invoke(window.rcPaso1); });
-	tabs.setAction("save1", () => { form.validate(self.validateP1) && form.invoke(window.rcSave1, 1); });
-	tabs.setAction("paso2", () => { form.validate(self.validate) && form.invoke(window.rcPaso2); });
-	tabs.setAction("save2", () => { form.validate(self.validate) && form.invoke(window.rcSave2, "maps"); }); 
+	tabs.setAction("paso1", () => { form.validate(self.validateP1) && form.sendTab(window.rcPaso1); });
+	tabs.setAction("save1", () => { form.validate(self.validateP1) && form.sendTab(window.rcSave1, 1); });
+	tabs.setAction("paso2", () => { form.validate(self.validate) && form.sendTab(window.rcPaso2); });
+	tabs.setAction("save2", () => { form.validate(self.validate) && form.sendTab(window.rcSave2, "maps"); }); 
 
 	async function fnAddRuta(ev) {
 		ev.preventDefault(); // stop event

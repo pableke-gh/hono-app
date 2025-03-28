@@ -1,7 +1,6 @@
 
 import coll from "../components/Collection.js";
 import tabs from "../components/Tabs.js";
-import pf from "../components/Primefaces.js";
 
 import iris from "./modules/iris.js";
 import resumen from "./modules/resumen.js"; 
@@ -12,7 +11,7 @@ import gastos from "./modules/gastos/gastos.js";
 import otri from "./modules/otri.js";
 
 window.IRSE = {};
-pf.ready(() => {
+coll.ready(() => {
 	iris.init();
 	perfil.init();
 	rutas.init();
@@ -20,7 +19,7 @@ pf.ready(() => {
 });
 
 window.viewIrse = (xhr, status, args) => {
-	if (!pf.showAlerts(xhr, status, args))
+	if (!window.showAlerts(xhr, status, args))
 		return false; // show error alerts
 
 	// Init IRSE form
@@ -32,7 +31,7 @@ window.viewIrse = (xhr, status, args) => {
 }
 
 window.updateIrse = (xhr, status, args, tab) => {
-	if (!pf.showAlerts(xhr, status, args))
+	if (!window.showAlerts(xhr, status, args))
 		return false; // show error alerts
 
 	// update IRSE form

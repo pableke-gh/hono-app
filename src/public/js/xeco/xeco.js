@@ -1,7 +1,7 @@
 
+import coll from "../components/CollectionHTML.js";
 import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
-import pf from "../components/Primefaces.js";
 import i18n from "../i18n/langs.js";
 
 import model from "./model/Solicitud.js";
@@ -10,9 +10,13 @@ import list from "./modules/list.js";
 import uxxiec from "./modules/uxxiec.js";
 
 function XecoForm() {
+	const self = this; //self instance
 	const form = new Form("#xeco-model");
 
-	const fnSend = (action, data) => pf.sendId(action, data.id);
+	this.send = (action, name, value) => window[action]([{ name, value }]);
+	this.sendId = (action, value) => self.send(action, "id", value);
+	const fnSend = (action, data) => self.sendId(action, data.id);
+
 	const rcView = data => {
 		if (form.isCached(data.id))
 			tabs.showTab("form"); // show form tab
@@ -45,9 +49,9 @@ function XecoForm() {
 		solicitudes.set("#rcView", rcView).set("#tab-reject", fnReject).set("#rcUxxiec", rcUxxiec);
 		solicitudes.set("#rcFirmar", data => fnSend("rcFirmar", data));
 		solicitudes.set("#rcReport", data => fnSend("rcReport", data));
-		solicitudes.set("#rcEmails", data => fnSend("rcEmails", data));
-		solicitudes.set("#rcRemove", data => fnSend("rcRemove", data));
-		solicitudes.set("#rcIntegrar", (data, link, tr) => {
+		solicitudes.set("#rcEmails", data => fnSend("rcEmails", data)); // admin test email
+		solicitudes.setRemove(data => !fnSend("rcRemove", data)); // remove true = confirm
+		solicitudes.set("#rcIntegrar", data => {
 			list.updateRow();  // avoid reclick
 			fnSend("rcIntegrar", data); // llamada al servidor
 		});
@@ -69,19 +73,23 @@ function XecoForm() {
 	}
 
 	/*** Init. actions for model form ***/
-	const fnClickNext = link => { link.nextElementSibling.click(); window.loading(); };
 	form.set("is-editable", model.isEditable).set("is-editable-uae", model.isEditableUae)
 		.set("is-firmable", model.isFirmable).set("is-rechazable", model.isRechazable)
 		.set("is-removable", model.isRemovable);
-	tabs.setAction("send", link => { model.validate() && i18n.confirm("msgSend") && fnClickNext(link); });
-	tabs.setAction("firmar", link => { i18n.confirm("msgFirmar") && fnClickNext(link); });
-	tabs.setAction("reject", () => { fnReject(list.getCurrentItem()); });
-	tabs.setAction("ejecutar", link => { uxxiec.save(); fnClickNext(link); });
-	tabs.setAction("notificar", link => { uxxiec.save(); fnClickNext(link); });
-	tabs.setAction("remove", link => {
-		const msg = link.dataset.confirm || "remove";
-		i18n.confirm(msg) && fnSend("rcRemove", list.getCurrentItem());
-	});
+	tabs.setAction("send", () => { model.validate() && i18n.confirm("msgSend") && form.invoke(window.rcSend); }); // send from xeco-model form
+	tabs.setAction("firmar", () => { i18n.confirm("msgFirmar") && form.invoke(window.rcFirmarForm); }); // run remote command from xeco-model
+	tabs.setAction("reject", () => { fnReject(list.getCurrentItem()); }); // open reject tab from list
+	tabs.setAction("ejecutar", () => { uxxiec.save(); form.invoke(window.rcEjecutar); });
+	tabs.setAction("notificar", () => { uxxiec.save(); form.invoke(window.rcNotificar); });
+
+	window.loadFirmas = (xhr, status, args) => {
+		if (!window.showTab(xhr, status, args, "list"))
+			return false; // Server error
+		const data = list.getCurrentItem(); // get current item
+		if (form.isCached(data.id)) // checks if current item is cached
+			firmas.view(coll.parse(args.firmas)); // update firmas blocks
+		list.updateRow();  // avoid reclick
+	}
 }
 
 export default new XecoForm();

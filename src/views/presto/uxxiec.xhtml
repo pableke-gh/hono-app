@@ -49,15 +49,15 @@
 		</table>
 
 		<div class="navbar">
-			<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+			<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-			<a href="#tab-action" class="btn btn-green" data-action="ejecutar" tabindex="14" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
+			<a href="#tab-action" class="btn btn-green" data-action="ejecutar" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
 				<i class="far fa-save btn-icon-left"></i>Guardar</a>
-			<p:commandLink action="#{presto.firmas.ejecutar()}" oncomplete="showAlerts(xhr, status, args)" styleClass="hide"/>
-			<a href="#tab-action" class="btn btn-green" data-refresh="is-notificable" data-action="notificar" tabindex="15" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
+			<p:remoteCommand name="rcEjecutar" action="#{presto.firmas.ejecutar()}" oncomplete="showAlerts(xhr, status, args)"/>
+			<a href="#tab-action" class="btn btn-green" data-refresh="is-notificable" data-action="notificar" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
 				<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</a>
-			<p:commandLink action="#{presto.firmas.notificar()}" oncomplete="showAlerts(xhr, status, args)" styleClass="hide"/>
-			<a href="#tab-action-reject" class="table-action btn btn-error" tabindex="16" title="#{msg['tit.btn.rechazar']}">
+			<p:remoteCommand name="rcNotificar" action="#{presto.firmas.notificar()}" oncomplete="showAlerts(xhr, status, args)"/>
+			<a href="#tab-action-reject" class="table-action btn btn-error" title="#{msg['tit.btn.rechazar']}">
 				<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
 		</div>
 	</h:form>

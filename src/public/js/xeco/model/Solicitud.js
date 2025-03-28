@@ -49,7 +49,7 @@ function Solicitud() {
 	this.isInvalidada = () => (self.isRechazada() || self.isCancelada());
 	this.isAnulada = () => (self.isInvalidada() || self.isCaducada());
 	this.isReadOnly = () => (self.isAnulada() || self.isIntegrada());
-	this.isRemovable = () => ((_data.estado == 6) || self.isAdmin());
+	this.isRemovable = () => (_data.id && ((_data.estado == 6) || self.isAdmin()));
 
 	this.isUae = () => (_grupo == "2"); // UAE
 	this.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") || (_grupo == "284")); // OTRI / UITT / UCCT / Catedras
@@ -86,7 +86,7 @@ function Solicitud() {
 		if (self.isIntegrable())
 			acciones += '<a href="#rcIntegrar" class="row-action once-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
 		if (self.isAdmin())
-			acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#rcRemove" class="row-action" data-confirm="msgRemove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
+			acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 		return acciones;
 	}
 }

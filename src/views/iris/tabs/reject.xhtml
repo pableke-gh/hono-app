@@ -13,7 +13,7 @@
 
 		<label class="ui-block">
 			<div class="label required">Información asociada al rechazo:</div>
-			<h:inputTextarea id="rechazo" value="#{presto.firmas.rechazo}" rows="8" styleClass="ui-input ui-ta" title="Motivo / causa del rechazo" tabindex="1" />
+			<h:inputTextarea id="rechazo" value="#{iris.firmas.rechazo}" rows="8" styleClass="ui-input ui-ta readonly-manual" title="Motivo / causa del rechazo" tabindex="1" />
 			<div class="ui-errtip"></div>
 		</label>
 	</div>
@@ -21,8 +21,8 @@
 	<div class="navbar">
 		<a href="#tab-back" class="btn btn-info" tabindex="2">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-		<p:commandLink action="#{presto.firmas.rechazar()}" styleClass="btn btn-error" tabindex="3" 
-			onclick="if (!fnRechazar()) return false;" oncomplete="updateList(xhr, status, args);">
+		<p:commandLink action="#{iris.firmas.rechazar()}" styleClass="btn btn-error" tabindex="3" 
+			onclick="if (!fnRechazar()) return false;" oncomplete="loadFirmas(xhr, status, args);">
 			<i class="far fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</p:commandLink>
 	</div>
 	<ui:include src="../parts/firmas.xhtml"></ui:include>

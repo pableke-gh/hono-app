@@ -39,16 +39,14 @@ function List() {
 	tabs.setAction("relist", () => fnList("", "5"));
 	tabs.setAction("vinc", () => {
 		if ("1" == form.getval("#estado"))
-			tabs.showTab("list");
+			tabs.showTab("list"); // estado aceptada
 		else
 			fnList("1");
 	});
+	tabs.setAction("remove", tblSolicitudes.removeRow);
 
 	window.loadFiltro = (xhr, status, args) => {
 		window.showTab(xhr, status, args, "list") && self.setSolicitudes(JSON.read(args.data));
-	}
-	window.updateList = (xhr, status, args) => {
-		window.showTab(xhr, status, args, "list") && self.updateRow(); // update list
 	}
 }
 

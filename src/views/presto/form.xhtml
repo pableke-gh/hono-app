@@ -13,17 +13,19 @@
 	<ui:include src="./form_info.xhtml"></ui:include>
 
 	<div class="navbar">
-		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="20">
+		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-		<a href="#tab-action" class="btn btn-green" data-refresh="is-editable" data-action="send" tabindex="21" title="Poner solicitud a la firma">
+		<a href="#tab-action-send" class="btn btn-green" data-refresh="is-editable" title="Poner solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:commandLink action="#{presto.form.save()}" oncomplete="showTab(xhr, status, args, 0)" styleClass="hide"/>
+		<p:remoteCommand name="rcSend" action="#{presto.form.save()}" oncomplete="showTab(xhr, status, args, 0)"/>
 		<p:commandLink id="save030" action="#{presto.partidas.save030()}" oncomplete="showTab(xhr, status, args, 1)" styleClass="hide"/>
-		<a href="#tab-action" class="btn btn-green" data-refresh="is-firmable" data-action="firmar" tabindex="22" title="#{msg['tit.btn.firmar']}">
+		<a href="#tab-action-firmar" class="btn btn-green" data-refresh="is-firmable" title="#{msg['tit.btn.firmar']}">
 			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>
-		<p:commandLink action="#{presto.firmas.firmar()}" oncomplete="updateList(xhr, status, args);" styleClass="hide"/>
-		<a href="#tab-reject" class="btn btn-error" data-refresh="is-rechazable" tabindex="23" title="#{msg['tit.btn.rechazar']}">
+		<p:remoteCommand name="rcFirmarForm" action="#{presto.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args);"/>
+		<a href="#tab-reject" class="btn btn-error" data-refresh="is-rechazable" title="#{msg['tit.btn.rechazar']}">
 			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+		<a href="#tab-action-remove" class="btn btn-error danger-btn" data-refresh="is-removable" title="Borra la solicitud del sistema"> 
+			<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
 	</div>
 	<ui:include src="./firmas.xhtml"></ui:include>
 </html>

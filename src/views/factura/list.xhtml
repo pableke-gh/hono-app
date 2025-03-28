@@ -99,13 +99,13 @@
 
 		<div id="solicitudes-json" class="hide">#{fact.list.stringify()}</div>
 		<p:remoteCommand name="rcView" action="#{fact.view()}" oncomplete="viewFactura(xhr, status, args)" />
-		<p:remoteCommand name="rcFirmar" action="#{fact.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
+		<p:remoteCommand name="rcFirmar" action="#{fact.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)" />
 		<p:remoteCommand name="rcReject" action="#{fact.firmas.reject()}" oncomplete="updateFactura(xhr, status, args, 'reject')" />
 		<p:remoteCommand name="rcReport" action="#{fact.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{fact.ws()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcUxxiec" action="#{fact.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />
 		<p:remoteCommand name="rcEmails" action="#{fact.emails()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcRemove" action="#{fact.remove()}" oncomplete="showAlerts(xhr, status, args)" />
+		<p:remoteCommand name="rcRemove" action="#{fact.remove()}" oncomplete="showTab(xhr, status, args, 'list')" />
 	</h:form>
 
 	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">

@@ -150,8 +150,8 @@ export default function(table, opts) {
 	this.removeCurrent = () => self.remove(_index) // remove current row and reload table
 	this.removeRow = () => {
 		i18n.confirm(opts.msgConfirmRemove) // force confirm
-				&& opts.onRemove(_rows[_index]) // call event
-				&& self.remove(_index); // remove data row and rebuild table
+			&& opts.onRemove(_rows[_index]) // call event
+			&& self.removeCurrent(); // remove row and rebuild table
 		return self;
 	}
 

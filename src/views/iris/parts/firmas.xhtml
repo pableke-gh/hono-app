@@ -10,7 +10,7 @@
 	<div class="navbar" data-refresh="has-firmas">
 		<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
 		<div class="ui-blocks ui-firmantes"></div>
-		<p class="notice notice-error" data-refresh="is-rechazada">
+		<p class="notice notice-error" data-refresh="is-invalidada">
 			<h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (@rejectedBy;) @info;
 		</p>
 		<ui:include src="leyenda_firmas.xhtml"></ui:include>

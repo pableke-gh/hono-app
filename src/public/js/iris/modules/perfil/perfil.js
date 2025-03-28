@@ -42,7 +42,7 @@ function Perfil() {
     }
 
 	form.afterReset(() => { _acInteresado.setValue(); actividad.setColectivo(); organicas.reset(); });
-	tabs.setAction("paso0", () => { form.validate(self.validate) && form.invoke(window.rcPaso0, 1); });
+	tabs.setAction("paso0", () => { form.validate(self.validate) && form.sendTab(window.rcPaso0, 1); });
 	tabs.setViewEvent(1, () => form.render(".i18n-tr-h1.active")); // render steps
 
 	this.init = () => {

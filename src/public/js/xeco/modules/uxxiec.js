@@ -2,8 +2,8 @@
 import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 
-import uxxiec from "../model/Uxxiec.js";
 import model from "../model/Solicitud.js";
+import uxxiec from "../model/Uxxiec.js";
 
 function Uxxiec() {
     const form = new Form("#xeco-uxxi");

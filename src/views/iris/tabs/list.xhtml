@@ -161,13 +161,13 @@
 		</table>
 	
 		<p:remoteCommand name="rcView" action="#{iris.view()}" oncomplete="viewIrse(xhr, status, args)" />
-		<p:remoteCommand name="rcFirmar" action="#{iris.firmas.firmar()}" oncomplete="updateList(xhr, status, args)" />
+		<p:remoteCommand name="rcFirmar" action="#{iris.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)" />
 		<p:remoteCommand name="rcReject" action="#{iris.firmas.reject()}" oncomplete="updateIrse(xhr, status, args, 'reject')" />
 		<p:remoteCommand name="rcReport" action="#{iris.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{iris.ws()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcUxxiec" action="#{iris.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />
 		<p:remoteCommand name="rcEmails" action="#{iris.emails()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcRemove" action="#{iris.remove()}" oncomplete="showAlerts(xhr, status, args)" />
+		<p:remoteCommand name="rcRemove" action="#{iris.remove()}" oncomplete="showTab(xhr, status, args, 'list')" />
 	</h:form>
 
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
