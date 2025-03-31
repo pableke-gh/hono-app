@@ -9,6 +9,7 @@ const CSS_ESTADOS = [
 
 function Solicitud() {
 	const self = this; //self instance
+	const SUBSANABLE = 15; // Estado de subsanable
 	let _data, _nif, _grupo, _admin;
 
 	this.getData = () => _data;
@@ -43,6 +44,9 @@ function Solicitud() {
 	this.isCancelada = () => (_data.estado == 7); // Solicitud cancelada por la UAE
 	this.isCaducada = () => (_data.estado == 8); // Solicitud caducada por expiración
 	this.isErronea = () => ((_data.estado == 9) || (_data.estado == 10)); // estado de error
+	this.isReactivable = () => (self.isUae() && self.isErronea()); // La solicitud se puede reactivar / subsanar
+	this.isSubsanable = () => (self.isUae() && (_data.estado == SUBSANABLE)); // Solicitud subsanable en el cliente
+	this.setSubsanable = () => { _data.estado = SUBSANABLE; return self; } // marca la solicitud como subsanable
 	this.isFinalizada = () => [1, 3, 4, 9, 10].includes(_data.estado); // Aceptada, Ejecutada, Notificada ó Erronea
 	this.isFirmada = () => (self.isAceptada() || self.isEjecutada());
 	this.isValidada = () => (self.isFirmada() || self.isIntegrada());
@@ -61,8 +65,8 @@ function Solicitud() {
 
 	this.isFirmable = () => (self.isPendiente() && firma.isFirmable(_data.fmask));
 	this.isCancelable = () => (self.isUae() && self.isValidada());
-	this.isRechazable = () => (_data.id && (self.isFirmable() || self.isCancelable()));
-	this.isEditableUae = () => (self.isEditable() || (self.isUae() && self.isFirmable()));
+	this.isInvalidable = () => (self.isFirmable() || self.isCancelable()); // show reject form 
+	this.isEditableUae = () => (self.isEditable() || self.isSubsanable() || (self.isUae() && self.isFirmable()));
 	this.isEjecutable = () => (self.isUae() && [1, 3, 4, 5, 9, 10].includes(_data.estado)); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
 	this.isNotificable = () => [1, 3, 9, 10].includes(_data.estado); // Aceptada, Ejecutada ó Erronea
 	this.isIntegrable = () => (self.isUae() && self.isNotificable()); // Requiere uae + estado notificable
@@ -73,7 +77,6 @@ function Solicitud() {
 	this.getMemoria = () => _data.memo;
 	this.getDescEstado = () => i18n.getItem("descEstados", _data.estado);
 	this.getStyleByEstado = () => (CSS_ESTADOS[_data.estado] || "text-warn");
-	this.validate = globalThis.void; // abstract validator => redefine in child classes
 
 	this.rowActions = data => {
 		self.setData(data); // initialize 

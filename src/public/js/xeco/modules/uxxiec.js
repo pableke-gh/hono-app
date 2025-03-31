@@ -17,7 +17,7 @@ function Uxxiec() {
 		const tabUxxi = tabs.getTab("uxxiec");
 		model.setUser(tabUxxi.dataset);
 
-		form.set("is-notificable", model.isNotificable);
+		form.set("is-notificable", model.isNotificable).set("is-cancelable", model.isCancelable);
 		form.addClick("a#add-uxxi", () => {
 			const doc = acUxxi.getCurrentItem();
 			doc && tblUxxiec.add(doc); // Add and remove PK autocalculated in v_*_uxxiec

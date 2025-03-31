@@ -15,7 +15,7 @@
 			<label class="ui-block">
 				<div class="label">Ejercicio:</div>
 				<h:selectOneMenu id="ej-uxxi" value="#{fact.uxxiec.ejercicio}" styleClass="ui-input ui-select" tabindex="1">
-					<f:selectItems value="#{uae.ejercicios}" />
+					<f:selectItems value="#{fact.ejercicios}" />
 				</h:selectOneMenu>
 			</label>
 			<label class="ui-block-xl autocomplete">
@@ -53,11 +53,11 @@
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 			<a href="#tab-action-ejecutar" class="btn btn-green" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
 				<i class="far fa-save btn-icon-left"></i>Guardar</a>
-			<p:remoteCommand name="rcEjecutar" action="#{fact.firmas.ejecutar()}" oncomplete="showAlerts(xhr, status, args)"/>
+			<p:remoteCommand name="rcEjecutar" action="#{presto.firmas.ejecutar()}" oncomplete="showAlerts(xhr, status, args)"/>
 			<a href="#tab-action-notificar" class="btn btn-green" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
 				<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</a>
-			<p:remoteCommand name="rcNotificar" action="#{fact.firmas.notificar()}" oncomplete="showAlerts(xhr, status, args)"/>
-			<a href="#tab-action-reject" class="table-action btn btn-error" tabindex="16" title="#{msg['tit.btn.rechazar']}">
+			<p:remoteCommand name="rcNotificar" action="#{presto.firmas.notificar()}" oncomplete="showAlerts(xhr, status, args)"/>
+			<a href="#tab-action-reject" class="table-action btn btn-error" data-refresh="is-cancelable" title="#{msg['tit.btn.rechazar']}">
 				<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
 		</div>
 	</h:form>

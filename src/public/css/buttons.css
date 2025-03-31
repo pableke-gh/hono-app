@@ -32,8 +32,8 @@
 .btn-error { color: white; background-color: rgb(185 28 28)/* red-700 */; border-color: rgb(185 28 28)/* red-700 */; }
 .btn-error:hover { color: white; background-color: rgb(153 27 27)/* red-800 */; }
 
-.btn-danger { background-color: rgb(102 27 38)/* mexican-red-700 */; border-color: rgb(102 27 38)/* mexican-red-700 */; }
-.btn-danger:hover { background-color: rgb(74 20 32)/* mexican-red-800 */; }
+.btn-danger { background-color: rgb(145, 28, 45)/* mexican-red-700 */; border-color: rgb(124, 27, 42)/* mexican-red-700 */; }
+.btn-danger:hover { background-color: rgb(110, 27, 45)/* mexican-red-800 */; }
 
 .btn-dark { background-color: rgb(31 41 55)/* gray-800 */; border-color: rgb(31 41 55)/* gray-800 */; }
 .btn-dark:hover { background-color: rgb(17 24 39)/* gray-900 */; }

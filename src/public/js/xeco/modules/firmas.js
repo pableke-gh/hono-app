@@ -1,12 +1,16 @@
 
 import coll from "../../components/Collection.js";
+import tabs from "../../components/Tabs.js";
 import i18n from "../../i18n/langs.js";
 
 import model from "../model/Solicitud.js";
 import firma from "../model/Firma.js";
+import list from "./list.js";
 import xeco from "../xeco.js";
 
 function Firmas() {
+	const self = this; //self instance
+
 	this.init = () => {
 		const form = xeco.getForm(); // current form after initialization
 		form.set("is-invalidada", model.isInvalidada).set("has-firmas", globalThis.void);
@@ -27,9 +31,23 @@ function Firmas() {
 		form.reset("#rechazo");
 	}
 
-	window.fnRechazar = () => {
+	tabs.setAction("rechazar", () => { // ejecuta la accion de rechazar
 		const form = xeco.getForm(); // current form after initialization
-		return form.validate(firma.validate) && i18n.confirm("msgRechazar") && window.loading();
+		form.validate(firma.validate) && i18n.confirm("msgRechazar") && form.invoke(window.rcRechazar);
+	});
+	tabs.setAction("cancelar", () => { // ejecuta la accion de cancelar
+		const form = xeco.getForm(); // current form after initialization
+		form.validate(firma.validate) && i18n.confirm("msgCancelar") && form.invoke(window.rcCancelar);
+	});
+
+	window.loadFirmas = (xhr, status, args) => {
+		if (!window.showTab(xhr, status, args, "list"))
+			return false; // Server error
+		const form = xeco.getForm(); // current form after initialization
+		const data = list.getCurrentItem(); // get current table item
+		if (form.isCached(data.id)) // checks if current item is cached
+			self.view(coll.parse(args.firmas)); // update firmas blocks
+		list.updateRow();  // avoid reclick
 	}
 }
 

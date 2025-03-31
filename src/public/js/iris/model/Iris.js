@@ -10,9 +10,7 @@ function Iris() {
 
 	this.getData = solicitud.getData;
 	this.isUxxiec = solicitud.isUxxiec;
-	this.isDisabled = solicitud.isDisabled;
 	this.isEditable = solicitud.isEditable;
-	this.isCancelable = solicitud.isCancelable;
 	this.isResumable = () => (solicitud.isPendiente() || solicitud.isFirmada() || solicitud.isIntegrada());
 
 	this.setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {

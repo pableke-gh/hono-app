@@ -56,7 +56,7 @@ function PartidaInc() {
     }
 
 	this.init = () => {
-		xeco.setValidator(self.validate); // define validate action
+		form.set("is-valid", self.validate); // define validate action
 		_partidasInc.set("#doc030", p030.load); // load form 030
 		form.onChangeInput("#ejInc", _acOrgInc.reload); // reload organica inc.
 		pf.uploads(form.querySelectorAll(".pf-upload"));

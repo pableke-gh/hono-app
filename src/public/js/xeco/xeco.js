@@ -1,5 +1,4 @@
 
-import coll from "../components/CollectionHTML.js";
 import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
 import i18n from "../i18n/langs.js";
@@ -13,7 +12,7 @@ function XecoForm() {
 	const self = this; //self instance
 	const form = new Form("#xeco-model");
 
-	this.send = (action, name, value) => window[action]([{ name, value }]);
+	this.send = (action, name, value) => { form.loading(); window[action]([{ name, value }]); }
 	this.sendId = (action, value) => self.send(action, "id", value);
 	const fnSend = (action, data) => self.sendId(action, data.id);
 
@@ -40,11 +39,15 @@ function XecoForm() {
 	}
 
 	this.getForm = () => form;
-	this.setValidator = fnValid => { model.validate = fnValid; }
 	this.init = () => {
 		firmas.init();
 		uxxiec.init();
 
+		// hack editable inputs for PF
+		form.eachInput(".readonly-manual", el => { el.dataset.readonly = "manual"; });
+		form.eachInput(".editable-uae", el => { el.dataset.readonly = "is-editable-uae"; });
+
+		// Actions for solicitudes table
 		const solicitudes = list.load().getTable(); // preload data
 		solicitudes.set("#rcView", rcView).set("#tab-reject", fnReject).set("#rcUxxiec", rcUxxiec);
 		solicitudes.set("#rcFirmar", data => fnSend("rcFirmar", data));
@@ -60,36 +63,30 @@ function XecoForm() {
 	this.view = (data, principales) => {
 		model.setData(data).update(data); // 1º carga los datos de la solicitud
 		firmas.view(principales); // 2º cargo la vista de firmas asociadas
-		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])")//.setEditable()
-			.readonly(model.isDisabled(), ":not(.readonly-manual)").readonly(!model.isEditableUae(), ".editable-uae")
-			.refresh(data); // 3º update form views
-		tabs.showTab("form"); // navego al tab form
+		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])");
+		// 3º force last action => update form views and go to tab form
+		setTimeout(() => { form.setEditable().refresh(data); tabs.showTab("form"); }, 1);
 	}
 	this.update = (data, principales, tab) => {
 		data = data || model.getData(); // default = current data
 		model.setData(data).update(data); // 1º carga los datos de la solicitud
 		principales && firmas.view(principales); // 2º actualizo la vista de firmas asociadas
-		form.refresh(data).nextTab(tab); // 3º update form views
+		// 3º force last action => update form views and go to specific tab
+		setTimeout(() => { form.refresh(data).nextTab(tab); }, 1);
 	}
 
 	/*** Init. actions for model form ***/
-	form.set("is-editable", model.isEditable).set("is-editable-uae", model.isEditableUae)
-		.set("is-firmable", model.isFirmable).set("is-rechazable", model.isRechazable)
-		.set("is-removable", model.isRemovable);
-	tabs.setAction("send", () => { model.validate() && i18n.confirm("msgSend") && form.invoke(window.rcSend); }); // send from xeco-model form
+	form.set("is-disabled", model.isDisabled).set("is-editable", model.isEditable).set("is-editable-uae", model.isEditableUae)
+		.set("is-firmable", model.isFirmable).set("is-cancelable", model.isCancelable).set("is-invalidable", model.isInvalidable)
+		.set("is-reactivable", model.isReactivable).set("is-subsanable", model.isSubsanable).set("is-valid", globalThis.void)
+		.set("is-removable", model.isRemovable);  
+	tabs.setAction("send", () => { form.fire("is-valid") && i18n.confirm("msgSend") && form.invoke(window.rcSend); }); // send from xeco-model form
 	tabs.setAction("firmar", () => { i18n.confirm("msgFirmar") && form.invoke(window.rcFirmarForm); }); // run remote command from xeco-model
 	tabs.setAction("reject", () => { fnReject(list.getCurrentItem()); }); // open reject tab from list
+	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model.getData()); }); // update editable inputs
+	tabs.setAction("subsanar", () => { form.fire("is-valid") && i18n.confirm("msgSave") && form.invoke(window.rcSubsanar); }); // send from changes
 	tabs.setAction("ejecutar", () => { uxxiec.save(); form.invoke(window.rcEjecutar); });
 	tabs.setAction("notificar", () => { uxxiec.save(); form.invoke(window.rcNotificar); });
-
-	window.loadFirmas = (xhr, status, args) => {
-		if (!window.showTab(xhr, status, args, "list"))
-			return false; // Server error
-		const data = list.getCurrentItem(); // get current item
-		if (form.isCached(data.id)) // checks if current item is cached
-			firmas.view(coll.parse(args.firmas)); // update firmas blocks
-		list.updateRow();  // avoid reclick
-	}
 }
 
 export default new XecoForm();

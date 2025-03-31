@@ -113,13 +113,13 @@ export default function(form, opts) {
 	this.disabled = (force, selector) => fnUpdate(selector, el => el.setDisabled(force));
 	this.readonly = (force, selector) => fnUpdate(selector, el => el.setReadonly(force));
 	this.eachInput = (selector, fn) => fnUpdate(selector, fn);
-	/*this.setEditable = selector => fnUpdate(selector, el => {
+	this.setEditable = selector => fnUpdate(selector, el => {
 		const value = el.dataset.readonly;
 		if (value == "manual")
 			return; // skip evaluation
 		const fnEditable = self.get(value) || self.get("is-editable");
 		el.setReadonly(!fnEditable(el)); // recalc. attribute by handler
-	});*/
+	});
 
 	// Value property
 	const isSelect = el => (el.tagName == "SELECT");
@@ -129,11 +129,10 @@ export default function(form, opts) {
 		el.classList.toggle(opts.negativeNumClass, el.value.startsWith("-"));
 	}
 	function fnSetval(el, value) {
-		if ((el.tagName == "SELECT") && !value)
+		if (isSelect(el) && !value)
 			el.selectedIndex = 0; // first option
 		else
-			el.value = value || ""; // force String
-		return self;
+			el.value = value || EMPTY; // force String
 	}
 	function fnSetValue(el, value) {
 		if (el.type =="date") // input type = date
@@ -229,8 +228,9 @@ export default function(form, opts) {
 	}
 
 	this.afterChange = fn => fnChange(form, fn);
-	this.onSubmit = fn => fnEvent(form, "submit", fn);
-	this.fireSubmit = () => { form.submit(); return self; }
+	this.onSubmit = fn => fnEvent(form, "submit", fn); // add event handler
+	this.fire = action => (self.get(action)()); // fire manual handler
+	this.fireSubmit = () => { form.submit(); return self; } // force submit
 	this.fireReset = () => { form.reset(); return self; }
 	this.beforeReset = fn => fnEvent(form, "reset", fn);
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));

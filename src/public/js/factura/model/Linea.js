@@ -7,7 +7,6 @@ function Linea() {
 	const msgEmptyTable = "No existen conceptos asociados a la solicitud";
 
 	this.beforeRender = resume => {
-		resume.iva = factura.getIva();
 		resume.imp = 0;
 	}
 
@@ -24,7 +23,6 @@ function Linea() {
 	this.tfoot = resume => {
 		const iva = factura.getIva();
 		const show = factura.isFacturable() ? "" : "hide";
-		const readonly = factura.isEditableUae() ? 'tabindex="30"' : "disabled";
 		return `<tr>
 			<td colspan="2">Conceptos: ${resume.size}</td>
 			<td class="text-right">${i18n.isoFloat(resume.imp)} €</td>
@@ -35,7 +33,7 @@ function Linea() {
 				<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
 				<div class="ui-block-main text-right">IVA:</div>
 				<div class="ui-block">
-					<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" ${readonly}></select>
+					<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-readonly="is-editable-uae"></select>
 				</div>
 				</label>
 			</td>

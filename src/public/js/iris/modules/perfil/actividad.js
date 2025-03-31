@@ -57,14 +57,14 @@ function Actividad() {
 		form.select("#actividad", actividades(self.getRol(), self.getColectivo(), self.getFinanciacion()))
 			.select("#tramite", (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
 			.closeAlerts();
+		form.eachInput(".ui-pf", el => { form.setStrval("#pf-" + el.name, el.value); }); // update pf inputs
 		iris.setPerfil(self.getRol(), self.getColectivo(), self.getActividad(), self.getTramite(), self.getFinanciacion());
 		return self;
 	}
 
 	this.init = () => {
 		_eColectivo = form.querySelector("#colectivo");
-		const fnUpdatePf = ev => { ev.target.previousElementSibling.value = ev.target.value; };
-		form.onChangeInput("#actividad", self.update).onChangeInputs(".ui-pf", fnUpdatePf);
+		form.onChangeInput("#actividad", self.update);
 		form.set("is-mun", self.isMun).set("is-tribunal", self.isTribunal).set("is-mesa", globalThis.void);
 	}
 }

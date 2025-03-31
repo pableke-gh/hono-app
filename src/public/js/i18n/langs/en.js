@@ -117,10 +117,12 @@ export default {
 	noResults: "No results founds",
 	selectOption: "Select an option",
 
+	msgSave: "¿Confirma que desea guardar y enviar los datos seleccionados?",
 	msgSend: "¿Confirma que desea firmar y enviar esta solicitud?",
 	msgFirmar: "¿Confirma que desea firmar esta solicitud?",
 	msgFirmarEnviar: "¿Confirma que desea firmar y enviar esta comunicación?",
 	msgRechazar: "¿Confirma que desea rechazar esta solicitud?",
+	msgCancelar: "¿Confirma que desea cancelar esta solicitud?", 
 	msgIntegrar: "¿Confirma que desea integrar esta solicitud en UXXI-EC?",
 	msgRemove: "¿Confirma que desea eliminar esta solicitud?",
 	removeCom: "¿Confirma que desea eliminar esta comunicación?",

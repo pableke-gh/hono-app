@@ -11,7 +11,7 @@ function Iris() {
 
 	this.init = () => {
 		xeco.init(); // init. actions
-		form.set("is-disabled", iris.isDisabled).set("is-cancelable", iris.isCancelable).set("is-resumable", iris.isResumable);
+		form.set("is-resumable", iris.isResumable);
 		form.onChangeInputs("[name='matricula-vp']", ev => form.setStrval("#matricula", ev.target.value));
 	}
 

@@ -10,6 +10,8 @@
 	<a href="#tab-action" class="btn btn-green" data-refresh="is-firmable" data-action="firmar" title="#{msg['tit.btn.firmar']}">
 		<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>
 	<p:commandLink action="#{irse.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)" styleClass="hide"/>
-	<a href="#tab-reject" class="btn btn-error danger-btn" data-refresh="is-rechazable" title="#{msg['tit.btn.rechazar']}">
-		<i class="fas fa-times-circle btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.rechazar']}" escape="false" /></a>
+	<a href="#tab-reject" class="btn btn-error" data-refresh="is-firmable" title="#{msg['tit.btn.rechazar']}">
+		<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+	<a href="#tab-reject" class="btn btn-error" data-refresh="is-cancelable" title="#{msg['tit.btn.cancelar']}">
+		<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.cancelar']}</a>
 </html>

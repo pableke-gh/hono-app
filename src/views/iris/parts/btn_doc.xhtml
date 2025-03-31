@@ -9,7 +9,7 @@
 
 	<c:if test="#{irse.form.documentable}">
 		<p:commandLink action="#{irse.list.report(irse.solicitud)}" oncomplete="handleReport(xhr, status, args)"
-				styleClass="btn btn-error danger-btn" title="#{msg['tit.btn.informe']}" tabindex="195">
+				styleClass="btn btn-danger" title="#{msg['tit.btn.informe']}" tabindex="195">
 			<i class="fal fa-file-pdf btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.informe']}" escape="false" /></p:commandLink>
 		<c:if test="#{not empty irse.gastos.gastosComisionado}">
 			<p:commandButton value="#{msg['lbl.btn.zip1']}" ajax="false" icon="far fa-file-archive" styleClass="btn btn-warn warning-btn" 
