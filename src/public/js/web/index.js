@@ -3,8 +3,8 @@ import api from "../components/Api.js";
 import Form from "../components/forms/Form.js";
 import nav from "../components/Navigation.js";
 import sb from "../components/types/StringBox.js";
-import excel from "../components/Excel.js";
-import menus from "./data/menus.js";
+import i18n from "../i18n/langs.js";
+import xlsx from "../services/xlsx.js";
 
 function fnIndex() {
     // Tab1 = Pokemon API Tests
@@ -46,16 +46,31 @@ function fnIndex() {
     options.setItems(animales);
 
     /********************* EXCEL *********************/
-    document.getElementById("xlsx").addEventListener("click", ev => {
-        excel.json(menus, {
-            keys: [ "id", "tipo", "nombre", "titulo", "orden", "mask", "creado", "padre" ], // column order
-            columns: {
-                titulo: (cell, row) => { cell.l = { Target:row.enlace, Tooltip:"Find us @ SheetJS.com!" }; },
-                orden: cell => { cell.t = "n" }, // type number
-                creado: cell => { cell.t = "d"; } // type date
-            }
-        });
-    });
+	$1('[href="#download"]').setClick(ev => {
+		const sheet = "listado-isu";
+		const TITLES = ["Name", "Birthday", "Importe", "Link"];
+		const DATA = [
+			{ name: "George Washington", birthday: "1732-02-22T00:00:00.000Z", imp: 10.65, link: "https://docs.sheetjs.com/docs/" },
+			{ name: "John Adams", birthday: "1735-10-19T00:00:00.000Z", imp: 1243363.45645, link: "https://docs.sheetjs.com/docs/" },
+			// ... one row per President
+		];
+
+		xlsx.setData(sheet, DATA).setTitles(sheet, TITLES);
+		const worksheet = xlsx.getSheet(sheet);
+		DATA.forEach((data, i) => { // row parser
+			const row = i + 2; // Titles row = 1
+			worksheet["B"+ row].v = i18n.isoDate(data.birthday); // cell.t="s" = type string => iso date in string format
+			worksheet["C"+ row].z = "#,##0.00"; // cell.t="n" = type number => cell.z="#,##0.00" = currency format
+	
+			// link example
+			const cellLink = worksheet["D"+ row]; // cell type link
+			cellLink.l = { Target: data.link, Tooltip: "Enlace externo "}; // cell.l = type link
+			cellLink.v = "Texto a mostrar";
+		});
+		console.log(worksheet);
+		xlsx.download("Informe ISU.xlsx");
+		ev.preventDefault();
+	});
 }
 
 // Register event on page load and export default handler

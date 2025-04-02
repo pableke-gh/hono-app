@@ -19,8 +19,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.objeto.act']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="memo" value="#{iris.form.objeto}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" 
-								tabindex="41" maxlength="600" title="Objeto de la actividad" />
+				<h:inputTextarea id="memo" value="#{iris.form.objeto}" styleClass="ui-input ui-ta rows-2" tabindex="41" maxlength="600" title="Objeto de la actividad" />
 				<span class="ui-errtip"></span>
 			</div>
 		</label>
@@ -44,7 +43,7 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.resp']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText value="#{iris.firmas.acPromotor}" tabindex="43" styleClass="ui-input ui-autocomplete ui-personal #{iris.form.cssDisabled}" />
+				<h:inputText value="#{iris.firmas.acPromotor}" tabindex="43" styleClass="ui-input ui-autocomplete ui-personal" />
 				<h:inputHidden value="#{iris.firmas.nifPromotor}" />
 				<ul role="list" class="results"></ul>
 			</div>
@@ -53,7 +52,7 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.tribunal']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText value="#{iris.firmas.acTribunal}" tabindex="44" styleClass="ui-input ui-autocomplete ui-personal #{iris.form.cssDisabled}" />
+				<h:inputText value="#{iris.firmas.acTribunal}" tabindex="44" styleClass="ui-input ui-autocomplete ui-personal" />
 				<h:inputHidden value="#{iris.firmas.nifTribunal}" />
 				<ul role="list" class="results"></ul>
 			</div>
@@ -62,7 +61,7 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.mesa']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText value="#{iris.firmas.acMesa}" tabindex="45" styleClass="ui-input ui-autocomplete ui-personal #{iris.form.cssDisabled}" />
+				<h:inputText value="#{iris.firmas.acMesa}" tabindex="45" styleClass="ui-input ui-autocomplete ui-personal" />
 				<h:inputHidden value="#{iris.firmas.nifMesa}" />
 				<ul role="list" class="results"></ul>
 			</div>
@@ -73,13 +72,13 @@
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
 				<div class="ui-block-xl">
-					<input type="text" class="ui-input ui-text ui-mun #{iris.form.cssDisabled}" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
+					<input type="text" class="ui-input ui-text ui-mun" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
 					<div class="ui-errtip"></div>
 				</div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select class="ui-input ui-select ui-mun #{iris.form.cssDisabled}" tabindex="47">
+				<select class="ui-input ui-select ui-mun" tabindex="47">
 					<option value="1">#{irse.rutas.getMsgDesp(1)}</option>
 					<option value="10">#{irse.rutas.getMsgDesp(10)}</option>
 				</select>
@@ -87,21 +86,21 @@
 			<label class="ui-block grupo-matricula-mun">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
 				<div>
-					<input type="text" name="matricula-vp" value="#{iris.form.matricula}" class="ui-input ui-code #{iris.form.cssDisabled}" maxlength="10" tabindex="48"/>
+					<input type="text" name="matricula-vp" value="#{iris.form.matricula}" class="ui-input ui-code" maxlength="10" tabindex="48"/>
 					<div class="ui-errtip"></div>
 				</div>
 			</label>
 			<label class="ui-block grupo-matricula-mun">
 				<div class="label required">km:</div>
 				<div>
-					<input type="text" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun #{iris.form.cssDisabled}"/>
+					<input type="text" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun"/>
 					<div class="ui-errtip"></div>
 				</div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
 				<div>
-					<input type="date" class="ui-input ui-date ui-mun #{iris.form.cssDisabled}" tabindex="50" />
+					<input type="date" class="ui-input ui-date ui-mun" tabindex="50" />
 					<div class="ui-errtip"></div>
 				</div>
 			</label>

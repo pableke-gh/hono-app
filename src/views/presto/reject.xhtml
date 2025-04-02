@@ -23,10 +23,10 @@
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 		<a href="#tab-action-rechazar" class="btn btn-error" data-refresh="is-firmable" title="#{msg['tit.btn.rechazar']}">
 			<i class="far fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
-		<p:remoteCommand name="rcRechazar" action="#{fact.firmas.rechazar()}" oncomplete="loadFirmas(xhr, status, args)"/> 
+		<p:remoteCommand name="rcRechazar" action="#{presto.firmas.rechazar()}" oncomplete="loadFirmas(xhr, status, args)"/> 
 		<a href="#tab-action-cancelar" class="btn btn-error" data-refresh="is-cancelable" title="#{msg['tit.btn.cancelar']}"> 
 			<i class="far fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.cancelar']}</a>
-		<p:remoteCommand name="rcCancelar" action="#{fact.firmas.cancelar()}" oncomplete="loadFirmas(xhr, status, args)"/> 
+		<p:remoteCommand name="rcCancelar" action="#{presto.firmas.cancelar()}" oncomplete="loadFirmas(xhr, status, args)"/> 
 	</div>
 	<ui:include src="./firmas.xhtml"></ui:include>
 </html>

@@ -23,10 +23,7 @@ function RutasMun() {
 			.setField(fields[0], ruta1Dia.origen, ev => { ruta1Dia.origen = ruta1Dia.destino = ev.target.value; })
 			.setField(fields[1], ruta1Dia.desp, ev => { ruta1Dia.desp = +ev.target.value; form.setVisible(SELECTOR, ruta1Dia.desp == 1); })
 			.setField(fields[2], i18n.isoFloat(ruta1Dia.km1), ev => { ruta1Dia.km1 = ruta1Dia.km2 = i18n.toFloat(ev.target.value); })
-			.setField(fields[3], ruta1Dia.dt1, ev => {
-				ruta1Dia.dt1 = ev.target.value;
-				ruta1Dia.dt2 = sb.endDay(ruta1Dia.dt1);
-			});
+			.setField(fields[3], ruta1Dia.dt1, ev => { ruta1Dia.dt1 = ev.target.value; ruta1Dia.dt2 = sb.endDay(ruta1Dia.dt1); });
 	}
 
 	/*********** PERFIL MUN tab-1 ***********/ 

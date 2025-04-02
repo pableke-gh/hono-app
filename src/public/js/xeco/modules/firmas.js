@@ -34,10 +34,12 @@ function Firmas() {
 	tabs.setAction("rechazar", () => { // ejecuta la accion de rechazar
 		const form = xeco.getForm(); // current form after initialization
 		form.validate(firma.validate) && i18n.confirm("msgRechazar") && form.invoke(window.rcRechazar);
+		// todo: actualizar el estado de la solicitud a rechazda
 	});
 	tabs.setAction("cancelar", () => { // ejecuta la accion de cancelar
 		const form = xeco.getForm(); // current form after initialization
 		form.validate(firma.validate) && i18n.confirm("msgCancelar") && form.invoke(window.rcCancelar);
+		// todo: actualizar el estado de la solicitud a cancelada
 	});
 
 	window.loadFirmas = (xhr, status, args) => {

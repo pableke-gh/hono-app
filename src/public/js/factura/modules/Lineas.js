@@ -9,7 +9,11 @@ function Lineas() {
 
 	const linea = factura.getLinea();
 	const lineas = form.setTable("#lineas-fact", linea.getTable());
-	lineas.setAfterRender(() => form.setLabels("#iva", [0, 4, 10, 21]).setStrval("#iva", factura.getIva()));
+	lineas.setAfterRender(() => {
+		const fnChangeIva = ev => self.setIva(+ev.target.value);
+		form.setLabels("#iva", [0, 4, 10, 21]).setField("#iva", factura.getIva(), fnChangeIva);
+		self.setIva(factura.getIva());
+	});
 
 	this.setIva = iva => {
 		factura.setIva(iva);
@@ -35,7 +39,7 @@ function Lineas() {
 		form.addClick("a#add-linea", ev => { // add linea action
 			const data = form.validate(linea.validate);
 			if (data)
-				form.restart("#desc").setval("#imp").setval("#memo", lineas.push(data).getItem(0).desc);
+				form.restart("#desc").setval("#imp", 0).setval("#memo", lineas.push(data).getItem(0).desc);
 			ev.preventDefault();
 		});
 		return self;

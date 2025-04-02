@@ -30,9 +30,10 @@ function Uxxiec() {
 		model.setData(data); // update model
 		form.setCache(data.id).refresh(data); // Update form cache and view
 	}
-    this.save = () => {
-        form.saveTable("#docs-json", tblUxxiec);
-    }
+
+	const fnSave = () => form.saveTable("#docs-json", tblUxxiec);
+	tabs.setAction("ejecutar", () => { fnSave(); form.invoke(window.rcEjecutar); });
+	tabs.setAction("notificar", () => { fnSave(); form.invoke(window.rcNotificar); });
 
 	window.loadUxxiec = (xhr, status, args) => {
         if (window.showTab(xhr, status, args, "uxxiec"))

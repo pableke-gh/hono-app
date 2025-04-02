@@ -85,8 +85,6 @@ function XecoForm() {
 	tabs.setAction("reject", () => { fnReject(list.getCurrentItem()); }); // open reject tab from list
 	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model.getData()); }); // update editable inputs
 	tabs.setAction("subsanar", () => { form.fire("is-valid") && i18n.confirm("msgSave") && form.invoke(window.rcSubsanar); }); // send from changes
-	tabs.setAction("ejecutar", () => { uxxiec.save(); form.invoke(window.rcEjecutar); });
-	tabs.setAction("notificar", () => { uxxiec.save(); form.invoke(window.rcNotificar); });
 }
 
 export default new XecoForm();

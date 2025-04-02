@@ -15,7 +15,6 @@ function Rutas() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
 
-	this.reload = rutas => { rmaps.reload(rutas); return self; }
 	this.setRutas = rutas => { rmaps.setRutas(rutas); return self; }
 	this.update = rutas => { rutas && self.setRutas(rutas); return self; }
 

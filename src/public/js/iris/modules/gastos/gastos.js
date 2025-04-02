@@ -133,7 +133,7 @@ console.log(data);
 			return !form.showError("Error al adjuntar el gasto a la comunicación.");
 		_gastos.push(data); // añadir gasto a lista
 		const links = coll.parse(args.rutas); // rutas asociadas al gasto
-		links && rutas.reload(links); // actualizo el registro de rutas
+		links && rutas.setRutas(links); // actualizo el registro de rutas
 		_tblGastos.render(self.getPaso5());
 		_isPasoUpdate6 = true;
 		fnResetForm();

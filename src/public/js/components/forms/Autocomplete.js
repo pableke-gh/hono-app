@@ -12,13 +12,13 @@ export default function(autocomplete, opts) {
     if (!autocomplete)
         return; // Input element not found
 
-    opts = opts || {}; // Config. container
+	opts = opts || {}; // Config. container
 	opts.delay = opts.delay || 400; //milliseconds between keystroke occurs and when a search is performed
 	opts.minLength = opts.minLength || 3; //length to start
 	opts.maxLength = opts.maxLength || 20; //max length for searching
 	opts.maxResults = opts.maxResults || 10; //max showed rows (default = 10)
-    opts.optionClass = opts.optionClass || "option"; // child name class
-    opts.activeClass = opts.activeClass || "active"; // active option class
+	opts.optionClass = opts.optionClass || "option"; // child name class
+	opts.activeClass = opts.activeClass || "active"; // active option class
 
     opts.source = opts.source || fnEmpty; //empty source by default
     opts.render = opts.render || fnParam; //render label on autocomplete
@@ -124,7 +124,7 @@ export default function(autocomplete, opts) {
         return self;
     }
 
-		// Event fired before char is writen in text
+	// Event fired before char is writen in text
 	autocomplete.onkeydown = ev => {
 		const TAB = 9;
 		const UP = 38;
@@ -155,19 +155,10 @@ export default function(autocomplete, opts) {
             clearTimeout(_time); // Clear previous searches
             _time = setTimeout(fnSearch, opts.delay);
         }
-    }
-    // Event occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
-    /*autocomplete.onsearch = ev => {
-        autocomplete.value || self.reset();
-    }*/
-    // Event fired before onblur only when text changes
-	autocomplete.onchange = ev => {
-		if (!autocomplete.value)
-			self.reset();
-		//else // Delay reset event after click on list
-		//	setTimeout(() => { self.isLoaded() || opts.onReset(self); }, 270);
-    }
-    autocomplete.onblur = ev => {
-        setTimeout(removeList, 280);
-    }
+	}
+	// Event occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
+	/*autocomplete.onsearch = ev => { autocomplete.value || self.reset(); }*/
+	// Event fired before onblur only when text changes
+	autocomplete.onchange = ev => { autocomplete.value || self.reset(); }
+	autocomplete.onblur = ev => { setTimeout(removeList, 280); }
 }

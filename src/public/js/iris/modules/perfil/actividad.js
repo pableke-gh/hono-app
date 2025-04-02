@@ -45,6 +45,12 @@ function Actividad() {
 	this.isFacturaUpct = () => true; // TODO: ver si es necesario
 
 	this.getColectivo = () => form.getText("#colectivo");
+	this.isPas = () => (self.getColectivo() == "PAS");
+	this.isPdiFu = () => (self.getColectivo() == "PDI-FU");
+	this.isPdiLa = () => (self.getColectivo() == "PDI-LA");
+	this.isPdi = () => (self.isPdiFu() || self.isPdiLa());
+	this.isAlumno = () => (self.getColectivo() == "ALU");
+	this.isExterno = () => (self.getColectivo() == "EXT");
 	this.setColectivo = (colectivo, email) => {
 		// Show mailto icon and update href attribute
 		_eColectivo.nextElementSibling.setVisible(email).setAttribute("href", "mailto:" + email);
@@ -57,7 +63,6 @@ function Actividad() {
 		form.select("#actividad", actividades(self.getRol(), self.getColectivo(), self.getFinanciacion()))
 			.select("#tramite", (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
 			.closeAlerts();
-		form.eachInput(".ui-pf", el => { form.setStrval("#pf-" + el.name, el.value); }); // update pf inputs
 		iris.setPerfil(self.getRol(), self.getColectivo(), self.getActividad(), self.getTramite(), self.getFinanciacion());
 		return self;
 	}

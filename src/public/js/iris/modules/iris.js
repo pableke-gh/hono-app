@@ -12,6 +12,7 @@ function Iris() {
 	this.init = () => {
 		xeco.init(); // init. actions
 		form.set("is-resumable", iris.isResumable);
+		form.onChangeInputs(".ui-pf", (ev, el) => { el.previousElementSibling.value = el.value; }); // update pf inputs 
 		form.onChangeInputs("[name='matricula-vp']", ev => form.setStrval("#matricula", ev.target.value));
 	}
 

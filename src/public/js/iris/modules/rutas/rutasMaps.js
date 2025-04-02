@@ -1,22 +1,24 @@
 
 import sb from "../../../components/types/StringBox.js";
-import iris from "../iris.js";
-import resumen from "../resumen.js";
-import rro from "./rutasReadOnly.js";
+
+import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/Ruta.js";
 import rutas from "../../model/ruta/Rutas.js";
 import { CT } from "../../data/rutas.js";
 
+import xeco from "../../../xeco/xeco.js";
+import resumen from "../resumen.js";
+import rro from "./rutasReadOnly.js";
+
 function RutasMaps() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	let _tblRutas; // itinerario
-	let _saveRutas; // bool indicator
 
 	this.getRutas = rutas.getRutas;
 	this.size = rutas.size;
 	this.isEmpty = rutas.isEmpty;
-	this.setSaveRutas = () => { _saveRutas = true; }
+	this.setSaveRutas = () => { _tblRutas.setChanged(true); }
 
 	this.getSalida = rutas.getSalida;
 	this.getLlegada = rutas.getLlegada;
@@ -30,29 +32,19 @@ function RutasMaps() {
 		return self;
 	}
 
-	const fnUpdateView = () => {
-		form.setVisible(".rutas-gt-1", self.size() > 1); 
-		_saveRutas = false;
-		return self;
-	}
-	this.reload = data => {
-		rutas.setRutas(data);
-		return self;
-	}
 	this.setRutas = data => {
 		rutas.setRutas(data);
-		_tblRutas.render(data);
-		fnUpdateView();
-		return self;
+		_tblRutas.render(data).setChanged();
 	}
 	this.saveRutas = () => {
-		if (!_saveRutas)
-			return self; // no hay cambios
-		const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
-		form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
-		rro.setRender();
-		resumen.setUpdatable();
-		return fnUpdateView();
+		if (_tblRutas.isChanged()) { // save changes in rutas table
+			const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
+			form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
+			rro.setRender();
+			resumen.setUpdatable();
+		}
+		_tblRutas.setChanged();
+		return self; // no hay cambios
 	}
 
 	function fnUpdateForm() {
@@ -66,9 +58,11 @@ function RutasMaps() {
 			form.restart("#h1");
 		else
 			form.setFocus("#destino");
-		self.setSaveRutas();
 	}
 	this.init = () => {
+		const fnRutasGt1 = () => (self.size() > 1); // como minimo hay 2 rutas
+		form.set("is-rutas-gt-1", fnRutasGt1).set("is-editable-rutas-gt-1", () => (iris.isEditable() && fnRutasGt1()));
+
 		_tblRutas = form.setTable("#tbl-rutas");
 		_tblRutas.setMsgEmpty("msgRutasEmpty")
 				.setBeforeRender(ruta.beforeRender).setRender(ruta.row).setFooter(ruta.tfoot)

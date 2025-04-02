@@ -17,14 +17,14 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.justifi']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="justifi" value="#{irse.gastos.justifi}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="50"/>
+				<h:inputTextarea id="justifi" value="#{irse.gastos.justifi}" styleClass="ui-input ui-ta rows-2" tabindex="50"/>
 				<div class="ui-errtip"></div>
 			</div>
 		</label>
 		<label class="ui-blocks rutas-vp">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.justifi.vp']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="justifiVp" value="#{irse.gastos.justifiVp}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="51"/>
+				<h:inputTextarea id="justifiVp" value="#{irse.gastos.justifiVp}" styleClass="ui-input ui-ta rows-2" tabindex="51"/>
 				<br/><span class="ui-errtip"></span>
 			</div>
 		</label>
@@ -32,7 +32,7 @@
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.tipo.gasto']}" escape="false" />:</div>
-				<h:selectOneMenu id="tg" value="#{irse.gastos.subvTipo}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="52">
+				<h:selectOneMenu id="tg" value="#{irse.gastos.subvTipo}" styleClass="ui-input ui-select" tabindex="52">
 					<f:selectItem itemValue="1" itemLabel="#{msg['lbl.subv.tipo.1']}" itemEscaped="false" />
 					<f:selectItem itemValue="2" itemLabel="#{msg['lbl.subv.tipo.2']}" itemEscaped="false" />
 					<f:selectItem itemValue="3" itemLabel="#{msg['lbl.subv.tipo.3']}" itemEscaped="false" />
@@ -42,7 +42,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.finalidad']}" escape="false" />:</div>
-				<h:selectOneMenu id="finalidad" value="#{irse.gastos.finalidad}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="53">
+				<h:selectOneMenu id="finalidad" value="#{irse.gastos.finalidad}" styleClass="ui-input ui-select" tabindex="53">
 					<f:selectItem itemValue="1" itemLabel="#{msg['lbl.finalidad.1']}" itemEscaped="false" />
 					<f:selectItem itemValue="2" itemLabel="#{msg['lbl.finalidad.2']}" itemEscaped="false" />
 					<f:selectItem itemValue="3" itemLabel="#{msg['lbl.finalidad.3']}" itemEscaped="false" />
@@ -50,7 +50,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.vinc']}" escape="false" />:</div>
-				<h:selectOneMenu id="vinc" value="#{irse.gastos.vinc}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="54">
+				<h:selectOneMenu id="vinc" value="#{irse.gastos.vinc}" styleClass="ui-input ui-select" tabindex="54">
 					<f:selectItem itemValue="1" itemLabel="#{msg['lbl.vinc.1']}" itemEscaped="false" />
 					<f:selectItem itemValue="2" itemLabel="#{msg['lbl.vinc.2']}" itemEscaped="false" />
 					<f:selectItem itemValue="3" itemLabel="#{msg['lbl.vinc.3']}" itemEscaped="false" />
@@ -60,7 +60,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.congreso']}" escape="false" />:</div>
-				<h:selectOneMenu id="congreso" value="#{irse.gastos.congreso}" styleClass="ui-input ui-select #{iris.form.cssDisabled}" tabindex="65">
+				<h:selectOneMenu id="congreso" value="#{irse.gastos.congreso}" styleClass="ui-input ui-select" tabindex="65">
 					<f:selectItem itemValue="0" itemLabel="#{irse.getMsg('lblNo')}" />
 					<f:selectItem itemValue="4" itemLabel="#{irse.getMsg('lblSi')}" />
 				</h:selectOneMenu>
@@ -70,17 +70,17 @@
 		<div class="ui-blocks grp-congreso">
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.imp.inscripcion']}" escape="false" />:</div>
-				<h:inputText id="impInsc" value="#{irse.gastos.impInsc}" tabindex="66" styleClass="ui-input ui-float #{iris.form.cssDisabled}"/><span class="icon">€</span>
+				<h:inputText id="impInsc" value="#{irse.gastos.impInsc}" tabindex="66" styleClass="ui-input ui-float"/><span class="icon">€</span>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">#{msg['lbl.f1.congreso']}:</div>
-				<h:inputText id="fIniCong" value="#{irse.gastos.FIniCong}" maxlength="10" tabindex="67" styleClass="ui-input ui-date #{iris.form.cssDisabled}"/>
+				<h:inputText id="fIniCong" value="#{irse.gastos.FIniCong}" maxlength="10" tabindex="67" styleClass="ui-input ui-date"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">#{msg['lbl.f2.congreso']}:</div>
-				<h:inputText id="fFinCong" value="#{irse.gastos.FFinCong}" maxlength="10" tabindex="68" styleClass="ui-input ui-date #{iris.form.cssDisabled}"/>
+				<h:inputText id="fFinCong" value="#{irse.gastos.FFinCong}" maxlength="10" tabindex="68" styleClass="ui-input ui-date"/>
 				<div class="ui-errtip"></div>
 			</label>
 		</div>
@@ -90,7 +90,7 @@
 			<label class="ui-blocks">
 				<div class="label required inline"><h:outputText value="#{msg['lbl.justifi.comision']}" escape="false" />:</div>
 				<div class="ui-block-main">
-					<h:inputTextarea id="justifiCong" value="#{irse.gastos.justifiCong}" styleClass="ui-input ui-ta rows-2 #{iris.form.cssDisabled}" tabindex="69"/>
+					<h:inputTextarea id="justifiCong" value="#{irse.gastos.justifiCong}" styleClass="ui-input ui-ta rows-2" tabindex="69"/>
 					<div class="ui-errtip"></div>
 				</div>
 			</label>
