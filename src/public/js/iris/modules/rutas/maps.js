@@ -33,8 +33,6 @@ async function getPlaceDetails(query) { // find a place by query
 
 //initialize google maps
 window.initMap = () => {
-	if (!window.IRSE.editable)
-		return true; // readonly mode 
 	_distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
 	_placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService
 	place.setAutocomplete($1("#origen"), origen => { p1 = origen.getPlace(); }); // Origen autocomplete input 

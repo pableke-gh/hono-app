@@ -2,6 +2,7 @@
 function DomBox() {
 	const self = this; //self instance
 	const divNull = document.createElement("div");
+	divNull.id = "_iPHJ2s04ID"; // rand id
 
 	this.isMediaXs = () => (window.innerWidth < 576);
 	this.ismediaSm = () => ((575 < window.innerWidth) && (window.innerWidth < 768));

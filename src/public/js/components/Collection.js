@@ -19,19 +19,19 @@ function fnEachPrev(arr, fn) {
 function Collection() {
 	const self = this; //self instance
 
-    this.isset = isset;
-    this.size = sb.size;
+	this.isset = isset;
+	this.size = sb.size;
 	this.isEmpty = sb.isEmpty;
-    this.parse = fnParse;
+	this.parse = fnParse;
 	this.split = sb.split;
-    this.eachPrev = fnEachPrev;
+	this.eachPrev = fnEachPrev;
 	this.get = (arr, i) => arr ? arr[i] : null;
 	this.last = arr => arr ? arr.last() : null;
-    this.reset = arr => arr ? fnReset(arr) : [];
+	this.reset = arr => arr ? fnReset(arr) : [];
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
 	this.findIndex = (arr, fn) => arr ? arr.findIndex(fn) : -1;
 	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
-    this.distinct = (arr, fn) => arr.filter((o1, index, $this) => ($this.findIndex(o2 => fn(o2, o1)) === index));
+	this.distinct = (arr, fn) => arr.filter((o1, index, $this) => ($this.findIndex(o2 => fn(o2, o1)) === index));
 
 	/*this.remove = (arr, fn) => {
 		let i = self.findIndex(arr, fn);
@@ -52,47 +52,47 @@ function Collection() {
 		return self;
 	}
 
-    this.render = (data, fnRender, resume) => {
-        const status = {};
-        resume = resume || status;
-        status.size = resume.size = data.length;
-        return data.map((item, i) => { // render each item
-            status.index = i;
-            status.count = i + 1;
-            return fnRender(item, status, resume, data);
-        }).join("");
-    }
+	this.render = (data, fnRender, resume) => {
+		const status = {};
+		resume = resume || status;
+		status.size = resume.size = data.length;
+		return data.map((item, i) => { // render each item
+			status.index = i;
+			status.count = i + 1;
+			return fnRender(item, status, resume, data);
+		}).join("");
+	}
 
     this.copy = function(output, data, keys) {
-        if (keys)
-            keys.forEach(key => { output[key] = data[key]; });
-        else
-            Object.assign(output, data);
-        return output;
-    }
-    this.clone = function(data, keys) {
-        return self.copy({}, data, keys);
-    }
-    this.clear = function(data, keys) {
-        if (keys)
-            keys.forEach(key => delete data[key]);
-        else {
-            for (let key in data)
-                delete data[key];
-        }
-        return data;
-    }
+		if (keys)
+			keys.forEach(key => { output[key] = data[key]; });
+		else
+			Object.assign(output, data);
+		return output;
+	}
+	this.clone = (data, keys)  => self.copy({}, data, keys);
+	this.values = (data, keys) => keys ? keys.map(key => data[key]) : Object.values(data);
+	this.clear = function(data, keys) {
+		if (keys)
+			keys.forEach(key => delete data[key]);
+		else {
+			for (let key in data)
+				delete data[key];
+		}
+		return data;
+	}
 	this.merge = function(keys, values, data) {
 		data = data || {}; // Output
 		keys.forEach((k, i) => { data[k] = values[i]; });
 		return data;
 	}
 
-    // Extends Object
-    Object.copy = self.copy;
-    Object.clone = self.clone;
-    Object.clear = self.clear;
-    Object.merge = self.merge;
+	// Extends Object
+	Object.copy = self.copy;
+	Object.clone = self.clone;
+	Object.clear = self.clear;
+	Object.merge = self.merge;
+	Object.extract = self.values;
 }
 
 // Client / Server global functions

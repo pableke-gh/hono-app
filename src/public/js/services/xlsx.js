@@ -24,24 +24,42 @@ function Xlsx() {
 	const self = this; //self instance
 	const workbook = XLSX.utils.book_new();
 
-	this.getSheets = () => workbook.Sheets;
-	this.getSheet = name => workbook.Sheets[name];
-
-	this.setData = (name, data/*, fnParser*/) => {
-		const worksheet = XLSX.utils.json_to_sheet(data);
-		//if (fnParser) // Iterate over all rows
-			//data.forEach((row, i) => fnParser(worksheet, row, i));
+	const fnSave = (worksheet, name) => {
 		if (workbook.Sheets[name]) // replace sheet
 			workbook.Sheets[name] = worksheet;
-		else // append new sheet
+		else // append new sheet to work book
 			XLSX.utils.book_append_sheet(workbook, worksheet, name);
 		return self;
 	}
 
-	this.setTitles = (name, titles) => {
-		const worksheet = workbook.Sheets[name]; // sheet must exists
-		XLSX.utils.sheet_add_aoa(worksheet, [titles], { origin: "A1" });
-		//titles.forEach((title, column) => fnParseTitles(worksheet, title, column));
+	this.getSheets = () => workbook.Sheets;
+	this.getSheet = name => workbook.Sheets[name];
+
+	this.setData = (name, data, fnParser) => {
+		const worksheet = XLSX.utils.json_to_sheet(data, { cellDates: true });
+		if (fnParser) // Iterate over all rows
+			data.forEach((row, i) => fnParser(worksheet, row, i));
+		return fnSave(worksheet, name);
+	}
+
+	this.setValues = (name, values, fnParser) => { // values is array of arrays
+		const worksheet = XLSX.utils.aoa_to_sheet(values, { origin: "A2" }); // A1 = titles
+		if (fnParser) // Iterate over all rows
+			values.forEach((row, i) => fnParser(worksheet, row, i));
+		return fnSave(worksheet, name);
+	}
+
+	this.setTitles = (name, titles, fnParser) => {
+		const opts = { origin: "A1" }; // A1 = titles
+		let worksheet = workbook.Sheets[name];
+		if (worksheet) // check if sheet exists
+			XLSX.utils.sheet_add_aoa(worksheet, [titles], opts);
+		else { // create new workseet
+			worksheet = XLSX.utils.aoa_to_sheet([titles], opts);
+			fnSave(worksheet, name); // save worksheet in work book
+		}
+		if (fnParser) // Iterate over row 1 only (titles row)
+			titles.forEach((title, column) => fnParser(worksheet, title, column));
 		return self;
 	}
 

@@ -14,3 +14,4 @@ src/data/**/*.sqlite
 src/public/files/**/*
 src/public/js/irse/modules/place.js
 src/public/js/iris/modules/rutas/place.js
+src/public/js/services/place.js

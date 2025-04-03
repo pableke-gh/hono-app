@@ -7,6 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
+	<div id="tab-16" class="tab-content">
 	<h:form id="xeco-isu" prependId="false" onsubmit="loading();">
 		<h2>JG #{irse.isu.jg.numJg}<hr class="underline"/></h2>
 
@@ -46,5 +47,6 @@
 			<i class="btn-icon-left fas fa-caret-left"></i><span class="ui-button-text ui-c"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
 		<p:commandLink action="#{irse.isu.link()}" update="xeco-list-isu" oncomplete="viewIrse(xhr, status, args, 16)" tabindex="101" styleClass="btn btn-green">
 			<i class="far fa-save btn-icon-left"></i>Guardar</p:commandLink>
+	</div>
 	</div>
 </html>

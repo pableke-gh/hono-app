@@ -1,6 +1,6 @@
 
 import nav from "../../components/Navigation.js";
-import place from "./place.js";
+import place from "../../services/place.js";
 
 window.initMap = function() {
     const inputOrigen = $1("#ac-origen");

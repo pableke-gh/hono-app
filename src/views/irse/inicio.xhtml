@@ -119,12 +119,8 @@
 
 		<!-- listado ISU para la OTRI -->
 		<c:if test="#{irse.uae or irse.otri}">
-			<div id="tab-16" class="tab-content">
-				<ui:include src="tabs/list_isu.xhtml"></ui:include>
-			</div>
-			<div id="tab-17" class="tab-content">
-				<ui:include src="tabs/form_isu.xhtml"></ui:include>
-			</div>
+			<ui:include src="tabs/list_isu.xhtml"></ui:include>
+			<ui:include src="tabs/form_isu.xhtml"></ui:include>
 		</c:if>
 	</ui:define>
 </ui:composition>

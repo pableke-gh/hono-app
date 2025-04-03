@@ -3,9 +3,11 @@ import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import dt from "../../components/types/DateBox.js";
 import pf from "../../components/Primefaces.js";
+
 import dom from "../../lib/uae/dom-box.js";
 import xlsx from "../../services/xlsx.js";
-import i18n from "../../i18n/langs.js";
+
+import otri from "../model/Otri.js";
 import rutas from "./rutas.js";
 
 function Otri() {
@@ -64,14 +66,10 @@ function fnViewIsu() {
 window.viewIsu = (xhr, status, args) => {
     showAlerts(xhr, status, args) && fnViewIsu();
 }
-tabs.setInitEvent(16, tab16 => {
+tabs.setInitEvent(16, () => {
     const formListIsu = new Form("#xeco-filtro-isu");
-    formListIsu.setAutocomplete("#organica-isu", {
-        minLength: 4,
-        source: term => pf.sendTerm("rcFindOrg", term),
-        render: item => item.o + " - " + item.dOrg,
-        select: item => item.id
-    });
+    const acOrgancias = formListIsu.setAutocomplete("#organica-isu", otri.getAutocomplete());
+	acOrgancias.setSource(term => pf.sendTerm("rcFindOrg", term));
 });
 tabs.setViewEvent(17, fnViewIsu);
 
@@ -104,24 +102,8 @@ window.xlsx = (xhr, status, args) => {
 	];
 
 	const aux = data.map(obj => Object.clone(obj, keys));
-	xlsx.setData(sheet, aux).setTitles(sheet, titles);
-	const worksheet = xlsx.getSheet(sheet);
-	data.forEach((data, i) => { // row parser
-		const row = i + 2; // Titles row = 1
-		worksheet["G" + row].z = "#,##0.00"; // Imp. Total = currency format
-		worksheet["H" + row].v = i18n.isoDate(data.fJg); // F. Emisión = currency format
-		worksheet["R" + row].v = i18n.isoDate(data.start); // Fecha de inicio del viaje (5) = currency format
-		worksheet["S" + row].v = i18n.isoDate(data.end); // Fecha de fin del viaje (5) = currency format
-		worksheet["V" + row].z = "#,##0.00"; // Kilómetros recorridos en vehículo particular (en su caso) (8) = currency format
-		worksheet["X" + row].z = "#,##0.00"; // Importe Kilometraje (vehículo particular) (10) = currency format
-		worksheet["Y" + row].z = "#,##0.00"; // TOTAL Locomoción = currency format
-		worksheet["AB" + row].z = "#,##0.00"; // TOTAL Alojamiento = currency format
-		worksheet["AE" + row].z = "#,##0.00"; // TOTAL Manutención = currency format
-		worksheet["AF" + row].z = "#,##0.00"; // TOTAL (Locomoción+Alojamiento+Manutención) = currency format
-	});
-
-	// download XLSX file
-	xlsx.download("Informe ISU.xlsx");
+	xlsx.setData(sheet, aux, otri.xlsx).setTitles(sheet, titles);
+	xlsx.download("Informe ISU.xlsx"); // download XLSX file
 }
 
 export default new Otri();
