@@ -41,7 +41,7 @@ function Actividad() {
 	this.isAutA7j = () => (self.isAut() || self.isA7j());
 	this.isRutaUnica = () => (self.isAutA7j() || self.is1Dia());
 	this.isLocalizaciones = () => (self.isMun() || self.isAutA7j());
-	this.isTrayectos = () => (!self.isLocalizaciones() && !self.is1Dia());
+	this.isMaps = () => (!self.isLocalizaciones() && !self.is1Dia());
 	this.isFacturaUpct = () => true; // TODO: ver si es necesario
 
 	this.getColectivo = () => form.getText("#colectivo");

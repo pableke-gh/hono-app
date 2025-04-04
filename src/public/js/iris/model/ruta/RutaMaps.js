@@ -1,11 +1,11 @@
 
 import i18n from "../../../i18n/langs.js";
+import iris from "../Iris.js";
 
 function RutaMaps() {
 	this.row = (data, status, resume) => {
-		const editable = window.IRSE.editable;
-		const destino = editable ? `<a href="#main" class="row-action">${data.destino}${resume.flag}</a>` : `${data.destino}${resume.flag}`;
-		const remove = editable ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
+		const destino = iris.isEditable() ? `<a href="#main" class="row-action">${data.destino}${resume.flag}</a>` : `${data.destino}${resume.flag}`;
+		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
 		return `<tr class="tb-data tb-data-tc">
 			<td class="hide-sm" data-cell="Nº">${status.count}</td>
 			<td data-cell="Origen">${data.origen}</td>

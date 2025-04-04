@@ -12,8 +12,8 @@ function Iris() {
 	this.init = () => {
 		xeco.init(); // init. actions
 		form.set("is-resumable", iris.isResumable);
-		form.onChangeInputs(".ui-pf", (ev, el) => { el.previousElementSibling.value = el.value; }); // update pf inputs 
-		form.onChangeInputs("[name='matricula-vp']", ev => form.setStrval("#matricula", ev.target.value));
+		form.onChangeInputs(".ui-pf", (ev, el) => { el.previousElementSibling.value = ev.target.value; }); // update pf inputs 
+		form.onChangeInputs(".ui-matricula", ev => form.eachInput(".ui-matricula", el => { el.value = ev.target.value; }));
 	}
 
 	this.view = (data, firmas) => {

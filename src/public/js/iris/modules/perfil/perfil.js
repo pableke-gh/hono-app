@@ -28,7 +28,7 @@ function Perfil() {
 	this.isMun = actividad.isMun;
 	this.isIsu = actividad.isIsu;
 	this.is1Dia = actividad.is1Dia;
-	this.isTrayectos = actividad.isTrayectos;
+	this.isMaps = actividad.isMaps;
 	this.isRutaUnica = actividad.isRutaUnica;
 	//this.isFacturaUpct = actividad.isFacturaUpct;
 
@@ -50,7 +50,7 @@ function Perfil() {
 		organicas.init();
 
 		form.loadAcItems(".ui-personal", term => pf.sendTerm("rcFindPersonal", term));
-		form.set("is-isu", actividad.isIsu).set("is-maps", actividad.isTrayectos);
+		form.set("is-isu", actividad.isIsu).set("is-maps", actividad.isMaps);
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));

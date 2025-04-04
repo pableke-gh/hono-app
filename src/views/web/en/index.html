@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="/public/img/png/fav.png"></link>
     <link rel="stylesheet" type="text/css" media="screen" href="/public/css/styles-min.css">
 	<script type="text/javascript" src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script> 
     <script type="module" src="/public/js/index.js"></script>
 </head>
 <body>
@@ -126,62 +126,92 @@
             </div>
 
             <div class="navbar">
-                <a href="#tab-next" class="btn btn-info">Sig. <i class="fas fa-angle-double-right"></i></a>
-                <a href="/login" class="btn btn-info load-main">Login <i class="fas fa-angle-double-right"></i></a>
-                <a href="/web/en/maps.html" class="btn btn-green">Go maps <i class="fas fa-share"></i></a>
-                <a href="/maps" class="btn btn-green load-main">Go maps by AJAX <i class="fas fa-undo-alt"></i></a>
-                <a href="/web/en/tables.html" class="btn btn-green">Tables <i class="fas fa-table"></i></a>
-                <button id="xlsx" class="btn btn-green">Button</button>
+				<a href="#tab-next" class="btn btn-info">Sig.<i class="fas fa-angle-double-right btn-icon-right"></i></a>
+				<a href="/login" class="btn btn-info load-main">Login<i class="fas fa-angle-double-right btn-icon-right"></i></a>
+				<a href="#tab-maps" class="btn btn-info">Go maps<i class="fas fa-map-marker-alt btn-icon-right"></i></a>
+				<a href="/web/es/tables.html" class="btn btn-green">Tables<i class="fas fa-table btn-icon-right"></i></a>
+				<a href="#download" class="btn btn-green">Excel<i class="far fa-file-excel btn-icon-right"></i></a>
             </div>
         </div>
 
-        <div id="tab-1" class="tab-content">
-            <h2>Actions<hr class="underline"/></h2>
+		<div id="tab-1" class="tab-content">
+			<h2>Actions<hr class="underline"/></h2>
 
-            <form id="form-pokemon" action="#">
-                <div class="ui-blocks">
-                    <label class="ui-block">
-                        <div class="label">Multiselect:</div>
-                        <select class="ui-input ui-select">
-                            <option value="1">&#x2611; Opción 1</option>
-                            <option value="2">&#x2611; Opción 2</option>
-                            <option value="3">&#x2611; Opción 3</option>
-                            <option value="4">&#x2611; Opción 4</option>
-                            <option value="5">&#x2611; Opción 5</option>
-                        </select>
-                    </label>
-                    <div class="ui-block multiselect multi-options">
-                        <div class="label">Multiselect:</div>
-                        <button class="ui-input ui-select">
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <ul class="options"></ul>
-                    </div>
-                    <div class="ui-block-row"></div>
-                    <label class="ui-block-xl autocomplete">
-                        <div class="label required">Pokemon finder:</div>
-                        <i class="fas fa-search ui-input-icon left"></i>
-                        <input type="search" id="ac-pokemon" class="ui-input ui-autocomplete" tabindex="1" placeholder="Search a pokemon" />
-                        <input type="hidden" name="id"/>
-                        <ul class="results"></ul>
-                        <div class="ui-errtip"></div>
-                    </label>
-                </div>
-                </form>
-    
-            <div id="info-pokemon" class="hide ui-blocks" style="align-items: end;"></div>
+			<form id="form-pokemon" action="#">
+				<div class="ui-blocks">
+					<label class="ui-block">
+						<div class="label">Multiselect:</div>
+						<select class="ui-input ui-select">
+							<option value="1">&#x2611; Opción 1</option>
+							<option value="2">&#x2611; Opción 2</option>
+							<option value="3">&#x2611; Opción 3</option>
+							<option value="4">&#x2611; Opción 4</option>
+							<option value="5">&#x2611; Opción 5</option>
+						</select>
+					</label>
+					<div class="ui-block multiselect multi-options">
+						<div class="label">Multiselect:</div>
+						<button class="ui-input ui-select">
+							<i class="fas fa-chevron-down"></i>
+						</button>
+						<ul class="options"></ul>
+					</div>
+					<div class="ui-block-row"></div>
+					<label class="ui-block-xl autocomplete">
+						<div class="label required">Pokemon finder:</div>
+						<i class="fas fa-search ui-input-icon left"></i>
+						<input type="search" id="ac-pokemon" class="ui-input ui-autocomplete" tabindex="1" placeholder="Search a pokemon" />
+						<input type="hidden" name="id"/>
+						<ul class="results"></ul>
+						<div class="ui-errtip"></div>
+					</label>
+				</div>
+				</form>
 
-            <div class="navbar">
-                <a href="#" class="action text-green resize">Green</a>
-                <a href="#" class="action text-blue resize">Blue</a>
-                <a href="#" class="action text-warn resize">Warn</a>
+			<div id="info-pokemon" class="hide ui-blocks" style="align-items: end;"></div>
+
+			<div class="navbar">
+				<a href="#" class="action text-green resize">Green</a>
+				<a href="#" class="action text-blue resize">Blue</a>
+				<a href="#" class="action text-warn resize">Warn</a>
+			</div>
+
+			<div class="navbar">
+				<a href="#tab-0" class="btn btn-info"><i class="fas fa-angle-double-left"></i>Volver</a>
+			</div>
+		</div>
+
+        <div id="tab-maps" class="tab-content">
+            <h2>GOOGLE MAPS API<hr class="underline"/></h2>
+
+            <div class="ui-blocks">
+                <label class="ui-block-xl autocomplete">
+                    <div class="label required">Origen de la ruta:</div>
+                    <i class="fas fa-map-marker-alt ui-input-icon left"></i>
+                    <input type="search" id="ac-origen" name="ac-origen" class="ui-input ui-autocomplete" tabindex="1" placeholder="Search for a place" />
+					<input type="hidden" id="id-origen" name="id-origen" value="" />
+					<ul role="list" class="results"></ul>
+                    <div class="ui-errtip"></div>
+                </label>
             </div>
 
-            <div class="navbar">
-                <a href="#tab-0" class="btn btn-info"><i class="fas fa-angle-double-left"></i></a>
+            <div class="address-components hide">
+                <h2>Address Components:</h2>
+                <ul>
+                    <li><b>@lblDireccion;:</b> @dir;</li>
+                    <li><b>@lblLocalidad; (locality):</b> @localidad;</li>
+                    <li><b>@lblCP; (postal_code):</b> @cp;</li>
+                    <li><b>@lblProvincia; (administrative_area_level_2):</b> @provincia;</li>
+                    <li><b>@lblCCAA; (administrative_area_level_1):</b> @ccaa;</li>
+                    <li><b>@lblPais; (country):</b> @pais;</li>
+                </ul>
+            </div>
+
+			<div class="navbar">
+                <a href="#tab-0" class="btn btn-info"><i class="fas fa-angle-double-left btn-icon-left"></i>Volver</a>
             </div>
         </div>
-        <script id="index-js" type="module" src="/public/js/web/index.js"></script>
+		<script id="index-js" type="module" src="/public/js/web/index.js"></script>
     </main>
 
     <footer>

@@ -40,11 +40,11 @@ function Rutas() {
 
 	async function fnAddRuta(ev) {
 		ev.preventDefault(); // stop event
-		const data = form.validate(maps.validateFields, ".ui-ruta");
-		if (!data || !maps.validatePlaces(data, self) || !ruta.valid(data))
-			return false; // maps validation error
+		const data = await maps.validate();
+		if (!data) // maps validation
+			return false;
 
-		const temp = self.getRutas().concat(data);
+		const temp = rutas.getRutas().concat(data);
 		// reordeno todas las rutas por fecha de salida
 		temp.sort((a, b) => sb.cmp(a.dt1, b.dt1));
 		if (!rutas.validate(temp)) // check if all routes are valid
@@ -75,7 +75,7 @@ function Rutas() {
 	}
 
 	/*********** Google Maps API ***********/
-	tabs.setActiveEvent("maps", perfil.isTrayectos);
+	tabs.setActiveEvent("maps", perfil.isMaps);
 	tabs.setInitEvent("maps", self.maps);
 	//tabs.setViewEvent("maps", tabs.resetToggleAction);
 }

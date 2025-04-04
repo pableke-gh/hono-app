@@ -1,5 +1,6 @@
 
 import i18n from "../../../i18n/langs.js";
+import iris from "../Iris.js";
 
 const TICKETS = ["-", "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros", "-", "-", "Tickets de transporte (taxi, parking, peajes...)"];
 const DOCS = ["-", "Documentación obligatoria por ausencia de facturas", "Otra documentación (opcional)", "Justificación de dietas", "Facturas a nombre de la UPCT a pagar al proveedor", "Facturas a nombre de la UPCT a pagar al comisionado", "Documentación acreditativa del programa de movilidad"]
@@ -19,9 +20,8 @@ function Gasto() {
 	this.isPaso5 = gasto => self.isFactura(gasto) || self.isTicket(gasto) || self.isPernocta(gasto) || self.isExtra(gasto) || self.isDoc(gasto);
 
 	this.row = (gasto, status, resume) => {
-		const editable = window.IRSE.editable;
 		const link = `<a href="${gasto.fref}" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>`;
-		const remove = editable ? `<a href="#rcUnloadGasto" class="row-action"><i class="fas fa-times action text-red resize"></i></a>` : "";
+		const remove = iris.isEditable() ? `<a href="#rcUnloadGasto" class="row-action"><i class="fas fa-times action text-red resize"></i></a>` : "";
 
 		let subtipo = self.isFactura(gasto) ? "Factura a nombre del comisionado por transporte interurbano" : "";
 		subtipo = self.isTicket(gasto) ? (TICKETS[gasto.subtipo] || TICKETS[0]) : subtipo;

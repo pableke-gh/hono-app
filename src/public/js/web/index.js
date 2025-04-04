@@ -2,8 +2,11 @@
 import api from "../components/Api.js";
 import Form from "../components/forms/Form.js";
 import nav from "../components/Navigation.js";
+import tabs from "../components/Tabs.js";
 import sb from "../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
+
+import maps from "./modules/maps.js";
 import xlsx from "../services/xlsx.js";
 
 function fnIndex() {
@@ -71,6 +74,8 @@ function fnIndex() {
 		xlsx.download("Informe ISU.xlsx");
 		ev.preventDefault();
 	});
+
+	tabs.setInitEvent("maps", maps.init);
 }
 
 // Register event on page load and export default handler

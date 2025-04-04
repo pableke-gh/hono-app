@@ -21,11 +21,7 @@ function PartidaInc() {
 
 	const _partidasInc = form.setTable("#partidas-inc", partida.getTable());
 	_partidasInc.setMsgEmpty("No existen partidas asociadas a la solicitud");
-	_partidasInc.setAfterRender(resume => {
-		partidas.setData(_partidasInc);
-		const readonly = resume.size > 0;
-		form.readonly(readonly, "#ejDec").readonly(readonly || presto.isDisableEjInc(), "#ejInc").refresh(presto.getData());
-	});
+	_partidasInc.setAfterRender(resume => { partidas.setData(_partidasInc); form.setEditable(); });
 
 	this.getOrganica = () => _acOrgInc;
 	this.setEconomicas = economicas => { _ecoInc.setItems(economicas); return self; }
@@ -56,9 +52,12 @@ function PartidaInc() {
     }
 
 	this.init = () => {
-		form.set("is-valid", self.validate); // define validate action
+		// define validate action and init form view
+		const fnEditableEjDec = () => _partidasInc.isEmpty();
+		const fnEditableEjInc = () => (fnEditableEjDec() && !presto.isDisableEjInc());
+		form.set("is-valid", self.validate).onChangeInput("#ejInc", _acOrgInc.reload);
+		form.set("is-editable-ej-dec", fnEditableEjDec).set("is-editable-ej-inc", fnEditableEjInc);
 		_partidasInc.set("#doc030", p030.load); // load form 030
-		form.onChangeInput("#ejInc", _acOrgInc.reload); // reload organica inc.
 		pf.uploads(form.querySelectorAll(".pf-upload"));
 	}
 

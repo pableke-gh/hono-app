@@ -47,7 +47,7 @@ tabs.setActiveEvent("isu", perfil.isIsu);
 tabs.setInitEvent("isu", otri.init);
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
-tabs.setViewEvent(5, gastos.initTab5);
+tabs.setViewEvent(5, gastos.viewTab);
 
 /*********** Tablas de resumen ***********/
 tabs.setInitEvent("resumen", resumen.init); 

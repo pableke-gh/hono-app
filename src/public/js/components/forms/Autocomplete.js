@@ -142,9 +142,9 @@ export default function(autocomplete, opts) {
 			selectItem(self.getCurrentOption(), _index);
 		}
 	}
-    // Event fired when value changes, ignore ctrl, alt, etc...
-    // also occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
-    autocomplete.oninput = ev => {
+	// Event fired when value changes, ignore ctrl, alt, etc...
+	// also occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
+	autocomplete.oninput = ev => {
 		if (_searching) // Avoid new searchs
 			return ev.preventDefault();
         const size = coll.size(autocomplete.value);

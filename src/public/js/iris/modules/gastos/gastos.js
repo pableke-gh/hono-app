@@ -13,8 +13,32 @@ import rutas from "../../model/ruta/Rutas.js";
 function Gastos() {
 	const self = this; //self instance
 	const form = iris.getForm(); // form component
+	const _eTipoGasto = form.getInput("#tipo-gasto");
+	const _grpGasto = form.querySelectorAll(".grupo-gasto");
 	let _gastos, _tblGastos; // container
-	let _eTipoGasto, _grpGasto; // upload fields
+
+	const isTaxi = () => (_eTipoGasto.value == "4"); //ISU y taxi
+	const isPernocta = () => (_eTipoGasto.value == "9"); //Tipo pernocta
+	const isDoc = () => ["201", "202", "204", "205", "206"].includes(_eTipoGasto.value);
+	const isExtra = () => ["301", "302", "303", "304"].includes(_eTipoGasto.value);
+	const fnChange = () => {
+		form.setval("#tipoGasto", _eTipoGasto.value)
+				.text(".label-text-gasto", i18n.get("lblDescObserv"));
+		if (isPernocta())
+			_grpGasto.mask(0b11011);
+		else if (isDoc())
+			_grpGasto.mask(0b10101);
+		else if (isExtra())
+			_grpGasto.mask(0b10111);
+		else if (isTaxi()) { //ISU y taxi
+			form.text(".label-text-gasto", i18n.get("lblDescTaxi"));
+			_grpGasto.mask(0b10111);
+		}
+		else if (0 < +_eTipoGasto.value)
+			_grpGasto.mask(0b10011);
+		else
+			_grpGasto.mask(0b00001);			
+	}
 
 	this.getGastos = () => _gastos;
 	this.getFacturas = () => _gastos.filter(gasto.isFactura);
@@ -37,7 +61,7 @@ function Gastos() {
 	const fnUpdateTab = () => {
 		const numNochesPendientes = 0;
 		const numRutasOut = rutas.getNumRutasSinGastos();
-		form.setVisible(".ui-gastos-pendientes", perfil.isTrayectos() && ((numRutasOut > 0) || (numNochesPendientes > 0)))
+		form.setVisible(".ui-gastos-pendientes", perfil.isMaps() && ((numRutasOut > 0) || (numNochesPendientes > 0)))
 			.setVisible(".ui-noches-pendientes", numNochesPendientes > 0)
 			.setVisible(".ui-rutas-pendientes", numRutasOut > 0)
 			.render("#info-rutas-gastos", { numRutasOut, numNochesPendientes });
@@ -54,15 +78,9 @@ function Gastos() {
 		return fnUpdateTab();
 	}
 
-	this.setGastos = gastos => {
-		_gastos = gastos;
-		_tblGastos.render(self.getPaso5());
-		return self;
-	}
-	this.update = gastos => {
-		gastos && self.setGastos(gastos);
-		return self;
-	}
+	this.setGastos = gastos => { _gastos = gastos; _tblGastos.render(self.getPaso5()).setChanged(); }
+	this.update = gastos => { gastos && self.setGastos(gastos); }
+	this.viewTab = fnResetForm;
 
 	this.validateGasto = data => {
 console.log(data);
@@ -81,45 +99,15 @@ console.log(data);
 		return valid.isOk();
 	}
 
-	this.initTab5 = tab => {
-		if (!window.IRSE.editable)
-			return self; // modo solo consulta
-
-		_eTipoGasto = form.getInput("#tipo-gasto");
-		_grpGasto = form.querySelectorAll(".grupo-gasto");
-
-		const isTaxi = () => (_eTipoGasto.value == "4"); //ISU y taxi
-		const isPernocta = () => (_eTipoGasto.value == "9"); //Tipo pernocta
-		const isDoc = () => ["201", "202", "204", "205", "206"].includes(_eTipoGasto.value);
-		const isExtra = () => ["301", "302", "303", "304"].includes(_eTipoGasto.value);
-		const fnChange = () => {
-			form.setval("#tipoGasto", _eTipoGasto.value)
-					.text(".label-text-gasto", i18n.get("lblDescObserv"));
-			if (isPernocta())
-				_grpGasto.mask(0b11011);
-			else if (isDoc())
-				_grpGasto.mask(0b10101);
-			else if (isExtra())
-				_grpGasto.mask(0b10111);
-			else if (isTaxi()) { //ISU y taxi
-				form.text(".label-text-gasto", i18n.get("lblDescTaxi"));
-				_grpGasto.mask(0b10111);
-			}
-			else if (0 < +_eTipoGasto.value)
-				_grpGasto.mask(0b10011);
-			else
-				_grpGasto.mask(0b00001);			
-		}
-
-		_eTipoGasto.onchange = fnChange; // Change event
-		pf.uploads(tab.querySelectorAll(".pf-upload"), fnChange);
-		return fnResetForm();
-	}
 	this.init = () => {
 		//_eTipoGasto = _grpGasto = null;
 		_tblGastos = form.setTable("#tbl-gastos");
 		const fnUnload = data => { i18n.confirm("remove") && pf.sendId("rcUnloadGasto", data.id); };
 		_tblGastos.setMsgEmpty("msgGastosEmpty").setRender(gasto.row).setFooter(gasto.tfoot).set("#rcUnloadGasto", fnUnload);
+
+		_eTipoGasto.onchange = fnChange; // Change event
+		pf.uploads(form.querySelectorAll(".pf-upload-gasto"), fnChange);
+		form.setDateRange("#fMinGasto", "#fMaxGasto");
 		return self;
 	}
 
@@ -135,7 +123,6 @@ console.log(data);
 		const links = coll.parse(args.rutas); // rutas asociadas al gasto
 		links && rutas.setRutas(links); // actualizo el registro de rutas
 		_tblGastos.render(self.getPaso5());
-		_isPasoUpdate6 = true;
 		fnResetForm();
 	}
 	window.unloadGasto = (xhr, status, args) => {
@@ -144,7 +131,6 @@ console.log(data);
 		const data = _tblGastos.getCurrentItem();
 		_gastos = _gastos.filter(gasto => (gasto.id != data.id));
 		_tblGastos.removeCurrent(); // remove and reload
-		_isPasoUpdate6 = true;
 		fnUpdateTab();
 	}
 }

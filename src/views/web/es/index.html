@@ -128,8 +128,7 @@
 			<div class="navbar">
 				<a href="#tab-next" class="btn btn-info">Sig.<i class="fas fa-angle-double-right btn-icon-right"></i></a>
 				<a href="/login" class="btn btn-info load-main">Login<i class="fas fa-angle-double-right btn-icon-right"></i></a>
-				<a href="/web/es/maps.html" class="btn btn-green">Go maps<i class="fas fa-share btn-icon-right"></i></a>
-				<a href="/maps" class="btn btn-green load-main">Go maps by AJAX<i class="fas fa-undo-alt btn-icon-right"></i></a>
+				<a href="#tab-maps" class="btn btn-info">Go maps<i class="fas fa-map-marker-alt btn-icon-right"></i></a>
 				<a href="/web/es/tables.html" class="btn btn-green">Tables<i class="fas fa-table btn-icon-right"></i></a>
 				<a href="#download" class="btn btn-green">Excel<i class="far fa-file-excel btn-icon-right"></i></a>
 			</div>
@@ -178,10 +177,41 @@
             </div>
 
             <div class="navbar">
-                <a href="#tab-0" class="btn btn-info"><i class="fas fa-angle-double-left"></i></a>
+                <a href="#tab-0" class="btn btn-info"><i class="fas fa-angle-double-left"></i>Volver</a>
             </div>
         </div>
-        <script id="index-js" type="module" src="/public/js/web/index.js"></script>
+
+        <div id="tab-maps" class="tab-content">
+            <h2>GOOGLE MAPS API<hr class="underline"/></h2>
+
+            <div class="ui-blocks">
+                <label class="ui-block-xl autocomplete">
+                    <div class="label required">Origen de la ruta:</div>
+                    <i class="fas fa-map-marker-alt ui-input-icon left"></i>
+                    <input type="search" id="ac-origen" name="ac-origen" class="ui-input ui-autocomplete" tabindex="1" placeholder="Search for a place" />
+					<input type="hidden" id="id-origen" name="id-origen" value="" />
+					<ul role="list" class="results"></ul>
+                    <div class="ui-errtip"></div>
+                </label>
+            </div>
+
+            <div class="address-components hide">
+                <h2>Address Components:</h2>
+                <ul>
+                    <li><b>@lblDireccion;:</b> @dir;</li>
+                    <li><b>@lblLocalidad; (locality):</b> @localidad;</li>
+                    <li><b>@lblCP; (postal_code):</b> @cp;</li>
+                    <li><b>@lblProvincia; (administrative_area_level_2):</b> @provincia;</li>
+                    <li><b>@lblCCAA; (administrative_area_level_1):</b> @ccaa;</li>
+                    <li><b>@lblPais; (country):</b> @pais;</li>
+                </ul>
+            </div>
+
+			<div class="navbar">
+                <a href="#tab-0" class="btn btn-info"><i class="fas fa-angle-double-left btn-icon-left"></i>Volver</a>
+            </div>
+        </div>
+		<script id="index-js" type="module" src="/public/js/web/index.js"></script>
     </main>
 
     <footer>

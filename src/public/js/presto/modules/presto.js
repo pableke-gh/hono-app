@@ -19,7 +19,7 @@ function Presto() {
 			.set("show-subtipo", () => (presto.isUae() && presto.isGcr()));
 
 		// Init. form events
-		const fnSync = ev => { form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); }; 
+		const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
 		const fnUrgente = ev => form.setVisible("[data-refresh='is-urgente']", ev.target.value == "2");
 		form.onChangeInput("#urgente", fnUrgente).onChangeInputs(".ui-ej", fnSync);
 	}
