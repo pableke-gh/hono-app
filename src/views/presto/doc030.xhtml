@@ -7,14 +7,14 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 data-refresh="text-render">@titulo; @codigo;</h2>
+	<h2 data-refresh="text-render">@getTitulo; @codigo;</h2>
 	<div class="card-xeco">
 		<h2>Datos del Documento 080</h2>
 		<ul>
 			<li data-refresh="text-render"><b>Ejercicio:</b> @ej;</li>
-			<li data-refresh="text-render"><b>Organica:</b> @o; - @dOrg;</li>
-			<li data-refresh="text-render"><b>Económica:</b> @e; - @dEco;</li>
-			<li data-refresh="text-render"><b>Importe:</b> $imp; €</li>
+			<li data-refresh="text-render"><b>Organica:</b> @getOrg080; - @getDescOrg080;</li>
+			<li data-refresh="text-render"><b>Económica:</b> @getEco080; - @getDescEco080;</li>
+			<li data-refresh="text-render"><b>Importe:</b> $getImp080; €</li>
 		</ul>
 		<h2>Datos del Documento 030</h2>
 		<div class="ui-blocks">

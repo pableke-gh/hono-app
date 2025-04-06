@@ -24,10 +24,11 @@ function Facturas() {
 
 	this.view = (data, conceptos, firmas) => {
 		data.nifTercero = data.nif; // set field
-		xeco.view(data, firmas); // load data-model before view
+		factura.setData(data); // set data model
 		lineas.setLineas(conceptos); // Load conceptos and iva input
 		acOrganica.setValue(data.idOrg, data.org + " - " + data.descOrg);
 		acRecibo.setValue(data.idRecibo, data.acRecibo);
+		xeco.view(data, firmas); // load data-model before view
 	}
 
 	this.update = (data, firmas, tab) => {

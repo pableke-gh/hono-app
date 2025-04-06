@@ -26,7 +26,7 @@ function Fiscal() {
 	this.setFace = face => {
 		factura.setFace(face);
 		const lbl = factura.isPlataforma() ? "Nombre de la plataforma:" : "Órgano Gestor:";
-		form.text("[data-refresh='show-gestor'] > .label", lbl).refresh(factura.getData());
+		form.text("[data-refresh='show-gestor'] > .label", lbl).refresh(factura);
 		return self;
 	}
 
@@ -49,7 +49,7 @@ function Fiscal() {
 	}
 	this.update = (subtipo, tercero) => {
 		factura.setSubtipo(subtipo); // actualizo el nuevo subtipo
-        form.setval("#nifTercero", acTercero.getCode()).refresh(factura.getData());
+        form.setval("#nifTercero", acTercero.getCode()).refresh(factura);
 		return fnUpdateFiscalidad(tercero || acTercero.getCurrentItem());
 	}
 	this.load = (tercero, del) => {

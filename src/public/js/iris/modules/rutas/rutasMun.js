@@ -1,5 +1,4 @@
 
-import tabs from "../../../components/Tabs.js";
 import sb from "../../../components/types/StringBox.js";
 import i18n from "../../../i18n/langs.js";
 
@@ -8,7 +7,6 @@ import rmaps from "./rutasMaps.js";
 import { MUN } from "../../data/rutas.js";
 
 function RutasMun() {
-	const self = this; //self instance
 	const form = iris.getForm(); // form component
 
 	this.init = () => {
@@ -25,9 +23,6 @@ function RutasMun() {
 			.setField(fields[2], i18n.isoFloat(ruta1Dia.km1), ev => { ruta1Dia.km1 = ruta1Dia.km2 = i18n.toFloat(ev.target.value); })
 			.setField(fields[3], ruta1Dia.dt1, ev => { ruta1Dia.dt1 = ev.target.value; ruta1Dia.dt2 = sb.endDay(ruta1Dia.dt1); });
 	}
-
-	/*********** PERFIL MUN tab-1 ***********/ 
-	tabs.setInitEvent(1, self.init);
 }
 
 export default new RutasMun();

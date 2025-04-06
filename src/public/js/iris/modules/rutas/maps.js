@@ -5,6 +5,13 @@ import rutas from "../../model/ruta/Rutas.js";
 import iris from "../iris.js";
 import place from "./place.js";
 
+// Initialize autocomplete places
+let p1, p2; // from ... to
+window.afterInitMap = () => {
+	place.setAutocomplete("#origen", place => { p1 = place; }); // Origen autocomplete input 
+	place.setAutocomplete("#destino", place => { p2 = place; }); // Destino autocomplete input
+}
+
 const getPlaceDetails = async query => { // find a place by query 
 	const [errQuery, results] = await place.findPlaceFromQuery(query);
 	if (errQuery || !results[0])
@@ -29,9 +36,6 @@ place.validate = async () => {
 	const data = form.validate(validateFields, ".ui-ruta");
 	if (!data) // inputs validation
 		return false;
-
-	let p1 = place.getOrigen();
-	let p2 = place.getDestino();
 
 	function loadOrigen(place, pais, mask) {
 		p1 = place;

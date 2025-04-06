@@ -93,11 +93,10 @@ export default function(form, opts) {
     this.setText = (selector, text) => { dom.text(fnQuery(selector), text); return self; }
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
 	this.render = (selector, data) => { $$(selector).render(data || opts); return self; } // HTMLElement.prototype.render
-	this.refresh = data => {
-		data = data || opts; // render contents
+	this.refresh = model => {
 		$$("[data-refresh]").forEach(el => {
 			if (el.dataset.refresh == "text-render")
-				return el.render(data); // render contents only
+				return el.render(model); // render contents only
 			const fnRefresh = opts[el.dataset.refresh]; // handler
 			if (el.dataset.toggle) // toggle specific style class
 				el.classList.toggle(el.dataset.toggle, fnRefresh(el));

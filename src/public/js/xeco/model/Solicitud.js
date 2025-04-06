@@ -16,7 +16,10 @@ function Solicitud() {
 	this.get  = name => _data[name];
 	this.setData = data => { _data = data; return self; }
 	this.set = (name, value) => { _data[name] = value; return self; }
-	this.update = data => self;
+	this.getValue = name => {
+		const fnValue = self[name]; // calculated value
+		return fnValue ? fnValue() : self.get(name);
+	}
 
 	this.getNif = () => _nif;
 	this.setNif = val => { self._nif = val; return self; } 
@@ -92,6 +95,7 @@ function Solicitud() {
 			acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 		return acciones;
 	}
+	this.tfoot = resume => `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`;
 }
 
 export default new Solicitud();

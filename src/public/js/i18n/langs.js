@@ -92,23 +92,18 @@ function Langs() {
 	// Render styled string
 	const RE_VAR = /[@$](\w+)(\.\w+)?;/g;
 	this.render = function(str, data, opts) {
-		if (!str) // has string
-			return str;
 		opts = opts || {};
 		opts.size = opts.size || 1;
 		opts.index = opts.index || 0;
 		opts.count = opts.index + 1;
 		opts.matches = opts.keys = 0;
 		data = data || _lang; // default data = lang
+		const fnValue = data.getValue || (k => (data[k]));
 		return str.replace(RE_VAR, (m, k, t) => { // replacer
 			opts.keys++; // always increment keys matches
-			/*if (t == ".s") { // data styled by function
-				opts.matches++; // is a valid matches
-				return opts[k](data, opts); // restyle data by handler
-			}*/
-			const value = data[k] ?? _lang[k]; // value to replace
+			const value = fnValue(k) ?? _lang[k]; // value to replace
 			opts.matches += globalThis.isset(value); // increment matches 
-			if (m.startsWith("$") || (t == ".f")) // float
+			if (m.startsWith("$")) // float / currency
 				return self.isoFloat(value);
 			if (t == ".d") // Date in ISO string format
 				return self.isoDate(value); // substring = 0, 10

@@ -61,18 +61,16 @@ function XecoForm() {
 	}
 
 	this.view = (data, principales) => {
-		model.setData(data).update(data); // 1º carga los datos de la solicitud
-		firmas.view(principales); // 2º cargo la vista de firmas asociadas
-		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])");
-		// 3º force last action => update form views and go to tab form
-		setTimeout(() => { form.setEditable().refresh(data); tabs.showTab("form"); }, 1);
+		firmas.view(principales); // 1º cargo la vista de firmas asociadas
+		// 2º force last action => update form views and go to tab form
+		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])")
+			.setEditable().refresh(model);
+		tabs.showTab("form");
 	}
 	this.update = (data, principales, tab) => {
-		data = data || model.getData(); // default = current data
-		model.setData(data).update(data); // 1º carga los datos de la solicitud
+		data && model.setData(data); // 1º carga los datos de la solicitud
 		principales && firmas.view(principales); // 2º actualizo la vista de firmas asociadas
-		// 3º force last action => update form views and go to specific tab
-		setTimeout(() => { form.refresh(data).nextTab(tab); }, 1);
+		form.refresh(model).nextTab(tab); // 3º and last action => update views and go to specific tab
 	}
 
 	/*** Init. actions for model form ***/
@@ -83,7 +81,7 @@ function XecoForm() {
 	tabs.setAction("send", () => { form.fire("is-valid") && i18n.confirm("msgSend") && form.invoke(window.rcSend); }); // send from xeco-model form
 	tabs.setAction("firmar", () => { i18n.confirm("msgFirmar") && form.invoke(window.rcFirmarForm); }); // run remote command from xeco-model
 	tabs.setAction("reject", () => { fnReject(list.getCurrentItem()); }); // open reject tab from list
-	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model.getData()); }); // update editable inputs
+	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // update editable inputs
 	tabs.setAction("subsanar", () => { form.fire("is-valid") && i18n.confirm("msgSave") && form.invoke(window.rcSubsanar); }); // send from changes
 }
 

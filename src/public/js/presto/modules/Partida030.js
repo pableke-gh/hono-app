@@ -40,8 +40,12 @@ function Partida030() {
 
 	this.view = row => { // load tab view 3
 		_ej030 = row.ej030 = row.ej; // Ejercicio de la partida a añadir
-		const data = Object.assign({}, presto.getData(), row);
-        form.setData(row, ".ui-030").refresh(data);
+		presto.getOrg080 = () => row.o; // Organica del documento 080
+		presto.getDescOrg080 = () => row.dOrg; // Descripción de la organica del documento 080
+		presto.getEco080 = () => row.e; // Económica del documento 080
+		presto.getDescEco080 = () => row.dEco; // Descripción de la económica del documento 080
+		presto.getImp080 = () => row.imp; // Descripción de la económica del documento 080 
+        form.setData(row, ".ui-030").refresh(presto); // Actualizo los campos de la vista
         acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
         tabs.showTab("030"); // change tab
         return self;

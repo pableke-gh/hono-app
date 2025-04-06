@@ -1,13 +1,13 @@
 
-import iris from "../iris.js";
-import resumen from "../resumen.js";
+import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/Ruta.js";
 import rutas from "../../model/ruta/Rutas.js";
 import i18n from "../../../i18n/langs.js";
+import xeco from "../../../xeco/xeco.js";
 
 function RutasVehiculoPropio() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	let _tblRutasVp; // itinerario
 
 	this.getImporte = () => _tblRutasVp.getResume().impKm;
@@ -20,10 +20,7 @@ function RutasVehiculoPropio() {
 	}
 	const fnAfterRenderVp = resume => {
 		ruta.afterRender(resume);
-		resumen.upodate();
-		form.setVisible("#justifi-km", resume.justifi)
-			.setVisible(".rutas-vp", resume.size > 0)
-			.text("#imp-km", i18n.isoFloat(resume.impKm) + " €");
+		form.refresh(iris);
 	}
 
 	this.validate = data => {
@@ -40,6 +37,11 @@ function RutasVehiculoPropio() {
 		_tblRutasVp.setMsgEmpty("msgRutasEmpty")
 				.setBeforeRender(ruta.beforeRender).setRender(ruta.rowVehiculoPropio).setFooter(ruta.tfootVehiculoPropio)
 				.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
+
+		const resume = _tblRutasVp.getResume();
+		iris.getImpKm = () => resume.impKm;
+		const fnJustifi = () => resume.justifi;
+		form.set("is-rutas-vp", _tblRutasVp.size).set("is-justifi-km", fnJustifi);
 		return self;
 	}
 }

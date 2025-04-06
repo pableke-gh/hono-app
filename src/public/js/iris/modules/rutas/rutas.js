@@ -6,7 +6,9 @@ import i18n from "../../../i18n/langs.js";
 import iris from "../iris.js";
 import perfil from "../perfil/perfil.js";
 import maps from "./maps.js";
+import rmun from "./rutasMun.js";
 import rmaps from "./rutasMaps.js";
+import rvp from "./rutasVehiculoPropio.js";
 
 import ruta from "../../model/ruta/Ruta.js";
 import rutas from "../../model/ruta/Rutas.js";
@@ -62,7 +64,7 @@ function Rutas() {
 	}
 
 	this.maps = () => {
-		maps.init();
+		maps.init(); // execute once
 		form.setClick("#add-ruta", fnAddRuta).setDateRange("#f1", "#f2") // Rango de fechas
 			.onChangeInput("#f1", ev => form.setval("#f2", ev.target.value)) // copy value to f2
 			.onChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))
@@ -71,8 +73,11 @@ function Rutas() {
 	}
 	this.init = () => {
 		rmaps.init();
-		return self;
+		rvp.init();
 	}
+
+	/*********** PERFIL MUN tab-1 ***********/ 
+	tabs.setInitEvent(1, rmun.init);
 
 	/*********** Google Maps API ***********/
 	tabs.setActiveEvent("maps", perfil.isMaps);

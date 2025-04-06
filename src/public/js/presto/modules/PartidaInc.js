@@ -44,7 +44,7 @@ function PartidaInc() {
 	}
 
     this.validate = () => {
-		partidas.setData(_partidasInc); // Cargo las partidas para su validación
+		//partidas.setData(_partidasInc); // Cargo las partidas para su validación
 		if (!form.validate(presto.validate))
 			return false; // Errores al validar las partidas
 		partidas.setPrincipal(); //marco la primera como principal
@@ -83,7 +83,7 @@ function PartidaInc() {
 		if (!pf.showAlerts(xhr, status, args))
 			return false; // Server error
 		const partidaInc = coll.parse(args.data);
-		if (!partidas.setData(_partidasInc).validatePartida(partidaInc))
+		if (!partidas/*.setData(_partidasInc)*/.validatePartida(partidaInc))
 			return form.setErrors(); // error en la partida a incrementar
 		partidaInc.imp030 = partidaInc.imp = form.valueOf("#impInc"); // Importe de la partida a añadir
 		_partidasInc.add(partidaInc); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc

@@ -27,8 +27,8 @@ function Uxxiec() {
 
 	this.view = data => {
         acUxxi.reload(); // Reload autocomplete
-		model.setData(data); // update model
-		form.setCache(data.id).refresh(data); // Update form cache and view
+		model.setData(data); // update data model
+		form.setCache(data.id).refresh(model); // Update form cache and view
 	}
 
 	const fnSave = () => form.saveTable("#docs-json", tblUxxiec);
