@@ -172,6 +172,7 @@ export default function(form, opts) {
 	this.getValue = el => el && fnParseValue(el);
 	this.getval = selector => dom.getValue(fnQueryInput(selector));
 	this.valueOf = selector => self.getValue(fnQueryInput(selector));
+	this.setModel = (model, selector) => fnUpdate(selector || "[name]", el => model.setValue(el.name, el.value));
 	this.getData = selector => { // View to JSON
 		const data = {}; // Results container
 		fnUpdate(selector, el => {

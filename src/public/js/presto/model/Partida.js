@@ -8,7 +8,10 @@ function Partida() {
 
 	let data; // Current presto data type
 	this.getData = () => data;
-	this.setData = partida => { data = partida; return self; }
+	this.setData = partida => { data = partida; }
+
+	this.isPrincipal = partida => (partida.mask & 1);
+	this.setPrincipal = partida => { partida.mask |= 1; }
 
 	this.isAnticipada = partida => (partida.mask & 4);
 	this.isExcedida = partida => ((presto.isAnt() || (partida.e == "642")) && Number.isNumber(partida.ih) && ((partida.ih + .01) < partida.imp));

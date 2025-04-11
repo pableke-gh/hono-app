@@ -29,9 +29,9 @@ solicitud.isPartidaExt = () => (solicitud.isGcr() || solicitud.isAnt());
 solicitud.isDisableEjInc = () => (solicitud.isDisabled() || solicitud.isTcr() /*|| solicitud.isFce()*/);
 solicitud.isAutoLoadImp = () => (solicitud.isL83() || solicitud.isAnt() || solicitud.isAfc());
 solicitud.isAutoLoadInc = () => (solicitud.isL83() || solicitud.isAnt());
-solicitud.hasMultipartida = () => (solicitud.mask & 1);
-solicitud.isAnticipada = () => (solicitud.mask & 4);
-solicitud.isExcedida = () => (solicitud.mask & 8);
+solicitud.hasMultipartida = () => (solicitud.getMask() & 1);
+solicitud.isAnticipada = () => (solicitud.getMask() & 4);
+solicitud.isExcedida = () => (solicitud.getMask() & 8);
 
 solicitud.row = data => {
 	let acciones = solicitud.rowActions(data);

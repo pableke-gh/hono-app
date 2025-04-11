@@ -1,5 +1,6 @@
 
 import i18n from "../../i18n/langs.js";
+import Base from "./Base.js";
 import firma from "./Firma.js";
 
 const CSS_ESTADOS = [
@@ -7,95 +8,78 @@ const CSS_ESTADOS = [
     "text-warn", "text-green", "text-error", "text-green", "text-green", "text-warn", "text-warn", "text-error", "text-error", "text-error", "text-error"
 ];
 
-function Solicitud() {
-	const self = this; //self instance
-	const SUBSANABLE = 15; // Estado de subsanable
-	let _data, _nif, _grupo, _admin;
+const base = new Base(); // model instance
+const SUBSANABLE = 15; // Estado de subsanable
+let _nif, _grupo, _admin; // User params
 
-	this.getData = () => _data;
-	this.get  = name => _data[name];
-	this.setData = data => { _data = data; return self; }
-	this.set = (name, value) => { _data[name] = value; return self; }
-	this.getValue = name => {
-		const fnValue = self[name]; // calculated value
-		return fnValue ? fnValue() : self.get(name);
-	}
+base.getNif = () => _nif;
+base.setNif = val => { base._nif = val; return base; } 
+base.isAdmin = () => _admin;
+base.setAdmin = val => { _admin = val; return base; }
 
-	this.getNif = () => _nif;
-	this.setNif = val => { self._nif = val; return self; } 
-	this.isAdmin = () => _admin;
-	this.setAdmin = val => { _admin = val; return self; }
+base.setGrupo = val => { _grupo = val; return base; }
+base.setUser = ({ nif, grupo, admin }) => base.setNif(nif).setGrupo(grupo).setAdmin("1" == admin);
+base.isUsuEc = () => !!_grupo;
+base.isUxxiec = base.isUsuEc;
 
-	this.setGrupo = val => { _grupo = val; return self; }
-	this.setUser = ({ nif, grupo, admin }) => self.setNif(nif).setGrupo(grupo).setAdmin("1" == admin);
-	this.isUsuEc = () => !!_grupo;
-	this.isUxxiec = self.isUsuEc;
+base.isDisabled = () => !base.isEditable();
+base.isEditable = () => (!base.getId() || (base.getEstado() == 6));
+base.isPendiente = () => (base.getEstado() == 5); // Pendiente de las firmas
+base.isAceptada = () => (base.getEstado() == 1); // Aceptada por todos los firmantes
+base.isRechazada = () => (base.getEstado() == 2); // Rechazada no llega a estado finalizada
+base.isEjecutada = () => (base.getEstado() == 3); // Documentos creados en uxxiec y asociados a la solicitud
+base.isIntegrada = () => (base.getEstado() == 4); // Solicitud integrada en uxxiec y notificada a los firmantes
+base.isCancelada = () => (base.getEstado() == 7); // Solicitud cancelada por la UAE
+base.isCaducada = () => (base.getEstado() == 8); // Solicitud caducada por expiración
+base.isErronea = () => ((base.getEstado() == 9) || (base.getEstado() == 10)); // estado de error
+base.isReactivable = () => (base.isUae() && base.isErronea()); // La solicitud se puede reactivar / subsanar
+base.isSubsanable = () => (base.isUae() && (base.getEstado() == SUBSANABLE)); // Solicitud subsanable en el cliente
+base.setSubsanable = () => { base.getEstado() = SUBSANABLE; return base; } // marca la solicitud como subsanable
+base.isFinalizada = () => [1, 3, 4, 9, 10].includes(base.getEstado()); // Aceptada, Ejecutada, Notificada ó Erronea
+base.isFirmada = () => (base.isAceptada() || base.isEjecutada());
+base.isValidada = () => (base.isFirmada() || base.isIntegrada());
+base.isInvalidada = () => (base.isRechazada() || base.isCancelada());
+base.isAnulada = () => (base.isInvalidada() || base.isCaducada());
+base.isReadOnly = () => (base.isAnulada() || base.isIntegrada());
+base.isRemovable = () => (base.getId() && ((base.getEstado() == 6) || base.isAdmin()));
 
-	this.getTipo = () => _data.tipo;
-	this.getSubtipo = () => _data.subtipo;
-	this.setSubtipo = value => { _data.subtipo = value; return self; }
-	this.getEstado = () => _data.estado;
-	this.getMask = () => _data.mask;
+base.isUae = () => (_grupo == "2"); // UAE
+base.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") || (_grupo == "284")); // OTRI / UITT / UCCT / Catedras
+//base.isUtec = () => (_grupo == "6");
+//base.isGaca = () => (_grupo == "54");
+//base.isEut = () => (_grupo == "253");
+//base.isEstudiantes = () => (_grupo == "9");
+//base.isContratacion = () => (_grupo == "68");
 
-	this.isDisabled = () => !self.isEditable();
-	this.isEditable = () => (!_data.id || (_data.estado == 6));
-	this.isPendiente = () => (_data.estado == 5); // Pendiente de las firmas
-	this.isAceptada = () => (_data.estado == 1); // Aceptada por todos los firmantes
-	this.isRechazada = () => (_data.estado == 2); // Rechazada no llega a estado finalizada
-	this.isEjecutada = () => (_data.estado == 3); // Documentos creados en uxxiec y asociados a la solicitud
-	this.isIntegrada = () => (_data.estado == 4); // Solicitud integrada en uxxiec y notificada a los firmantes
-	this.isCancelada = () => (_data.estado == 7); // Solicitud cancelada por la UAE
-	this.isCaducada = () => (_data.estado == 8); // Solicitud caducada por expiración
-	this.isErronea = () => ((_data.estado == 9) || (_data.estado == 10)); // estado de error
-	this.isReactivable = () => (self.isUae() && self.isErronea()); // La solicitud se puede reactivar / subsanar
-	this.isSubsanable = () => (self.isUae() && (_data.estado == SUBSANABLE)); // Solicitud subsanable en el cliente
-	this.setSubsanable = () => { _data.estado = SUBSANABLE; return self; } // marca la solicitud como subsanable
-	this.isFinalizada = () => [1, 3, 4, 9, 10].includes(_data.estado); // Aceptada, Ejecutada, Notificada ó Erronea
-	this.isFirmada = () => (self.isAceptada() || self.isEjecutada());
-	this.isValidada = () => (self.isFirmada() || self.isIntegrada());
-	this.isInvalidada = () => (self.isRechazada() || self.isCancelada());
-	this.isAnulada = () => (self.isInvalidada() || self.isCaducada());
-	this.isReadOnly = () => (self.isAnulada() || self.isIntegrada());
-	this.isRemovable = () => (_data.id && ((_data.estado == 6) || self.isAdmin()));
+base.isFirmable = () => (base.isPendiente() && firma.isFirmable(base.get("fmask")));
+base.isCancelable = () => (base.isUae() && base.isValidada());
+base.isInvalidable = () => (base.isFirmable() || base.isCancelable()); // show reject form 
+base.isEditableUae = () => (base.isEditable() || base.isSubsanable() || (base.isUae() && base.isFirmable()));
+base.isEjecutable = () => (base.isUae() && [1, 3, 4, 5, 9, 10].includes(base.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
+base.isNotificable = () => [1, 3, 9, 10].includes(base.getEstado()); // Aceptada, Ejecutada ó Erronea
+base.isIntegrable = () => (base.isUae() && base.isNotificable()); // Requiere uae + estado notificable
+base.isUrgente = () => (base.get("fMax") && base.get("extra")); //solicitud urgente?
+//base.setUrgente = ({ fMax, extra }) => { _data.fMax = fMax; _data.extra = extra; return base; }
 
-	this.isUae = () => (_grupo == "2"); // UAE
-	this.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") || (_grupo == "284")); // OTRI / UITT / UCCT / Catedras
-	//this.isUtec = () => (_grupo == "6");
-	//this.isGaca = () => (_grupo == "54");
-	//this.isEut = () => (_grupo == "253");
-	//this.isEstudiantes = () => (_grupo == "9");
-	//this.isContratacion = () => (_grupo == "68");
+base.getCodigo = () => base.get("codigo");
+base.getMemoria = () => base.get("memo");
+base.getDescEstado = () => i18n.getItem("descEstados", base.getEstado());
+base.getStyleByEstado = () => (CSS_ESTADOS[base.getEstado()] || "text-warn");
 
-	this.isFirmable = () => (self.isPendiente() && firma.isFirmable(_data.fmask));
-	this.isCancelable = () => (self.isUae() && self.isValidada());
-	this.isInvalidable = () => (self.isFirmable() || self.isCancelable()); // show reject form 
-	this.isEditableUae = () => (self.isEditable() || self.isSubsanable() || (self.isUae() && self.isFirmable()));
-	this.isEjecutable = () => (self.isUae() && [1, 3, 4, 5, 9, 10].includes(_data.estado)); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
-	this.isNotificable = () => [1, 3, 9, 10].includes(_data.estado); // Aceptada, Ejecutada ó Erronea
-	this.isIntegrable = () => (self.isUae() && self.isNotificable()); // Requiere uae + estado notificable
-	this.isUrgente = () => (_data.fMax && _data.extra); //solicitud urgente?
-	//this.setUrgente = ({ fMax, extra }) => { _data.fMax = fMax; _data.extra = extra; return self; }
-
-	this.getCodigo = () => _data.codigo;
-	this.getMemoria = () => _data.memo;
-	this.getDescEstado = () => i18n.getItem("descEstados", _data.estado);
-	this.getStyleByEstado = () => (CSS_ESTADOS[_data.estado] || "text-warn");
-
-	this.rowActions = data => {
-		self.setData(data); // initialize 
-		let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
-		if (self.isFirmable())
-			acciones += `<a href="#rcFirmar" class="row-action resize once-action" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
-						<a href="#tab-reject" class="row-action resize once-action"><i class="fas fa-times action resize text-red"></i></a>`;
-		if (self.isEjecutable())
-			acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
-		if (self.isIntegrable())
-			acciones += '<a href="#rcIntegrar" class="row-action once-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
-		if (self.isAdmin())
-			acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
-		return acciones;
-	}
-	this.tfoot = resume => `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`;
+base.rowActions = data => {
+	base.setData(data); // initialize 
+	let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
+	if (base.isFirmable())
+		acciones += `<a href="#rcFirmar" class="row-action resize once-action" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
+					<a href="#tab-reject" class="row-action resize once-action"><i class="fas fa-times action resize text-red"></i></a>`;
+	if (base.isEjecutable())
+		acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
+	if (base.isIntegrable())
+		acciones += '<a href="#rcIntegrar" class="row-action once-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
+	if (base.isAdmin())
+		acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
+	return acciones;
 }
+base.tfoot = resume => `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`;
 
-export default new Solicitud();
+export default base;

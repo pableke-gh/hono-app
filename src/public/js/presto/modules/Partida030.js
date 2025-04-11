@@ -7,13 +7,13 @@ import xeco from "../../xeco/xeco.js";
 
 function Partida030() {
 	const self = this; //self instance
-    const form = xeco.getForm();
-    const partida = presto.getPartida();
+	const form = xeco.getForm();
+	const partida = presto.getPartida();
 	let _ej030;
 
 	const fnSource = () => window.rcFindOrg030();
 	const fnSelect = item => form.setval("#idEco030", item.imp);
-    const acOrg030 = form.setAcItems("#acOrg030", fnSource, fnSelect);
+	const acOrg030 = form.setAcItems("#acOrg030", fnSource, fnSelect);
 
 	//this.getForm = () => form;
 	this.validate = data030 => {
@@ -28,14 +28,15 @@ function Partida030() {
 		const label = data030.acOrg030?.split(" - ");
 		if (!label) // Code separator
 			return !valid.addError("acOrg030", ERR_ORGANICA, "No ha seleccionada correctamente la aplicación para el DC 030.");
-        if (data.imp < data030.imp030)
+		if (data.imp < data030.imp030)
 			return !valid.addError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.");
-        // If ok => update partida a incrementar
-        data.idOrg030 = +data030.idOrg030;
-        [ data.o030, data.dOrg030 ] = label;
-        data.idEco030 = data030.idEco030;
-        data.imp030 = data030.imp030;
-        return valid.isOk();
+
+		// If ok => update partida a incrementar
+		data.idOrg030 = +data030.idOrg030;
+		[ data.o030, data.dOrg030 ] = label;
+		data.idEco030 = data030.idEco030;
+		data.imp030 = data030.imp030;
+		return valid.isOk();
 	}
 
 	this.view = row => { // load tab view 3
@@ -45,10 +46,11 @@ function Partida030() {
 		presto.getEco080 = () => row.e; // Económica del documento 080
 		presto.getDescEco080 = () => row.dEco; // Descripción de la económica del documento 080
 		presto.getImp080 = () => row.imp; // Descripción de la económica del documento 080 
-        form.setData(row, ".ui-030").refresh(presto); // Actualizo los campos de la vista
-        acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
-        tabs.showTab("030"); // change tab
-        return self;
+
+		form.setData(row, ".ui-030").refresh(presto); // Actualizo los campos de la vista
+		acOrg030.setValue(row.idOrg030, row.o030 + " - " + row.dOrg030);
+		tabs.showTab("030"); // change tab
+		return self;
 	}
 	this.load = row => { // load tab view 3
 		if (_ej030 == row.ej) // cambio de ejercicio

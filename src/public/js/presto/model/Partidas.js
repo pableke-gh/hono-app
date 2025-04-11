@@ -24,8 +24,7 @@ function Partidas() {
 
     this.setPrincipal = () => {
         data.sort((a, b) => (b.imp - a.imp)); //orden por importe desc.
-        data[0].mask |= 1; //marco la primera como principal
-        return self;
+        partida.setPrincipal(data[0]); // marco la primera como principal
     }
 
     const MSG_ERR_INC = "Debe seleccionar al menos una partida a incrementar";
