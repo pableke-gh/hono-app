@@ -3,7 +3,6 @@ import coll from "../components/Collection.js";
 import tabs from "../components/Tabs.js";
 
 import iris from "./modules/iris.js";
-import resumen from "./modules/resumen.js"; 
 import uxxiec from "./modules/uxxiec.js";
 import perfil from "./modules/perfil/perfil.js";
 import rutas from "./modules/rutas/rutas.js";
@@ -45,13 +44,6 @@ window.updateIrse = (xhr, status, args, tab) => {
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
 tabs.setActiveEvent("isu", perfil.isIsu);
 tabs.setInitEvent("isu", otri.init);
-
-/*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
-tabs.setViewEvent(5, gastos.viewTab);
-
-/*********** Tablas de resumen ***********/
-tabs.setInitEvent("resumen", resumen.init); 
-tabs.setViewEvent("resumen", resumen.view); 
 
 /*********** Expediente UXXI-EC ***********/
 tabs.setInitEvent("uxxiec", uxxiec.init);

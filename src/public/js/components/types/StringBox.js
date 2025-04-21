@@ -67,29 +67,31 @@ function StringBox() {
 	this.randInt = (min, max) => Math.floor(self.randFloat(min || 0, max));
     this.randString = (size, characters) => { // Declare all characters
         characters = characters || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        let result = "";
+        let result = EMPTY;
         for (let i = 0; i < size; i++)
             result += characters.charAt(Math.floor(Math.random() * characters.length));
         return result;
     }
 
-    // String Datetime handlers
+	// String Datetime handlers
 	this.sysdate = () => sysdate;
 	this.toDate = str => str ? new Date(str) : null; // Build new Date instance
 	this.inYear = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 4)); //yyyy
 	this.inMonth = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 7)); //yyyy-mm
-    this.inDay = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 10)); //yyyy-mm-dd
+	this.inDay = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 10)); //yyyy-mm-dd
 	this.inHour = (str1, str2) => self.starts(str1, self.substring(str2 || sysdate, 0, 13)); //yyyy-mm-ddThh
 	this.diffDate = (str1, str2) => (Date.parse(str1) - Date.parse(str2 || sysdate)); // get timestamp 
-    this.isoDate = str => str && str.substring(0, 10); //yyyy-mm-dd
-    this.isoTime = str => str && str.substring(11, 19); //hh:MM:ss
-    this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
+	this.isoDate = str => str && str.substring(0, 10); //yyyy-mm-dd
+	this.strDate = str => str ? str.substring(0, 10) : EMPTY; //yyyy-mm-dd
+	this.isoTime = str => str && str.substring(11, 19); //hh:MM:ss
+	this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
+	this.strTimeShort = str => str ? str.substring(11, 16) : EMPTY; //hh:MM
 	this.toIsoTime = str => str ? (str + ":00") : "00:00:00"; //hh:MM:ss
 	this.toIsoDate = (date, time) => (date + "T" + self.toIsoTime(time) + ".0Z"); //yyyy-mm-ddThh:MM:ss
-    this.getYear = str => (str || sysdate).substring(0, 4); //yyyy string format
-    this.getHours = str => +(str || sysdate).substring(11, 13); //hh int format
-    this.getMonth = str => +(str || sysdate).substring(5, 7); //mm int format
-    this.getMinutes = str => +(str || sysdate).substring(14, 16); //min int format
+	this.getYear = str => (str || sysdate).substring(0, 4); //yyyy string format
+	this.getHours = str => +(str || sysdate).substring(11, 13); //hh int format
+	this.getMonth = str => +(str || sysdate).substring(5, 7); //mm int format
+	this.getMinutes = str => +(str || sysdate).substring(14, 16); //min int format
 	this.endDay = str => str ? (str.substring(0, 10) + "T23:59:59.999Z") : str;
 	this.cmp = function(a, b) {
 		if (globalThis.isset(a) && globalThis.isset(b))
@@ -97,7 +99,7 @@ function StringBox() {
 		return globalThis.isset(a) ? -1 : 1; //nulls last
 	}
 
-    // Chunk string in multiple parts
+	// Chunk string in multiple parts
 	this.test = (str, re) => re.test(str) ? str : null;
 	this.split = (str, sep) => str ? str.split(sep || ",") : [];
 	this.match = (str, re) => str ? str.trim().match(re) : null;

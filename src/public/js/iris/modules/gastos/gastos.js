@@ -1,86 +1,63 @@
 
 import coll from "../../../components/CollectionHTML.js";
-import sb from "../../../components/types/StringBox.js";
 import pf from "../../../components/Primefaces.js";
+import tabs from "../../../components/Tabs.js";
 import i18n from "../../../i18n/langs.js";
 
-import iris from "../iris.js";
+import iris from "../../model/Iris.js";
+import gasto from "../../model/gasto/Gasto.js";
+import gastos from "../../model/gasto/Gastos.js";
+import rutas from "../../model/ruta/Rutas.js";
+
 import perfil from "../perfil/perfil.js"; 
 import pernoctas from "./pernoctas.js";
-import gasto from "../../model/gasto/Gasto.js";
-import rutas from "../../model/ruta/Rutas.js";
+import resumen from "../resumen.js";
+
+import rmaps from "../rutas/rutasMaps.js";
+import rgastos from "../rutas/rutasGasto.js"; 
+import xeco from "../../../xeco/xeco.js";
 
 function Gastos() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	const _eTipoGasto = form.getInput("#tipo-gasto");
 	const _grpGasto = form.querySelectorAll(".grupo-gasto");
-	let _gastos, _tblGastos; // container
+	let _tblGastos; // container
 
 	const isTaxi = () => (_eTipoGasto.value == "4"); //ISU y taxi
 	const isPernocta = () => (_eTipoGasto.value == "9"); //Tipo pernocta
 	const isDoc = () => ["201", "202", "204", "205", "206"].includes(_eTipoGasto.value);
 	const isExtra = () => ["301", "302", "303", "304"].includes(_eTipoGasto.value);
 	const fnChange = () => {
-		form.setval("#tipoGasto", _eTipoGasto.value)
-				.text(".label-text-gasto", i18n.get("lblDescObserv"));
 		if (isPernocta())
 			_grpGasto.mask(0b11011);
 		else if (isDoc())
 			_grpGasto.mask(0b10101);
 		else if (isExtra())
 			_grpGasto.mask(0b10111);
-		else if (isTaxi()) { //ISU y taxi
-			form.text(".label-text-gasto", i18n.get("lblDescTaxi"));
+		else if (isTaxi()) //ISU y taxi
 			_grpGasto.mask(0b10111);
-		}
-		else if (0 < +_eTipoGasto.value)
+		else if (0 < +_eTipoGasto.value) // ticket
 			_grpGasto.mask(0b10011);
 		else
-			_grpGasto.mask(0b00001);			
+			_grpGasto.mask(0b00001);
+		form.refresh(iris);
 	}
 
-	this.getGastos = () => _gastos;
-	this.getFacturas = () => _gastos.filter(gasto.isFactura);
-	this.getTickets = () => _gastos.filter(gasto.isTicket);
-	this.getTransporte = () => _gastos.filter(gasto.isTransporte);
-	this.getPernoctas = () => _gastos.filter(gasto.isPernocta);
-	this.getDietas = () => _gastos.filter(gasto.isDieta);
-	this.getPaso5 = () => _gastos.filter(gasto.isPaso5);
-
-	const fnUpdateGastos = (data, fn) => { _gastos = _gastos.filter(fn).concat(data); return self; }
-	this.updatePaso5 = data => fnUpdateGastos(data, gasto.isPaso5);
-	this.updateTransporte = data => fnUpdateGastos(data, gasto.isTransporte);
-	this.updateDietas = data => fnUpdateGastos(data, gasto.isDieta);
-
-	this.getNochesPendientes = () => {
-		const numNochesPendientes = _gastos.reduce((num, row) => (num + (gasto.isPernocta(row) ? row.num : 0)), 0);
-		return rutas.getNumNoches() - numNochesPendientes;
-	}
-
-	const fnUpdateTab = () => {
-		const numNochesPendientes = 0;
-		const numRutasOut = rutas.getNumRutasSinGastos();
-		form.setVisible(".ui-gastos-pendientes", perfil.isMaps() && ((numRutasOut > 0) || (numNochesPendientes > 0)))
-			.setVisible(".ui-noches-pendientes", numNochesPendientes > 0)
-			.setVisible(".ui-rutas-pendientes", numRutasOut > 0)
-			.render("#info-rutas-gastos", { numRutasOut, numNochesPendientes });
-		return self;
-	}
 	const fnResetForm = () => {
 		_grpGasto.mask(0);
 		_eTipoGasto.value = ""; // clear selection
-		const start = sb.isoDate(rutas.getSalida().dt1);
-		const end = sb.isoDate(rutas.getLlegada().dt2);
+		const start = rutas.getHoraSalida();
+		const end = rutas.getHoraLlegada();
 		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
-				.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start).setAttr("#fMinGasto", "max", end)
-				.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "min", start).setAttr("#fMaxGasto", "max", end).text(".filename", "")
-		return fnUpdateTab();
+			.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start)
+			.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "max", end)
+			.text(".filename", "").refresh(iris);
 	}
 
-	this.setGastos = gastos => { _gastos = gastos; _tblGastos.render(self.getPaso5()).setChanged(); }
+	this.getNochesPendientes = () => (2/*rutas.getNumNoches()*/ - gastos.getNumPernoctas());
+	this.setGastos = data => { gastos.setGastos(data); _tblGastos.render(gastos.getPaso5()).setChanged(); resumen.view(); }
 	this.update = gastos => { gastos && self.setGastos(gastos); }
-	this.viewTab = fnResetForm;
 
 	this.validateGasto = data => {
 console.log(data);
@@ -92,23 +69,38 @@ console.log(data);
 		return valid.isOk();
 	}
 	this.validate = data => {
-		data.totKm = rutas.getKm();
+		//data.totKm = rutas.getTotKm();
 console.log(data);
 		const valid = form.getValidators();
 		// todo: validacion de 250 km
 		return valid.isOk();
 	}
 
+	tabs.setAction("paso5", () => { form.validate(self.validate) && form.sendTab(window.rcPaso5); });
+	tabs.setAction("save5", () => { form.validate(self.validate) && form.sendTab(window.rcSave5, 5); });
+	tabs.setViewEvent(5, fnResetForm); // reset form on view tab 5
+
+	// update tabs events
+	tabs.setInitEvent(12, rgastos.init);
+	tabs.setViewEvent(12, rgastos.view);
+
 	this.init = () => {
-		//_eTipoGasto = _grpGasto = null;
-		_tblGastos = form.setTable("#tbl-gastos");
-		const fnUnload = data => { i18n.confirm("remove") && pf.sendId("rcUnloadGasto", data.id); };
-		_tblGastos.setMsgEmpty("msgGastosEmpty").setRender(gasto.row).setFooter(gasto.tfoot).set("#rcUnloadGasto", fnUnload);
+		const fnUnload = data => { i18n.confirm("remove") && xeco.sendId("rcUnloadGasto", data.id); };
+		_tblGastos = form.setTable("#tbl-gastos", gasto.getTable()).set("#rcUnloadGasto", fnUnload);
 
 		_eTipoGasto.onchange = fnChange; // Change event
 		pf.uploads(form.querySelectorAll(".pf-upload-gasto"), fnChange);
 		form.setDateRange("#fMinGasto", "#fMaxGasto");
-		return self;
+
+		const resume = _tblGastos.getResume();
+		gastos.getNumPernoctas = () => resume.noches; // redefine calc
+		iris.getNumRutasOut = rutas.getNumRutasUnlinked; // calc redefined by rutasMaps modeule
+		iris.getNumNochesPendientes = self.getNochesPendientes; // calc redefined by gastos module
+		iris.getTextGasto = () => i18n.get(isTaxi() ? "lblDescTaxi" : "lblDescObserv"); // label text
+		form.set("is-gastos-pendientes", () => (perfil.isMaps() && ((rutas.getNumRutasUnlinked() > 0) || (self.getNochesPendientes() > 0))))
+			.set("is-noches-pendientes", () => (self.getNochesPendientes() > 0))
+			.set("is-rutas-pendientes", () => (rutas.getNumRutasUnlinked() > 0));
+		resumen.init();
 	}
 
 	window.validateGasto = () => form.validate(self.validateGasto);
@@ -119,9 +111,9 @@ console.log(data);
 		const data = coll.parse(args.gasto);
 		if (!data || !data.id || !data.fref)
 			return !form.showError("Error al adjuntar el gasto a la comunicación.");
-		_gastos.push(data); // añadir gasto a lista
+		gastos.push(data); // añadir gasto a lista
 		const links = coll.parse(args.rutas); // rutas asociadas al gasto
-		links && rutas.setRutas(links); // actualizo el registro de rutas
+		links && rmaps.recalc(links); // actualizo el registro de rutas
 		_tblGastos.render(self.getPaso5());
 		fnResetForm();
 	}
@@ -129,9 +121,9 @@ console.log(data);
 		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
 		const data = _tblGastos.getCurrentItem();
-		_gastos = _gastos.filter(gasto => (gasto.id != data.id));
-		_tblGastos.removeCurrent(); // remove and reload
-		fnUpdateTab();
+		gastos.remove(data);
+		_tblGastos.remove(); // remove and reload
+		fnResetForm();
 	}
 }
 

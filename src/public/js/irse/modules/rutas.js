@@ -181,9 +181,9 @@ function IrseRutas() {
 				dom.table("#rutas", rutas, resume, STYLES);
 			}).onRenderTable("#rutas", table => {
 				const last = fnResume().last(rutas) || CT;
-				form.setval("#origen", last.destino).setval("#f1", sb.isoDate(last.dt2)).setval("#h1", sb.isoTimeShort(last.dt2))
-					.setval("#destino").copy("#f2", "#f1").setval("#h2").setval("#principal", "0").setval("#desp")
-					.delAttr("#f1", "max").delAttr("#f2", "min").hide(".grupo-matricula");
+				form.setval("#origen", last.destino).setval("#f1", last.dt2).setval("#h1", last.dt2)
+					.setval("#destino").copy("#f2", "#f1").setval("#h2").delAttr("#f1", "max")
+					.setval("#principal", "0").setval("#desp").hide(".grupo-matricula");
 				if (!last.dt1)
 					form.setFocus("#f1");
 				else if (last.mask & 1) // es ruta principal?
@@ -209,7 +209,8 @@ function IrseRutas() {
 		dom.table("#rutas", rutas, resume, STYLES) // render rutas
 			.onRenderTable("#rutas", fnSave); // save after first render
 
-		form.onChangeInput("#f1", ev => form.setval("#f2", ev.target.value)).setDateRange("#f1", "#f2") // Rango de fechas
+		form.setDateRange("#f1", "#f2").delAttr("#f1", "max") // Rango de fechas
+			.onChangeInput("#f1", ev => form.setStrval("#f2", ev.target.value))
 			.onChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))
 			.onChangeInput("#matricula", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
 		return self;

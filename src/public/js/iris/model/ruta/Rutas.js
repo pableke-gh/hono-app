@@ -7,7 +7,6 @@ import ruta from "./Ruta.js";
 
 function Rutas() {
 	const self = this; //self instance
-	let _resumne; // resumen calculado de rutas
 	let _rutas; // itinerario
 
 	this.getRutas = () => _rutas;
@@ -15,15 +14,13 @@ function Rutas() {
 	this.isEmpty = () => coll.isEmpty(_rutas);
 	this.setRutas = data => { _rutas = data; return self; }
 
-	this.setResumen = data => { _resumne = data; return self; }
-	this.getImpKm = () => _resumne.impKm;
-	this.getKm = () => _resumne.totKm;
-
 	this.getSalida = () => _rutas[0]; // primera ruta
 	this.getLlegada = () => _rutas.at(-1); // ultima ruta
+	this.getHoraSalida = () => ruta.getHoraSalida(self.getSalida()); 
 	this.getPaisSalida = () => ruta.getPaisSalida(self.getSalida());
 	this.salida = () => ruta.salida(self.getSalida());
 	this.llegada = () => ruta.llegada(self.getLlegada());
+	this.getHoraLlegada = () => ruta.getHoraLlegada(self.getLlegada()); 
 	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(self.getLlegada());
 
 	const fnDiffDias = () => tb.getDays(tb.trunc(self.salida()), self.llegada());
@@ -31,8 +28,8 @@ function Rutas() {
 	this.getNumDias = () => (self.isEmpty() ? 0 : Math.ceil(fnDiffDias()));
 
 	this.getRutasVehiculoPropio = () => _rutas.filter(ruta.isVehiculoPropio);
-	this.getRutasSinGastos = () => _rutas.filter(data => (ruta.isAsociableGasto(data) && !data.g));
-	this.getNumRutasSinGastos = () => _rutas.reduce((num, row) => (num + (ruta.isAsociableGasto(row) && !row.g)), 0);
+	this.getRutasUnlinked = () => _rutas.filter(ruta.isUnlinked);
+	this.getNumRutasUnlinked = () => self.getRutasUnlinked().length;
 
 	this.getRuta = fecha => { // Ruta asociada a fecha
 		if (rutas.isEmpty())

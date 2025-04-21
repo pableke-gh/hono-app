@@ -17,16 +17,18 @@ function Fiscal() {
 	const acTercero = form.setAcItems("#acTercero", fnSource, fnSelect, delegaciones.reset);
 	acTercero.setDelay(500).setMinLength(5);
 
-	this.setTercero = (id, label) => { acTercero.setValue(id, label); return self; }
+	this.setTercero = (id, label) => {
+		acTercero.setValue(id, label);
+		return self;
+	}
 	this.setSujeto = sujeto => {
 		factura.setSujeto(sujeto);
-		form.setVisible(".grupo-exento", factura.isExento()); // update sujeto inputs group
+		form.refresh(factura);
 		return self;
 	}
 	this.setFace = face => {
 		factura.setFace(face);
-		const lbl = factura.isPlataforma() ? "Nombre de la plataforma:" : "Órgano Gestor:";
-		form.text("[data-refresh='show-gestor'] > .label", lbl).refresh(factura);
+		form.refresh(factura);
 		return self;
 	}
 
@@ -61,7 +63,6 @@ function Fiscal() {
 		form.onChangeInput("[name=subtipo]", ev => self.update(+ev.target.value))
 			.onChangeInput("#sujeto", ev => self.setSujeto(+ev.target.value))
 			.onChangeInput("#face", ev => self.setFace(+ev.target.value));
-		return self;
 	}
 
     window.loadDelegaciones = (xhr, status, args) => {

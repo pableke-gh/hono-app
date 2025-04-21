@@ -1,17 +1,18 @@
 
 import tb from "../../../components/types/TemporalBox.js";
 
-import iris from "../iris.js";
-import perfil from "../perfil/perfil.js";
+import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
+import perfil from "../perfil/perfil.js";
 import gastos from "./gastos.js";
 
 import dieta from "../../model/gasto/Dieta.js";
 import dietas from "../../data/dietas/dietas.js";  
+import xeco from "../../../xeco/xeco.js";
 
 function Dietas() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	let _tblDietas; // mapa de dietas
 
 	this.getImporte = () => _tblDietas.getResume().percibir;
@@ -69,19 +70,17 @@ function Dietas() {
 		return self;
 	}
 
-	const fnAfterDietas = resume => {
-		form.setVisible(".block-dietas", resume.size > 0);
-	}
 	const fnChangeDietas = data => {
 		console.log(data);
 	}
 
 	this.init = () => {
-		_tblDietas = form.setTable("#tbl-dietas");
-		_tblDietas.setMsgEmpty("msgDietasEmpty")
-				.setBeforeRender(dieta.beforeRender).setRender(dieta.row).setFooter(dieta.tfoot)
-				.setAfterRender(fnAfterDietas).setChange("dietas", fnChangeDietas);
-		return self;
+		_tblDietas = form.setTable("#tbl-dietas", dieta.getTable());
+		_tblDietas.setChange("dietas", fnChangeDietas);
+
+		const resume = _tblDietas.getResume();
+		iris.getImpDietas = () => resume.percibir;
+		form.set("is-dietas", () => (resume.size > 0));
 	}
 }
 

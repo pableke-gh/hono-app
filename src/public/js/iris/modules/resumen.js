@@ -1,27 +1,19 @@
 
 import iris from "../model/Iris.js";
+import gastos from "../model/gasto/Gastos.js"; 
+
 import rvp from "./rutas/rutasVehiculoPropio.js";
-import gastos from "./gastos/gastos.js"; 
 import transportes from "./gastos/transportes.js"; 
 import pernoctas from "./gastos/pernoctas.js"; 
 import dietas from "./gastos/dietas.js";
 
 function Resumen() {
-	const self = this; //self instance
-	//const form = xeco.getForm(); // form component
-	let _isUpdatableTab = true; // bool indicator
-
-	this.isUpdatable = () => _isUpdatableTab;
-	this.setUpdatable = () => { _isUpdatableTab = true; return self; }
+	//const self = this; //self instance
 
 	this.view = () => {
-		if (!_isUpdatableTab)
-			return self; // no changes
-		rvp.render();
 		transportes.setTransportes(gastos.getTransporte());
 		pernoctas.setPernoctas(gastos.getPernoctas());
 		dietas.setDietas(gastos.getDietas());
-		return self.upodate();
 	}
 
 	this.init = () => {

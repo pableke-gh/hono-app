@@ -26,9 +26,9 @@
 				<h:inputHidden id="tipoGasto" value="#{iris.gastos.tipoGasto}" />
 				<select id="tipo-gasto" class="ui-input ui-select ui-pf" tabindex="100">
 					<option value=""></option>
-					<optgroup label="Factura a nombre del comisionado" class="ui-gastos-pendientes">
-						<option value="9" class="ui-noches-pendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
-						<option value="8" class="ui-rutas-pendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
+					<optgroup label="Factura a nombre del comisionado" data-refresh="is-gastos-pendientes">
+						<option value="9" data-refresh="is-noches-pendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
+						<option value="8" data-refresh="is-rutas-pendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
 					</optgroup>
 					<optgroup label="Tickets por transporte" class="ui-factura-upct">
 						<option value="1" data-refresh="is-isu">#{irse.gastos.getMsgTicket(1)}</option>
@@ -72,7 +72,7 @@
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block grupo-gasto hide">
-				<div class="label required label-text-gasto"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
+				<div class="label required" data-refresh="text-render">@getTextGasto;:</div>
 				<h:inputText id="txtGasto" value="#{iris.gastos.txtGasto}" maxlength="300" tabindex="102" styleClass="ui-input ui-text"/>
 				<div class="ui-errtip"></div>
 			</label>
@@ -107,7 +107,7 @@
 			<tfoot></tfoot>
 		</table>
 		<div class="navbar" data-refresh="is-rutas-gt-1">
-			<p id="info-rutas-gastos">* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @numRutasOut; <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @numNochesPendientes; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>
+			<p data-refresh="text-render">* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @getNumRutasOut;, <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @getNumNochesPendientes; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>
 		</div>
 	</div>
 
@@ -115,15 +115,12 @@
 		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 
-		<a href="#tab-action-paso5" class="btn btn-green" data-refresh="is-editable" title="#{msg['tit.btn.siguiente']}">
+		<a href="#tab-action-paso5" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<a href="#tab-action-save5" class="btn btn-info" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
+		<a href="#tab-action-save5" class="btn btn-green" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<p:remoteCommand name="rcPaso5" action="#{iris.form.paso5()}" oncomplete="updateIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcSave5" action="#{iris.form.paso5()}" oncomplete="updateIrse(xhr, status, args, 'isu')" />
-
-		<a href="#tab-next" class="btn btn-info" data-refresh="is-disabled" title="#{msg['lbl.btn.siguiente']}">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

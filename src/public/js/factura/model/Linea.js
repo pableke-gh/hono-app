@@ -1,60 +1,54 @@
 
 import i18n from "../../i18n/langs.js";
+import Base from "../../xeco/model/Base.js";
 import factura from "./Factura.js";
 
-function Linea() {
-	const self = this; //self instance
-	const msgEmptyTable = "No existen conceptos asociados a la solicitud";
+const base = new Base(); // model instance
 
-	this.beforeRender = resume => {
-		resume.imp = 0;
-	}
-
-	this.row = (data, status, resume) => {
-		resume.imp += data.imp; // sum
-		const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red row-action" title="Desasociar partida"></a>' : "";
-		return `<tr class="tb-data">
-			<td class="text-center">${status.count}</td>
-			<td>${data.desc}</td><td class="text-right">${i18n.isoFloat(data.imp)} €</td>
-			<td class="text-center">${remove}</td>
-		</tr>`;
-	}
-
-	this.tfoot = resume => {
-		const iva = factura.getIva();
-		const show = factura.isFacturable() ? "" : "hide";
-		return `<tr>
-			<td colspan="2">Conceptos: ${resume.size}</td>
-			<td class="text-right">${i18n.isoFloat(resume.imp)} €</td>
-			<td></td>
-		</tr>
-		<tr class="${show}">
-			<td colspan="2">
-				<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
-				<div class="ui-block-main text-right">IVA:</div>
-				<div class="ui-block">
-					<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-readonly="is-editable-uae"></select>
-				</div>
-				</label>
-			</td>
-			<td id="imp-iva" class="text-right">${i18n.isoFloat(iva)} €</td>
-			<td></td>
-		</tr>
-		<tr class="${show}">
-			<td class="text-right" colspan="2">Importe Total:</td>
-			<td id="imp-total" class="text-right">${i18n.isoFloat(resume.imp * (iva / 100))} €</td>
-			<td></td>
-		</tr>`;
-	}
-
-	this.getTable = () => ({ msgEmptyTable, beforeRender: self.beforeRender, onRender: self.row, onFooter: self.tfoot });
-
-	this.validate = function(data) {
-		const valid = i18n.getValidators();
-		valid.gt0("imp", data.imp); // float required
-		valid.size("desc", data.desc); // string required
-		return valid.close("El concepto indicado no es válido!"); // Main form message
-	}
+base.beforeRender = resume => { resume.imp = 0; }
+base.row = (data, status, resume) => {
+	resume.imp += data.imp; // sum
+	const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red row-action" title="Desasociar partida"></a>' : "";
+	return `<tr class="tb-data">
+		<td class="text-center">${status.count}</td>
+		<td>${data.desc}</td><td class="text-right">${i18n.isoFloat(data.imp)} €</td>
+		<td class="text-center">${remove}</td>
+	</tr>`;
 }
 
-export default new Linea();
+base.tfoot = resume => {
+	return `<tr>
+		<td colspan="2">Conceptos: ${resume.size}</td>
+		<td class="text-right">${i18n.isoFloat(resume.imp)} €</td>
+		<td></td>
+	</tr>
+	<tr data-refresh="show-factura">
+		<td colspan="2">
+			<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
+			<div class="ui-block-main text-right">IVA:</div>
+			<div class="ui-block">
+				<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-readonly="is-editable-uae"></select>
+			</div>
+			</label>
+		</td>
+		<td class="text-right text-render">$impIva; €</td> 
+		<td></td>
+	</tr>
+	<tr data-refresh="show-factura">
+		<td class="text-right" colspan="2">Importe Total:</td>
+		<td class="text-right text-render">$impTotal; €</td>
+		<td></td>
+	</tr>`;
+}
+
+const msgEmptyTable = "No existen conceptos asociados a la solicitud";
+base.getTable = () => ({ msgEmptyTable, beforeRender: base.beforeRender, onRender: base.row, onFooter: base.tfoot });
+
+base.validate = function(data) {
+	const valid = i18n.getValidators();
+	valid.gt0("imp", data.imp); // float required
+	valid.size("desc", data.desc); // string required
+	return valid.close("El concepto indicado no es válido!"); // Main form message
+}
+
+export default base;

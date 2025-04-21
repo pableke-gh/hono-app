@@ -1,11 +1,19 @@
 
 import i18n from "../../../i18n/langs.js";
 import iris from "../Iris.js";
+import ruta from "./Ruta.js";
 
 function RutaMaps() {
+	const self = this; //self instance
+
+	this.isPrincipal = ruta.isPrincipal;
+	this.beforeRender = ruta.beforeRender;
+	this.rowCalc = ruta.rowCalc;
+
 	this.row = (data, status, resume) => {
-		const destino = iris.isEditable() ? `<a href="#main" class="row-action">${data.destino}${resume.flag}</a>` : `${data.destino}${resume.flag}`;
-		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
+		self.rowCalc(data, resume);
+		const destino = iris.isEditable() ? `<a href="#main" class="row-action">${data.destino}${data.tplFlag}</a>` : `${data.destino}${data.tplFlag}`;
+		const remove = iris.isEditable() ? '<a href="#flush" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
 		return `<tr class="tb-data tb-data-tc">
 			<td class="hide-sm" data-cell="Nº">${status.count}</td>
 			<td data-cell="Origen">${data.origen}</td>
@@ -23,11 +31,13 @@ function RutaMaps() {
 	this.tfoot = resume => {
 		const totKmCalc = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
 		return `<tr>
-			<td colspan="8">Etapas: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs hide-sm">${totKmCalc}</td>
+			<td class="text-render" colspan="8" data-template="Etapas: @size;">Etapas: ${resume.size}</td>
+			<td class="tb-data-tc hide-xs hide-sm text-render" data-template="$totKmCalc;">${totKmCalc}</td>
 			<td class="hide-sm no-print"></td>
 		</tr>`;
 	}
+
+	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
 }
 
 export default new RutaMaps();

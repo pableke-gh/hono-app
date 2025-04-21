@@ -18,7 +18,7 @@ function Facturas() {
 		const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
 		form.set("show-recibo", factura.isRecibo).set("show-factura-uae", fnShowFactUae).set("show-uae", factura.isUae)
 			.set("show-gestor", fnShowGestor).set("show-face", factura.isFace).set("show-gaca", factura.isFirmaGaca)
-			.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago)
+			.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago).set("is-exento", factura.isExento)
 			.onChangeInput("[name=subtipo]", ev => { form.setStrval("#subtipoPF", ev.target.value); });
 	}
 

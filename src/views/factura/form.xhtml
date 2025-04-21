@@ -38,7 +38,7 @@
 					<f:selectItem itemValue="1" itemLabel="Art. 7, 14, otros." itemEscaped="false" />
 				</h:selectOneMenu>
 			</label>
-			<label class="ui-block grupo-exento">
+			<label class="ui-block" data-refresh="is-exento">
 				<div class="label">Causas de exención en IVA:</div>
 				<h:selectOneMenu id="exento" value="#{fact.solicitud.exentoView}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="6">
 					<f:selectItem itemValue="0" itemLabel="Seleccione una causa de exención" itemEscaped="false" />
@@ -93,7 +93,7 @@
 				</h:selectOneMenu>
 			</label>
 			<label class="ui-block-md" data-refresh="show-gestor">
-				<div class="label required">Órgano Gestor:</div>
+				<div class="label required" data-refresh="text-render">@getNamePlataforma;:</div>
 				<h:inputText id="og" value="#{fact.solicitud.gestor}" maxlength="20" tabindex="9" styleClass="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>

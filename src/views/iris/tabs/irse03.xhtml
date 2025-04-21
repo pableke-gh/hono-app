@@ -101,15 +101,12 @@
 		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 
-		<a href="#tab-action-paso3" class="btn btn-green" data-refresh="is-editable" title="#{msg['tit.btn.siguiente']}">
+		<a href="#tab-action-paso3" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<a href="#tab-action-save3" class="btn btn-info" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
+		<a href="#tab-action-save3" class="btn btn-green" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<p:remoteCommand name="rcPaso3" action="#{iris.form.paso3()}" oncomplete="updateIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcSave3" action="#{iris.form.paso3()}" oncomplete="updateIrse(xhr, status, args, 'isu')" />
-
-		<a href="#tab-next" class="btn btn-info" data-refresh="is-disabled" title="#{msg['lbl.btn.siguiente']}">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

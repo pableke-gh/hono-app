@@ -19,7 +19,7 @@ function Iris() {
 	this.view = (data, firmas) => {
 		iris.setData(data).init(data); // set codigo, perfil, titulo...
 		form.reset("input[id$='-json']"); // update fields
-		xeco.view(data, firmas); // load data-model before view
+		xeco.view(data, firmas); // load view
 	}
 
 	this.update = (data, firmas, tab) => {

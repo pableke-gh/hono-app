@@ -4,7 +4,7 @@ export default function() {
 	let _data; // current data container
 
 	this.getData = () => _data;
-	this.get  = name => _data[name];
+	this.get = name => _data[name];
 	this.getValue = name => {
 		const fnValue = self[name]; // calculated value
 		return fnValue ? fnValue() : self.get(name);
@@ -17,9 +17,10 @@ export default function() {
 		return fnValue ? fnValue(value) : self.set(name, value); // set value
 	}
 
+	this.render = self.getValue;
 	this.parse = (name, value) => {
-		const fnValue = self[name + "Parse"];
-		return fnValue ? fnValue(value) : self.set(name, value); // set value
+		const fnParse = self[name + "Parse"]; // parse string value to type (float, int, ...)
+		return fnParse ? fnParse(value) : self.set(name, value); // set new typed value
 	}
 
 	// Generc getters and setters

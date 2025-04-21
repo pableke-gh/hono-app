@@ -8,10 +8,10 @@ function Partidas() {
 
     let data; // Current data table
     this.getData = () => data;
-    this.setPartidas = partidas => {
-        data = partidas;
-        return self;
-    }
+	this.setPartidas = partidas => {
+		data = partidas;
+		return self;
+	}
     this.setData = table => {
         const resume = table.getResume();
 		self.getImporte = () => resume.imp.round(2);

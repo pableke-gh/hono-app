@@ -1,17 +1,19 @@
 
 /*** MAPEO DE VALORES PARA LOS CAMPOS DEL FORMULARIO ***/
 const ECO_323003 = "323003";
+const ECO_131004 = "131004";
 const ECO_131600 = "131600";
+const ECO_132700 = "132700";
 const ECO_133001 = "133001";
 
 const DEFAULT    = { economica: "", sujeto: 0, exento: 0, m349: 0, iban:  0, iva: 0 }; // Default values
-const CARTA_PAGO = { economica: "", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 0 } // Cartas de pago
+const CARTA_PAGO = { economica: "", sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 0 }; // Cartas de pago
 
 const NP_010  = { economica: ECO_323003, sujeto: 0, exento: 1, m349: 0, iban:  0, iva:  0 };
 const NP_206  = { economica: ECO_323003, sujeto: 2, exento: 0, m349: 6, iban:  0, iva:  0 };
-const C2T14   = { economica: "131004",   sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
-const C2UET14 = { economica: "131004",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C2ZZT14 = { economica: "131004",   sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
+const C2T14   = { economica: ECO_131004, sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
+const C2UET14 = { economica: ECO_131004, sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C2ZZT14 = { economica: ECO_131004, sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
 const C2T15   = { economica: "131200",   sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
 const C2TUE15 = { economica: "131200",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
 const C2T16   = { economica: "139000",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
@@ -27,9 +29,9 @@ const C2T19   = { economica: ECO_131600, sujeto: 0, exento: 5, m349: 2, iban: 10
 const C2ZZT19 = { economica: ECO_131600, sujeto: 0, exento: 2, m349: 0, iban: 10, iva:  0 };
 const C1T1    = { economica: "132500",   sujeto: 0, exento: 0, m349: 0, iban:  4, iva: 21 };
 const C2T1    = { economica: "132500",   sujeto: 2, exento: 0, m349: 6, iban:  4, iva: 21 };
-const C1T20   = { economica: "132700",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
-const C1UET20 = { economica: "132700",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
-const C1ZZT20 = { economica: "132700",   sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
+const C1T20   = { economica: ECO_132700, sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
+const C1UET20 = { economica: ECO_132700, sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C1ZZT20 = { economica: ECO_132700, sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
 const C1T21   = { economica: "132600",   sujeto: 0, exento: 1, m349: 0, iban: 10, iva:  0 };
 const F133001 = { economica: ECO_133001, sujeto: 0, exento: 0, m349: 0, iban: 10, iva:  4 };
 const C2UET22 = { economica: ECO_133001, sujeto: 0, exento: 5, m349: 2, iban: 10, iva:  0 };

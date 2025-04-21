@@ -25,15 +25,18 @@ solicitud.isExtension = () => (solicitud.getSubtipo() == 9);
 solicitud.isDeportes = () => (solicitud.getSubtipo() == 10);
 solicitud.isCongresoGdi = () => (solicitud.getSubtipo() == 24);
 solicitud.isRecibo = () => (solicitud.isTtpp() || solicitud.isTituloOficial() || solicitud.isExtension() || solicitud.isCongresoGdi());
-solicitud.setSujeto = val => { solicitud.set("sujeto", val); return solicitud; }
+solicitud.setSujeto = val => solicitud.set("sujeto", val);
 solicitud.isExento = () => !solicitud.get("sujeto");
 
 solicitud.getIva = () => solicitud.get("iva");
-solicitud.setIva = imp => { solicitud.set("iva", imp ?? 0); return solicitud; }
+solicitud.setIva = imp => solicitud.set("iva", imp ?? 0);
+solicitud.getImpIva = () => 0; // importes calculados default = 0
+solicitud.getImpTotal = () => 0; // importes calculados default = 0
 
 solicitud.isFace = () => (solicitud.get("face") == 1); //factura electronica FACe
 solicitud.isPlataforma = () => (solicitud.get("face") == 2); //factura electronica Otras
-solicitud.setFace = val => { solicitud.set("face", val); return solicitud; } // update plataforma
+solicitud.setFace = val => solicitud.set("face", val); // update plataforma / FACe
+solicitud.getNamePlataforma = () => (solicitud.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor");
 
 solicitud.row = data => {
 	const acciones = solicitud.rowActions(data);

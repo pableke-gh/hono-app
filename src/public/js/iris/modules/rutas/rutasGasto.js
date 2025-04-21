@@ -1,17 +1,15 @@
 
-import tabs from "../../../components/Tabs.js";
 import iris from "../iris.js";
-import ruta from "../../model/ruta/Ruta.js";
+import ruta from "../../model/ruta/RutaGasto.js";
 import rutas from "../../model/ruta/Rutas.js";
 
 function RutasGasto() {
-	const self = this; //self instance
+	//const self = this; //self instance
 	const form = iris.getForm(); // form component
 	let _tblRutasGasto; // itinerario
 
-	this.initTab12 = tab12 => {
-		_tblRutasGasto = form.setTable("#rutas-out");
-		_tblRutasGasto.setMsgEmpty("msgRutasEmpty").setRender(ruta.rowRutasGasto).setFooter(ruta.tfootRutasGasto); 
+	this.init = tab12 => {
+		_tblRutasGasto = form.setTable("#rutas-out", ruta.getTable());
 
 		// init. all validations and inputs events only once
 		tab12.querySelector("a#gasto-rutas").onclick = ev => { // button in tab12
@@ -23,13 +21,10 @@ function RutasGasto() {
 			ev.preventDefault();
 		}
 	}
-	this.view = () => {
-		_tblRutasGasto.render(rutas.getRutasSinGastos());
-	}
 
-	// update tabs events
-	tabs.setInitEvent(12, self.initTab12);
-	tabs.setViewEvent(12, self.view);
+	this.view = () => {
+		_tblRutasGasto.render(rutas.getRutasUnlinked());
+	}
 }
 
 export default new RutasGasto();

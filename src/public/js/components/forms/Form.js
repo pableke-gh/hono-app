@@ -2,6 +2,8 @@
 import api from "../Api.js";
 import tabs from "../Tabs.js";
 import alerts from "../Alerts.js";
+import sb from "../types/StringBox.js";
+
 import dom from "./DomBox.js";
 import Table from "../Table.js";
 import Datalist from "./Datalist.js";
@@ -25,6 +27,9 @@ export default function(form, opts) {
 	opts.inputErrorClass = opts.inputErrorClass || "ui-error"; // Input error styles
 	opts.tipErrorClass = opts.tipErrorClass || "ui-errtip"; // Tip error style
 	opts.negativeNumClass = opts.negativeNumClass || "text-red"; // Negative numbers styles
+
+	opts.refreshSelector = opts.refreshSelector || "[data-refresh]";
+	opts.textRenderType = opts.textRenderType || "text-render";
 
 	const self = this; //self instance
 	const EMPTY = ""; // Empty string
@@ -94,8 +99,8 @@ export default function(form, opts) {
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
 	this.render = (selector, data) => { $$(selector).render(data || opts); return self; } // HTMLElement.prototype.render
 	this.refresh = model => {
-		$$("[data-refresh]").forEach(el => {
-			if (el.dataset.refresh == "text-render")
+		$$(opts.refreshSelector).forEach(el => {
+			if (el.dataset.refresh == opts.textRenderType)
 				return el.render(model); // render contents only
 			const fnRefresh = opts[el.dataset.refresh]; // handler
 			if (el.dataset.toggle) // toggle specific style class
@@ -134,8 +139,15 @@ export default function(form, opts) {
 			el.value = value || EMPTY; // force String
 	}
 	function fnSetValue(el, value) {
-		if (el.type =="date") // input type = date
-			el.value = value ? value.substring(0, 10) : EMPTY;
+		if (el.type == "date") { // input type date
+			el.value = sb.strDate(value); // yyyy-mm-dd
+			if (el.dataset.min) // if element is date range => set min and max attributes
+				self.getInput(el.dataset.min).setAttribute("max", el.value);
+			else if (el.dataset.max)
+				self.getInput(el.dataset.max).setAttribute("min", el.value);
+		}
+		else if (el.type == "time") // input type time
+			el.value = sb.strTimeShort(value); // hh:mm
 		else if (fnContains(el, opts.floatFormatClass))
 			fnNumber(el, i18n.isoFloat(value));
 		else if (fnContains(el, opts.integerFormatClass))
@@ -172,7 +184,8 @@ export default function(form, opts) {
 	this.getValue = el => el && fnParseValue(el);
 	this.getval = selector => dom.getValue(fnQueryInput(selector));
 	this.valueOf = selector => self.getValue(fnQueryInput(selector));
-	this.setModel = (model, selector) => fnUpdate(selector || "[name]", el => model.setValue(el.name, el.value));
+	this.loadModel = (model, selector) => fnUpdate(selector, el => model.set(el.name, fnParseValue(el)));
+	this.setModel = (model, selector) => fnUpdate(selector, el => fnSetValue(el, model.get(el.name)));
 	this.getData = selector => { // View to JSON
 		const data = {}; // Results container
 		fnUpdate(selector, el => {
@@ -215,14 +228,14 @@ export default function(form, opts) {
 	const fnEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return self; }
 	const fnChange = (el, fn) => fnEvent(el, "change", fn);
 
-	this.setDateRange = (f1, f2) => {
-		f1 = fnQueryInput(f1);
-		f2 = fnQueryInput(f2);
-		if (f1 && f2) { // check if fields exist
-			fnEvent(f1, "blur", ev => f2.setAttribute("min", f1.value));
-			fnEvent(f2, "blur", ev => f1.setAttribute("max", f2.value));
-			f1.setAttribute("max", f2.value);
-			f2.setAttribute("min", f1.value);
+	this.setDateRange = (f1Selector, f2Selector) => {
+		const el1 = fnQueryInput(f1Selector);
+		const el2 = fnQueryInput(f2Selector);
+		if (el1 && el2) { // check if fields exist
+			fnEvent(el1, "blur", ev => el2.setAttribute("min", el1.value));
+			fnEvent(el2, "blur", ev => el1.setAttribute("max", el2.value));
+			el1.setAttribute("max", el2.value); el1.dataset.max = f2Selector; // save max reference
+			el2.setAttribute("min", el1.value); el2.dataset.min = f1Selector; // save min reference
 		}
 		return self;
 	}
@@ -242,8 +255,8 @@ export default function(form, opts) {
 	this.click = selector => { $1(selector).click(); return self; } // Fire event only for PF
 
 	this.onChange = (selector, fn) => fnAction(selector, el => fnChange(el, fn));
-	this.onChangeInput = self.onChange;
 	this.onChangeInputs = (selector, fn) => fnUpdate(selector, el => fnChange(el, fn));
+	this.onChangeInput = self.onChange; // synonym
 
 	const fnChangeFile = (el, fn) => {
 		let file, index = 0; // file, position;

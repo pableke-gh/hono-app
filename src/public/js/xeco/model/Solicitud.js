@@ -16,7 +16,6 @@ base.getNif = () => _nif;
 base.setNif = val => { base._nif = val; return base; } 
 base.isAdmin = () => _admin;
 base.setAdmin = val => { _admin = val; return base; }
-
 base.setGrupo = val => { _grupo = val; return base; }
 base.setUser = ({ nif, grupo, admin }) => base.setNif(nif).setGrupo(grupo).setAdmin("1" == admin);
 base.isUsuEc = () => !!_grupo;
@@ -34,7 +33,7 @@ base.isCaducada = () => (base.getEstado() == 8); // Solicitud caducada por expir
 base.isErronea = () => ((base.getEstado() == 9) || (base.getEstado() == 10)); // estado de error
 base.isReactivable = () => (base.isUae() && base.isErronea()); // La solicitud se puede reactivar / subsanar
 base.isSubsanable = () => (base.isUae() && (base.getEstado() == SUBSANABLE)); // Solicitud subsanable en el cliente
-base.setSubsanable = () => { base.getEstado() = SUBSANABLE; return base; } // marca la solicitud como subsanable
+base.setSubsanable = () => base.setEstado(SUBSANABLE); // marca la solicitud como subsanable
 base.isFinalizada = () => [1, 3, 4, 9, 10].includes(base.getEstado()); // Aceptada, Ejecutada, Notificada ó Erronea
 base.isFirmada = () => (base.isAceptada() || base.isEjecutada());
 base.isValidada = () => (base.isFirmada() || base.isIntegrada());
@@ -70,12 +69,12 @@ base.rowActions = data => {
 	base.setData(data); // initialize 
 	let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
 	if (base.isFirmable())
-		acciones += `<a href="#rcFirmar" class="row-action resize once-action" data-confirm="msgFirmar"><i class="fas fa-check action resize text-green"></i></a>
+		acciones += `<a href="#rcFirmar" class="row-action resize once-action"><i class="fas fa-check action resize text-green"></i></a>
 					<a href="#tab-reject" class="row-action resize once-action"><i class="fas fa-times action resize text-red"></i></a>`;
 	if (base.isEjecutable())
 		acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
 	if (base.isIntegrable())
-		acciones += '<a href="#rcIntegrar" class="row-action once-action" data-confirm="msgIntegrar"><i class="far fa-save action resize text-blue"></i></a>';
+		acciones += '<a href="#rcIntegrar" class="row-action once-action"><i class="far fa-save action resize text-blue"></i></a>';
 	if (base.isAdmin())
 		acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 	return acciones;

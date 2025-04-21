@@ -7,10 +7,12 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="navbar block-dietas">
+	<div class="navbar" data-refresh="is-dietas">
 	<h3>
 	<a id="p7-dietas" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
-		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.4']}" escape="false" />: <b id="imp-dietas" class="text-green">#{irse.gastos.impManutencionI18n} €</b>
+		<i class="fas fa-caret-right icon"></i>
+		<h:outputText value="#{msg['uae.irse.tab6.msg.tit.4']}" escape="false" />:
+		<b class="text-green" data-refresh="text-render">$getImpDietas; €</b>
 	</a>
 	</h3>
 	<div class="info-p7-dietas hide">

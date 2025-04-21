@@ -1,6 +1,6 @@
 
 import iris from "../../model/Iris.js";
-import ruta from "../../model/ruta/Ruta.js";
+import ruta from "../../model/ruta/RutaVehiculoPropio.js";
 import rutas from "../../model/ruta/Rutas.js";
 import i18n from "../../../i18n/langs.js";
 import xeco from "../../../xeco/xeco.js";
@@ -11,12 +11,11 @@ function RutasVehiculoPropio() {
 	let _tblRutasVp; // itinerario
 
 	this.getImporte = () => _tblRutasVp.getResume().impKm;
-	this.render = () => { _tblRutasVp.render(rutas.getRutasVehiculoPropio()); return self; }
+	this.render = () => { _tblRutasVp.render(rutas.getRutasVehiculoPropio()); }
 
-	const fnChangeKm = (data, el, tr) => {
-		ruta.recalcKm(_tblRutasVp.getResume(), data, i18n.toFloat(el.value));
-		tr.cells[9].innerText = i18n.isoFloat(ruta.getImpKm(data)) + " €";
-		_tblRutasVp.renderFooter();
+	const fnChangeKm = (data, el) => {
+		data.km1 = i18n.toFloat(el.value);
+		_tblRutasVp.refresh(); // update table
 	}
 	const fnAfterRenderVp = resume => {
 		ruta.afterRender(resume);
@@ -33,16 +32,13 @@ function RutasVehiculoPropio() {
 	window.validateP6 = () => form.validate(self.validate);
  
 	this.init = () => {
-		_tblRutasVp = form.setTable("#tbl-rutas-vp");
-		_tblRutasVp.setMsgEmpty("msgRutasEmpty")
-				.setBeforeRender(ruta.beforeRender).setRender(ruta.rowVehiculoPropio).setFooter(ruta.tfootVehiculoPropio)
-				.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
+		_tblRutasVp = form.setTable("#tbl-rutas-vp", ruta.getTable());
+		_tblRutasVp.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
 
 		const resume = _tblRutasVp.getResume();
 		iris.getImpKm = () => resume.impKm;
 		const fnJustifi = () => resume.justifi;
 		form.set("is-rutas-vp", _tblRutasVp.size).set("is-justifi-km", fnJustifi);
-		return self;
 	}
 }
 

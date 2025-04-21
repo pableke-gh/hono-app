@@ -1,5 +1,4 @@
 
-import i18n from "../../i18n/langs.js";
 import factura from "../model/Factura.js";
 import xeco from "../../xeco/xeco.js";
 
@@ -18,10 +17,9 @@ function Lineas() {
 	this.setIva = iva => {
 		factura.setIva(iva);
 		const resume = lineas.getResume();
-		const impIva = resume.imp * (iva / 100);
-		form.text("#imp-iva", i18n.isoFloat(impIva) + " €")
-			.text("#imp-total", i18n.isoFloat(resume.imp + impIva) + " €");
-		return self;
+		resume.impIva = resume.imp * (iva / 100);
+		resume.impTotal = resume.imp + resume.impIva; // total conceptos + importe iva
+		lineas.refreshFooter(); // actualizo los totales de la subtabla de conceptos
 	}
 
 	this.setLineas = data => {
@@ -42,7 +40,6 @@ function Lineas() {
 				form.restart("#desc").setval("#imp", 0).setval("#memo", lineas.push(data).getItem(0).desc);
 			ev.preventDefault();
 		});
-		return self;
 	}
 }
 

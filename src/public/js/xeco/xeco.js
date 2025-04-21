@@ -50,27 +50,30 @@ function XecoForm() {
 		// Actions for solicitudes table
 		const solicitudes = list.load().getTable(); // preload data
 		solicitudes.set("#rcView", rcView).set("#tab-reject", fnReject).set("#rcUxxiec", rcUxxiec);
-		solicitudes.set("#rcFirmar", data => fnSend("rcFirmar", data));
+		solicitudes.set("#rcFirmar", data => (i18n.confirm("msgFirmar") && fnSend("rcFirmar", data)));
 		solicitudes.set("#rcReport", data => fnSend("rcReport", data));
 		solicitudes.set("#rcEmails", data => fnSend("rcEmails", data)); // admin test email
 		solicitudes.setRemove(data => !fnSend("rcRemove", data)); // remove true = confirm
 		solicitudes.set("#rcIntegrar", data => {
-			list.updateRow();  // avoid reclick
-			fnSend("rcIntegrar", data); // llamada al servidor
+			if (i18n.confirm("msgIntegrar")) {
+				list.updateRow();  // avoid reclick
+				fnSend("rcIntegrar", data); // llamada al servidor
+			}
 		});
 	}
 
 	this.view = (data, principales) => {
 		firmas.view(principales); // 1º cargo la vista de firmas asociadas
 		// 2º force last action => update form views and go to tab form
-		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])")
-			.setEditable().refresh(model);
-		tabs.showTab("form");
+		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])");
+		setTimeout(() => form.setEditable().refresh(model), 1); // execute at the end
+		tabs.showTab("form"); // go form tab
 	}
 	this.update = (data, principales, tab) => {
 		data && model.setData(data); // 1º carga los datos de la solicitud
 		principales && firmas.view(principales); // 2º actualizo la vista de firmas asociadas
-		form.refresh(model).nextTab(tab); // 3º and last action => update views and go to specific tab
+		// 3º and last action => update views and go to specific tab
+		setTimeout(() => form.refresh(model).nextTab(tab), 1);
 	}
 
 	/*** Init. actions for model form ***/

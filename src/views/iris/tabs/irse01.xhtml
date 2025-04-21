@@ -69,12 +69,10 @@
 	
 		<hr data-refresh="is-mun"/>
 		<div class="ui-blocks" data-refresh="is-mun">
-			<label class="ui-block">
+			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
-				<div class="ui-block-xl">
-					<input type="text" class="ui-input ui-text ui-mun" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
-					<div class="ui-errtip"></div>
-				</div>
+				<input type="text" class="ui-input ui-text ui-mun" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
+				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
@@ -83,26 +81,20 @@
 					<option value="10">#{irse.rutas.getMsgDesp(10)}</option>
 				</select>
 			</label>
-			<label class="ui-block grupo-matricula-mun">
+			<label class="ui-block" data-refresh="is-matricula-mun">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
-				<div>
-					<input type="text" name="matricula" value="#{iris.form.matricula}" class="ui-input ui-code ui-matricula" maxlength="10" tabindex="48"/>
-					<div class="ui-errtip"></div>
-				</div>
+				<input type="text" name="matricula" value="#{iris.form.matricula}" class="ui-input ui-code ui-matricula" maxlength="10" tabindex="48"/>
+				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block grupo-matricula-mun">
+			<label class="ui-block" data-refresh="is-matricula-mun">
 				<div class="label required">km:</div>
-				<div>
-					<input type="text" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun"/>
-					<div class="ui-errtip"></div>
-				</div>
+				<input type="text" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun"/>
+				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
-				<div>
-					<input type="date" class="ui-input ui-date ui-mun" tabindex="50" />
-					<div class="ui-errtip"></div>
-				</div>
+				<input type="date" class="ui-input ui-date ui-mun" tabindex="50" />
+				<div class="ui-errtip"></div>
 			</label>
 		</div>
 	</div>
@@ -111,15 +103,12 @@
 		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 
-		<a href="#tab-action-paso1" class="btn btn-green" data-refresh="is-editable" title="#{msg['tit.btn.siguiente']}">
+		<a href="#tab-action-paso1" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<a href="#tab-action-save1" class="btn btn-info" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
+		<a href="#tab-action-save1" class="btn btn-green" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<p:remoteCommand name="rcPaso1" action="#{iris.form.paso1()}" oncomplete="updateIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcSave1" action="#{iris.form.paso1()}" oncomplete="updateIrse(xhr, status, args, 1)" />
-
-		<a href="#tab-next" class="btn btn-info" data-refresh="is-disabled" title="#{msg['lbl.btn.siguiente']}">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

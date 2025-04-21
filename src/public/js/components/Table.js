@@ -16,6 +16,7 @@ export default function(table, opts) {
 
 	opts.activeClass = opts.activeClass || "active";
 	opts.rowActionClass = opts.rowActionClass || "row-action";
+	opts.textRenderClass = opts.textRenderClass || "text-render";
 	opts.msgConfirmRemove = opts.msgConfirmRemove || "remove";
 
 	opts.msgEmptyTable = opts.msgEmptyTable || "noResults"; // default empty table message
@@ -23,6 +24,7 @@ export default function(table, opts) {
 
 	opts.beforeRender = opts.beforeRender || globalThis.void;
 	opts.onHeader = opts.onHeader || (() => table.tHead.innerHTML);
+	opts.rowCalc = opts.rowCalc || fnTrue;
 	opts.onRender = opts.onRender || globalThis.void;
 	opts.onLastRow = opts.onLastRow || globalThis.none;
 	opts.onFooter = opts.onFooter || (() => table.tFoot.innerHTML);
@@ -40,14 +42,15 @@ export default function(table, opts) {
     let _index = -1; // current item position in data
 	let _isChanged; // bool indicator
 
-    this.get = name => opts[name];
-    this.set = (name, fn) => { opts[name] = fn; return self; }
-    this.clear = () => { _index = -1; return self; }
+	this.get = name => opts[name];
+	this.set = (name, fn) => { opts[name] = fn; return self; }
+	this.clear = () => { _index = -1; return self; }
 
 	this.setRowEmpty = html => self.set("rowEmptyTable", html);
 	this.setMsgEmpty = msg => self.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.get(msg)}</td></tr>`);
 	this.setBeforeRender = fn => { opts.beforeRender = fn; return self; }
 	this.setHeader = fn => { opts.onHeader = fn; return self; }
+	this.setRowCalc = fn => { opts.rowCalc = fn; return self; } 
 	this.setRender = fn => { opts.onRender = fn; return self; }
 	this.setLastRow = fn => { opts.onLastRow = fn; return self; }
 	this.setFooter = fn => { opts.onFooter = fn; return self; }
@@ -56,47 +59,56 @@ export default function(table, opts) {
 	this.setChange = (field, fn) => self.set(field + "Change", fn);
 	this.setRemove = fn => { opts.onRemove = fn; return self; }
 
-    this.getData = () => _rows;
-    this.getIndex = () => _index;
-    this.getResume = () => RESUME;
+	this.getData = () => _rows;
+	this.getIndex = () => _index;
+	this.getResume = () => RESUME;
+	this.getProp = name => RESUME[name];
 
-    const fnMove = i => (i < 0) ? 0 : Math.min(i, _rows.length - 1);
-    this.first = () => { _index = 0; return self; }
-    this.prev = () => { _index = fnMove(_index - 1); return self; }
-    this.next = () => { _index = fnMove(_index + 1); return self; }
-    this.last = () => { _index = fnMove(_rows.length); return self; }
+	const fnMove = i => (i < 0) ? 0 : Math.min(i, _rows.length - 1);
+	this.first = () => { _index = 0; return self; }
+	this.prev = () => { _index = fnMove(_index - 1); return self; }
+	this.next = () => { _index = fnMove(_index + 1); return self; }
+	this.last = () => { _index = fnMove(_rows.length); return self; }
 
-    this.getFirst = () => _rows[0];
-    this.getItem = i => _rows[i ?? _index];
-    this.isItem = () => (_index > -1) && (_index < _rows.length);
-    this.getCurrentItem = () => _rows[_index];
-    this.getLastItem = () => _rows.at(-1);
-    this.isEmpty = () => !_rows.length;
-    this.size = () => _rows.length;
+	this.getFirst = () => _rows[0];
+	this.getItem = i => _rows[i ?? _index];
+	this.isItem = () => (_index > -1) && (_index < _rows.length);
+	this.getCurrentItem = () => _rows[_index];
+	this.getLastItem = () => _rows.at(-1);
+	this.isEmpty = () => !_rows.length;
+	this.size = () => _rows.length;
 	this.isChanged = () => _isChanged;
 	this.setChanged = val => { _isChanged = val; return self; }
 
-    this.getTable = () => table;
-    this.getHeader = () => tHead;
-    this.getBody = () => tBody;
-    this.getRow = i => tBody.rows[i ?? _index];
-    this.getRows = () => tBody.rows;
-    this.getCurrentRow = () => tBody.rows[_index];
-    this.getLastRow = () => tBody.lastElementChild;
+	this.getTable = () => table;
+	this.getHeader = () => tHead;
+	this.getBody = () => tBody;
+	this.getRow = i => tBody.rows[i ?? _index];
+	this.getRows = () => tBody.rows;
+	this.getCurrentRow = () => tBody.rows[_index];
+	this.getLastRow = () => tBody.lastElementChild;
 	this.getFooter = () => tFoot;
 
 	this.querySelector = selector => table.querySelector(selector);
 	this.querySelectorAll = selector => table.querySelectorAll(selector);
     this.getText = selector => dom.getText(table.querySelector(selector)); // read text
 
-	this.renderFooter = () => {
-		tFoot.innerHTML = opts.onFooter(RESUME); // update table footer
-		opts.afterRender(RESUME); // After body and footer is rendered
-		return self;
-	}
 	function fnChangeEvent(data, el, tr, i) {
 		const fnChange = opts[el.name + "Change"];
 		fnChange && fnChange(data, el, tr, i);
+	}
+	// Row listeners for change, find and remove items in body
+	function addRowEvents(tr, i) {
+		tr.onchange = ev => {
+			_index = i; // update current item
+			fnChangeEvent(_rows[i], ev.target, tr, i);
+		}
+		tr.getElementsByClassName(opts.rowActionClass).setClick((ev, link) => {
+			_index = i; // update current item
+			const href = link.getAttribute("href");
+			opts[href](_rows[i], link, tr, i); // Call action
+			ev.preventDefault(); // avoid navigation
+		});
 	}
     function fnRender(data) {
 		_index = -1; // clear previous selects
@@ -110,29 +122,13 @@ export default function(table, opts) {
 		tBody.innerHTML = RESUME.size // has data
 						? (coll.render(_rows, opts.onRender, RESUME) + opts.onLastRow(RESUME))
 						: opts.rowEmptyTable; // specific empty row
-		self.renderFooter(); // update table footer
+		tFoot.innerHTML = opts.onFooter(RESUME); // update table footer
+		opts.afterRender(RESUME); // After body and footer is rendered
 		tBody.classList.add(opts.activeClass); // Add styles (animation)
 		_isChanged = true; // rendered force indicator
 
-		// Row listeners for change, find and remove items in body
-		tBody.rows.forEach((tr, i) => {
-			tr.onchange = ev => {
-				_index = i; // update current item
-				fnChangeEvent(_rows[i], ev.target, tr, i);
-			}
-			tr.getElementsByClassName(opts.rowActionClass).addClick((ev, link) => {
-				_index = i; // update current item
-				const href = link.getAttribute("href");
-				if (href == "#remove") // Remove action
-					self.removeRow(); // Remove selected item
-				else if (i18n.confirm(link.dataset.confirm)) // Action on selected item
-					opts[href](_rows[i], link, tr, i); // Call action
-				ev.preventDefault(); // avoid navigation
-			});
-		});
-
-		// Row listeners for change, and other actions in footer
-		tFoot.rows.forEach((tr, i) => {
+		tBody.rows.forEach(addRowEvents);
+		tFoot.rows.forEach((tr, i) => { // Row listeners for change footer
 			tr.onchange = ev => fnChangeEvent(RESUME, ev.target, tr, i);
 		});
 		return self;
@@ -146,12 +142,35 @@ export default function(table, opts) {
 	this.insert = (row, id) => { row.id = id; return self.push(row); } // New row with PK
 	this.update = data => { Object.assign(_rows[_index], data); return fnRender(_rows); }
 	this.save = (row, id) => (id ? self.insert(row, id) : self.update(row)); // Insert or update
-	this.remove = index => { _rows.splice(index, 1); return fnRender(_rows); } // remove a row and reload table
-	this.removeCurrent = () => self.remove(_index) // remove current row and reload table
-	this.removeRow = () => {
-		i18n.confirm(opts.msgConfirmRemove) // force confirm
-			&& opts.onRemove(_rows[_index]) // call event
-			&& self.removeCurrent(); // remove row and rebuild table
+	this.remove = index => { index = index ?? _index; _rows.splice(index, 1); return fnRender(_rows); } // remove a row and reload table
+	const fnConfirmRemove = index => (i18n.confirm(opts.msgConfirmRemove) && opts.onRemove(_rows[index])); // confirmation message
+	this.removeRow = () => { fnConfirmRemove(_index) && self.remove(_index); return self; } // remove row and rebuild table
+
+	const fnRefresh = (el, data) => el.getElementsByClassName(opts.textRenderClass).forEach(el => el.render(data)); // render table elements
+	this.refreshBody = () => { tBody.rows.forEach((tr, i) => fnRefresh(tr, _rows[i])); return self; } // refresh each row
+	this.refreshFooter = () => { fnRefresh(tFoot, RESUME); return self; } // refresh footer only
+	this.refresh = () => self.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer
+	this.recalc = () => {
+		opts.beforeRender(RESUME); // Fired init. event before render
+		_rows.forEach(row => opts.rowCalc(row, RESUME)); // recalc. all rows
+		opts.afterRender(RESUME); // After body recalc
+		_isChanged = true; // refresh force indicator
+		return self;
+	}
+
+	this.flush = index => {
+		index = index ?? _index;
+		_rows.splice(index, 1); // remove row
+		RESUME.size = _rows.length; // update size
+		tBody.removeChild(tBody.rows[index]); // remove row
+		if (_rows.length) // is empty table?
+			tBody.rows.forEach(addRowEvents); // update listeners
+		else
+			tBody.innerHTML = opts.rowEmptyTable; // empty body
+		return self.recalc().refreshFooter(); // refresh footer
+	}
+	this.flushRow = () => { // remove row and rebuild table
+		fnConfirmRemove(_index) && self.flush(_index);
 		return self;
 	}
 
@@ -176,4 +195,8 @@ export default function(table, opts) {
 		fnRender(_rows.sort(fnSort)); // render sorted table
 		ev.preventDefault();
 	});
+
+	// Define default actions
+	opts["#remove"] = self.removeRow;
+	opts["#flush"] = self.flushRow;
 }
