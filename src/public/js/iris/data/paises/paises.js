@@ -1,5 +1,5 @@
 
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 import es from "./paises-es.js";
 import en from "./paises-en.js";
 

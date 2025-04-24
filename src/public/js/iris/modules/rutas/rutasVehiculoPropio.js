@@ -2,7 +2,7 @@
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaVehiculoPropio.js";
 import rutas from "../../model/ruta/Rutas.js";
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 import xeco from "../../../xeco/xeco.js";
 
 function RutasVehiculoPropio() {

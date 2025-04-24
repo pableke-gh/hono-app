@@ -1,5 +1,5 @@
 
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 
 const DEFAULT = "P,PDI-FU,COM,AyL,OTR"; // titulo = 0
 

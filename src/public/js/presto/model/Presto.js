@@ -1,5 +1,5 @@
 
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 import firma from "../../xeco/model/Firma.js";
 import solicitud from "../../xeco/model/Solicitud.js";
 import partidas from "./Partidas.js";
@@ -7,7 +7,7 @@ import partidas from "./Partidas.js";
 solicitud.getPartidas = () => partidas;
 solicitud.getPartida = partidas.getPartida;
 
-solicitud.getTitulo = () => i18n.getItem("descTipos", solicitud.getTipo() - 1);
+solicitud.getTitulo = () => i18n.getItem("descTipos", solicitud.getTipo());
 solicitud.isTcr = () => (solicitud.getTipo() == 1);
 solicitud.isFce = () => (solicitud.getTipo() == 6);
 solicitud.isL83 = () => (solicitud.getTipo() == 3);
@@ -51,7 +51,7 @@ solicitud.row = data => {
 		${info}
 		<td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
 		<td class="hide-sm">${solicitud.getTitulo()}</td>
-		<td class="${solicitud.getStyleByEstado()} estado">${solicitud.getDescEstado()}</td>
+		<td class="${solicitud.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${solicitud.getDescEstado()}</td>
 		<td class="text-center">${firma.myFlag(data)}</td>
 		<td class="hide-sm">${data.sig || ""}</td>
 		<td title="${data.oIncDesc}">${data.orgInc}${otras}</td>

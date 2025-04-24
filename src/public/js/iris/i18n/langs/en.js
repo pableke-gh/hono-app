@@ -1,0 +1,73 @@
+
+export default {
+	errItinerario: "Error al cumplimentar los datos del itinerario.",
+	errItinerarioPaises: "Los paises de origen y de destino de las etapas no son consecutivos.",
+	errItinerarioFechas: "Las fechas de salida y de llegada de las etapas no son consecutivas.",
+	errItinerarioCiudad: "La ciudad de origen y de destino deben de ser distintas.",
+	errMulticomision: "No puede solicitar multicomisiones para esta comunicación.",
+	errTransporte: "Medio de Transporte incorrecto.",
+	errMatricula: "Debe indicar la matricula del vehiculo privado.",
+	msgRutasEmpty: "Aún no has añadido ninguna ETAPA a esta Comunicación.",
+	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta Comunicación.",
+	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta Comunicación.",
+	msgPernoctasEmpty: "No hay pernoctas asociadas a esta Comunicación.",
+	msgDietasEmpty: "No hay dietas / manutenciones asociadas a esta Comunicación.",
+
+	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
+	docMovilidad: "Documentación acreditativa del programa de movilidad",
+	docOpcional: "Otra documentación (opcional)",
+
+	errPerfil: "No ha seleccionado un perfil válido.",
+	errOrganicas: "No se han encontrado orgánicas asociadas a la comunicación.",
+	errObjeto: "Debe indicar el objeto de la actividad.",
+	errOrigen: "¡No ha seleccionado correctamente la ciudad de origen!",
+	errDestino: "¡No ha seleccionado correctamente la ciudad de destino!",
+	errMinRutas: "El mínimo de trayectos a introducir es: 1 de ida y 1 de vuelta.",
+	errFechasRuta: "¡La fecha de salida o de llegada, no es válida!",
+	errFechaFutura: "¡Las fechas del itinerario deben ser anteriores a la fecha actual!",
+	errFechasOrden: "¡La fecha de llegada debe ser posterior a la de salida!",
+	errMainRuta: "Es necesario marcar un destino del itinerario como principal.",
+	errLinkRuta: "Debe seleccionar al menos 1 etapa.",
+	errJustifiSubv: "Debe indicar la relación entre la actividad y el proyecto subvencionado.",
+	errJustifiVp: "Debe justificar la razón por la que usó de su vehiculo propio.",
+	errJustifiKm: "Debe indicar una justificación para la diferencia de kilometraje de la comunicación.",
+	errJustifiExtra: "Debe indicar una justificación para la indemnización extraordinaria.",
+	errEntidadOrigen: "Debe indicar una entidad de origen para la subvención.",
+	errCongreso: "Debe justificar la fecha de inicio/fin del congreso respoecto a la del viaje.",
+	errEstimaciones: "Debe asociar al menos una estimación a la comunicación.",
+	errFechasAloja: "No ha seleccionadas correctamente el periodo de fechas del alojamiento.",
+	errRangoAloja: "El periodo de fechas del gasto de alojamiento, esta fuera del rango de la solicitud.",
+	errDoc: "Debe asociar la documentación obligatoria",
+
+	errImputacion: "Error al generar la imputación asocuada a la comunicación.",
+	errMaxDietas: "Importe máximo para dietas excedido.",
+	errMaxAloja: "Importe máximo por alojamiento excedido.",
+	errMaxTrans: "Importe máximo por transporte excedido.",
+	errMaxAsist: "Importe máximo por asistencios excedido.",
+	errImpBruto: "El importe a imputar no coincide con el bruto de la comunicación.",
+	errTipo: "No ha seleccionado correctamente el tipo de operación.",
+	errTipoGasto: "Debe seleccionar un tipo de gasto.",
+	errIban: "Debe indicar un IBAN válido.",
+	errSwift: "Debe indicar un swift válido.",
+
+	errExtra: "Debe indicar un motivo para la urgencia de esta comunicación",
+	errFechaMax: "Debe indicar una fecha maxima de resolución para esta comunicación.",
+
+	lblEtapas: "Etapas", lblOrigen: "Origen", lblDestino: "Destino", lblTransporte: "Medio de Transporte", 
+	lblFechaSalida: "Fecha de salida", lblHoraSalida: "Hora de salida", lblFechaLlegada: "Fecha de llegada", lblHoraLlegada: "Hora de llegada",
+
+	lblPaso: "Paso", lblDe: "de", lblA: "a", lblTusKm: "Tus km",
+	firstDay: "Primer día", medDay: "Días Intermedios", lastDay: "Último día",
+	lblDescObserv: "Descripción / observaciones:", lblDescTaxi: "Itinerario (para justificación del proyecto):",
+
+	lblPais: "Country", lblDireccion: "Address", lblLocalidad: "Locality", lblCP: "Postal Code", lblProvincia: "Province", lblCCAA: "Administrative area",  
+
+	// IRIS Collections
+	despMun: [ "Vehículo Propio", "Transportes Públicos" ],
+	despMaps: [ "Vehículo Propio", "Avión", "Tren", "Vehículo Alquiler", "Vehículo Ajeno", "Taxi Interurbano", "Bús Interurbano", "Barco", "Otros" ],
+	gastosTiketIsu: [ "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros" ],
+	gastosTiket: [ "Tickets de transporte (peaje, aparcamiento, etc.)" ],
+	tiposDesp: ["", "Vehículo Propio", "Vehiculo de Alquiler", "Vehiculo Ajeno", "Taxi Interurbano", "Autobús Interurbano", "Tren", "Barco", "Avión", "Otros", "Transportes Públicos"],
+	tiposEstimaciones: ["-", "Estimación gastos por dietas", "Estimación gastos de alojamiento", "Estimación gastos de transporte"],
+	tiposMultiorganica: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"]
+}

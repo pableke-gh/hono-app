@@ -1,5 +1,5 @@
 
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 import iris from "../../model/Iris.js";
 import ruta from "./Ruta.js";
 
@@ -23,25 +23,25 @@ function RutaVehiculoPropio() {
 		const km1 = i18n.isoFloat(ruta.km1);
 		const cell = iris.isEditable() ? `<input type="text" name="km1" value="${km1}" tabindex="100" class="ui-float tc"/>` : km1;
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="#{msg['lbl.origen.etapa']}">${ruta.origen}</td>
-			<td data-cell="#{msg['lbl.fecha.salida']}">${i18n.isoDate(ruta.dt1)}</td>
-			<td data-cell="#{msg['lbl.hora.salida']}">${i18n.isoTimeShort(ruta.dt1)}</td>
-			<td data-cell="#{msg['lbl.destino.etapa']}">${ruta.destino}</td>
-			<td data-cell="#{msg['lbl.fecha.llegada']}">${i18n.isoDate(ruta.dt2)}</td>
-			<td data-cell="#{msg['lbl.hora.llegada']}">${i18n.isoTimeShort(ruta.dt2)}</td>
-			<td data-cell="#{msg['lbl.medio.trans']}">${i18n.getItem("tiposDesp", ruta.desp)}</td>
+			<td data-cell="${i18n.get("lblOrigen")}">${ruta.origen}</td>
+			<td data-cell="${i18n.get("lblFechaSalida")}">${i18n.isoDate(ruta.dt1)}</td>
+			<td data-cell="${i18n.get("lblHoraSalida")}">${i18n.isoTimeShort(ruta.dt1)}</td>
+			<td data-cell="${i18n.get("lblDestino")}">${ruta.destino}</td>
+			<td data-cell="${i18n.get("lblFechaLlegada")}">${i18n.isoDate(ruta.dt2)}</td>
+			<td data-cell="${i18n.get("lblHoraLlegada")}">${i18n.isoTimeShort(ruta.dt2)}</td>
+			<td data-cell="${i18n.get("lblTransporte")}">${i18n.getItem("tiposDesp", ruta.desp)}</td>
 			<td data-cell="Google km">${i18n.isoFloat(ruta.km2) || "-"}</td>
-			<td data-cell="#{msg['lbl.tus.km']}">${cell}</td>
-			<td data-cell="#{msg['lbl.importe']}" data-template="$impKm; €" class="text-render">${i18n.isoFloat(ruta.impKm)} €</td>
+			<td data-cell="${i18n.get("lblTusKm")}">${cell}</td>
+			<td data-cell="${i18n.get("lblImporte")}" class="table-refresh" data-refresh="text-render" data-template="$impKm; €">${i18n.isoFloat(ruta.impKm)} €</td>
 		</tr>`;
 	}
 
     this.tfoot = resume => {
 		return `<tr>
-			<td colspan="7">Etapas: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs text-render" data-template="$totKmCalc;">${i18n.isoFloat(resume.totKmCalc)}</td>
-			<td class="tb-data-tc hide-xs text-render" data-template="$totKm;">${i18n.isoFloat(resume.totKm)}</td>
-			<td class="tb-data-tc hide-xs text-render" data-template="$impKm; €">${i18n.isoFloat(resume.impKm)} €</td>
+			<td colspan="7">${i18n.get("lblEtapas")}: ${resume.size}</td>
+			<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render" data-template="$totKmCalc;">${i18n.isoFloat(resume.totKmCalc)}</td>
+			<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render" data-template="$totKm;">${i18n.isoFloat(resume.totKm)}</td>
+			<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render" data-template="$impKm; €">${i18n.isoFloat(resume.impKm)} €</td>
 		</tr>`;
 	}
 

@@ -48,7 +48,7 @@
 				<ul role="list" class="results"></ul>
 			</div>
 		</label>
-		<label class="ui-blocks" data-refresh="is-tribunal">
+		<label class="ui-blocks form-refresh" data-refresh="is-tribunal">
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.tribunal']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
@@ -57,7 +57,7 @@
 				<ul role="list" class="results"></ul>
 			</div>
 		</label>
-		<label class="ui-blocks" data-refresh="is-mesa">
+		<label class="ui-blocks form-refresh" data-refresh="is-mesa">
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.mesa']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
@@ -67,8 +67,8 @@
 			</div>
 		</label>
 	
-		<hr data-refresh="is-mun"/>
-		<div class="ui-blocks" data-refresh="is-mun">
+		<hr class="form-refresh" data-refresh="is-mun"/>
+		<div class="ui-blocks form-refresh" data-refresh="is-mun">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
 				<input type="text" class="ui-input ui-text ui-mun" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
@@ -81,12 +81,12 @@
 					<option value="10">#{irse.rutas.getMsgDesp(10)}</option>
 				</select>
 			</label>
-			<label class="ui-block" data-refresh="is-matricula-mun">
+			<label class="ui-block form-refresh" data-refresh="is-matricula-mun">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
 				<input type="text" name="matricula" value="#{iris.form.matricula}" class="ui-input ui-code ui-matricula" maxlength="10" tabindex="48"/>
 				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block" data-refresh="is-matricula-mun">
+			<label class="ui-block form-refresh" data-refresh="is-matricula-mun">
 				<div class="label required">km:</div>
 				<input type="text" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun"/>
 				<div class="ui-errtip"></div>
@@ -105,7 +105,7 @@
 
 		<a href="#tab-action-paso1" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<a href="#tab-action-save1" class="btn btn-green" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
+		<a href="#tab-action-save1" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<p:remoteCommand name="rcPaso1" action="#{iris.form.paso1()}" oncomplete="updateIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcSave1" action="#{iris.form.paso1()}" oncomplete="updateIrse(xhr, status, args, 1)" />

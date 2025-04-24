@@ -1,7 +1,7 @@
 
 import sb from "../../../components/types/StringBox.js";
 import tb from "../../../components/types/TemporalBox.js";
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 
 function Ruta() {
 	const self = this; //self instance
@@ -18,13 +18,13 @@ function Ruta() {
 	const setTplPrincipal = ruta => {
 		ruta.flag = TPL_FLAG;
 		ruta.spanFlag = `<span class="text-warn icon">${TPL_FLAG}</span>`;
-		ruta.tplFlag = `<span class="text-warn icon text-render" data-template="@flag;">${TPL_FLAG}</span>`;
+		ruta.tplFlag = `<span class="text-warn icon table-refresh" data-refresh="text-render" data-template="@flag;">${TPL_FLAG}</span>`;
 		return self;
 	}
 	const setTplOrdinaria = ruta => {
 		delete ruta.flag;
 		ruta.spanFlag = "";
-		ruta.tplFlag = '<span class="text-warn icon text-render" data-template="@flag;"></span>';
+		ruta.tplFlag = '<span class="text-warn icon table-refresh" data-refresh="text-render" data-template="@flag;"></span>';
 		return self;
 	}
 	this.isPrincipal = ruta => ((ruta.mask & 1) == 1);

@@ -1,30 +1,34 @@
 
 import en from "./langs/en.js";
 import es from "./langs/es.js";
-import Validators from "./validators.js";
+import validators from "./validators.js";
 import nb from "../components/types/NumberBox.js";
 import sb from "../components/types/StringBox.js";
 
 function Langs() {
 	const self = this; //self instance
 	const DEFAULT = "en"; // Default iso lang
-	const valid = new Validators(en); // instance
+	const KEYS = [ "es", DEFAULT ]; // Accepted lang keys
+	const valid = validators(self); // closure
 
-	let _langs = { en, es }; // All langs
-	let _lang = en; // Default language
+	let _langs, _appLangs; // All langs containers
+	let _lang, _appLang; // Current language pointer
 
+	// Init private vars
+	_langs = _appLangs = { en, es }; // Default langs container
+	_lang = _appLang = en; // Default language = en
+	
 	this.getLangs = () => _langs;
 	this.getLang = () => _lang;
 	this.getCurrent = () => _lang;
-	this.getI18n = lang => _langs[lang] || _langs[sb.substring(lang, 0, 2)] || _lang;
-	this.setLang = lang => { // Load especific language by key
-		_lang = self.getI18n(lang);
-		valid.setLang(_lang);
-		return self;
-	}
+	this.addLangs = langs => { _appLangs = langs; return self; }
 
-	this.addLang = function(name, lang) {
-		Object.assign(_langs[name], lang);
+	const findKey = lang => KEYS.find(key => (key == lang));
+	const getLangKey = lang => (findKey(lang) || findKey(sb.substring(lang, 0, 2)) || DEFAULT);
+	this.setLang = lang => { // Load especific language by key
+		const key = getLangKey(lang);
+		_appLang = _appLangs[key];
+		_lang = _langs[key];
 		return self;
 	}
 
@@ -32,18 +36,21 @@ function Langs() {
 	this.getIsoLang = () => _lang.lang;
 	this.isDefault = lang => (!lang || (DEFAULT == lang));
 
-	this.getIsoLangs = () => Object.keys(_langs);
+	this.getIsoLangs = () => KEYS;
 	this.getNavLang = () => navigator.language || navigator.userLanguage; // default browser language
 	this.getLanguage = () => document.documentElement.getAttribute("lang") || self.getNavLang() || DEFAULT;
 	this.getAcceptLanguage = list => self.setLang(sb.substring(list, 0, 5)).getIsoLang(); // server header Accept-Language
 	this.setLanguage = () => self.setLang(self.getLanguage()); // Set language object
 
+	this.clone = () => new Langs();
 	this.getValidation = () => valid; // Current validators
 	this.getValidators = () => valid.reset(); // Init. messages
-	this.createValidators = lang => new Validators(self.getI18n(lang)); // Create instance
+	// Create new validator instance cloning current language instance
+	this.createValidators = lang => validators(self.clone().setLang(lang));
 
-	this.get = msg => _lang[msg] || msg || "";
-	this.getItem = (msg, index) => _lang[msg][index];
+	const fnGetMsg = msg => (_appLang[msg] || _lang[msg]);
+	this.get = msg => (fnGetMsg(msg) || msg || "");
+	this.getItem = (msg, index) => fnGetMsg(msg)[index];
 	this.confirm = msg => msg ? confirm(self.get(msg)) : true;
 	this.set = (name, msg) => { _lang[name] = msg; return self; }
 
@@ -101,12 +108,14 @@ function Langs() {
 		const fnValue = data.getValue || (k => (data[k]));
 		return str.replace(RE_VAR, (m, k, t) => { // replacer
 			opts.keys++; // always increment keys matches
-			const value = fnValue(k) ?? _lang[k]; // value to replace
-			opts.matches += globalThis.isset(value); // increment matches 
+			const value = fnValue(k) ?? fnGetMsg(k); // value to replace
+			opts.matches += globalThis.isset(value); // increment matches
 			if (m.startsWith("$")) // float / currency
 				return self.isoFloat(value);
 			if (t == ".d") // Date in ISO string format
 				return self.isoDate(value); // substring = 0, 10
+			if (typeof value === "function") // function type
+				return value(opts); // call function
 			return (value ?? opts[k] ?? ""); // Default = String
         });
     }

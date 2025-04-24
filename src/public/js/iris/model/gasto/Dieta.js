@@ -1,5 +1,5 @@
 
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 import iris from "../../model/Iris.js";
 
 function Dieta() {

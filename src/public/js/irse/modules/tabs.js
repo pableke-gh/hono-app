@@ -2,8 +2,8 @@
 import tabs from "../../components/Tabs.js";
 import sb from "../../components/types/StringBox.js";
 import pf from "../../components/Primefaces.js";
-import i18n from "../../i18n/langs.js";
 import dom from "../../lib/uae/dom-box.js";
+import i18n from "../i18n/langs.js";
 
 import rutas from "./rutas.js";
 import organicas from "./organicas.js";
@@ -93,7 +93,7 @@ export const initTab9 = (tab, form) => {
 
 	const valid = i18n.getValidation();
 	cuentas.options.forEach(opt => {
-		let entidad = valid.banks.getEntidad(opt.innerText);
+		let entidad = valid.getBanks().getEntidad(opt.innerText);
 		if (entidad)
 			opt.innerText += " - " + entidad;
 	});

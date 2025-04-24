@@ -9,7 +9,7 @@
 
 	<h:form id="xeco-uxxi" prependId="false" onsubmit="loading();">
 		<h2>Consulta de Formación de Expediente<hr class="underline"/></h2>
-		<p class="notice notice-info" data-refresh="text-render">@codigo;: @memo;</p>
+		<p class="notice notice-info form-refresh" data-refresh="text-render">@codigo;: @memo;</p>
 
 		<div class="ui-blocks">
 			<label class="ui-block">
@@ -54,10 +54,10 @@
 			<a href="#tab-action-ejecutar" class="btn btn-green" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
 				<i class="far fa-save btn-icon-left"></i>Guardar</a>
 			<p:remoteCommand name="rcEjecutar" action="#{fact.firmas.ejecutar()}" oncomplete="showAlerts(xhr, status, args)"/>
-			<a href="#tab-action-notificar" class="btn btn-green" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
+			<a href="#tab-action-notificar" class="btn btn-green form-refresh" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
 				<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</a>
 			<p:remoteCommand name="rcNotificar" action="#{fact.firmas.notificar()}" oncomplete="showAlerts(xhr, status, args)"/>
-			<a href="#tab-action-reject" class="table-action btn btn-error" data-refresh="is-cancelable" title="#{msg['tit.btn.rechazar']}">
+			<a href="#tab-action-reject" class="table-action btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.rechazar']}">
 				<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
 		</div>
 	</h:form>

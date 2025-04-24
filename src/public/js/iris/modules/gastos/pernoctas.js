@@ -8,7 +8,7 @@ import rutas from "../../model/ruta/Rutas.js";
 import pernocta from "../../model/gasto/Pernocta.js";
 import pernoctas from "../../data/pernoctas/pernoctas.js";
 import paises from "../../data/paises/paises.js";
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 
 function Pernoctas() {
 	const self = this; //self instance

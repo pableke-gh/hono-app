@@ -1,6 +1,6 @@
 
 import sb from "../../components/types/StringBox.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 import Base from "../../xeco/model/Base.js";
 import presto from "./Presto.js";
 

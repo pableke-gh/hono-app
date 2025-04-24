@@ -43,7 +43,7 @@ solicitud.row = data => {
 	return `<tr class="tb-data">
 		<td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
 		<td class="hide-sm text-upper1">${solicitud.getTitulo()}</td>
-		<td class="${solicitud.getStyleByEstado()} estado">${solicitud.getDescEstado()}</td>
+		<td class="${solicitud.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${solicitud.getDescEstado()}</td>
 		<td class="text-center">${firma.myFlag(data)}</td>
 		<td class="hide-sm">${data.sig || ""}</td>
 		<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>

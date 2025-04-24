@@ -2,7 +2,7 @@
 import coll from "../../../components/CollectionHTML.js";
 import tb from "../../../components/types/TemporalBox.js";
 import sb from "../../../components/types/StringBox.js";
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 import ruta from "./Ruta.js";
 
 function Rutas() {

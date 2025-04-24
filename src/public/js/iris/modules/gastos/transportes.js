@@ -1,7 +1,7 @@
 
 import iris from "../iris.js";
 import transporte from "../../model/gasto/Transporte.js";
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 
 function Transportes() {
 	const self = this; //self instance

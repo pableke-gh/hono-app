@@ -1,5 +1,5 @@
 
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
 import iris from "../Iris.js";
 
 const TICKETS = ["-", "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros", "-", "-", "Tickets de transporte (taxi, parking, peajes...)"];

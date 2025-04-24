@@ -8,7 +8,7 @@ import i18n from "#client/i18n/langs.js";
 // usar siempre la referencia: #client/i18n/langs.js en el servidor
 // para evitar crear mas de una instancia del modulo
 // usar la referncia local: ./i18n/langs.js en el cliente
-i18n.addLang("en", en).addLang("es", es);
+i18n.addLangs({ en, es }); // All server langs
 
 // Server redefinitions
 i18n.confirm = () => true;

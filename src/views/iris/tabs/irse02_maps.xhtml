@@ -10,7 +10,7 @@
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
-			<span class="text-warn i18n-tr-h1" data-refresh="is-maps" data-toggle="active">@lblPaso; @count; @lblDe; @size;</span> 
+			<span class="text-warn i18n-tr-h1 form-refresh" data-refresh="is-maps" data-toggle="active">@lblPaso; @count; @lblDe; @size;</span> 
 			<span><h:outputText value="#{msg['uae.irse.tab2.msg.tit.maps']}" escape="false" /></span>
 		</h2>
 
@@ -102,7 +102,7 @@
 
 		<a href="#tab-action-paso2" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<a href="#tab-action-save2" class="btn btn-green" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
+		<a href="#tab-action-save2" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<p:remoteCommand name="rcPaso2" action="#{iris.form.paso2()}" oncomplete="updateIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcSave2" action="#{iris.form.paso2()}" oncomplete="updateIrse(xhr, status, args, 'maps')" />

@@ -1,5 +1,4 @@
 
-import Msgs from "../msgs.js";
 import { BankNames, IbanCodeLengths } from "../../data/bancos.js";
 
 // RegEx for Cards Numbers
@@ -10,11 +9,11 @@ const RE_DISCOVER = /^(?:6(?:011|5[0-9][0-9])[0-9]{12})$/;
 const RE_DINER_CLUB = /^(?:3(?:0[0-5]|[68][0-9])[0-9]{11})$/;
 const RE_JCB = /^(?:(?:2131|1800|35\d{3})\d{11})$/;*/
 
-export default class Bancks extends Msgs {
-	isIban(name, iban, msg) {
+export default function bancks(msgs) {
+	msgs.isIban = (name, iban, msg) => {
 		let code = iban && iban.match(/^([A-Z]{2})(\d{2})([A-Z\d]+)$/);
 		if (!code || (iban.length !== IbanCodeLengths[code[1]]))
-			return this.addRequired(name, msg);
+			return msgs.addRequired(name, msg);
 
 		let digits = (code[3] + code[1] + code[2]).replace(/[A-Z]/g, letter => (letter.charCodeAt(0) - 55));
 		let digital = digits.toString();
@@ -23,26 +22,26 @@ export default class Bancks extends Msgs {
 			let fragment = checksum + digital.substring(offset, offset + 7);
 			checksum = parseInt(fragment, 10) % 97;
 		}
-		return (checksum === 1) ? this : this.addError(name, "errFormat", msg);
+		return (checksum === 1) ? msgs : msgs.addError(name, "errFormat", msg);
 	}
-	isSwift(name, value, msg) {
+	msgs.isSwift = (name, value, msg) => {
 		if (!value) // iso date validation
-			return this.addRequired(name, msg); // required
+			return msgs.addRequired(name, msg); // required
 		const ok = /^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$/.test(value); // RE_SWIFT / RE_BIC format
-		return ok ? this : this.addFormatError(name, msg);
+		return ok ? msgs : msgs.addFormatError(name, msg);
 	}
 
-	getEntidades() { return BankNames; }
-	getIban1(iban) { return iban && iban.substring(0, 4); }
-	getIban2(iban) { return iban && iban.substring(4, 8); }
-	getEntidad(iban) { return BankNames[this.getIban2(iban)]; }
-	getIban3(iban) { return iban && iban.substring(8, 12); }
-	getOficina(iban) { return iban && iban.substring(8, 12); }
-	getDC(iban) { return iban && iban.substring(12, 14); }
+	msgs.getEntidades = () => BankNames;
+	msgs.getIban1 = iban => iban && iban.substring(0, 4);
+	msgs.getIban2 = iban => iban && iban.substring(4, 8);
+	msgs.getEntidad = iban => BankNames[msgs.getIban2(iban)];
+	msgs.getIban3 = iban => iban && iban.substring(8, 12);
+	msgs.getOficina = iban => iban && iban.substring(8, 12);
+	msgs.getDC = iban => iban && iban.substring(12, 14);
 
-	isCreditCardNumber(name, cardNo, msg) { //Luhn check algorithm
+	msgs.isCreditCardNumber = (name, cardNo, msg) => { //Luhn check algorithm
 		if (!cardNo || (cardNo.length != 16))
-			return this.addRequired(name, msg);
+			return msgs.addRequired(name, msg);
 
 		let s = 0;
 		let doubleDigit = false;
@@ -55,6 +54,8 @@ export default class Bancks extends Msgs {
 			s += digit;
 			doubleDigit = !doubleDigit;
 		}
-		return ((s % 10) == 0) ? this : this.addError(name, "errFormat", msg);
+		return ((s % 10) == 0) ? msgs : msgs.addError(name, "errFormat", msg);
 	}
+
+	return msgs;
 }

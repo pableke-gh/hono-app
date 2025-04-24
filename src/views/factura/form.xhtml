@@ -10,7 +10,7 @@
 	<h:inputText id="ivaPF" value="#{fact.solicitud.ivaView}" styleClass="ui-input ui-number hide" />
 	<h:inputText id="nifTercero" value="#{fact.solicitud.nifTerceroView}" styleClass="ui-input hide" />
 	<div class="card-xeco">
-		<h2 data-refresh="text-render">Solicitud de emisión de @getTitulo; @codigo;</h2>
+		<h2 class="form-refresh" data-refresh="text-render">Solicitud de emisión de @getTitulo; @codigo;</h2>
 
 		<div class="ui-blocks">
 			<ui:include src="./tercero.xhtml"></ui:include>
@@ -29,7 +29,7 @@
 			<ui:include src="./subtipos.xhtml"></ui:include>
 		</div>
 
-		<div class="ui-blocks" data-refresh="show-factura-uae">
+		<div class="ui-blocks form-refresh" data-refresh="show-factura-uae">
 			<label class="ui-block">
 				<div class="label">Causas de no sujeción a IVA:</div>
 				<h:selectOneMenu id="sujeto" value="#{fact.solicitud.sujetoView}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="5">
@@ -38,7 +38,7 @@
 					<f:selectItem itemValue="1" itemLabel="Art. 7, 14, otros." itemEscaped="false" />
 				</h:selectOneMenu>
 			</label>
-			<label class="ui-block" data-refresh="is-exento">
+			<label class="ui-block form-refresh" data-refresh="is-exento">
 				<div class="label">Causas de exención en IVA:</div>
 				<h:selectOneMenu id="exento" value="#{fact.solicitud.exentoView}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="6">
 					<f:selectItem itemValue="0" itemLabel="Seleccione una causa de exención" itemEscaped="false" />
@@ -50,7 +50,7 @@
 					<f:selectItem itemValue="6" itemLabel="E6 Exenta por Otros." itemEscaped="false" />
 				</h:selectOneMenu>
 			</label>
-			<label class="ui-block-row" data-refresh="show-factura-uae">
+			<label class="ui-block-row form-refresh" data-refresh="show-factura-uae">
 				<div class="label">Modelo fiscal 349:</div>
 				<h:selectOneMenu id="m349" value="#{fact.solicitud.m349View}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
 					<f:selectItem itemValue="0" itemLabel="No" itemEscaped="false" />
@@ -65,7 +65,7 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks" data-refresh="show-uae">
+		<div class="ui-blocks form-refresh" data-refresh="show-uae">
 			<label class="ui-block-xl">
 				<div class="label">Económica:</div>
 				<h:selectOneMenu id="economica" value="#{fact.solicitud.economica}" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
@@ -83,7 +83,7 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks" data-refresh="show-factura">
+		<div class="ui-blocks form-refresh" data-refresh="show-factura">
 			<label class="ui-block">
 				<div class="label">Factura electrónica:</div>
 				<h:selectOneMenu id="face" value="#{fact.solicitud.faceView}" styleClass="ui-input ui-select" tabindex="8">
@@ -92,7 +92,7 @@
 					<f:selectItem itemValue="2" itemLabel="Otras" itemEscaped="false" />
 				</h:selectOneMenu>
 			</label>
-			<label class="ui-block-md" data-refresh="show-gestor">
+			<label class="ui-block-md form-refresh" data-refresh="show-gestor">
 				<div class="label required" data-refresh="text-render">@getNamePlataforma;:</div>
 				<h:inputText id="og" value="#{fact.solicitud.gestor}" maxlength="20" tabindex="9" styleClass="ui-input" />
 				<div class="ui-errtip"></div> 
@@ -102,19 +102,19 @@
 				<h:inputText id="oc" value="#{fact.solicitud.contable}" maxlength="20" tabindex="10" styleClass="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
-			<label class="ui-block-md" data-refresh="show-face">
+			<label class="ui-block-md form-refresh" data-refresh="show-face">
 				<div class="label">Unidad Tramitadora:</div>
 				<h:inputText id="ut" value="#{fact.solicitud.tramit}" maxlength="20" tabindex="11" styleClass="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
-			<label class="ui-block-md" data-refresh="show-face">
+			<label class="ui-block-md form-refresh" data-refresh="show-face">
 				<div class="label">Órgano Proponente:</div>
 				<h:inputText id="op" value="#{fact.solicitud.prop}" maxlength="20" tabindex="12" styleClass="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
 		</div>
 
-		<div class="ui-blocks" data-refresh="show-gaca">
+		<div class="ui-blocks form-refresh" data-refresh="show-gaca">
 		<label class="ui-block-row">
 			<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
 			<h:inputTextarea id="memo" value="#{fact.solicitud.memoriaView}" styleClass="ui-input ui-ta" tabindex="13" maxlength="600" title="Observaciones de la factura" />
@@ -127,25 +127,25 @@
 	<div class="navbar">
 		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-		<a href="#tab-action-send" class="btn btn-green" data-refresh="is-editable" title="Poner solicitud a la firma">
+		<a href="#tab-action-send" class="btn btn-green form-refresh" data-refresh="is-editable" title="Poner solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
 		<p:remoteCommand name="rcSend" action="#{fact.form.save()}" oncomplete="showTab(xhr, status, args, 0)"/>
 
-		<a href="#tab-action-reactivar" class="btn btn-warn" data-refresh="is-reactivable" title="Activa los campos modificables por la UAE">
+		<a href="#tab-action-reactivar" class="btn btn-warn form-refresh" data-refresh="is-reactivable" title="Activa los campos modificables por la UAE">
 			<i class="fas fa-wrench btn-icon-left"></i>Reactivar</a>
-		<a href="#tab-action-subsanar" class="btn btn-green" data-refresh="is-subsanable" title="Guarda los cambios realizados">
+		<a href="#tab-action-subsanar" class="btn btn-green form-refresh" data-refresh="is-subsanable" title="Guarda los cambios realizados">
 			<i class="far fa-save btn-icon-left"></i>Subsanar</a>
 		<p:remoteCommand name="rcSubsanar" action="#{fact.form.subsanar()}" oncomplete="showTab(xhr, status, args, 'list')"/>
 
-		<a href="#tab-action-firmar" class="btn btn-green" data-refresh="is-firmable" title="#{msg['tit.btn.firmar']}">
+		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="is-firmable" title="#{msg['tit.btn.firmar']}">
 			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>
 		<p:remoteCommand name="rcFirmarForm" action="#{fact.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)"/>
-		<a href="#tab-reject" class="btn btn-error" data-refresh="is-firmable" title="#{msg['tit.btn.rechazar']}">
+		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="is-firmable" title="#{msg['tit.btn.rechazar']}">
 			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
-		<a href="#tab-reject" class="btn btn-error" data-refresh="is-cancelable" title="#{msg['tit.btn.cancelar']}">
+		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.cancelar']}">
 			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.cancelar']}</a>
 
-		<a href="#tab-action-remove" class="btn btn-danger" data-refresh="is-removable" title="Borra la solicitud del sistema"> 
+		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="is-removable" title="Borra la solicitud del sistema"> 
 			<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
 	</div>
 	<ui:include src="./firmas.xhtml"></ui:include>

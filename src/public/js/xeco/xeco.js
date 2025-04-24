@@ -54,12 +54,7 @@ function XecoForm() {
 		solicitudes.set("#rcReport", data => fnSend("rcReport", data));
 		solicitudes.set("#rcEmails", data => fnSend("rcEmails", data)); // admin test email
 		solicitudes.setRemove(data => !fnSend("rcRemove", data)); // remove true = confirm
-		solicitudes.set("#rcIntegrar", data => {
-			if (i18n.confirm("msgIntegrar")) {
-				list.updateRow();  // avoid reclick
-				fnSend("rcIntegrar", data); // llamada al servidor
-			}
-		});
+		solicitudes.set("#rcIntegrar", data => (i18n.confirm("msgIntegrar") && list.setProcesando(data) && fnSend("rcIntegrar", data))); // llamada al servidor
 	}
 
 	this.view = (data, principales) => {

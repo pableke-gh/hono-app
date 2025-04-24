@@ -1,6 +1,6 @@
 
 import coll from "../../components/Collection.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 import partida from "./Partida.js";
 
 function Partidas() {

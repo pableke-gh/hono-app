@@ -40,7 +40,8 @@ function RutasMaps() {
 	}
 	this.saveRutas = () => {
 		if (_tblRutas.isChanged()) { // save changes in rutas table
-			const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
+			const keys = [ "p2", "flag", "spanFlag", "tplFlag" ]; // excluded fields
+			const fnReplace = (key, value) => (keys.includes(key) ? undefined : value); // reduce size
 			form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
 			rro.setRender(); // fuerza la actualización de la tabla de consulta (paso 5)
 			rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)

@@ -4,19 +4,12 @@ const KEY_ERR = "msgError"; // Error key
 export default function Msgs(lang) {
 	const self = this; //self instance
 	const MSGS = {}; // Messages container
-	let _lang = lang; // Current lang
 	let _errors = 0; // Errors counter
-
-	this.getLang = () => _lang;
-	this.setLang = lang => {
-		_lang = lang;
-		return self;
-	}
 
 	this.getMsgs = () => MSGS;
 	this.getMsg = name => MSGS[name];
 	this.setMsg = (name, msg) => {
-		MSGS[name] = _lang[msg] || msg;
+		MSGS[name] = lang.get(msg);
 		return self;
 	}
 	this.reset = () => {
@@ -38,10 +31,10 @@ export default function Msgs(lang) {
 	}
 
     this.addError = (field, tip, msg) => {
-        if (msg && !self.getMsg(KEY_ERR))
-		self.setError(msg); // set global message
-        else
-            _errors++;
+		if (msg && !self.getMsg(KEY_ERR))
+			self.setError(msg); // set global message
+		else
+			_errors++;
         return self.setMsg(field, tip); // set field message
 	}
 	this.addRequired = (name, msg) => self.addError(name, "errRequired", msg);

@@ -31,12 +31,12 @@ base.tfoot = resume => {
 			</div>
 			</label>
 		</td>
-		<td class="text-right text-render">$impIva; €</td> 
+		<td class="text-right table-refresh" data-refresh="text-render">$impIva; €</td> 
 		<td></td>
 	</tr>
 	<tr data-refresh="show-factura">
 		<td class="text-right" colspan="2">Importe Total:</td>
-		<td class="text-right text-render">$impTotal; €</td>
+		<td class="text-right table-refresh" data-refresh="text-render">$impTotal; €</td>
 		<td></td>
 	</tr>`;
 }

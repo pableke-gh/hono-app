@@ -49,7 +49,7 @@ function Firmas() {
 		const data = list.getCurrentItem(); // get current table item
 		if (form.isCached(data.id)) // checks if current item is cached
 			self.view(coll.parse(args.firmas)); // update firmas blocks
-		list.updateRow();  // avoid reclick
+		list.setProcesando();  // avoid reclick
 	}
 }
 

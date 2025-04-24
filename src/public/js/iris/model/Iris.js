@@ -1,6 +1,6 @@
 
 import sb from "../../components/types/StringBox.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 import firma from "../../xeco/model/Firma.js";
 import solicitud from "../../xeco/model/Solicitud.js";
 import perfiles from "../data/perfiles/perfiles.js"; 

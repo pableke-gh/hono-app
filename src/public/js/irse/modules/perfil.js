@@ -2,8 +2,8 @@
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
 import pf from "../../components/Primefaces.js";
-import i18n from "../../i18n/langs.js";
 import dom from "../../lib/uae/dom-box.js";
+import i18n from "../i18n/langs.js";
 
 import organica from "../model/Organica.js"
 import getActividad from "../data/actividades.js"

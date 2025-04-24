@@ -9,6 +9,7 @@ const CSS_ESTADOS = [
 ];
 
 const base = new Base(); // model instance
+const PROCESANDO = 16; // Procesando tarea
 const SUBSANABLE = 15; // Estado de subsanable
 let _nif, _grupo, _admin; // User params
 
@@ -32,6 +33,9 @@ base.isCancelada = () => (base.getEstado() == 7); // Solicitud cancelada por la 
 base.isCaducada = () => (base.getEstado() == 8); // Solicitud caducada por expiración
 base.isErronea = () => ((base.getEstado() == 9) || (base.getEstado() == 10)); // estado de error
 base.isReactivable = () => (base.isUae() && base.isErronea()); // La solicitud se puede reactivar / subsanar
+base.isProcesable = () => (base.getEstado() != PROCESANDO); // Solicitud en estado procesable
+base.isProcesando = () => (base.getEstado() == PROCESANDO); // Solicitud procesando tarea
+base.setProcesando = () => base.setEstado(PROCESANDO); // solicitud ejecutando tarea
 base.isSubsanable = () => (base.isUae() && (base.getEstado() == SUBSANABLE)); // Solicitud subsanable en el cliente
 base.setSubsanable = () => base.setEstado(SUBSANABLE); // marca la solicitud como subsanable
 base.isFinalizada = () => [1, 3, 4, 9, 10].includes(base.getEstado()); // Aceptada, Ejecutada, Notificada ó Erronea
@@ -69,12 +73,12 @@ base.rowActions = data => {
 	base.setData(data); // initialize 
 	let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
 	if (base.isFirmable())
-		acciones += `<a href="#rcFirmar" class="row-action resize once-action"><i class="fas fa-check action resize text-green"></i></a>
-					<a href="#tab-reject" class="row-action resize once-action"><i class="fas fa-times action resize text-red"></i></a>`;
+		acciones += `<a href="#rcFirmar" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-check action resize text-green"></i></a> 
+					<a href="#tab-reject" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-times action resize text-red"></i></a>`;
 	if (base.isEjecutable())
 		acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
 	if (base.isIntegrable())
-		acciones += '<a href="#rcIntegrar" class="row-action once-action"><i class="far fa-save action resize text-blue"></i></a>';
+		acciones += '<a href="#rcIntegrar" class="row-action table-refresh" data-refresh="is-procesable"><i class="far fa-save action resize text-blue"></i></a>';
 	if (base.isAdmin())
 		acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 	return acciones;

@@ -1,6 +1,6 @@
 
 import coll from "../../components/CollectionHTML.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 
 import nb from "../../lib/uae/number-box.js";
 import dom from "../../lib/uae/dom-box.js";

@@ -10,6 +10,7 @@ function List() {
 	const msgEmptyTable = "No se han encontrado solicitudes para a la búsqueda seleccionada";
 	const opts = { msgEmptyTable, onRender: model.row, onFooter: model.tfoot };
 	const tblSolicitudes = form.setTable("#solicitudes", opts);
+	tblSolicitudes.set("is-procesable", model.isProcesable);
 
 	this.getForm = () => form;
 	this.getTable = () => tblSolicitudes;
@@ -18,10 +19,10 @@ function List() {
 		tblSolicitudes.render(data);
 		return self;
 	}
-	this.updateRow = () => { // avoid reclicks
-		const tr = tblSolicitudes.getCurrentRow();
-		tr.querySelectorAll(".once-action").hide();
-		tr.querySelectorAll(".estado").text("Procesando...");
+	this.setProcesando = data => { // avoid reclicks
+		data = data || tblSolicitudes.getCurrentItem();
+		tblSolicitudes.refreshRow(model.setData(data).setProcesando());
+		return self;
 	}
 	this.load = () => {
 		const divSolicitudes = form.querySelector("#solicitudes-json");

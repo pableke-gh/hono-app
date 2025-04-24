@@ -16,11 +16,11 @@ export default function(table, opts) {
 
 	opts.activeClass = opts.activeClass || "active";
 	opts.rowActionClass = opts.rowActionClass || "row-action";
-	opts.textRenderClass = opts.textRenderClass || "text-render";
 	opts.msgConfirmRemove = opts.msgConfirmRemove || "remove";
 
 	opts.msgEmptyTable = opts.msgEmptyTable || "noResults"; // default empty table message
 	opts.rowEmptyTable = opts.rowEmptyTable || `<tr><td class="no-data" colspan="99">${i18n.get(opts.msgEmptyTable)}</td></tr>`;
+	opts.refreshSelector = opts.refreshSelector || ".table-refresh"; // selector for refresh elements
 
 	opts.beforeRender = opts.beforeRender || globalThis.void;
 	opts.onHeader = opts.onHeader || (() => table.tHead.innerHTML);
@@ -146,16 +146,16 @@ export default function(table, opts) {
 	const fnConfirmRemove = index => (i18n.confirm(opts.msgConfirmRemove) && opts.onRemove(_rows[index])); // confirmation message
 	this.removeRow = () => { fnConfirmRemove(_index) && self.remove(_index); return self; } // remove row and rebuild table
 
-	const fnRefresh = (el, data) => el.getElementsByClassName(opts.textRenderClass).forEach(el => el.render(data)); // render table elements
-	this.refreshBody = () => { tBody.rows.forEach((tr, i) => fnRefresh(tr, _rows[i])); return self; } // refresh each row
+	const fnRefresh = (el, data) => el.querySelectorAll(opts.refreshSelector).refresh(data, opts); // render table elements
+	this.refreshRow = data => { fnRefresh(tBody.rows[_index], data || _rows[_index]); return self; } // refresh a row
+	this.refreshBody = () => { tBody.rows.forEach((tr, i) => fnRefresh(tr, _rows[i])); return self.setChanged(true); } // refresh each row
 	this.refreshFooter = () => { fnRefresh(tFoot, RESUME); return self; } // refresh footer only
 	this.refresh = () => self.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer
 	this.recalc = () => {
 		opts.beforeRender(RESUME); // Fired init. event before render
 		_rows.forEach(row => opts.rowCalc(row, RESUME)); // recalc. all rows
 		opts.afterRender(RESUME); // After body recalc
-		_isChanged = true; // refresh force indicator
-		return self;
+		return self.setChanged(true); // force refresh indicator
 	}
 
 	this.flush = index => {

@@ -19,6 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
+		<script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script> 
 		<script type="module" src="/uae/resources/js/iris/index.js"></script> 
 	</ui:define>
 
@@ -51,7 +52,7 @@
 		<p:remoteCommand name="rcFindInteresado" action="#{iris.perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:remoteCommand name="rcFindOrg" action="#{iris.perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
 		<div id="tab-form" class="tab-content">
-			<h2 data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
+			<h2 class="form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse00.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
@@ -59,43 +60,43 @@
 		<!-- Itinerarios rutas de tab1 y tab2 -->
 		<p:remoteCommand name="rcFindPersonal" action="#{iris.firmas.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
 		<div id="tab-1" class="tab-content">
-			<h2 data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
+			<h2 class="form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse01.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 		<!-- Itinerarios de google maps tab2 -->
 		<div id="tab-maps" class="tab-content">
-			<h2 data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
+			<h2 class="form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
 		<div id="tab-isu" class="tab-content">
-			<h2 data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
+			<h2 class="form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse03.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
 		<div id="tab-5" class="tab-content">
-			<h2 data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
+			<h2 class="form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse05.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
 		<div id="tab-resumen" class="tab-content">
-			<h2 data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
+			<h2 class="form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse06.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
 		<div id="tab-9" class="tab-content">
-			<h2 data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
+			<h2 class="form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse09.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
 		<div id="tab-12" class="tab-content">
-			<h2 data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
+			<h2 class="form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i><hr class="underline"/></h2>
 			<ui:include src="tabs/irse12.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>

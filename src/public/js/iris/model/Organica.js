@@ -1,7 +1,7 @@
 
 import coll from "../../components/Collection.js";
 import sb from "../../components/types/StringBox.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 import iris from "./Iris.js";
 
 function Organica() {

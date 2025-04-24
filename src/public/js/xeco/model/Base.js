@@ -17,11 +17,12 @@ export default function() {
 		return fnValue ? fnValue(value) : self.set(name, value); // set value
 	}
 
-	this.render = self.getValue;
-	this.parse = (name, value) => {
+	//this.render = self.getValue;
+	//this.render =  (str, opts) => i18n.render(str, self, opts);
+	/*this.parse = (name, value) => {
 		const fnParse = self[name + "Parse"]; // parse string value to type (float, int, ...)
 		return fnParse ? fnParse(value) : self.set(name, value); // set new typed value
-	}
+	}*/
 
 	// Generc getters and setters
 	this.getId = () => _data.id;

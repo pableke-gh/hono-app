@@ -3,6 +3,7 @@ import dom from "./forms/DomBox.js";
 import coll from "./Collection.js";
 import i18n from "../i18n/langs.js";
 
+const OPTS = {};
 const HIDE_CLASS = "hide";
 const fnHide = el => el.classList.add(HIDE_CLASS);
 const fnShow = el => el.classList.remove(HIDE_CLASS);
@@ -11,6 +12,17 @@ const fnRender = (el, data, opts) => {
     el.dataset.template = el.dataset.template || el.innerHTML; // save current template
     el.innerHTML = i18n.render(el.dataset.template, data, opts); // display new data
 	el.classList.toggle(HIDE_CLASS, !opts.matches); // hide if empty
+	return el; // current HTMLElement instance
+}
+const fnRefresh = (el, data, opts) => {
+	if (el.dataset.refresh == "text-render")
+		return fnRender(el, data, OPTS); // render contents only
+	const fnRefresh = opts[el.dataset.refresh]; // handler
+	if (el.dataset.toggle) // toggle specific style class
+		el.classList.toggle(el.dataset.toggle, fnRefresh(el));
+	else // show / hide
+		el.setVisible(fnRefresh(el));
+	return el; // current HTMLElement instance
 }
 
 // Extends HTMLCollection prototype
@@ -24,10 +36,10 @@ HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
 HTMLCollection.prototype.findBy = function(selector) { return this.find(el => el.matches(selector)); }
 HTMLCollection.prototype.findIndexBy = function(selector) { return this.findIndex(el => el.matches(selector)); }
 HTMLCollection.prototype.filterBy = function(selector) { return this.filter(el => el.matches(selector)); }
+HTMLCollection.prototype.refresh = function(data, opts) { this.forEach(el => fnRefresh(el, data, opts)); }
 HTMLCollection.prototype.render = function(data) {
-	const opts = { size: this.length }; // array length
-	this.forEach((el, i) => { opts.index = i; fnRender(el, data, opts); });
-	return this;
+	OPTS.size = this.length; // array length
+	this.forEach((el, i) => { OPTS.index = i; fnRender(el, data, OPTS); });
 }
 HTMLCollection.prototype.html = function(text) { this.forEach(el => { el.innerHTML = text; }); return this; }
 HTMLCollection.prototype.text = function(text) { this.forEach(el => { el.innerText = text; }); return this; }
@@ -36,9 +48,8 @@ HTMLCollection.prototype.setClick = function(fn) { this.forEach(el => el.setClic
 HTMLCollection.prototype.hide = function() { this.forEach(fnHide); return this; }
 HTMLCollection.prototype.show = function() { this.forEach(fnShow); return this; }
 HTMLCollection.prototype.toggle = function(name, force) {
-    //name = name || HIDE_CLASS; // Toggle class name
-    this.forEach(el => el.classList.toggle(name, force));
-    return this;
+	this.forEach(el => el.classList.toggle(name, force));
+	return this;
 }
 HTMLCollection.prototype.mask = function(flags, name) {
     if (!name) { // Toggle class name
@@ -59,6 +70,7 @@ NodeList.prototype.findLastIndex = HTMLCollection.prototype.findLastIndex;
 NodeList.prototype.findBy = HTMLCollection.prototype.findBy;
 NodeList.prototype.findIndexBy = HTMLCollection.prototype.findIndexBy;
 NodeList.prototype.filterBy = HTMLCollection.prototype.filterBy;
+NodeList.prototype.refresh = HTMLCollection.prototype.refresh;
 NodeList.prototype.render = HTMLCollection.prototype.render;
 NodeList.prototype.html = HTMLCollection.prototype.html;
 NodeList.prototype.text = HTMLCollection.prototype.text;
@@ -80,7 +92,8 @@ HTMLElement.prototype.setClick = function(fn) { this.onclick = ev => fn(ev, this
 HTMLElement.prototype.setVisible = function(force) { return force ? this.show() : this.hide(); }
 HTMLElement.prototype.isHidden = function() { return this.classList.contains(HIDE_CLASS); } // has class hide
 HTMLElement.prototype.isVisible = function(selector) { return fnVisible(this) && (selector ? this.matches(selector) : true); }
-HTMLElement.prototype.render = function(data, opts) { fnRender(this, data, opts || {}); return this; }
+HTMLElement.prototype.render = function(data, opts) { return fnRender(this, data, opts || OPTS); }
+HTMLElement.prototype.refresh = function(data, opts) { return fnRefresh(this, data, opts); }
 
 HTMLElement.prototype.setDisabled = function(force) { // Update attribute and style
     this.classList.toggle("disabled", this.toggleAttribute("disabled", force));

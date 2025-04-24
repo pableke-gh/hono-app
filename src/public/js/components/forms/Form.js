@@ -27,9 +27,7 @@ export default function(form, opts) {
 	opts.inputErrorClass = opts.inputErrorClass || "ui-error"; // Input error styles
 	opts.tipErrorClass = opts.tipErrorClass || "ui-errtip"; // Tip error style
 	opts.negativeNumClass = opts.negativeNumClass || "text-red"; // Negative numbers styles
-
-	opts.refreshSelector = opts.refreshSelector || "[data-refresh]";
-	opts.textRenderType = opts.textRenderType || "text-render";
+	opts.refreshSelector = opts.refreshSelector || ".form-refresh"; // selector for refresh
 
 	const self = this; //self instance
 	const EMPTY = ""; // Empty string
@@ -97,19 +95,8 @@ export default function(form, opts) {
     this.getText = selector => dom.getText(fnQuery(selector));
     this.setText = (selector, text) => { dom.text(fnQuery(selector), text); return self; }
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
-	this.render = (selector, data) => { $$(selector).render(data || opts); return self; } // HTMLElement.prototype.render
-	this.refresh = model => {
-		$$(opts.refreshSelector).forEach(el => {
-			if (el.dataset.refresh == opts.textRenderType)
-				return el.render(model); // render contents only
-			const fnRefresh = opts[el.dataset.refresh]; // handler
-			if (el.dataset.toggle) // toggle specific style class
-				el.classList.toggle(el.dataset.toggle, fnRefresh(el));
-			else // show / hide
-				el.setVisible(fnRefresh(el));
-		});
-		return self;
-	}
+	this.render = (selector, data) => { $$(selector).render(data); return self; } // NodeList.prototype.render
+	this.refresh = model => { $$(opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
 
 	this.hide = selector => { $$(selector).hide(); return self; }
 	this.show = selector => { $$(selector).show(); return self; }
@@ -209,7 +196,7 @@ export default function(form, opts) {
 
 	// Inputs helpers
 	this.setTable = (selector, opts) => new Table($1(selector), opts); // table
-	this.stringify = (selector, data, replacer) => self.setStrval(selector, JSON.stringify(data, replacer));
+	this.stringify = (selector, data, replacer) => self.setStrval(selector, JSON.stringify(data, replacer)).setChanged(true);
 	this.saveTable = (selector, table, replacer) => self.stringify(selector, table.getData(), replacer);
 	this.getOptionText = selector => dom.getOptionText(self.getInput(selector));
 	this.select = (selector, mask) => { dom.select(fnQueryInput(selector), mask); return self; }
