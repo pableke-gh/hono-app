@@ -1,18 +1,15 @@
 
-import iris from "../iris.js";
-import transporte from "../../model/gasto/Transporte.js";
 import i18n from "../../i18n/langs.js";
+import iris from "../../model/Iris.js";
+import transporte from "../../model/gasto/Transporte.js";
+import xeco from "../../../xeco/xeco.js";
 
 function Transportes() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
-	let _tblTransporte; // mapa de dietas
+	const form = xeco.getForm(); // form component
+	const _tblTransporte = form.setTable("#transportes", transporte.getTable());
 
-	this.getImporte = () => _tblTransporte.getResume().imp1;
-
-	const fnAfterRender = resume => {
-		form.setText("#imp-trans", i18n.isoFloat(resume.imp1) + " €");
-	}
+	this.getImporte = () => _tblTransporte.getProp("imp1");
 
 	this.validate = data => {
 		const valid = i18n.getValidation();
@@ -22,15 +19,12 @@ function Transportes() {
 
 	this.setTransportes = transportes => {
 		_tblTransporte.render(transportes);
-		form.setVisible(".block-transportes", _tblTransporte.size() > 0);
-		return self;
 	}
+
 	this.init = () => {
-		_tblTransporte = form.setTable("#transportes");
-		_tblTransporte.setMsgEmpty("msgTransportesEmpty") // #{msg['msg.no.fac.tickets']} 
-					.setBeforeRender(transporte.beforeRender).setRender(transporte.row).setFooter(transporte.tfoot)
-					.setAfterRender(fnAfterRender);
-		return self;
+		//_tblTransporte = form.setTable("#transportes", transporte.getTable());
+		iris.getImpTrasportes = self.getImporte;
+		form.set("is-transportes", _tblTransporte.size);
 	}
 }
 

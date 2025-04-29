@@ -46,7 +46,7 @@ function Langs() {
 	this.getValidation = () => valid; // Current validators
 	this.getValidators = () => valid.reset(); // Init. messages
 	// Create new validator instance cloning current language instance
-	this.createValidators = lang => validators(self.clone().setLang(lang));
+	//this.createValidators = lang => validators(self.clone().setLang(lang));
 
 	const fnGetMsg = msg => (_appLang[msg] || _lang[msg]);
 	this.get = msg => (fnGetMsg(msg) || msg || "");

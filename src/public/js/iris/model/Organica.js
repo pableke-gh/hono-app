@@ -1,45 +1,64 @@
 
-import coll from "../../components/Collection.js";
 import sb from "../../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
 import iris from "./Iris.js";
 
 function Organica() {
-	//const self = this; //self instance
+	const self = this; //self instance
+	const ORG_300518 = "300518"; // organica investigacion
+	var _tipo, _financiacion;
 
-	this.getFinanciacion = organicas => {
-		let result = "OTR"; //default fin.
-		if (coll.isEmpty(organicas))
-			return result; // default value
-		const ORG_300518 = "300518";
-		organicas.forEach(org => {
-			result = (sb.starts(org.o, ORG_300518) && ((org.mask & 8) == 8)) ? "ISU" : result; //apli=642
-			result = (sb.starts(org.o, ORG_300518) && ((org.mask & 16) == 16) && (result != "ISU")) ? "A83" : result; //apli=643
-			result = ((sb.starts(org.o, "300906") || sb.starts(org.o, "300920")) && (result == "OTR")) ? "ACA" : result; //TTPP o Master
-		});
-		if (organicas.length > 1) {
-			if (result == "ISU") return "xSU"; 
-			if (result == "A83") return "x83"; 
-			if (result == "ACA") return "xAC"; 
-			return "xOT";
-		}
-		return result;
+	this.getTipoDieta = () => _tipo;
+	this.isRD = () => (_tipo == 1);
+	this.isEUT = () => (_tipo == 2);
+	this.isUPCT = () => (_tipo == 9);
+
+	this.is642 = org => (sb.starts(org.o, ORG_300518) && ((org.mask & 8) == 8));  // apli = 642
+	this.is643 = org => (sb.starts(org.o, ORG_300518) && ((org.mask & 16) == 16)); // apli = 643
+	this.isA83 = org => (self.is643(org) && (_financiacion != "ISU")); // A83 = 643 y no ISU
+	this.isACA = org => ((sb.starts(org.o, "300906") || sb.starts(org.o, "300920")) && (_financiacion == "OTR")); // TTPP o Master
+	this.getFinanciacion = () => _financiacion;
+
+	this.beforeRender = resume => {
+		_financiacion = "OTR"; //default fin.
 	}
 
-	this.row = row => {
-		const cd = iris.isEditable() ? `<td data-cell="Crédito Disp.">${i18n.isoFloat(row.imp)}</td>` : ""; // #{iris.form.editable}
+	this.rowCalc = (data, resume) => {
+		_tipo = data.tipo; // tipo de organica = (RD, EUT, UPCT)
+		_financiacion = self.is642(data) ? "ISU" : _financiacion; // apli = 642
+		_financiacion = self.isA83(data) ? "A83" : _financiacion; // A83 = 643 y no ISU
+		_financiacion = self.isACA(data) ? "ACA" : _financiacion; // TTPP o Master
+	}
+
+	this.row = (data, resume) => {
+		self.rowCalc(data, resume);
+		const cd = iris.isEditable() ? `<td data-cell="Crédito Disp.">${i18n.isoFloat(data.imp)}</td>` : ""; // #{iris.form.editable}
 		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="#{msg['lbl.organica']}">${row.o}</td>
+			<td data-cell="#{msg['lbl.organica']}">${data.o}</td>
 			${cd}
-			<td data-cell="#{msg['lbl.descripcion']}">${row.dOrg}</td>
-			<td data-cell="#{msg['lbl.responsable.gasto']}">${row.resp}</td>
-			<td data-cell="#{msg['lbl.nombre.apellidos']}">${row.r}</td>
+			<td data-cell="#{msg['lbl.descripcion']}">${data.dOrg}</td>
+			<td data-cell="#{msg['lbl.responsable.gasto']}">${data.resp}</td>
+			<td data-cell="#{msg['lbl.nombre.apellidos']}">${data.r}</td>
 			<td class="no-print" data-cell="Acciones">${remove}</td>
 		</tr>`;
 	}
-    this.tfoot = resume => `<tr><td colspan="99">Filas: ${resume.size}</td></tr>`;
-	//this.afterRender = resume => { resume.updateDietas = true; }
+
+	this.tfoot = resume => `<tr><td colspan="99">Filas: ${resume.size}</td></tr>`;
+
+	this.afterRender = resume => {
+		const MULTI_APLICACION = {
+			"ISU": "xSU",
+			"A83": "x83",
+			"ACA": "xAC",
+			"OTR": "xOT"
+		};
+		if (resume.size > 1)
+			_financiacion = MULTI_APLICACION[_financiacion]; // || "xOT"; // default = "xOT"
+	}
+
+	const msgEmptyTable = "No existen orgánicas asociadas a la comunicación.";
+	this.getTable = () => ({ msgEmptyTable, beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
 }
 
 export default new Organica();

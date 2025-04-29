@@ -153,7 +153,7 @@ export default function(table, opts) {
 	this.refresh = () => self.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer
 	this.recalc = () => {
 		opts.beforeRender(RESUME); // Fired init. event before render
-		_rows.forEach(row => opts.rowCalc(row, RESUME)); // recalc. all rows
+		_rows.forEach((row, i) => opts.rowCalc(row, RESUME, i)); // recalc. all rows
 		opts.afterRender(RESUME); // After body recalc
 		return self.setChanged(true); // force refresh indicator
 	}

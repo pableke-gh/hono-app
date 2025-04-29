@@ -8,7 +8,7 @@ import xeco from "../../../xeco/xeco.js";
 function RutasVehiculoPropio() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	let _tblRutasVp; // itinerario
+	const _tblRutasVp = form.setTable("#tbl-rutas-vp", ruta.getTable()); // itinerario
 
 	this.getImporte = () => _tblRutasVp.getResume().impKm;
 	this.render = () => { _tblRutasVp.render(rutas.getRutasVehiculoPropio()); }
@@ -32,10 +32,8 @@ function RutasVehiculoPropio() {
 	window.validateP6 = () => form.validate(self.validate);
  
 	this.init = () => {
-		_tblRutasVp = form.setTable("#tbl-rutas-vp", ruta.getTable());
-		_tblRutasVp.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
-
 		const resume = _tblRutasVp.getResume();
+		_tblRutasVp.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
 		iris.getImpKm = () => resume.impKm;
 		const fnJustifi = () => resume.justifi;
 		form.set("is-rutas-vp", _tblRutasVp.size).set("is-justifi-km", fnJustifi);

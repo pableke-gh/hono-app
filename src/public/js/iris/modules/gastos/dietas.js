@@ -3,19 +3,19 @@ import tb from "../../../components/types/TemporalBox.js";
 
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
-import perfil from "../perfil/perfil.js";
-import gastos from "./gastos.js";
-
+import gastos from "../../model/gasto/Gastos.js";
 import dieta from "../../model/gasto/Dieta.js";
+
 import dietas from "../../data/dietas/dietas.js";  
+import perfil from "../perfil/perfil.js";
 import xeco from "../../../xeco/xeco.js";
 
 function Dietas() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	let _tblDietas; // mapa de dietas
+	const _tblDietas = form.setTable("#tbl-dietas", dieta.getTable());
 
-	this.getImporte = () => _tblDietas.getResume().percibir;
+	this.getImporte = () => _tblDietas.getProp("percibir");
 
 	const fnCreateDiaIntermedio = (fecha, tipo, grupo) => {
 		const row = dieta.createDiaIntermedio();
@@ -33,7 +33,6 @@ function Dietas() {
 		const temp = []; // mapped array
 		if (perfil.isEmpty() || perfil.isRutaUnica() || rutas.isEmpty())
 			return fnUpdateDietas(temp); // tabla vacia
-		return self;
 
 		const tipo = perfil.getTipoDieta();
 		const grupo = perfil.getGrupoDieta();
@@ -66,21 +65,19 @@ function Dietas() {
 	}
 
 	this.setDietas = data => {
-		_tblDietas.render(data);
-		return self;
+		_tblDietas.render(data).setChanged();
 	}
 
-	const fnChangeDietas = data => {
-		console.log(data);
+	const fnChangeDietas = (dieta, element) => {
+		dieta.imp1 = +element.value;
+		_tblDietas.refresh();
+		form.refresh(iris);
 	}
 
 	this.init = () => {
-		_tblDietas = form.setTable("#tbl-dietas", dieta.getTable());
 		_tblDietas.setChange("dietas", fnChangeDietas);
-
-		const resume = _tblDietas.getResume();
-		iris.getImpDietas = () => resume.percibir;
-		form.set("is-dietas", () => (resume.size > 0));
+		iris.getImpDietas = self.getImporte;
+		form.set("is-dietas", _tblDietas.size);
 	}
 }
 

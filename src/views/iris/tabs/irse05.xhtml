@@ -71,7 +71,7 @@
 				<h:inputText id="impGasto" value="#{iris.gastos.impGasto}" maxlength="12" tabindex="101" styleClass="ui-input ui-float" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
 				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block grupo-gasto hide">
+			<label class="ui-block-lg grupo-gasto hide">
 				<div class="label required form-refresh" data-refresh="text-render">@getTextGasto;:</div>
 				<h:inputText id="txtGasto" value="#{iris.gastos.txtGasto}" maxlength="300" tabindex="102" styleClass="ui-input ui-text"/>
 				<div class="ui-errtip"></div>
@@ -84,9 +84,8 @@
 			</label>
 			<div class="ui-block-btn grupo-gasto hide">
 				<p:remoteCommand name="rcUnloadGasto" action="#{iris.gastos.unload()}" oncomplete="unloadGasto(xhr, status, args)" />
-				<p:commandButton id="uploadGasto"
-					onclick="if (!validateGasto()) return false;loading();" action="#{iris.gastos.upload()}" oncomplete="addGasto(xhr, status, args);"
-					icon="fas fa-arrow-alt-down" iconPos="right" value="Añadir" styleClass="btn btn-green success-btn" tabindex="104" />
+				<p:remoteCommand name="rcUploadGasto" action="#{iris.gastos.upload()}" oncomplete="addGasto(xhr, status, args)" />
+				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 			</div>
 		</div>
 		<br class="clear"/>

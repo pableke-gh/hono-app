@@ -9,7 +9,6 @@ import rutas from "./modules/rutas/rutas.js";
 import gastos from "./modules/gastos/gastos.js"; 
 import otri from "./modules/otri.js";
 
-window.IRSE = {};
 coll.ready(() => {
 	iris.init();
 	perfil.init();

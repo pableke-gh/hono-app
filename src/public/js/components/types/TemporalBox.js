@@ -7,7 +7,7 @@ function TemporalBox() {
 
 	this.now = () => Temporal.Now.plainDateTimeISO();
 	this.parse = str => Temporal.PlainDateTime.from(str);
-	this.trunc = date => { date.set({ hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }); return self; }
+	this.trunc = date => date.set({ hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
 	this.clone = date => (date ? self.parse(date) : self.now());
 
 	this.addMonths = (date, months) => { date.add({ months }); return self; }

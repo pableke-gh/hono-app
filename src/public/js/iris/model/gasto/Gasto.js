@@ -17,7 +17,10 @@ function Gasto() {
 	this.isDieta = gasto => (gasto.tipo == 7);
 	this.isExtra = gasto => (gasto.tipo == 8);
 	this.isDoc = gasto => (gasto.tipo == 9);
+	this.isKm = gasto => (gasto.tipo == 10);
 	this.isPaso5 = gasto => self.isFactura(gasto) || self.isTicket(gasto) || self.isPernocta(gasto) || self.isExtra(gasto) || self.isDoc(gasto);
+
+	this.getMatricula = gasto => gasto?.cod; // matricula = cod = id_fichero
 
 	this.beforeRender = resume => {
 		resume.noches = 0;
@@ -47,8 +50,8 @@ console.log(data, subtipo, desc);
 			<td data-cell="#{msg['lbl.tipo.gasto']}">${subtipo}</td>
 			<td data-cell="#{msg['lbl.desc.obsev']}">${desc}</td>
 			<td data-cell="#{msg['lbl.adjunto']}">${data.nombre}</td>
-			<td data-cell="#{msg['lbl.importe']}">${i18n.isoFloat(data.imp1)} €</td>
-			<td class="no-print" data-cell="Acciones">${link}${remove}</td>
+			<td data-cell="${i18n.get("lblImporte")}">${i18n.isoFloat(data.imp1)} €</td>
+			<td data-cell="${i18n.get("lblAcciones")}" class="no-print">${link}${remove}</td>
 		</tr>`;
 	}
 

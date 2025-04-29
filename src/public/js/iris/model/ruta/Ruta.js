@@ -52,19 +52,10 @@ function Ruta() {
 		return self.isLlegadaTardia(ruta) ? self.getPaisllegada(ruta) : self.getPaisSalida(ruta);
 	}
 
-	//this.getImpKm = rvp.getImpKm;
-	//this.getImpGasolina = rvp.getImpGasolina;
-	//this.recalcKm = rvp.recalcKm;
-	//this.link = (ruta, id) => { ruta.g = id; return self; }
-	//this.unlink = ruta => { delete ruta.g; return self; }
-
 	this.valid = ruta => {
 		const valid = i18n.getValidation();
 		if (!ruta.origen || !ruta.pais1)
 			valid.addRequired("origen", "errOrigen");
-		// OJO! descomentar validacion matricula y fechas
-		//if (self.isVehiculoPropio(ruta) && !window.IRSE.matricula)
-			//valid.addRequired("matricula", "errMatricula");
 		//if (!tb.isBetween(self.salida(ruta), MIN_DATE, MAX_DATE)) 
 			//return valid.addError("f1", "errFechasRuta").isOk();
 		if (ruta.dt1 > ruta.dt2)

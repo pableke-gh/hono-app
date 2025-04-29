@@ -13,7 +13,7 @@ import xeco from "../../../xeco/xeco.js";
 function RutasMaps() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	let _tblRutas; // itinerario
+	const _tblRutas = form.setTable("#tbl-rutas", ruta.getTable()); // itinerario
 
 	this.getRutas = rutas.getRutas;
 	this.size = rutas.size;
@@ -35,16 +35,18 @@ function RutasMaps() {
 		rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
 	}
 	this.recalc = data => {
+		if (!data) return; // no hay rutas a recalcular
 		rutas.setRutas(data); // actualizo el array de rutas
 		_tblRutas.recalc(); // recalcula los datos de las rutas
 	}
 	this.saveRutas = () => {
 		if (_tblRutas.isChanged()) { // save changes in rutas table
-			const keys = [ "p2", "flag", "spanFlag", "tplFlag" ]; // excluded fields
+			const keys = [ "p2", "matricula", "flag", "spanFlag", "tplFlag" ]; // excluded fields
 			const fnReplace = (key, value) => (keys.includes(key) ? undefined : value); // reduce size
 			form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
 			rro.setRender(); // fuerza la actualización de la tabla de consulta (paso 5)
 			rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
+			// todo: build dietas ...
 		}
 		_tblRutas.setChanged();
 		return self;
@@ -67,9 +69,7 @@ function RutasMaps() {
 		rvp.init(); // init rutas vehiculo propio (paso 6)
 		const fnRutasGt1 = () => (self.size() > 1); // como minimo hay 2 rutas
 		form.set("is-rutas-gt-1", fnRutasGt1).set("is-editable-rutas-gt-1", () => (iris.isEditable() && fnRutasGt1()));
-
-		_tblRutas = form.setTable("#tbl-rutas", ruta.getTable());
-		_tblRutas.setAfterRender(fnUpdateForm).set("#main", self.setRutaPrincipal);
+		_tblRutas.setAfterRender(fnUpdateForm).set("#main", self.setRutaPrincipal); // set table actions
 	}
 
 	// tabla de consulta del itinerario (paso 5)

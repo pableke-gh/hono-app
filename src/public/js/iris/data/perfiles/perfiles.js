@@ -1,7 +1,7 @@
 
 import i18n from "../../i18n/langs.js";
 
-const DEFAULT = "P,PDI-FU,COM,AyL,OTR"; // titulo = 0
+//const DEFAULT = "P,PDI-FU,COM,AyL,OTR"; // titulo = 0
 
 // Titles for language
 const TITULOS = {

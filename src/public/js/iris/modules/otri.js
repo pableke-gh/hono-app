@@ -7,6 +7,8 @@ import pf from "../../components/Primefaces.js";
 import dom from "../../lib/uae/dom-box.js";
 import xlsx from "../../services/xlsx.js";
 
+import otri from "../model/Otri.js";
+
 import iris from "./iris.js";
 import rutas from "./rutas/rutas.js";
 

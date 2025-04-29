@@ -57,6 +57,8 @@ place.validate = async () => {
 	p1 || valid.addRequired("origen", "errOrigen"); //ha seleccionado un origen
 	if (p1 && p2 && place.isSameLocality(p1, p2))
 		valid.addRequired("destino", "errItinerarioCiudad");
+	if (ruta.isVehiculoPropio(data) && !data.matricula)
+		valid.addRequired("matricula", "errMatricula");
 	if (valid.isError())
 		return false;
 

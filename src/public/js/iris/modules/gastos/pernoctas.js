@@ -1,37 +1,36 @@
 
 import tb from "../../../components/types/TemporalBox.js";
 
-import iris from "../iris.js";
-import perfil from "../perfil/perfil.js";
+import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
-
 import pernocta from "../../model/gasto/Pernocta.js";
+
 import pernoctas from "../../data/pernoctas/pernoctas.js";
 import paises from "../../data/paises/paises.js";
-import i18n from "../../i18n/langs.js";
+
+import perfil from "../perfil/perfil.js";
+import xeco from "../../../xeco/xeco.js";
 
 function Pernoctas() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
-	let _tblPernoctas; // mapa de dietas
+	const form = xeco.getForm(); // form component
+	const _tblPernoctas = form.setTable("#pernoctas", pernocta.getTable());
 
-	this.getImporte = () => 0; //_tblPernoctas.getResume().imp1;
-
-	const fnAfterRender = resume => {
-		form.setText("#imp-prenoctas", i18n.isoFloat(resume.imp1 || 0) + " €");
-	}
+	this.getImporte = () => _tblPernoctas.getProp("imp1");
 
 	this.validate = data => {
 		const valid = form.getValidators();
 		valid.gt0("impGasto", data.impGasto)
 			.isDate("fMinGasto", data.fMinGasto).isDate("fMaxGasto", data.fMaxGasto);
-		if (valid.isError() || (data.fMinGasto > data.fMaxGasto))
-			return !valid.addError("fMinGasto", "errFechasAloja");
+		if (data.fMinGasto > data.fMaxGasto)
+			valid.addError("fMinGasto", "errFechasAloja");
+		if (valid.isError()) // error en los campos
+			return false; // stop validations
 
 		const tipo = perfil.getTipoDieta();
 		const grupo = perfil.getGrupoDieta();
-		const f2 = tb.trunc(form.getval("#fMaxGasto"));
-		let f1 = tb.trunc(form.getval("#fMinGasto"));
+		/*const f2 = tb.trunc(form.valueOf("#fMaxGasto"));
+		let f1 = tb.trunc(form.valueOf("#fMinGasto"));
 		const idPais1 = rutas.getPaisPernocta(f1);
 		while (tb.lt(f1, f2)) {
 			const idPais = rutas.getPaisPernocta(f1);
@@ -41,21 +40,18 @@ function Pernoctas() {
 		}
 		data.num = tb.getDays(f1, f2);
 		data.imp2 = pernoctas.getImporte(tipo, idPais1, grupo);
-		data.desc = paises.getPais(pais);
+		data.desc = paises.getPais(idPais1);*/
 		return valid.isOk();
 	}
 
 	this.setPernoctas = pernoctas => {
 		_tblPernoctas.render(pernoctas);
-		form.setVisible(".block-pernoctas", _tblPernoctas.size() > 0);
-		return self;
 	}
+
 	this.init = () => {
-		_tblPernoctas = form.setTable("#pernoctas");
-		_tblPernoctas.setMsgEmpty("msgPernoctasEmpty") // #{msg['msg.no.pernoctas']}
-					.setBeforeRender(pernocta.beforeRender).setRender(pernocta.row).setFooter(pernocta.tfoot)
-					.setAfterRender(fnAfterRender);
-		return self;
+		//_tblPernoctas = form.setTable("#pernoctas", pernocta.getTable());
+		iris.getImpPernoctas = self.getImporte;
+		form.set("is-pernoctas", _tblPernoctas.size);
 	}
 }
 

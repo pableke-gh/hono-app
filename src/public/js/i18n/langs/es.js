@@ -52,7 +52,7 @@ export default {
 	removeRuta: "¿Confirma que desea eliminar esta etapa de la comunicación?",
 
 	//Labels and tags
-	lblAcciones: "Acciones", lblImporte: "Importe",
+	lblAcciones: "Acciones", lblImporte: "Importe", lblImpTotal: "Importe total",
 
 	//Collections
 	msgBool: ["No", "Si"],
