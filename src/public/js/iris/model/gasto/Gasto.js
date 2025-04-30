@@ -17,6 +17,9 @@ function Gasto() {
 	this.isDieta = gasto => (gasto.tipo == 7);
 	this.isExtra = gasto => (gasto.tipo == 8);
 	this.isDoc = gasto => (gasto.tipo == 9);
+	this.isDocJustifi = gasto => (self.isDoc(gasto) && (gasto.subtipo == 3));
+	this.isDocComisionado = gasto => (self.isTransporte(gasto) || self.isPernocta(gasto) || self.isDocJustifi(gasto));
+	this.isOtraDoc = gasto => (self.isDoc(gasto) && (gasto.subtipo != 3));
 	this.isKm = gasto => (gasto.tipo == 10);
 	this.isPaso5 = gasto => self.isFactura(gasto) || self.isTicket(gasto) || self.isPernocta(gasto) || self.isExtra(gasto) || self.isDoc(gasto);
 

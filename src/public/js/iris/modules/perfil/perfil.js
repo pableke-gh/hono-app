@@ -2,13 +2,14 @@
 import tabs from "../../../components/Tabs.js";
 import pf from "../../../components/Primefaces.js";
 
-import iris from "../iris.js";
+import iris from "../../model/Iris.js";
 import organicas from "./organicas.js";
 import actividad from "./actividad.js";
+import xeco from "../../../xeco/xeco.js";
 
 function Perfil() {
 	const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = xeco.getForm(); // form component
 
 	const fnRender = (nif, nombre) => (nif + " - " + nombre);
 	const _acInteresado = form.setAutocomplete("#interesado", {
@@ -56,11 +57,12 @@ function Perfil() {
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));
 	}
 
-	this.view = (data, interesado, orgs) => {
-		organicas.setOrganicas(orgs); // update financiacion
-		_acInteresado.setValue(data.nifInt, fnRender(data.nifInt, data.interesado));
-		actividad.setColectivo(data.colectivo, data.emailInt);
-		self.update(interesado);
+	this.view = (interesado, orgs) => {
+		const nif = iris.getNifInteresado(); // 1º set colectivo / actividad
+		_acInteresado.setValue(nif, fnRender(nif, iris.getInteresado())); 
+		actividad.setColectivo(iris.getColectivo(), iris.getEmailInteresado());
+		organicas.setOrganicas(orgs); // 2º update financiacion
+		self.update(interesado); // 3º update interesado info
 	}
 
 	this.update = interesado => {

@@ -49,7 +49,6 @@ function Pernoctas() {
 	}
 
 	this.init = () => {
-		//_tblPernoctas = form.setTable("#pernoctas", pernocta.getTable());
 		iris.getImpPernoctas = self.getImporte;
 		form.set("is-pernoctas", _tblPernoctas.size);
 	}

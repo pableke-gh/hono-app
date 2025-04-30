@@ -26,8 +26,7 @@ function Presto() {
 
 	this.view = (data, ejercicios, firmas) => {
 		data.ej = data.ejDec; // sync ejercicios
-		presto.setData(data); // load data model
-		form.reset("input[id$='-json']").setLabels("select.ui-ej", ejercicios); // update field values
+		form.setLabels("select.ui-ej", ejercicios); // update field values
 		xeco.view(data, firmas); // load data-model before view
 	}
 

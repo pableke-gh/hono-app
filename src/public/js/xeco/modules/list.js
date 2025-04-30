@@ -44,6 +44,8 @@ function List() {
 		else
 			fnList("1");
 	});
+
+	tabs.setAction("report", () => tblSolicitudes.invoke("#rcReport"));
 	tabs.setAction("remove", tblSolicitudes.removeRow);
 
 	window.loadFiltro = (xhr, status, args) => {

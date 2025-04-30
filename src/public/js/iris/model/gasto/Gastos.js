@@ -4,6 +4,7 @@ import gasto from "./Gasto.js";
 function Gastos() {
 	const self = this; //self instance
 	let _gastos = []; // dietas, pernoctas, transporte, etc...
+	let _numGastosComisionado, _numGastosDoc; // estadisticas
 
 	this.getGastos = () => _gastos;
 	this.getFacturas = () => _gastos.filter(gasto.isFactura);
@@ -13,7 +14,16 @@ function Gastos() {
 	this.getDietas = () => _gastos.filter(gasto.isDieta);
 	this.getPaso5 = () => _gastos.filter(gasto.isPaso5);
 	this.getKm = () => _gastos.find(gasto.isKm);
-	this.setGastos = gastos => { _gastos = gastos; }
+	this.getDocumentacion = () => _gastos.filter(gasto.isDoc);
+	this.getGastosComisionado = () => _gastos.filter(gasto.isDocComisionado);
+	this.getNumGastosComisionado = () => _numGastosComisionado;
+	this.getGastosDocumentacion = () => _gastos.filter(gasto.isOtraDoc);
+	this.getNumGastosDoc = () => _numGastosDoc;
+	this.setGastos = gastos => {
+		_gastos = gastos; // update container
+		_numGastosComisionado = self.getGastosComisionado().length;
+		_numGastosDoc = self.getGastosDocumentacion().length;
+	}
 
 	const fnUpdateGastos = (data, fn) => { _gastos = _gastos.filter(fn).concat(data); return self; }
 	this.updatePaso5 = data => fnUpdateGastos(data, gasto.isPaso5);

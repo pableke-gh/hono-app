@@ -58,7 +58,8 @@ function XecoForm() {
 	}
 
 	this.view = (data, principales) => {
-		firmas.view(principales); // 1º cargo la vista de firmas asociadas
+		model.setData(data); // 1º carga los datos de la solicitud
+		firmas.view(principales); // 2º cargo la vista de firmas asociadas
 		// 2º force last action => update form views and go to tab form
 		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])");
 		setTimeout(() => form.setEditable().refresh(model), 1); // execute at the end

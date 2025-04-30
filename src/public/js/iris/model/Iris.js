@@ -6,6 +6,7 @@ import solicitud from "../../xeco/model/Solicitud.js";
 import perfiles from "../data/perfiles/perfiles.js"; 
 
 solicitud.isResumable = () => (solicitud.isPendiente() || solicitud.isFirmada() || solicitud.isIntegrada());
+solicitud.isDocumentable = () => (solicitud.isPendiente() || solicitud.isValidada() || solicitud.isErronea());
 
 solicitud.setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
 	solicitud.set("rol", rol).set("colectivo", colectivo).set("actividad", actividad);
@@ -25,6 +26,10 @@ solicitud.getActividad = () => solicitud.get("actividad");
 solicitud.getTramite = () => solicitud.get("tramite");
 solicitud.getFinanciacion = () => solicitud.get("financiacion");
 solicitud.getTitulo = () => perfiles.getTitulo(solicitud.getRol(), solicitud.getColectivo(), solicitud.getActividad(), solicitud.getTramite(), solicitud.getFinanciacion());
+
+solicitud.getNifInteresado = () => solicitud.get("nifInt");
+solicitud.getInteresado = () => solicitud.get("interesado");
+solicitud.getEmailInteresado = () => solicitud.get("emailInt");
 
 solicitud.isMun = () => (solicitud.getActividad() == "MUN");
 solicitud.hasMultipartida = () => (solicitud.mask & 1);

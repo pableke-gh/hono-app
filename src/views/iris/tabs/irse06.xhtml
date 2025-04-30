@@ -36,31 +36,17 @@
 	</div>
 
 	<div class="navbar">
-	<a href="#tab-form" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="129"><i class="fas fa-arrow-to-left"></i></a>
-	<a href="#tab-5" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="130">
-		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-	<c:choose>
-	<c:when test="#{iris.form.editable}">
-		<p:commandLink action="#{iris.form.paso6()}" onclick="if (!validateP6()) return false;loading();" oncomplete="updateIrse(xhr, status, args);"
-				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
-		</p:commandLink>
-		<p:commandButton action="#{iris.form.paso6()}" onclick="if (!validateP6()) return false;" oncomplete="updateIrse(xhr, status, args, 6);"
-			styleClass="btn btn-green success-btn" icon="far fa-save" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="132" />
-	</c:when>
-	<c:otherwise>
-		<a href="#tab-next" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-	</c:otherwise>
-	</c:choose>
+		<a href="#tab-form" class="btn btn-info" title="#{msg['tit.btn.paso.0']}"><i class="fas fa-arrow-to-left"></i></a>
+		<a href="#tab-5" class="btn btn-info" title="#{msg['tit.btn.volver']}">
+			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 
-	<c:if test="#{iris.form.firmable}">
+		<a href="#tab-action-paso6" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
+			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
+		<a href="#tab-action-save6" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
+			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
+		<p:remoteCommand name="rcPaso6" action="#{iris.form.paso6()}" oncomplete="updateIrse(xhr, status, args)" />
+		<p:remoteCommand name="rcSave6" action="#{iris.form.paso6()}" oncomplete="updateIrse(xhr, status, args, 'resumen')" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-	</c:if>
-	<c:if test="#{irse.form.cancelable}">
-		<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="134" title="#{msg['tit.btn.cancelar']}">
-			<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
-	</c:if>
-	<ui:include src="../parts/btn_doc.xhtml"></ui:include>
+		<ui:include src="../parts/btn_doc.xhtml"></ui:include>
 	</div>
 </html>

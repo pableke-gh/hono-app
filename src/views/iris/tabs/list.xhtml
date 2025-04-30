@@ -40,16 +40,16 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<h:inputText value="#{irse.input.codigo}" styleClass="ui-input ui-code ui-filter" tabindex="4" />
+				<h:inputText value="#{iris.list.codigo}" styleClass="ui-input ui-code ui-filter" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" />:</div>
-				<h:inputText value="#{irse.input.organica}" styleClass="ui-input ui-code ui-filter" tabindex="5" />
+				<h:inputText value="#{iris.list.organica}" styleClass="ui-input ui-code ui-filter" tabindex="5" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<h:inputText id="f-min" value="#{irse.input.FMin}" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
-				<h:inputText id="f-max" value="#{irse.input.FMax}" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
+				<h:inputText id="f-min" value="#{iris.list.FMin}" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
+				<h:inputText id="f-max" value="#{iris.list.FMax}" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
 			</label>
 		</div>
 
@@ -59,11 +59,11 @@
 			</div>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
-				<h:inputText value="#{irse.input.interesado}" styleClass="ui-input ui-text ui-filter" tabindex="8" />
+				<h:inputText value="#{iris.list.interesado}" styleClass="ui-input ui-text ui-filter" tabindex="8" />
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" /></div>
-				<h:selectOneMenu id="filtro-actividad" value="#{irse.input.actividad}" class="ui-input ui-select ui-filter" tabindex="10">
+				<h:selectOneMenu id="filtro-actividad" value="#{iris.list.actividad}" class="ui-input ui-select ui-filter" tabindex="10">
 					<f:selectItem itemValue="" itemLabel="" />
 					<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
 					<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
@@ -82,7 +82,7 @@
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" /></div>
-				<h:selectOneMenu id="filtro-tramite" value="#{irse.input.tramite}" class="ui-input ui-select ui-filter" tabindex="11">
+				<h:selectOneMenu id="filtro-tramite" value="#{iris.list.tramite}" class="ui-input ui-select ui-filter" tabindex="11">
 					<f:selectItem itemValue="" itemLabel="" />
 					<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
 					<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
@@ -163,7 +163,7 @@
 		<p:remoteCommand name="rcView" action="#{iris.view()}" oncomplete="viewIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{iris.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)" />
 		<p:remoteCommand name="rcReject" action="#{iris.firmas.reject()}" oncomplete="updateIrse(xhr, status, args, 'reject')" />
-		<p:remoteCommand name="rcReport" action="#{iris.report()}" oncomplete="handleReport(xhr, status, args)" />
+		<p:remoteCommand name="rcReport" action="#{iris.list.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{iris.ws()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcUxxiec" action="#{iris.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />
 		<p:remoteCommand name="rcEmails" action="#{iris.emails()}" oncomplete="showAlerts(xhr, status, args)" />

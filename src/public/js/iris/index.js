@@ -21,9 +21,8 @@ window.viewIrse = (xhr, status, args) => {
 		return false; // show error alerts
 
 	// Init IRSE form
-	const data = coll.parse(args.iris);
-	iris.view(data, coll.parse(args.firmas));
-	perfil.view(data, coll.parse(args.interesado), coll.parse(args.organicas));
+	iris.view(coll.parse(args.iris), coll.parse(args.firmas));
+	perfil.view(coll.parse(args.interesado), coll.parse(args.organicas));
 	rutas.setRutas(coll.parse(args.rutas) || []);
 	gastos.setGastos(coll.parse(args.gastos) || []);
 }
@@ -33,8 +32,7 @@ window.updateIrse = (xhr, status, args, tab) => {
 		return false; // show error alerts
 
 	// update IRSE form
-	const data = coll.parse(args.iris); // get irse data
-	iris.update(data, coll.parse(args.firmas), tab); // update inputs
+	iris.update(coll.parse(args.iris), coll.parse(args.firmas), tab);
 	perfil.update(coll.parse(args.interesado));
 	rutas.update(coll.parse(args.rutas));
 	gastos.update(coll.parse(args.gastos));

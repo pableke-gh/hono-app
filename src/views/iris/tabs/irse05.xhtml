@@ -119,7 +119,7 @@
 		<a href="#tab-action-save5" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<p:remoteCommand name="rcPaso5" action="#{iris.form.paso5()}" oncomplete="updateIrse(xhr, status, args)" />
-		<p:remoteCommand name="rcSave5" action="#{iris.form.paso5()}" oncomplete="updateIrse(xhr, status, args, 'isu')" />
+		<p:remoteCommand name="rcSave5" action="#{iris.form.paso5()}" oncomplete="updateIrse(xhr, status, args, 5)" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

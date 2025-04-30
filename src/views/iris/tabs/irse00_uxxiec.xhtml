@@ -44,7 +44,7 @@
 			<thead>
 				<tr>
 					<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
-					<c:if test="#{iris.form.editable}"><th><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th></c:if>
+					<th class="form-refresh" data-refresh="is-editable"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
 					<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
 					<th>#{msg['lbl.responsable.gasto']}</th><th>#{msg['lbl.nombre.apellidos']}</th>
 					<th class="no-print"></th>

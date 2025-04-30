@@ -93,6 +93,11 @@ export default function(table, opts) {
 	this.querySelectorAll = selector => table.querySelectorAll(selector);
     this.getText = selector => dom.getText(table.querySelector(selector)); // read text
 
+	this.invoke = (name, data, el, tr, i) => {
+		const fnAction = opts[name]; // action by name => must exists
+		fnAction(data || _rows[_index], el, tr, i); // call action
+	}
+
 	function fnChangeEvent(data, el, tr, i) {
 		const fnChange = opts[el.name + "Change"];
 		fnChange && fnChange(data, el, tr, i);
@@ -106,7 +111,7 @@ export default function(table, opts) {
 		tr.getElementsByClassName(opts.rowActionClass).setClick((ev, link) => {
 			_index = i; // update current item
 			const href = link.getAttribute("href");
-			opts[href](_rows[i], link, tr, i); // Call action
+			self.invoke(href, _rows[i], link, tr, i); // Call action
 			ev.preventDefault(); // avoid navigation
 		});
 	}

@@ -11,29 +11,30 @@ function Langs() {
 	const KEYS = [ "es", DEFAULT ]; // Accepted lang keys
 	const valid = validators(self); // closure
 
+	let _current = DEFAULT; // _current = default
 	let _langs, _appLangs; // All langs containers
 	let _lang, _appLang; // Current language pointer
 
-	// Init private vars
-	_langs = _appLangs = { en, es }; // Default langs container
-	_lang = _appLang = en; // Default language = en
-	
 	this.getLangs = () => _langs;
 	this.getLang = () => _lang;
 	this.getCurrent = () => _lang;
-	this.addLangs = langs => { _appLangs = langs; return self; }
+	this.addLangs = langs => {
+		_appLangs = langs;
+		_appLang = _appLangs[_current];
+		return self;
+	}
 
 	const findKey = lang => KEYS.find(key => (key == lang));
 	const getLangKey = lang => (findKey(lang) || findKey(sb.substring(lang, 0, 2)) || DEFAULT);
 	this.setLang = lang => { // Load especific language by key
-		const key = getLangKey(lang);
-		_appLang = _appLangs[key];
-		_lang = _langs[key];
+		_current = getLangKey(lang);
+		_appLang = _appLangs[_current];
+		_lang = _langs[_current];
 		return self;
 	}
 
 	this.getDefault = () => DEFAULT;
-	this.getIsoLang = () => _lang.lang;
+	this.getIsoLang = () => _current;
 	this.isDefault = lang => (!lang || (DEFAULT == lang));
 
 	this.getIsoLangs = () => KEYS;
@@ -119,6 +120,11 @@ function Langs() {
 			return (value ?? opts[k] ?? ""); // Default = String
         });
     }
+
+	// Init. private vars
+	_current = self.getLanguage(); // get current language
+	_langs = _appLangs = { en, es }; // Default langs container
+	_lang = _appLang = _langs[_current]; // Default language = en
 }
 
 export default new Langs();

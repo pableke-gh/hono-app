@@ -6,7 +6,7 @@ import actividades from "../../data/perfiles/actividades.js"
 function Actividad() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	let _eColectivo; // span element
+	const _eColectivo = form.querySelector("#colectivo"); // span element
 
 	this.isEmpty = () => (!_eColectivo.innerText);
 	this.getRol = () => form.getval("#rol");
@@ -68,7 +68,6 @@ function Actividad() {
 	}
 
 	this.init = () => {
-		_eColectivo = form.querySelector("#colectivo");
 		form.onChangeInput("#actividad", self.update);
 		form.set("is-mun", self.isMun).set("is-tribunal", self.isTribunal).set("is-mesa", globalThis.void);
 	}

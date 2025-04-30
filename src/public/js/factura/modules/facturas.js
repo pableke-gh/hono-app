@@ -19,16 +19,16 @@ function Facturas() {
 		form.set("show-recibo", factura.isRecibo).set("show-factura-uae", fnShowFactUae).set("show-uae", factura.isUae)
 			.set("show-gestor", fnShowGestor).set("show-face", factura.isFace).set("show-gaca", factura.isFirmaGaca)
 			.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago).set("is-exento", factura.isExento)
+			//.set("is-reactivable", factura.isReactivable)
 			.onChangeInput("[name=subtipo]", ev => { form.setStrval("#subtipoPF", ev.target.value); });
 	}
 
 	this.view = (data, conceptos, firmas) => {
 		data.nifTercero = data.nif; // set field
-		factura.setData(data); // set data model
+		xeco.view(data, firmas); // load data-model before view
 		lineas.setLineas(conceptos); // Load conceptos and iva input
 		acOrganica.setValue(data.idOrg, data.org + " - " + data.descOrg);
 		acRecibo.setValue(data.idRecibo, data.acRecibo);
-		xeco.view(data, firmas); // load data-model before view
 	}
 
 	this.update = (data, firmas, tab) => {

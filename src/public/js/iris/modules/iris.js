@@ -11,14 +11,12 @@ function Iris() {
 
 	this.init = () => {
 		xeco.init(); // init. actions
-		form.set("is-resumable", iris.isResumable);
+		form.set("is-resumable", iris.isResumable).set("is-documentable", iris.isDocumentable);
 		form.onChangeInputs(".ui-pf", (ev, el) => { el.previousElementSibling.value = ev.target.value; }); // update pf inputs 
 		form.onChangeInputs(".ui-matricula", ev => form.eachInput(".ui-matricula", el => { el.value = ev.target.value; }));
 	}
 
 	this.view = (data, firmas) => {
-		iris.setData(data).init(data); // set codigo, perfil, titulo...
-		form.reset("input[id$='-json']"); // update fields
 		xeco.view(data, firmas); // load view
 	}
 

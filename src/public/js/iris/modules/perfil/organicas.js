@@ -10,11 +10,11 @@ import xeco from "../../../xeco/xeco.js";
 function Organicas() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	let _tblOrganicas; // tabla de organicas
+	const _tblOrganicas = form.setTable("#tbl-organicas", organica.getTable());
 
-	this.size = () => _tblOrganicas.size(); 
-	this.isEmpty = () => _tblOrganicas.isEmpty();
-	this.reset = () => self.setOrganicas();
+	this.size = _tblOrganicas.size; 
+	this.isEmpty = _tblOrganicas.isEmpty;
+	this.reset = self.setOrganicas;
 	this.getFinanciacion = organica.getFinanciacion;
 
 	this.getGrupoDieta = () => form.getval("#grupo-dieta"); 
@@ -53,9 +53,7 @@ function Organicas() {
 	}
 
 	this.init = () => {
-		_tblOrganicas = form.setTable("#tbl-organicas", organica.getTable());
 		_tblOrganicas.setAfterRender(fnAfterRender);
-
 		const acOrganiaca = form.setAutocomplete("#organica", {
 			minLength: 4,
 			source: term => pf.sendTerm("rcFindOrg", term),

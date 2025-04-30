@@ -86,26 +86,17 @@
 
 	<ui:include src="./irse09_org.xhtml"></ui:include>
 	<div class="navbar">
-	<a href="#tab-form" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="190"><i class="fas fa-arrow-to-left"></i></a>
-	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
-		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-	<c:if test="#{iris.form.editable}">
-		<p:commandButton action="#{irse.form.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="showAlerts(xhr, status, args);" icon="far fa-save" 
-			styleClass="btn btn warn warning-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="192" title="#{msg['lbl.btn.no.enviar']}" />
-		<p:commandButton action="#{irse.list.send()}" onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 'init');" icon="far fa-file-signature" 
-			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.enviar']}" tabindex="193" title="#{msg['tit.btn.firmar.enviar']}" />
-	</c:if>
-	<c:choose>
-		<c:when test="#{iris.form.firmable}">
-			<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-		</c:when>
-		<c:when test="#{irse.form.cancelable}">
-			<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="194" title="#{msg['tit.btn.cancelar']}">
-				<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
-		</c:when>
-		<c:otherwise>
-		</c:otherwise>
-	</c:choose>
-	<ui:include src="../parts/btn_doc.xhtml"></ui:include>
+		<a href="#tab-form" class="btn btn-info" title="#{msg['tit.btn.paso.0']}"><i class="fas fa-arrow-to-left"></i></a>
+		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
+			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+
+		<a href="#tab-action-save9" class="btn btn-warn form-refresh" data-refresh="is-editable" title="#{msg['lbl.btn.no.enviar']}">
+			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
+		<a href="#tab-action-paso9" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.firmar.enviar']}">
+			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
+		<p:remoteCommand name="rcPaso9" action="#{iris.form.paso9()}" oncomplete="showTab(xhr, status, args, 'init')" />
+		<p:remoteCommand name="rcSave9" action="#{iris.form.paso9()}" oncomplete="updateIrse(xhr, status, args, 9)" />
+		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
+		<ui:include src="../parts/btn_doc.xhtml"></ui:include>
 	</div>
 </html>

@@ -7,10 +7,10 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="notice notice-info dir-interesado">
+	<div class="notice notice-info dir-interesado form-refresh" data-refresh="is-editable">
 		<h:outputText value="#{msg['lbl.domicilio']}" escape="false" />: @dir;, @cp;, @municipio;, @provincia; (@residencia;)
 	</div>
-	<div class="notice notice-info">
+	<div class="notice notice-info form-refresh" data-refresh="is-editable">
 		<h:outputText value="#{msg['uae.irse.tab2.msg.ruta']}" escape="false" />
 		<a id="msgs" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
 		<div class="info-msgs hide">

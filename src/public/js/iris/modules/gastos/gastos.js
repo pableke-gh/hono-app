@@ -41,6 +41,7 @@ console.log(data);
 
 	tabs.setAction("paso5", () => { form.validate(self.validate) && form.sendTab(window.rcPaso5); });
 	tabs.setAction("save5", () => { form.validate(self.validate) && form.sendTab(window.rcSave5, 5); });
+	tabs.setAction("click-next", link => { link.nextElementSibling.click(); setTimeout(window.working, 400); });
 
 	// update tabs events
 	tabs.setInitEvent(12, rgastos.init);
@@ -48,17 +49,17 @@ console.log(data);
 
 	this.init = () => {
 		gModule.init(); // init fields for gasto
+		resumen.init(); // init tables for paso 6
 		const fnUnload = data => { i18n.confirm("remove") && xeco.sendId("rcUnloadGasto", data.id); };
 		_tblGastos.set("#rcUnloadGasto", fnUnload); // set table action
 
 		const resume = _tblGastos.getResume();
 		gastos.getNumPernoctas = () => resume.noches; // redefine calc
-		iris.getNumRutasOut = rutas.getNumRutasUnlinked; // calc redefined by rutasMaps modeule
-		iris.getNumNochesPendientes = self.getNochesPendientes; // calc redefined by gastos module
-		form.set("is-gastos-pendientes", () => (perfil.isMaps() && ((rutas.getNumRutasUnlinked() > 0) || (self.getNochesPendientes() > 0))))
-			.set("is-noches-pendientes", () => (self.getNochesPendientes() > 0))
-			.set("is-rutas-pendientes", () => (rutas.getNumRutasUnlinked() > 0));
-		resumen.init();
+		iris.getNumRutasOut = () => rutas.getNumRutasUnlinked(); // call function after redefined by rutasMaps modeule
+		iris.getNumNochesPendientes = () => self.getNochesPendientes(); // call function after redefined by gastos module
+		const fnGastosPendientes = () => (perfil.isMaps() && ((rutas.getNumRutasUnlinked() > 0) || (self.getNochesPendientes() > 0)));
+		form.set("is-gastos-pendientes", fnGastosPendientes).set("is-noches-pendientes", self.getNochesPendientes).set("is-rutas-pendientes", iris.getNumRutasOut)
+			.set("is-zip-com", gastos.getNumGastosComisionado).set("is-zip-doc", gastos.getNumGastosDoc);
 	}
 
 	window.addGasto = (xhr, status, args) => {
