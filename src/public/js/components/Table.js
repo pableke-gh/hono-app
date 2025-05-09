@@ -63,6 +63,7 @@ export default function(table, opts) {
 	this.getIndex = () => _index;
 	this.getResume = () => RESUME;
 	this.getProp = name => RESUME[name];
+	this.setProp = (name, value) => { RESUME[name] = value; return self; }
 
 	const fnMove = i => (i < 0) ? 0 : Math.min(i, _rows.length - 1);
 	this.first = () => { _index = 0; return self; }

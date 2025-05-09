@@ -1,5 +1,6 @@
 
 import i18n from "../../i18n/langs.js";
+import gasto from "./Gasto.js";
 
 function Transporte() {
 	const self = this; //self instance
@@ -17,10 +18,10 @@ function Transporte() {
 		self.rowCalc(data, resume);
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>
-			<td data-cell="#{msg['lbl.tipo.gasto']}">#{irse.gastos.getSubtipoDesc(g)}</td>
-			<td data-cell="#{msg['lbl.desc.obsev']}">#{irse.gastos.getDescGasto(g)}</td>
+			<td data-cell="#{msg['lbl.tipo.gasto']}">${gasto.getDescSubtipo(data)}</td>
+			<td data-cell="#{msg['lbl.desc.obsev']}">${gasto.getDescGasto(data)}</td>
 			<td data-cell="#{msg['lbl.adjunto']}">${data.nombre}</td>
-			<td data-cell="#{msg['lbl.importe']}">${i18n.isoFloat(data.imp1)} €</td>
+			<td data-cell="${i18n.get("lblImporte")}">${i18n.isoFloat(data.imp1)} €</td>
 		</tr>`
 	}
 

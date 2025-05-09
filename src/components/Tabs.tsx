@@ -5,7 +5,7 @@ export const Tab = (props: TabType) => {
     const active = props.active ? "tab-content active" : "tab-content";
     return (
         <div id={props.id} class={active}>
-            <h2>{props.title}<hr class="underline"/></h2>
+            <h2 class="underline">{props.title}</h2>
             {props.children}
         </div>
     );

@@ -13,42 +13,35 @@
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuentas']}" escape="false" /></div>
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
-			<div class="ui-block-xl">
-			<h:selectOneMenu id="cuentas" value="#{irse.form.cuenta}" styleClass="ui-input ui-select" tabindex="150">
-				<f:selectItems value="#{irse.form.cuentas}" />
-				<f:selectItem itemValue="" itemLabel="#{msg['lbl.alta.cuenta']}" itemEscaped="false"/>
-			</h:selectOneMenu>
-		</div>
+			<select id="cuentas" name="cuenta" class="ui-input ui-select ui-block-xl" tabindex="150"></select>
 		</label>
 
-		<div id="grupo-iban" class="navbar hide">
+		<div class="navbar form-refresh" data-refresh="is-new-iban">
 			<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.iban']}" escape="false" /></div>
 			<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.pais']}" escape="false" />:</div>
-				<h:selectOneMenu id="paises" value="#{irse.gastos.paisEntidad}" class="ui-input ui-select" tabindex="151">
-					<c:forEach items="#{irse.rutas.idPaises}" var="pais" varStatus="loop">
-						<f:selectItem itemValue="#{pais}" itemLabel="#{irse.rutas.getPais(loop.index)}"/>
-					</c:forEach>
-				</h:selectOneMenu>
+				<select id="paises" name="paisEntidad" class="ui-input ui-select" tabindex="151"></select>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
-				<h:inputText id="banco" value="#{irse.gastos.nombreEntidad}" maxlength="50" tabindex="152" class="ui-input ui-text hide" />
-				<h:selectOneMenu id="entidades" value="#{irse.gastos.codigoEntidad}" class="ui-input ui-select" tabindex="152">
-					<f:selectItem itemValue="" itemLabel=""/>
-					<f:selectItems value="#{irse.gastos.entidades}" var="banco" itemValue="#{banco.value}" itemLabel="#{banco.label}"/>
-				</h:selectOneMenu>
+				<input type="text" id="banco" name="nombreEntidad" maxlength="50" class="ui-input ui-text form-refresh" data-refresh="is-zz" tabindex="152" />
+				<select id="entidades" name="codigoEntidad" class="ui-input ui-select form-refresh" data-refresh="is-es" tabindex="152">
+					<option value=""></option>
+					<c:forEach items="#{iris.gastos.entidades}" var="banco">
+						<option value="#{banco.value}">#{banco.label}</option>
+					</c:forEach>
+				</select>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required"><h:outputText value="#{msg['lbl.num.cuenta']}" escape="false" />:</div>
-				<h:inputText id="iban" value="#{irse.gastos.iban}" maxlength="50" tabindex="160" class="ui-input ui-text" />
+				<input type="text" id="iban" name="iban" maxlength="50" tabindex="160" class="ui-input ui-text" />
 				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block swift-block hide">
+			<label class="ui-block form-refresh" data-refresh="is-zz">
 				<div class="label">Swift:</div>
-				<h:inputText id="swift" value="#{irse.gastos.swift}" maxlength="30" tabindex="161" class="ui-input ui-code" />
+				<input type="text" id="swift" name="swift" maxlength="30" tabindex="161" class="ui-input ui-code" />
 				<div class="ui-errtip"></div>
 			</label>
 			</div>
@@ -59,27 +52,25 @@
 		<div class="ui-blocks">
 			<label class="ui-block-row">
 				<div class="label inline">#{msg['lbl.observaciones']}:</div>
-				<h:inputTextarea id="observaciones" value="#{irse.gastos.observaciones}" styleClass="ui-input ui-ta rows-2" tabindex="180" />
+				<textarea id="observaciones" name="observaciones" class="ui-input ui-ta rows-2" tabindex="180"></textarea>
 			</label>
 
 			<label class="ui-block">
-				<div class="label">#{irse.getMsg('lblUrg')}:</div>
-				<h:selectOneMenu id="urgente" value="#{irse.form.urgente}" class="ui-input ui-select" tabindex="181">
-					<f:selectItem itemValue="1" itemLabel="#{irse.getMsg('lblNormal')}" />
-					<f:selectItem itemValue="2" itemLabel="#{irse.getMsg('lblUrgente')}" />
+				<div class="label">#{iris.getMsg('lblUrg')}:</div>
+				<h:selectOneMenu id="urgente" value="#{iris.form.urgente}" class="ui-input ui-select" tabindex="181">
+					<f:selectItem itemValue="1" itemLabel="#{iris.getMsg('lblNormal')}" />
+					<f:selectItem itemValue="2" itemLabel="#{iris.getMsg('lblUrgente')}" />
 				</h:selectOneMenu>
 			</label>
 
-			<label class="ui-block grp-urgente #{irse.form.cssUrgente}">
-				<div class="label required">#{irse.getMsg('lblFechaUrg')}:</div>
-				<h:inputText id="fMax" value="#{irse.form.FMaxIsoDate}" tabindex="183" styleClass="ui-input ui-date"/>
+			<label class="ui-block form-refresh" data-refresh="is-urgente">
+				<div class="label required">#{iris.getMsg('lblFechaUrg')}:</div>
+				<h:inputText id="fMax" value="#{iris.form.FMax}" tabindex="183" styleClass="ui-input ui-date"/>
 			</label>
-			<label class="ui-block-row grp-urgente #{irse.form.cssUrgente}">
-				<div class="label required">#{irse.getMsg('lblMotivoUrg')}:</div>
-				<div class="ui-block-main">
-					<h:inputTextarea id="extra" value="#{irse.form.extra}" styleClass="ui-input ui-ta rows-2" tabindex="184"/>
-					<div class="hide ui-errtip"></div>
-				</div>
+			<label class="ui-block-row form-refresh" data-refresh="is-urgente">
+				<div class="label required">#{iris.getMsg('lblMotivoUrg')}:</div>
+				<h:inputTextarea id="extra" value="#{iris.form.extra}" styleClass="ui-input ui-ta rows-2" tabindex="184"/>
+				<div class="hide ui-errtip"></div>
 			</label>
 		</div>
 	</div>

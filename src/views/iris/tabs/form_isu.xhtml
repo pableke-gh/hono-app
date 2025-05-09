@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h:form id="xeco-isu" prependId="false" onsubmit="loading();">
-		<h2>JG #{irse.isu.jg.numJg}<hr class="underline"/></h2>
+		<h2 class="underline">JG #{irse.isu.jg.numJg}</h2>
 
 		<div class="card-xeco">
 			<div class="notice notice-info">#{irse.isu.jg.descJg}</div>
@@ -16,7 +16,7 @@
 				<label class="ui-block-xl autocomplete">
 					<div class="label">Solicitud IRSE:</div>
 					<p:remoteCommand name="rcSolicitudesIrse" action="#{irse.isu.findSolicitudesIrse()}" oncomplete="loadItems(xhr, status, args)" />
-					<p:remoteCommand name="rcLinkIrse" action="#{irse.isu.link()}" update="xeco-isu" oncomplete="viewIsu(xhr, status, args)" />
+					<p:remoteCommand name="rcLinkIrse" action="#{irse.isu.link()}" update="xeco-isu" oncomplete="showAlerts(xhr, status, args)" />
 					<h:inputText id="acIrse" value="#{irse.isu.acIrse}" styleClass="ui-input ui-autocomplete" tabindex="1" />
 					<h:inputHidden id="id-irse" value="#{irse.isu.idIrse}" />
 					<ul role="list" class="results"></ul>
@@ -44,7 +44,7 @@
 	<div class="navbar">
 		<a href="#tab-16" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="100">
 			<i class="btn-icon-left fas fa-caret-left"></i><span class="ui-button-text ui-c"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
-		<p:commandLink action="#{irse.isu.link()}" update="xeco-list-isu" oncomplete="viewIrse(xhr, status, args, 16)" tabindex="101" styleClass="btn btn-green">
-			<i class="far fa-save btn-icon-left"></i>Guardar</p:commandLink>
+		<!--<p:commandLink action="#{irse.isu.link()}" update="xeco-list-isu" oncomplete="viewIrse(xhr, status, args, 16)" tabindex="101" styleClass="btn btn-green">
+			<i class="far fa-save btn-icon-left"></i>Guardar</p:commandLink>-->
 	</div>
 </html>

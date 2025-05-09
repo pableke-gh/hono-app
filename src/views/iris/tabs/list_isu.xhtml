@@ -7,23 +7,23 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2>Informe ISU</h2>
-	<h:form id="xeco-filtro-isu" prependId="false" class="card-filter" onsubmit="loading();">
+	<h2 class="underline">Informe ISU</h2>
+	<h:form id="xeco-filtro-isu" prependId="false" onsubmit="loading();">
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<h:inputText id="organica-isu" value="#{irse.isu.organica}" styleClass="ui-input ui-autocomplete" tabindex="1" />
+				<h:inputText id="organica-isu" value="#{iris.isu.organica}" styleClass="ui-input ui-autocomplete" tabindex="1" />
 				<input type="hidden" name="id"/>
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">
 				<div class="label required">Ejercicios:</div>
-				<p:selectCheckboxMenu id="filtro-ej-isu" value="#{irse.isu.ejercicio}"
+				<p:selectCheckboxMenu id="filtro-ej-isu" value="#{iris.isu.ejercicio}"
 						label="Ejercicios" filter="true" filterMatchMode="startsWith" multiple="true" emptyLabel="Seleccione Ejercicio..." updateLabel="true"
 						styleClass="ui-select ui-filter" style="min-height: 36px" panelStyle="width: 16rem" tabindex="2" title="#{msg['tit.ejercicio']}">
-					<f:selectItems value="#{irse.isu.ejercicios}" />
+					<f:selectItems value="#{iris.isu.ejercicios}" />
 				</p:selectCheckboxMenu>
 			</label>
 		</div>
@@ -31,63 +31,36 @@
 		<div class="navbar">
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="btn-icon-left fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			<p:commandButton id="filter-list-isu" action="#{irse.isu.list()}" onclick="loading()" update="xeco-list-isu" oncomplete="showTab(xhr, status, args, 16);"
-					icon="far fa-search" value="Buscar" tabindex="13" styleClass="btn btn-info"></p:commandButton>
+			<a href="#tab-action-listIsu" class="btn btn-green" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
+			<p:remoteCommand name="rcListIsu" action="#{iris.isu.list()}" oncomplete="loadFiltroIsu(xhr, status, args)" />
 		</div>
-	</h:form>
 
-	<br class="clear"/>
-	<h:form id="xeco-list-isu" prependId="false" onsubmit="loading();">
-	<table id="solicitudes" class="tb-xeco">
-		<thead>
-			<tr>
-				<th>Ej.</th>
-				<th>ID</th>
-				<th>Nº JG</th>
-				<th>Nº Factura</th>
-				<th>NIF</th>
-				<th>Tercero</th>
-				<th>Total JG</th>
-				<th>F. Emisión</th>
-				<th class="hide-sm">Descripción</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:if test="#{irse.isu.isEmpty()}">
-				<tr><td class="no-data" colspan="99">No se han encontrado registros asociadas al filtro seleccionado</td></tr>
-			</c:if>
-			<c:forEach items="#{irse.isu.registrosJgs}" var="jg">
-			<tr class="tb-data">
-				<td>#{jg.ejercicio}</td>
-				<td>
-					<p:commandLink action="#{irse.isu.view(jg)}" update="xeco-isu" oncomplete="showTab(xhr, status, args, 16);">#{jg.codigo}</p:commandLink>
-				</td>
-				<td>#{jg.numJg}</td>
-				<td>#{jg.numFactura}</td>
-				<td>#{jg.nifTercero}</td>
-				<td>#{jg.tercero}</td>
-				<td class="text-right">#{irse.isu.getImpTotal(jg)} €</td>
-				<td class="text-center">#{irse.isu.getFEmision(jg)}</td>
-				<td class="hide-sm">#{jg.descJg}</td>
-				<td class="text-center">
-					<p:commandLink action="#{irse.isu.view(jg)}" update="xeco-isu" oncomplete="showTab(xhr, status, args, 16);">
-						<i class="fas fa-search action text-blue resize"></i></p:commandLink>
-				</td>
-			</tr>
-			</c:forEach>
-		</tbody>
-		<tfoot>
-			<tr><td colspan="99"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{irse.isu.numJgs}</td></tr>
-		</tfoot>
-	</table>
+		<table id="tbl-isu" class="tb-xeco table-xs">
+			<thead>
+				<tr>
+					<th class="hide-sm">Nº</th>
+					<th>ID</th>
+					<th>Nº JG</th>
+					<th>Nº Factura</th>
+					<th>NIF</th>
+					<th>Tercero</th>
+					<th>Total JG</th>
+					<th>F. Emisión</th>
+					<th class="hide-sm">Descripción</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot></tfoot>
+		</table>
+
+		<p:remoteCommand name="rcViewIsu" action="#{iris.isu.view()}" oncomplete="showTab(xhr, status, args, 'formIsu')" />
+		<p:remoteCommand name="rcExcel" action="#{iris.isu.excel()}" oncomplete="xlsx(xhr, status, args)" />
 	</h:form>
 
 	<div class="navbar">
-	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="100">
-		<i class="btn-icon-left fas fa-caret-left"></i><span class="ui-button-text ui-c"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
-	<p:commandButton action="#{irse.isu.excel()}" oncomplete="xlsx(xhr, status, args);" icon="fal fa-file-excel" styleClass="btn btn-green success-btn" value="Excel" tabindex="101"/>
+		<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="100">
+			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		<a href="#tab-action-excel" class="btn btn-green" tabindex="101"><i class="fal fa-file-excel btn-icon-left"></i>Excel</a>
 	</div>
-
-	<script type="module" src="/uae/resources/js/iris/modules/otri.js"></script>
 </html>

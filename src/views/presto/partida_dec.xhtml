@@ -29,7 +29,7 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number #{presto.form.cssReadOnly}" tabindex="7"></select>
+			<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number" data-readonly="is-editable" tabindex="7"></select>
 			<h:inputText id="idEcoDecPF" value="#{presto.solicitud.idEconomicaDec}" styleClass="ui-input ui-number hide" />
 			<p:remoteCommand name="rcEcoDec" action="#{presto.form.filterEconomicas()}" oncomplete="loadEconomicasDec(xhr, status, args)" />
 			<p:commandButton id="autoload-l83" action="#{presto.form.autoloadL83()}" oncomplete="autoloadL83(xhr, status, args)" styleClass="hide" />
@@ -38,7 +38,7 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Importe:</div>
-			<input type="text" id="impDec" name="impDec" maxlength="12" tabindex="8" class="ui-input ui-float #{presto.form.cssReadOnly}"/> €
+			<input type="text" id="impDec" name="impDec" maxlength="12" tabindex="8" class="ui-input ui-float" data-readonly="is-editable"/> €
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block form-refresh" data-refresh="show-imp-cd">

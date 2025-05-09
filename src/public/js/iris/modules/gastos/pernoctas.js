@@ -16,7 +16,7 @@ function Pernoctas() {
 	const form = xeco.getForm(); // form component
 	const _tblPernoctas = form.setTable("#pernoctas", pernocta.getTable());
 
-	this.getImporte = () => _tblPernoctas.getProp("imp1");
+	this.getImporte = () => _tblPernoctas.getProp("impMin");
 
 	this.validate = data => {
 		const valid = form.getValidators();

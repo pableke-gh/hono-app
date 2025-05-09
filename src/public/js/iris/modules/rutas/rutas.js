@@ -23,7 +23,7 @@ function Rutas() {
 		let ok = rutas.validate(); // valida el itinerario
 		if (ok && (rutas.size() < 2)) // validate min rutas = 2
 			return !form.getValidators().addRequired("destino", "errMinRutas");
-		return ok && rmaps.saveRutas(); // guardo los cambios y recalculo las dietas
+		return ok && rmaps.saveRutas(data); // guardo los cambios y recalculo las dietas
 	}
 
 	tabs.setAction("paso2", () => { form.validate(self.validate) && form.sendTab(window.rcPaso2); });

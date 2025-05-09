@@ -96,7 +96,7 @@
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 			<a href="#tab-action-list" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
 			<c:if test="#{not iris.user.otri}">
-				<a href="#tab-action-list-all" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a> 
+				<a href="#tab-action-list-all" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Ver Todos</a> 
 			</c:if>
 			<a href="#tab-action-relist" class="btn btn-warn" tabindex="14"><i class="far fa-times-circle btn-icon-left"></i>Limpiar</a>
 			<p:remoteCommand name="rcList" action="#{iris.list.list()}" oncomplete="loadFiltro(xhr, status, args)" />

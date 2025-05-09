@@ -9,6 +9,7 @@ import { CT } from "../../data/rutas.js";
 import rro from "./rutasReadOnly.js";
 import rvp from "./rutasVehiculoPropio.js";
 import xeco from "../../../xeco/xeco.js";
+import gastos from "../gastos/gastos.js";
 
 function RutasMaps() {
 	const self = this; //self instance
@@ -18,11 +19,11 @@ function RutasMaps() {
 	this.getRutas = rutas.getRutas;
 	this.size = rutas.size;
 	this.isEmpty = rutas.isEmpty;
+	this.getResume = () => _tblRutas.getResume();
+	this.getTotKm = () => _tblRutas.getProp("totKm");
 	this.setSaveRutas = () => { _tblRutas.setChanged(true); }
-
 	this.getSalida = rutas.getSalida;
 	this.getLlegada = rutas.getLlegada;
-	this.getTotKm = () => _tblRutas.getProp("totKm");
 
 	this.setRutaPrincipal = data => {
 		rutas.setRutaPrincipal(data);
@@ -39,16 +40,19 @@ function RutasMaps() {
 		rutas.setRutas(data); // actualizo el array de rutas
 		_tblRutas.recalc(); // recalcula los datos de las rutas
 	}
-	this.saveRutas = () => {
-		if (_tblRutas.isChanged()) { // save changes in rutas table
+	this.saveRutas = data => {
+		if (_tblRutas.isChanged()) {
 			const keys = [ "p2", "matricula", "flag", "spanFlag", "tplFlag" ]; // excluded fields
 			const fnReplace = (key, value) => (keys.includes(key) ? undefined : value); // reduce size
 			form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
 			rro.setRender(); // fuerza la actualización de la tabla de consulta (paso 5)
 			rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
-			// todo: build dietas ...
+			// todo: build dietas con temporal api...
 		}
-		_tblRutas.setChanged();
+		if (form.isChanged()) { // save gasto km (matricula) e iban (tipo dieta)
+			_tblRutas.setChanged().setProp("impKm", rvp.getImporte());
+			gastos.setKm(data).setIban(data).save();
+		}
 		return self;
 	}
 

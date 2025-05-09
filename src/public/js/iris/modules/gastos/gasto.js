@@ -67,7 +67,7 @@ function Gasto() {
 		_eTipoGasto.onchange = fnChange; // Change event
 		pf.uploads(form.querySelectorAll(".pf-upload-gasto"), fnChange);
 		iris.getTextGasto = () => i18n.get(isTaxi() ? "lblDescTaxi" : "lblDescObserv"); // label text
-		form.setDateRange("#fMinGasto", "#fMaxGasto"); // label for description
+		form.setDateRange("#fMinGasto", "#fMaxGasto"); // date range
 	}
 
 	tabs.setViewEvent(5, self.reset); // reset form on view tab 5

@@ -75,16 +75,18 @@ function Ruta() {
 
 	// table renders
 	this.beforeRender = resume => {
-		resume.impKm = resume.totKm = resume.totKmCalc = resume.unlinked = 0;
+		resume.vp = resume.unlinked = 0;
+		resume.impKm = resume.totKm = resume.totKmCalc = 0;
 	}
 	this.rowCalc = (data, resume) => {
 		if (self.isPrincipal(data))
 			setTplPrincipal(data);
 		else
 			setTplOrdinaria(data);
+		resume.vp += self.isVehiculoPropio(data);
+		resume.unlinked += self.isUnlinked(data);
 		resume.totKm += self.isVehiculoPropio(data) ? data.km1 : 0;
 		resume.totKmCalc += self.isVehiculoPropio(data) ? data.km2 : 0;
-		resume.unlinked += self.isUnlinked(data);
 	}
 }
 

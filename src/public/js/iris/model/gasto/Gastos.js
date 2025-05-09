@@ -4,7 +4,7 @@ import gasto from "./Gasto.js";
 function Gastos() {
 	const self = this; //self instance
 	let _gastos = []; // dietas, pernoctas, transporte, etc...
-	let _numGastosComisionado, _numGastosDoc; // estadisticas
+	let _gKm, _gSubv, _gCongreso, _gAc, _gIban, _gBanco; // singles gastos
 
 	this.getGastos = () => _gastos;
 	this.getFacturas = () => _gastos.filter(gasto.isFactura);
@@ -14,15 +14,22 @@ function Gastos() {
 	this.getDietas = () => _gastos.filter(gasto.isDieta);
 	this.getPaso5 = () => _gastos.filter(gasto.isPaso5);
 	this.getKm = () => _gastos.find(gasto.isKm);
+	this.getSubvencion = () => _gastos.find(gasto.isSubvencion);
+	this.getCongreso = () => _gastos.find(gasto.isCongreso);
+	this.getAsistencia = () => _gastos.find(gasto.isAsistencia);
+	this.getIban = () => _gastos.find(gasto.isIban);
+	this.getBanco = () => _gastos.find(gasto.isBanco);
 	this.getDocumentacion = () => _gastos.filter(gasto.isDoc);
 	this.getGastosComisionado = () => _gastos.filter(gasto.isDocComisionado);
-	this.getNumGastosComisionado = () => _numGastosComisionado;
 	this.getGastosDocumentacion = () => _gastos.filter(gasto.isOtraDoc);
-	this.getNumGastosDoc = () => _numGastosDoc;
 	this.setGastos = gastos => {
-		_gastos = gastos; // update container
-		_numGastosComisionado = self.getGastosComisionado().length;
-		_numGastosDoc = self.getGastosDocumentacion().length;
+		_gastos = gastos;
+		_gKm = self.getKm();
+		_gSubv = self.getSubvencion();
+		_gCongreso = self.getCongreso();
+		_gAc = self.getAsistencia();
+		_gIban = self.getIban();
+		_gBanco = self.getBanco();
 	}
 
 	const fnUpdateGastos = (data, fn) => { _gastos = _gastos.filter(fn).concat(data); return self; }
@@ -30,7 +37,34 @@ function Gastos() {
 	this.updateTransporte = data => fnUpdateGastos(data, gasto.isTransporte);
 	this.updateDietas = data => fnUpdateGastos(data, gasto.isDieta);
 
-	this.getMatricula = () => gasto.getMatricula(self.getKm());
+	this.getMatricula = () => gasto.getMatricula(_gKm);
+	this.getJustifiKm = () => gasto.getJustifiKm(_gKm);
+	this.setKm = (data, resumen) => { gasto.setKm(_gKm, data, resumen); return self; }
+
+	this.getTipoSubv = () => gasto.getTipoSubv(_gSubv); // _gSubv = tipo subv. = tipo
+	this.getFinalidad = () => gasto.getFinalidad(_gSubv); // _gSubv = finalidad = subtipo
+	this.getVinc = () => gasto.getVinc(_gSubv); // _gSubv = vinculacion al proyecto = num
+	this.getJustifi = () => gasto.getJustifi(_gSubv); // _gSubv = justificacion = desc
+	this.setSubvencion = data => { gasto.setSubvencion(_gSubv, data); return self; }
+
+	this.getTipoCongreso = () => gasto.getTipoCongreso(_gCongreso);
+	this.getImpInsc = () => gasto.getImpInsc(_gCongreso);
+	this.getJustifiCong = () => gasto.getJustifiCong(_gCongreso);
+	this.setCongreso = data => { gasto.setCongreso(_gCongreso, data); return self; }
+
+	this.getJustifiVp = () => gasto.getJustifiVp(_gAc);
+	this.setAsistencia = data => { gasto.setAsistencia(_gAc, data); return self; }
+
+	this.getDieta = () => gasto.getDieta(_gIban);
+	this.getCodigoIban = () => gasto.getCodigoIban(_gIban);
+	this.getSwift = () => gasto.getSwift(_gIban);
+	this.getObservaciones = () => gasto.getObservaciones(_gIban);
+	this.setIban = data => { gasto.setIban(_gIban, data); return self; }
+
+	this.getNombreEntidad = () => gasto.getNombreEntidad(_gBanco);
+	this.getPaisEntidad = () => gasto.getPaisEntidad(_gBanco);
+	this.getCodigoEntidad = () => gasto.getCodigoEntidad(_gBanco);
+	this.setBanco = data => { gasto.setBanco(_gBanco, data); return self; }
 
 	this.getNumPernoctas = () => _gastos.reduce((num, row) => (num + (gasto.isPernocta(row) ? row.num : 0)), 0);
 	this.push = data => { _gastos.push(data); return self; }

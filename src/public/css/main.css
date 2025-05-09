@@ -21,9 +21,10 @@ h3 { font-size: clamp(.4rem, calc(2vw + .4rem), 1.3rem); }
 h4 { font-size: clamp(.2rem, calc(1vw + .2rem), 1.2rem); }
 
 hr { margin: 15px 0; border-top: 1px solid skyblue; }
-hr.underline { margin-top: 2px; margin-bottom: 15px; border-top: 1px solid skyblue; }
-hr.slim { margin: 1px; border-top: 1px solid skyblue; }
 img.inline { display: inline-block; width: 24px; height: auto; }
+
+.underline { padding-bottom: 3px; border-bottom: 2px solid skyblue; }
+.slim { margin: 1px; border-top: 1px solid skyblue; }
 
 /* Actions */
 .action { display: inline-block; margin-right: 6px; text-decoration: none; font-size: 24px; }

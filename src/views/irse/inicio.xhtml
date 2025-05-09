@@ -47,7 +47,7 @@
 		<p:remoteCommand name="rcFindInteresado" action="#{irse.perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:remoteCommand name="rcFindOrg" action="#{irse.perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:outputPanel id="tab-0" styleClass="tab-content update-irse">
-			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
+			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse00.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
@@ -55,7 +55,7 @@
 		<!-- Itinerarios rutas de tab1 y tab2 -->
 		<p:remoteCommand name="rcFindPersonal" action="#{irse.form.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:outputPanel id="tab-1" styleClass="tab-content update-irse">
-			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
+			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
 			<h:inputHidden id="etapas" value="#{irse.input.rutas}" />
 			<div id="rutas-data" class="hide">#{irse.rutas.rutasJson}</div>
 
@@ -70,38 +70,38 @@
 
 		<p:outputPanel id="tab-2" styleClass="tab-content update-irse #{irse.perfil.cssTab2}">
 		<c:if test="#{irse.perfil.tab2}"> <!-- evita la colision de id's de matricula -->
-			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
+			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</c:if>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-3" styleClass="tab-content update-irse #{irse.perfil.cssTab3}">
-			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
+			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse03.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-5" styleClass="tab-content update-irse">
-			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
+			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse05.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-6" styleClass="tab-content update-irse">
-			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
+			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse06.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-9" styleClass="tab-content update-irse">
-			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
+			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse09.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-12" styleClass="tab-content update-irse">
-			<h2>#{irse.perfil.nombre} <i>#{irse.form.codigo}</i><hr class="underline"/></h2>
+			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse12.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>

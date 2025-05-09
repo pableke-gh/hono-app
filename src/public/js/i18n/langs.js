@@ -35,7 +35,7 @@ function Langs() {
 
 	this.getDefault = () => DEFAULT;
 	this.getIsoLang = () => _current;
-	this.isDefault = lang => (!lang || (DEFAULT == lang));
+	this.isDefault = lang => (DEFAULT == (lang || _current));
 
 	this.getIsoLangs = () => KEYS;
 	this.getNavLang = () => navigator.language || navigator.userLanguage; // default browser language

@@ -37,7 +37,7 @@ function RutasMun() {
 		if (!data.memo)
         	valid.addRequired("memo", "errObjeto");
 		if (valid.isOk() && perfil.isMun()) // valida ruta unica
-			return rutas.validate() && rmaps.saveRutas();
+			return rutas.validate() && rmaps.saveRutas(data);
 		return valid.isOk();
 	}
 

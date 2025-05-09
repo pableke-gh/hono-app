@@ -10,7 +10,8 @@ function RutasVehiculoPropio() {
 	const form = xeco.getForm(); // form component
 	const _tblRutasVp = form.setTable("#tbl-rutas-vp", ruta.getTable()); // itinerario
 
-	this.getImporte = () => _tblRutasVp.getResume().impKm;
+	this.getImporte = () => _tblRutasVp.getProp("impKm");
+	this.isJustifiKm = () => _tblRutasVp.getProp("justifi");
 	this.render = () => { _tblRutasVp.render(rutas.getRutasVehiculoPropio()); }
 
 	const fnChangeKm = (data, el) => {
@@ -33,10 +34,9 @@ function RutasVehiculoPropio() {
  
 	this.init = () => {
 		const resume = _tblRutasVp.getResume();
-		_tblRutasVp.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
 		iris.getImpKm = () => resume.impKm;
-		const fnJustifi = () => resume.justifi;
-		form.set("is-rutas-vp", _tblRutasVp.size).set("is-justifi-km", fnJustifi);
+		_tblRutasVp.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
+		form.set("is-rutas-vp", _tblRutasVp.size).set("is-justifi-km", self.isJustifiKm);
 	}
 }
 

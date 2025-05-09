@@ -38,6 +38,7 @@ export default {
 	errFechasAloja: "No ha seleccionadas correctamente el periodo de fechas del alojamiento.",
 	errRangoAloja: "El periodo de fechas del gasto de alojamiento, esta fuera del rango de la solicitud.",
 	errDoc: "Debe asociar la documentación obligatoria",
+	errDocFacturas: "Tu comisión ha durado más de un día o tiene un kilometraje superior a 250 km (ida y vuelta). En ausencia de facturas es necesario aportar documentación acreditativa de la realización del viaje, como tickets de combustible, de cafetería o restaurante u otros justificantes emitidos en el destino final o lugar cercano. (Art. 61 NEP)",
 
 	errImputacion: "Error al generar la imputación asocuada a la comunicación.",
 	errMaxDietas: "Importe máximo para dietas excedido.",
@@ -48,6 +49,7 @@ export default {
 	errTipo: "No ha seleccionado correctamente el tipo de operación.",
 	errTipoGasto: "Debe seleccionar un tipo de gasto.",
 	errIban: "Debe indicar un IBAN válido.",
+	errEntidad: "Entidad bancaria no reconocida en el sistema.",
 	errSwift: "Debe indicar un swift válido.",
 
 	errExtra: "Debe indicar un motivo para la urgencia de esta comunicación",

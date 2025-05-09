@@ -9,19 +9,23 @@ import rvp from "./rutas/rutasVehiculoPropio.js";
 import transportes from "./gastos/transportes.js"; 
 import pernoctas from "./gastos/pernoctas.js"; 
 import dietas from "./gastos/dietas.js";
-import send from "./send.js";
+import gm from "../modules/gastos/gastos.js";
 import xeco from "../../xeco/xeco.js";
 
 function Resumen() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
 
+	const fnSave = data => {
+		if (form.isChanged())
+			gm.setKm(data).save();
+		return true;
+	}
 	this.validate = data => {
-		//data.totKm = rutas.getTotKm();
-console.log(data);
 		const valid = i18n.getValidators();
-		// todo: validacion de 250 km
-		return valid.isOk();
+		if (rvp.isJustifiKm())
+			valid.size("justifiKm", data.justifiKm, "errJustifiKm");
+		return valid.isOk() && fnSave(data);
 	}
 
 	tabs.setAction("paso6", () => { form.validate(self.validate) && form.sendTab(window.rcPaso6); });
@@ -32,21 +36,22 @@ console.log(data);
 		pernoctas.setPernoctas(gastos.getPernoctas());
 	}
 
-	this.view = () => {
-		self.setResumen(); // update changes paso 5
-		dietas.setDietas(gastos.getDietas());
-
-		const matricula = gastos.getMatricula();
-		form.eachInput(".ui-matricula", el => { el.value = matricula; });
-	}
-
 	this.init = () => {
 		transportes.init();
 		pernoctas.init();
 		dietas.init();
-		send.init();
 
 		iris.getImpBruto = () => (rvp.getImporte() + transportes.getImporte() + pernoctas.getImporte() + dietas.getImporte());
+	}
+
+	this.view = () => {
+		self.setResumen(); // update changes paso 5
+		dietas.setDietas(gastos.getDietas());
+		iris.set("matricula", gastos.getMatricula()).set("justifiKm", gastos.getJustifiKm()); // gastos Km
+	}
+
+	this.update = () => {
+		self.view(); // update changes paso 5
 	}
 }
 
