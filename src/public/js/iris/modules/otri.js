@@ -62,7 +62,7 @@ function Otri() {
 
 	this.view = () => {
 		iris.set("justifi", gastos.getJustifi()).set("tipoSubv", gastos.getTipoSubv()).set("finalidad", gastos.getFinalidad()).set("vinc", gastos.getVinc()) // gasto subv.
-			.set("tipoCongreso", gastos.getTipoCongreso()).set("impInsc", gastos.getImpInsc()).set("justifiCong", gastos.getJustifiCong()) // gasto congreso
+			.set("tipoCongreso", gastos.getTipoCongreso()).set("impInsc", gastos.getImpInsc()).set("f1Cong", gastos.getF1Cong()).set("f2Cong", gastos.getF2Cong()).set("justifiCong", gastos.getJustifiCong()) // gasto congreso
 			.set("justifiVp", gastos.getJustifiVp()); // gasto asistencia / colaboraciones
 	}
 }

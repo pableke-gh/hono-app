@@ -1,0 +1,142 @@
+<ui:composition
+       	template="/templates/layout/private-embed-layout.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:cc="http://java.sun.com/jsf/composite"
+        xmlns:ifw="http://java.sun.com/jsf/composite/component"
+        xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="header">
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
+	</ui:define>
+	<ui:define name="outputScript">
+		<script type="text/javascript" src="/uae/resources/js/isuite/uae-box.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script> 
+	</ui:define>
+
+	<ui:define name="title">Extraeco</ui:define>
+	<ui:define name="description">Panel del Fondo de Cobertura</ui:define>
+	<ui:define name="semilla"><li class="active">PANEL FCB</li></ui:define>
+
+	<ui:define name="body">
+		<h1>Panel del Fondo de Cobertura</h1>
+		<c:set var="ctrl" value="#{xecomControlador}" />
+		<f:event type="preRenderView" listener="#{ctrl.readFcb()}"/>
+
+		<h:form id="filtro" styleClass="card-filter">
+			<div class="ui-blocks">
+			<label class="ui-block">
+				<div class="label">Ejercicios:</div>
+				<h:selectOneMenu id="ejercicio" value="#{ctrl.ejercicio}" styleClass="ui-input ui-select">
+					<f:selectItems value="#{ctrl.ejercicios}" />
+				</h:selectOneMenu>
+			</label>
+
+			<label class="ui-block">
+				<div class="label">Orgánica:</div>
+				<input type="text" id="organica" name="organica" size="25" maxlength="20" group="search" class="ui-input ui-text" />
+			</label>
+
+			<label class="ui-block"> 
+				<div class="label">Tipo:</div>
+				<select id="tipo" name="tipo" group="search" class="ui-input ui-select">
+					<option value=""></option>
+					<!--<option value="FCB">Fondo de Cobertura</option>-->
+					<option value="FCB1">Fondo de Cobertura 1</option>
+					<option value="FCB2">Fondo de Cobertura 2</option>
+					<option value="FCB3">Fondo de Cobertura 3</option>
+				</select>
+			</label>
+
+			<label for="descripcion" class="ui-block">
+				<div class="label">Desc. Orgánica:</div>
+				<input type="text" id="descripcion" descripcion="descripcion" size="40" maxlength="200" group="search" class="ui-input ui-text" />
+			</label>
+			</div>
+
+			<div class="navbar">
+			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
+				<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
+			<a id="search" href="#" class="btn btn-info" title="Aplica el filtro sobre la consulta">
+				<i class="fa fa-search btn-icon-left"></i>Buscar</a>
+			<p:commandButton id="srv-search" value="Buscar" icon="fa fa-search" 
+				action="#{ctrl.loadFcb()}" styleClass="hide btn-xeco" title="Aplica el filtro sobre la consulta" />
+			<p:commandLink id="clearFilter" action="#{ctrl.initFcb()}" styleClass="btn btn-warn" title="Inicializa el filtro a sus valores por defecto">
+				<i class="fa fa-broom btn-icon-left"></i>Limpiar Filtro</p:commandLink>
+			<a id="tabla" href="#" class="btn btn-info" title="Muestra los datos en formato tabla">
+				<i class="fa fa-table btn-icon-left"></i>Tabla</a>
+			<a id="pivot" href="#" class="btn btn-info hide" title="Pivota la tabla sobre el Grupo de Gasto">
+				<i class="fa fa-cog btn-icon-left"></i>Mensual</a>
+			</div>
+		</h:form>
+
+		<table id="fcb" name="detalle" class="hide tb-xeco tb-group" tb-groups="grupoGasto" tb-key="idFcb"
+				tb-columns="grupoGasto grupoGastoDesc organica funcional economica organicaDesc textoLibre impAplicacion dc tipo fAsiento"
+				tb-xls="grupoGasto grupoGastoDesc organica funcional economica organicaDesc textoLibre impAplicacion dc tipo fAsiento"
+				tb-orderby="grupoGasto dc">
+			<thead>
+				<tr>
+					<th>Grupo de Gasto</th>
+					<th>Desc. del Grupo de Gasto</th>
+					<th>Orgánica</th>
+					<th>Funcional</th>
+					<th>Económica</th>
+					<th>Desc. Orgánica</th>
+					<th>Texto Libre</th>
+					<th>Importe</th>
+					<th>Nº de DC</th>
+					<th>Tipo</th>
+					<th>F. Asiento</th>
+				</tr>
+			</thead>
+			<tbody>
+				<ui:repeat value="#{ctrl.fcbDocs}" var="row">
+					<tr id="#{row.idFcb}" class="tb-data">
+						<td>#{row.grupoGasto}</td>
+						<td>#{row.grupoGastoDesc}</td>
+						<td>#{row.organica}</td>
+						<td>#{row.funcional}</td>
+						<td>#{row.economica}</td>
+						<td>#{row.organicaDesc}</td>
+						<td>#{row.textoLibre}</td>
+						<td class="text-right">#{row.impAplicacion}</td>
+						<td>#{row.dc}</td>
+						<td>#{row.tipo}</td>
+						<td>#{row.FAsiento}</td>
+					</tr>
+				</ui:repeat>
+			</tbody>
+		</table>
+		<table id="fcbpivot" name="mensual" class="tb-xeco" tb-pivot="fcb"
+				tb-columns="grupoGasto Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre impAplicacion"
+				tb-types="String Number Number Number Number Number Number Number Number Number Number Number Number Number"
+				tb-styles="Default LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat"
+				tb-xls="Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre impAplicacion"
+				tb-groups="grupoGasto" tb-pivot-column="mmmm" tb-pivot-cell="impAplicacion">
+			<thead>
+				<tr>
+					<th>Grupo de Gasto</th>
+					<th>Enero</th>
+					<th>Febrero</th>
+					<th>Marzo</th>
+					<th>Abril</th>
+					<th>Mayo</th>
+					<th>Junio</th>
+					<th>Julio</th>
+					<th>Agosto</th>
+					<th>Septiembre</th>
+					<th>Octubre</th>
+					<th>Noviembre</th>
+					<th>Diciembre</th>
+					<th>Suma Vic.</th>
+				</tr>
+			</thead>
+		</table>
+	</ui:define>
+</ui:composition>

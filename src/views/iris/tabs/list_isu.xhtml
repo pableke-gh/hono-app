@@ -31,7 +31,7 @@
 		<div class="navbar">
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="btn-icon-left fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			<a href="#tab-action-listIsu" class="btn btn-green" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
+			<a href="#tab-action-listIsu" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
 			<p:remoteCommand name="rcListIsu" action="#{iris.isu.list()}" oncomplete="loadFiltroIsu(xhr, status, args)" />
 		</div>
 

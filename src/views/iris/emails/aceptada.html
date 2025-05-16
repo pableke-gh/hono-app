@@ -1,49 +1,82 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<div class="ui-g ui-fluid notice_content">
-	<div class="ui-g-9">
-		<i class="fal fa-fw fa-inbox-in mr-1"></i>
-		<b><span th:text="${notice.title}"/></b>.
-	</div>
-	<div class="ui-g-3 text-right">
-		<a th:href="${notice.urlAction}"><span th:utext="${notice.urlText}"/></a>
-	</div>
-	<div class="ui-g-12">
-		<ul>
-			<th:block th:each="detalle : ${detalleResoluciones}">
-				<li>
-					Le comunicamos que, con fecha <span th:utext="${#dates.format(detalle.ayuResoluciones.fechaPubTablon, 'dd/MM/yyyy')}"/>, ha sido publicada 
-					en el Tablón Oficial Electrónico de la Universidad, la
-					<span th:if="${detalle.ayuConsultaSolicitud.ayuAyudas.tipo ==  T(es.upct.portal.modules.ayuso.AyusoConstants).AYUDAS_SOCIALES}">
-						<span th:if="${detalle.ayuConsultaSolicitud.ayuAyudas.caracter ==  T(es.upct.portal.modules.ayuso.AyusoConstants).CARACTER_ORDINARIO}">
-							<span th:if="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> Resolución <span th:utext="${detalle.ayuResoluciones.numResolucion}"/> </span>
-							<span th:unless="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> propuesta de la Gerencia </span>
-							de concesión de ayudas sociales 
-						</span>
-						<span th:if="${detalle.ayuConsultaSolicitud.ayuAyudas.caracter ==  T(es.upct.portal.modules.ayuso.AyusoConstants).CARACTER_EXTRAORDINARIO}">
-							<span th:if="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> Resolución <span th:utext="${detalle.ayuResoluciones.numResolucion}"/> </span>
-							<span th:unless="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> propuesta de la Comisión de </span>
-							Ayudas Sociales	de concesión de ayudas sociales	de carácter extraordinario 
-						</span>
-					</span>
-					<span th:if="${detalle.ayuConsultaSolicitud.ayuAyudas.tipo ==  T(es.upct.portal.modules.ayuso.AyusoConstants).BECAS_ESTUDIO}">
-						<span th:if="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> Resolución <span th:utext="${detalle.ayuResoluciones.numResolucion}"/> </span>
-						<span th:unless="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}"> propuesta de </span>
-						de concesión de la Comisión de Becas de Estudio 
-					</span>
-					para el personal que presta servicios en la Universidad Politécnica de Cartagena, habiendo resultado 
-					<span th:if="${detalle.ayuConsultaSolicitud.estado ==  T(es.upct.portal.modules.ayuso.AyusoConstants).AYU_ESTADO_ACEPTADO}"><u>Aceptada</u></span> 
-					<span th:if="${detalle.ayuConsultaSolicitud.estado ==  T(es.upct.portal.modules.ayuso.AyusoConstants).AYU_ESTADO_DENEGADO}"><u>Denegada</u></span>
-					<span th:if="${detalle.ayuConsultaSolicitud.estado ==  T(es.upct.portal.modules.ayuso.AyusoConstants).AYU_ESTADO_DESISTIDA}"><u>Desistida</u></span>
-					la ayuda número <b><span th:utext="${detalle.id.codSolicitud}"/></b> por usted solicitada.
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - IRIS</title>
+	<style th:replace="emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="emails/general.html :: header"></header>
+	<p>La siguiente <b>PROPUESTA</b> de <b th:text="${xs.tramiteDesc}"></b> por <b th:text="${xs.actividadDesc}"></b>, ha sido <b>ACEPTADA</b> por todos los firmantes y está pendiente de su contabilización en <b>UXXIEC</b>.</p>
+	<div th:replace="emails/general.html :: solicitud"></div>
 
-					<div th:if="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}">
-						<p>De conformidad con lo dispuesto en el artículo 6.4 de la Ley 6/2001, de 21 de diciembre, de Universidades, modificada por la Ley Orgánica 4/2007, de 12 de abril, la citada Resolución pone fin a la vía administrativa y, al amparo del artículo 116.1 de la Ley 30/1992, de 26 de noviembre, de Régimen Jurídico de las Administraciones Públicas y del Procedimiento Administrativo Común, contra la misma cabe interponer recurso potestativo de reposición ante el mismo órgano que dictó el acto, en el plazo de un mes, contado desde el día siguiente de la fecha de la publicación de la presente Resolución, o en su caso recurso contencioso-administrativo ante el Juzgado Contencioso Administrativo en el plazo de dos meses, contando desde el día siguiente de la fecha de la publicación de la Resolución de referencia.</p>
-					</div>
-					<div th:unless="${detalle.ayuResoluciones.tipoResolucion ==  T(es.upct.portal.modules.ayuso.AyusoConstants).RESOLUCION_DEFINITIVAS_AYD}">
-						<p>Asimismo, le informamos que el plazo de reclamaciones es de diez días hábiles contados a partir del <span th:utext="${#dates.format(detalle.ayuResoluciones.fechaIniRecla, 'dd/MM/yyyy')}"/>, día hábil siguiente al de la publicación en el Tablón Oficial Electrónico.</p>
-					</div>
-				</li>
-			</th:block>
-		</ul>
+	<div class="navbar">
+	<p><b>Relación de orgánicas / Unidades Tramitadoras</b></p>
+	<table>
+		<thead>
+			<tr><th>Orgánica</th><th>UT Descripción</th></tr>
+		</thead>
+		<tbody class="tc">
+			<tr th:each="ut:${organicas}">
+				<td th:text="${ut.organica}"></td>
+				<td th:text="${ut.resp}"></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr><td colspan="4">Unidades Tramitadoras: <span th:utext="${numUt}"></span></td></tr>
+		</tfoot>
+	</table>
 	</div>
-</div>
+
+	<p class="terr"><b>AVISOS</b></p>
+	<ul>
+		<li><b>Nuevo tercero:</b> <span th:text="${isNewTercero}"></span> <span th:text="${canceladoTercero}"></span></li>
+		<li><b>Nueva cuenta bancaria:</b> <span th:text="${isNewIban}"></span></li>
+		<li><b>Solicitadas indemnizaciones extraordinarias:</b> <span th:text="${isPaso8}"></span></li>
+		<li><b>Número de km corregidos al alza:</b> <span th:text="${overNumKm}"></span></li>
+		<li><b>Validaciones de coincidencia temporal:</b> <span th:text="${codigoConflicto}"></span></li>
+		<li><b>El interesado es externo y ha sido personal de la UPCT en los dos últimos años:</b> <span th:text="${isMaxVigencia}"></span></li>
+	</ul>
+
+	<p><b><u>DATOS PARA EL REGISTRO EN UXXI-EC</u></b></p>
+	<p><b>FICHA GENERAL</b></p>
+
+	<div class="navbar">
+	<table>
+		<thead>
+			<tr><th>Campo UXXI-EC</th><th>Valor del Campo UXXI-EC</th></tr>
+		</thead>
+		<tbody>
+			<tr><th class="tl w180">Descripción del JG</th><td>IRIS <span th:text="${xs.codigoNum}"></span> #codFirmante# <span th:text="${xs.actividad}"></span> - <span th:text="${xs.fullNameInteresado}"></span> - <span th:text="${xs.memoria}"></span> - <span th:text="${dt.toEsDate(rutas.fechaSalida)}"></span> a <span th:text="${dt.toEsDate(rutas.fechaLlegada)}"></span>. <span th:text="${subv.descripcion}"></span></td></tr>
+			<tr><th class="tl w180">Fecha de emisión</th><td th:text="${dt.toEsDate(dt.sysdate())}"></td></tr>
+			<tr><th class="tl w180">NIF y nombre</th><td><span th:text="${xs.nifInteresado}"></span> - <span th:text="${xs.fullNameInteresado}"></span></td></tr>
+			<tr><th class="tl w180">Número justificante</th><td><span th:text="${xs.ejercicio}"></span>/<span th:text="${xs.codigoPk}"></span>/<span th:text="${xs.actividad}"></span></td></tr>
+		</tbody>
+		<tfoot>
+			<tr><td colspan="2">Campos: 4</td></tr>
+		</tfoot>
+	</table>
+	</div>
+
+	<div class="navbar">
+	<p><b>FICHA ECONÓMICO Y DATOS FISCALES</b></p>
+	<table>
+		<thead>
+			<tr><th>Campo UXXI-EC</th><th class="tr">Línea 1 (Exento)</th><th class="tr">Línea 2 (No exento)</th></tr>
+		</thead>
+		<tbody>
+			<tr><th class="tl w180">Importe neto</th><td class="tr">#impNetoExentoEs#</td><td class="tr">#impNetoNoExentoEs#</td></tr>
+			<tr><th class="tl w180">Imp. Rtn. IRPF (<span th:text="${nb.esBigval(iban.getImporte(), '-')}"></span> %)</th><td class="tr">-</td><td class="tr">#rtnIrpfEs#</td></tr>
+			<tr><th class="tl w180">Líquido a pagar</th><td class="tr">#impLiquidoExentoEs#</td><td class="tr">#impLiquidoNoExentoEs#</td></tr>
+			<tr><th class="tl w180">Clave fiscal</th><td class="tr">#cfExento#</td><td class="tr">#cfNoExento#</td></tr>
+		</tbody>
+		<tfoot>
+			<tr><td colspan="3">Campos: 4</td></tr>
+		</tfoot>
+	</table>
+	</div>
+
+	<div th:replace="emails/general.html :: imputacion"></div>
+	<footer th:replace="emails/general.html :: footer"></footer>
+</body>
+</html>

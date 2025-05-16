@@ -50,6 +50,8 @@ function DomBox() {
 	this.isSelect = el => el && el.options;
 	this.getOption = select => select && select.options[select.selectedIndex]; // get current option element
 	this.getOptionText = select => self.getHtml(self.getOption(select)); // get current option text
+	this.getOptionByValue = (select, value) => select && select.options.find(option => (option.value == value)); // get option by value
+	this.getOptionTextByValue = (select, value) => self.getHtml(self.getOptionByValue(select, value)); // get option text by value
 	this.select = function(el, mask) {
 		if (self.isSelect(el)) {
 			const option = self.getOption(el); //get current option

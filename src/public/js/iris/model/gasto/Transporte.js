@@ -18,9 +18,9 @@ function Transporte() {
 		self.rowCalc(data, resume);
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>
-			<td data-cell="#{msg['lbl.tipo.gasto']}">${gasto.getDescSubtipo(data)}</td>
-			<td data-cell="#{msg['lbl.desc.obsev']}">${gasto.getDescGasto(data)}</td>
-			<td data-cell="#{msg['lbl.adjunto']}">${data.nombre}</td>
+			<td data-cell="${i18n.get("lblTipoGasto")}">${gasto.getDescSubtipo(data)}</td>
+			<td data-cell="${i18n.get("lblDescObserv")}">${gasto.getDescGasto(data)}</td>
+			<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>
 			<td data-cell="${i18n.get("lblImporte")}">${i18n.isoFloat(data.imp1)} €</td>
 		</tr>`
 	}

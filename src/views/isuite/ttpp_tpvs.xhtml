@@ -1,0 +1,71 @@
+<ui:composition
+       	template="/templates/layout/private-embed-layout.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:cc="http://java.sun.com/jsf/composite"
+        xmlns:ifw="http://java.sun.com/jsf/composite/component"
+        xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="header">
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
+	</ui:define>
+	<ui:define name="outputScript">
+		<script type="text/javascript" src="/uae/resources/js/isuite/jquery-ui.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/uae-box.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/ttpp.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script> 
+	</ui:define>
+
+	<ui:define name="title">Extraeco</ui:define>
+	<ui:define name="description">Ingresos de Gestión Económica</ui:define>
+	<ui:define name="semilla"><li class="active">TPV</li></ui:define>
+
+	<ui:define name="body">
+		<h1 id="title">Ingresos de Gestión Económica</h1>
+		<c:set var="ctrl" value="#{xecomControlador}" />
+
+		<h:form id="ttpp" styleClass="card-filter no-print">
+			<div class="navbar">
+				<input type="file" id="fichero" name="files[]" multiple="*.*" title="Seleccionar fichero Norma 43" />
+				<a id="reset" href="#" class="btn btn-info" title="Limpia los datos del formulario"><i class="fa fa-sync"></i></a>
+				<a id="group" href="#" class="btn btn-info hide" title="Agrupar los datos de las tablas"><i class="fa fa-lock"></i></a>
+				<a id="ungroup" href="#" class="btn btn-info" title="Desagrupar los datos de las tablas"><i class="fa fa-lock-open"></i></a>
+
+				<br class="clear" />
+				<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
+					<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
+			</div>
+		</h:form>
+
+		<div id="tpvsJSON" class="hide">[<ui:repeat value="#{ctrl.loadTpvs()}" var="tpv">"#{tpv.codigo} - #{tpv.descripcion}",</ui:repeat>""]</div>
+		<div id="tpvs" class="ui-datatable-tablewrapper navbar hide">
+			<ul id="tpvsResume" name="resume">
+				<li><b>Extracto de (entidad, oficina, cuenta):</b> <span name="ccc"></span></li>
+				<li><b>Saldo Inicial:</b> <span name="inicial" tb-style="LatinFloat"></span> €</li>
+				<li><b>Total Fichero =</b> <span name="total" tb-style="LatinFloat"></span> €</li>
+				<li><b>Total haber - todal debe =</b> <span name="importeSumFmt"></span> €</li>
+				<li><b>Saldo Final:</b> <span name="saldo" tb-style="LatinFloat"></span> €</li>
+				<li name="fRango"></li>
+			</ul>
+			<table id="tpvs" class="tb-xeco tb-group" tb-resume="tpvsResume" tb-groups="forma"
+					tb-columns="forma fCobro concepto importe" 
+					tb-xls="forma fCobro concepto importe">
+				<thead>
+					<tr>
+						<th>Tipo</th>
+						<th>F. Operación</th>
+						<th>Descripción</th>
+						<th>Importe</th>
+					</tr>
+				</thead>
+			</table>
+			<hr />
+		</div>
+	</ui:define>
+</ui:composition>

@@ -159,10 +159,11 @@
 			</tbody>
 			<tfoot></tfoot>
 		</table>
-	
+
 		<p:remoteCommand name="rcView" action="#{iris.view()}" oncomplete="viewIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{iris.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)" />
 		<p:remoteCommand name="rcReject" action="#{iris.firmas.reject()}" oncomplete="updateIrse(xhr, status, args, 'reject')" />
+		<p:remoteCommand name="rcReactivar" action="#{iris.list.reactivar()}" oncomplete="reactivarIrse(xhr, status, args)" /> 
 		<p:remoteCommand name="rcReport" action="#{iris.list.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{iris.ws()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcUxxiec" action="#{iris.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />

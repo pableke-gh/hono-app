@@ -2,16 +2,13 @@
 import i18n from "../../i18n/langs.js";
 import iris from "../Iris.js";
 
-const TICKETS = ["-", "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros", "-", "-", "Tickets de transporte (taxi, parking, peajes...)"];
-const DOCS = ["-", "Documentación obligatoria por ausencia de facturas", "Otra documentación (opcional)", "Justificación de dietas", "Facturas a nombre de la UPCT a pagar al proveedor", "Facturas a nombre de la UPCT a pagar al comisionado", "Documentación acreditativa del programa de movilidad"]
-const EXTRA = ["-", "Gasto extraordinario por transporte", "Gasto extraordinario por alojamiento", "Gasto extraordinario por cena final españa", "Gasto extraordinario por otras dietas"];
-//const ORGANICAS = ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"];
-
 function Gasto() {
 	const self = this; //self instance
 
 	this.isFactura = gasto => (gasto.tipo == 1);
 	this.isTicket = gasto => (gasto.tipo == 2);
+	this.isTaxi = gasto => (self.isTicket(gasto) && (gasto.subtipo == 4));
+	this.isTaxiJustifi = gasto => (self.isTaxi(gasto) && gasto.desc);
 	this.isTransporte = gasto => (self.isFactura(gasto) || self.isTicket(gasto));
 	this.isPernocta = gasto => (gasto.tipo == 6);
 	this.isDieta = gasto => (gasto.tipo == 7);
@@ -42,7 +39,7 @@ function Gasto() {
 		return self;
 	}
 
-	this.getTipoSubv = gasto => gasto?.tipo; // _gSubv = tipo subv. = tipo
+	this.getTipoSubv = gasto => gasto?.estado; // _gSubv = tipo subv. = estado
 	this.getFinalidad = gasto => gasto?.subtipo; // _gSubv = finalidad = subtipo
 	this.getVinc = gasto => gasto?.num; // _gSubv = vinculacion al proyecto = num
 	this.getJustifi = gasto => gasto?.desc; // _gSubv = justificacion = desc
@@ -56,10 +53,14 @@ function Gasto() {
 
 	this.getTipoCongreso = gasto => gasto?.estado; // _gCongreso = congreso = estado (0, 4)
 	this.getImpInsc = gasto => gasto?.imp1; // _gCongreso = importe inscripcion al congreso = imp1
+	this.getF1Cong = gasto => gasto?.f1; // _gCongreso = fecha inicio congreso = f1
+	this.getF2Cong = gasto => gasto?.f2; // _gCongreso = fecha fin congreso = f2
 	this.getJustifiCong = gasto => gasto?.desc; // _gCongreso = justificacion congreso = desc
 	this.setCongreso = (gCongreso, data) => {
 		gCongreso.estado = data.tipoCongreso;
 		gCongreso.imp1 = data.impInsc;
+		gCongreso.f1 = data.f1Cong;
+		gCongreso.f2 = data.f2Cong;
 		gCongreso.desc = data.justifiCong;
 		return self;
 	}
@@ -107,16 +108,27 @@ function Gasto() {
 	}
 
 	this.getDescSubtipo = data => {
-		let subtipo = self.isFactura(data) ? "Factura a nombre del comisionado por transporte interurbano" : "";
-		subtipo = self.isTicket(data) ? (TICKETS[data.subtipo] || TICKETS[0]) : subtipo;
-		subtipo = self.isPernocta(data) ? "Factura a nombre del comisionado por alojamiento" : subtipo;
-		subtipo = self.isExtra(data) ? (EXTRA[data.subtipo] || EXTRA[0]) : subtipo;
-		return self.isDoc(data) ? (DOCS[data.subtipo] || DOCS[0]) : subtipo;
+		if (self.isFactura(data))
+			return i18n.get("lblFactTransporte");
+		if (self.isTicket(data))
+			return i18n.getItem("tipoTickets", data.subtipo) || "-";
+		if (self.isPernocta(data))
+			return i18n.get("lblFactAlojamiento");
+		if (self.isExtra(data))
+			return i18n.getItem("tipoExtra", data.subtipo) || "-";
+		return self.isDoc(data) ? i18n.getItem("tipoDocs", data.subtipo) : data.desc;
+	}
+	this.getDescSubtipoImp = data => {
+		return self.getDescSubtipo(data) + ": " + i18n.isoFloat(data.imp1) + " €";
 	}
 	this.getDescGasto = data => {
-		let desc = self.isFactura(data) ? `${i18n.isoInt(data.num)} etapa/s asociados al gasto` : data.desc;
-		desc = self.isTicket(data) ? (TICKETS[data.subtipo] || TICKETS[0]) : desc;
-		return self.isPernocta(data) ? `Noches del ${i18n.isoDate(data.f1)} al ${i18n.isoDate(data.f2)}` : desc;
+		if (self.isFactura(data))
+			return i18n.render(i18n.get("lblFactRutas"), data);
+		if (self.isTaxiJustifi(data)) // descripcion del itinerario del taxi
+			return data.desc;
+		if (self.isTicket(data))
+			return i18n.getItem("tipoTickets", data.subtipo) || "-";
+		return self.isPernocta(data) ? i18n.render(i18n.get("lblRangoNoches"), data) : data.desc;
 	}
 
 	this.row = (data, status, resume) => {
@@ -127,9 +139,9 @@ console.log(data);
 
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>
-			<td data-cell="#{msg['lbl.tipo.gasto']}">${self.getDescSubtipo(data)}</td>
-			<td data-cell="#{msg['lbl.desc.obsev']}">${self.getDescGasto(data)}</td>
-			<td data-cell="#{msg['lbl.adjunto']}">${data.nombre}</td>
+			<td data-cell="${i18n.get("lblTipoGasto")}">${self.getDescSubtipo(data)}</td>
+			<td data-cell="${i18n.get("lblDescObserv")}">${self.getDescGasto(data)}</td>
+			<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>
 			<td data-cell="${i18n.get("lblImporte")}">${i18n.isoFloat(data.imp1)} €</td>
 			<td data-cell="${i18n.get("lblAcciones")}" class="no-print">${link}${remove}</td>
 		</tr>`;

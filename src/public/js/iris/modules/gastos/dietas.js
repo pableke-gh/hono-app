@@ -15,7 +15,10 @@ function Dietas() {
 	const form = xeco.getForm(); // form component
 	const _tblDietas = form.setTable("#tbl-dietas", dieta.getTable());
 
-	this.getImporte = () => _tblDietas.getProp("percibir");
+	this.getGastos = () => _tblDietas.getData(); // array de gastos
+	this.getImporte = () => _tblDietas.getProp("percibir"); // importe total de dietas (imp. a percibir)
+	this.getDietasByPais = () => Map.groupBy(_tblDietas.getData(), dieta => dieta.cod); // preserve/guarantee order keys
+	this.getTotalDias = dietas => dietas.reduce((sum, gasto) => (sum + dieta.getDieta(gasto)), 0); // acumulado de dias
 
 	const fnCreateDiaIntermedio = (fecha, tipo, grupo) => {
 		const row = dieta.createDiaIntermedio();
@@ -64,8 +67,8 @@ function Dietas() {
 		return fnUpdateDietas(temp);
 	}
 
-	this.setDietas = data => {
-		_tblDietas.render(data).setChanged();
+	this.setDietas = () => {
+		_tblDietas.render(gastos.getDietas()).setChanged();
 	}
 
 	const fnChangeDietas = (dieta, element) => {

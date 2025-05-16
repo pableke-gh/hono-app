@@ -2,6 +2,7 @@
 import i18n from "../../i18n/langs.js";
 import iris from "../../model/Iris.js";
 import transporte from "../../model/gasto/Transporte.js";
+import gastos from "../../model/gasto/Gastos.js";
 import xeco from "../../../xeco/xeco.js";
 
 function Transportes() {
@@ -17,8 +18,8 @@ function Transportes() {
 		return valid.isOk();
 	}
 
-	this.setTransportes = transportes => {
-		_tblTransporte.render(transportes);
+	this.setTransportes = () => {
+		_tblTransporte.render(gastos.getTransporte());
 	}
 
 	this.init = () => {

@@ -31,10 +31,16 @@ function Actividad() {
 	this.is1Dia = () => (self.isMun() || self.isMes() || self.isAcs() || self.isAfo() || self.isAtr() || self.isCtp() || self.isOce());
 
 	this.getFinanciacion = () => form.getval("#financiacion");
-	this.isIsu = () => (self.getFinanciacion() == "ISU") || (self.getFinanciacion() == "xSU");
-	this.isA83 = () => (self.getFinanciacion() == "A83") || (self.getFinanciacion() == "x83");
-	this.isACA = () => (self.getFinanciacion() == "ACA") || (self.getFinanciacion() == "xAC");
-	this.isOTR = () => (self.getFinanciacion() == "OTR") || (self.getFinanciacion() == "xOT");
+	this.isXsu = () => (self.getFinanciacion() == "xSU");
+	this.isFinIsu = () => (self.getFinanciacion() == "ISU");
+	this.isIsu = () => (self.isFinIsu() || self.isXsu());
+	this.isX83 = () => (self.getFinanciacion() == "x83");
+	this.isFinA83 = () => (self.getFinanciacion() == "A83");
+	this.isA83 = () => (self.isFinA83() || self.isX83()); 
+	this.isXac = () => (self.getFinanciacion() == "xAC");
+	this.isACA = () => ((self.getFinanciacion() == "ACA") || self.isXac());
+	this.isXot = () => (self.getFinanciacion() == "xOT");
+	this.isOtr = () => ((self.getFinanciacion() == "OTR") || self.isXot());
 
 	this.getTramite = () => form.getval("#tramite");
 	this.isAut = () => (self.getTramite() == "AUT");
@@ -64,6 +70,7 @@ function Actividad() {
 			.select("#tramite", (self.isCom() || self.isMov()) ? 7 : 1) //default = AyL
 			.closeAlerts();
 		iris.setPerfil(self.getRol(), self.getColectivo(), self.getActividad(), self.getTramite(), self.getFinanciacion());
+		iris.set("pasos", 2 + self.isIsu() + self.isMaps()); // set num pasos
 		return self;
 	}
 

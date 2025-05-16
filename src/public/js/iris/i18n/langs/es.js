@@ -7,11 +7,13 @@ export default {
 	errMulticomision: "No puede solicitar multicomisiones para esta comunicación.",
 	errTransporte: "Medio de Transporte incorrecto.",
 	errMatricula: "Debe indicar la matricula del vehiculo privado.",
-	msgRutasEmpty: "Aún no has añadido ninguna ETAPA a esta Comunicación.",
-	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta Comunicación.",
-	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta Comunicación.",
-	msgPernoctasEmpty: "No hay pernoctas asociadas a esta Comunicación.",
-	msgDietasEmpty: "No hay dietas / manutenciones asociadas a esta Comunicación.",
+
+	msgRutasEmpty: "Aún no has añadido ninguna ETAPA a esta comunicación.",
+	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta comunicación.",
+	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta comunicación.",
+	msgPernoctasEmpty: "No hay pernoctas asociadas a esta comunicación.",
+	msgDietasEmpty: "No hay dietas / manutenciones asociadas a esta comunicación.",
+	msgReactivar: "¿Confirma que desea reactivar esta comunicación?",
 
 	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
 	docMovilidad: "Documentación acreditativa del programa de movilidad",
@@ -57,12 +59,17 @@ export default {
 
 	lblEtapas: "Etapas", lblOrigen: "Origen", lblDestino: "Destino", lblTransporte: "Medio de Transporte",
 	lblFechaSalida: "Fecha de salida", lblHoraSalida: "Hora de salida", lblFechaLlegada: "Fecha de llegada", lblHoraLlegada: "Hora de llegada",
+	lblFechaInicio: "Fecha inicio", lblFechaFin: "Fecha fin",
 
-	lblPaso: "Paso", lblDe: "de", lblA: "a", lblTusKm: "Tus km",
 	firstDay: "Primer día", medDay: "Días Intermedios", lastDay: "Último día",
-	lblDescObserv: "Descripción / observaciones:", lblDescTaxi: "Itinerario (para justificación del proyecto):",
-
-	lblPais: "Country", lblDireccion: "Address", lblLocalidad: "Locality", lblCP: "Postal Code", lblProvincia: "Province", lblCCAA: "Administrative area",
+	lblTipoGasto: "Tipo de gasto", lblAdjunto: "Adjunto", lblPeriodo: "Periodo", lblDias: "Dias", lblNoches: "Noches",
+	lblDesc: "Descripción", lblDescObserv: "Descripción / observaciones", lblDescTaxi: "Itinerario (para justificación del proyecto)",
+	lblPais: "País", lblDireccion: "Dirección", lblDomicilio: "Domicilio", lblLocalidad: "Localidad", lblCP: "Código Postal", lblProvincia: "Provincia", lblCCAA: "Comunidad Autónoma",
+	lblPasos: "Paso @paso; de @pasos;", lblFactRutas: "@num; etapa/s asociados al gasto", lblRangoNoches: "Noches del @f1.d; al @f2.d;",
+	lblFactTransporte: "Factura a nombre del comisionado por transporte interurbano",
+	lblFactAlojamiento: "Factura a nombre del comisionado por alojamiento",
+	lblImpNoche: "Importe / noche", lblImpJustifi: "Importe justificado", lblImpPercibir: "Importe a percibir",
+	lblDietasPropuestas: "Dietas propuestas", lblImpDietaDia: "Importe dieta / día", lblImpPropuesto: "Importe propuesto", lblTusDietas: "Tus dietas", lblReduccion: "Reducción",
 
 	// IRIS Collections
 	despMun: [ "Vehículo Propio", "Transportes Públicos" ],
@@ -71,5 +78,10 @@ export default {
 	gastosTiket: [ "Tickets de transporte (peaje, aparcamiento, etc.)" ],
 	tiposDesp: ["", "Vehículo Propio", "Vehiculo de Alquiler", "Vehiculo Ajeno", "Taxi Interurbano", "Autobús Interurbano", "Tren", "Barco", "Avión", "Otros", "Transportes Públicos"],
 	tiposEstimaciones: ["-", "Estimación gastos por dietas", "Estimación gastos de alojamiento", "Estimación gastos de transporte"],
-	tiposMultiorganica: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"]
-}
+	tiposMultiorganica: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"],
+
+	tipoTickets: ["-", "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros", "-", "-", "Tickets de transporte (taxi, parking, peajes...)"],
+	tipoDocs: ["-", "Documentación obligatoria por ausencia de facturas", "Otra documentación (opcional)", "Justificación de dietas", "Facturas a nombre de la UPCT a pagar al proveedor", "Facturas a nombre de la UPCT a pagar al comisionado", "Documentación acreditativa del programa de movilidad"],
+	tipoExtra: ["-", "Gasto extraordinario por transporte", "Gasto extraordinario por alojamiento", "Gasto extraordinario por cena final españa", "Gasto extraordinario por otras dietas"],
+	//tipoOrganicas: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"]
+	}

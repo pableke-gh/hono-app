@@ -31,7 +31,8 @@ function Collection() {
 	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
 	this.findIndex = (arr, fn) => arr ? arr.findIndex(fn) : -1;
 	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
-	this.distinct = (arr, fn) => arr.filter((o1, index, $this) => ($this.findIndex(o2 => fn(o2, o1)) === index));
+	this.unique = arr => arr.filter((value, i) => (arr.indexOf(value) === i));
+	this.distinct = (arr, fn) => arr.filter((o1, i) => (arr.findIndex(o2 => fn(o1, o2)) === i));
 
 	/*this.remove = (arr, fn) => {
 		let i = self.findIndex(arr, fn);

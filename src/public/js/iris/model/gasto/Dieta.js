@@ -1,9 +1,14 @@
 
 import i18n from "../../i18n/langs.js";
 import iris from "../../model/Iris.js";
+import paises from "../../data/paises/paises.js";
 
 function Dieta() {
 	const self = this; //self instance
+
+	this.getRegion = dieta => paises.getRegion(dieta.cod); // nombre del pais de la dieta
+	this.getImpDia = dieta => dieta.imp2;
+	this.getDieta = dieta => dieta.imp1;
 
 	// nueva dieta => tipo 7 = dieta, subtipo = (1, 2 ó 3) (tipo de dia)
 	this.createDiaInicial = () => ({ tipo: 7, subtipo: 1, periodo: i18n.get("firstDay") });
@@ -40,16 +45,16 @@ function Dieta() {
 		self.rowCalc(dieta, resume, status.index);
 		const dietas = iris.isEditable() ? `<select name="dietas">${fnDietas(dieta.imp1, dieta.maxDietas)}</select>` : i18n.isoInt(dieta.imp1);
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="#{msg['lbl.dia.periodo']}">${dieta.desc}</td>
-			<td data-cell="#{msg['lbl.pais']}">${dieta.nombre}</td>
-			<td data-cell="#{msg['lbl.fecha.inicio']}">${i18n.isoDate(dieta.f1)}</td>
-			<td data-cell="#{msg['lbl.fecha.fin']}">${i18n.isoDate(dieta.f2)}</td>
-			<td data-cell="#{msg['lbl.dias']}">${i18n.isoInt(dieta.num)}</td>
-			<td data-cell="#{msg['lbl.dietas.propuestas']}">${i18n.isoFloat1(dieta.maxDietas)}</td>
-			<td data-cell="#{msg['lbl.imp.dieta']}">${i18n.isoFloat(dieta.imp2)} €</td>
-			<td data-cell="#{msg['lbl.imp.propuesto']}">${i18n.isoFloat(dieta.impMax)} €</td>
-			<td data-cell="#{msg['lbl.tus.dietas']}">${dietas}</td>
-			<td data-cell="#{msg['lbl.imp.reduccion']}" class="table-refresh" data-refresh="text-render" data-template="$reducido; €">${i18n.isoFloat(dieta.reducido)} €</td>
+			<td data-cell="${i18n.get("lblPeriodo")}">${dieta.desc}</td>
+			<td data-cell="${i18n.get("lblPais")}">${dieta.nombre}</td>
+			<td data-cell="${i18n.get("lblFechaInicio")}">${i18n.isoDate(dieta.f1)}</td>
+			<td data-cell="${i18n.get("lblFechaFin")}">${i18n.isoDate(dieta.f2)}</td>
+			<td data-cell="${i18n.get("lblDias")}">${i18n.isoInt(dieta.num)}</td>
+			<td data-cell="${i18n.get("lblDietasPropuestas")}">${i18n.isoFloat1(dieta.maxDietas)}</td>
+			<td data-cell="${i18n.get("lblImpDietaDia")}">${i18n.isoFloat(dieta.imp2)} €</td>
+			<td data-cell="${i18n.get("lblImpPropuesto")}">${i18n.isoFloat(dieta.impMax)} €</td>
+			<td data-cell="${i18n.get("lblTusDietas")}">${dietas}</td>
+			<td data-cell="${i18n.get("lblReduccion")}" class="table-refresh" data-refresh="text-render" data-template="$reducido; €">${i18n.isoFloat(dieta.reducido)} €</td>
 			<td data-cell="${i18n.get("lblImpTotal")}" class="table-refresh" data-refresh="text-render" data-template="$percibir; €">${i18n.isoFloat(dieta.percibir)} €</td>
 		</tr>`;
 	}

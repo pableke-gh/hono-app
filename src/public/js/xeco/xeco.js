@@ -39,6 +39,8 @@ function XecoForm() {
 	}
 
 	this.getForm = () => form;
+	this.refresh = () => form.refresh(model);
+
 	this.init = () => {
 		firmas.init();
 		uxxiec.init();
@@ -54,6 +56,7 @@ function XecoForm() {
 		solicitudes.set("#rcReport", data => fnSend("rcReport", data));
 		solicitudes.set("#rcEmails", data => fnSend("rcEmails", data)); // admin test email
 		solicitudes.setRemove(data => !fnSend("rcRemove", data)); // remove true = confirm
+		solicitudes.set("#rcReactivar", data => (i18n.confirm("msgReactivar") && fnSend("rcReactivar", data)));
 		solicitudes.set("#rcIntegrar", data => (i18n.confirm("msgIntegrar") && list.setProcesando(data) && fnSend("rcIntegrar", data))); // llamada al servidor
 	}
 

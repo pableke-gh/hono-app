@@ -55,7 +55,7 @@ base.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") |
 //base.isContratacion = () => (_grupo == "68");
 
 base.isFirmable = () => (base.isPendiente() && firma.isFirmable(base.get("fmask")));
-base.isCancelable = () => (base.isUae() && base.isValidada());
+base.isCancelable = () => (base.isUae() && (base.isValidada() || base.isErronea()));
 base.isInvalidable = () => (base.isFirmable() || base.isCancelable()); // show reject form 
 base.isEditableUae = () => (base.isEditable() || base.isSubsanable() || (base.isUae() && base.isFirmable()));
 base.isEjecutable = () => (base.isUae() && [1, 3, 4, 5, 9, 10].includes(base.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea

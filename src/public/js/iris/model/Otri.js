@@ -6,15 +6,18 @@ function Otri() {
 	const currency = "#,##0.00";
 
 	this.row = (data, status, resume) => {
+		//todo: href="#" => href="#rcViewIsu"
 		return `<tr class="tb-data">
 			<td data-cell="Nº" class="text-center hide-sm">${status.count}</td>
-			<td><a href="#rcViewIsu" class="row-action">${data.cod}</a></td>
-			<td>${data.jg}</td><td>${data.fact}</td>
-			<td>${data.nif}</td><td>${data.ter}</td>
-			<td class="text-right">${i18n.isoFloat(data.impJg)} €</td>
-			<td class="text-center">${i18n.isoDate(data.fJg)}</td>
-			<td class="hide-sm">${data.descJg}</td>
-			<td class="text-center hide-sm"><a href="#rcViewIsu" class="row-action"><i class="fas fa-search action resize text-blue"></i></a></td>
+			<td data-cell="ID"><a href="#" class="row-action">${data.cod}</a></td>
+			<td data-cell="Nº JG">${data.jg}</td>
+			<td data-cell="Nº Factura">${data.fact}</td> 
+			<td data-cell="NIF">${data.nif}</td>
+			<td data-cell="Tercero">${data.ter}</td>
+			<td data-cell="${i18n.get("lblImporte")}" class="text-right">${i18n.isoFloat(data.impJg)} €</td>
+			<td data-cell="F. Emisión" class="text-center">${i18n.isoDate(data.fJg)}</td>
+			<td data-cell="${i18n.get("lblDesc")}" class="hide-sm">${data.descJg}</td>
+			<td class="text-center hide-sm"><a href="#" class="row-action"><i class="fas fa-search action resize text-blue"></i></a></td>
 		</tr>`;
 	}
 
@@ -26,7 +29,7 @@ function Otri() {
 		const row = i + 2; // Titles row = 1
 		worksheet["G" + row].z = currency; // Imp. Total = currency format
 		worksheet["H" + row].t = "d"; // F. Emisión = date format
-		/*worksheet["R" + row].t = "d"; // Fecha de inicio del viaje (5) = date format
+		worksheet["R" + row].t = "d"; // Fecha de inicio del viaje (5) = date format
 		worksheet["S" + row].t = "d"; // Fecha de fin del viaje (5) = date format
 		worksheet["V" + row].z = currency; // Kilómetros recorridos en vehículo particular (en su caso) (8) = currency format
 		worksheet["X" + row].z = currency; // Importe Kilometraje (vehículo particular) (10) = currency format
@@ -34,8 +37,6 @@ function Otri() {
 		worksheet["AB" + row].z = currency; // TOTAL Alojamiento = currency format
 		worksheet["AE" + row].z = currency; // TOTAL Manutención = currency format
 		worksheet["AF" + row].z = currency; // TOTAL (Locomoción+Alojamiento+Manutención) = currency format
-		*/
-		//console.log('xlsx: ', data);
 	}
 }
 

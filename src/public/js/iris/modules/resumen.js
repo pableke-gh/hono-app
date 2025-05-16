@@ -16,6 +16,9 @@ function Resumen() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
 
+	this.getImpTrans = () => (rvp.getImporte() + transportes.getImporte());
+	this.getImpBruto = () => (self.getImpTrans() + pernoctas.getImporte() + dietas.getImporte());
+
 	const fnSave = data => {
 		if (form.isChanged())
 			gm.setKm(data).save();
@@ -31,22 +34,24 @@ function Resumen() {
 	tabs.setAction("paso6", () => { form.validate(self.validate) && form.sendTab(window.rcPaso6); });
 	tabs.setAction("save6", () => { form.validate(self.validate) && form.sendTab(window.rcSave6, 6); });
 
-	this.setResumen = () => { // update changes paso 5
-		transportes.setTransportes(gastos.getTransporte());
-		pernoctas.setPernoctas(gastos.getPernoctas());
+	this.setFactComisionado = () => {
+		transportes.setTransportes(); // update changes paso 5
+		pernoctas.setPernoctas(); // update changes paso 5
+	}
+	this.setResumen = () => {
+		self.setFactComisionado(); // facturas a nombre del comisionado
+		dietas.setDietas(); // update table for dietas / manutenciones
 	}
 
 	this.init = () => {
 		transportes.init();
 		pernoctas.init();
 		dietas.init();
-
-		iris.getImpBruto = () => (rvp.getImporte() + transportes.getImporte() + pernoctas.getImporte() + dietas.getImporte());
+		iris.getImpBruto = self.getImpBruto;
 	}
 
 	this.view = () => {
-		self.setResumen(); // update changes paso 5
-		dietas.setDietas(gastos.getDietas());
+		self.setResumen(); // update changes from paso 5
 		iris.set("matricula", gastos.getMatricula()).set("justifiKm", gastos.getJustifiKm()); // gastos Km
 	}
 

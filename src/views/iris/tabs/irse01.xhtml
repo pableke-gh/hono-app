@@ -10,7 +10,7 @@
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
-			<span class="text-warn i18n-tr-h1 active">@lblPaso; 1 @lblDe; @size;</span>
+			<span class="text-warn form-refresh" data-refresh="text-render">@getPaso1;</span>
 			<span><h:outputText value="#{msg['uae.irse.tab2.msg.act']}" escape="false" /></span>
 		</h2>
 
@@ -26,7 +26,7 @@
 		<c:if test="#{iris.perfil.equipoGob}">
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.dieta']}" escape="false" />:</div>
-			<select name="dieta" class="ui-input ui-select ui-number ui-block-main" tabindex="42"> 
+			<select id="grupo-dieta" name="dieta" class="ui-input ui-select ui-number ui-block-main" tabindex="42"> 
 				<option value="2">#{msg['uae.irse.tab2.grupo2']}</option>
 				<option value="1">#{msg['uae.irse.tab2.grupo1']}</option>
 			</select>
@@ -34,7 +34,9 @@
 		</c:if>
 	
 		<div class="notice notice-info">
-			<h:outputText value="#{msg['uae.irse.tab2.msg.resp1']}" escape="false" /><span id="responsables"></span><h:outputText value="#{msg['uae.irse.tab2.msg.resp2']}" escape="false" />
+			<h:outputText value="#{msg['uae.irse.tab2.msg.resp1']}" escape="false" />
+			<span class="form-refresh" data-refresh="text-render">@getResponsables;</span>
+			<h:outputText value="#{msg['uae.irse.tab2.msg.resp2']}" escape="false" />
 		</div>
 		<label class="ui-blocks">
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.resp']}" escape="false" />:</div>

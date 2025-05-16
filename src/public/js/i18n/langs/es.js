@@ -34,6 +34,7 @@ export default {
 	unlinkOk: "Registro desasociado correctamente",
 	linkOk: "Registros asociados correctamente.",
 	reactivar: "¿Confirma que desea reactivar este registro?",
+	msgReactivar: "¿Confirma que desea reactivar esta solicitud?",
 	reactivarOk: "Registro reactivado correctamente",
 	notFound: "Elemento no encontrado en el sistema",
 	noResults: "No se han encontrado registros asociados",

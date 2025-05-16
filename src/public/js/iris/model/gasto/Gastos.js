@@ -33,15 +33,15 @@ function Gastos() {
 	}
 
 	const fnUpdateGastos = (data, fn) => { _gastos = _gastos.filter(fn).concat(data); return self; }
-	this.updatePaso5 = data => fnUpdateGastos(data, gasto.isPaso5);
-	this.updateTransporte = data => fnUpdateGastos(data, gasto.isTransporte);
+	//this.updatePaso5 = data => fnUpdateGastos(data, gasto.isPaso5);
+	//this.updateTransporte = data => fnUpdateGastos(data, gasto.isTransporte);
 	this.updateDietas = data => fnUpdateGastos(data, gasto.isDieta);
 
 	this.getMatricula = () => gasto.getMatricula(_gKm);
 	this.getJustifiKm = () => gasto.getJustifiKm(_gKm);
 	this.setKm = (data, resumen) => { gasto.setKm(_gKm, data, resumen); return self; }
 
-	this.getTipoSubv = () => gasto.getTipoSubv(_gSubv); // _gSubv = tipo subv. = tipo
+	this.getTipoSubv = () => gasto.getTipoSubv(_gSubv); // _gSubv = tipo subv. = estado
 	this.getFinalidad = () => gasto.getFinalidad(_gSubv); // _gSubv = finalidad = subtipo
 	this.getVinc = () => gasto.getVinc(_gSubv); // _gSubv = vinculacion al proyecto = num
 	this.getJustifi = () => gasto.getJustifi(_gSubv); // _gSubv = justificacion = desc
@@ -49,6 +49,8 @@ function Gastos() {
 
 	this.getTipoCongreso = () => gasto.getTipoCongreso(_gCongreso);
 	this.getImpInsc = () => gasto.getImpInsc(_gCongreso);
+	this.getF1Cong = () => gasto.getF1Cong(_gCongreso);
+	this.getF2Cong = () => gasto.getF2Cong(_gCongreso);
 	this.getJustifiCong = () => gasto.getJustifiCong(_gCongreso);
 	this.setCongreso = data => { gasto.setCongreso(_gCongreso, data); return self; }
 
@@ -67,8 +69,8 @@ function Gastos() {
 	this.setBanco = data => { gasto.setBanco(_gBanco, data); return self; }
 
 	this.getNumPernoctas = () => _gastos.reduce((num, row) => (num + (gasto.isPernocta(row) ? row.num : 0)), 0);
+	this.remove = data => { _gastos = _gastos.filter(gasto => (gasto.id != data.id)); return self; }
 	this.push = data => { _gastos.push(data); return self; }
-	this.remove = data => { _gastos = _gastos.filter(gasto => (gasto.id != data.id)); }
 }
 
 export default new Gastos();

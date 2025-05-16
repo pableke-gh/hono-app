@@ -15,7 +15,7 @@ function RutasGasto() {
 		tab12.querySelector("a#gasto-rutas").onclick = ev => { // button in tab12
 			const list = tab12.querySelectorAll(".link-ruta:checked").map(el => el.value).join(",");
 			if (list)
-				form.setStrval("#rutas-json", list).sendTab(window.rcUploadGasto, 5);
+				form.setStrval("#rutas-json", list).invoke(window.rcUploadGasto);
 			else
 				form.showError("errLinkRuta");
 			ev.preventDefault();

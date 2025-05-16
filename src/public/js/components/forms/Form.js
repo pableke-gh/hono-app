@@ -33,6 +33,7 @@ export default function(form, opts) {
 	const EMPTY = ""; // Empty string
 	const INPUTS = "input,select,textarea"; // All input fields
 	const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
+	let _refreshList; // container elements
 	let _isChanged; // bool indicator
 
 	const $1 = selector => form.querySelector(selector);
@@ -96,7 +97,7 @@ export default function(form, opts) {
     this.setText = (selector, text) => { dom.text(fnQuery(selector), text); return self; }
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
 	this.render = (selector, data) => { $$(selector).render(data); return self; } // NodeList.prototype.render
-	this.refresh = model => { $$(opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
+	this.refresh = model => { _refreshList.refresh(model, opts); return self; } // NodeList.prototype.refresh
 
 	this.hide = selector => { $$(selector).hide(); return self; }
 	this.show = selector => { $$(selector).show(); return self; }
@@ -203,6 +204,7 @@ export default function(form, opts) {
 	this.stringify = (selector, data, replacer) => self.setStrval(selector, JSON.stringify(data, replacer)).setChanged(true);
 	this.saveTable = (selector, table, replacer) => self.stringify(selector, table.getData(), replacer);
 	this.getOptionText = selector => dom.getOptionText(fnQueryInput(selector));
+	this.getOptionTextByValue = (selector, value) => dom.getOptionTextByValue(fnQueryInput(selector), value);
 	this.select = (selector, mask) => { dom.select(fnQueryInput(selector), mask); return self; }
 	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
 	this.setItems = (selector, items, emptyOption) => fnUpdate(selector, el => dom.setItems(el, items, emptyOption));
@@ -232,7 +234,8 @@ export default function(form, opts) {
 		return self;
 	}
 
-	this.afterChange = fn => fnChange(form, fn);
+	this.afterChange = fn => fnChange(form, fn); // add change event handler
+	this.onKeydown = fn => fnEvent(form, "keydown", fn); // add event handler
 	this.onSubmit = fn => fnEvent(form, "submit", fn); // add event handler
 	this.fire = action => (self.get(action)()); // fire manual handler
 	this.fireSubmit = () => { form.submit(); return self; } // force submit
@@ -306,6 +309,7 @@ export default function(form, opts) {
 	}
 
 	this.update = () => { // Form initialization
+		_refreshList = $$(opts.refreshSelector);
 		form.elements.forEach(el => { // update inputs
 			if (fnContains(el, opts.floatFormatClass)) {
 				fnChange(el, ev => fnNumber(el, i18n.fmtFloat(el.value)));

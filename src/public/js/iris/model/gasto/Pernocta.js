@@ -5,6 +5,9 @@ import organica from "../Organica.js";
 function Pernocatas() {
 	const self = this; //self instance
 
+	this.getNumNoches = pernocta => pernocta.num;
+	this.getImpNoche = pernocta => pernocta.imp2;
+
 	this.beforeRender = resume => {
 		resume.imp1 = resume.imp2 = resume.numNoches = 0;
 		resume.impTotal = resume.impMin = 0;
@@ -24,14 +27,14 @@ function Pernocatas() {
 		self.rowCalc(data, resume);
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>
-			<td data-cell="#{msg['lbl.pais']}">${data.desc}</td>
-			<td data-cell="#{msg['lbl.fecha.inicio']}">${i18n.isoDate(data.f1)}</td>
-			<td data-cell="#{msg['lbl.fecha.fin']}">${i18n.isoDate(data.f2)}</td>
-			<td data-cell="#{msg['lbl.noches']}">${data.num}</td>
-			<td data-cell="#{msg['lbl.imp.noche']}">${i18n.isoFloat(data.imp2)} €</td>
-			<td data-cell="#{msg['lbl.imp.tot']}">${i18n.isoFloat(data.impTotal)} €</td>
-			<td data-cell="#{msg['lbl.imp.justifi']}">${i18n.isoFloat(data.imp1)} €</td>
-			<td data-cell="#{msg['lbl.imp.percibir']}">${i18n.isoFloat(data.impMin)} €</td>
+			<td data-cell="${i18n.get("lblPais")}">${data.desc}</td>
+			<td data-cell="${i18n.get("lblFechaInicio")}">${i18n.isoDate(data.f1)}</td>
+			<td data-cell="${i18n.get("lblFechaFin")}">${i18n.isoDate(data.f2)}</td>
+			<td data-cell="${i18n.get("lblNoches")}">${data.num}</td>
+			<td data-cell="${i18n.get("lblImpNoche")}">${i18n.isoFloat(data.imp2)} €</td>
+			<td data-cell="${i18n.get("lblImpTotal")}">${i18n.isoFloat(data.impTotal)} €</td>
+			<td data-cell="${i18n.get("lblImpJustifi")}">${i18n.isoFloat(data.imp1)} €</td>
+			<td data-cell="${i18n.get("lblImpPercibir")}">${i18n.isoFloat(data.impMin)} €</td>
 		</tr>`
 	}
 

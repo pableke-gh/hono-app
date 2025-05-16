@@ -16,35 +16,30 @@ function Organicas() {
 	this.isEmpty = _tblOrganicas.isEmpty;
 	this.reset = self.setOrganicas;
 	this.getFinanciacion = organica.getFinanciacion;
-
 	this.getGrupoDieta = () => form.getval("#grupo-dieta"); 
 	this.getTipoDieta = organica.getTipoDieta;
-	this.isRD = organica.isRD;
-	this.isEUT = organica.isEUT;
-	this.isUPCT = organica.isUPCT;
 
 	const fnAfterRender = resume => {
 		// 1º recalculo la financiacion
 		organica.afterRender(resume); // actualiza la financiacion
-		form.setStrval("#financiacion", self.getFinanciacion())
-			.setVisible("#add-org", _tblOrganicas.isEmpty())
-			.hide(".fin-info").show(".fin-" + self.getFinanciacion());
-		const org = _tblOrganicas.getFirst();
+		form.setStrval("#financiacion", self.getFinanciacion());
 		// 2º actualizo la información del crédito disp.
-		const elMsgCd = form.querySelector(".msg-cd");
-		if (elMsgCd) // hay mensaje a mostrar?
-			elMsgCd.render(org).setVisible(org);
-		if (org) { // actualizo los responsables
-			const responsables = _tblOrganicas.getData().map(org => org.r).join(", ");
-			form.text("span#responsables", " " + responsables);
+		const org = _tblOrganicas.getFirst();
+		if (org) { // actualizo los responsables de la organica
+			const responsables = " " + _tblOrganicas.getData().map(org => org.r).join(", ");
+			iris.getResponsables = () => responsables; // listado de responsables de las organicas
+			iris.getImpCd = () => org.imp; // importe de credito disponible de la organica
 		}
 		else
-			form.text("span#responsables", "");
+			iris.getImpCd = iris.getResponsables = globalThis.void;
 		actividad.update(); // 3º update actividad + tramite
+		if (_tblOrganicas.isChanged()) // render manual del usuario
+			xeco.refresh(); // 4º actualizo el perfil de la solicitud
 	}
 	this.setOrganicas = organicas => {
 		_tblOrganicas.render(organicas).setChanged();
 	}
+
 	this.save = () => {
 		if (_tblOrganicas.isChanged())
 			form.saveTable("#org-json", _tblOrganicas);
@@ -63,8 +58,12 @@ function Organicas() {
 					_tblOrganicas.render([item]);
 				return item.id;
 			},
-			onReset: () => form.hide(".msg-cd")
+			onReset: xeco.refresh
 		});
+
+		form.set("is-add-org", _tblOrganicas.isEmpty);
+		form.set("is-fin-xsu", actividad.isXsu).set("is-fin-isu", actividad.isFinIsu)
+			.set("is-fin-x83", actividad.isX83).set("is-fin-a83", actividad.isFinA83);
 		form.addClick("a[href='#add-org']", ev => {
 			const organicas = _tblOrganicas.getData();
 			const current = acOrganiaca.getCurrentItem();

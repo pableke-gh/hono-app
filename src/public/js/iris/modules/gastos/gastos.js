@@ -9,6 +9,7 @@ import gastos from "../../model/gasto/Gastos.js";
 import rutas from "../../model/ruta/Rutas.js";
 
 import perfil from "../perfil/perfil.js";
+import resumen from "../resumen.js";
 import gp5 from "./gasto.js";
 
 import rmaps from "../rutas/rutasMaps.js";
@@ -20,14 +21,9 @@ function Gastos() {
 	const form = xeco.getForm(); // form component
 	const _tblGastos = form.setTable("#tbl-gastos", gasto.getTable());
 
-	this.getNochesPendientes = () => (2/*rutas.getNumNoches()*/ - gastos.getNumPernoctas());
-	this.setGastos = data => {
-		gastos.setGastos(data);
-		_tblGastos.render(gastos.getPaso5()).setChanged();
-	}
-	this.update = gastos => {
-		gastos && self.setGastos(gastos);
-	}
+	this.getNochesPendientes = () => (rutas.getNumNoches() - gastos.getNumPernoctas());
+	this.setGastos = data => { gastos.setGastos(data); _tblGastos.render(gastos.getPaso5()).setChanged(); }
+	this.update = gastos => { gastos && self.setGastos(gastos); }
 
 	this.setKm = data => { gastos.setKm(data, rmaps.getResume()); return self; } 
 	this.setSubvencion = data => { gastos.setSubvencion(data); return self; } 
@@ -63,24 +59,28 @@ function Gastos() {
 		iris.getNumNochesPendientes = () => self.getNochesPendientes(); // call function after redefined by gastos module
 		const fnGastosPendientes = () => (perfil.isMaps() && ((rutas.getNumRutasUnlinked() > 0) || (self.getNochesPendientes() > 0)));
 		form.set("is-gastos-pendientes", fnGastosPendientes).set("is-noches-pendientes", self.getNochesPendientes).set("is-rutas-pendientes", iris.getNumRutasOut)
-			.set("is-zip-com", () => resume.docComisionado).set("is-zip-doc", () => resume.otraDoc);
+			.set("is-zip-com", () => (iris.isDisabled() && resume.docComisionado)).set("is-zip-doc", () => (iris.isDisabled() && resume.otraDoc));
 	}
 
 	window.addGasto = (xhr, status, args) => {
-		if (!window.showAlerts(xhr, status, args))
+		if (!window.showTab(xhr, status, args, 5))
 			return false; // Server error
 		const data = coll.parse(args.gasto);
 		if (!data || !data.id || !data.fref) // valido campos obligatorios
 			return !form.showError("Error al adjuntar el gasto a la comunicación.");
 		gastos.push(data); // añado el nuevo gasto a lista de gastos
-		rmaps.recalc(coll.parse(args.rutas)); // actualizo el registro de rutas
-		_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos
+		rmaps.update(coll.parse(args.rutas)); // actualizo el registro de rutas
+		_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos (paso 5)
+		resumen.setFactComisionado(); // update facturas a nombre del comisionado
 		gp5.reset(); // clear fields
 	}
 	window.unloadGasto = (xhr, status, args) => {
 		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
-		_tblGastos.flush(); // remove and reload
+		gastos.remove(_tblGastos.getCurrentItem()); // remove gasto from array
+		rmaps.update(coll.parse(args.rutas)); // actualizo el registro de rutas
+		_tblGastos.flush(); // remove and reload table gastos (paso 5)
+		resumen.setFactComisionado(); // update facturas a nombre del comisionado
 		gp5.reset(); // clear fields
 	}
 }

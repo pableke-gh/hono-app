@@ -24,7 +24,7 @@
 			<div class="hide ui-block-info">[<span id="colectivo" class="icon">#{iris.perfil.colectivo}</span>]<a href="mailto:#{iris.perfil.usuEmail}" title="#{msg['tit.enviar.correo']}"><i class="fa fa-regular fa-envelope fa-lg icon"></i></a></div>
 		</label>
 
-		<label id="add-org" class="ui-blocks">
+		<label id="add-org" class="ui-blocks form-refresh" data-refresh="is-add-org">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.ppto']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
@@ -34,7 +34,8 @@
 				<div class="ui-errtip"></div> 
 			</div>
 			<div class="ui-block">
-				<a href="#add-org" class="btn btn-green" tabindex="5"><i class="ui-button-icon-right ui-icon ui-c fas fa-plus"></i><h:outputText value="#{msg['lbl.add.tabla']}" escape="false" /></a>
+				<a href="#add-org" class="btn btn-green" tabindex="5">
+					<i class="ui-button-icon-right ui-icon ui-c fas fa-plus"></i><h:outputText value="#{msg['lbl.add.tabla']}" escape="false" /></a>
 			</div>
 		</label>
 
@@ -59,10 +60,10 @@
 			<label for="financiacion" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.fin']}" escape="false" />:</label>
 			<h:inputText id="financiacion" value="#{iris.perfil.financiacion}" styleClass="hide" />
 		</div>
-		<div class="fin-info fin-xSU notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
-		<div class="fin-info fin-ISU notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
-		<div class="fin-info fin-x83 notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
-		<div class="fin-info fin-A83 notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is-fin-xsu"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is-fin-isu"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is-fin-x83"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is-fin-a83"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
 		<div class="notice notice-error"><h:outputText value="#{msg['uae.irse.tab0.org.info']}" escape="false" /></div>
 
 		<label class="ui-blocks">

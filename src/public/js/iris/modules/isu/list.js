@@ -2,13 +2,24 @@
 import Form from "../../../components/forms/Form.js";
 import tabs from "../../../components/Tabs.js";
 import pf from "../../../components/Primefaces.js";
+import i18n from "../../i18n/langs.js";
 import xlsx from "../../../services/xlsx.js";
 
 import otri from "../../model/Otri.js";
+import ruta from "../../model/ruta/Ruta.js";
 import rutas from "../../model/ruta/Rutas.js";
+import gasto from "../../model/gasto/Gasto.js";
 import gastos from "../../model/gasto/Gastos.js";
+import pernocta from "../../model/gasto/Pernocta.js";
+import dieta from "../../model/gasto/Dieta.js";
+import iris from "../../model/Iris.js";
 
 import formIsu from "./form.js";
+import rmaps from "../rutas/rutasMaps.js";
+import rvp from "../rutas/rutasVehiculoPropio.js"; 
+import pernoctas from "../gastos/pernoctas.js";
+import dietas from "../gastos/dietas.js";
+import resumen from "../resumen.js";
 import xeco from "../../../xeco/xeco.js";
 
 function ListIsu() {
@@ -24,9 +35,15 @@ function ListIsu() {
 	this.view = () => {
 	}
 
+	const fnValidate = data => {
+		const valid = i18n.getValidators();
+		valid.isKey("organica-isu", data.id, "Debe seleccionar una orgánica y al menos un ejercicio para la consulta.");
+		return valid.isOk();
+	}
+
 	tabs.setInitEvent("formIsu", formIsu.init);
-	tabs.setAction("listIsu", () => window.rcListIsu());
-	tabs.setAction("excel", () => window.rcExcel());
+	tabs.setAction("listIsu", () => form.validate(fnValidate) && window.rcListIsu());
+	tabs.setAction("excel", () => form.validate(fnValidate) && window.rcExcel());
 
 	window.loadFiltroIsu = (xhr, status, args) => {
 		window.showTab(xhr, status, args, "listIsu") && tblIsu.render(JSON.read(args.data));
@@ -34,6 +51,8 @@ function ListIsu() {
 	window.xlsx = (xhr, status, args) => {
 		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
+		if (!args.data) // no data loaded
+			return !form.showError("No se han encontrado IRIS asociados a la orgánica: " + form.getval("#organica-isu"));
 
 		// XLSX service
 		const sheet = "listado-isu";
@@ -58,18 +77,56 @@ function ListIsu() {
 			"TOTAL Manutención", "TOTAL (Locomoción+Alojamiento+Manutención)", "Observaciones (11)"
 		];
 
-		const formIrse = xeco.getForm();
 		const data = JSON.parse(args.data);
+		const formIrse = xeco.getForm().resetCache();
 		const aux = data.map(row => {
-			rutas.setRutas(JSON.parse(row.rutas));
+			iris.setData(row); // current iris
+			rmaps.setRutas(JSON.parse(row.rutas));
 			gastos.setGastos(JSON.parse(row.gastos));
+			resumen.setResumen(); // paso 6 = resumen
+			delete row.rutas;
+			delete row.gastos;
 
 			row.fact = row.jg;
-			row.int = row.ter;
-			row.vinc = formIrse.getHtml(`select[name="vinc"]>option[value="${gastos.getVinc()}"]`);
-			row.gasto = formIrse.getHtml(`select[name="tipoSubv"]>option[value="${gastos.getTipoSubv()}"]`);
+			//row.int = row.ter; //nombre del interesado puede no coincidir ocn el tercero del JG
+			row.vinc = formIrse.getOptionTextByValue('select[name="vinc"]', gastos.getVinc());
+			row.gasto = formIrse.getOptionTextByValue('select[name="tipoSubv"]', gastos.getTipoSubv());
 			row.proy = gastos.getJustifi();
-console.log('row: ', row);
+
+			const principal = rutas.getPrincipal();
+			row.dest = principal.destino;
+			row.pais = ruta.getPaisDestino(principal);
+			row.itinerario = rutas.getItinerario();
+			row.start = rutas.getHoraSalida();
+			row.end = rutas.getHoraLlegada();
+			row.loc = rutas.getLocomocion();
+			row.impLoc = gastos.getTransporte().map(gasto.getDescSubtipoImp).join(", ");
+			row.km = rmaps.getTotKm();
+			row.vp = rutas.getItinerarioVp();
+			row.impKm = rvp.getImporte();
+
+			row.impTrans = resumen.getImpTrans();
+			row.noches = row.impNoche = "";
+			pernoctas.getPernoctasByPais().forEach((value, key) => {
+				const pais = ", " + key; // current name country/region
+				row.noches += pais + ": " + pernoctas.getTotalNoches(value) + " noches ";
+				row.impNoche += pais + ": " + i18n.isoFloat(pernocta.getImpNoche(value[0])) + " €/noche "; 
+			});
+			row.noches = row.noches.substring(2);
+			row.impNoche = row.impNoche.substring(2);
+			row.impPern = pernoctas.getImporte();
+
+			row.dietas = row.impDieta = "";
+			dietas.getDietasByPais().forEach((value, key) => {
+				const pais = ", " + dieta.getRegion(value[0]); // current name country/region
+				row.dietas += pais + ": " + i18n.isoFloat1(dietas.getTotalDias(value)) + " dietas ";
+				row.impDieta += pais + ": " + i18n.isoFloat(dieta.getImpDia(value[0])) + " €/día ";
+			});
+			row.dietas = row.dietas.substring(2);
+			row.impDieta = row.impDieta.substring(2);
+			row.impDietas = dietas.getImporte();
+			row.impTotal = resumen.getImpBruto();
+			row.taxis = gastos.getGastos().filter(gasto.isTaxiJustifi).map(gasto => gasto.desc).join(", ");
 			return keys.map(key => row[key]);
 		});
 

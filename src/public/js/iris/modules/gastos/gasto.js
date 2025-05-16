@@ -6,6 +6,7 @@ import i18n from "../../i18n/langs.js";
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
 
+import transportes from "./transportes.js";
 import pernoctas from "./pernoctas.js";
 import xeco from "../../../xeco/xeco.js";
 
@@ -45,11 +46,10 @@ function Gasto() {
 		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 			.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start.substring(0, 10))
 			.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "max", end.substring(0, 10))
-			.text(".filename", "").refresh(iris);
+			.text(".filename", "").setChanged().refresh(iris);
 	}
 
 	this.validate = data => {
-		console.log(data);
 		// validación del tipo de gasto
 		const valid = form.getValidators();
 		if (isDoc()) {
@@ -57,6 +57,8 @@ function Gasto() {
 			return valid.isOk();
 		}
 		//valid.gt0("impGasto", data.impGasto);
+		if (isInterurbano(data.tipoGasto))
+			return transportes.validate(data);
 		if (fnPernocta(data.tipoGasto))
 			return pernoctas.validate(data);
 		// todo: validate campos grupo-gastos

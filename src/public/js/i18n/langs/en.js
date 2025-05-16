@@ -34,6 +34,7 @@ export default {
 	unlinkOk: "Elements unlinked successfully!",
 	linkOk: "Elements linked successfully!",
 	reactivar: "¿Confirma que desea reactivar este registro?",
+	msgReactivar: "¿Confirma que desea reactivar esta solicitud?",
 	reactivarOk: "Registro reactivado correctamente",
 	notFound: "Element not found!",
 	noResults: "No results founds",

@@ -26,7 +26,7 @@
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</div>
-			<div class="msg-cd hide ui-block-info"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" />: $imp; €</div>
+			<div class="ui-block-info form-refresh" data-refresh="text-render"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" />: $getImpCd; €</div> 
 		</label>
 
 		<h:inputHidden id="org-json" value="#{iris.perfil.organicas}" />
@@ -36,10 +36,10 @@
 			<label for="financiacion" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.fin']}" escape="false" />:</label>
 			<h:inputHidden id="financiacion" value="#{iris.perfil.financiacion}" />
 		</div>
-		<div class="fin-info fin-xSU notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
-		<div class="fin-info fin-ISU notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
-		<div class="fin-info fin-x83 notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
-		<div class="fin-info fin-A83 notice notice-info hide"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is-fin-xsu"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is-fin-isu"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is-fin-x83"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is-fin-a83"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab0.org.info']}" escape="false" /></div>
 
 		<label class="ui-blocks">

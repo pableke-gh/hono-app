@@ -48,7 +48,7 @@ function Rutas() {
 		}
 
 		// nuevo contenedor de rutas + recalculo de la ruta principal
-		rmaps.setRutaPrincipal(rutas.setRutas(temp).getRutaPrincipal());
+		rmaps.setRutaPrincipal(rutas.setRutas(temp).findRutaPrincipal());
 		return true; // ruta agregada correctamente
 	}
 

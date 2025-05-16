@@ -8,6 +8,9 @@
 		xmlns:h="http://java.sun.com/jsf/html"
 		xmlns:f="http://java.sun.com/jsf/core">
 
+	<ui:define name="importConstants">
+		<p:importConstants type="es.upct.portal.modules.authorities.XecomGroups" var="xecomGroups" />
+	</ui:define>
 	<ui:define name="metadata">
 		<f:metadata>
             <f:viewParam name="lang" value="#{uae.lang}" />
@@ -32,13 +35,11 @@
 		<ui:include src="parts/msgs.xhtml"></ui:include>
 
 		<h:form id="xeco" prependId="false" class="cards" onsubmit="loading();">
-			<div class="card-xeco">
+		<div class="card-xeco">
 			<h2>Aplicaciones Económicas</h2>
 			<ul>
 				<li><a href="/uae/modules/irse/inicio.xhtml"><i class="fab fa-telegram-plane"></i> IRIS</a></li>
-				<!-- <li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=PRESTO#"><i class="fal fa-fw fa-money-check"></i> PRESTO</a></li> -->
 				<li><a href="/uae/modules/presto/index.xhtml"><i class="fal fa-fw fa-money-check layout-menuitem-icon"></i> PRESTO</a></li>
-				<!--<li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=JB#"><i class="fa fa-euro fa-fw"></i> Justificaciones bancarias + ICM</a></li>-->
 				<li><a href="/uae/modules/xeco/jb.xhtml"><i class="fa fa-euro fa-fw layout-menuitem-icon"></i> Justificaciones Bancarias + ICM</a></li>
 				<li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=PATRIMONIO#"><i class="fas fa-boxes"></i> Comunicaciones electrónicas de inventario</a></li>
 				<li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=MIS_GASTOS#"><i class="fal fa-file-invoice-dollar"></i> Mis Orgánicas</a></li>
@@ -51,9 +52,25 @@
 				</c:if>
 				<li><a href="/uae/modules/factura/index.xhtml"><i class="fas fa-file-invoice"></i> Solicitud de Facturas y Cartas de Pago</a></li>
 			</ul>
-			</div>
+			
+			<c:if test="#{sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_ING)}">
+				<h2>Ingresos</h2>
+				<ul>
+					<li><a href="/uae/modules/xecom/ttpp.xhtml">Ingresos de Gestión Académica</a></li>
+					<li><a href="/uae/modules/xecom/ttpp_tpvs.xhtml">Ingresos de Gestión Económica</a></li>
+				</ul>
+			</c:if>
 
-			<div class="card-xeco">
+			<h2>Gestión Presupuestaria</h2>
+			<ul>
+				<li><a href="/uae/modules/xecom/panel_gc.xhtml">Panel de Gestión Presupuestaria</a></li>
+				<c:if test="#{sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_UAE)}">
+					<li><a href="/uae/modules/xecom/panel_fcb.xhtml">Panel del Fondo de Cobertura</a></li>
+				</c:if>
+			</ul>
+		</div>
+
+		<div class="card-xeco">
 			<h2>Solicitud de Certificados</h2>
 			<ul>
 				<li>
@@ -108,7 +125,7 @@
 				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198canon_digital.pdf" target="_blank"><i class="fas fa-file-check"></i> Certificado de canon digital</a></li>
 				<li><a href="https://www.upct.es/asuntos-economicos/docs/anexos_docs/198Certificacion_declaracion_responsable_SEFYCU_2547004.pdf" target="_blank"><i class="fas fa-file-check"></i> Certificado de cumplimiento de plazos de pago de operaciones comerciales</a></li>
 			</ul>
-			</div>
+		</div>
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -33,7 +33,7 @@ export default function(table, opts) {
 	opts.onRemove = opts.onRemove || fnTrue;
 
 	const self = this; //self instance
-    const RESUME = {}; //Table parameters
+    const RESUME = {}; // Table parameters
 	const tHead = table.tHead || table.createTHead(); //header element
 	const tBody = table.tBodies[0] || table.createTBody(); //body element
 	const tFoot = table.tFoot || table.createTFoot(); //footer element
@@ -59,8 +59,9 @@ export default function(table, opts) {
 	this.setChange = (field, fn) => self.set(field + "Change", fn);
 	this.setRemove = fn => { opts.onRemove = fn; return self; }
 
-	this.getData = () => _rows;
-	this.getIndex = () => _index;
+	this.getData = () => _rows; // current data
+	this.setData = data => { _rows = data; return self; }; // update data without render
+	this.getIndex = () => _index; // current index
 	this.getResume = () => RESUME;
 	this.getProp = name => RESUME[name];
 	this.setProp = (name, value) => { RESUME[name] = value; return self; }
@@ -203,6 +204,7 @@ export default function(table, opts) {
 	});
 
 	// Define default actions
+	opts["#"] = globalThis.void;
 	opts["#remove"] = self.removeRow;
 	opts["#flush"] = self.flushRow;
 }

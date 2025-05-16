@@ -23,6 +23,12 @@ function Iris() {
 		form.reset("input[id$='-json']"); // update fields
 		xeco.update(data, firmas, tab); // Update firmas blocks
 	}
+
+	this.reactivate = data => {
+		xeco.view(data); // load data view
+		iris.setSubsanable(); // set view editable
+		form.setChanged(true); // force to invoke paso 0
+	}
 }
 
 export default new Iris();

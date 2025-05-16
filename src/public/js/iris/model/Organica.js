@@ -39,7 +39,7 @@ function Organica() {
 			<td data-cell="#{msg['lbl.descripcion']}">${data.dOrg}</td>
 			<td data-cell="#{msg['lbl.responsable.gasto']}">${data.resp}</td>
 			<td data-cell="#{msg['lbl.nombre.apellidos']}">${data.r}</td>
-			<td class="no-print" data-cell="Acciones">${remove}</td>
+			<td data-cell="Acciones" class="no-print">${remove}</td>
 		</tr>`;
 	}
 

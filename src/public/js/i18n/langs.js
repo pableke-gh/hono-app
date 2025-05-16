@@ -40,7 +40,7 @@ function Langs() {
 	this.getIsoLangs = () => KEYS;
 	this.getNavLang = () => navigator.language || navigator.userLanguage; // default browser language
 	this.getLanguage = () => document.documentElement.getAttribute("lang") || self.getNavLang() || DEFAULT;
-	this.getAcceptLanguage = list => self.setLang(sb.substring(list, 0, 5)).getIsoLang(); // server header Accept-Language
+	//this.getAcceptLanguage = list => self.setLang(sb.substring(list, 0, 5)).getIsoLang(); // server header Accept-Language
 	this.setLanguage = () => self.setLang(self.getLanguage()); // Set language object
 
 	this.clone = () => new Langs();
@@ -115,8 +115,8 @@ function Langs() {
 				return self.isoFloat(value);
 			if (t == ".d") // Date in ISO string format
 				return self.isoDate(value); // substring = 0, 10
-			if (typeof value === "function") // function type
-				return value(opts); // call function
+			//if (typeof value === "function") // function type
+				//return value(opts); // call function
 			return (value ?? opts[k] ?? ""); // Default = String
         });
     }

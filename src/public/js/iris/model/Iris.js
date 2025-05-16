@@ -5,8 +5,9 @@ import firma from "../../xeco/model/Firma.js";
 import solicitud from "../../xeco/model/Solicitud.js";
 import perfiles from "../data/perfiles/perfiles.js"; 
 
-solicitud.isResumable = () => (solicitud.isPendiente() || solicitud.isFirmada() || solicitud.isIntegrada());
-solicitud.isDocumentable = () => (solicitud.isPendiente() || solicitud.isValidada() || solicitud.isErronea());
+solicitud.isReactivable = () => (solicitud.isUae() && (solicitud.isInvalidada() || solicitud.isErronea())); // La solicitud se puede reactivar / subsanar
+solicitud.isResumable = () => (solicitud.isPendiente() || solicitud.isFirmada() || solicitud.isIntegrada()); // muestra el boton de resumen (paso 6)
+solicitud.isDocumentable = () => (solicitud.isPendiente() || solicitud.isValidada() || solicitud.isErronea()); // muestra el boton de informe pdf
 
 solicitud.setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
 	solicitud.set("rol", rol).set("colectivo", colectivo).set("actividad", actividad);
@@ -36,8 +37,11 @@ solicitud.hasMultipartida = () => (solicitud.mask & 1);
 
 solicitud.row = data => {
 	let acciones = solicitud.rowActions(data);
-	if (!solicitud.isEditable())
-		acciones += '<a href="#rcReport" class="row-action"><i class="fal fa-file-pdf action resize text-red"></i></a>';
+	if (solicitud.isDocumentable())
+		acciones += '<a href="#rcReport" class="row-action" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
+	if (solicitud.isReactivable())
+		acciones += '<a href="#rcReactivar" class="row-action" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
+
 	const info = solicitud.isUrgente() ? `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>` : "";
 	const otras = solicitud.hasMultipartida() ? "<span> (y otras)</span>" : "";
 	return `<tr class="tb-data">

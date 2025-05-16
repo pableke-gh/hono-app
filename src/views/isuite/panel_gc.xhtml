@@ -1,0 +1,123 @@
+<ui:composition
+       	template="/templates/layout/private-embed-layout.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:cc="http://java.sun.com/jsf/composite"
+        xmlns:ifw="http://java.sun.com/jsf/composite/component"
+        xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="header">
+		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
+	</ui:define>
+	<ui:define name="outputScript">
+		<script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/uae-box.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script> 
+	</ui:define>
+
+	<ui:define name="title">Extraeco</ui:define>
+	<ui:define name="description">Generación de Crédito de Oficio</ui:define>
+	<ui:define name="semilla"><li class="active">PANEL GC</li></ui:define>
+
+	<ui:define name="body">
+		<h1>Generación de Crédito de Oficio</h1>
+		<c:set var="ctrl" value="#{xecomControlador}" />
+		<f:event type="preRenderView" listener="#{ctrl.readGc()}"/>
+
+		<h:form id="filtro" styleClass="card-filter">
+			<div class="ui-blocks">
+				<label class="ui-block">
+					<div class="label">Ejercicios:</div>
+					<h:selectOneMenu id="ejercicio" value="#{ctrl.ejercicio}" styleClass="ui-input ui-select">
+						<f:selectItems value="#{ctrl.ejercicios}" />
+					</h:selectOneMenu>
+				</label>
+				<label class="ui-block">
+					<div class="label">Orgánica:</div>
+					<input type="text" id="organica" name="organica" size="25" maxlength="20" group="search" class="ui-input ui-text" />
+				</label>
+
+				<label class="ui-block">
+					<div class="label">Imp. a Habilitar:</div>
+					<select id="impHabilitar" name="impHabilitar" class="ui-input ui-select">
+						<option value=""></option>
+						<option value="I">Sin Ingreso</option>
+						<option value="N">No Vigente</option>
+						<option value="S">A Solicitud</option>
+						<option value="0">Igual a 0,00 €</option>
+						<option value="1">Mayor de 0,00 €</option>
+					</select>
+				</label>
+
+				<label class="label">
+					<div class="label">Desc. Orgánica:</div>
+					<input type="text" id="descripcion" name="descripcion" size="40" maxlength="200" group="search" class="ui-input ui-text" /> 
+				</label>
+			</div>
+
+			<div class="navbar">
+				<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
+					<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
+				<a id="search" href="#" class="btn btn-info" title="Aplica el filtro sobre la consulta">
+					<i class="fa fa-search btn-icon-left"></i>Buscar</a>
+				<p:commandButton id="srv-search" value="Buscar" icon="fa fa-search" 
+					action="#{ctrl.loadGc()}" styleClass="hide btn-xeco" title="Aplica el filtro sobre la consulta" />
+				<p:commandLink id="clearFilter" action="#{ctrl.initGc()}" styleClass="btn btn-warn" title="Inicializa el filtro a sus valores por defecto">
+					<i class="fa fa-broom btn-icon-left"></i>Limpiar Filtro</p:commandLink>
+				<!-- <a id="excel" href="#" download="descarga.xls" aria-disabled="false" title="Exportar tabla a formato EXCEL"
+					class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn-xeco" role="button">
+					<span class="ui-button-icon-left ui-icon ui-c fa fa-file-excel"></span>
+					<span class="ui-button-text ui-c">Exportar a Excel</span>
+				</a>-->
+			</div>
+		</h:form>
+
+		<table id="gc" class="tb-xeco" tb-groups="grupoGasto" tb-key="idOrganica" tb-orderby="organica ejercicio"
+				tb-columns="ejercicio organica descripcion porGg drnAcum rnAcum maxHabilitar orAcum ctHabilitado txtHabilitar aipOrg fMaxCobro"
+				tb-types="String String String Number Number Number Number Number Number String String DateTime"
+				tb-styles="Default Default Default LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat Default Default LatinDate"
+				tb-xls="ejercicio organica descripcion porGg drnAcum rnAcum maxHabilitar orAcum ctHabilitado txtHabilitar aipOrg fMaxCobro">
+			<thead>
+				<tr>
+					<th>Ej.</th>
+					<th>Orgánica</th>
+					<th>Descripción</th>
+					<th>% GG</th>
+					<th>Total Derechos Reconocidos Netos</th>
+					<th>Total Recaudación Neta</th>
+					<th>Máximo a Habilitar</th>
+					<th>Total Obligaciones Reconocidas</th>
+					<th>Total Crédito Habilitado</th>
+					<th>Importe a Habilitar</th>
+					<th>AIP</th>
+					<th>Fecha Último Cobro</th>
+				</tr>
+			</thead>
+			<tbody>
+				<ui:repeat value="#{ctrl.gcDocs}" var="row">
+					<tr id="#{row.idOrganica}" class="tb-data" modalidad="#{row.modalidad}" impCpAcum="#{row.impCpAcum}" 
+															impHabilitar="#{row.impHabilitar}" fCreacion="#{row.FCreacion}">
+						<td>#{row.ejercicio}</td>
+						<td>#{row.organica}</td>
+						<td>#{row.descripcion}</td>
+						<td class="text-right">#{row.porGg}</td>
+						<td class="text-right">#{row.drnAcum}</td>
+						<td class="text-right">#{row.rnAcum}</td>
+						<td class="text-right">#{row.maxHabilitar}</td>
+						<td class="text-right">#{row.orAcum}</td>
+						<td class="text-right">#{row.ctHabilitado}</td>
+						<td class="text-right">@txtHabilitar;</td>
+						<td>#{row.aipOrg}</td>
+						<td>#{row.fMaxCobro}</td>
+					</tr>
+				</ui:repeat>
+			</tbody>
+		</table>
+	</ui:define>
+</ui:composition>

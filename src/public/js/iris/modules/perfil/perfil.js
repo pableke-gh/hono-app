@@ -1,6 +1,7 @@
 
 import tabs from "../../../components/Tabs.js";
 import pf from "../../../components/Primefaces.js";
+import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
 import organicas from "./organicas.js";
@@ -39,12 +40,13 @@ function Perfil() {
         	valid.addRequired("interesado", "errPerfil");
 		if (organicas.isEmpty())
 			valid.addRequired("organica", "errOrganicas");
+		// when create or reactivate iris force to invoke rcPaso0 
+		form.setChanged(form.isChanged() || !form.fire("has-firmas"));
 		return valid.isOk() && organicas.save();
     }
 
 	form.afterReset(() => { _acInteresado.setValue(); actividad.setColectivo(); organicas.reset(); });
 	tabs.setAction("paso0", () => { form.validate(self.validate) && form.sendTab(window.rcPaso0, 1); });
-	tabs.setViewEvent(1, () => form.render(".i18n-tr-h1.active")); // render steps
 
 	this.init = () => {
 		actividad.init();
@@ -55,6 +57,11 @@ function Perfil() {
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));
+
+		// render steps functions
+		iris.getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), iris);
+		iris.getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), iris);
+		iris.getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + actividad.isIsu()).get("lblPasos"), iris);
 	}
 
 	this.view = (interesado, orgs) => {
@@ -66,7 +73,10 @@ function Perfil() {
 	}
 
 	this.update = interesado => {
-		interesado && form.render(".dir-interesado", interesado);
+		iris.getDirInteresado = () => {
+			const tpl = "@lblDomicilio;: @dir;, @cp;, @municipio;, @provincia; (@residencia;)"; // template for matches
+			return (interesado && iris.isEditable()) ? i18n.render(tpl, interesado) : null; // reload contents or hide if no matches
+		}
 	}
 }
 

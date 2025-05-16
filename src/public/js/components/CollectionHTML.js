@@ -8,6 +8,7 @@ const HIDE_CLASS = "hide";
 const fnHide = el => el.classList.add(HIDE_CLASS);
 const fnShow = el => el.classList.remove(HIDE_CLASS);
 const fnVisible = el => (el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+const initOptions = size => { OPTS.size = size; OPTS.index = 0; OPTS.count = 1; return OPTS; };
 const fnRender = (el, data, opts) => {
     el.dataset.template = el.dataset.template || el.innerHTML; // save current template
     el.innerHTML = i18n.render(el.dataset.template, data, opts); // display new data
@@ -16,9 +17,11 @@ const fnRender = (el, data, opts) => {
 }
 const fnRefresh = (el, data, opts) => {
 	if (el.dataset.refresh == "text-render")
-		return fnRender(el, data, OPTS); // render contents only
+		return fnRender(el, data, initOptions(1)); // render contents only
 	const fnRefresh = opts[el.dataset.refresh]; // handler
-	if (el.dataset.toggle) // toggle specific style class
+	if (!fnRefresh) // no handler linked to element
+		el.setVisible(false); // element not renderizable yet!
+	else if (el.dataset.toggle) // toggle specific style class
 		el.classList.toggle(el.dataset.toggle, fnRefresh(el));
 	else // show / hide
 		el.setVisible(fnRefresh(el));
@@ -38,7 +41,7 @@ HTMLCollection.prototype.findIndexBy = function(selector) { return this.findInde
 HTMLCollection.prototype.filterBy = function(selector) { return this.filter(el => el.matches(selector)); }
 HTMLCollection.prototype.refresh = function(data, opts) { this.forEach(el => fnRefresh(el, data, opts)); }
 HTMLCollection.prototype.render = function(data) {
-	OPTS.size = this.length; // array length
+	initOptions(this.length); // array length
 	this.forEach((el, i) => { OPTS.index = i; fnRender(el, data, OPTS); });
 }
 HTMLCollection.prototype.html = function(text) { this.forEach(el => { el.innerHTML = text; }); return this; }
@@ -92,7 +95,7 @@ HTMLElement.prototype.setClick = function(fn) { this.onclick = ev => fn(ev, this
 HTMLElement.prototype.setVisible = function(force) { return force ? this.show() : this.hide(); }
 HTMLElement.prototype.isHidden = function() { return this.classList.contains(HIDE_CLASS); } // has class hide
 HTMLElement.prototype.isVisible = function(selector) { return fnVisible(this) && (selector ? this.matches(selector) : true); }
-HTMLElement.prototype.render = function(data, opts) { return fnRender(this, data, opts || OPTS); }
+HTMLElement.prototype.render = function(data, opts) { return fnRender(this, data, opts || initOptions(1)); }
 HTMLElement.prototype.refresh = function(data, opts) { return fnRefresh(this, data, opts); }
 
 HTMLElement.prototype.setDisabled = function(force) { // Update attribute and style

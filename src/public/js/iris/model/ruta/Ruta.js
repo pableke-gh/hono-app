@@ -2,6 +2,7 @@
 import sb from "../../../components/types/StringBox.js";
 import tb from "../../../components/types/TemporalBox.js";
 import i18n from "../../i18n/langs.js";
+import paises from "../../data/paises/paises.js";
 
 function Ruta() {
 	const self = this; //self instance
@@ -36,8 +37,10 @@ function Ruta() {
 	this.isVehiculoAlquiler = ruta => (ruta.desp == 2);
 	this.isVehiculoAjeno = ruta => (ruta.desp == 3);
 	this.isTaxiInterurbano = ruta => (ruta.desp == 4);
-	this.isLinkable = ruta => (!self.isVehiculoPropio(ruta) && !self.isVehiculoAjeno(ruta)); // rutas a las que se le puede asignar un gasto
+	this.isDespSinFactura = ruta => (self.isVehiculoPropio(ruta) || self.isVehiculoAjeno(ruta));
+	this.isDespConFactura = ruta => !self.isDespSinFactura(ruta); // desplazamiento que requiere factura
 	this.isUnlinked = ruta => (self.isLinkable(ruta) && !ruta.g); // rutas asociables a gasto sin gasto asociado
+	this.isLinkable = self.isDespConFactura; // rutas a las que se le puede asignar un gasto 
 
 	this.isSalidaTemprana = ruta => (sb.getHours(ruta.dt1) < 14);
 	this.isSalidaTardia = ruta => (sb.getHours(ruta.dt1) > 21);
@@ -47,10 +50,13 @@ function Ruta() {
 
 	this.getOrigen = ruta => ruta.origen;
 	this.getPaisSalida = ruta => ruta.pais1;
+	this.getDestino = ruta => ruta.destino;
 	this.getPaisllegada = ruta => ruta.pais2;
-	this.getPaisPernocta = ruta => {
-		return self.isLlegadaTardia(ruta) ? self.getPaisllegada(ruta) : self.getPaisSalida(ruta);
-	}
+	this.getPaisDestino = ruta => paises.getPais(ruta.pais2);
+	this.getMedioTransporte = ruta => i18n.getItem("tiposDesp", ruta.desp);
+	this.getTrayecto = ruta => (ruta.origen + " - " + ruta.destino);
+	this.getTrayectoPais = ruta => `${ruta.origen} (${ruta.pais1}) - ${ruta.destino} (${ruta.pais2})`;
+	this.getPaisPernocta = ruta => (self.isLlegadaTardia(ruta) ? self.getPaisllegada(ruta) : self.getPaisSalida(ruta));
 
 	this.valid = ruta => {
 		const valid = i18n.getValidation();
