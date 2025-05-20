@@ -37,7 +37,7 @@ function List() {
 		return self.setSolicitudes(JSON.read(divSolicitudes?.innerHTML)); // preload data
 	}
 
-	tabs.setInitEvent("list", () => (tblSolicitudes.isEmpty() && fnList("", "5")));
+	tabs.setInitEvent("list", () => (tblSolicitudes.isEmpty() && !form.getval("#estado") && fnList("", "5")));
 	tabs.setAction("list", fnCallList);
 	tabs.setAction("list-all", () => { form.reset(".ui-filter").loading(); window.rcList(); });
 	tabs.setAction("relist", () => fnList("", "5"));

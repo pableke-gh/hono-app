@@ -20,11 +20,13 @@ function Facturas() {
 			.set("show-gestor", fnShowGestor).set("show-face", factura.isFace).set("show-gaca", factura.isFirmaGaca)
 			.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago).set("is-exento", factura.isExento)
 			//.set("is-reactivable", factura.isReactivable)
-			.onChangeInput("[name=subtipo]", ev => { form.setStrval("#subtipoPF", ev.target.value); });
+			.onChangeInputs(".ui-pf", (ev, el) => { el.previousElementSibling.value = ev.target.value; }); // update pf inputs 
 	}
 
 	this.view = (data, conceptos, firmas) => {
+		data.ivaPF = data.iva; // sync iva
 		data.nifTercero = data.nif; // set field
+		data.subtipoPF = data.subtipo; // sync subtipo
 		xeco.view(data, firmas); // load data-model before view
 		lineas.setLineas(conceptos); // Load conceptos and iva input
 		acOrganica.setValue(data.idOrg, data.org + " - " + data.descOrg);

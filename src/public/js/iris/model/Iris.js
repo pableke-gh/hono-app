@@ -33,7 +33,9 @@ solicitud.getInteresado = () => solicitud.get("interesado");
 solicitud.getEmailInteresado = () => solicitud.get("emailInt");
 
 solicitud.isMun = () => (solicitud.getActividad() == "MUN");
-solicitud.hasMultipartida = () => (solicitud.mask & 1);
+solicitud.isConflicto = () => (solicitud.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
+solicitud.isPaso8 = () => (solicitud.getMask() & 4); // paso 8 activado manualmente por la uae
+solicitud.isMaxVigencia = () => (solicitud.getMask() & 8); //maxima fecha de vigencia en rrhh
 
 solicitud.row = data => {
 	let acciones = solicitud.rowActions(data);
@@ -43,7 +45,7 @@ solicitud.row = data => {
 		acciones += '<a href="#rcReactivar" class="row-action" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
 
 	const info = solicitud.isUrgente() ? `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>` : "";
-	const otras = solicitud.hasMultipartida() ? "<span> (y otras)</span>" : "";
+	const otras = solicitud.isMultilinea() ? "<span> (y otras)</span>" : "";
 	return `<tr class="tb-data">
 		<td>${info}</td>
 		<td class="text-center"><a href="#rcView" class="row-action" title="${data.cod}: ${data.name}">${sb.substr(data.cod, 0, 9)}</a></td>

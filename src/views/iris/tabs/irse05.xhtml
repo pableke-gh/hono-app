@@ -44,25 +44,23 @@
 						<option value="201" class="ui-factura-upct"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
 						<option value="202"><h:outputText value="#{msg['lbl.doc.otra']}" escape="false" /></option>
 					</optgroup>
-					<c:if test="#{irse.form.extAlu and irse.form.iaeExt}">
+					<!--<c:if test="#{irse.form.extAlu and irse.form.iaeExt}">
 						<optgroup label="Justificaciones">
 							<option value="203"><h:outputText value="#{msg['lbl.justifi.dietas']}" escape="false" /></option>
 						</optgroup>
-					</c:if>
-					<c:if test="#{iris.perfil.tab8}">
-						<optgroup label="Gasto Extraordinario">
-							<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
-							<c:if test="#{not irse.form.mun}">
-								<option value="302"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
-							</c:if>
-							<c:if test="#{irse.rutas.llegadaCena and irse.gastos.extraCena}">
-								<option value="303"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
-							</c:if>
-							<c:if test="#{irse.form.alu or irse.form.ext}">
-								<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
-							</c:if>
-						</optgroup>
-					</c:if>
+					</c:if>-->
+					<optgroup label="Gasto Extraordinario" class="form-refresh" data-refresh="is-paso8">
+						<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
+						<c:if test="#{not irse.form.mun}">
+							<option value="302"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
+						</c:if>
+						<c:if test="#{irse.rutas.llegadaCena and irse.gastos.extraCena}">
+							<option value="303"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
+						</c:if>
+						<c:if test="#{irse.form.alu or irse.form.ext}">
+							<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
+						</c:if>
+					</optgroup>
 				</select>
 				<div class="ui-errtip"></div>
 			</label>

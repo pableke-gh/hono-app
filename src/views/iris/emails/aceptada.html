@@ -47,7 +47,7 @@
 			<tr><th>Campo UXXI-EC</th><th>Valor del Campo UXXI-EC</th></tr>
 		</thead>
 		<tbody>
-			<tr><th class="tl w180">Descripción del JG</th><td>IRIS <span th:text="${xs.codigoNum}"></span> #codFirmante# <span th:text="${xs.actividad}"></span> - <span th:text="${xs.fullNameInteresado}"></span> - <span th:text="${xs.memoria}"></span> - <span th:text="${dt.toEsDate(rutas.fechaSalida)}"></span> a <span th:text="${dt.toEsDate(rutas.fechaLlegada)}"></span>. <span th:text="${subv.descripcion}"></span></td></tr>
+			<tr><th class="tl w180">Descripción del JG</th><td>IRIS <span th:text="${xs.codigoNum}"></span> #codFirmante# <span th:text="${xs.actividad}"></span> - <span th:text="${xs.fullNameInteresado}"></span> - <span th:text="${xs.memoria}"></span> - <span th:text="${dt.toEsDate(rutas.fechaSalida)}"></span> a <span th:text="${dt.toEsDate(rutas.fechaLlegada)}"></span>. <span th:text="${gastos.justifiSubv}"></span></td></tr>
 			<tr><th class="tl w180">Fecha de emisión</th><td th:text="${dt.toEsDate(dt.sysdate())}"></td></tr>
 			<tr><th class="tl w180">NIF y nombre</th><td><span th:text="${xs.nifInteresado}"></span> - <span th:text="${xs.fullNameInteresado}"></span></td></tr>
 			<tr><th class="tl w180">Número justificante</th><td><span th:text="${xs.ejercicio}"></span>/<span th:text="${xs.codigoPk}"></span>/<span th:text="${xs.actividad}"></span></td></tr>
@@ -65,10 +65,10 @@
 			<tr><th>Campo UXXI-EC</th><th class="tr">Línea 1 (Exento)</th><th class="tr">Línea 2 (No exento)</th></tr>
 		</thead>
 		<tbody>
-			<tr><th class="tl w180">Importe neto</th><td class="tr">#impNetoExentoEs#</td><td class="tr">#impNetoNoExentoEs#</td></tr>
-			<tr><th class="tl w180">Imp. Rtn. IRPF (<span th:text="${nb.esBigval(iban.getImporte(), '-')}"></span> %)</th><td class="tr">-</td><td class="tr">#rtnIrpfEs#</td></tr>
-			<tr><th class="tl w180">Líquido a pagar</th><td class="tr">#impLiquidoExentoEs#</td><td class="tr">#impLiquidoNoExentoEs#</td></tr>
-			<tr><th class="tl w180">Clave fiscal</th><td class="tr">#cfExento#</td><td class="tr">#cfNoExento#</td></tr>
+			<tr><th class="tl w180">Importe neto</th><td class="tr" th:text="${nb.esBigval(gastos.impNetoExento)}"></td><td class="tr" th:text="${nb.esBigval(gastos.impNetoNoExento, '-')}"></td></tr>
+			<tr><th class="tl w180">Imp. Rtn. IRPF (<span th:text="${nb.esBigval(gastos.porcentajeIrpf, '-')}"></span> %)</th><td class="tr">-</td><td class="tr" th:text="${nb.esBigval(gastos.impRetencionIrpf, '-')}"></td></tr>
+			<tr><th class="tl w180">Líquido a pagar</th><td class="tr" th:text="${nb.esBigval(gastos.impLiquidoExento, '-')}"></td><td class="tr" th:text="${nb.esBigval(gastos.impLiquidoNoExento, '-')}"></td></tr>
+			<tr><th class="tl w180">Clave fiscal</th><td class="tr" th:text="${gastos.claveFiscalExenta}"></td><td class="tr" th:text="${gastos.claveFiscalNoExenta}"></td></tr>
 		</tbody>
 		<tfoot>
 			<tr><td colspan="3">Campos: 4</td></tr>

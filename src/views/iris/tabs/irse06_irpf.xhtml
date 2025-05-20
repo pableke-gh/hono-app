@@ -7,29 +7,33 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h3>
-	<a id="p6-irpf" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
-		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.irpf']}" escape="false" />: <b class="texterr">#{irse.form.retencionIrpfI18n} €</b>
-	</a>
-	</h3>
-	<table id="gastos" class="info-p6-irpf hide table-xs">
-		<thead>
-		<tr>
-			<th>Total dietas no justificadas</th>
-			<th>Total asistencias / colaboraciones</th>
-			<th>Total sujeto a IRPF</th>
-			<th>Tipo IRPF​</th>
-			<th>Importe retención IRPF</th>
-		</tr>
-		</thead>
-		<tbody>
-			<tr class="tb-data tb-data-tc">
-				<td data-cell="Total dietas no justificadas">#{irse.gastos.impNoJustifiI18n} €</td>
-				<td data-cell="Total asistencias / colaboraciones">#{irse.gastos.totAcI18n} €</td>
-				<td data-cell="Total sujeto a IRPF">#{irse.gastos.totSujetoIrpfI18n} €</td>
-				<td data-cell="Tipo IRPF​">#{irse.gastos.irpf} %</td>
-				<td data-cell="Importe retención IRPF">#{irse.form.retencionIrpfI18n} €</td>
+	<div class="navbar form-refresh" data-refresh="is-irpf">
+		<h3>
+			<a id="p6-irpf" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
+				<i class="fas fa-caret-right icon"></i>
+				<h:outputText value="#{msg['uae.irse.tab6.msg.tit.irpf']}" escape="false" />:
+				<b class="text-green form-refresh" data-refresh="text-render">$getImpIrpf; €</b> <!-- #{irse.form.retencionIrpfI18n} -->
+			</a>
+		</h3>
+		<table id="gastos" class="info-p6-irpf hide table-xs">
+			<thead>
+			<tr>
+				<th>Total dietas no justificadas</th>
+				<th>Total asistencias / colaboraciones</th>
+				<th>Total sujeto a IRPF</th>
+				<th>Tipo IRPF​</th>
+				<th>Importe retención IRPF</th>
 			</tr>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<tr class="tb-data tb-data-tc">
+					<td data-cell="Total dietas no justificadas">#{irse.gastos.impNoJustifiI18n} €</td>
+					<td data-cell="Total asistencias / colaboraciones">#{irse.gastos.totAcI18n} €</td>
+					<td data-cell="Total sujeto a IRPF">#{irse.gastos.totSujetoIrpfI18n} €</td>
+					<td data-cell="Tipo IRPF​">#{irse.gastos.irpf} %</td>
+					<td data-cell="Importe retención IRPF">#{irse.form.retencionIrpfI18n} €</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </html>

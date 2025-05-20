@@ -71,12 +71,15 @@ function Gasto() {
 		return self;
 	}
 
-	this.getDieta = gasto => gasto?.estado; // _gIban = tipo de dieta = estado (default = 2)
+	this.getGrupoDieta = gasto => gasto?.subtipo; // _gIban = grupo de la dieta = subtipo (default = 2)
+	this.getTipoDieta = gasto => gasto?.estado; // _gIban = tipo de dieta = estado (RD = 1, EUT = 2, UPCT = 9)
+	this.setTipoDieta = (gasto, tipo) => { gasto.estado = tipo; } // _gIban = tipo de dieta = estado (RD = 1, EUT = 2, UPCT = 9) 
 	this.getCodigoIban = gasto => gasto?.nombre; // _gIban = codigo iban (XXXX-XXXX-XXXX-XXXX) = nombre
 	this.getSwift = gasto => gasto?.cod; // _gIban = swift = cod = id_fichero
 	this.getObservaciones = gasto => gasto?.desc; // _gIban = observaciones = desc
 	this.setIban = (gIban, data) => {
-		gIban.estado = data.dieta;
+		gIban.subtipo = data.grupoDieta;
+		//gIban.estado = data.tipoDieta; // autocalculado por la organica
 		gIban.nombre = data.iban;
 		gIban.cod = data.swift;
 		gIban.desc = data.observaciones;

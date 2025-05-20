@@ -64,7 +64,7 @@ function Send() {
 
 		const aux = gastos.getCodigoIban(); // user iban
 		const iban = cuentas.find(iban => (iban == aux)) || ""; // find selected iban
-		iris.set("dieta", gastos.getDieta()).set("cuenta", iban).set("iban", aux).set("swift", gastos.getSwift()).set("observaciones", gastos.getObservaciones()) // gastos Iban 
+		iris.set("grupoDieta", gastos.getGrupoDieta()).set("cuenta", iban).set("iban", aux).set("swift", gastos.getSwift()).set("observaciones", gastos.getObservaciones()) // gastos Iban 
 			.set("paisEntidad", gastos.getPaisEntidad()).set("nombreEntidad", gastos.getNombreEntidad()).set("codigoEntidad", gastos.getCodigoEntidad()); // gastos Banco
 	}
 

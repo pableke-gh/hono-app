@@ -64,6 +64,7 @@ function PartidaInc() {
 	this.view = partidas => {
 		_ecoInc.reset(); // clear select box
 		self.setPartidas(partidas); // load table
+		form.text(".filename", ""); // limpio el nombre anterior
 	}
 
 	tabs.setAction("save030", () => {

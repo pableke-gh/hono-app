@@ -30,6 +30,7 @@ function Gastos() {
 	this.setCongreso = data => { gastos.setCongreso(data); return self; } 
 	this.setAsistencia = data => { gastos.setAsistencia(data); return self; } 
 	this.setIban = data => { gastos.setIban(data); return self; } 
+	this.setTipoDieta = tipo => { gastos.setTipoDieta(tipo); return self; }
 	this.setBanco = data => { gastos.setBanco(data); return self; } 
 	this.save = () => { form.stringify("#gastos-json", gastos.getGastos()); } // serialize gastos
 
@@ -59,7 +60,8 @@ function Gastos() {
 		iris.getNumNochesPendientes = () => self.getNochesPendientes(); // call function after redefined by gastos module
 		const fnGastosPendientes = () => (perfil.isMaps() && ((rutas.getNumRutasUnlinked() > 0) || (self.getNochesPendientes() > 0)));
 		form.set("is-gastos-pendientes", fnGastosPendientes).set("is-noches-pendientes", self.getNochesPendientes).set("is-rutas-pendientes", iris.getNumRutasOut)
-			.set("is-zip-com", () => (iris.isDisabled() && resume.docComisionado)).set("is-zip-doc", () => (iris.isDisabled() && resume.otraDoc));
+			.set("is-zip-com", () => (iris.isDisabled() && resume.docComisionado)).set("is-zip-doc", () => (iris.isDisabled() && resume.otraDoc))
+			.set("is-ac", globalThis.none).set("is-irpf", globalThis.none); // no aplica para esta version
 	}
 
 	window.addGasto = (xhr, status, args) => {

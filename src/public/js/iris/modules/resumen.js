@@ -17,7 +17,7 @@ function Resumen() {
 	const form = xeco.getForm(); // form component
 
 	this.getImpTrans = () => (rvp.getImporte() + transportes.getImporte());
-	this.getImpBruto = () => (self.getImpTrans() + pernoctas.getImporte() + dietas.getImporte());
+	this.getImpBruto = () => (self.getImpTrans() + pernoctas.getImporte() + dietas.getImporte() /*+ extras.getImporte()*/); // todo: modulo extras
 
 	const fnSave = data => {
 		if (form.isChanged())

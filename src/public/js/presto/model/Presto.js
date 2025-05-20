@@ -23,13 +23,12 @@ solicitud.isImpCd = () => (solicitud.isEditable() && !solicitud.isAnt());
 solicitud.getAdjunto = () => solicitud.get("file");
 
 solicitud.isPartidaDec = () => (solicitud.isTcr() || solicitud.isL83() || solicitud.isAnt() || solicitud.isAfc());
-solicitud.isMultipartida = () => (solicitud.isTcr() || solicitud.isFce() || solicitud.isGcr());
-solicitud.showPartidasInc = () => (solicitud.isMultipartida() && solicitud.isEditable() && (partidas.size() < 20));
+solicitud.isTipoMultipartida = () => (solicitud.isTcr() || solicitud.isFce() || solicitud.isGcr());
+solicitud.showPartidasInc = () => (solicitud.isTipoMultipartida() && solicitud.isEditable() && (partidas.size() < 20));
 solicitud.isPartidaExt = () => (solicitud.isGcr() || solicitud.isAnt());
 solicitud.isDisableEjInc = () => (solicitud.isDisabled() || solicitud.isTcr() /*|| solicitud.isFce()*/);
 solicitud.isAutoLoadImp = () => (solicitud.isL83() || solicitud.isAnt() || solicitud.isAfc());
 solicitud.isAutoLoadInc = () => (solicitud.isL83() || solicitud.isAnt());
-solicitud.hasMultipartida = () => (solicitud.getMask() & 1);
 solicitud.isAnticipada = () => (solicitud.getMask() & 4);
 solicitud.isExcedida = () => (solicitud.getMask() & 8);
 
@@ -46,7 +45,7 @@ solicitud.row = data => {
 	if ((solicitud.isUae() || solicitud.isOtri()) && solicitud.isExcedida())
 		info = '<td class="text-center text-warn text-xl" title="La cantidad solicitada excede el margen registrado por el Buzón de Ingresos">&#9888;</td>';
 
-	const otras = solicitud.hasMultipartida() ? "<span> (y otras)</span>" : "";
+	const otras = solicitud.isMultilinea() ? "<span> (y otras)</span>" : "";
 	return `<tr class="tb-data">
 		${info}
 		<td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>

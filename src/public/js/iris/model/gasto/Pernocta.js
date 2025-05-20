@@ -19,7 +19,7 @@ function Pernocatas() {
 		resume.numNoches += data.num; // numero total de noches
 
 		data.impTotal = data.imp2 * data.num; // importe total = (imp./noche) * (num noches)
-		data.impMin = organica.isEUT() ? resume.imp1 : Math.min(data.imp1, data.impTotal);
+		data.impMin = organica.isEUT() ? data.imp1 : Math.min(data.imp1, data.impTotal);
 		resume.impMin += data.impMin; // #{irse.form.getMinPernoctaI18n(g)}
 	}
 

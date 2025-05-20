@@ -57,7 +57,9 @@ function Gastos() {
 	this.getJustifiVp = () => gasto.getJustifiVp(_gAc);
 	this.setAsistencia = data => { gasto.setAsistencia(_gAc, data); return self; }
 
-	this.getDieta = () => gasto.getDieta(_gIban);
+	this.getGrupoDieta = () => gasto.getGrupoDieta(_gIban);
+	this.getTipoDieta = () => gasto.getTipoDieta(_gIban);
+	this.setTipoDieta = tipo => gasto.setTipoDieta(_gIban, tipo);
 	this.getCodigoIban = () => gasto.getCodigoIban(_gIban);
 	this.getSwift = () => gasto.getSwift(_gIban);
 	this.getObservaciones = () => gasto.getObservaciones(_gIban);

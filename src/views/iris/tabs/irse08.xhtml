@@ -7,12 +7,13 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="navbar">
+	<div class="navbar form-refresh" data-refresh="is-paso8">
 	<h3>
-	<a id="p6-extra" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
-		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.5']}" escape="false" />:
-		<b class="text-green">#{irse.gastos.totExtraI18n} €</b>
-	</a>
+		<a id="p6-extra" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
+			<i class="fas fa-caret-right icon"></i>
+			<h:outputText value="#{msg['uae.irse.tab6.msg.tit.5']}" escape="false" />:
+			<b class="text-green form-refresh" data-refresh="text-render">$getImpExtras; €</b>
+		</a>
 	</h3>
 	<table id="gastos" class="info-p6-extra hide tb-xeco table-xs">
 		<thead>

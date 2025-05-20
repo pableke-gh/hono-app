@@ -30,7 +30,7 @@
 			<li><b>Fecha de la comunicación:</b> <span th:text="${dt.toEsDate(xs.FCreacion)}"></span></li>
 			<li><b>Remitente:</b> <span th:text="${xs.solicitante}"></span></li>
 			<li><b>Interesado:</b> <span th:text="${xs.interesado}"></span> (<span th:text="${xs.colectivo}"></span>)</li>
-			<li><b>Observaciones:</b> <span th:text="${iban.descripcion}"></span></li>
+			<li><b>Observaciones:</b> <span th:text="${gastos.observaciones}"></span></li>
 			<li th:if="${xs.isUrgente()}"><b>Urgencia:</b> <span th:text="${xs.extra}"></span></li>
 			<li th:if="${xs.isUrgente()}"><b>Fecha Límite:</b> <span th:text="${dt.toEsDate(xs.FMax)}"></span></li>
 		</ul>

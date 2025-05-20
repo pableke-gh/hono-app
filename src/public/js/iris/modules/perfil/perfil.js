@@ -53,7 +53,8 @@ function Perfil() {
 		organicas.init();
 
 		form.loadAcItems(".ui-personal", term => pf.sendTerm("rcFindPersonal", term));
-		form.set("is-isu", actividad.isIsu).set("is-maps", actividad.isMaps);
+		form.set("is-isu", actividad.isIsu).set("is-maps", actividad.isMaps)
+			.set("is-paso8", iris.isPaso8).set("is-editable-paso8", () => (iris.isEditable() && iris.isPaso8()));
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));

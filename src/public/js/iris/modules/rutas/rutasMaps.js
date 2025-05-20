@@ -2,6 +2,7 @@
 import tabs from "../../../components/Tabs.js";
 
 import iris from "../../model/Iris.js";
+import organica from "../../model/Organica.js";
 import ruta from "../../model/ruta/RutaMaps.js";
 import rutas from "../../model/ruta/Rutas.js";
 import { CT } from "../../data/rutas.js";
@@ -39,8 +40,9 @@ function RutasMaps() {
 			rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
 			// todo: build dietas con temporal api...
 		}
-		if (form.isChanged()) { // save gasto km (matricula) e iban (tipo dieta)
-			_tblRutas.setChanged().setProp("impKm", rvp.getImporte());
+		if (form.isChanged()) { // save gasto km (matricula) e iban (tipo / grupo dieta)
+			_tblRutas.setChanged().setProp("impKm", rvp.getImporte()); // importe = €/km
+			gastos.setTipoDieta(organica.getTipoDieta()); // set tipo = (RD, EUT o UPCT)
 			gastos.setKm(data).setIban(data).save();
 		}
 		return self;

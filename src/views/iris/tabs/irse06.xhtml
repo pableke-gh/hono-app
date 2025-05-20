@@ -14,25 +14,26 @@
 			<span>Pulsa en cada línea si quieres revisar y editar algunos de ellos antes de enviarlos.</span>
 		</h2>
 
-		<!--<div class="#{irse.gastos.cssAc}">
-			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.ac']}" escape="false" />: <b class="text-green">#{irse.gastos.totAcI18n} €</b></h3>
-		</div>-->
-
+		<div class="navbar form-refresh" data-refresh="is-ac">
+			<h3>
+				<i class="fas fa-caret-right icon"></i>
+				<h:outputText value="#{msg['uae.irse.tab6.msg.tit.ac']}" escape="false" />:
+				<b class="text-green form-refresh" data-refresh="text-render">$impAc; €</b>
+			</h3>
+		</div>
 		<div class="navbar form-refresh" data-refresh="is-mun">
-			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green"></b></h3>
+			<h3>
+				<i class="fas fa-caret-right icon"></i>
+				<h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />:
+				<b class="text-green form-refresh" data-refresh="text-render">$impMun; €</b>
+			</h3>
 		</div>
 		<ui:include src="irse06_km.xhtml"></ui:include>
 		<ui:include src="irse06_transporte.xhtml"></ui:include>
 		<ui:include src="irse06_pernoctas.xhtml"></ui:include>
 		<ui:include src="irse07.xhtml"></ui:include>
-
-		<c:if test="#{iris.perfil.tab8}">
-			<ui:include src="irse08.xhtml"></ui:include>
-		</c:if>
-
-		<div class="#{irse.form.cssIrpf}">
-			<ui:include src="irse06_irpf.xhtml"></ui:include>
-		</div>
+		<ui:include src="irse08.xhtml"></ui:include>
+		<ui:include src="irse06_irpf.xhtml"></ui:include>
 	</div>
 
 	<div class="navbar">

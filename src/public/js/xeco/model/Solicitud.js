@@ -54,6 +54,7 @@ base.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") |
 //base.isEstudiantes = () => (_grupo == "9");
 //base.isContratacion = () => (_grupo == "68");
 
+base.isMultilinea = () => (base.getMask() & 1);
 base.isFirmable = () => (base.isPendiente() && firma.isFirmable(base.get("fmask")));
 base.isCancelable = () => (base.isUae() && (base.isValidada() || base.isErronea()));
 base.isInvalidable = () => (base.isFirmable() || base.isCancelable()); // show reject form 

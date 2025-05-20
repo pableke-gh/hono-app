@@ -83,7 +83,7 @@ function XecoForm() {
 	tabs.setAction("send", () => { form.fire("is-valid") && i18n.confirm("msgSend") && form.invoke(window.rcSend); }); // send from xeco-model form
 	tabs.setAction("firmar", () => { i18n.confirm("msgFirmar") && form.invoke(window.rcFirmarForm); }); // run remote command from xeco-model
 	tabs.setAction("reject", () => { fnReject(list.getCurrentItem()); }); // open reject tab from list
-	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // update editable inputs
+	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable => TODO: auto call window.rcReactivar if exists
 	tabs.setAction("subsanar", () => { form.fire("is-valid") && i18n.confirm("msgSave") && form.invoke(window.rcSubsanar); }); // send from changes
 }
 
