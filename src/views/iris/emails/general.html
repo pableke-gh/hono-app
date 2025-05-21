@@ -44,7 +44,7 @@
 		</thead>
 		<tbody class="tc">
 			<tr th:each="org:${aplicaciones}">
-				<td th:text="${msgs.get(org.descImputacion)}"></td>
+				<td th:text="${org.descImputacion}"></td>
 				<td th:text="${org.idFichero}"></td>
 				<td th:text="${org.nombre}"></td>
 				<td class="tr"><span th:text="${nb.esBigval(org.importe)}"></span> €</td>

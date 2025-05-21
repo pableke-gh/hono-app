@@ -30,7 +30,7 @@
 
 	<p class="terr"><b>AVISOS</b></p>
 	<ul>
-		<li><b>Nuevo tercero:</b> <span th:text="${isNewTercero}"></span> <span th:text="${canceladoTercero}"></span></li>
+		<li><b>Nuevo tercero:</b> <span th:text="${isNewTercero}"></span></li>
 		<li><b>Nueva cuenta bancaria:</b> <span th:text="${isNewIban}"></span></li>
 		<li><b>Solicitadas indemnizaciones extraordinarias:</b> <span th:text="${isPaso8}"></span></li>
 		<li><b>Número de km corregidos al alza:</b> <span th:text="${overNumKm}"></span></li>
@@ -47,7 +47,7 @@
 			<tr><th>Campo UXXI-EC</th><th>Valor del Campo UXXI-EC</th></tr>
 		</thead>
 		<tbody>
-			<tr><th class="tl w180">Descripción del JG</th><td>IRIS <span th:text="${xs.codigoNum}"></span> #codFirmante# <span th:text="${xs.actividad}"></span> - <span th:text="${xs.fullNameInteresado}"></span> - <span th:text="${xs.memoria}"></span> - <span th:text="${dt.toEsDate(rutas.fechaSalida)}"></span> a <span th:text="${dt.toEsDate(rutas.fechaLlegada)}"></span>. <span th:text="${gastos.justifiSubv}"></span></td></tr>
+			<tr><th class="tl w180">Descripción del JG</th><td>IRIS <span th:text="${xs.codigoNum}"></span> <span th:text="${firma.codigo}"></span> <span th:text="${xs.actividad}"></span> - <span th:text="${xs.fullNameInteresado}"></span> - <span th:text="${xs.memoria}"></span> - <span th:text="${dt.toEsDate(rutas.fechaSalida)}"></span> a <span th:text="${dt.toEsDate(rutas.fechaLlegada)}"></span>. <span th:text="${gastos.justifiSubv}"></span></td></tr>
 			<tr><th class="tl w180">Fecha de emisión</th><td th:text="${dt.toEsDate(dt.sysdate())}"></td></tr>
 			<tr><th class="tl w180">NIF y nombre</th><td><span th:text="${xs.nifInteresado}"></span> - <span th:text="${xs.fullNameInteresado}"></span></td></tr>
 			<tr><th class="tl w180">Número justificante</th><td><span th:text="${xs.ejercicio}"></span>/<span th:text="${xs.codigoPk}"></span>/<span th:text="${xs.actividad}"></span></td></tr>

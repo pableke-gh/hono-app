@@ -3,14 +3,14 @@ import sb from "../../../components/types/StringBox.js";
 import tabs from "../../../components/Tabs.js";
 import i18n from "../../i18n/langs.js";
 
+import ruta from "../../model/ruta/Ruta.js";
+import rutas from "../../model/ruta/Rutas.js";
+
 import iris from "../iris.js";
 import perfil from "../perfil/perfil.js";
 import maps from "./maps.js";
 import rmun from "./rutasMun.js";
 import rmaps from "./rutasMaps.js";
-
-import ruta from "../../model/ruta/Ruta.js";
-import rutas from "../../model/ruta/Rutas.js";
 
 function Rutas() {
 	const self = this; //self instance

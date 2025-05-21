@@ -58,13 +58,11 @@ function PartidaInc() {
 		form.set("is-valid", self.validate).onChangeInput("#ejInc", _acOrgInc.reload);
 		form.set("is-editable-ej-dec", fnEditableEjDec).set("is-editable-ej-inc", fnEditableEjInc);
 		_tblPartidasInc.set("#doc030", p030.load); // load form 030
-		pf.uploads(form.querySelectorAll(".pf-upload"));
 	}
 
 	this.view = partidas => {
 		_ecoInc.reset(); // clear select box
 		self.setPartidas(partidas); // load table
-		form.text(".filename", ""); // limpio el nombre anterior
 	}
 
 	tabs.setAction("save030", () => {
@@ -74,14 +72,14 @@ function PartidaInc() {
 
 	//****** tabla de partidas a incrementar ******//
 	window.loadEconomicasInc = (xhr, status, args) => {
-		if (!pf.showAlerts(xhr, status, args))
+		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
 		self.setEconomicas(coll.parse(args?.data)); // load new items for economicas inc.
 		self.setAvisoFa(_acOrgInc.getCurrentItem()); // aviso para organicas afectadas en TCR o FCE
 	}
 	window.fnAddPartidaInc = () => form.validate(partida.validate);
 	window.loadPartidaInc = (xhr, status, args) => {
-		if (!pf.showAlerts(xhr, status, args))
+		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
 		const partidaInc = coll.parse(args.data);
 		if (!partidas/*.setData(_tblPartidasInc)*/.validatePartida(partidaInc))
@@ -91,7 +89,7 @@ function PartidaInc() {
 		_acOrgInc.reload();
 	}
 	window.loadEco030 = (xhr, status, args) => {
-		if (!pf.showAlerts(xhr, status, args))
+		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
 		// carga las econonomicas de ingresos 030
 		form.setItems("#idEco030", coll.parse(args.data));

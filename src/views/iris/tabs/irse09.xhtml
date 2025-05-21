@@ -85,8 +85,8 @@
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<a href="#tab-action-paso9" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.firmar.enviar']}">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
+		<p:remoteCommand name="rcSave9" action="#{iris.form.save9()}" oncomplete="updateIrse(xhr, status, args, 9)" />
 		<p:remoteCommand name="rcPaso9" action="#{iris.form.paso9()}" oncomplete="showTab(xhr, status, args, 'init')" />
-		<p:remoteCommand name="rcSave9" action="#{iris.form.paso9()}" oncomplete="updateIrse(xhr, status, args, 9)" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 		<ui:include src="../parts/btn_doc.xhtml"></ui:include>
 	</div>

@@ -40,7 +40,7 @@ function Perfil() {
         	valid.addRequired("interesado", "errPerfil");
 		if (organicas.isEmpty())
 			valid.addRequired("organica", "errOrganicas");
-		// when create or reactivate iris force to invoke rcPaso0 
+		// when create or reactivate iris force to invoke rcPaso0
 		form.setChanged(form.isChanged() || !form.fire("has-firmas"));
 		return valid.isOk() && organicas.save();
     }
@@ -53,7 +53,7 @@ function Perfil() {
 		organicas.init();
 
 		form.loadAcItems(".ui-personal", term => pf.sendTerm("rcFindPersonal", term));
-		form.set("is-isu", actividad.isIsu).set("is-maps", actividad.isMaps)
+		form.set("is-isu", actividad.isIsu).set("not-isu", () => !actividad.isIsu()).set("is-maps", actividad.isMaps)
 			.set("is-paso8", iris.isPaso8).set("is-editable-paso8", () => (iris.isEditable() && iris.isPaso8()));
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";

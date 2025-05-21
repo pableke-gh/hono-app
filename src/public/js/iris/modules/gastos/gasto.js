@@ -1,6 +1,5 @@
 
 import tabs from "../../../components/Tabs.js";
-import pf from "../../../components/Primefaces.js";
 import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
@@ -35,7 +34,6 @@ function Gasto() {
 			_grpGasto.mask(0b10011);
 		else
 			_grpGasto.mask(0b00001);
-		form.refresh(iris);
 	}
 
 	this.reset = () => {
@@ -46,7 +44,7 @@ function Gasto() {
 		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 			.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start.substring(0, 10))
 			.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "max", end.substring(0, 10))
-			.text(".filename", "").setChanged().refresh(iris);
+			.setChanged().refresh(iris);
 	}
 
 	this.validate = data => {
@@ -67,9 +65,9 @@ function Gasto() {
 
 	this.init = () => {
 		_eTipoGasto.onchange = fnChange; // Change event
-		pf.uploads(form.querySelectorAll(".pf-upload-gasto"), fnChange);
 		iris.getTextGasto = () => i18n.get(isTaxi() ? "lblDescTaxi" : "lblDescObserv"); // label text
-		form.setDateRange("#fMinGasto", "#fMaxGasto"); // date range
+		// set date range type inputs + upload gasto handler on change event
+		form.setDateRange("#fMinGasto", "#fMaxGasto").set("upload-gasto", fnChange);
 	}
 
 	tabs.setViewEvent(5, self.reset); // reset form on view tab 5
