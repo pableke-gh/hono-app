@@ -20,6 +20,19 @@ function fnTable() {
     table.render(menus.filter(node => (node.tipo == 1)));
 }
 
+const elPdf = $1("a[href='#pdf']");
+elPdf.onclick = ev => {
+	ev.preventDefault();
+	// Creating a new jsPDF object
+	const pdf = new jsPDF();
+
+	// Use jsPDF's 'fromHTML' method to add HTML element to PDF
+	pdf.fromHTML($1("main"));
+
+	// Saving the PDF with specified file name
+	pdf.save("file");
+};
+
 // Register event on page load and export default handler
 nav.ready(fnTable);
 export default fnTable;
