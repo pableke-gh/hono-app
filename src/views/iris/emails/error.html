@@ -9,8 +9,7 @@
 	<header th:replace="emails/general.html :: header"></header>
 	<div class="navbar">
 		Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-		<br/>La Unidad de Asuntos Económicos ha elaborado la siguiente <b>PROPUESTA</b> de <b th:text="${xs.tramiteDesc}"></b> por <b th:text="${xs.actividadDesc}"></b>.
-		<br/>Se precisa tu FIRMA como <span th:text="${firma.cargo}"></span> para continuar la tramitación, salvo que seas el remitente o hayas firmado con anterioridad.
+		<br/>Se ha producido un <b class="terr">ERROR</b> en la siguiente <b>PROPUESTA</b> de <b th:text="${xs.tramiteDesc}"></b> por <b th:text="${xs.actividadDesc}">:
 	</div>
 
 	<div th:replace="emails/general.html :: comunicacion"></div>

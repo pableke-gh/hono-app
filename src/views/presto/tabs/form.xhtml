@@ -8,9 +8,9 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2 class="form-refresh" data-refresh="text-render">@getTitulo; @codigo;</h2>
-	<ui:include src="./partida_dec.xhtml"></ui:include>
-	<ui:include src="./partida_inc.xhtml"></ui:include>
-	<ui:include src="./form_info.xhtml"></ui:include>
+	<ui:include src="../partidas/pDec.xhtml"></ui:include>
+	<ui:include src="../partidas/pInc.xhtml"></ui:include>
+	<ui:include src="../parts/form_info.xhtml"></ui:include>
 
 	<div class="navbar">
 		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
@@ -37,5 +37,5 @@
 		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="is-removable" title="Borra la solicitud del sistema"> 
 			<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
 	</div>
-	<ui:include src="./firmas.xhtml"></ui:include>
+	<ui:include src="../parts/firmas.xhtml"></ui:include>
 </html>

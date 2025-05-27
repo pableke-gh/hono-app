@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - PRESTO</title>
+	<style th:replace="presto/emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="presto/emails/general.html :: header"></header>
+	<div class="navbar">
+		<p>
+			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
+			<br/>Se ha RECHAZADO la solicitud <span th:text="${xs.codigo}"></span> de <span th:text="${xs.descCodigo}"></span>:
+			<br/><b>Motivo del rechazo:</b> (<span th:text="${fRechazo.fullName}"></span>) <span th:text="${fRechazo.info}"></span>
+		</p>
+	</div>
+
+	<div th:replace="presto/emails/general.html :: firmas"></div>
+	<div th:replace="presto/emails/general.html :: solicitud"></div>
+	<div th:replace="presto/emails/general.html :: decrementar"></div>
+	<div th:replace="presto/emails/general.html :: incrementar"></div>
+	<footer th:replace="presto/emails/general.html :: footer"></footer>
+</body>
+</html>

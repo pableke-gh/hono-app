@@ -1,8 +1,5 @@
 
 import coll from "../../components/Collection.js";
-import tabs from "../../components/Tabs.js";
-import i18n from "../../i18n/langs.js";
-
 import model from "../model/Solicitud.js";
 import firma from "../model/Firma.js";
 import xeco from "../xeco.js";
@@ -18,9 +15,11 @@ function Firmas() {
 	this.view = firmas => {
 		const form = xeco.getForm();
 		form.set("has-firmas", () => firmas);
-		if (!firmas) return; // nada que actualizar
+		if (!firmas) // compruebo si hay firmas
+			return; // nada que actualizar
+
 		const blocks = form.querySelectorAll(".ui-firmantes");
-		// extraigo la firma principal del grupo de gastores = -1
+		// extraigo la firma del grupo de gastores (grupo = -1)
 		blocks.html(coll.render(firmas.slice(1), firma.render));
 		if (model.isInvalidada()) { // solicitud rechazada o cancelada
 			const rechazo = firmas.find(firma.isRechazada);
@@ -30,16 +29,11 @@ function Firmas() {
 		form.reset("#rechazo");
 	}
 
-	tabs.setAction("rechazar", () => { // ejecuta la accion de rechazar
-		const form = xeco.getForm(); // current form after initialization
-		form.validate(firma.validate) && i18n.confirm("msgRechazar") && form.invoke(window.rcRechazar);
-		// todo: actualizar el estado de la solicitud a rechazda
-	});
-	tabs.setAction("cancelar", () => { // ejecuta la accion de cancelar
-		const form = xeco.getForm(); // current form after initialization
-		form.validate(firma.validate) && i18n.confirm("msgCancelar") && form.invoke(window.rcCancelar);
-		// todo: actualizar el estado de la solicitud a cancelada
-	});
+	this.update = data => {
+		const form = xeco.getForm();
+		form.set("has-firmas", () => form.isCached(data.id));
+		form.reset("#rechazo").refresh(model.setData(data));
+	}
 }
 
 export default new Firmas();

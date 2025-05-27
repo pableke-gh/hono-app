@@ -3,7 +3,9 @@ import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
 import i18n from "../i18n/langs.js";
 
+import firma from "./model/Firma.js";
 import model from "./model/Solicitud.js";
+
 import firmas from "./modules/firmas.js";
 import list from "./modules/list.js";
 
@@ -57,6 +59,8 @@ function XecoForm() {
 
 	tabs.setAction("send", () => { form.fire("is-valid") && i18n.confirm("msgSend") && form.invoke(window.rcSend); }); // send from xeco-model form
 	tabs.setAction("firmar", () => { i18n.confirm("msgFirmar") && form.invoke(window.rcFirmarForm); }); // run remote command from xeco-model
+	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && list.send("rcRechazar"); });
+	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && list.send("rcCancelar"); });
 	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable => TODO: auto call window.rcReactivar if exists
 	tabs.setAction("subsanar", () => { form.fire("is-valid") && i18n.confirm("msgSave") && form.invoke(window.rcSubsanar); }); // send from changes
 }

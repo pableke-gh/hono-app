@@ -20,10 +20,3 @@ window.viewPresto = (xhr, status, args) => {
 	pDec.view(data, coll.parse(args.economicas)); // vista de la partida a decrementar
 	pInc.view(coll.parse(args.data)); // cargo la tabla de partidas a incrementar
 }
-
-window.updatePresto = (xhr, status, args, tab) => {
-	if (!window.showAlerts(xhr, status, args))
-		return false; // Server error
-	const data = coll.parse(args.presto); // get presto data
-	presto.update(data, JSON.read(args.firmas), tab); // update tab
-}

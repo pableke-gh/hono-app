@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - Solicitud de Facturas y Cartas de Pago</title>
+	<style th:replace="factura/emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="factura/emails/general.html :: header"></header>
+	<div class="navbar">
+		<p>La siguiente solicitud de <span th:text="${xs.descCodigo}"></span> ha sido ACEPTADA por todos los firmantes y está pendiente de su contabilización en UXXIEC:</p>
+	</div>
+
+	<div th:replace="factura/emails/general.html :: solicitud"></div>
+	<div th:replace="factura/emails/general.html :: lineas"></div>
+	<div th:replace="factura/emails/general.html :: firmas"></div>
+	<footer th:replace="factura/emails/general.html :: footer"></footer>
+</body>
+</html>

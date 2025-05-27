@@ -113,12 +113,11 @@
 		<div id="solicitudes-json" class="hide">#{presto.list.stringify()}</div>
 		<p:remoteCommand name="rcView" action="#{presto.view()}" oncomplete="viewPresto(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{presto.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)" />
-		<p:remoteCommand name="rcReject" action="#{presto.firmas.reject()}" oncomplete="updatePresto(xhr, status, args, 'reject')" />
 		<p:remoteCommand name="rcReport" action="#{presto.report()}" oncomplete="handleReport(xhr, status, args)" />
-		<p:remoteCommand name="rcIntegrar" action="#{presto.ws()}" oncomplete="showAlerts(xhr, status, args)" />
+		<p:remoteCommand name="rcIntegrar" action="#{presto.firmas.ws()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcUxxiec" action="#{presto.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />
-		<p:remoteCommand name="rcEmails" action="#{presto.emails()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcRemove" action="#{presto.remove()}" oncomplete="showTab(xhr, status, args, 'list')" />
+		<p:remoteCommand name="rcEmails" action="#{presto.firmas.emails()}" oncomplete="showAlerts(xhr, status, args)" />
+		<p:remoteCommand name="rcRemove" action="#{presto.list.remove()}" oncomplete="showTab(xhr, status, args, 'list')" />
 	</h:form>
 
 	<c:if test="#{presto.user.uxxiec}">

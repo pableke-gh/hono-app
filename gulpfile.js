@@ -6,6 +6,7 @@ import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
 import transform from "gulp-transform";
 
+const fnNone = () => {};
 const VIEW_FILES = "src/views/**/*";
 
 const JS_FILES = "src/public/js/**/*.js";
@@ -48,28 +49,34 @@ gulp.task("minify-views", done => {
 		removeRedundantAttributes: false // remove attr with default value
 	};
 
-	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest("dist/views")).on("end", () => {
+	const VIEW_DEST = "dist/views"; // Remove previous unused files
+	fs.rmSync(VIEW_DEST, { recursive: true, force: true });
+	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest(VIEW_DEST)).on("end", () => {
 		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
-		deployCV("dist/views/xeco/**/*", CV_XECO, () => {}); // deploy xeco XHTML in Campus Virtual
+		deployCV("dist/views/xeco/**/*", CV_XECO, fnNone); // deploy xeco XHTML in Campus Virtual
 
 		const CV_ISUITE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-xeco/src/main/resources/META-INF/resources/modules/xecom";
-		deployCV("dist/views/isuite/**/*", CV_ISUITE, () => {}); // deploy xeco XHTML in Campus Virtual
+		deployCV("dist/views/isuite/**/*", CV_ISUITE, fnNone); // deploy xeco XHTML in Campus Virtual
 
 		const CV_PRESTO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/presto";
-		deployCV("dist/views/presto/**/*", CV_PRESTO, () => {}); // deploy presto XHTML in Campus Virtual
+		const CV_PRESTO_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/presto/emails";
+		deployCV("dist/views/presto/**/*", CV_PRESTO, fnNone); // deploy presto XHTML in Campus Virtual
+		deployCV("dist/views/presto/emails/**/*", CV_PRESTO_EMAILS, fnNone); // deploy irse XHTML in Campus Virtual
 
 		const CV_FACT = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/factura";
-		deployCV("dist/views/factura/**/*", CV_FACT, () => {}); // deploy presto XHTML in Campus Virtual 
+		const CV_FACT_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/factura/emails";
+		deployCV("dist/views/factura/**/*", CV_FACT, fnNone); // deploy presto XHTML in Campus Virtual 
+		deployCV("dist/views/factura/emails/**/*", CV_FACT_EMAILS, fnNone); // deploy irse XHTML in Campus Virtual
 
 		const CV_BUZON = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/buzon";
-		deployCV("dist/views/buzon/**/*", CV_BUZON, () => {}); // deploy presto XHTML in Campus Virtual 
+		deployCV("dist/views/buzon/**/*", CV_BUZON, fnNone); // deploy presto XHTML in Campus Virtual 
 
 		const CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
-		deployCV("dist/views/irse/**/*", CV_IRSE, () => {}); // deploy irse XHTML in Campus Virtual
+		deployCV("dist/views/irse/**/*", CV_IRSE, fnNone); // deploy irse XHTML in Campus Virtual
 
 		const CV_IRIS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/iris";
 		const CV_IRIS_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates/emails";
-		deployCV("dist/views/iris/**/*", CV_IRIS, () => {}); // deploy irse XHTML in Campus Virtual
+		deployCV("dist/views/iris/**/*", CV_IRIS, fnNone); // deploy irse XHTML in Campus Virtual
 		deployCV("dist/views/iris/emails/**/*", CV_IRIS_EMAILS, done); // deploy irse XHTML in Campus Virtual
 	});
 });

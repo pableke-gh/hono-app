@@ -13,7 +13,7 @@
 		<h2 class="form-refresh" data-refresh="text-render">Solicitud de emisión de @getTitulo; @codigo;</h2>
 
 		<div class="ui-blocks">
-			<ui:include src="./tercero.xhtml"></ui:include>
+			<ui:include src="../parts/tercero.xhtml"></ui:include>
 		</div>
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
@@ -26,7 +26,7 @@
 			</label>
 		</div>
 		<div class="ui-blocks">
-			<ui:include src="./subtipos.xhtml"></ui:include>
+			<ui:include src="../parts/subtipos.xhtml"></ui:include>
 		</div>
 
 		<div class="ui-blocks form-refresh" data-refresh="show-factura-uae">
@@ -123,7 +123,7 @@
 		</div>
 	</div>
 
-	<ui:include src="./conceptos.xhtml"></ui:include>
+	<ui:include src="../parts/conceptos.xhtml"></ui:include>
 	<div class="navbar">
 		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
@@ -148,5 +148,5 @@
 		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="is-removable" title="Borra la solicitud del sistema"> 
 			<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
 	</div>
-	<ui:include src="./firmas.xhtml"></ui:include>
+	<ui:include src="../parts/firmas.xhtml"></ui:include>
 </html>

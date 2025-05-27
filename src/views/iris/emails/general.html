@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>Campus Virtual - IRIS - fragments</title>
+	<title>Campus Virtual - IRIS</title>
 	<style th:fragment="styles">
 		table{margin:auto;width:94%;border-collapse:collapse;}
 		thead{border-bottom:solid 1px #000;}
@@ -19,7 +19,11 @@
 </head>
 <body>
     <header th:fragment="header">
-		<p>UNIVERSIDAD POLITÉCNICA DE CARTAGENA.<br/>Sistema IRIS de Comunicación de Datos y Entrega de Documentación para indemnización por Comisiones de Servicio y Otras.<br/>Unidad de Asuntos Económicos.</p> 
+		<p>
+			UNIVERSIDAD POLITÉCNICA DE CARTAGENA.
+			<br/>Sistema IRIS de Comunicación de Datos y Entrega de Documentación para indemnización por Comisiones de Servicio y Otras.
+			<br/>Unidad de Asuntos Económicos.
+		</p>
 	</header>
 
 	<div th:fragment="solicitud" class="navbar">
@@ -33,7 +37,46 @@
 			<li><b>Observaciones:</b> <span th:text="${gastos.observaciones}"></span></li>
 			<li th:if="${xs.isUrgente()}"><b>Urgencia:</b> <span th:text="${xs.extra}"></span></li>
 			<li th:if="${xs.isUrgente()}"><b>Fecha Límite:</b> <span th:text="${dt.toEsDate(xs.FMax)}"></span></li>
+			<li th:if="${error}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
 		</ul>
+	</div>
+	<div th:fragment="comunicacion" class="navbar">
+		<p><b>DATOS DE LA COMUNICACION:</b></p>
+		<ul>
+			<li><b>Código de comunicación:</b> <span th:text="${xs.codigo}"></span></li>
+			<li><b>Interesado:</b> <span th:text="${xs.interesado}"></span> (<span th:text="${xs.colectivo}"></span>)</li>
+			<li><b>Observaciones:</b> <span th:text="${gastos.observaciones}"></span></li>
+			<li th:if="${xs.isUrgente()}"><b>Urgencia:</b> <span th:text="${xs.extra}"></span></li>
+			<li th:if="${xs.isUrgente()}"><b>Fecha Límite:</b> <span th:text="${dt.toEsDate(xs.FMax)}"></span></li>
+			<li th:if="${error}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
+		</ul>
+	</div>
+	<div th:fragment="actividad" class="navbar">
+		<p><b>DATOS DE LA ACTIVIDAD:</b></p>
+		<ul>
+			<li><b>Descripción de la actividad:</b> #memoria#</li>
+			<li><b>Destino principal:</b> <span th:text="${rutas.destPrincipal}"></span></li>
+			<li><b>Fecha de la actividad:</b> de <span th:text="${dt.toEsDate(rutas.fechaSalida)}"></span> a <span th:text="${dt.toEsDate(rutas.fechaLlegada)}"></span></li>
+			<li><b>Importe líquido:</b> <span th:text="${nb.esBigval(xs.importe)}"></span> €</li>
+		</ul>
+	</div>
+	
+	<div th:fragment="presupuesto" class="navbar">
+		<p><b>Con cargo al presupuesto:</b></p> 
+		<table>
+			<thead>
+				<tr><th>Orgánica</th><th>Descripción</th></tr>
+			</thead>
+			<tbody class="tc">
+				<tr th:each="org:${organicas}">
+					<td th:text="${org.organica}"></td>
+					<td th:text="${org.descOrganica}"></td>
+				</tr>
+				</tbody>
+			<tfoot>
+				<tr><td colspan="2">Orgánicas: <span th:utext="${numOrganicas}"></span></td></tr>
+			</tfoot>
+		</table>
 	</div>
 
 	<div th:fragment="imputacion" class="navbar">
@@ -44,7 +87,7 @@
 		</thead>
 		<tbody class="tc">
 			<tr th:each="org:${aplicaciones}">
-				<td th:text="${org.descImputacion}"></td>
+				<td th:text="${msgs.get(org.descImputacion)}"></td>
 				<td th:text="${org.idFichero}"></td>
 				<td th:text="${org.nombre}"></td>
 				<td class="tr"><span th:text="${nb.esBigval(org.importe)}"></span> €</td>
@@ -56,9 +99,31 @@
 		</table>
 	</div>
 
+	<div th:fragment="firmas" class="navbar">
+		<p><b>Registro de Firmas:</b></p>
+		<table>
+			<thead>
+				<tr><th>Firmante</th><th>Firma</th><th>Estado</th><th>Fecha y Hora</th></tr>
+			</thead>
+			<tbody>
+				<tr th:each="firma:${firmas}">
+					<td th:text="${firma.fullName}"></td>
+					<td th:text="${firma.cargo}"></td>
+					<td th:text="${msgs.get(firma.msgEstado)}"></td>
+					<td th:text="${dt.toEsDate(firma.fecha)}" class="tc"></td>
+				</tr>	
+			</tbody>
+			<tfoot>
+				<tr><td colspan="4">Firmas: <span th:utext="${numFirmas}"></span></td></tr>
+			</tfoot>
+		</table>
+	</div>
+
 	<footer th:fragment="footer" class="navbar">
-		<p>Puede consultar sus comunicaciones accediendo a: <a href="https://campusvirtual.upct.es/uportal/">Campus Virtual / Gestión / Económico / IRIS</a>.
-			<br/>Este correo electrónico se ha generado automáticamente. Por favor, no responda a la dirección del remitente.</p>
+		<p>
+			Puede consultar sus comunicaciones accediendo a: <a href="https://campusvirtual.upct.es/uportal/">Campus Virtual / Gestión / Económico / IRIS</a>.
+			<br/>Este correo electrónico se ha generado automáticamente. Por favor, no responda a la dirección del remitente.
+		</p>
     </footer>
 </body>
 </html>

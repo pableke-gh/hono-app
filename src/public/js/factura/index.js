@@ -19,10 +19,3 @@ window.viewFactura = (xhr, status, args) => {
 			.setSujeto(data.sujeto) // update sujeto / exento
 			.setFace(data.face); // update face inputs group
 }
-
-window.updateFactura = (xhr, status, args, tab) => {
-	if (!window.showAlerts(xhr, status, args))
-		return false; // Server error
-	const data = coll.parse(args.fact); // get presto data
-	facturas.update(data, coll.parse(args.firmas), tab); // update tab
-}

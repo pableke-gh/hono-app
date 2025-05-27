@@ -66,8 +66,10 @@ function Gasto() {
 	}
 
 	this.getJustifiVp = gasto => gasto?.desc; // _gAc = justificacion VP = desc
+	this.getImpAc = gasto => gasto?.imp1; // _gAc = importe de la asistencia / colaboracion = imp1
 	this.setAsistencia = (gAc, data) => {
-		gAc.desc = data.justifiVp;
+		//gAc.imp1 = data.impAc; // importe de la asistencia / colaboracion paso 3 (a futuro)
+		gAc.desc = data.justifiVp; // justificación del uso del vehiculo propio paso 3
 		return self;
 	}
 

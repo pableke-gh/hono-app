@@ -26,32 +26,32 @@
 	<ui:define name="semilla"><li class="active">UAE</li></ui:define>
 
 	<ui:define name="body">
-		<ui:include src="./msgs.xhtml"></ui:include>
+		<ui:include src="./parts/msgs.xhtml"></ui:include>
 
 		<!-- Home tab -->
 		<div id="tab-init" class="tab-content active">
-			<ui:include src="./init.xhtml"></ui:include>
+			<ui:include src="./tabs/init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
 		<div id="tab-list" class="tab-content">
-			<ui:include src="./list.xhtml"></ui:include>
-			<ui:include src="./leyenda_firmas.xhtml"></ui:include>
+			<ui:include src="./tabs/list.xhtml"></ui:include>
+			<ui:include src="./parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
 		<!-- vinculación con uxxiec -->
 		<div id="tab-uxxiec" class="tab-content" data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}" data-admin="#{fact.user.adminFlag}">
-			<ui:include src="./uxxiec.xhtml"></ui:include>
+			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
 		<h:form id="xeco-model" prependId="false" onsubmit="loading();">
 			<!-- Form factura -->
 			<div id="tab-form" class="tab-content">
-				<ui:include src="./form.xhtml"></ui:include>
+				<ui:include src="./tabs/form.xhtml"></ui:include>
 			</div>
 			<!-- formulario de rechazo/cancelacion -->
 			<div id="tab-reject" class="tab-content">
-				<ui:include src="./reject.xhtml"></ui:include>
+				<ui:include src="./tabs/reject.xhtml"></ui:include>
 			</div>
 		</h:form>
 	</ui:define>

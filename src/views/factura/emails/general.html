@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Campus Virtual - Solicitud de Facturas y Cartas de Pago</title>
+	<style th:fragment="styles">
+		table{margin:auto;width:94%;border-collapse:collapse;}
+		thead{border-bottom:solid 1px #000;}
+		tfoot{font-weight:bold;border-top:1px dashed #000;}
+		hr{margin:7px 0px;}
+		p{margin-top:10px;}
+		br.clear{margin-top:4px;clear:both;}
+
+		.w180{width:180px;}
+		.navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
+		.tr{text-align:right;}.tl{text-align:left;}.tc{text-align:center;}.tj{text-align:justify;}.terr{color:tomato;}
+		.bl1{padding:5px;border-left:1px solid #000;}
+	</style>
+</head>
+<body>
+    <header th:fragment="header">
+		<p>
+			UNIVERSIDAD POLITÉCNICA DE CARTAGENA.
+			<br/>Sistema de notificaciones de la Unidad de Asuntos Económicos.
+		</p>
+	</header>
+
+	<div th:fragment="solicitud" class="navbar">
+		<p><b>Datos de la Solicitud</b></p>
+		<ul>
+			<li><b>Ejercicio:</b> <span th:text="${xs.ejercicio}"></span></li>
+			<li><b>Código de solicitud:</b> <span th:text="${xs.codigo}"></span></li>
+			<li><b>Fecha de la solicitud:</b> <span th:text="${dt.toEsDate(xs.FCreacion)}"></span></li>
+			<li><b>Tercero:</b> <span th:text="${xs.terFullName}"></span></li>
+			<li><b>Delegación:</b> <span th:text="${xs.delFullName}"></span></li>
+			<li th:if="${xs.recibo}"><b>Recibo:</b> <span th:text="${xs.descRecibo}"></span></li>
+			<li th:if="${xs.face == 2}"><b>Pataforma:</b> <span th:text="${xs.organoGestor}"></span></li>
+			<li><b>Orgánica:</b> <span th:text="${xs.codOrganica}"></span> - <span th:text="${xs.descOrganica}"></span></li>
+			<li><b>Solicitante:</b> <span th:text="${xs.usuFullName}"></span></li>
+			<li><b>Memoria:</b> <span th:text="${xs.memoria}"></span></li>
+			<li th:if="${error}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
+		</ul>
+	</div>
+
+	<div th:fragment="lineas" class="navbar">
+		<p><b>Detalle por conceptos:</b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Descripción</th><th>Importe</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="linea:${lineas}">
+					<td th:text="${linea.descripcion}"></td>
+					<td class="tr"><span th:text="${nb.esBigval(linea.importe)}"></span> €</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>Conceptos: <span th:text="${numLineas}"></span></td>
+					<td class="tr"><span th:text="${nb.esBigval(xs.importe)}"></span> €</td>
+				</tr>
+				<tr th:if="${xs.facturable}">
+					<td class="tr"><span th:text="${nb.esBigval(xs.iva)}"></span> %</td>
+					<td class="tr"><span th:text="${nb.esBigval(xs.impIva)}"></span> €</td>
+				</tr>
+				<tr th:if="${xs.facturable}">
+					<td class="tr">Importe Total:</td>
+					<td class="tr"><span th:text="${nb.esBigval(xs.impTotal)}"></span> €</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<div th:fragment="firmas" class="navbar">
+		<p><b>Registro de Firmas:</b></p>
+		<table>
+			<thead>
+				<tr><th>Firmante</th><th>Firma</th><th>Estado</th><th>Fecha y Hora</th></tr>
+			</thead>
+			<tbody>
+				<tr th:each="firma:${firmas}">
+					<td th:text="${firma.fullName}"></td>
+					<td th:text="${firma.cargo}"></td>
+					<td th:text="${msgs.get(firma.msgEstado)}"></td>
+					<td th:text="${dt.toEsDate(firma.fecha)}" class="tc"></td>
+				</tr>	
+			</tbody>
+			<tfoot>
+				<tr><td colspan="4">Firmas: <span th:utext="${numFirmas}"></span></td></tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<footer th:fragment="footer" class="navbar">
+		<p>
+			Puede consultar sus solicitudes accediendo a: <a href="https://campusvirtual.upct.es/uportal/">Campus Virtual / Gestión / Económico / Extraeco / Solicitud de Facturas y Cartas de Pago</a>.
+			<br/>Este correo electrónico se ha generado automáticamente. Por favor, no responda a la dirección del remitente.
+		</p>
+    </footer>
+</body>
+</html>

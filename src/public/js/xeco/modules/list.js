@@ -20,26 +20,25 @@ function List() {
 	const fnSendId = (action, value) => fnSendParam(action, "id", value);
 	const fnSend = (action, data) => fnSendId(action, data.id);
 
+	const fnLoadTab = (tab, data) => {
+		firmas.update(data); // update firmas view
+		tabs.showTab(tab); // show selected tab
+	}
 	const rcView = data => {
 		if (form.isCached(data.id))
-			tabs.showTab("form"); // show form tab
+			fnLoadTab("form", data);
 		else
 			fnSend("rcView", data); // call server action
-		form.setCache(data.id); // filter form cache = xeco form cache
+		form.setCache(data.id); // filter form cache = xeco form cache!
 	}
 	const fnReject = data => {
-		if (form.isCached(data.id))
-			tabs.showTab("reject");
-		else
-			fnSend("rcReject", data);
+		fnLoadTab("reject", data);
 	}
 	const rcUxxiec = data => {
 		if (uxxiec.isCached(data.id))
-			tabs.showTab("uxxiec");
+			fnLoadTab("uxxiec", data);
 		else
 			fnSend("rcUxxiec", data);
-		if (!form.isCached(data.id))
-			form.resetCache(); // force reload
 		uxxiec.view(data);
 	}
 
@@ -48,7 +47,7 @@ function List() {
 		window.rcList(); // invoke list action to server
 	}
 	const fnList = (fEstado, fMiFirma) => { // prepare filter and call list action
-		form.setData({ fEstado, fMiFirma}, ".ui-filter");//.setStrval("#fEstado", estado).setStrval("#fMiFirma", firma);
+		form.setData({ fEstado, fMiFirma}, ".ui-filter"); // set filter values
 		fnCallList(); // invoke list action to server
 	}
 	const fnProcesando = data => { // avoid reclicks
@@ -57,6 +56,7 @@ function List() {
 	}
 
 	this.sendId = fnSendId;
+	this.send = action => { form.loading().setChanged(); fnSend(action, tblSolicitudes.getCurrentItem());}
 	this.setSolicitudes = data => { tblSolicitudes.render(data); }
 
 	this.init = () => {
@@ -75,7 +75,8 @@ function List() {
 		tblSolicitudes.set("#rcIntegrar", data => (i18n.confirm("msgIntegrar") && fnProcesando(data) && fnSend("rcIntegrar", data))); // llamada al servidor
 	}
 
-	tabs.setInitEvent("list", () => (tblSolicitudes.isEmpty() && !form.getval("#fEstado") && fnList("", "5")));
+	const isEmptyEstado = () => { const value = form.getval("#fEstado"); return (!value || (value == "0")); }
+	tabs.setInitEvent("list", () => (tblSolicitudes.isEmpty() && isEmptyEstado() && fnList("", "5")));
 	tabs.setAction("list", fnCallList);
 	tabs.setAction("list-all", () => { form.reset(".ui-filter").loading(); window.rcList(); });
 	tabs.setAction("relist", () => fnList("", "5"));
@@ -98,7 +99,7 @@ function List() {
 			return false; // Server error
 		const data = tblSolicitudes.getCurrentItem();
 		if (form.isCached(data.id)) // checks if current item is cached
-			firmas.view(coll.parse(args.firmas)); // update firmas blocks
+			firmas.view(JSON.read(args.firmas)); // update firmas blocks
 		fnProcesando(data); // avoid reclick
 	}
 }

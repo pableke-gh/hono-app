@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - PRESTO</title>
+	<style th:replace="presto/emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="presto/emails/general.html :: header"></header>
+	<div class="navbar">
+		<p>
+			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
+			<br/>Le comunicamos que la solicitud: <span th:text="${xs.codigo}"></span> ha CADUCADO. 
+		</p>
+	</div>
+	<footer th:replace="presto/emails/general.html :: footer"></footer>
+</body>
+</html>

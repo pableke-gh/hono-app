@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Campus Virtual - Presto</title>
+	<style th:fragment="styles">
+		table{margin:auto;width:94%;border-collapse:collapse;}
+		thead{border-bottom:solid 1px #000;}
+		tfoot{font-weight:bold;border-top:1px dashed #000;}
+		hr{margin:7px 0px;}
+		p{margin-top:10px;}
+		br.clear{margin-top:4px;clear:both;}
+
+		.w180{width:180px;}
+		.navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
+		.tr{text-align:right;}.tl{text-align:left;}.tc{text-align:center;}.tj{text-align:justify;}.terr{color:tomato;}
+		.bl1{padding:5px;border-left:1px solid #000;}
+	</style>
+</head>
+<body>
+    <header th:fragment="header">
+		<p>
+			UNIVERSIDAD POLITÉCNICA DE CARTAGENA.
+			<br/>Sistema PRESTO de Modificaciones Presupuestarias.
+			<br/>Unidad de Asuntos Económicos.
+		</p>
+	</header>
+
+	<div th:fragment="solicitud" class="navbar">
+		<p><b>Datos de la Solicitud:</b></p>
+		<ul>
+			<li><b>Ejercicio:</b> <span th:text="${xs.ejOrg}"></span></li>
+			<li><b>Código de solicitud:</b> <span th:text="${xs.codigo}"></span></li>
+			<li><b>Fecha de solicitud:</b> <span th:text="${dt.toEsDate(xs.FCreacion)}"></span></li>
+			<li><b>Solicitante:</b> <span th:text="${xs.fullName}"></span></li>
+			<li th:if="${xs.isUrgente()}"><b>Urgencia:</b> <span th:text="${xs.extra}"></span></li>
+			<li th:if="${xs.isUrgente()}"><b>Fecha Límite:</b> <span th:text="${dt.toEsDate(xs.FMax)}"></span></li>
+			<li><b>Memoria:</b> <span th:text="${xs.memoria}"></span></li>
+			<li th:if="${error}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
+		</ul>
+	</div>
+
+	<div th:fragment="decrementar" th:if="${xs.partidaDec}" class="navbar">
+		<p><b>Partidas a disminuir:</b></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Ej.</th><th>Orgánica</th><th>Funcional</th><th>Económica</th><th>Descripción Orgánica</th><th>Descripción Económica</th><th>Importe</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td th:text="${xs.ejOrg}"></td><td th:text="${xs.organica}"></td><td th:text="${xs.funcional}" class="tc"></td><td th:text="${xs.economica}" class="tc"></td> 
+					<td th:text="${xs.descOrganica}"></td><td th:text="${xs.descEconomica}"></td>
+					<td class="tr"><span th:text="${nb.esBigval(xs.importe)}"></span> €</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5"></td>
+					<td colspan="2" class="tr"><span th:text="${nb.esBigval(xs.importe)}"></span> €</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<div th:fragment="incrementar" class="navbar">
+		<p><b>Partidas a incrementar:</b></p>
+		<table th:if="${xs.extendible}">
+			<thead>
+				<tr>
+					<th>Ej.</th><th>Orgánica</th><th>Funcional</th><th>Económica</th><th>Descripción Orgánica</th><th>Descripción Económica</th><th>Responsable de Gasto</th><th>Importe</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="partida:${partidas}">
+					<td th:text="${partida.ejOrg}"></td><td th:text="${partida.organica}"></td><td th:text="${partida.funcional}" class="tc"></td><td th:text="${partida.economica}" class="tc"></td>
+					<td th:text="${partida.descOrganica}"></td><td th:text="${partida.descEconomica}"></td><td th:text="${partida.fullName}"></td>
+					<td class="tr"><span th:text="${nb.esBigval(partida.importe)}"></span> €</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5">Partidas: <span th:text="${numPartidas}"></span></td>
+					<td colspan="3" class="tr"><span th:text="${nb.esBigval(xs.importe)}"></span> €</td>
+				</tr>
+			</tfoot>
+		</table>
+		<table th:unless="${xs.extendible}">
+			<thead>
+				<tr>
+					<th>Ej.</th><th>Orgánica</th><th>Funcional</th><th>Económica</th><th>Descripción Orgánica</th><th>Descripción Económica</th><th>Importe</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="partida:${partidas}">
+					<td th:text="${partida.ejOrg}"></td><td th:text="${partida.organica}"></td><td th:text="${partida.funcional}" class="tc"></td><td th:text="${partida.economica}" class="tc"></td>
+					<td th:text="${partida.descOrganica}"></td><td th:text="${partida.descEconomica}"></td>
+					<td class="tr"><span th:text="${nb.esBigval(partida.importe)}"></span> €</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5">Partidas: <span th:text="${numPartidas}"></span></td>
+					<td colspan="3" class="tr"><span th:text="${nb.esBigval(xs.importe)}"></span> €</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<div th:fragment="firmas" class="navbar">
+		<p><b>Registro de Firmas:</b></p>
+		<table>
+			<thead>
+				<tr><th>Firmante</th><th>Firma</th><th>Estado</th><th>Fecha y Hora</th></tr>
+			</thead>
+			<tbody>
+				<tr th:each="firma:${firmas}">
+					<td th:text="${firma.fullName}"></td>
+					<td th:text="${firma.cargo}"></td>
+					<td th:text="${msgs.get(firma.msgEstado)}"></td>
+					<td th:text="${dt.toEsDate(firma.fecha)}" class="tc"></td>
+				</tr>	
+			</tbody>
+			<tfoot>
+				<tr><td colspan="4">Firmas: <span th:utext="${numFirmas}"></span></td></tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<footer th:fragment="footer" class="navbar">
+		<p>
+			Puede consultar sus solicitudes accediendo a: <a href="https://campusvirtual.upct.es/uportal/">Campus Virtual / Gestión / Económico / PRESTO</a>.
+			<br/>Este correo electrónico se ha generado automáticamente. Por favor, no responda a la dirección del remitente.
+		</p>
+    </footer>
+</body>
+</html>
