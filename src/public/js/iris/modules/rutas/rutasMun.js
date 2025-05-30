@@ -8,7 +8,7 @@ import ruta from "../../model/ruta/Ruta.js";
 import { MUN } from "../../data/rutas.js";
 
 import rmaps from "./rutasMaps.js";
-import perfil from "../perfil/perfil.js";
+import actividad from "../perfil/actividad.js";
 import xeco from "../../../xeco/xeco.js";
 
 function RutasMun() {
@@ -36,7 +36,7 @@ function RutasMun() {
 		const valid = form.getValidators();
 		if (!data.memo)
         	valid.addRequired("memo", "errObjeto");
-		if (valid.isOk() && perfil.isMun()) // valida ruta unica
+		if (valid.isOk() && actividad.isMun()) // valida ruta unica
 			return ruta.valid(rmaps.getRutas()[0]) && rmaps.saveRutas(data);
 		return valid.isOk();
 	}

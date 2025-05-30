@@ -16,10 +16,6 @@ function List() {
 	const tblSolicitudes = form.setTable("#solicitudes", opts);
 	tblSolicitudes.set("is-procesable", model.isProcesable);
 
-	const fnSendParam = (action, name, value) => { form.loading(); window[action]([{ name, value }]); }
-	const fnSendId = (action, value) => fnSendParam(action, "id", value);
-	const fnSend = (action, data) => fnSendId(action, data.id);
-
 	const fnLoadTab = (tab, data) => {
 		firmas.update(data); // update firmas view
 		tabs.showTab(tab); // show selected tab
@@ -28,7 +24,7 @@ function List() {
 		if (form.isCached(data.id))
 			fnLoadTab("form", data);
 		else
-			fnSend("rcView", data); // call server action
+			self.send(window.rcView); // call server action
 		form.setCache(data.id); // filter form cache = xeco form cache!
 	}
 	const fnReject = data => {
@@ -38,7 +34,7 @@ function List() {
 		if (uxxiec.isCached(data.id))
 			fnLoadTab("uxxiec", data);
 		else
-			fnSend("rcUxxiec", data);
+			self.send(window.rcUxxiec);
 		uxxiec.view(data);
 	}
 
@@ -55,9 +51,9 @@ function List() {
 		return self;
 	}
 
-	this.sendId = fnSendId;
-	this.send = action => { form.loading().setChanged(); fnSend(action, tblSolicitudes.getCurrentItem());}
 	this.setSolicitudes = data => { tblSolicitudes.render(data); }
+	this.getTable = () => tblSolicitudes;
+	this.send = tblSolicitudes.send
 
 	this.init = () => {
 		uxxiec.init(); // expediente uxxiec
@@ -67,12 +63,13 @@ function List() {
 
 		// Actions for solicitudes table
 		tblSolicitudes.set("#rcView", rcView).set("#tab-reject", fnReject).set("#rcUxxiec", rcUxxiec);
-		tblSolicitudes.set("#rcFirmar", data => (i18n.confirm("msgFirmar") && fnSend("rcFirmar", data)));
-		tblSolicitudes.set("#rcReport", data => fnSend("rcReport", data));
-		tblSolicitudes.set("#rcEmails", data => fnSend("rcEmails", data)); // admin test email
-		tblSolicitudes.setRemove(data => !fnSend("rcRemove", data)); // remove true = confirm
-		tblSolicitudes.set("#rcReactivar", data => (i18n.confirm("msgReactivar") && fnSend("rcReactivar", data)));
-		tblSolicitudes.set("#rcIntegrar", data => (i18n.confirm("msgIntegrar") && fnProcesando(data) && fnSend("rcIntegrar", data))); // llamada al servidor
+		tblSolicitudes.set("#rcFirmar", data => (i18n.confirm("msgFirmar") && self.send(window.rcFirmar, data)));
+		tblSolicitudes.set("#rcReport", data => self.send(window.rcReport, data)); // report service
+		tblSolicitudes.set("#rcEmails", data => self.send(window.rcEmails, data)); // admin test email
+		tblSolicitudes.setRemove(data => !self.send(window.rcRemove, data)); // remove true = confirm
+		//tblSolicitudes.set("#rcPdf", () => { $1("#pdf").click(); setTimeout(window.working, 450); });
+		tblSolicitudes.set("#rcReactivar", data => (i18n.confirm("msgReactivar") && self.send(window.rcReactivar, data)));
+		tblSolicitudes.set("#rcIntegrar", data => (i18n.confirm("msgIntegrar") && fnProcesando(data) && self.send(window.rcIntegrar))); // llamada al servidor
 	}
 
 	const isEmptyEstado = () => { const value = form.getval("#fEstado"); return (!value || (value == "0")); }

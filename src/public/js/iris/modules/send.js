@@ -7,7 +7,8 @@ import iris from "../model/Iris.js";
 import gastos from "../model/gasto/Gastos.js"; 
 import paises from "../data/paises/paises.js";
 
-import gm from "../modules/gastos/gastos.js";
+import mg from "../modules/gastos/gastos.js";
+import mgo from "./gastos/organicas.js";
 import xeco from "../../xeco/xeco.js";
 
 function Send() {
@@ -18,8 +19,8 @@ function Send() {
 	const isSpain = () => (_paises.value == "ES"); // codigo = españa
 
 	const fnSave = data => {
-		if (form.isChanged())
-			gm.setIban(data).setBanco(data).save();
+		mgo.build(); //auto-build mono-organica
+		mg.setIban(data).setBanco(data).save();
 		return true;
 	}
 	this.validate = data => {
@@ -57,9 +58,15 @@ function Send() {
 	}
 
 	this.view = cuentas => {
-		cuentas = cuentas || [];
-		const option = "Dar de alta una nueva cuenta"; // todo: i18n
+		mgo.view(); // load table organicas
+		cuentas = cuentas || []; // cuentas bancarias
 		form.setLabels("#cuentas", cuentas); // update options
+		const bancos = i18n.getValidation().getBanks();
+		_cuentas.options.forEach(opt => { // update options view
+			const entidad = bancos.getEntidad(opt.innerText);
+			opt.innerText += entidad ? (" - " + entidad) : "";
+		});
+		const option = "Dar de alta una nueva cuenta"; // todo: i18n
 		_cuentas.insertAdjacentHTML("beforeend", '<option value="">' + option + '</option>');
 
 		const aux = gastos.getCodigoIban(); // user iban

@@ -85,6 +85,7 @@ export default function(form, opts) {
 		tabs.nextTab(tab); // go to next tab
 		return self;
 	}
+	this.call = fnCall => { self.loading().setChanged(); fnCall([{ name: "id", value: opts.cache }]); } // invoke action
 	this.invoke = fnInvoke => { self.loading().setChanged(); fnInvoke(); return self; } // invoke action
 	this.sendTab = (fnInvoke, tab) => (self.isChanged() ? self.invoke(fnInvoke) : self.nextTab(tab));
 

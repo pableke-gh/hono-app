@@ -47,19 +47,17 @@ function Gasto() {
 			.setChanged().refresh(iris);
 	}
 
+	// validación del tipo de gasto
 	this.validate = data => {
-		// validación del tipo de gasto
 		const valid = form.getValidators();
-		if (isDoc()) {
-			valid.addRequired("txtGasto", "errDoc");
-			return valid.isOk();
-		}
-		//valid.gt0("impGasto", data.impGasto);
+		if (isDoc()) // doc only
+			return valid.addRequired("txtGasto", "errDoc").isOk();
+		if (isExtra() || isTaxi()) // extra info (paso 8) o ISU+taxi
+			return valid.addRequired("txtGasto", "errDoc").gt0("impGasto", data.impGasto).isOk();
 		if (isInterurbano(data.tipoGasto))
 			return transportes.validate(data);
 		if (fnPernocta(data.tipoGasto))
 			return pernoctas.validate(data);
-		// todo: validate campos grupo-gastos
 		return valid.isOk();
 	}
 

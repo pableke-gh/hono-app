@@ -7,7 +7,7 @@ import iris from "../model/Iris.js";
 import rutas from "../model/ruta/Rutas.js";
 import gastos from "../model/gasto/Gastos.js"; 
 
-import perfil from "./perfil/perfil.js";
+import actividad from "./perfil/actividad.js";
 import gm from "./gastos/gastos.js";
 import xeco from "../../xeco/xeco.js";
 
@@ -51,7 +51,7 @@ function Otri() {
 	/*********** subvención, congreso, asistencias/colaboraciones ***********/
 	tabs.setAction("paso3", () => { form.validate(self.validate) && form.sendTab(window.rcPaso3); });
 	tabs.setAction("save3", () => { form.validate(self.validate) && form.sendTab(window.rcSave3, 3); });
-	tabs.setActiveEvent("isu", perfil.isIsu);
+	tabs.setActiveEvent("isu", actividad.isIsu);
 
 	this.init = () => {
 		const fnRefresh = () => form.refresh(iris);

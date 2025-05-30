@@ -6,59 +6,26 @@
 	<style th:replace="presto/emails/general.html :: styles"></style>
 </head>
 <body>
-	<header th:replace="presto/emails/general.html :: header"></header>
+	<header class="navbar"></header>
+	<div class="navbar">CÓDIGO PRESTO: <b th:text="${xs.codigo}"></b></div>
 	<div class="navbar">
-		<p>
-			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-			<br/>Se ha EJECUTADO EN UXXIEC, con fecha <span th:text="${sysdate}"></span>, la siguiente solicitud de <span th:text="${xs.descCodigo}"></span>:
-		</p>
+		El presente documento unifica las comunicaciones internas sucesivas de solicitud, informes favorables, fiscalización previa y autorización de
+		la modificación presupuestaria por las personas y órganos competentes, identificados a través de sistemas de claves concertadas, de
+		acuerdo con las Normas de Ejecución del Presupuesto de la Universidad Politécnica de Cartagena, y sin perjuicio de la elaboración y firmas
+		preceptivas de los documentos contables correspondientes que constituyen y finalizan el expediente administrativo, en el cual puede
+		integrarse este documento.
+	</div>
+	<div class="navbar">
+		<span th:text="${xs.fullName}"></span>, con NIF: <span th:text="${xs.nif}"></span>, ha registrado una SOLICITUD DE <span th:text="${xs.descCodigo}"></span>, con los siguientes datos:
+	</div>
+	<div class="navbar">
+		EJERCICIO: <span th:text="${xs.ejercicio}"></span>
+	</div>
+	<div class="navbar">
+		MEMORIA: <p class="box"><span th:text="${xs.memoria}"></span></p>
 	</div>
 
-	<div th:replace="presto/emails/general.html :: solicitud"></div>
-	<div th:replace="presto/emails/general.html :: decrementar"></div>
 	<div th:replace="presto/emails/general.html :: incrementar"></div>
-
-	<div th:if="${numIngresos > 0}" class="navbar">
-		<p><b>La solicitud se corresponde con el/los siguiente/s ingreso/s</b></p>
-		<table>
-			<thead>
-				<tr>
-					<th>Nº de JI</th><th>Nº de Factura</th><th>F. Emisión</th><th>Descripción</th><th>Proveedor</th><th class="tr">Imp. Neto</th><th class="tr">Imp. IVA</th><th class="tr">Imp. Total</th>
-				</tr>
-			</thead>
-			<tbody th:each="entry,loop:${map}" th:with="ji=${entry.value[0]}">
-				<tr>
-					<td th:text="${ji.numJi}"></td><td th:text="${ji.factura}"></td><td th:text="${dt.toEsDate(ji.FEmision)}"></td>
-					<td th:text="${ji.descripcion}"></td><td th:text="${ji.tercero}"></td>
-					<td class="tr"><span th:text="${nb.esBigval(ji.impNeto)}"></span> €</td>
-					<td class="tr"><span th:text="${nb.esBigval(ji.impIva)}"></span> €</td>
-					<td class="tr"><span th:text="${nb.esBigval(ji.impTotal)}"></span> €</td>
-				</tr>
-				<tr th:if="${ji.hasCobros()}">
-					<tr>
-						<td></td>
-						<td colspan="7" class="bl1">
-							<table style="float: left; width: 50%;">
-								<thead>
-									<tr><th>Nº</th><th>F. Cobro</th><th>Imp. Cobro</th></tr>
-								</thead>
-								<tbody>
-									<tr th:each="cobro,loop:${entry.value}">
-										<td th:text="${loop.index + 1}" class="tc"></td>
-										<td th:text="${dt.toEsDate(cobro.FCobro)}" class="tc"></td>
-										<td class="tr"><span th:text="${nb.esBigval(cobro.impCobro)}"></span> €</td> 
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>
-				</tr>
-				<tr th:if="${numIngresos > (loop.index + 1)}"><td colspan="8"><hr/></td></tr>
-			</tbody>
-		</table>
-	</div>
-
 	<div th:replace="presto/emails/general.html :: firmas"></div>
-	<footer th:replace="presto/emails/general.html :: footer"></footer>
 </body>
 </html>

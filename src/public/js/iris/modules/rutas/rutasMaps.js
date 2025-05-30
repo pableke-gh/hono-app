@@ -1,13 +1,11 @@
 
-import tabs from "../../../components/Tabs.js";
-
 import iris from "../../model/Iris.js";
 import organica from "../../model/Organica.js";
 import ruta from "../../model/ruta/RutaMaps.js";
+import rro from "../../model/ruta/RutaReadOnly.js";
 import rutas from "../../model/ruta/Rutas.js";
 import { CT } from "../../data/rutas.js";
 
-import rro from "./rutasReadOnly.js";
 import rvp from "./rutasVehiculoPropio.js";
 import xeco from "../../../xeco/xeco.js";
 import gastos from "../gastos/gastos.js";
@@ -16,6 +14,7 @@ function RutasMaps() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
 	const _tblRutas = form.setTable("#tbl-rutas", ruta.getTable()); // itinerario
+	const _tblReadOnly = form.setTable("#rutas-read", rro.getTable()); // itinerario
 
 	this.getRutas = rutas.getRutas;
 	this.getResume = () => _tblRutas.getResume();
@@ -27,8 +26,8 @@ function RutasMaps() {
 	}
 
 	// actualizo el array y la tabla de rutas
-	const fnUpdate = data => { rutas.setRutas(data); _tblRutas.render(data).setChanged(); }
-	this.setRutas = data => { fnUpdate(data); rvp.render(); } // actualizo la tabla de vehiculos propios (paso 6)
+	const fnUpdate = data => { rutas.setRutas(data); _tblRutas.render(data).setChanged(); } // actualizo el registro de rutas y el itinerario (paso 2)
+	this.setRutas = data => { fnUpdate(data); _tblReadOnly.render(data); rvp.render(); } // actualizo la tabla de consulta (paso 5) y la de vehiculos propios (paso 6)
 	this.update = data => { data && fnUpdate(data); } // recalcula cambios en los gastos
 
 	this.saveRutas = data => {
@@ -36,7 +35,7 @@ function RutasMaps() {
 			const keys = [ "p2", "matricula", "flag", "spanFlag", "tplFlag" ]; // excluded fields
 			const fnReplace = (key, value) => (keys.includes(key) ? undefined : value); // reduce size
 			form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
-			rro.setRender(); // fuerza la actualización de la tabla de consulta (paso 5)
+			_tblReadOnly.render(rutas.getRutas()); // fuerza la actualización de la tabla de consulta (paso 5)
 			rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
 			// todo: build dietas con temporal api...
 		}
@@ -67,9 +66,6 @@ function RutasMaps() {
 		form.set("is-rutas-gt-1", fnRutasGt1).set("is-editable-rutas-gt-1", () => (iris.isEditable() && fnRutasGt1()));
 		_tblRutas.setAfterRender(fnUpdateForm).set("#main", self.setRutaPrincipal); // set table actions
 	}
-
-	// tabla de consulta del itinerario (paso 5)
-	tabs.setAction("show-rutas-read", rro.view);
 }
 
 export default  new RutasMaps();

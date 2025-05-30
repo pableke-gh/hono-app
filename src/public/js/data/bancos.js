@@ -6,7 +6,7 @@ export const BankNames = {
     "0162": "HSBC Bank", "2085": "Ibercaja Banco", "1465": "ING", "1000": "Instituto de crédito oficial", "2095": "Kutxabank",
     "0073": "Openbank", "2103": "Unicaja Banco", "3058": "Cajamar", "3085": "Caja Rural", "3146": "Novanca", "0238": "Banco Pastor",
     "0487": "Banco Mare Nostrum", "2090": "Caja de Ahorros Mediterraneo", "0030": "Banco Español de Crédito", "0146": "Citibank",
-	"0186": "Banco Mediolanum"
+	"0186": "Banco Mediolanum", "2038": "Bankia"
 };
 
 export const IbanCodeLengths = {

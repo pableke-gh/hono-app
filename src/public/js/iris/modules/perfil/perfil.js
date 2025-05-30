@@ -22,17 +22,10 @@ function Perfil() {
 		onReset: () => actividad.setColectivo()
 	});
 
-	this.size = organicas.size;
 	this.isEmpty = () => (actividad.isEmpty() || organicas.isEmpty());
 	this.getGrupoDieta = organicas.getGrupoDieta;
 	this.getTipoDieta = organicas.getTipoDieta;
-
-	this.isMun = actividad.isMun;
-	this.isIsu = actividad.isIsu;
-	this.is1Dia = actividad.is1Dia;
-	this.isMaps = actividad.isMaps;
 	this.isRutaUnica = actividad.isRutaUnica;
-	//this.isFacturaUpct = actividad.isFacturaUpct;
 
     this.validate = data => {
 		const valid = form.getValidators();
@@ -41,7 +34,7 @@ function Perfil() {
 		if (organicas.isEmpty())
 			valid.addRequired("organica", "errOrganicas");
 		// when create or reactivate iris force to invoke rcPaso0
-		form.setChanged(form.isChanged() || !form.fire("has-firmas"));
+		//form.setChanged(form.isChanged() || !form.fire("has-firmas"));
 		return valid.isOk() && organicas.save();
     }
 

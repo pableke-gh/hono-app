@@ -47,6 +47,8 @@ function Resumen() {
 		transportes.init();
 		pernoctas.init();
 		dietas.init();
+
+		iris.getImpTrans = self.getImpTrans;
 		iris.getImpBruto = self.getImpBruto;
 	}
 

@@ -118,6 +118,9 @@
 		<p:remoteCommand name="rcUxxiec" action="#{presto.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />
 		<p:remoteCommand name="rcEmails" action="#{presto.firmas.emails()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcRemove" action="#{presto.list.remove()}" oncomplete="showTab(xhr, status, args, 'list')" />
+
+		<!--<h:inputHidden id="id" value="#{presto.list.id}" />
+		<p:commandButton id="pdf" ajax="false" styleClass="hide"><p:fileDownload value="#{presto.list.pdf()}"/></p:commandButton>-->
 	</h:form>
 
 	<c:if test="#{presto.user.uxxiec}">

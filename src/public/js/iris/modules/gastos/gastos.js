@@ -8,7 +8,7 @@ import gasto from "../../model/gasto/Gasto.js";
 import gastos from "../../model/gasto/Gastos.js";
 import rutas from "../../model/ruta/Rutas.js";
 
-import perfil from "../perfil/perfil.js";
+import actividad from "../perfil/actividad.js";
 import resumen from "../resumen.js";
 import gp5 from "./gasto.js";
 
@@ -38,12 +38,12 @@ function Gastos() {
 		const valid = form.getValidators();
 		if (!_tblGastos.getProp("adjuntos") && (rmaps.getTotKm() > 250))
 			valid.addRequired("adjuntos", "errDocFacturas"); // validacion de 250 km
+		_tblGastos.setChanged();
 		return valid.isOk();
 	}
 
 	tabs.setAction("paso5", () => { form.validate(self.validate) && form.sendTab(window.rcPaso5); });
 	tabs.setAction("save5", () => { form.validate(self.validate) && form.sendTab(window.rcSave5, 5); });
-	tabs.setAction("click-next", link => { link.nextElementSibling.click(); setTimeout(window.working, 450); });
 
 	// update tabs events
 	tabs.setInitEvent(12, rgastos.init);
@@ -51,14 +51,14 @@ function Gastos() {
 
 	this.init = () => {
 		gp5.init(); // init fields for gasto
-		const fnUnload = data => { i18n.confirm("remove") && xeco.sendId("rcUnloadGasto", data.id); };
+		const fnUnload = () => { i18n.confirm("remove") && _tblGastos.send(window.rcUnloadGasto); }; 
 		_tblGastos.set("#rcUnloadGasto", fnUnload); // set table action
 
 		const resume = _tblGastos.getResume();
 		gastos.getNumPernoctas = () => resume.noches; // redefine calc
 		iris.getNumRutasOut = () => rutas.getNumRutasUnlinked(); // call function after redefined by rutasMaps modeule
 		iris.getNumNochesPendientes = () => self.getNochesPendientes(); // call function after redefined by gastos module
-		const fnGastosPendientes = () => (perfil.isMaps() && ((rutas.getNumRutasUnlinked() > 0) || (self.getNochesPendientes() > 0)));
+		const fnGastosPendientes = () => (actividad.isMaps() && ((rutas.getNumRutasUnlinked() > 0) || (self.getNochesPendientes() > 0)));
 		form.set("is-gastos-pendientes", fnGastosPendientes).set("is-noches-pendientes", self.getNochesPendientes).set("is-rutas-pendientes", iris.getNumRutasOut)
 			.set("is-zip-com", () => (iris.isDisabled() && resume.docComisionado)).set("is-zip-doc", () => (iris.isDisabled() && resume.otraDoc))
 			.set("is-ac", globalThis.none).set("is-irpf", globalThis.none); // no aplica para esta version
@@ -79,7 +79,7 @@ function Gastos() {
 	window.unloadGasto = (xhr, status, args) => {
 		if (!window.showAlerts(xhr, status, args))
 			return false; // Server error
-		gastos.remove(_tblGastos.getCurrentItem()); // remove gasto from array
+		gastos.removeById(_tblGastos.getCurrentItem()); // remove gasto from array
 		rmaps.update(coll.parse(args.rutas)); // actualizo el registro de rutas
 		_tblGastos.flush(); // remove and reload table gastos (paso 5)
 		resumen.setFactComisionado(); // update facturas a nombre del comisionado

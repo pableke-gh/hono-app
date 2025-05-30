@@ -15,7 +15,6 @@ function XecoForm() {
 
 	this.getForm = () => form;
 	this.refresh = () => form.refresh(model);
-	this.sendId = list.sendId;
 
 	this.init = () => {
 		list.init();
@@ -52,17 +51,19 @@ function XecoForm() {
 	}
 
 	/*** Init. actions for model form ***/
-	form.set("is-disabled", model.isDisabled).set("is-editable", model.isEditable).set("is-editable-uae", model.isEditableUae)
+	form.set("is-admin", model.isAdmin).set("is-uae", model.isUae).set("is-usu-ec", model.isUsuEc)
+		.set("is-disabled", model.isDisabled).set("is-editable", model.isEditable).set("is-editable-uae", model.isEditableUae)
 		.set("is-firmable", model.isFirmable).set("is-cancelable", model.isCancelable).set("is-invalidable", model.isInvalidable)
 		.set("is-reactivable", model.isReactivable).set("is-subsanable", model.isSubsanable).set("is-valid", globalThis.void)
-		.set("is-removable", model.isRemovable).set("pf-upload", pfUpload);
+		.set("is-documentable", model.isDocumentable).set("is-removable", model.isRemovable).set("pf-upload", pfUpload);
 
 	tabs.setAction("send", () => { form.fire("is-valid") && i18n.confirm("msgSend") && form.invoke(window.rcSend); }); // send from xeco-model form
 	tabs.setAction("firmar", () => { i18n.confirm("msgFirmar") && form.invoke(window.rcFirmarForm); }); // run remote command from xeco-model
-	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && list.send("rcRechazar"); });
-	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && list.send("rcCancelar"); });
-	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable => TODO: auto call window.rcReactivar if exists
+	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && list.send(window.rcRechazar); });
+	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && list.send(window.rcCancelar); });
+	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable
 	tabs.setAction("subsanar", () => { form.fire("is-valid") && i18n.confirm("msgSave") && form.invoke(window.rcSubsanar); }); // send from changes
+	tabs.setAction("click-next", link => { link.nextElementSibling.click(); setTimeout(window.working, 450); });
 }
 
 export default new XecoForm();

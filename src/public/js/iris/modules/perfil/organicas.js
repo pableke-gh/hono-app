@@ -14,10 +14,13 @@ function Organicas() {
 
 	this.size = _tblOrganicas.size; 
 	this.isEmpty = _tblOrganicas.isEmpty;
-	this.reset = self.setOrganicas;
 	this.getFinanciacion = organica.getFinanciacion;
 	this.getGrupoDieta = () => form.getval("#grupo-dieta"); 
 	this.getTipoDieta = organica.getTipoDieta;
+
+	this.getOrganicas = () => _tblOrganicas.getData();
+	this.setOrganicas = organicas => { _tblOrganicas.render(organicas).setChanged(); }
+	this.reset = self.setOrganicas;
 
 	const fnAfterRender = resume => {
 		// 1º recalculo la financiacion
@@ -35,9 +38,6 @@ function Organicas() {
 		actividad.update(); // 3º update actividad + tramite
 		if (_tblOrganicas.isChanged()) // render manual del usuario
 			xeco.refresh(); // 4º actualizo el perfil de la solicitud
-	}
-	this.setOrganicas = organicas => {
-		_tblOrganicas.render(organicas).setChanged();
 	}
 
 	this.save = () => {

@@ -62,6 +62,7 @@ base.isEditableUae = () => (base.isEditable() || base.isSubsanable() || (base.is
 base.isEjecutable = () => (base.isUae() && [1, 3, 4, 5, 9, 10].includes(base.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
 base.isNotificable = () => [1, 3, 9, 10].includes(base.getEstado()); // Aceptada, Ejecutada ó Erronea
 base.isIntegrable = () => (base.isUae() && base.isNotificable()); // Requiere uae + estado notificable
+base.isDocumentable = () => (base.isPendiente() || base.isValidada() || base.isErronea()); // muestra el boton de informe pdf
 base.isUrgente = () => (base.get("fMax") && base.get("extra")); //solicitud urgente?
 //base.setUrgente = ({ fMax, extra }) => { _data.fMax = fMax; _data.extra = extra; return base; }
 

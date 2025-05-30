@@ -118,51 +118,14 @@
 					<th class="no-print"><h:outputText value="#{msg['lbl.acciones']}" escape="false" /></th>
 				</tr>
 			</thead>
-			<tbody>
-				<!--<tr class="tb-data">
-					<td class="text-right no-print">
-						<p:commandLink action="#{iris.view(sol)}" onclick="if (isCached('#{sol.idIrse}', '#{irse.form.getPaso(sol)}'))return false;loading();" oncomplete="viewIrse(xhr, status, args)" title="Acceso a la comunicación">
-								<i class="fas fa-search action text-blue resize"></i></p:commandLink>
-						<c:if test="#{sol.editable and iris.user.uae}">
-							<p:commandLink action="#{irse.list.activePaso8(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
-								title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></p:commandLink>
-						</c:if>
-						<c:if test="#{irse.isReactivable(sol)}">
-							<p:commandLink action="#{irse.list.clone(sol)}" onclick="if (!fnClone()) return false;" oncomplete="viewIrse(xhr, status, args, 'form')"
-									title="Subsanar la comunicación salvo cambio de presupuesto">
-								<i class="far fa-edit action text-blue resize"></i></p:commandLink>
-						</c:if>
-						<c:if test="#{sol.firmable}">
-							<p:commandLink action="#{irse.list.firmar(sol)}" onclick="if (!fnFirmar()) return false;loading();" oncomplete="showAlerts(xhr, status, args)" title="Firmar rolicitud"><i class="fas fa-check action text-green resize"></i></p:commandLink>
-							<p:commandLink action="#{irse.list.confirm(sol)}" onclick="loading();" oncomplete="viewIrse(xhr, status, args, 'reject');" title="Ir al motivo de rechazo"><i class="fas fa-times action text-red resize"></i></p:commandLink>
-						</c:if>
-						<c:if test="#{sol.pendiente or sol.ejecutable}">
-							<p:commandLink action="#{irse.list.report(sol)}" onclick="loading();" oncomplete="handleReport(xhr, status, args)" title="#{msg['tit.btn.informe']}">
-								<i class="fal fa-file-pdf action text-red resize"></i></p:commandLink>
-						</c:if>
-						<c:if test="#{iris.user.admin and irse.isIntegrable(sol)}">
-							<p:commandLink action="#{irse.list.rptFinalizar(sol)}" onclick="loading();" oncomplete="openHtml(xhr, status, args, 'Informe IRIS')" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></p:commandLink>
-							<p:commandLink action="#{irse.list.integrar(sol)}" onclick="if(!fnIntegrar(this)) return false;" oncomplete="showAlerts(xhr, status, args)" title="Lanza el proceso de integración con la capa SOA"><i class="far fa-save action resize text-blue"></i></p:commandLink>
-						</c:if>
-						<c:if test="#{irse.isEjecutable(sol) and (irse.isUae() or sol.isFirmaGestor())}">
-							<p:commandLink action="#{irse.list.uxxi(sol)}" onclick="loading();" oncomplete="viewIrse(xhr, status, args, 'uxxiec');" title="Expediente asociado a la solicitud"><i class="fal fa-cog action text-blue resize"></i></p:commandLink>
-						</c:if>
-						<c:if test="#{iris.user.admin}">
-							<p:commandLink action="#{irse.list.emails(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" title="Envia una prueba de cada tipo de correo al administrador"><i class="fal fa-mail-bulk action text-blue resize"></i></p:commandLink>
-							<p:commandLink action="#{irse.list.recalc(sol)}" onclick="if (!fnFirmar()) return false;loading();" oncomplete="showAlerts(xhr, status, args)" title="Recalcula las firmas asociadas a la comunicación"><i class="far fa-file-signature action text-green resize"></i></p:commandLink>
-						</c:if>
-						<c:if test="#{irse.form.isRemovable(sol)}">
-							<p:commandLink action="#{irse.list.remove(sol.idIrse)}" onclick="if (!fnRemove()) return false;" oncomplete="showAlerts(xhr, status, args)" title="Borra la comunicación del sistema"><i class="fal fa-trash-alt action text-red resize"></i></p:commandLink>
-						</c:if>
-					</td>
-				</tr>-->
-			</tbody>
+			<tbody></tbody>
 			<tfoot></tfoot>
 		</table>
 
 		<p:remoteCommand name="rcView" action="#{iris.view()}" oncomplete="viewIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcFirmar" action="#{iris.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)" />
-		<p:remoteCommand name="rcReactivar" action="#{iris.list.reactivar()}" oncomplete="reactivarIrse(xhr, status, args)" /> 
+		<p:remoteCommand name="rcReactivar" action="#{iris.list.reactivar()}" oncomplete="viewIrse(xhr, status, args)" /> 
+		<p:remoteCommand name="rcPaso8" action="#{iris.list.activarPaso8()}" oncomplete="viewIrse(xhr, status, args)" /> 
 		<p:remoteCommand name="rcReport" action="#{iris.list.report()}" oncomplete="handleReport(xhr, status, args)" />
 		<p:remoteCommand name="rcIntegrar" action="#{iris.firmas.ws()}" oncomplete="showAlerts(xhr, status, args)" />
 		<p:remoteCommand name="rcUxxiec" action="#{iris.uxxiec.view()}" oncomplete="loadUxxiec(xhr, status, args)" />

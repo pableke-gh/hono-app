@@ -17,6 +17,7 @@ function Organica() {
 	this.is643 = org => (sb.starts(org.o, ORG_300518) && ((org.mask & 16) == 16)); // apli = 643
 	this.isA83 = org => (self.is643(org) && (_financiacion != "ISU")); // A83 = 643 y no ISU
 	this.isACA = org => ((sb.starts(org.o, "300906") || sb.starts(org.o, "300920")) && (_financiacion == "OTR")); // TTPP o Master
+	this.isInve3005 = org => (org && sb.starts(org.o, "3005") && ((org.mask & 64) == 64)); // investigacion de la 3005XX
 	this.getFinanciacion = () => _financiacion;
 
 	this.beforeRender = resume => {
@@ -32,7 +33,7 @@ function Organica() {
 
 	this.row = (data, resume) => {
 		self.rowCalc(data, resume);
-		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
+		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : "";
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="#{msg['lbl.organica']}">${data.o}</td>
 			<td data-cell="Crédito Disp." class="form-refresh" data-refresh="is-editable">${i18n.isoFloat(data.imp)}</td>

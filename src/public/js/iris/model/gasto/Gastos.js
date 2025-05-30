@@ -22,6 +22,11 @@ function Gastos() {
 	this.getDocumentacion = () => _gastos.filter(gasto.isDoc);
 	this.getGastosComisionado = () => _gastos.filter(gasto.isDocComisionado);
 	this.getGastosDocumentacion = () => _gastos.filter(gasto.isOtraDoc);
+	this.getOrganicas = () => _gastos.filter(gasto.isOrganica);
+	this.getOrganicaDieta = () => _gastos.find(gasto.isOrganicaDieta);
+	this.getOrganicaPernocta = () => _gastos.find(gasto.isOrganicaPernocta);
+	this.getOrganicaTrans = () => _gastos.find(gasto.isOrganicaTrans);
+	this.getOrganicaAc = () => _gastos.find(gasto.isOrganicaAc);
 	this.setGastos = gastos => {
 		_gastos = gastos;
 		_gKm = self.getKm();
@@ -31,11 +36,6 @@ function Gastos() {
 		_gIban = self.getIban();
 		_gBanco = self.getBanco();
 	}
-
-	const fnUpdateGastos = (data, fn) => { _gastos = _gastos.filter(fn).concat(data); return self; }
-	//this.updatePaso5 = data => fnUpdateGastos(data, gasto.isPaso5);
-	//this.updateTransporte = data => fnUpdateGastos(data, gasto.isTransporte);
-	this.updateDietas = data => fnUpdateGastos(data, gasto.isDieta);
 
 	this.getMatricula = () => gasto.getMatricula(_gKm);
 	this.getJustifiKm = () => gasto.getJustifiKm(_gKm);
@@ -54,6 +54,7 @@ function Gastos() {
 	this.getJustifiCong = () => gasto.getJustifiCong(_gCongreso);
 	this.setCongreso = data => { gasto.setCongreso(_gCongreso, data); return self; }
 
+	this.getImpAc = () => gasto.getImpAc(_gAc);
 	this.getJustifiVp = () => gasto.getJustifiVp(_gAc);
 	this.setAsistencia = data => { gasto.setAsistencia(_gAc, data); return self; }
 
@@ -71,7 +72,9 @@ function Gastos() {
 	this.setBanco = data => { gasto.setBanco(_gBanco, data); return self; }
 
 	this.getNumPernoctas = () => _gastos.reduce((num, row) => (num + (gasto.isPernocta(row) ? row.num : 0)), 0);
-	this.remove = data => { _gastos = _gastos.filter(gasto => (gasto.id != data.id)); return self; }
+	this.filter = fn => { _gastos = _gastos.filter(fn); return self; }
+	this.removeById = data => self.filter(gasto => (gasto.id != data.id));
+	this.removeByTipo = data => self.filter(gasto => (gasto.tipo != data.tipo));
 	this.push = data => { _gastos.push(data); return self; }
 }
 

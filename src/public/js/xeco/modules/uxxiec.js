@@ -32,8 +32,8 @@ function Uxxiec() {
 	}
 
 	const fnSave = () => form.saveTable("#docs-json", tblUxxiec);
-	tabs.setAction("ejecutar", () => { fnSave(); form.invoke(window.rcEjecutar); });
-	tabs.setAction("notificar", () => { fnSave(); form.invoke(window.rcNotificar); });
+	tabs.setAction("ejecutar", () => { fnSave(); form.call(window.rcEjecutar); });
+	tabs.setAction("notificar", () => { fnSave(); form.call(window.rcNotificar); });
 
 	window.loadUxxiec = (xhr, status, args) => {
         if (window.showTab(xhr, status, args, "uxxiec"))

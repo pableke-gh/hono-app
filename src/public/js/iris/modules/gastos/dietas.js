@@ -27,15 +27,10 @@ function Dietas() {
 		fDieta = fDieta.add({ days: 1 });
 		return row;
 	}
-	const fnUpdateDietas = data => {
-		gastos.updateDietas(data);
-		_tblDietas.render(data);
-		return self;
-	}
 	this.build = () => {
-		const temp = []; // mapped array
+		gastos.removeByTipo(dieta.getTipo()); // remove gastos de tipo dieta
 		if (perfil.isEmpty() || perfil.isRutaUnica() || rutas.isEmpty())
-			return fnUpdateDietas(temp); // tabla vacia
+			return _tblDietas.reset(); // tabla vacia
 
 		const tipo = perfil.getTipoDieta();
 		const grupo = perfil.getGrupoDieta();
@@ -46,25 +41,27 @@ function Dietas() {
 		if (tb.lt(fDieta, fMax) || fDieta.equals(fMax)) {
 			const row = dieta.createDiaInicial();
 			fDieta = fDieta.add({ days: 1 });
-			temp.push(row);
+			gastos.push(row);
 		}
 
 		// primer día intermedio
 		if (tb.lt(fDieta, fMax) || fDieta.equals(fMax)) {
-			temp.push(fnCreateDiaIntermedio(fDieta, tipo, grupo));
+			gastos.push(fnCreateDiaIntermedio(fDieta, tipo, grupo));
 		}
 
 		// resto de días intermedios
 		while (tb.lt(fDieta, fMax)) {
-			temp.push(fnCreateDiaIntermedio(fDieta, tipo, grupo));
+			gastos.push(fnCreateDiaIntermedio(fDieta, tipo, grupo));
 		}
 
 		// ultimo día
 		if (fDieta.equals(fMax)) {
 			const row = dieta.createDiaFinal();
-			temp.push(row);
+			gastos.push(row);
 		}
-		return fnUpdateDietas(temp);
+
+		// update table view dietas
+		_tblDietas.render(gastos.getDietas());
 	}
 
 	this.setDietas = () => {

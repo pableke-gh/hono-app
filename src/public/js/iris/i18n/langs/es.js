@@ -14,6 +14,7 @@ export default {
 	msgPernoctasEmpty: "No hay pernoctas asociadas a esta comunicación.",
 	msgDietasEmpty: "No hay dietas / manutenciones asociadas a esta comunicación.",
 	msgReactivar: "¿Confirma que desea reactivar esta comunicación?",
+	msgReactivarP8: "¿Confirma que desea activar: Otras Indemnizaciones Extraordinarias?",
 
 	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
 	docMovilidad: "Documentación acreditativa del programa de movilidad",
@@ -83,5 +84,5 @@ export default {
 	tipoTickets: ["-", "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros", "-", "-", "Tickets de transporte (taxi, parking, peajes...)"],
 	tipoDocs: ["-", "Documentación obligatoria por ausencia de facturas", "Otra documentación (opcional)", "Justificación de dietas", "Facturas a nombre de la UPCT a pagar al proveedor", "Facturas a nombre de la UPCT a pagar al comisionado", "Documentación acreditativa del programa de movilidad"],
 	tipoExtra: ["-", "Gasto extraordinario por transporte", "Gasto extraordinario por alojamiento", "Gasto extraordinario por cena final españa", "Gasto extraordinario por otras dietas"],
-	//tipoOrganicas: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"]
+	tipoOrganica: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"]
 	}

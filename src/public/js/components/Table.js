@@ -1,6 +1,7 @@
 
 import dom from "./forms/DomBox.js";
 import coll from "./CollectionHTML.js";
+import alerts from "./Alerts.js";
 import i18n from "../i18n/langs.js";
 
 const fnTrue = () => true;
@@ -95,6 +96,8 @@ export default function(table, opts) {
 	this.querySelectorAll = selector => table.querySelectorAll(selector);
     this.getText = selector => dom.getText(table.querySelector(selector)); // read text
 
+	this.call = (fnCall, value) => { alerts.loading(); self.setChanged(); fnCall([{ name: "id", value }]); }
+	this.send = (fn, data) => { data = data || _rows[_index]; self.call(fn, data.id); }
 	this.invoke = (name, data, el, tr, i) => {
 		const fnAction = opts[name]; // action by name => must exists
 		fnAction(data || _rows[_index], el, tr, i); // call action

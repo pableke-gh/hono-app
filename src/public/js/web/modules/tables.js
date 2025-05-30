@@ -10,8 +10,8 @@ function fnTable() {
             <td class="text-center hide-xs" data-cell="Nº">${status.count}</td>
             <td data-cell="Nombre"><a href="#" class="link">${data.nombre}</a></td>
             <td data-cell="Título">${data.titulo}</td>
-            <td class="text-center" data-cell="Icono">${data.icono || ""}</td>
-            <td class="text-center" data-cell="Acciones">
+            <td data-cell="Icono" class="text-center">${data.icono || ""}</td>
+            <td data-cell="Acciones" class="text-center no-print">
 				<div><a href="#remove" class="fas fa-times action text-red text-xl resize row-action" title="Desasociar partida"></a></div>
 			</td>
         </tr>`;
@@ -20,17 +20,25 @@ function fnTable() {
     table.render(menus.filter(node => (node.tipo == 1)));
 }
 
-const elPdf = $1("a[href='#pdf']");
-elPdf.onclick = ev => {
+$1("a[href='#pdf']").onclick = ev => {
+	// Step 1: Select the HTML element (or build template)
+	const main = $1("main").cloneNode(true);
+	main.querySelectorAll(".no-print").forEach(el => el.remove());
+	const element = main; //document.documentElement;
+
+	// Step 2: Configure the conversion options
+	const options = {
+		margin: .25,
+		filename: 'my-document.pdf',
+		image: { type: 'jpeg', quality: 0.98 },
+		html2canvas: { scale: 2 },
+		jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+	};
+
+	// Step 3: Convert and save the PDF
+	const worker = html2pdf();
+	worker.set(options).from(element).save();
 	ev.preventDefault();
-	// Creating a new jsPDF object
-	const pdf = new jsPDF();
-
-	// Use jsPDF's 'fromHTML' method to add HTML element to PDF
-	pdf.fromHTML($1("main"));
-
-	// Saving the PDF with specified file name
-	pdf.save("file");
 };
 
 // Register event on page load and export default handler

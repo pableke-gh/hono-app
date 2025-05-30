@@ -33,6 +33,6 @@
 	/* CV specific styles */
 	.layout-topbar, .layout-menu-container, .layout-footer, 
 	.layout-main > .route-bar, .layout-main > form {
-		display: none;
+		display: none !important;
 	}
 }

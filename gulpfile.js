@@ -50,7 +50,8 @@ gulp.task("minify-views", done => {
 	};
 
 	const VIEW_DEST = "dist/views"; // Remove previous unused files
-	fs.rmSync(VIEW_DEST, { recursive: true, force: true });
+	fs.rmSync(VIEW_DEST, { recursive: true, force: true }); // remove obsolete files
+	gulp.src("dist/public").pipe(gulp.symlink("dist/views")); // static server links
 	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest(VIEW_DEST)).on("end", () => {
 		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
 		deployCV("dist/views/xeco/**/*", CV_XECO, fnNone); // deploy xeco XHTML in Campus Virtual
@@ -116,7 +117,6 @@ gulp.task("modules", done => {
 
 // Tasks to create static data
 gulp.task("static", done => {
-	gulp.src("dist/public").pipe(gulp.symlink("dist/views")); // static server links
 	gulp.src(SYM_LINKS).pipe(gulp.symlink("node_modules/app")); // dynamic links
 
 	gulp.src("src/public/img/**/*").pipe(gulp.dest("dist/public/img"));

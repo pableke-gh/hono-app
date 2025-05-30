@@ -61,6 +61,7 @@
 				</ul>
 			</c:if>
 
+			<c:if test="#{sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_GACA) or sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_UAE) or sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_GERENCIA)}">
 			<h2>Gestión Presupuestaria</h2>
 			<ul>
 				<li><a href="/uae/modules/xecom/panel_gc.xhtml">Panel de Gestión Presupuestaria</a></li>
@@ -68,6 +69,7 @@
 					<li><a href="/uae/modules/xecom/panel_fcb.xhtml">Panel del Fondo de Cobertura</a></li>
 				</c:if>
 			</ul>
+			</c:if>
 		</div>
 
 		<div class="card-xeco">

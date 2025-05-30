@@ -34,8 +34,10 @@ solicitud.isExcedida = () => (solicitud.getMask() & 8);
 
 solicitud.row = data => {
 	let acciones = solicitud.rowActions(data);
-	if (!solicitud.isEditable())
+	if (solicitud.isDocumentable())
 		acciones += '<a href="#rcReport" class="row-action"><i class="fal fa-file-pdf action resize text-red"></i></a>';
+	//if (solicitud.isAdmin())
+		//acciones += '<a href="#rcPdf" class="row-action"><i class="fas fa-file-pdf action resize text-blue"></i></a>';
 
 	let info = '<td></td>';
 	if (solicitud.isUrgente())

@@ -24,6 +24,11 @@ function Gasto() {
 	this.isIban = gasto => (gasto.tipo == 12); // paso 9 = liquidacion
 	this.isBanco = gasto => (gasto.tipo == 13); // paso 9 = liquidacion
 	this.isPaso5 = gasto => self.isFactura(gasto) || self.isTicket(gasto) || self.isPernocta(gasto) || self.isExtra(gasto) || self.isDoc(gasto);
+	this.isOrganica = gasto => (gasto.tipo == 19); // paso 9 = multiorganica
+	this.isOrganicaDieta = gasto => (self.isOrganica(gasto) && (gasto.subtipo == 1)); // paso 9 = multiorganica dieta = 1
+	this.isOrganicaPernocta = gasto => (self.isOrganica(gasto) && (gasto.subtipo == 2)); // paso 9 = multiorganica pernocta = 2
+	this.isOrganicaTrans = gasto => (self.isOrganica(gasto) && (gasto.subtipo == 3)); // paso 9 = multiorganica transporte = 3
+	this.isOrganicaAc = gasto => (self.isOrganica(gasto) && (gasto.subtipo == 4)); // paso 9 = multiorganica asistencias = 4
 
 	this.getMatricula = gasto => gasto?.cod; // _gKm = matricula = cod = id_fichero
 	this.setMatricula = (gasto, matricula) => { gasto.cod = matricula; }
@@ -65,8 +70,8 @@ function Gasto() {
 		return self;
 	}
 
-	this.getJustifiVp = gasto => gasto?.desc; // _gAc = justificacion VP = desc
 	this.getImpAc = gasto => gasto?.imp1; // _gAc = importe de la asistencia / colaboracion = imp1
+	this.getJustifiVp = gasto => gasto?.desc; // _gAc = justificacion VP = desc
 	this.setAsistencia = (gAc, data) => {
 		//gAc.imp1 = data.impAc; // importe de la asistencia / colaboracion paso 3 (a futuro)
 		gAc.desc = data.justifiVp; // justificación del uso del vehiculo propio paso 3
@@ -104,7 +109,7 @@ function Gasto() {
 	}
 
 	this.rowCalc = (data, resume) => {
-		resume.noches = self.isPernocta(data) ? data.num : 0;
+		resume.noches += self.isPernocta(data) ? data.num : 0;
 		resume.numTransportes += self.isTransporte(data);
 		resume.numPernoctas += self.isPernocta(data);
 		resume.adjuntos += globalThis.isset(data.fref);
