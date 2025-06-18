@@ -18,7 +18,7 @@ solicitud.isReciboCV = () => (solicitud.getTipo() == 4); // viene de CV
 solicitud.isCongresoCV = () => (solicitud.getTipo() == 5); // viene de CV
 solicitud.isFacturable = () => (solicitud.isFactura() || solicitud.isReciboCV() || solicitud.isCongresoCV());
 solicitud.isFirmaGaca = () => (solicitud.isReciboCV() && solicitud.isTtpp() && (solicitud.getMask() & 2));
-//solicitud.isReactivable = () => (solicitud.isUae() && (solicitud.isRechazada() || solicitud.isErronea())); // La solicitud se puede reactivar / subsanar
+//solicitud.isReactivable = () => (solicitud.isUae() && (solicitud.isInvalidada() || solicitud.isErronea())); // La solicitud se puede reactivar / subsanar
 
 solicitud.isTtpp = () => (solicitud.getSubtipo() == 3);
 solicitud.isTituloOficial = () => (solicitud.getSubtipo() == 4);

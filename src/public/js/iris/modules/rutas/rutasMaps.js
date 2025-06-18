@@ -8,6 +8,7 @@ import { CT } from "../../data/rutas.js";
 
 import rvp from "./rutasVehiculoPropio.js";
 import xeco from "../../../xeco/xeco.js";
+import dietas from "../gastos/dietas.js";
 import gastos from "../gastos/gastos.js";
 
 function RutasMaps() {
@@ -37,7 +38,7 @@ function RutasMaps() {
 			form.saveTable("#rutas-json", _tblRutas, fnReplace); // guardo los cambios en las rutas
 			_tblReadOnly.render(rutas.getRutas()); // fuerza la actualización de la tabla de consulta (paso 5)
 			rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
-			// todo: build dietas con temporal api...
+			dietas.build(); // rebuild table of dietas
 		}
 		if (form.isChanged()) { // save gasto km (matricula) e iban (tipo / grupo dieta)
 			_tblRutas.setChanged().setProp("impKm", rvp.getImporte()); // importe = €/km

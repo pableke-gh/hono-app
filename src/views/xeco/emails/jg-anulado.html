@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - Anulación de JG</title>
+	<style th:replace="uae/emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="uae/emails/general.html :: header"></header>
+	<div class="navbar">
+		El justificante de gasto número <span th:text="${xp.numJg}"></span>: "<span th:text="${xp.jgDesc}"></span>",
+		ha sido anulado por: <span th:text="${xp.claveFase}"></span> con fecha <span th:text="${dt.toEsDate(xp.FEmision)}"></span>,
+		por el siguiente motivo: "<span th:text="${xp.formaPago}"></span>"
+	</div>
+	<footer th:replace="uae/emails/general.html :: footer"></footer>
+</body>
+</html>

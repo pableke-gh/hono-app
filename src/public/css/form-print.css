@@ -4,4 +4,7 @@
 
 	input, select, textarea { border: 0; border-style: none; } /* remove inputs borders */
     .btn { display: none; }
+
+	-webkit-calendar-picker-indicator { display: none; }
+	-webkit-search-cancel-button { display: none; }
 }

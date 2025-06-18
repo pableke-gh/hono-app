@@ -54,7 +54,9 @@ gulp.task("minify-views", done => {
 	gulp.src("dist/public").pipe(gulp.symlink("dist/views")); // static server links
 	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest(VIEW_DEST)).on("end", () => {
 		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
+		const CV_XECO_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/uae/emails";
 		deployCV("dist/views/xeco/**/*", CV_XECO, fnNone); // deploy xeco XHTML in Campus Virtual
+		deployCV("dist/views/xeco/emails/**/*", CV_XECO_EMAILS, fnNone); // deploy xeco XHTML in CV
 
 		const CV_ISUITE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-xeco/src/main/resources/META-INF/resources/modules/xecom";
 		deployCV("dist/views/isuite/**/*", CV_ISUITE, fnNone); // deploy xeco XHTML in Campus Virtual
@@ -62,12 +64,12 @@ gulp.task("minify-views", done => {
 		const CV_PRESTO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/presto";
 		const CV_PRESTO_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/presto/emails";
 		deployCV("dist/views/presto/**/*", CV_PRESTO, fnNone); // deploy presto XHTML in Campus Virtual
-		deployCV("dist/views/presto/emails/**/*", CV_PRESTO_EMAILS, fnNone); // deploy irse XHTML in Campus Virtual
+		deployCV("dist/views/presto/emails/**/*", CV_PRESTO_EMAILS, fnNone); // deploy presto XHTML in CV
 
 		const CV_FACT = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/factura";
 		const CV_FACT_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/factura/emails";
 		deployCV("dist/views/factura/**/*", CV_FACT, fnNone); // deploy presto XHTML in Campus Virtual 
-		deployCV("dist/views/factura/emails/**/*", CV_FACT_EMAILS, fnNone); // deploy irse XHTML in Campus Virtual
+		deployCV("dist/views/factura/emails/**/*", CV_FACT_EMAILS, fnNone); // deploy fact XHTML in Campus Virtual
 
 		const CV_BUZON = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/buzon";
 		deployCV("dist/views/buzon/**/*", CV_BUZON, fnNone); // deploy presto XHTML in Campus Virtual 
