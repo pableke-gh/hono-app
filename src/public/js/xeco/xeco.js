@@ -31,6 +31,7 @@ function XecoForm() {
 		// 2º force last action => update form views and go to tab form
 		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])");
 		setTimeout(() => form.setValues(data).setEditable().refresh(model), 1); // execute at the end
+		list.setCache(data.id); // filter form cache = xeco form cache!
 		tabs.showTab("form"); // go form tab
 	}
 	this.update = (data, principales, tab) => {

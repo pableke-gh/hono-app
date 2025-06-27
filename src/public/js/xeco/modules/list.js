@@ -25,7 +25,6 @@ function List() {
 			fnLoadTab("form", data);
 		else
 			self.send(window.rcView); // call server action
-		form.setCache(data.id); // filter form cache = xeco form cache!
 	}
 	const fnReject = data => {
 		fnLoadTab("reject", data);
@@ -52,6 +51,7 @@ function List() {
 	}
 
 	this.setSolicitudes = data => { tblSolicitudes.render(data); }
+	this.setCache = id => form.setCache(id); // set form cache
 	this.getTable = () => tblSolicitudes;
 	this.send = tblSolicitudes.send
 

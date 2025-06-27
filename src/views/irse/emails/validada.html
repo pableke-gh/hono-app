@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - IRIS</title>
+	<style th:replace="emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="emails/general.html :: header"></header>
+	<p>La siguiente <b>PROPUESTA</b> de <b th:text="${xs.tramiteDesc}"></b> por <b th:text="${xs.actividadDesc}"></b>, ha sido <b>ACEPTADA</b> por todos los firmantes y está pendiente de su contabilización en <b>UXXIEC</b>.</p>
+	<div th:replace="emails/general.html :: solicitud"></div>
+
+	<div class="navbar">
+		<p><b>Relación de orgánicas / Unidades Tramitadoras</b></p>
+		<table>
+			<thead>
+				<tr><th>Orgánica</th><th>UT Descripción</th></tr>
+			</thead>
+			<tbody class="tc">
+				<tr th:each="ut:${uts}">
+					<td th:text="${ut.organica}"></td>
+					<td th:text="${ut.resp}"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr><td colspan="4">Unidades Tramitadoras: <span th:utext="${numUts}"></span></td></tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<div class="navbar">
+		<p class="terr"><b>AVISOS</b></p>
+		<ul>
+			<li><b>Nuevo tercero:</b> <span th:text="${isNewTercero}"></span></li>
+			<li><b>Nueva cuenta bancaria:</b> <span th:text="${isNewIban}"></span></li>
+			<li><b>Solicitadas indemnizaciones extraordinarias:</b> <span th:text="${isPaso8}"></span></li>
+			<li><b>Número de km corregidos al alza:</b> <span th:text="${overNumKm}"></span></li>
+			<li><b>Validaciones de coincidencia temporal:</b> <span th:text="${codigoConflicto}"></span></li>
+			<li><b>El interesado es externo y ha sido personal de la UPCT en los dos últimos años:</b> <span th:text="${isMaxVigencia}"></span></li>
+		</ul>
+	</div>
+
+	<p><b><u>DATOS PARA EL REGISTRO EN UXXI-EC</u></b></p>
+
+	<div class="navbar">
+		<p><b>FICHA GENERAL</b></p>
+		<table>
+			<thead>
+				<tr><th>Campo UXXI-EC</th><th>Valor del Campo UXXI-EC</th></tr>
+			</thead>
+			<tbody>
+				<tr><th class="tl w180">Descripción del JG</th><td>IRIS <span th:text="${xs.codigoNum}"></span> <span th:text="${firma.codigo}"></span> <span th:text="${xs.actividad}"></span> - <span th:text="${xs.fullNameInteresado}"></span> - <span th:text="${xs.memoria}"></span> - <span th:text="${dt.toEsDate(rutas.fechaSalida)}"></span> a <span th:text="${dt.toEsDate(rutas.fechaLlegada)}"></span>. <span th:text="${gastos.justifiSubv}"></span></td></tr>
+				<tr><th class="tl w180">Fecha de emisión</th><td th:text="${sysdate}"></td></tr>
+				<tr><th class="tl w180">NIF y nombre</th><td><span th:text="${xs.nifInteresado}"></span> - <span th:text="${xs.fullNameInteresado}"></span></td></tr>
+				<tr><th class="tl w180">Número justificante</th><td><span th:text="${xs.ejercicio}"></span>/<span th:text="${xs.codigoPk}"></span>/<span th:text="${xs.actividad}"></span></td></tr>
+			</tbody>
+			<tfoot>
+				<tr><td colspan="2">Campos: 4</td></tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<div class="navbar">
+	<p><b>FICHA ECONÓMICO Y DATOS FISCALES</b></p>
+	<table>
+		<thead>
+			<tr><th>Campo UXXI-EC</th><th class="tr">Línea 1 (Exento)</th><th class="tr">Línea 2 (No exento)</th></tr>
+		</thead>
+		<tbody>
+			<tr><th class="tl w180">Importe neto</th><td class="tr" th:text="${nb.esBigval(gastos.impNetoExento)}"></td><td class="tr" th:text="${nb.esBigval(gastos.impNetoNoExento, '-')}"></td></tr>
+			<tr><th class="tl w180">Imp. Rtn. IRPF (<span th:text="${nb.esBigval(gastos.porcentajeIrpf, '-')}"></span> %)</th><td class="tr">-</td><td class="tr" th:text="${nb.esBigval(gastos.impRetencionIrpf, '-')}"></td></tr>
+			<tr><th class="tl w180">Líquido a pagar</th><td class="tr" th:text="${nb.esBigval(gastos.impLiquidoExento, '-')}"></td><td class="tr" th:text="${nb.esBigval(gastos.impLiquidoNoExento, '-')}"></td></tr>
+			<tr><th class="tl w180">Clave fiscal</th><td class="tr" th:text="${gastos.claveFiscalExenta}"></td><td class="tr" th:text="${gastos.claveFiscalNoExenta}"></td></tr>
+		</tbody>
+		<tfoot>
+			<tr><td colspan="3">Campos: 4</td></tr>
+		</tfoot>
+	</table>
+	</div>
+
+	<div th:replace="emails/general.html :: imputacion"></div>
+	<footer th:replace="emails/general.html :: footer"></footer>
+</body>
+</html>

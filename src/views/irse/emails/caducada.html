@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - IRIS</title>
+	<style th:replace="emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="emails/general.html :: header"></header>
+	<div class="navbar">
+		<p>
+			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
+			<br/>Le comunicamos que la comunicación <b th:text="${xs.codigo}"></b> ha CADUCADO.
+		</p>
+	</div>
+	<footer th:replace="emails/general.html :: footer"></footer>
+</body>
+</html>
