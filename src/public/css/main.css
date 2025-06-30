@@ -28,6 +28,7 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 
 /* Actions */
 .action { display: inline-block; margin-right: 6px; text-decoration: none; font-size: 24px; }
+.text-header { font-size: x-large; font-weight: bold; text-align: center; }
 .text-xl { font-size: x-large; font-weight: bold; text-transform: uppercase; }
 .text-upper1:first-letter { text-transform: capitalize; }
 .text-disabled { opacity: .5; color: gray !important; }

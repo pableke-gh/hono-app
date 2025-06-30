@@ -6,11 +6,13 @@
 	<style th:replace="emails/general.html :: styles"></style>
 </head>
 <body>
-	<header th:replace="emails/general.html :: header"></header>
-	<div class="navbar">texto..</div>
+	<header><img src="../webapp/resources/images/upct/azul-horizontal.png" alt="logo" width="200px"/></header>
+	<div class="navbar txl"><b th:text="${xs.tramiteDesc}"></b> por <b th:text="${xs.actividadDesc}"></b></div>
+	<div class="navbar"><b>CÓDIGO IRIS:</b> <span th:text="${xs.codigo}"></span></div>
+	<div class="navbar">A partir de los siguientes datos comunicados por <span th:text="${xs.fullNameInteresado}"></span> y validados conforme al registro de firmas, se procede por parte de la Unidad de Asuntos Económicos, con fecha <span th:text="${dt.toEsDate(sysdate)}"></span>, a la liquidación de las correspondientes indemnizaciones.</div>
 
 	<div class="navbar">
-		<p><b>LIQUIDACION EFECTUADA:</b></p> 
+		<p><b>LIQUIDACION EFECTUADA:</b></p>
 		<table>
 			<thead>
 				<tr>
@@ -20,7 +22,7 @@
 			<tbody>
 				<tr>
 					<td>Vehículo propio <span th:text="${gastos.matricula}"></span></td>
-					<td class="tr"><span th:text="${nb.esBigval(rutas.totalKm, '-')}"></span> €</td>
+					<td class="tr"><span th:text="${nb.esBigval(gastos.impKm, '-')}"></span> €</td>
 				</tr>
 				<tr>
 					<td>Facturas a nombre del comisionado y tickets por gastos de transporte</td>
@@ -37,9 +39,8 @@
 			</tbody>
 
 			<thead>
-				<tr>
-					<th colspan="2">GASTOS DE ALOJAMIENTO</th>
-				</tr>
+				<tr><th colspan="2"><hr/></th></tr>
+				<tr><th colspan="2">GASTOS DE ALOJAMIENTO</th></tr>
 			</thead>
 			<tbody>
 				<tr>
@@ -57,6 +58,7 @@
 			</tbody>
 
 			<thead>
+				<tr><th colspan="2"><hr/></th></tr>
 				<tr><th colspan="2">RESUMEN DIETAS MANUTENCIÓN</th></tr>
 			</thead>
 			<tbody>
@@ -67,6 +69,7 @@
 			</tbody>
 
 			<thead th:if="${gastos.isAc()}">
+				<tr><th colspan="2"><hr/></th></tr>
 				<tr><th colspan="2">RESUMEN ASISTENCIAS/COLABORACIONES EXTERNAS</th></tr>
 			</thead>
 			<tbody th:if="${gastos.isAc()}">
@@ -77,11 +80,10 @@
 			</tbody>
 
 			<thead>
-				<tr><th colspan="2"></th></tr>
+				<tr><th colspan="2"><hr/></th></tr>
 			</thead>
 			<tbody>
 				<tr><th class="tl">TOTAL BRUTO</th><th class="tr"><span th:text="${nb.esBigval(gastos.impBruto)}"></span> €</th></tr>
-				<tr><td colspan="2"><hr/></td></tr>
 				<tr><th class="tl">TOTAL LÍQUIDO</th><th class="tr"><span th:text="${nb.esBigval(xs.importe)}"></span> €</th></tr>
 			</tbody>
 
@@ -119,6 +121,6 @@
 	<div th:replace="emails/general.html :: comunicacion"></div>
 	<div th:replace="emails/general.html :: actividad"></div>
 	<div th:replace="emails/general.html :: firmas"></div>
-	<footer th:replace="emails/general.html :: footer"></footer>
+	<footer></footer>
 </body>
 </html>

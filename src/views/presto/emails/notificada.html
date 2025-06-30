@@ -10,7 +10,7 @@
 	<div class="navbar">
 		<p>
 			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-			<br/>Se ha EJECUTADO EN UXXIEC, con fecha <span th:text="${sysdate}"></span>, la siguiente solicitud de <span th:text="${xs.descCodigo}"></span>:
+			<br/>Se ha EJECUTADO EN UXXIEC, con fecha <span th:text="${dt.toEsDate(sysdate)}"></span>, la siguiente solicitud de <span th:text="${xs.descCodigo}"></span>:
 		</p>
 	</div>
 

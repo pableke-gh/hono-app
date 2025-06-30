@@ -9,7 +9,7 @@
 	<header th:replace="emails/general.html :: header"></header>
 	<div class="navbar">
 		Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-		<br/>La Unidad de Asuntos Económicos ha CONTABILIZADO PARA EL PAGO, con fecha <span th:text="${sysdate}"></span> la siguiente <b th:text="${xs.tramiteDesc}"></b> por <b th:text="${xs.actividadDesc}"> a partir de la siguiente comunicación:</b>:
+		<br/>La Unidad de Asuntos Económicos ha CONTABILIZADO PARA EL PAGO, con fecha <span th:text="${dt.toEsDate(sysdate)}"></span> la siguiente <b th:text="${xs.tramiteDesc}"></b> por <b th:text="${xs.actividadDesc}"> a partir de la siguiente comunicación:</b>:
 	</div>
 
 	<div class="navbar">
