@@ -18,7 +18,6 @@
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Cual es la orgánica para la factura:</div>
-				<p:remoteCommand name="rcFindOrganica" action="#{fact.form.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
 				<input type="search" id="acOrganica" name="acOrganica" class="ui-input ui-autocomplete" tabindex="3" />
 				<h:inputText id="idOrganica" value="#{fact.solicitud.organica}" styleClass="ui-input ui-number hide" />
 				<ul role="list" class="results"></ul>
@@ -117,7 +116,7 @@
 		<div class="ui-blocks form-refresh" data-refresh="show-gaca">
 		<label class="ui-block-row">
 			<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
-			<h:inputTextarea id="memo" value="#{fact.solicitud.memoriaView}" styleClass="ui-input ui-ta editable-uae" tabindex="13" maxlength="600" title="Observaciones de la factura" />
+			<h:inputTextarea id="memo" value="#{fact.solicitud.memoriaView}" styleClass="ui-input ui-ta" data-readonly="manual" tabindex="13" maxlength="600" title="Observaciones de la factura" />
 			<div class="ui-errtip"></div>
 		</label>
 		</div>
@@ -129,7 +128,7 @@
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 		<a href="#tab-action-send" class="btn btn-green form-refresh" data-refresh="is-editable" title="Poner solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcSend" action="#{fact.form.save()}" oncomplete="showTab(xhr, status, args, 0)"/>
+		<p:remoteCommand name="rcSend" action="#{fact.form.save()}" oncomplete="showTab(xhr, status, args, 'init')"/>
 
 		<a href="#tab-action-reactivar" class="btn btn-warn form-refresh" data-refresh="is-reactivable" title="Activa los campos modificables por la UAE">
 			<i class="fas fa-wrench btn-icon-left"></i>Reactivar</a>
@@ -139,7 +138,6 @@
 
 		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="is-firmable" title="#{msg['tit.btn.firmar']}">
 			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>
-		<p:remoteCommand name="rcFirmarForm" action="#{fact.firmas.firmar()}" oncomplete="loadFirmas(xhr, status, args)"/>
 		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="is-firmable" title="#{msg['tit.btn.rechazar']}">
 			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
 		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.cancelar']}">

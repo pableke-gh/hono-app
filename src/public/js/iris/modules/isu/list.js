@@ -27,8 +27,8 @@ function ListIsu() {
 	const tblIsu = form.setTable("#tbl-isu", otri.getTable());
 
 	this.init = () => {
-		const acOrgancias = form.setAutocomplete("#organica-isu", otri.getAutocomplete());
-		acOrgancias.setSource(term => pf.sendTerm("rcFindOrg", term));
+		const acOrganicas = form.setAutocomplete("#organica-isu", otri.getAutocomplete());
+		acOrganicas.setSource(term => pf.sendTerm("rcFindOrg", term));
 		tblIsu.render(); // render empty table
 	}
 

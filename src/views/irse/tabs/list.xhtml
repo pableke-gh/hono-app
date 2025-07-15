@@ -208,7 +208,7 @@
 						<p:commandLink action="#{irse.list.confirm(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'reject');" title="Ir al motivo de rechazo"><i class="fas fa-times action text-red resize"></i></p:commandLink>
 					</c:if>
 					<c:if test="#{sol.pendiente or sol.ejecutable}">
-						<p:commandLink action="#{irse.list.report(sol)}" onclick="loading();" oncomplete="handleReport(xhr, status, args)" title="#{msg['tit.btn.informe']}">
+						<p:commandLink action="#{irse.list.report(sol)}" onclick="loading();" oncomplete="openUrl(xhr, status, args)" title="#{msg['tit.btn.informe']}">
 							<i class="fal fa-file-pdf action text-red resize"></i></p:commandLink>
 					</c:if>
 					<c:if test="#{irse.admin and irse.isIntegrable(sol)}">

@@ -75,6 +75,7 @@ export default function(table, opts) {
 
 	this.getFirst = () => _rows[0];
 	this.getItem = i => _rows[i ?? _index];
+	this.getId = i => self.getItem(i)?.id; // get item id
 	this.isItem = () => (_index > -1) && (_index < _rows.length);
 	this.getCurrentItem = () => _rows[_index];
 	this.getLastItem = () => _rows.at(-1);

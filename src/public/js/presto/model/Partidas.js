@@ -27,18 +27,18 @@ function Partidas() {
         partida.setPrincipal(data[0]); // marco la primera como principal
     }
 
-    const MSG_ERR_INC = "Debe seleccionar al menos una partida a incrementar";
     this.validate = () => { // Todas las solicitudes tienen partidas a incrementar
         const valid = i18n.getValidation(); // Continue with validation without reset
+		const MSG_ERR_INC = "Debe seleccionar al menos una partida a incrementar";
         return data.length ? valid.isOk() : !valid.addRequired("acOrgInc", MSG_ERR_INC);
     }
     this.validatePartida = partida => { // compruebo si la partida existía previamente
 		const valid = i18n.getValidation(); // Continue with validation without reset
 		if (!partida)
-            return !valid.addRequired("acOrgInc", MSG_ERR_INC);
-        if (data.find(row => ((row.o == partida.o) && (row.e == partida.e))))
-            return !valid.addError("acOrgInc", "notAllowed", "¡Partida ya asociada a la solicitud!");
-        return true;
+			return !valid.addRequired("acOrgInc", "Partida a incrementar no encontrada en el sistema.");
+		return data.find(row => ((row.o == partida.o) && (row.e == partida.e)))
+			? !valid.addError("acOrgInc", "notAllowed", "¡Partida ya asociada a la solicitud!")
+			: true;
     }
 }
 

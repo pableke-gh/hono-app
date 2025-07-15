@@ -9,7 +9,6 @@
 
 	<label class="ui-block-xl autocomplete">
 		<div class="label required">Tercero (CIF / NIF / Nombre):</div>
-		<p:remoteCommand name="rcFindTercero" action="#{fact.form.findTercero()}" oncomplete="loadItems(xhr, status, args)" />
 		<input type="search" id="acTercero" name="acTercero" class="ui-input ui-autocomplete" tabindex="1" />
 		<h:inputText id="idTercero" value="#{fact.solicitud.idTerceroView}" styleClass="ui-input ui-number hide" />
 		<ul role="list" class="results"></ul>
@@ -19,7 +18,6 @@
 		<div class="label required">Delegación:</div>
 		<select id="delegacion" name="delegacion" class="ui-input ui-select ui-number" tabindex="2"></select>
 		<h:inputText id="idDelegacion" value="#{fact.solicitud.delegacion}" styleClass="ui-input ui-number hide" />
-		<p:remoteCommand name="rcDelegaciones" action="#{fact.form.findDelegaciones()}" oncomplete="loadDelegaciones(xhr, status, args)" />
 		<div class="ui-errtip"></div> 
 	</label>
 </html>

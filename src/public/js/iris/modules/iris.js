@@ -1,5 +1,9 @@
 
+import tabs from "../../components/Tabs.js";
+
 import iris from "../model/Iris.js";
+import listIsu from "./isu/list.js";
+
 import xeco from "../../xeco/xeco.js";
 import list from "../../xeco/modules/list.js";
 
@@ -27,6 +31,13 @@ function Iris() {
 		form.reset("input[id$='-json']"); // update fields
 		xeco.update(data, firmas, tab); // Update firmas blocks
 	}
+
+	/*********** Extra list actions ***********/
+	list.getTable().set("#rcFinalizar", data => list.send(window.rcFinalizar, data)); // html report
+	tabs.setAction("finalizar", () => list.send(window.rcFinalizar)); // set tab action
+
+	/*********** Listado ISU - Justifi OTRI ***********/
+	tabs.setInitEvent("listIsu", listIsu.init);
 }
 
 export default new Iris();

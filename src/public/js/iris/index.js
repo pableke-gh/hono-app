@@ -1,6 +1,5 @@
 
 import coll from "../components/Collection.js";
-import tabs from "../components/Tabs.js";
 
 import iris from "./modules/iris.js";
 import perfil from "./modules/perfil/perfil.js";
@@ -9,7 +8,6 @@ import gastos from "./modules/gastos/gastos.js";
 import resumen from "./modules/resumen.js";
 import sendTab from "./modules/send.js";
 import otri from "./modules/otri.js";
-import listIsu from "./modules/isu/list.js";
 
 coll.ready(() => {
 	iris.init();
@@ -51,6 +49,3 @@ window.updateIrse = (xhr, status, args, tab) => {
 	resumen.update(); // update tables for paso 6
 	sendTab.update(coll.parse(args.cuentas));
 }
-
-/*********** Listado ISU - Justifi OTRI ***********/
-tabs.setInitEvent("listIsu", listIsu.init);

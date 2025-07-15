@@ -1,11 +1,11 @@
 
-import iris from "../iris.js";
 import ruta from "../../model/ruta/RutaGasto.js";
 import rutas from "../../model/ruta/Rutas.js";
+import xeco from "../../../xeco/xeco.js";
 
 function RutasGasto() {
 	//const self = this; //self instance
-	const form = iris.getForm(); // form component
+	const form = xeco.getForm(); // form component
 	let _tblRutasGasto; // itinerario
 
 	this.init = tab12 => {

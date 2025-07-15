@@ -33,6 +33,8 @@ function Resumen() {
 
 	tabs.setAction("paso6", () => { form.validate(self.validate) && form.sendTab(window.rcPaso6); });
 	tabs.setAction("save6", () => { form.validate(self.validate) && form.sendTab(window.rcSave6, 6); });
+	tabs.setAction("zip-com", () => { form.invoke(window.rcZipCom); }); // download zip file
+	tabs.setAction("zip-doc", () => { form.invoke(window.rcZipDoc); });
 
 	this.setFactComisionado = () => {
 		transportes.setTransportes(); // update changes paso 5

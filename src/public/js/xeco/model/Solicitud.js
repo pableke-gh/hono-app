@@ -21,6 +21,7 @@ base.setGrupo = val => { _grupo = val; return base; }
 base.setUser = ({ nif, grupo, admin }) => base.setNif(nif).setGrupo(grupo).setAdmin("1" == admin);
 base.isUsuEc = () => !!_grupo;
 base.isUxxiec = base.isUsuEc;
+base.getUrl = path => "/uae" + path;
 
 base.isDisabled = () => !base.isEditable();
 base.isEditable = () => (!base.getId() || (base.getEstado() == 6));
@@ -36,7 +37,7 @@ base.isReactivable = () => (base.isUae() && base.isErronea()); // La solicitud s
 base.isProcesable = () => (base.getEstado() != PROCESANDO); // Solicitud en estado procesable
 base.isProcesando = () => (base.getEstado() == PROCESANDO); // Solicitud procesando tarea
 base.setProcesando = () => base.setEstado(PROCESANDO); // solicitud ejecutando tarea
-base.isSubsanable = () => (base.isUae() && (base.getEstado() == SUBSANABLE)); // Solicitud subsanable en el cliente
+base.isSubsanable = () => (base.getEstado() == SUBSANABLE); // Solicitud subsanable en el cliente
 base.setSubsanable = () => base.setEstado(SUBSANABLE); // marca la solicitud como subsanable
 base.isFinalizada = () => [1, 3, 4, 9, 10].includes(base.getEstado()); // Aceptada, Ejecutada, Notificada ó Erronea
 base.isFirmada = () => (base.isAceptada() || base.isEjecutada());
@@ -48,9 +49,12 @@ base.isRemovable = () => (base.getId() && ((base.getEstado() == 6) || base.isAdm
 
 base.isUae = () => (_grupo == "2"); // UAE
 base.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") || (_grupo == "284")); // OTRI / UITT / UCCT / Catedras
-//base.isUtec = () => (_grupo == "6");
-//base.isGaca = () => (_grupo == "54");
-//base.isEut = () => (_grupo == "253");
+//base.isUtec = () => (_grupo == "6"); //grupo de la unidad tecnica
+//base.isEid = () => (_grupo == "287"); //Escuela Internacional de doctorado
+//base.isAcad = () => (_grupo == "290"); //SERVICIO DE GESTION ACADEMICA
+//base.isBecas = () => (_grupo == "288"); //BECAS
+//base.isGaca = () => ((_grupo == "54") || (_grupo == "288") || (_grupo == "290") || (_grupo == "287")); // GACA / BECAS / ACADEMICO / EID
+//base.isEut = () => (_grupo == "253"); //European University Of Technology (EUT+)
 //base.isEstudiantes = () => (_grupo == "9");
 //base.isContratacion = () => (_grupo == "68");
 
@@ -74,15 +78,16 @@ base.getStyleByEstado = () => (CSS_ESTADOS[base.getEstado()] || "text-warn");
 base.rowActions = data => {
 	base.setData(data); // initialize 
 	let acciones = '<a href="#rcView" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
-	if (base.isFirmable())
-		acciones += `<a href="#rcFirmar" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-check action resize text-green"></i></a> 
-					<a href="#tab-reject" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-times action resize text-red"></i></a>`;
+	if (base.isFirmable()) {
+		acciones += '<a href="#firmar" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-check action resize text-green"></i></a>';
+		acciones += '<a href="#tab-reject" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-times action resize text-red"></i></a>';
+	}
 	if (base.isEjecutable())
 		acciones += '<a href="#rcUxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
 	if (base.isIntegrable())
-		acciones += '<a href="#rcIntegrar" class="row-action table-refresh" data-refresh="is-procesable"><i class="far fa-save action resize text-blue"></i></a>';
+		acciones += '<a href="#integrar" class="row-action table-refresh" data-refresh="is-procesable"><i class="far fa-save action resize text-blue"></i></a>';
 	if (base.isAdmin())
-		acciones += '<a href="#rcEmails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
+		acciones += '<a href="#emails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 	return acciones;
 }
 base.tfoot = resume => `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`;

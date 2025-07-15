@@ -6,6 +6,7 @@ import lineas from "./Lineas.js";
 
 const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso" ];
 
+solicitud.getUrl = path => "/uae/fact" + path;
 solicitud.getLineas = () => lineas;
 solicitud.setLineas = table => { lineas.setData(table.getData()); return solicitud; }
 solicitud.getLinea = lineas.getLinea;
@@ -18,7 +19,7 @@ solicitud.isReciboCV = () => (solicitud.getTipo() == 4); // viene de CV
 solicitud.isCongresoCV = () => (solicitud.getTipo() == 5); // viene de CV
 solicitud.isFacturable = () => (solicitud.isFactura() || solicitud.isReciboCV() || solicitud.isCongresoCV());
 solicitud.isFirmaGaca = () => (solicitud.isReciboCV() && solicitud.isTtpp() && (solicitud.getMask() & 2));
-solicitud.isReactivable = () => (solicitud.isUae() && (solicitud.isInvalidada() || solicitud.isErronea())); // La solicitud se puede reactivar / subsanar
+//solicitud.isReactivable = () => ((solicitud.isUae() && solicitud.isErronea()) || (solicitud.isGaca() && solicitud.isRechazada()));
 
 solicitud.isTtpp = () => (solicitud.getSubtipo() == 3);
 solicitud.isTituloOficial = () => (solicitud.getSubtipo() == 4);

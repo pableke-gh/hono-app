@@ -59,6 +59,9 @@ export default function(form, opts) {
 	//this.isset = () => form;
 	this.getForm = () => form;
 	this.getElements = () => form.elements;
+	this.getElement = name => form.elements.find(el => (el.name == name));
+	this.getElementValue = name => dom.getValue(self.getElement(name));
+
 	this.focus = el => { dom.focus(el); return self; }
 	this.setFocus = selector => fnAction(selector, el => el.focus());
 	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
@@ -151,7 +154,7 @@ export default function(form, opts) {
 			fnSetval(el, value)
 		return self;
 	}
-	this.setValue = (el, value) => el ? fnSetValue(el, value) : self;
+	this.setValue = (selector, value) => fnSetValue(fnQueryInput(selector), value);
 	this.setval = (selector, value) => fnAction(selector, el => fnSetValue(el, value));
 	this.setStrval = (selector, value) => fnAction(selector, el => fnSetval(el, value));
 	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name])).setChanged(); // force changed = false

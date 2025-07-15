@@ -5,6 +5,8 @@ import i18n from "../i18n/langs.js";
 
 const OPTS = {};
 const HIDE_CLASS = "hide";
+const divNull = document.createElement("div");
+
 const fnHide = el => el.classList.add(HIDE_CLASS);
 const fnShow = el => el.classList.remove(HIDE_CLASS);
 const fnVisible = el => (el.offsetWidth || el.offsetHeight || el.getClientRects().length);
@@ -98,17 +100,46 @@ HTMLElement.prototype.isVisible = function(selector) { return fnVisible(this) &&
 HTMLElement.prototype.render = function(data, opts) { return fnRender(this, data, opts || initOptions(1)); }
 HTMLElement.prototype.refresh = function(data, opts) { return fnRefresh(this, data, opts); }
 
-HTMLElement.prototype.setDisabled = function(force) { // Update attribute and style
-    this.classList.toggle("disabled", this.toggleAttribute("disabled", force));
+// Update attribute and style
+HTMLElement.prototype.setDisabled = function(force) { return this.toggle("disabled", this.toggleAttribute("disabled", force)); }
+HTMLElement.prototype.setReadonly = function(force) { // Update attribute readonly / disabled and style
+	// The attribute readonly is not supported or relevant to <select> or input types file, checkbox, radio, range...
+	const disabled = [ "file", "checkbox", "radio", "range", "color", "button" ].includes(this.type); // force disabled attribute
+	return disabled ? this.setDisabled(force) : this.toggle("readonly", this.toggleAttribute("readonly", force));
+}
+
+HTMLElement.prototype.eachPrev = function(fn) {
+    var el = this.previousElementSibling;
+    for (let i = 0; el; el = el.previousElementSibling)
+        fn(el, i++);
     return this;
 }
-HTMLElement.prototype.setReadonly = function(force) { // Update attribute and style
-    // The attribute readonly is not supported or relevant to <select> or input types file, checkbox, radio, range...
-    if ([ "file", "checkbox", "radio", "range", "color", "button" ].includes(this.type))
-        return this.setDisabled(force); // Force disabled attribute
-    this.classList.toggle("readonly", this.toggleAttribute("readonly", force));
+HTMLElement.prototype.prev = function(selector) {
+    var el = this.previousElementSibling;
+    while (el) {
+        if (el.matches(selector))
+            return el;
+        el = el.previousElementSibling;
+    }
+    return null;
+}
+HTMLElement.prototype.eachNext = function(fn) {
+    var el = this.nextElementSibling;
+    for (let i = 0; el; el = el.nextElementSibling)
+        fn(el, i++);
     return this;
 }
+HTMLElement.prototype.next = function(selector) {
+    var el = this.nextElementSibling;
+    while (el) {
+        if (el.matches(selector))
+            return el;
+        el = el.nextElementSibling;
+    }
+    return null;
+}
+HTMLElement.prototype.eachSibling = function(fn) { return this.eachPrev(fn).eachNext(fn); }
+HTMLElement.prototype.sibling = function(selector) { return this.prev(selector) || this.next(selector); }
 
 // Commons initializations in the HTML client
 window.$1 = selector => document.querySelector(selector);
@@ -116,7 +147,7 @@ window.$$ = selector => document.querySelectorAll(selector);
 
 coll.dom = dom; // add reference
 coll.ready = dom.ready; // shortcut
-coll.getDivNull = dom.getDivNull; // readonly element
+coll.getDivNull = () => divNull; // readonly element
 coll.ready(i18n.setLanguage); // Load client language
 
 export default coll;

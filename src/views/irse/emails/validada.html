@@ -28,17 +28,7 @@
 		</table>
 	</div>
 
-	<div class="navbar">
-		<p class="terr"><b>AVISOS</b></p>
-		<ul>
-			<li><b>Nuevo tercero:</b> <span th:text="${isNewTercero}"></span></li>
-			<li><b>Nueva cuenta bancaria:</b> <span th:text="${isNewIban}"></span></li>
-			<li><b>Solicitadas indemnizaciones extraordinarias:</b> <span th:text="${isPaso8}"></span></li>
-			<li><b>Número de km corregidos al alza:</b> <span th:text="${overNumKm}"></span></li>
-			<li><b>Validaciones de coincidencia temporal:</b> <span th:text="${codigoConflicto}"></span></li>
-			<li><b>El interesado es externo y ha sido personal de la UPCT en los dos últimos años:</b> <span th:text="${isMaxVigencia}"></span></li>
-		</ul>
-	</div>
+	<div th:replace="emails/general.html :: avisos"></div>
 
 	<p><b><u>DATOS PARA EL REGISTRO EN UXXI-EC</u></b></p>
 
@@ -79,6 +69,26 @@
 	</div>
 
 	<div th:replace="emails/general.html :: imputacion"></div>
+	<div th:if="${gastos.irpf}" class="navbar">
+		<p><b>FICHA IRPF</b></p>
+		<table>
+			<thead>
+				<tr><th>Descripción</th><th>Importe</th><th>Concepto Descuento</th></tr>
+			</thead>
+			<tbody>
+				<tr><th class="tl w180">Retenciones</th><td class="tr"><span th:text="${nb.esBigval(gastos.impRetencionIrpf, '-')}"></span> €</td><td class="tc">320001 - IRPF A CUENTA DE PROFESIONALES</td></tr>
+			</tbody>
+			<tfoot>
+				<tr><td colspan="3">Descuentos: 1</td></tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="navbar">
+		<p><b>FICHA PAGO</b></p>
+		<ul>
+			<li><b>Ordinal perceptor:</b> <span th:text="${gastos.ibanLopd}"></span> <span th:text="${gastos.swift}"></span></li>
+		</ul>
+	</div>
 	<footer th:replace="emails/general.html :: footer"></footer>
 </body>
 </html>

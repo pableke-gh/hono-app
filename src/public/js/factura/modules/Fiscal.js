@@ -1,21 +1,29 @@
 
-import pf from "../../components/Primefaces.js";
-import facturas from "./facturas.js";
-import lineas from "./lineas.js";
+import api from "../../components/Api.js"
+
 import factura from "../model/Factura.js";
 import fiscalidad from "../data/fiscal.js"
 
+import lineas from "./lineas.js";
+import xeco from "../../xeco/xeco.js";
+
 function Fiscal() {
 	const self = this; //self instance
-	const form = facturas.getForm();
+	const form = xeco.getForm();
 
-	const delegaciones = pf.datalist(form, "#delegacion", "#idDelegacion");
-	delegaciones.setEmptyOption("Seleccione una delegación");
+	const delegaciones = form.setDatalist("#delegacion");
+	const fnChange = item => form.setValue("#idDelegacion", item.value); 
+	delegaciones.setEmptyOption("Seleccione una delegación").setChange(fnChange);
 
-	const fnSource = () => window.rcFindTercero();
-	const fnSelect = data => { form.loading(); window.rcDelegaciones(); self.update(factura.getSubtipo(), data); }
-	const acTercero = form.setAcItems("#acTercero", fnSource, fnSelect, delegaciones.reset);
-	acTercero.setDelay(500).setMinLength(5);
+	const acTercero = form.setAutocomplete("#acTercero");
+	const fnSource = term => api.init().json(`/uae/fact/terceros?term=${term}`).then(acTercero.render);
+	const fnSelect = tercero => {
+		api.init().json(`/uae/fact/delegaciones?ter=${tercero.value}`).then(delegaciones.setItems);
+		self.update(factura.getSubtipo(), tercero);
+	}
+	acTercero.setDelay(500).setItemMode(5)
+			.setSource(fnSource).setAfterSelect(fnSelect)
+			.setReset(delegaciones.reset);
 
 	this.setTercero = (id, label) => {
 		acTercero.setValue(id, label);
@@ -64,11 +72,6 @@ function Fiscal() {
 			.onChangeInput("#sujeto", ev => self.setSujeto(+ev.target.value))
 			.onChangeInput("#face", ev => self.setFace(+ev.target.value));
 	}
-
-    window.loadDelegaciones = (xhr, status, args) => {
-		if (pf.showAlerts(xhr, status, args))
-			delegaciones.setItems(JSON.read(args.delegaciones));
-    }
 }
 
 export default new Fiscal();

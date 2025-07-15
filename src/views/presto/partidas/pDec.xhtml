@@ -17,7 +17,6 @@
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
-			<p:remoteCommand name="rcFindOrgDec" action="#{presto.form.filterOrganicas()}" oncomplete="loadItems(xhr, status, args)" />
 			<input type="search" id="acOrgDec" name="acOrgDec" class="ui-input ui-autocomplete" tabindex="6" /> 
 			<h:inputText id="idOrgDec" value="#{presto.solicitud.idOrganicaDec}" styleClass="ui-input ui-number hide" />
 			<ul role="list" class="results"></ul>
@@ -29,11 +28,8 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number" data-readonly="is-editable" tabindex="7"></select>
 			<h:inputText id="idEcoDecPF" value="#{presto.solicitud.idEconomicaDec}" styleClass="ui-input ui-number hide" />
-			<p:remoteCommand name="rcEcoDec" action="#{presto.form.filterEconomicas()}" oncomplete="loadEconomicasDec(xhr, status, args)" />
-			<p:commandButton id="autoload-l83" action="#{presto.form.autoloadL83()}" oncomplete="autoloadL83(xhr, status, args)" styleClass="hide" />
-			<p:commandButton id="autoload-ant" action="#{presto.form.autoloadAnt()}" oncomplete="autoloadAnt(xhr, status, args)" styleClass="hide" />
+			<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number ui-pf" data-readonly="is-editable" tabindex="7"></select>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">

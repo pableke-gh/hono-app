@@ -36,7 +36,6 @@
 	</label>
 	<label class="autocomplete ui-block-md form-refresh" data-refresh="show-recibo">
 		<div class="label required">Recibo asociado a la factura:</div>
-		<p:remoteCommand name="rcFindRecibo" action="#{fact.form.findRecibo()}" oncomplete="loadItems(xhr, status, args)" />
 		<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" />
 		<h:inputText id="idRecibo" value="#{fact.solicitud.reciboView}" styleClass="ui-input hide" />
 		<ul role="list" class="results"></ul>

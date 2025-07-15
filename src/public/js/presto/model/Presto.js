@@ -4,6 +4,7 @@ import firma from "../../xeco/model/Firma.js";
 import solicitud from "../../xeco/model/Solicitud.js";
 import partidas from "./Partidas.js";
 
+solicitud.getUrl = path => "/uae/presto" + path;
 solicitud.getPartidas = () => partidas;
 solicitud.getPartida = partidas.getPartida;
 
@@ -34,10 +35,10 @@ solicitud.isExcedida = () => (solicitud.getMask() & 8);
 
 solicitud.row = data => {
 	let acciones = solicitud.rowActions(data);
-	if (solicitud.isDocumentable())
-		acciones += '<a href="#rcReport" class="row-action"><i class="fal fa-file-pdf action resize text-red"></i></a>';
-	//if (solicitud.isAdmin())
-		//acciones += '<a href="#rcPdf" class="row-action"><i class="fas fa-file-pdf action resize text-blue"></i></a>';
+	if (solicitud.isDocumentable()) {
+		//acciones += solicitud.isAdmin() ? '<a href="#pdf" class="row-action" title="Informe PRESTO"><i class="fas fa-file-pdf action resize text-red"></i></a>' : "";
+		acciones += '<a href="#report" class="row-action" title="Informe PRESTO"><i class="fal fa-file-pdf action resize text-red"></i></a>';
+	}
 
 	let info = '<td></td>';
 	if (solicitud.isUrgente())

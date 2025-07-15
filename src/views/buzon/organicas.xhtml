@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h:form id="xeco-organicas" prependId="false" method="post">
-		<div id="organcias-json" class="hide">#{buzon.organicas.stringify()}</div>
+		<div id="organicas-json" class="hide">#{buzon.organicas.stringify()}</div>
 		<div id="card-ancladas" class="card-xeco hide">
 			<h2>Orgánicas Ancladas</h2>
 			<table id="ancladas" class="tb-xeco">
@@ -41,7 +41,7 @@
 		<p:remoteCommand name="rcUsersByOrganica" action="#{buzon.usuarios.filterByOrganica()}" oncomplete="loadUsuarios(xhr, status, args)" />
 		<p:remoteCommand name="utProv" action="#{buzon.facturas.setUnidadesTramit()}" update="utProv" oncomplete="showModal(xhr, status, args, 'ut')" />
 		<p:remoteCommand name="utFact" action="#{buzon.facturas.setUnidadesTramit()}" update="utFact" oncomplete="showTab(xhr, status, args, 1)" />
-		<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="handleReport(xhr, status, args);"/>
+		<p:remoteCommand name="report" action="#{buzon.report()}" oncomplete="openUrl(xhr, status, args);"/>
 
 		<!-- modals dialog -->
 		<ui:include src="./modal_ut.xhtml"></ui:include>

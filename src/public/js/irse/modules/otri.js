@@ -68,8 +68,8 @@ window.viewIsu = (xhr, status, args) => {
 }
 tabs.setInitEvent(16, () => {
     const formListIsu = new Form("#xeco-filtro-isu");
-    const acOrgancias = formListIsu.setAutocomplete("#organica-isu", otri.getAutocomplete());
-	acOrgancias.setSource(term => pf.sendTerm("rcFindOrg", term));
+    const acOrganicas = formListIsu.setAutocomplete("#organica-isu", otri.getAutocomplete());
+	acOrganicas.setSource(term => pf.sendTerm("rcFindOrg", term));
 });
 tabs.setViewEvent(17, fnViewIsu);
 

@@ -7,16 +7,14 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h:form id="xeco-uxxi" prependId="false" onsubmit="loading();">
+	<form id="xeco-uxxi" action="/uae/presto">
 		<h2 class="underline">Consulta de Formación de Expediente</h2>
 		<p class="notice notice-info form-refresh" data-refresh="text-render">@codigo;: @memo;</p>
 
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required">Ejercicio:</div>
-				<h:selectOneMenu id="ej-uxxi" value="#{presto.uxxiec.ejercicio}" styleClass="ui-input ui-select" tabindex="1">
-					<f:selectItems value="#{presto.ejercicios}" />
-				</h:selectOneMenu>
+				<ui:include src="../parts/ejercicios.xhtml"></ui:include>
 			</label>
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Operación UXXI-EC:</div>
@@ -25,40 +23,36 @@
 				<input type="text" id="idUxxi" name="idUxxi" class="ui-number hide" />
 				<ul role="list" class="results"></ul>
 				<div class="errtip"></div>
-				<p:remoteCommand name="rcFindUxxi" action="#{presto.uxxiec.filter()}" oncomplete="loadItems(xhr, status, args)" />
 			</label>
 			<div class="ui-block-btn">
 				<a id="add-uxxi" href="#" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus btn-icon-left"></i> Añadir</a>
 			</div>
 		</div>
+	</form>
 
-		<h:inputText id="docs-json" value="#{presto.uxxiec.operaciones}" styleClass="hide" />
-		<table id="docs-uxxi" class="tb-xeco">
-			<thead>
-				<tr>
-					<th>Operación</th>
-					<th>Doc.</th>
-					<th>Importe</th>
-					<th>F. Creación</th>
-					<th>Descripción</th>
-					<th>Acciones</th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-			<tfoot></tfoot>
-		</table>
+	<table class="tb-xeco">
+		<thead>
+			<tr>
+				<th>Operación</th>
+				<th>Doc.</th>
+				<th>Importe</th>
+				<th>F. Creación</th>
+				<th>Descripción</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot></tfoot>
+	</table>
 
-		<div class="navbar">
-			<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-			<a href="#tab-action-ejecutar" class="btn btn-green" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
-				<i class="far fa-save btn-icon-left"></i>Guardar</a>
-			<p:remoteCommand name="rcEjecutar" action="#{presto.firmas.ejecutar()}" oncomplete="showAlerts(xhr, status, args)"/>
-			<a href="#tab-action-notificar" class="btn btn-green form-refresh" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
-				<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</a>
-			<p:remoteCommand name="rcNotificar" action="#{presto.firmas.notificar()}" oncomplete="showAlerts(xhr, status, args)"/>
-			<a href="#tab-action-reject" class="table-action btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.rechazar']}">
-				<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
-		</div>
-	</h:form>
+	<div class="navbar">
+		<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+		<a href="#tab-action-ejecutar" class="btn btn-green" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
+			<i class="far fa-save btn-icon-left"></i>Guardar</a>
+		<a href="#tab-action-notificar" class="btn btn-green form-refresh" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
+			<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</a>
+		<a href="#tab-action-reject" class="table-action btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.rechazar']}">
+			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+	</div>
 </html>

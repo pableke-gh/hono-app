@@ -69,7 +69,19 @@
 			<li><b>Importe líquido:</b> <span th:text="${nb.esBigval(xs.importe)}"></span> €</li>
 		</ul>
 	</div>
-	
+
+	<div th:fragment="avisos" class="navbar">
+		<p class="terr"><b>AVISOS</b></p>
+		<ul>
+			<li><b>Nuevo tercero:</b> <span th:text="${isNewTercero}"></span></li>
+			<li><b>Nueva cuenta bancaria:</b> <span th:text="${isNewIban}"></span></li>
+			<li><b>Solicitadas indemnizaciones extraordinarias:</b> <span th:text="${isPaso8}"></span></li>
+			<li><b>Número de km corregidos al alza:</b> <span th:text="${overNumKm}"></span></li>
+			<li><b>Validaciones de coincidencia temporal:</b> <span th:text="${codigoConflicto}"></span></li>
+			<li><b>El interesado es externo y ha sido personal de la UPCT en los dos últimos años:</b> <span th:text="${isMaxVigencia}"></span></li>
+		</ul>
+	</div>
+
 	<div th:fragment="presupuesto" class="navbar">
 		<p><b>Con cargo al presupuesto:</b></p> 
 		<table>
@@ -105,6 +117,114 @@
 		<tfoot>
 			<tr><td colspan="4">Aplicaciones: <span th:utext="${numApli}"></span></td></tr>
 		</tfoot>
+		</table>
+	</div>
+
+	<div th:fragment="liquidacion" class="navbar">
+		<p><b>LIQUIDACION EFECTUADA:</b></p>
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2">GASTOS DE TRANSPORTE</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Vehículo propio <span th:text="${gastos.matricula}"></span></td>
+					<td class="tr"><span th:text="${nb.esBigval(gastos.impKm, '-')}"></span> €</td>
+				</tr>
+				<tr>
+					<td>Facturas a nombre del comisionado y tickets por gastos de transporte</td>
+					<td class="tr"><span th:text="${nb.esBigval(gastos.impTransporte, '-')}"></span> €</td>
+				</tr>
+				<tr>
+					<td>Otras indemnizaciones de transporte</td>
+					<td class="tr"><span th:text="${nb.esBigval(gastos.impExtraTrans, '-')}"></span> €</td>
+				</tr>
+				<tr><th colspan="2"><hr/></th></tr>
+				<tr>
+					<th class="tl">Subtotal transporte</th>
+					<th class="tr"><span th:text="${nb.esBigval(gastos.totTransporte, '-')}"></span> €</th>
+				</tr>
+			</tbody>
+
+			<thead>
+				<tr><th colspan="2">GASTOS DE ALOJAMIENTO</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Facturas a nombre del comisionado por gastos de alojamiento</td>
+					<td class="tr"><span th:text="${nb.esBigval(gastos.impPernoctas, '-')}"></span> €</td>
+				</tr>
+				<tr>
+					<td>Otras indemnizaciones por alojamiento</td>
+					<td class="tr"><span th:text="${nb.esBigval(gastos.impExtraPernoctas, '-')}"></span> €</td>
+				</tr>
+				<tr><th colspan="2"><hr/></th></tr>
+				<tr>
+					<th class="tl">Subtotal alojamiento</th>
+					<th class="tr"><span th:text="${nb.esBigval(gastos.totPernoctas, '-')}"></span> €</th>
+				</tr>
+			</tbody>
+
+			<thead>
+				<tr><th colspan="2">RESUMEN DIETAS MANUTENCIÓN</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th class="tl">Subtotal dietas</th>
+					<th class="tr"><span th:text="${nb.esBigval(gastos.totDietas, '-')}"></span> €</th>
+				</tr>
+			</tbody>
+
+			<thead th:if="${gastos.isAc()}">
+				<tr><th colspan="2">RESUMEN ASISTENCIAS/COLABORACIONES EXTERNAS</th></tr>
+			</thead>
+			<tbody th:if="${gastos.isAc()}">
+				<tr>
+					<th class="tl">Subtotal asistencias/colaboraciones</th>
+					<th class="tr"><span th:text="${nb.esBigval(gastos.impAc, '-')}"></span> €</th>
+				</tr>
+			</tbody>
+
+			<tbody>
+				<tr><th colspan="2"><hr/></th></tr>
+				<tr><th class="tl">TOTAL BRUTO</th><th class="tr"><span th:text="${nb.esBigval(gastos.impBruto)}"></span> €</th></tr>
+			</tbody>
+
+			<thead th:if="${gastos.irpf}">
+				<tr><th colspan="2">IRPF</th></tr>
+			</thead>
+			<tbody th:if="${gastos.irpf}">
+				<tr>
+					<td>Total importe de dietas no justificado</td>
+					<td class="tr"><span th:text="${nb.esBigval(gastos.impNoJustifi)}"></span> €</th></td>
+				</tr>
+				<tr th:if="${gastos.isAc()}">
+					<td>Total asistencias/colaboraciones</td>
+					<td class="tr"><span th:text="${nb.esBigval(gastos.impAc, '-')}"></span> €</td>
+				</tr>
+				<tr>
+					<th class="tl">Total sujeto a IRPF (<span th:text="${nb.esBigval(gastos.porcentajeIrpf, '-')}"></span> %)</th>
+					<th class="tr"><span th:text="${nb.esBigval(gastos.totSujetoIrpf, '-')}"></span> €</th>
+				</tr>
+				<tr>
+					<th class="tl">Total retención IRPF</th>
+					<th class="tr">-<span th:text="${nb.esBigval(gastos.impRetencionIrpf)}"></span> €</th>
+				</tr>
+			</tbody>
+
+			<!--<thead th:if="${!xs.isA_L()}">
+				<tr><th colspan="2">Anticipo</th></tr>
+			</thead>
+			<tbody th:if="${!xs.isA_L()}">
+				<tr><th class="tl">Importe a anticipar 80%</th><th class="tr">#impAnticipar# &euro;</th></tr>
+			</tbody>-->
+
+			<tbody>
+				<tr><th colspan="2"><hr/></th></tr>
+				<tr><th class="tl">TOTAL LÍQUIDO</th><th class="tr"><span th:text="${nb.esBigval(xs.importe)}"></span> €</th></tr>
+			</tbody>
 		</table>
 	</div>
 

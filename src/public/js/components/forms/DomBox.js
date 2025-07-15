@@ -1,8 +1,6 @@
 
 function DomBox() {
 	const self = this; //self instance
-	const divNull = document.createElement("div");
-	divNull.id = "_iPHJ2s04ID"; // rand id
 
 	this.isMediaXs = () => (window.innerWidth < 576);
 	this.ismediaSm = () => ((575 < window.innerWidth) && (window.innerWidth < 768));
@@ -107,7 +105,6 @@ function DomBox() {
 	}
 
 	// Helper DOM elements
-	this.getDivNull = () => divNull; // readonly element
 	this.copyToClipboard = str => { // new 
 		navigator.clipboard.writeText(str).then(() => {
 			console.log("Text copied to clipboard!");

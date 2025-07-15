@@ -114,8 +114,15 @@ function Tabs() {
 		$$("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
 		return self;
 	}*/
+    this.showMsgs = (msgs, tab) => {
+        const ok = !msgs?.msgError; // is error message
+        if (ok) // If message is ok => Show next tab
+            globalThis.isset(tab) ? self.showTab(tab) : self.nextTab();
+        alerts.showAlerts(msgs); // Always show alerts after change tab
+        return ok;
+    }
 
-    this.closeModal = id => {
+    /*this.closeModal = id => {
 		const modal = $1(id ? ("dialog#" + id) : "dialog[open]");
         if (modal) { // has modal
             const scrollY = document.body.style.top;
@@ -138,7 +145,7 @@ function Tabs() {
             fnCallEvent("view", modal); // fire open handler
         }
         return self;
-    }
+    }*/
 
 	this.setActions = el => { // set default actions
         el.querySelectorAll("[href^='#tab-']").forEach(link => {
@@ -153,10 +160,10 @@ function Tabs() {
                     self.lastTab();
                 else if (href == "#tab-toggle")
                     self.toggle(link); // call toggle handler
-				else if (href.startsWith("#tab-open"))
-					self.showModal(id); // open modal dialog
-				else if (href.startsWith("#tab-close"))
-					self.closeModal(id); // close modal dialog
+				//else if (href.startsWith("#tab-open"))
+					//self.showModal(id); // open modal dialog
+				//else if (href.startsWith("#tab-close"))
+					//self.closeModal(id); // close modal dialog
                 else if (href.startsWith("#tab-action"))
 					EVENTS[link.dataset.action || id](link); // call handler
                 else
@@ -174,28 +181,19 @@ function Tabs() {
         return self.setActions(el); // update actions
     }
 
-    // Init. view and PF navigation (only for CV-UAE)
-    self.load(document); // Load all tabs by default
-    window.showModal = (xhr, status, args, selector) => window.showAlerts(xhr, status, args) && self.showModal(selector);
-    window.closeModal = (xhr, status, args) => window.showAlerts(xhr, status, args) && self.closeModal();
-    window.showTab = (xhr, status, args, tab) => {
-        if (!alerts.isLoaded(xhr, status, args))
-            return false; // Server error
-        const msgs = coll.parse(args.msgs); // Parse server messages
-        const ok = !msgs?.msgError; // has error message
-        if (ok) // If no error => Show next tab
-            globalThis.isset(tab) ? self.showTab(tab) : self.nextTab();
-        alerts.showAlerts(msgs); // Always show alerts after change tab
-        return ok;
-    }
+	// Init. view and PF navigation (only for CV-UAE)
+	self.load(document); // Load all tabs by default
+	window.showTab = (xhr, status, args, tab) => (alerts.isLoaded(xhr, status, args) && self.showMsgs(coll.parse(args.msgs), tab));
+	//window.showModal = (xhr, status, args, selector) => window.showAlerts(xhr, status, args) && self.showModal(selector);
+	//window.closeModal = (xhr, status, args) => (window.showAlerts(xhr, status, args) && self.closeModal());
 
 	// Listen for keypad event
-    document.onkeydown = ev => {
+    /*document.onkeydown = ev => {
         if (ev.key === "Escape")
             return self.closeModal(); // close current modal
 		//if (ev.key === "ArrowLeft")
 			//return self.backTab(); // go to previous tab
-    }
+    }*/
 }
 
 export default new Tabs();

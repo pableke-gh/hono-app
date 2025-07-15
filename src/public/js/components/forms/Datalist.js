@@ -18,6 +18,8 @@ export default function(select, opts) {
 
 	this.set = (name, fn) => { opts[name] = fn; return self; }
 	this.setEmptyOption = text => self.set("emptyOption", text);
+	this.setChange = fn => self.set("onChange", fn);
+	this.setReset = fn => self.set("onReset", fn);
 
 	this.getItems = () => _data;
     this.getItem = index => _data[index];

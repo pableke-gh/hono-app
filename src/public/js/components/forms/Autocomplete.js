@@ -46,6 +46,7 @@ export default function(autocomplete, opts) {
 	this.setSelect = fn => { opts.select = fn; return self; }
 	this.setAfterSelect = fn => { opts.afterSelect = fn; return self; }
 	this.setReset = fn => { opts.onReset = fn; return self; }
+	this.setItemMode = minLength => self.setMinLength(minLength || opts.minLength).setSelect(item => item.value).setRender(item => item.label); 
 
 	this.getData = () => _results;
     this.getIndex = () => _index;

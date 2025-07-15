@@ -5,8 +5,8 @@ import xeco from "../../xeco/xeco.js";
 function Lineas() {
 	const self = this; //self instance
 	const form = xeco.getForm();
-
 	const linea = factura.getLinea();
+
 	const lineas = form.setTable("#lineas-fact", linea.getTable());
 	lineas.setAfterRender(() => {
 		const fnChangeIva = ev => self.setIva(+ev.target.value);
@@ -22,18 +22,10 @@ function Lineas() {
 		lineas.refreshFooter(); // actualizo los totales de la subtabla de conceptos
 	}
 
-	this.setLineas = data => {
-		lineas.render(data);
-		return self;
-	}
-	this.validate = () => {
-		factura.setLineas(lineas); // actualizo los conceptos
-		form.copy("#ivaPF", "#iva"); // set iva value in pf field
-		return form.validate(factura.validate) && form.saveTable("#lineas-json", lineas);
-	}
+	this.getTable = () => lineas
+	this.setLineas = data => { lineas.render(data); }
 
 	this.init = () => {
-		form.set("is-valid", self.validate); // define validate action
 		form.addClick("a#add-linea", ev => { // add linea action
 			const data = form.validate(linea.validate);
 			if (data)

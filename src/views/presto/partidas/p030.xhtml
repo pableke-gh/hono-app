@@ -24,7 +24,6 @@
 			</div>
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica 030:</div>
-				<p:remoteCommand name="rcFindOrg030" action="#{presto.partidas.find030()}" oncomplete="loadItems(xhr, status, args)" />
 				<input type="search" id="acOrg030" name="acOrg030" class="ui-input ui-autocomplete ui-030 editable-uae" tabindex="1" />
 				<input type="text" id="idOrg030" name="idOrg030" class="hide ui-number ui-030" />
 				<ul role="list" class="results"></ul>
@@ -32,7 +31,6 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required">Económica 030:</div>
-				<p:remoteCommand name="rcEco030" action="#{presto.partidas.loadEco030()}" oncomplete="loadEco030(xhr, status, args)" />
 				<select id="idEco030" name="idEco030" class="ui-input ui-select ui-number ui-030 editable-uae" tabindex="2"></select>
 				<div class="ui-errtip"></div>
 			</label>
@@ -42,7 +40,7 @@
 				<div class="ui-errtip"></div>
 			</label>
 		</div>
-		<p class="notice notice-info form-refresh" data-refresh="text-render">@memo;</p>
+		<p class="notice notice-info form-refresh navbar" data-refresh="text-render">@memo;</p>
 	</div>
 
 	<div class="navbar">

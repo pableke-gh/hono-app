@@ -1,10 +1,11 @@
 
 import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
+import api from "../components/Api.js"
 import i18n from "../i18n/langs.js";
 
-import firma from "./model/Firma.js";
 import model from "./model/Solicitud.js";
+import firma from "./model/Firma.js";
 
 import firmas from "./modules/firmas.js";
 import list from "./modules/list.js";
@@ -55,16 +56,21 @@ function XecoForm() {
 	form.set("is-admin", model.isAdmin).set("is-uae", model.isUae).set("is-usu-ec", model.isUsuEc)
 		.set("is-disabled", model.isDisabled).set("is-editable", model.isEditable).set("is-editable-uae", model.isEditableUae)
 		.set("is-firmable", model.isFirmable).set("is-cancelable", model.isCancelable).set("is-invalidable", model.isInvalidable)
-		.set("is-reactivable", model.isReactivable).set("is-subsanable", model.isSubsanable).set("is-valid", globalThis.void)
-		.set("is-documentable", model.isDocumentable).set("is-removable", model.isRemovable).set("pf-upload", pfUpload);
+		.set("is-documentable", model.isDocumentable).set("is-removable", model.isRemovable).set("pf-upload", pfUpload)
+		.set("is-reactivable", model.isReactivable).set("is-subsanable", model.isSubsanable);
 
-	tabs.setAction("send", () => { form.fire("is-valid") && i18n.confirm("msgSend") && form.invoke(window.rcSend); }); // send from xeco-model form
-	tabs.setAction("firmar", () => { i18n.confirm("msgFirmar") && form.invoke(window.rcFirmarForm); }); // run remote command from xeco-model
-	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && list.send(window.rcRechazar); });
-	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && list.send(window.rcCancelar); });
+	tabs.setAction("firmar", () => {
+		const data = Object.assign(model.getData(), form.getData());
+		api.setJSON(data).json(model.getUrl("/firmar")).then(list.loadFirmas);
+	});
+
+	tabs.setAction("reject", () => list.getTable().invoke("#tab-reject")); // open reject tab from list
+	const fnRechazar = id => api.init().json(model.getUrl(`/rechazar?id=${id}&rechazo=${form.getElementValue("rechazo")}`)).then(list.loadFirmas);
+	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && fnRechazar(list.getId()); });
+	const fnCancelar = id => api.init().json(model.getUrl(`/cancelar?id=${id}&rechazo=${form.getElementValue("rechazo")}`)).then(list.loadFirmas);
+	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && fnCancelar(list.getId()); });
 	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable
-	tabs.setAction("subsanar", () => { form.fire("is-valid") && i18n.confirm("msgSave") && form.invoke(window.rcSubsanar); }); // send from changes
-	tabs.setAction("click-next", link => { link.nextElementSibling.click(); setTimeout(window.working, 450); });
+	//tabs.setAction("click-next", link => { link.nextElementSibling.click(); setTimeout(window.working, 450); });
 }
 
 export default new XecoForm();

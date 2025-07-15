@@ -5,7 +5,7 @@ import bf from "./facturas.js";
 import buzon from "../model/Buzon.js";
 import organica from "../model/Organica.js";
 
-function Organcias() {
+function Organicas() {
 	const self = this; //self instance
 	const form = new Form("#xeco-organicas");
 	const tAncladas = form.setTable("#ancladas", organica.getTableAncladas());
@@ -49,7 +49,7 @@ function Organcias() {
 		fnAddActions(tAncladas);
 		fnAddActions(tRecientes);
 		form.onChangeInput("#pagina", ev => fnPaginate(+ev.target.value));
-		return fnLoadTables(JSON.read(form.getHtml("#organcias-json")));
+		return fnLoadTables(JSON.read(form.getHtml("#organicas-json")));
 	}
 
 	// Global functions
@@ -61,4 +61,4 @@ function Organcias() {
 	}
 }
 
-export default new Organcias();
+export default new Organicas();

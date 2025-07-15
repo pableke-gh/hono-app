@@ -39,17 +39,23 @@ solicitud.isMaxVigencia = () => (solicitud.getMask() & 8); //maxima fecha de vig
 
 solicitud.row = data => {
 	let acciones = solicitud.rowActions(data);
-	if (solicitud.isDocumentable())
-		acciones += '<a href="#rcReport" class="row-action" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
+	if (solicitud.isDocumentable()) {
+		if (solicitud.isAdmin()) {
+			acciones += '<a href="#rcFinalizar" class="row-action" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
+			//acciones += '<a href="#pdf" class="row-action" title="Informe IRIS"><i class="fas fa-file-pdf action text-red resize"></i></a>';
+		}
+		acciones += '<a href="#report" class="row-action" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
+		data.report = "/uae/iris/report?id=" + data.id;
+	}
 	if (solicitud.isReactivable())
 		acciones += '<a href="#rcReactivar" class="row-action" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
 	if (solicitud.isActivablePaso8())
 		acciones += '<a href="#rcPaso8" class="row-action" title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></a>';
 
-	const info = solicitud.isUrgente() ? `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>` : "";
+	const info = solicitud.isUrgente() ? `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>` : "<td></td>";
 	const otras = solicitud.isMultilinea() ? "<span> (y otras)</span>" : "";
 	return `<tr class="tb-data">
-		<td>${info}</td>
+		${info}
 		<td class="text-center"><a href="#rcView" class="row-action" title="${data.cod}: ${data.name}">${sb.substr(data.cod, 0, 9)}</a></td>
 		<td class="${solicitud.getStyleByEstado()} estado">${solicitud.getDescEstado()}</td>
 		<td class="text-center">${firma.myFlag(data)}</td>

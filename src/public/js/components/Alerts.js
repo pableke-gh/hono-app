@@ -1,42 +1,6 @@
 
 import coll from "./CollectionHTML.js";
-
-HTMLElement.prototype.eachPrev = function(fn) {
-    var el = this.previousElementSibling;
-    for (let i = 0; el; el = el.previousElementSibling)
-        fn(el, i++);
-    return this;
-}
-HTMLElement.prototype.prev = function(selector) {
-    var el = this.previousElementSibling;
-    while (el) {
-        if (el.matches(selector))
-            return el;
-        el = el.previousElementSibling;
-    }
-    return null;
-}
-HTMLElement.prototype.eachNext = function(fn) {
-    var el = this.nextElementSibling;
-    for (let i = 0; el; el = el.nextElementSibling)
-        fn(el, i++);
-    return this;
-}
-HTMLElement.prototype.next = function(selector) {
-    var el = this.nextElementSibling;
-    while (el) {
-        if (el.matches(selector))
-            return el;
-        el = el.nextElementSibling;
-    }
-    return null;
-}
-HTMLElement.prototype.eachSibling = function(fn) {
-    return this.eachPrev(fn).eachNext(fn);
-}
-HTMLElement.prototype.sibling = function(selector) {
-    return this.prev(selector) || this.next(selector);
-}
+import stream from "./Stream.js";
 
 // Classes Configuration
 const ALERT_ACTIVE = "active";
@@ -56,8 +20,7 @@ function Alerts() {
 
     // Scroll body to top on click and toggle back-to-top arrow
 	const _top = _loading.nextElementSibling;
-    this.top = () => { document.body.scrollIntoView({ behavior: "smooth" }); return self; }
-	this.redir = (url, target) => { url && window.open(url, target || "_blank"); return self; };
+    this.top = () => { document.body.scrollIntoView({ behavior: "smooth" }); }
 	_top.addEventListener("click", ev => { self.top(); ev.preventDefault(); });
 	window.onscroll = function() { _top.setVisible(this.scrollY > 80); }
 
@@ -102,6 +65,7 @@ function Alerts() {
     // Global handlers
     window.loading = self.loading;
     window.working = self.working;
+
 	window.catchError = promise => {
 		self.loading(); // redefine global catchError with loading / working
 		return promise.then(data => [undefined, data]).catch(err => [err]).finally(self.working);
@@ -123,17 +87,12 @@ function Alerts() {
         self.showAlerts(msgs); // show all messages
         return !msgs?.msgError; // has error message
     }
-    window.openHtml = (xhr, status, args, title) => {
-        if (window.showAlerts(xhr, status, args)) {
-            const wnd = window.open("about:blank", "_blank");
-            wnd.document.write(args.data); // parse all html
-            wnd.document.title = title || args.title || "";
-            wnd.document.close(); // end write
-        }
-    }
-    window.handleReport = (xhr, status, args) => {
-        window.showAlerts(xhr, status, args) && self.redir(args?.url);
-    }
+
+	window.openUrl = (xhr, status, args, name) => { window.showAlerts(xhr, status, args) && stream.redir(args?.url, name || args.name); }
+	window.openHtml = (xhr, status, args, title) => { window.showAlerts(xhr, status, args) && stream.html(args.data, title || args.title); }
+	window.openZip = (xhr, status, args, name) => { window.showAlerts(xhr, status, args) && stream.zip(args.data, name || args.name); }
+	//window.openBlob = (xhr, status, args, type) => { window.showAlerts(xhr, status, args) && stream.blob(args.data, type); }
+	window.openPdf = (xhr, status, args) => { window.showAlerts(xhr, status, args) && stream.pdf(args.data); }
 }
 
 export default new Alerts();

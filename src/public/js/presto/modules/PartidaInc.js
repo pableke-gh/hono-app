@@ -1,7 +1,6 @@
 
-import coll from "../../components/CollectionHTML.js";
 import tabs from "../../components/Tabs.js";
-import pf from "../../components/Primefaces.js";
+import api from "../../components/Api.js"
 
 import p030 from "./partida030.js";
 import presto from "../model/Presto.js";
@@ -13,87 +12,76 @@ function PartidaInc() {
 	const partida = presto.getPartida();
 	const partidas = presto.getPartidas();
 
-	const fnSource = () => window.rcFindOrgInc();
-	const fnSelect = item => { form.setval("#faInc", item.int & 1); window.rcEcoInc(); };
-	const fnReset = () => { form.setval("#faInc").setval("#impInc"); window.rcEcoInc(); };
-	const _acOrgInc = form.setAcItems("#acOrgInc", fnSource, fnSelect, fnReset);
-	const _ecoInc = pf.datalist(form, "#idEcoInc", "#idEcoIncPF", { emptyOption: "Seleccione una económica" });
+	const fnSelect = item => {
+		form.setValue("#faInc", item.int & 1); // organica afectada
+		api.init().json(`/uae/presto/economicas/inc?org=${item.value}`).then(_ecoInc.setItems); // load economicas inc.
+		self.setAvisoFa(item); // aviso para organicas afectadas en TCR o FCE
+	}
+	const _acOrgInc = form.setAutocomplete("#acOrgInc");
+	const fnSource = term => api.init().json(`/uae/presto/organicas/inc?ej=${form.getval("#ejInc")}&term=${term}`).then(_acOrgInc.render);
+	const fnReset = () => { form.setValue("#faInc").setValue("#impInc"); _ecoInc.reset(); }
+	_acOrgInc.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect).setReset(fnReset);
+
+	const _ecoInc = form.setDatalist("#idEcoInc");
+	const fnEcoChange = item => form.setValue("#idEcoIncPF", item.value); 
+	_ecoInc.setEmptyOption("Seleccione una económica").setChange(fnEcoChange);
 
 	const _tblPartidasInc = form.setTable("#partidas-inc", partida.getTable());
 	_tblPartidasInc.setMsgEmpty("No existen partidas asociadas a la solicitud");
 	_tblPartidasInc.setAfterRender(resume => { partidas.setData(_tblPartidasInc); form.setEditable(); });
 
-	this.getOrganica = () => _acOrgInc;
-	this.setEconomicas = economicas => { _ecoInc.setItems(economicas); return self; }
-	this.getPartidas = () => _tblPartidasInc;
-	this.setPartidas = partidas => { _tblPartidasInc.render(partidas); return self; }
+	this.getTable = () => _tblPartidasInc;
 	this.setAvisoFa = item => { //aviso para organicas afectadas en TCR o FCE
 		const info = "La orgánica seleccionada es afectada, por lo que su solicitud solo se aceptará para determinado tipo de operaciones.";
 		partida.isAfectada(item?.int) && (presto.isTcr() || presto.isFce()) && form.showInfo(info);
-		return self;
     }
-
 	this.autoload = (partida, imp) => {
 		partida = partida || _tblPartidasInc.getFirst();
 		if (!partida) // compruebo si existe partida a incrementar
 			return !form.showError("No se ha seleccionado una partida a incrementar");
 		partida.imp = imp || 0; //propone un importe
 		_tblPartidasInc.render([ partida ]); //render partida unica
-		form.setval("#impDec", partida.imp);
-		return p030.autoload(partida, imp);
+		form.setValue("#impDec", partida.imp);
+		p030.autoload(partida, imp);
 	}
 
-    this.validate = () => {
-		//partidas.setData(_tblPartidasInc); // Cargo las partidas para su validación
-		if (!form.validate(presto.validate))
-			return false; // Errores al validar las partidas
-		partidas.setPrincipal(); //marco la primera como principal
-		return form.saveTable("#partidas-json", _tblPartidasInc); // save data to send to server
-    }
-
-	this.init = () => {
-		// define validate action and init form view
+	this.init = () => { // init. partidas view
+		_tblPartidasInc.set("#doc030", p030.view);
 		const fnEditableEjDec = () => _tblPartidasInc.isEmpty();
 		const fnEditableEjInc = () => (fnEditableEjDec() && !presto.isDisableEjInc());
-		form.set("is-valid", self.validate).onChangeInput("#ejInc", _acOrgInc.reload);
-		form.set("is-editable-ej-dec", fnEditableEjDec).set("is-editable-ej-inc", fnEditableEjInc);
-		_tblPartidasInc.set("#doc030", p030.load); // load form 030
+		form.set("is-editable-ej-dec", fnEditableEjDec).set("is-editable-ej-inc", fnEditableEjInc).onChangeInput("#ejInc", _acOrgInc.reload);
 	}
 
 	this.view = partidas => {
 		_ecoInc.reset(); // clear select box
-		self.setPartidas(partidas); // load table
+		_tblPartidasInc.render(partidas); // load table
 	}
 
+	tabs.setAction("partida-inc-add", () => {
+		if (!form.validate(partida.validate))
+			return false; // Errores al validar las partidas
+		const url = `/uae/presto/partida/add?org=${_acOrgInc.getValue()}&eco=${_ecoInc.getValue()}`;
+		api.init().json(url).then(partidaInc => { // fetch partida a incrementar
+			if (!partidas.validatePartida(partidaInc))
+				return form.setErrors(); // error en la partida a incrementar
+			partidaInc.imp030 = partidaInc.imp = form.valueOf("#impInc"); // Importe de la partida a añadir
+			_tblPartidasInc.add(partidaInc); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
+			_acOrgInc.reload(); // reseteo los valores del formulario
+		});
+	});
 	tabs.setAction("save030", () => {
-		if (p030.save(_tblPartidasInc.getCurrentItem())) // partida actual
-			form.saveTable("#partidas-json", _tblPartidasInc); // save data to send to server
+		partida.setData(_tblPartidasInc.getCurrentItem()); // load partida actual
+		if (!form.validate(p030.validate, ".ui-030")) // validate partida 080 / 030
+			return false; // not valid data
+		if (presto.isEditable()) // if editable => back to presto view, send table on tab-action-send
+			return tabs.backTab().showOk("Datos del documento 030 asociados correctamente.");
+		api.setJSON(_tblPartidasInc.getData()).json("/uae/presto/save/030").then(msgs => tabs.showMsgs(msgs, "form"));
 	});
 
-	//****** tabla de partidas a incrementar ******//
-	window.loadEconomicasInc = (xhr, status, args) => {
-		if (!window.showAlerts(xhr, status, args))
-			return false; // Server error
-		self.setEconomicas(coll.parse(args?.data)); // load new items for economicas inc.
-		self.setAvisoFa(_acOrgInc.getCurrentItem()); // aviso para organicas afectadas en TCR o FCE
-	}
-	window.fnAddPartidaInc = () => form.validate(partida.validate);
-	window.loadPartidaInc = (xhr, status, args) => {
-		if (!window.showAlerts(xhr, status, args))
-			return false; // Server error
-		const partidaInc = coll.parse(args.data);
-		if (!partidas/*.setData(_tblPartidasInc)*/.validatePartida(partidaInc))
-			return form.setErrors(); // error en la partida a incrementar
-		partidaInc.imp030 = partidaInc.imp = form.valueOf("#impInc"); // Importe de la partida a añadir
-		_tblPartidasInc.add(partidaInc); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
-		_acOrgInc.reload();
-	}
-	window.loadEco030 = (xhr, status, args) => {
-		if (!window.showAlerts(xhr, status, args))
-			return false; // Server error
-		// carga las econonomicas de ingresos 030
-		form.setItems("#idEco030", coll.parse(args.data));
-		p030.view(_tblPartidasInc.getCurrentItem());
+	window.rcSendForm = () => {
+		const data = presto.getData();
+		data.partidas = _tblPartidasInc.getData(); // listado de partidas a incrementar
+		api.setJSON(data).json("/uae/presto/save").then(msgs => tabs.showMsgs(msgs, "init"));
 	}
 }
 

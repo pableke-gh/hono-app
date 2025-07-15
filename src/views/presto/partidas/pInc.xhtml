@@ -16,7 +16,6 @@
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
-			<p:remoteCommand name="rcFindOrgInc" action="#{presto.partidas.filterOrgancias()}" oncomplete="loadItems(xhr, status, args)" />
 			<input type="search" id="acOrgInc" name="acOrgInc" class="ui-input ui-autocomplete" tabindex="11" />
 			<h:inputText id="idOrgInc" value="#{presto.solicitud.idOrgInc}" styleClass="ui-input ui-number hide" />
 			<ul role="list" class="results"></ul>
@@ -28,9 +27,8 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<select id="idEcoInc" name="idEcoInc" class="ui-input ui-select ui-number" tabindex="12"></select>
 			<h:inputText id="idEcoIncPF" value="#{presto.solicitud.idEcoInc}" styleClass="ui-input ui-number hide" />
-			<p:remoteCommand name="rcEcoInc" action="#{presto.partidas.filterEconomicas()}" oncomplete="loadEconomicasInc(xhr, status, args)" />
+			<select id="idEcoInc" name="idEcoInc" class="ui-input ui-select ui-number" tabindex="12"></select>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
@@ -39,9 +37,8 @@
 			<div class="ui-errtip"></div>
 		</label>
 		<div class="ui-block-btn">
-			<p:commandLink action="#{presto.partidas.find()}" styleClass="btn btn-green" tabindex="14"
-				onclick="if (!fnAddPartidaInc()) return false;" oncomplete="loadPartidaInc(xhr, status, args)">
-				<i class="fas fa-plus btn-icon-left"></i> #{msg['lbl.add.tabla']}</p:commandLink>
+			<a href="#tab-action" class="btn btn-green" tabindex="14" data-action="partida-inc-add">
+				<i class="fas fa-plus btn-icon-left"></i> #{msg['lbl.add.tabla']}</a>
 		</div>
 		</div>
 
