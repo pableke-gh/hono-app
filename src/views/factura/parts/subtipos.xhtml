@@ -9,8 +9,7 @@
 
 	<label class="ui-block-xl">
 		<div class="label required">Tipos de Ingreso:</div>
-		<h:inputText id="subtipoPF" value="#{fact.solicitud.subtipoView}" styleClass="ui-number hide" />
-		<select name="subtipo" value="#{fact.solicitud.subtipoView}" class="ui-input ui-select ui-number ui-pf" tabindex="4">
+		<select id="subtipo" name="subtipo" class="ui-input ui-select ui-number" tabindex="4">
 			<option value="14" class="form-refresh" data-refresh="show-factura">MATRÍCULAS ENSEÑANZA OFICIAL - CONVENIOS EDUCATIVOS (SUBV. PRECIO)</option> 
 			<option value="4"  class="form-refresh" data-refresh="show-factura">MATRÍCULA ENSEÑANZA OFICIAL</option>
 			<option value="3"  class="form-refresh" data-refresh="show-factura">TÍTULOS PROPIOS (INCLUYE IDIOMAS, EXTRANJEROS, CAP, …)</option>
@@ -29,7 +28,7 @@
 			<option value="6"  class="form-refresh" data-refresh="show-factura">ALQUILER DE ESPACIOS</option>
 			<option value="2"  class="form-refresh" data-refresh="show-factura" disabled>LICENCIAS SOBRE PATENTES</option>
 			<option value="11" class="form-refresh" data-refresh="show-factura">OTROS (CANARIAS/CEUTA/MELILLA, MOOCs, DEPORTES, SYMPOSIUM, CENTROS ADSCRITOS, FOTOCOPIAS, CONCESIONES, ENAJENACIÓN DE BIENES)</option>
-			<option value="24" class="form-refresh" data-refresh="show-factura" disabled>ASISTENCIA A CONGRESOS</option>
+			<option value="24" class="form-refresh" data-refresh="show-factura">ASISTENCIA A CONGRESOS</option>
 			<option value="12" class="form-refresh" data-refresh="show-cp" disabled>RED DE CÁTEDRAS</option>
 			<option value="13" class="form-refresh" data-refresh="show-cp">OTROS</option>
 		</select>
@@ -37,7 +36,7 @@
 	<label class="autocomplete ui-block-md form-refresh" data-refresh="show-recibo">
 		<div class="label required">Recibo asociado a la factura:</div>
 		<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" />
-		<h:inputText id="idRecibo" value="#{fact.solicitud.reciboView}" styleClass="ui-input hide" />
+		<input type="text" id="idRecibo" name="idRecibo" class="ui-input hide" /> 
 		<ul role="list" class="results"></ul>
 		<div class="ui-errtip"></div> 
 	</label>

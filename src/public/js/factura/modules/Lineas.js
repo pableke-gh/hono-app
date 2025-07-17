@@ -8,6 +8,7 @@ function Lineas() {
 	const linea = factura.getLinea();
 
 	const lineas = form.setTable("#lineas-fact", linea.getTable());
+	lineas.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago);
 	lineas.setAfterRender(() => {
 		const fnChangeIva = ev => self.setIva(+ev.target.value);
 		form.setLabels("#iva", [0, 4, 10, 21]).setField("#iva", factura.getIva(), fnChangeIva);

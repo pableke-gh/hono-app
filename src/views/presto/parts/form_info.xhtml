@@ -17,10 +17,10 @@
 		</label>
 		<label class="ui-block">
 			<div class="label">#{uae.getMsg('lblUrg')}:</div>
-			<h:selectOneMenu id="urgente" value="#{presto.form.urgente}" styleClass="ui-input ui-select" tabindex="15">
-				<f:selectItem itemValue="1" itemLabel="#{uae.getMsg('lblNormal')}" />
-				<f:selectItem itemValue="2" itemLabel="#{uae.getMsg('lblUrgente')}" />
-			</h:selectOneMenu>
+			<select id="urgente" name="urgente" class="ui-input ui-select" tabindex="15">
+				<option value="1">#{uae.getMsg('lblNormal')}</option>
+				<option value="2">#{uae.getMsg('lblUrgente')}</option>
+			</select>
 		</label>
 		<label class="ui-block form-refresh" data-refresh="is-urgente">
 			<div class="label required">#{uae.getMsg('lblFechaUrg')}:</div>

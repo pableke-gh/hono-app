@@ -1,11 +1,9 @@
 
 import api from "../../components/Api.js"
-
 import factura from "../model/Factura.js";
-import fiscalidad from "../data/fiscal.js"
-
 import lineas from "./lineas.js";
 import xeco from "../../xeco/xeco.js";
+import fiscalidad from "../data/fiscal.js"
 
 function Fiscal() {
 	const self = this; //self instance
@@ -16,7 +14,7 @@ function Fiscal() {
 	delegaciones.setEmptyOption("Seleccione una delegación").setChange(fnChange);
 
 	const acTercero = form.setAutocomplete("#acTercero");
-	const fnSource = term => api.init().json(`/uae/fact/terceros?term=${term}`).then(acTercero.render);
+	const fnSource = term => api.init().json("/uae/fact/terceros", { term }).then(acTercero.render);
 	const fnSelect = tercero => {
 		api.init().json(`/uae/fact/delegaciones?ter=${tercero.value}`).then(delegaciones.setItems);
 		self.update(factura.getSubtipo(), tercero);
@@ -58,8 +56,7 @@ function Fiscal() {
 		return self.setSujeto(data.sujeto);
 	}
 	this.update = (subtipo, tercero) => {
-		factura.setSubtipo(subtipo); // actualizo el nuevo subtipo
-        form.setval("#nifTercero", acTercero.getCode()).refresh(factura);
+		form.refresh(factura.setSubtipo(subtipo).setNifTercero(acTercero.getCode())); 
 		return fnUpdateFiscalidad(tercero || acTercero.getCurrentItem());
 	}
 	this.load = (tercero, del) => {
@@ -68,7 +65,7 @@ function Fiscal() {
 	}
 
 	this.init = () => {
-		form.onChangeInput("[name=subtipo]", ev => self.update(+ev.target.value))
+		form.onChangeInput("#subtipo", ev => self.update(+ev.target.value))
 			.onChangeInput("#sujeto", ev => self.setSujeto(+ev.target.value))
 			.onChangeInput("#face", ev => self.setFace(+ev.target.value));
 	}

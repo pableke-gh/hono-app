@@ -22,7 +22,7 @@ base.tfoot = resume => {
 		<td class="text-right">${i18n.isoFloat(resume.imp)} €</td>
 		<td></td>
 	</tr>
-	<tr class="form-refresh" data-refresh="show-factura">
+	<tr class="table-refresh" data-refresh="show-factura">
 		<td colspan="2">
 			<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
 			<div class="ui-block-main text-right">IVA:</div>
@@ -34,7 +34,7 @@ base.tfoot = resume => {
 		<td class="text-right table-refresh" data-refresh="text-render">$impIva; €</td> 
 		<td></td>
 	</tr>
-	<tr class="form-refresh" data-refresh="show-factura">
+	<tr class="table-refresh" data-refresh="show-factura">
 		<td class="text-right" colspan="2">Importe Total:</td>
 		<td class="text-right table-refresh" data-refresh="text-render">$impTotal; €</td>
 		<td></td>

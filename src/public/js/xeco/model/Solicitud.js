@@ -17,6 +17,7 @@ base.getNif = () => _nif;
 base.setNif = val => { base._nif = val; return base; } 
 base.isAdmin = () => _admin;
 base.setAdmin = val => { _admin = val; return base; }
+base.getGrupo = () => _grupo;
 base.setGrupo = val => { _grupo = val; return base; }
 base.setUser = ({ nif, grupo, admin }) => base.setNif(nif).setGrupo(grupo).setAdmin("1" == admin);
 base.isUsuEc = () => !!_grupo;

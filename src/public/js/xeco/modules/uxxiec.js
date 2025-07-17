@@ -12,7 +12,7 @@ function Uxxiec() {
     const form = new Form("#xeco-uxxi");
 	const tblUxxiec = new Table(form.getForm().nextElementSibling, uxxiec.getTable());
     const acUxxi = form.setAutocomplete("#uxxi", uxxiec.getAutocomplete());
-	acUxxi.setSource(term => api.init().json(model.getUrl(`/uxxiec/docs/?ej=${form.getElementValue("ej")}&term=${term}`)).then(acUxxi.render));
+	acUxxi.setSource(term => api.init().json(model.getUrl("/uxxiec/docs/"), { ej: form.getValueByName("ej"), term }).then(acUxxi.render));
 
 	this.getForm = () => form;
 	this.getTable = () => tblUxxiec;

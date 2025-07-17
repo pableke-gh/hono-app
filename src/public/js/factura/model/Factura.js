@@ -29,9 +29,11 @@ solicitud.isCongresoGdi = () => (solicitud.getSubtipo() == 24);
 solicitud.isRecibo = () => (solicitud.isTtpp() || solicitud.isTituloOficial() || solicitud.isExtension() || solicitud.isCongresoGdi());
 solicitud.setSujeto = val => solicitud.set("sujeto", val);
 solicitud.isExento = () => !solicitud.get("sujeto");
+solicitud.setExento = val => solicitud.set("exento", val);
 
 solicitud.getIva = () => solicitud.get("iva");
 solicitud.setIva = imp => solicitud.set("iva", imp ?? 0);
+solicitud.setNifTercero = nif => solicitud.set("nif", nif); 
 solicitud.getImpIva = () => 0; // importes calculados default = 0
 solicitud.getImpTotal = () => 0; // importes calculados default = 0
 
@@ -59,9 +61,9 @@ solicitud.row = data => {
 
 solicitud.validate = data => { 
 	const valid = i18n.getValidators();
-	valid.isKey("acTercero", data.idTercero, "Debe seleccionar un tercero válido"); // autocomplete required key
-	valid.isKey("delegacion", data.idDelegacion, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
-	valid.isKey("acOrganica", data.idOrganica, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
+	valid.isKey("acTercero", data.idTer, "Debe seleccionar un tercero válido"); // autocomplete required key
+	valid.isKey("delegacion", data.idDel, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
+	valid.isKey("acOrganica", data.idOrg, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
 	if (solicitud.isRecibo()) //subtipo = ttpp o extension
 		valid.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
 	/*if (solicitud.isDeportes()) {

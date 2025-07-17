@@ -68,12 +68,12 @@ function List() {
 		tblSolicitudes.setRemove(data => api.init().json(model.getUrl("/remove?id=" + data.id)).then(msgs => tabs.showMsgs(msgs, "list"))); // remove true = confirm
 	}
 
-	const isEmptyEstado = () => { const value = form.getElementValue("estado"); return (!value || (value == "0")); }
+	const isEmptyEstado = () => { const value = form.getValueByName("estado"); return (!value || (value == "0")); }
 	tabs.setInitEvent("list", () => (tblSolicitudes.isEmpty() && isEmptyEstado() && setTimeout(form.loading, 1) && fnList("", "5")));
 	tabs.setAction("list", fnCallList);
 	tabs.setAction("list-all", () => { form.reset(".ui-filter"); fnCallList(); });
 	tabs.setAction("relist", () => fnList("", "5"));
-	tabs.setAction("vinc", () => { ("1" == form.getElementValue("estado")) ? tabs.showTab("list") : fnList("1"); });
+	tabs.setAction("vinc", () => { ("1" == form.getValueByName("estado")) ? tabs.showTab("list") : fnList("1"); });
 
 	tabs.setAction("ejecutar", () => api.setJSON(uxxiec.getExpediente()).json(model.getUrl("/ejecutar?id=" + tblSolicitudes.getId())).then(tabs.showMsgs));
 	tabs.setAction("notificar", () => api.setJSON(uxxiec.getExpediente()).json(model.getUrl("/notificar?id=" + tblSolicitudes.getId())).then(tabs.showMsgs));

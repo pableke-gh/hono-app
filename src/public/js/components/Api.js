@@ -51,10 +51,11 @@ function Api() {
 		const promise = res.ok ? res.text() : fnError(res); // get promise
 		return promise.finally(alerts.working); // Add default finally functions to promise
 	}
-	this.json = async url => {
+	this.json = async (url, params) => {
 		alerts.loading(); // show loading indicator
 		self.setContentType(mt.json); // set content type header
-		const res = await globalThis.fetch(url, OPTS); // send api call
+		const query = params ? ("?" + (new URLSearchParams(params)).toString()) : "";
+		const res = await globalThis.fetch(url + query, OPTS); // send api call
 		// avoid error when json response is null: (SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input)
 		const promise = res.ok ? res.json().catch(console.error) : fnError(res); // get promise
 		return promise.finally(alerts.working); // Add default finally functions to promise

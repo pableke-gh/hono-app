@@ -60,7 +60,7 @@ export default function(form, opts) {
 	this.getForm = () => form;
 	this.getElements = () => form.elements;
 	this.getElement = name => form.elements.find(el => (el.name == name));
-	this.getElementValue = name => dom.getValue(self.getElement(name));
+	this.getValueByName = name => dom.getValue(self.getElement(name));
 
 	this.focus = el => { dom.focus(el); return self; }
 	this.setFocus = selector => fnAction(selector, el => el.focus());

@@ -13,7 +13,7 @@ function Partida030() {
 	let _ej030;
 
 	const acOrg030 = form.setAutocomplete("#acOrg030");
-	const fnSource = term => api.init().json(`/uae/presto/organicas/dec?ej=${form.getval("#ej030")}&term=${term}`).then(acOrg030.render);
+	const fnSource = term => api.init().json("/uae/presto/organicas/030", { ej: form.getval("#ej030"), term}).then(acOrg030.render);
 	const fnSelect = item => form.setValue("#idEco030", item.imp);
 	acOrg030.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect);
 
@@ -41,12 +41,7 @@ function Partida030() {
 	}
 
 	this.isLoaded = ej => (_ej030 == ej); // 030 cargado
-	this.view = partida => { // load tab 030
-		if (!self.isLoaded(partida.ej)) {
-			// actualizo las economicas de ingresos 030 para el nuevo ejercicio
-			const fnEconomicas = economicas => form.setItems("#idEco030", economicas);
-			api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(fnEconomicas);
-		}
+	const fnLoad = partida => { // load tab 030
 		_ej030 = partida.ej030 = partida.ej; // Ejercicio de la partida a añadir
 		presto.getOrg080 = () => partida.o; // Organica del documento 080
 		presto.getDescOrg080 = () => partida.dOrg; // Descripción de la organica del documento 080
@@ -57,6 +52,13 @@ function Partida030() {
 		form.setData(partida, ".ui-030").refresh(presto); // Actualizo los campos de la vista
 		acOrg030.setValue(partida.idOrg030, partida.o030 + " - " + partida.dOrg030);
 		tabs.showTab("030"); // change tab
+	}
+	this.view = partida => { // load tab 030
+		if (self.isLoaded(partida.ej))
+			return fnLoad(partida);
+		// actualizo las economicas de ingresos 030 para el nuevo ejercicio
+		const fnEconomicas = economicas => { form.setItems("#idEco030", economicas); fnLoad(partida); }
+		api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(fnEconomicas);
 	}
 	this.autoload = (partida, imp) => {
 		if (!partida) // compruebo si existe partida a incrementar

@@ -60,14 +60,15 @@ function XecoForm() {
 		.set("is-reactivable", model.isReactivable).set("is-subsanable", model.isSubsanable);
 
 	tabs.setAction("firmar", () => {
+		if (!i18n.confirm("msgFirmar")) return; // confirmation
 		const data = Object.assign(model.getData(), form.getData());
 		api.setJSON(data).json(model.getUrl("/firmar")).then(list.loadFirmas);
 	});
 
 	tabs.setAction("reject", () => list.getTable().invoke("#tab-reject")); // open reject tab from list
-	const fnRechazar = id => api.init().json(model.getUrl(`/rechazar?id=${id}&rechazo=${form.getElementValue("rechazo")}`)).then(list.loadFirmas);
+	const fnRechazar = id => api.init().json(model.getUrl("/rechazar"), { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
 	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && fnRechazar(list.getId()); });
-	const fnCancelar = id => api.init().json(model.getUrl(`/cancelar?id=${id}&rechazo=${form.getElementValue("rechazo")}`)).then(list.loadFirmas);
+	const fnCancelar = id => api.init().json(model.getUrl("/cancelar"), { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
 	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && fnCancelar(list.getId()); });
 	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable
 	//tabs.setAction("click-next", link => { link.nextElementSibling.click(); setTimeout(window.working, 450); });

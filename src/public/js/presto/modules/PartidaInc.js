@@ -14,11 +14,14 @@ function PartidaInc() {
 
 	const fnSelect = item => {
 		form.setValue("#faInc", item.int & 1); // organica afectada
-		api.init().json(`/uae/presto/economicas/inc?org=${item.value}`).then(_ecoInc.setItems); // load economicas inc.
+		api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(_ecoInc.setItems); // load economicas inc.
 		self.setAvisoFa(item); // aviso para organicas afectadas en TCR o FCE
 	}
 	const _acOrgInc = form.setAutocomplete("#acOrgInc");
-	const fnSource = term => api.init().json(`/uae/presto/organicas/inc?ej=${form.getval("#ejInc")}&term=${term}`).then(_acOrgInc.render);
+	const fnSource = term => {
+		const url = presto.isGcr() ? "/uae/presto/organicas/inc/gcr" : "/uae/presto/organicas/inc"; // url by type
+		api.init().json(url, { ej: form.getval("#ejInc"), term }).then(_acOrgInc.render); // send fetch
+	}
 	const fnReset = () => { form.setValue("#faInc").setValue("#impInc"); _ecoInc.reset(); }
 	_acOrgInc.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect).setReset(fnReset);
 
@@ -77,12 +80,6 @@ function PartidaInc() {
 			return tabs.backTab().showOk("Datos del documento 030 asociados correctamente.");
 		api.setJSON(_tblPartidasInc.getData()).json("/uae/presto/save/030").then(msgs => tabs.showMsgs(msgs, "form"));
 	});
-
-	window.rcSendForm = () => {
-		const data = presto.getData();
-		data.partidas = _tblPartidasInc.getData(); // listado de partidas a incrementar
-		api.setJSON(data).json("/uae/presto/save").then(msgs => tabs.showMsgs(msgs, "init"));
-	}
 }
 
 export default new PartidaInc();

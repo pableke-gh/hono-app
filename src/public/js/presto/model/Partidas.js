@@ -22,10 +22,11 @@ function Partidas() {
     this.getPartida = () => partida;
     this.getImporte = () => 0;
 
-    this.setPrincipal = () => {
-        data.sort((a, b) => (b.imp - a.imp)); //orden por importe desc.
-        partida.setPrincipal(data[0]); // marco la primera como principal
-    }
+	this.setPrincipal = () => {
+		data.sort((a, b) => (b.imp - a.imp)); //orden por importe desc.
+		partida.setPrincipal(data[0]); // marco la primera como principal
+		return self;
+	}
 
     this.validate = () => { // Todas las solicitudes tienen partidas a incrementar
         const valid = i18n.getValidation(); // Continue with validation without reset

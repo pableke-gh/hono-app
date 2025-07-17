@@ -30,6 +30,8 @@ solicitud.isPartidaExt = () => (solicitud.isGcr() || solicitud.isAnt());
 solicitud.isDisableEjInc = () => (solicitud.isDisabled() || solicitud.isTcr() /*|| solicitud.isFce()*/);
 solicitud.isAutoLoadImp = () => (solicitud.isL83() || solicitud.isAnt() || solicitud.isAfc());
 solicitud.isAutoLoadInc = () => (solicitud.isL83() || solicitud.isAnt());
+solicitud.isTransferencia = () => (solicitud.isTcr() || solicitud.isL83() || solicitud.isFce());
+solicitud.isGeneracion = () => (solicitud.isGcr() || solicitud.isAnt());
 solicitud.isAnticipada = () => (solicitud.getMask() & 4);
 solicitud.isExcedida = () => (solicitud.getMask() & 8);
 
@@ -71,12 +73,12 @@ solicitud.validate = data => {
 	valid.isKey("acOrgDec", data.idOrgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
 	valid.isKey("idEcoDec", data.idEcoDec, "Debe seleccionar la económica que disminuye"); // select required number
 
-	const imp = data.impDec ?? 0; // los importes pueden ser nulos segun el tipo de presto
+	const imp = data.imp ?? 0; // los importes pueden ser nulos segun el tipo de presto
 	const cd = solicitud.isAnt() ? imp : (data.cd ?? 0); // los anticipos no validan el CD
 	if (imp > cd)
-		valid.addError("impDec", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
+		valid.addError("imp", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
 	if (solicitud.isPartidaDec() && (partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
-		valid.addError("impDec", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
+		valid.addError("imp", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
 	valid.size("memo", data.memo, "Debe asociar una memoria justificativa a la solicitud."); // Required string
 	if (data.urgente == "2") { // Solicitud urgente
 		valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string

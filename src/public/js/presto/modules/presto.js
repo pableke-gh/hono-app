@@ -1,5 +1,6 @@
 
 import tabs from "../../components/Tabs.js";
+//import api from "../../components/Api.js"
 import i18n from "../../i18n/langs.js";
 
 import presto from "../model/Presto.js";
@@ -46,11 +47,21 @@ function Presto() {
 		presto.getPartidas().setPrincipal(); //marco la primera como principal
 		// serialize table data and call to specific action
 		form.saveTable("#partidas-json", pInc.getTable()).invoke(fn);
-		//data.partidas = pInc.getTable().getData(); // listado de partidas a incrementar
-		//api.setJSON(data).json("/uae/presto/save").then(msgs => tabs.showMsgs(msgs, "init"));
 	}
 	tabs.setAction("send", () => fnValidate("msgSend", window.rcSend)); // send xeco-model form
 	tabs.setAction("subsanar", () => fnValidate("msgSave", window.rcSubsanar)); // send from changes
+
+	/*function fnValidate2(msgConfirm, url, tab) {
+		const data = form.validate(presto.validate);
+		if (!data || !i18n.confirm(msgConfirm))
+			return false; // Errores al validar o sin confirmacion
+		Object.clear(data, [ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ]); // clear info fields
+		const temp = Object.assign(presto.getData(), data); // merge data to send
+		temp.partidas = presto.getPartidas().setPrincipal().getData(); // primera partida = principal
+		return api.setJSON(temp).json(url).then(msgs => tabs.showMsgs(msgs, tab)); // send data
+	}
+	tabs.setAction("send", () => fnValidate2("msgSend", "/uae/presto/save", "init")); // send xeco-model form
+	tabs.setAction("subsanar", () => fnValidate2("msgSave", "/uae/presto/subsanar", "list")); // send from changes*/
 }
 
 export default new Presto();

@@ -15,9 +15,9 @@ function PartidaDec() {
 
 	const fnSelectOrgDec = item => { //select
 		presto.isAutoLoadInc() && partidas.render(); //autoload => clear table
-		form.setValue("#faDec", item.int & 1); // campo de organica afectada
-		// _ecoDec.setItems => auto call fnEcoChange (economica change event)
-		api.init().json(`/uae/presto/economicas/dec?org=${item.value}`).then(_ecoDec.setItems);
+		form.setValue("#faDec", item.int & 1); // indicador de organica afectada
+		const url = presto.isAutoLoadInc() ? "/uae/presto/economicas/l83" : "/uae/presto/economicas/dec"; // url by type
+		api.init().json(url + "?org=" + item.value).then(_ecoDec.setItems); // _ecoDec.setItems => auto call fnEcoChange (economica change event)
 		pInc.setAvisoFa(item); //aviso para organicas afectadas en TCR o FCE
 	}
 	const fnResetOrgDec = () => { // reset organica a decrementar
@@ -26,7 +26,11 @@ function PartidaDec() {
 		_ecoDec.reset();
 	}
 	const _orgDec = form.setAutocomplete("#acOrgDec");
-	const fnSource = term => api.init().json(`/uae/presto/organicas/dec?ej=${form.getval("#ejDec")}&term=${term}`).then(_orgDec.render);
+	const fnSource = term => {
+		const opts = { 3: "/uae/presto/organicas/l83", 5: "/uae/presto/organicas/ant" };
+		const url = opts[presto.getTipo()] || "/uae/presto/organicas/dec"; // default url
+		api.init().json(url, { ej: form.getval("#ejDec"), term }).then(_orgDec.render);
+	}
 	_orgDec.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelectOrgDec).setReset(fnResetOrgDec);
 
 	const fnEcoChange = item => {
