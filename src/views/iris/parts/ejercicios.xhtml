@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<select name="ej" class="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
-		<c:forEach items="#{uae.ejercicios}" var="ej">
+		<c:forEach items="#{iris.ejercicios}" var="ej">
 			<option value="#{ej}">#{ej}</option>
 		</c:forEach>
 	</select>

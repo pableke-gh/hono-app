@@ -33,7 +33,7 @@
 			<li><b>Fecha de la solicitud:</b> <span th:text="${dt.toEsDate(xs.FCreacion)}"></span></li>
 			<li><b>Tercero:</b> <span th:text="${xs.terFullName}"></span></li>
 			<li><b>Delegación:</b> <span th:text="${xs.delFullName}"></span></li>
-			<li th:if="${xs.recibo}"><b>Recibo:</b> <span th:text="${xs.descRecibo}"></span></li>
+			<li th:if="${not #strings.isEmpty(xs.recibo)}"><b>Recibo:</b> <span th:text="${xs.descRecibo}"></span></li>
 			<li th:if="${xs.face == 2}"><b>Pataforma:</b> <span th:text="${xs.organoGestor}"></span></li>
 			<li><b>Orgánica:</b> <span th:text="${xs.codOrganica}"></span> - <span th:text="${xs.descOrganica}"></span></li>
 			<li><b>Solicitante:</b> <span th:text="${xs.usuFullName}"></span></li>

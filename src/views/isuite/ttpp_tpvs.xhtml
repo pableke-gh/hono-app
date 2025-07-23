@@ -16,8 +16,8 @@
 		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
-		<script type="text/javascript" src="/uae/resources/js/isuite/jquery-ui.min.js"></script> 
-		<script type="text/javascript" src="/uae/resources/js/isuite/uae-box.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/lib/jquery-ui.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/lib/uae-box.min.js"></script> 
 		<script type="text/javascript" src="/uae/resources/js/isuite/ttpp.js"></script> 
 		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script> 
 	</ui:define>
@@ -30,7 +30,7 @@
 		<h1 id="title">Ingresos de Gestión Económica</h1>
 		<c:set var="ctrl" value="#{xecomControlador}" />
 
-		<h:form id="ttpp" styleClass="card-filter no-print">
+		<h:form id="ttpp" prependId="false" styleClass="card-filter no-print">
 			<div class="navbar">
 				<input type="file" id="fichero" name="files[]" multiple="*.*" title="Seleccionar fichero Norma 43" />
 				<a id="reset" href="#" class="btn btn-info" title="Limpia los datos del formulario"><i class="fa fa-sync"></i></a>
@@ -40,6 +40,8 @@
 				<br class="clear" />
 				<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
 					<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
+				<a id="excel" href="#" download="descarga.xls" class="btn btn-green" title="Exportar tabla a formato EXCEL">
+					<i class="fa fa-file-excel btn-icon-left"></i>Exportar a Excel</a>
 			</div>
 		</h:form>
 
@@ -65,7 +67,10 @@
 					</tr>
 				</thead>
 			</table>
+
 			<hr />
+			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
+				<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
 		</div>
 	</ui:define>
 </ui:composition>

@@ -88,9 +88,9 @@ export default function(form, opts) {
 		tabs.nextTab(tab); // go to next tab
 		return self;
 	}
-	this.call = fnCall => { self.loading().setChanged(); fnCall([{ name: "id", value: opts.cache }]); } // invoke action
-	this.invoke = fnInvoke => { self.loading().setChanged(); fnInvoke(); return self; } // invoke action
-	this.sendTab = (fnInvoke, tab) => (self.isChanged() ? self.invoke(fnInvoke) : self.nextTab(tab));
+	//this.call = fnCall => { self.loading().setChanged(); fnCall([{ name: "id", value: opts.cache }]); } // invoke action
+	//this.invoke = fnInvoke => { self.loading().setChanged(); fnInvoke(); return self; } // invoke action
+	//this.sendTab = (fnInvoke, tab) => (self.isChanged() ? self.invoke(fnInvoke) : self.nextTab(tab));
 
 	this.getValidators = i18n.getValidation; // validator object
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard
@@ -112,7 +112,7 @@ export default function(form, opts) {
 	this.setEditable = selector => fnUpdate(selector, el => {
 		const value = el.dataset.readonly;
 		if (value == "manual")
-			return; // skip evaluation
+			return; // skip evaluation (input manual)
 		const fnEditable = self.get(value) || self.get("is-editable");
 		el.setReadonly(!fnEditable(el)); // recalc. attribute by handler
 	});

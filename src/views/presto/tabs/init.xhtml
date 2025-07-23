@@ -13,19 +13,19 @@
             <h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
             <ul>
                 <li>Nueva Solicitud:<ul>
-                    <li><p:commandLink action="#{presto.createTcr()}" oncomplete="viewPresto(xhr, status, args);" title="Código TCR">Transferencia de Crédito</p:commandLink></li>
-                    <li><p:commandLink action="#{presto.createFce()}" oncomplete="viewPresto(xhr, status, args);" title="Código FCE">Fondo de Cobertura</p:commandLink></li>
+                    <li><a href="#tab-action-tcr" title="Código TCR">Transferencia de Crédito</a></li>
+                    <li><a href="#tab-action-fce" title="Código FCE">Fondo de Cobertura</a></li>
                     <c:if test="#{presto.user.uae or presto.user.otri}">
-                        <li><p:commandLink action="#{presto.createL83()}" oncomplete="viewPresto(xhr, status, args);" title="Código L83">Liquidación de Contrato de Art. 83</p:commandLink></li>
+                        <li><a href="#tab-action-l83" title="Código L83">Liquidación de Contrato de Art. 83</a></li>
                     </c:if>
                     <c:if test="#{presto.user.hasGcr()}">
-                        <li><p:commandLink action="#{presto.createGcr()}" oncomplete="viewPresto(xhr, status, args);" title="Código GCR">Generación de Crédito (A83, Cátedras, Subvenciones y otras FA)</p:commandLink></li>
+                        <li><a href="#tab-action-gcr" title="Código GCR">Generación de Crédito (A83, Cátedras, Subvenciones y otras FA)</a></li>
                     </c:if>
                     <c:if test="#{presto.user.hasAnt()}">
-                        <li><p:commandLink action="#{presto.createAnt()}" oncomplete="viewPresto(xhr, status, args);" title="Código ANT">Anticipos sobre Recaudación A83, TTPP y Cátedras</p:commandLink></li>
+                        <li><a href="#tab-action-ant" title="Código ANT">Anticipos sobre Recaudación A83, TTPP y Cátedras</a></li>
                     </c:if>
                     <c:if test="#{presto.user.hasAfc()}">
-                        <li><p:commandLink action="#{presto.createAfc()}" oncomplete="viewPresto(xhr, status, args);" title="Código AFC">Traspaso al FC</p:commandLink></li>
+                        <li><a href="#tab-action-afc" title="Código AFC">Traspaso al FC</a></li>
                     </c:if>
                 </ul></li>
             </ul>

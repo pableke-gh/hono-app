@@ -12,23 +12,23 @@
 		<div class="ui-blocks">
 		<label class="ui-block-row form-refresh" data-refresh="show-memoria">
 			<div class="label required">Memoria Justificativa:</div>
-			<h:inputTextarea id="memo" value="#{presto.solicitud.memoriaView}" tabindex="14" styleClass="ui-input ui-ta" />
+			<textarea name="memo" class="ui-input ui-ta" tabindex="14"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
-			<div class="label">#{uae.getMsg('lblUrg')}:</div>
+			<div class="label">#{presto.getMsg('lblUrg')}:</div>
 			<select id="urgente" name="urgente" class="ui-input ui-select" tabindex="15">
-				<option value="1">#{uae.getMsg('lblNormal')}</option>
-				<option value="2">#{uae.getMsg('lblUrgente')}</option>
+				<option value="1">#{presto.getMsg('lblNormal')}</option>
+				<option value="2">#{presto.getMsg('lblUrgente')}</option>
 			</select>
 		</label>
 		<label class="ui-block form-refresh" data-refresh="is-urgente">
-			<div class="label required">#{uae.getMsg('lblFechaUrg')}:</div>
-			<h:inputText id="fMax" value="#{presto.solicitud.isoDateMax}" size="10" maxlength="10" tabindex="16" styleClass="ui-input ui-date"/>
+			<div class="label required">#{presto.getMsg('lblFechaUrg')}:</div>
+			<input type="date" name="fMax" tabindex="16" class="ui-input ui-date"/>
 		</label>
 		<label class="ui-block-row form-refresh" data-refresh="is-urgente">
-			<div class="label required">#{uae.getMsg('lblMotivoUrg')}:</div>
-			<h:inputTextarea id="extra" value="#{presto.solicitud.extraView}" styleClass="ui-input ui-ta" tabindex="17"/>
+			<div class="label required">#{presto.getMsg('lblMotivoUrg')}:</div>
+			<textarea name="extra" class="ui-input ui-ta" tabindex="17"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 	</div>
@@ -36,10 +36,10 @@
 	<div class="ui-blocks">
 		<label class="ui-block form-refresh" data-refresh="show-subtipo">
 			<div class="label required">Clasificación de la operación:</div>
-			<h:selectOneMenu id="subtipo" value="#{presto.solicitud.subtipoView}" tabindex="18" styleClass="ui-input ui-select editable-uae">
-				<f:selectItem itemValue="1" itemLabel="Por ingreso"/>
-				<f:selectItem itemValue="2" itemLabel="Por compromiso de ingreso"/>
-			</h:selectOneMenu>
+			<select name="subtipo" data-readonly="is-editable-uae" class="ui-input ui-select" tabindex="18">
+				<option value="1">Por ingreso</option>
+				<option value="2">Por compromiso de ingreso</option>
+			</select>
 		</label>
 		<div class="ui-block-row form-refresh" data-refresh="text-render"> 
 			<a href="@adjunto;" class="btn btn-info" target="_blank" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>

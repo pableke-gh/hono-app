@@ -29,7 +29,7 @@
 		<div class="ui-blocks form-refresh" data-refresh="show-factura-uae">
 			<label class="ui-block">
 				<div class="label">Causas de no sujeción a IVA:</div>
-				<select id="sujeto" name="sujeto" class="ui-input ui-select ui-fiscal editable-uae" tabindex="5">
+				<select id="sujeto" name="sujeto" data-readonly="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="5">
 					<option value="0">Seleccione una causa de no sujeción</option>
 					<option value="2">TAI Reglas Localización.</option>
 					<option value="1">Art. 7, 14, otros.</option>
@@ -37,7 +37,7 @@
 			</label>
 			<label class="ui-block form-refresh" data-refresh="is-exento">
 				<div class="label">Causas de exención en IVA:</div>
-				<select id="exento" name="exento" class="ui-input ui-select ui-fiscal editable-uae" tabindex="6">
+				<select id="exento" name="exento" data-readonly="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="6">
 					<option value="0">Seleccione una causa de exención</option>
 					<option value="1">E1 Exenta por el artículo 20.</option>
 					<option value="2">E2 Exenta por el artículo 21.</option>
@@ -49,7 +49,7 @@
 			</label>
 			<label class="ui-block-row form-refresh" data-refresh="show-factura-uae">
 				<div class="label">Modelo fiscal 349:</div>
-				<select id="m349" name="m349" class="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
+				<select id="m349" name="m349" data-readonly="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="7">
 					<option value="0">No</option>
 					<option value="1">D - Devoluciones de bienes desde otro Estado miembro al que previamente fueron enviados desde el TAI en el marco de acuerdos de ventas de bienes en consigna</option>
 					<option value="2">E - Entregas intracomunitarias</option>
@@ -65,18 +65,22 @@
 		<div class="ui-blocks form-refresh" data-refresh="show-uae">
 			<label class="ui-block-xl">
 				<div class="label">Económica:</div>
-				<h:selectOneMenu id="economica" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
-					<f:selectItem itemValue="" itemLabel="Seleccione una económica" itemEscaped="false" />
-					<f:selectItems value="#{fact.form.economicas}" var="eco" itemValue="#{eco.value}" itemLabel="#{eco.label}" />
-				</h:selectOneMenu>
+				<select name="economica" data-readonly="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="7">
+					<option value="">Seleccione una económica</option>
+					<c:forEach items="#{fact.form.economicas}" var="eco">
+						<option value="#{eco.value}">#{eco.label}</option>
+					</c:forEach>
+				</select>
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block-xl">
 				<div class="label">IBAN:</div>
-				<h:selectOneMenu id="iban" styleClass="ui-input ui-select ui-fiscal editable-uae" tabindex="7">
-					<f:selectItem itemValue="" itemLabel="Seleccione un IBAN" itemEscaped="false" />
-					<f:selectItems value="#{fact.form.getCuentasUpct()}" var="item" itemValue="#{item.value}" itemLabel="#{item.label}" itemEscaped="false" />
-				</h:selectOneMenu>
+				<select name="iban" data-readonly="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="7">
+					<option value="">Seleccione un IBAN</option>
+					<c:forEach items="#{fact.form.getCuentasUpct()}" var="item">
+						<option value="#{item.value}">#{item.label}</option>
+					</c:forEach>
+				</select>
 			</label>
 		</div>
 

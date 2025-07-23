@@ -16,8 +16,8 @@
 		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
-		<script type="text/javascript" src="/uae/resources/js/isuite/jquery-ui.min.js"></script> 
-		<script type="text/javascript" src="/uae/resources/js/isuite/uae-box.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/lib/jquery-ui.min.js"></script> 
+		<script type="text/javascript" src="/uae/resources/js/isuite/lib/uae-box.min.js"></script> 
 		<script type="text/javascript" src="/uae/resources/js/isuite/ttpp.js"></script> 
 		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script> 
 	</ui:define>
@@ -32,7 +32,7 @@
 		<div id="ok" name="srvmsg" class="hide">#{ctrl.msgOk}</div>
 		<div id="error" name="srvmsg" class="hide">#{ctrl.msgErr}</div>
 
-		<h:form id="ttpp" styleClass="card-filter no-print">
+		<h:form id="ttpp" prependId="false" styleClass="card-filter no-print">
 			<div class="navbar">
 				<input type="file" id="fichero" name="files[]" multiple="*.*" title="Seleccionar fichero Norma 43" />
 				<a id="reset" href="#" class="btn btn-info" title="Limpia los datos del formulario"><i class="fa fa-sync"></i></a>
@@ -52,12 +52,14 @@
 				<div class="navbar">
 				<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
 					<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
-				<p:commandButton id="save" action="#{ctrl.saveRecibos()}" value="Guardar Fichero" styleClass="btn btn-info"
+				<!-- <p:commandButton id="save" action="#{ctrl.saveRecibos()}" value="Guardar Fichero" styleClass="btn btn-info"
 					icon="fa fa-save" title="Guarda el fichero .N43 en el histórico" />
-				<!-- <p:commandButton id="view" action="#{ctrl.readFicheros()}" value="Ver Histórico" styleClass="btn btn-info" 
+				<p:commandButton id="view" action="#{ctrl.readFicheros()}" value="Ver Histórico" styleClass="btn btn-info" 
 					icon="fa fa-search" title="Ir a la conciliación de ficheros" /> -->
-				<a id="tr" href="#" download="fichero.n43" class="btn btn-info" title="Traduce ficheros con formato n57 a n43">
-					<i class="fa fa-file-download btn-icon-left"></i>Generar Fichero .N43</a>
+				<a id="excel" href="#" download="descarga.xls" class="btn btn-green" title="Exportar tabla a formato EXCEL">
+					<i class="fa fa-file-excel btn-icon-left"></i>Exportar a Excel</a>
+				<a id="tr" href="#" download="fichero.n43" class="btn btn-warn" title="Traduce ficheros con formato n57 a n43">
+					<i class="fas fa-arrow-down btn-icon-left"></i>Generar Fichero .N43</a>
 				</div>
 			</div>
 		</h:form>
@@ -69,7 +71,7 @@
 				<li><b>Nombre:</b> <span name="nombre"></span></li>
 				<li name="ORGNLMSGID"></li>
 			</ul>
-			<table id="n19" class="ui-datatable" tb-resume="n19Resume" 
+			<table id="n19" class="tb-xeco" tb-resume="n19Resume" 
 					tb-columns="fCobro MNDTID NM cuenta1 cuenta2 USTRD importe"
 					tb-xls="fCobro MNDTID NM cuenta1 cuenta2 USTRD importe">
 				<thead>
@@ -84,7 +86,10 @@
 					</tr>
 				</thead>
 			</table>
+
 			<hr />
+			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
+				<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
 		</div>
 
 		<div id="n43" class="ui-datatable-tablewrapper navbar hide">
@@ -101,7 +106,7 @@
 				<li><b>Saldo Final:</b> <span name="saldo" tb-style="LatinFloat"></span> €</li>
 				<li name="fRango"></li>
 			</ul>
-			<table id="n43" class="ui-datatable tb-group" tb-resume="n43Resume" tb-groups="ji forma aplicacion"
+			<table id="n43" class="tb-xeco tb-group" tb-resume="n43Resume" tb-groups="ji forma aplicacion"
 					tb-columns="ji fCobro forma ref1 concepto dnialu nombre organica economica descOrganica importe" 
 					tb-xls="ji fCobro forma ref1 concepto dnialu nombre organica economica descOrganica importe">
 				<thead>
@@ -137,7 +142,10 @@
 					</ui:repeat>
 				</tbody>
 			</table>
+
 			<hr />
+			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
+				<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
 		</div>
 
 		<div id="n57" class="ui-datatable-tablewrapper navbar hide">
@@ -149,7 +157,7 @@
 				<li><b>Total:</b> <span name="total" tb-style="LatinFloat"></span> €</li>
 				<li name="fRango"></li>
 			</ul>
-			<table id="n57" class="ui-datatable tb-group" tb-resume="n57Resume" tb-groups="aplicacion"
+			<table id="n57" class="tb-xeco tb-group" tb-resume="n57Resume" tb-groups="aplicacion"
 					tb-columns="fCobro plan idActividad actNombre dnialu nombre organica economica importe" 
 					tb-xls="fCobro plan idActividad actNombre dnialu nombre organica economica importe">
 				<thead>
@@ -181,6 +189,10 @@
 					</ui:repeat>
 				</tbody>
 			</table>
+
+			<hr />
+			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
+				<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
 		</div>
 	</ui:define>
 </ui:composition>

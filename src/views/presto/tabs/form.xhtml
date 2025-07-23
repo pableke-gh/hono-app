@@ -17,13 +17,11 @@
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 		<a href="#tab-action-send" class="btn btn-green form-refresh" data-refresh="is-editable" title="Poner solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcSend" action="#{presto.form.save()}" oncomplete="showTab(xhr, status, args, 'init')"/>
 
 		<a href="#tab-action-reactivar" class="btn btn-warn form-refresh" data-refresh="is-reactivable" title="Activa los campos modificables por la UAE">
 			<i class="fas fa-wrench btn-icon-left"></i>Reactivar</a>
 		<a href="#tab-action-subsanar" class="btn btn-green form-refresh" data-refresh="is-subsanable" title="Guarda los cambios realizados">
 			<i class="far fa-save btn-icon-left"></i>Subsanar</a>
-		<p:remoteCommand name="rcSubsanar" action="#{presto.form.subsanar()}" oncomplete="showTab(xhr, status, args, 'list')"/>
 
 		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="is-firmable" title="#{msg['tit.btn.firmar']}">
 			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>

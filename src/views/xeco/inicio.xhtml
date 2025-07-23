@@ -80,20 +80,18 @@
 					<div class="ui-blocks hide info-cargo-interno">
 					<label class="ui-block">
 						<div class="label required">Ejercicios:</div>
-						<h:selectOneMenu id="ej-pago" value="#{uae.ejercicio}" styleClass="ui-input ui-select" tabindex="1">
+						<h:selectOneMenu id="ej-pago" styleClass="ui-input ui-select ui-jg" tabindex="1">
 							<f:selectItems value="#{uae.ejercicios}" />
 						</h:selectOneMenu>
 					</label>
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Nº de JG / Descripción:</div>
-						<p:remoteCommand name="rcFindJg" action="#{uae.findCargoInterno()}" oncomplete="loadItems(xhr, status, args)" />
-						<h:inputText id="jg" value="#{uae.acJg}" styleClass="ui-input ui-autocomplete" tabindex="2" />
-						<h:inputHidden id="id-jg" value="#{uae.jg}" />
+						<input type="text" id="jg" name="jg" class="ui-input ui-autocomplete ui-jg" tabindex="2" />
+						<input type="hidden" name="idJg" class="ui-jg" />
 						<ul role="list" class="results"></ul>
 					</label>
 					<div class="ui-block-btn">
-						<p:commandButton action="#{uae.cargoInterno()}" icon="far fa-share" oncomplete="showAlerts(xhr, status, args)"
-							styleClass="success-btn" style="min-height: 40px;" value="Solicitar" tabindex="3" />
+						<a href="#tab-action" data-action="cargo-interno" class="btn btn-green" tabindex="3"><i class="far fa-share ui-icon-let"></i>Solicitar</a>
 					</div>
 					</div>
 				</li>
@@ -103,14 +101,12 @@
 					<div class="ui-blocks hide info-incompatibilidad">
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Tercero (CIF / NIF / Nombre):</div>
-						<p:remoteCommand name="rcFindTercero" action="#{uae.findTercero()}" oncomplete="loadItems(xhr, status, args)" />
-						<h:inputText id="tercero" value="#{uae.acTercero}" styleClass="ui-input ui-autocomplete" tabindex="4" />
-						<h:inputHidden id="nif-tercero" value="#{uae.tercero}" />
+						<input type="text" id="tercero" name="tercero" class="ui-input ui-autocomplete ui-tercero" tabindex="4" />
+						<input type="hidden" name="nifTercero" class="ui-tercero" />
 						<ul role="list" class="results"></ul>
 					</label>
 					<div class="ui-block-btn">
-						<p:commandButton action="#{uae.incompatibilidad()}" icon="far fa-share" oncomplete="showAlerts(xhr, status, args)"
-							styleClass="success-btn" style="min-height: 40px;" value="Solicitar" tabindex="5" />
+						<a href="#tab-action-incompatibilidad" class="btn btn-green" tabindex="5"><i class="far fa-share ui-icon-let"></i>Solicitar</a>
 					</div>
 					</div>
 				</li>

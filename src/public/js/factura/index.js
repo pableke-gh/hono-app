@@ -44,7 +44,7 @@ coll.ready(() => {
 				.setFace(data.fact.face); // update face inputs group
 	}
 
-	const fnBuild = (tipo, subtipo) => ({ fact: { tipo, subtipo, imp: 0 } });
+	const fnBuild = (tipo, subtipo) => ({ fact: { tipo, subtipo, imp: 0, iva: 0 } });
 	tabs.setAction("factura", () => factura.view(fnBuild(1, 14))); // create factura
 	tabs.setAction("cartap", () => factura.view(fnBuild(3, 13))); // create carta de pago
 

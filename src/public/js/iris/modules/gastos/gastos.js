@@ -32,7 +32,7 @@ function Gastos() {
 	this.setIban = data => { gastos.setIban(data); return self; } 
 	this.setTipoDieta = tipo => { gastos.setTipoDieta(tipo); return self; }
 	this.setBanco = data => { gastos.setBanco(data); return self; } 
-	this.save = () => { form.stringify("#gastos-json", gastos.getGastos()); } // serialize gastos
+	this.save = () => { } // send gastos
 
 	this.validate = data => {
 		const valid = form.getValidators();

@@ -5,6 +5,7 @@ import firma from "../../xeco/model/Firma.js";
 import solicitud from "../../xeco/model/Solicitud.js";
 import perfiles from "../data/perfiles/perfiles.js"; 
 
+solicitud.getUrl = path => "/uae/iris" + path;
 solicitud.isActivablePaso8 = () => (solicitud.isUae() && solicitud.isEditable()); // pueden mostrarse los campos del paso 8
 solicitud.isReactivable = () => (solicitud.isUae() && (solicitud.isInvalidada() || solicitud.isErronea())); // La solicitud se puede reactivar / subsanar
 solicitud.isResumable = () => (solicitud.isPendiente() || solicitud.isFirmada() || solicitud.isIntegrada()); // muestra el boton de resumen (paso 6)
@@ -14,11 +15,6 @@ solicitud.setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
 	solicitud.set("tramite", tramit).set("financiacion", financiacion);
 	solicitud.set("titulo", solicitud.getTitulo());
 	return solicitud;
-}
-solicitud.init = data => { // update parent
-	data.codigo = data.id ? data.cod : null; // synonym
-	const parts = sb.split(data.cod, "/"); // ej: 2025/5697/P/PDI-FU/COM/AyL/A83
-	return solicitud.setPerfil(parts[2], parts[3], parts[4], parts[5], parts[6]); 
 }
 
 solicitud.getRol = () => solicitud.get("rol");

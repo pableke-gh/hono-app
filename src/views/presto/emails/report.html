@@ -16,7 +16,7 @@
 		integrarse este documento.
 	</div>
 	<div class="navbar">
-		<span th:text="${xs.fullName}"></span>, con NIF: <span th:text="${xs.nif}"></span>, ha registrado una SOLICITUD DE <span th:text="${xs.descCodigo}"></span>, con los siguientes datos:
+		<span th:text="${xs.fullName}"></span>, con NIF: <span th:text="${xs.nif}"></span>, ha registrado una SOLICITUD DE <span th:text="${msgs.get(xs.keyDesc)}"></span>, con los siguientes datos:
 	</div>
 	<div class="navbar">
 		EJERCICIO: <span th:text="${xs.ejercicio}"></span>

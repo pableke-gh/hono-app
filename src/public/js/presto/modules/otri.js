@@ -30,10 +30,6 @@ function Otri() {
 	tabs.setInitEvent("list-otri", () => (tblGcr.isEmpty() && fnList()));
 	tabs.setAction("list-otri", () => { form.loading(); window.rcListOtri(); });
 	tabs.setAction("relist-otri", fnList);
-
-	window.loadOtri = (xhr, status, args) => {
-		window.showTab(xhr, status, args) && self.setData(JSON.read(args.data));
-	}
 }
 
 export default new Otri();

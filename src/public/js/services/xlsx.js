@@ -7,18 +7,16 @@
 	"DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ"
 ];*/
 
-/*const HEADER_STYLES = { // style only for pro version!
+const HEADER_STYLES = { // style only for pro version!
 	alignment: { horizontal: "center", vertical: "center", wrapText: true },
 	font: { bold: true }
 };
 
 // Iterate over row 1 only (titles row)
 const fnParseTitles = (worksheet, title, column) => {
-	const ref = LETTERS[column] + "1";
-	const cell = worksheet[ref];
-	cell.s = HEADER_STYLES;
-	cell.v = title;
-}*/
+	const cell = XLSX.utils.encode_cell({ r: 0, c: column });
+	worksheet[cell].s = HEADER_STYLES;
+}
 
 function Xlsx() {
 	const self = this; //self instance
@@ -58,8 +56,8 @@ function Xlsx() {
 			worksheet = XLSX.utils.aoa_to_sheet([titles], opts);
 			fnSave(worksheet, name); // save worksheet in work book
 		}
-		if (fnParser) // Iterate over row 1 only (titles row)
-			titles.forEach((title, column) => fnParser(worksheet, title, column));
+		fnParser = fnParser || fnParseTitles; // Iterate over row 1 only (titles row)
+		titles.forEach((title, column) => fnParser(worksheet, title, column));
 		return self;
 	}
 

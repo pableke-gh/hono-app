@@ -12,13 +12,12 @@
 		<div class="ui-blocks">
 		<label class="ui-block">
 			<div class="label">Ejercicio:</div>
-			<h:inputText id="ej" value="#{presto.solicitud.ejOrgDec}" styleClass="ui-ej hide" />
-			<select id="ejDec" name="ejDec" class="ui-input ui-select ui-ej" data-readonly="is-editable-ej-dec" tabindex="5"></select>
+			<select id="ejDec" name="ej" class="ui-input ui-select ui-ej" data-readonly="is-editable-ej-dec" tabindex="5"></select>
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
 			<input type="search" id="acOrgDec" name="acOrgDec" class="ui-input ui-autocomplete" tabindex="6" /> 
-			<h:inputText id="idOrgDec" value="#{presto.solicitud.idOrganicaDec}" styleClass="ui-input ui-number hide" />
+			<input type="text" name="idOrgDec" class="ui-input ui-number hide" />
 			<ul role="list" class="results"></ul>
 			<div class="ui-errtip"></div> 
 		</label>
@@ -28,7 +27,6 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<h:inputText id="idEcoDecPF" value="#{presto.solicitud.idEconomicaDec}" styleClass="ui-input ui-number hide" />
 			<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number ui-pf" data-readonly="is-editable" tabindex="7"></select>
 			<div class="ui-errtip"></div>
 		</label>

@@ -70,8 +70,10 @@ solicitud.row = data => {
 
 solicitud.validate = data => {
 	const valid = i18n.getValidators();
-	valid.isKey("acOrgDec", data.idOrgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
-	valid.isKey("idEcoDec", data.idEcoDec, "Debe seleccionar la económica que disminuye"); // select required number
+	if (solicitud.isPartidaDec()) { // valido la partida a disminuir
+		valid.isKey("acOrgDec", data.idOrgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
+		valid.isKey("idEcoDec", data.idEcoDec, "Debe seleccionar la económica que disminuye"); // select required number
+	}
 
 	const imp = data.imp ?? 0; // los importes pueden ser nulos segun el tipo de presto
 	const cd = solicitud.isAnt() ? imp : (data.cd ?? 0); // los anticipos no validan el CD

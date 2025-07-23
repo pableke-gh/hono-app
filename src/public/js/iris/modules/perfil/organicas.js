@@ -1,8 +1,8 @@
 
-import pf from "../../../components/Primefaces.js";
+import api from "../../../components/Api.js";
 
 import iris from "../../model/Iris.js";
-import organica from "../../model/Organica.js"
+import organica from "../../model/Organica.js";
 
 import actividad from "./actividad.js";
 import xeco from "../../../xeco/xeco.js";
@@ -42,7 +42,7 @@ function Organicas() {
 
 	this.save = () => {
 		if (_tblOrganicas.isChanged())
-			form.saveTable("#org-json", _tblOrganicas);
+			iris.set("organicas", _tblOrganicas.getData());
 		_tblOrganicas.setChanged(); // changed saved
 		return self
 	}
@@ -51,7 +51,7 @@ function Organicas() {
 		_tblOrganicas.setAfterRender(fnAfterRender);
 		const acOrganiaca = form.setAutocomplete("#organica", {
 			minLength: 4,
-			source: term => pf.sendTerm("rcFindOrg", term),
+			source: term => api.init().json("/uae/iris/organicas", { term }).then(acOrganiaca.render),
 			render: item => item.o + " - " + item.dOrg,
 			select: item => {
 				if (!iris.isUxxiec())

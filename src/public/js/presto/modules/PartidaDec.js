@@ -34,7 +34,7 @@ function PartidaDec() {
 	_orgDec.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelectOrgDec).setReset(fnResetOrgDec);
 
 	const fnEcoChange = item => {
-		form.setValue("#idEcoDecPF", item.value).setValue("#cd", item.imp);
+		form.setValue("#cd", item.imp);
 		if (presto.isL83() && presto.isEditable()) //L83 => busco su AIP solo en edicion
 			return api.init().json(`/uae/presto/l83?org=${_orgDec.getValue()}`).then(fnAutoloadL83);
 		if (presto.isAnt() && presto.isEditable()) //ANT => cargo misma organica solo en edicion

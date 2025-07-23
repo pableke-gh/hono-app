@@ -12,13 +12,16 @@ function Tabs() {
 	const self = this; //self instance
 	const EVENTS = {}; //events tab container
 
-	let tabs/*, progressbar*/;
-	let _tabIndex, _lastTab;
+	// hack ifPage-frame styles for CV
+	const iframe = window.parent.document.querySelector("#ifPage-frame");
+
+	let tabs, _tabIndex;
 
 	const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
 	const fnActive = el => el.classList.contains(ACTIVE_CLASS); //active class
 	const fnFindIndex = id => tabs.findIndexBy("#tab-" + id); //find index tab by id
 	const fnCurrentIndex = () => tabs.findIndex(fnActive); //current index tab
+	const fnResize = tab => { iframe.style.height = ((tab?.scrollHeight || iframe.contentDocument.body) + 80) + "px"; }
 	const autofocus = tab => {
 		const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 		const el = tab.querySelectorAll(FOCUSABLED).find(el => el.isVisible());
@@ -30,15 +33,15 @@ function Tabs() {
 		tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
 		tab.classList.add(ACTIVE_CLASS); // active current tab only
 		_tabIndex = index ?? fnCurrentIndex(); // current tab index
-		/*const step = "step-" + _tabIndex; //current step
-		progressbar.forEach(bar => { // progressbar is optional
-			bar.children.forEach(child => child.classList.toggle(ACTIVE_CLASS, child.id <= step));
-		});*/
 		if (!tab.dataset.loaded) { // event indicator
 			fnCallEvent("init", tab); // Fire once when show tab
 			tab.dataset.loaded = "1"; // avoid to fire event again
 		}
 		fnCallEvent("view", tab); // Fire when show tab
+		if (iframe) {
+			fnResize(tab); // resize iframe height
+			window.parent.scrollTo({ top: 0, behavior: "smooth" });
+		}
 		return autofocus(tab);
 	}
 
@@ -66,10 +69,10 @@ function Tabs() {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
 
-    function fnShowTab(i) { //show tab by index
-        i = (i < 0) ? 0 : Math.min(i, _lastTab);
+	function fnShowTab(i) { //show tab by index
+        i = (i < 0) ? 0 : Math.min(i, tabs.length - 1);
         const tab = tabs[i]; // get next tab
-        if (_tabIndex < i) { // go agead
+        if (_tabIndex < i) { // go ahead
 			if (!fnCallEvent("active", tab)) // is current tab active
                 return fnShowTab(i + 1); // recursive search for next active tab
             if (fnCallEvent("show", tab)) { // Validate event before change tab
@@ -87,7 +90,6 @@ function Tabs() {
 			}
 			fnSetTab(tab, i); // set current tab
         }
-        alerts.working().top(); // go up
         return self;
     }
 
@@ -95,7 +97,7 @@ function Tabs() {
 	this.nextTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : (_tabIndex + 1));
 	this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
 	this.prevTab = self.backTab; // Synonym to go back to previous tab
-	this.lastTab = () => fnShowTab(_lastTab);
+	this.lastTab = () => fnShowTab(tabs.length - 1);
 	this.toggle = el => {
 		const fnAction = EVENTS[el.dataset.action]; // search handler
 		if (fnAction && !el.dataset.off)  { // is hide
@@ -110,10 +112,6 @@ function Tabs() {
 		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
 		return self;
 	}
-	/*this.resetToggleAction = () => {
-		$$("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
-		return self;
-	}*/
     this.showMsgs = (msgs, tab) => {
         const ok = !msgs?.msgError; // is error message
         if (ok) // If message is ok => Show next tab
@@ -121,31 +119,6 @@ function Tabs() {
         alerts.showAlerts(msgs); // Always show alerts after change tab
         return ok;
     }
-
-    /*this.closeModal = id => {
-		const modal = $1(id ? ("dialog#" + id) : "dialog[open]");
-        if (modal) { // has modal
-            const scrollY = document.body.style.top;
-            document.body.style.position = "";
-            document.body.style.top = "";
-            window.scrollTo(0, parseInt(scrollY || "0") * -1);
-            modal.close();
-        }
-        alerts.working();
-        return self;
-	}
-    this.showModal = id => { // open modal by id
-        const modal = $1("dialog#" + id); // find modal by id
-        if (fnCallEvent("show", modal)) { // open modal if true
-            document.body.style.top = `-${window.scrollY}px`;
-            document.body.style.position = "fixed";
-
-            modal.showModal(); // show dialog
-            alerts.working(); // hide loading frame
-            fnCallEvent("view", modal); // fire open handler
-        }
-        return self;
-    }*/
 
 	this.setActions = el => { // set default actions
         el.querySelectorAll("[href^='#tab-']").forEach(link => {
@@ -160,10 +133,6 @@ function Tabs() {
                     self.lastTab();
                 else if (href == "#tab-toggle")
                     self.toggle(link); // call toggle handler
-				//else if (href.startsWith("#tab-open"))
-					//self.showModal(id); // open modal dialog
-				//else if (href.startsWith("#tab-close"))
-					//self.closeModal(id); // close modal dialog
                 else if (href.startsWith("#tab-action"))
 					EVENTS[link.dataset.action || id](link); // call handler
                 else
@@ -175,25 +144,20 @@ function Tabs() {
     }
     this.load = el => {
         tabs = el.getElementsByClassName(TAB_CLASS);
-        //progressbar = el.getElementsByClassName(PROGRESS_BAR);
         _tabIndex = fnCurrentIndex(); // current index tab
-        _lastTab = tabs.length - 1; // max tabs size
         return self.setActions(el); // update actions
     }
 
 	// Init. view and PF navigation (only for CV-UAE)
-	self.load(document); // Load all tabs by default
 	window.showTab = (xhr, status, args, tab) => (alerts.isLoaded(xhr, status, args) && self.showMsgs(coll.parse(args.msgs), tab));
-	//window.showModal = (xhr, status, args, selector) => window.showAlerts(xhr, status, args) && self.showModal(selector);
-	//window.closeModal = (xhr, status, args) => (window.showAlerts(xhr, status, args) && self.closeModal());
-
-	// Listen for keypad event
-    /*document.onkeydown = ev => {
-        if (ev.key === "Escape")
-            return self.closeModal(); // close current modal
-		//if (ev.key === "ArrowLeft")
-			//return self.backTab(); // go to previous tab
-    }*/
+	coll.ready(() => {
+		if (iframe) { // auto-adapt iframe height on resize event
+			const ro = new ResizeObserver(() => fnResize(self.getCurrent()));
+			ro.observe(iframe.contentDocument.body);
+			iframe.setAttribute("scrolling", "no");
+		}
+		self.load(document); // Load all tabs by default
+	});
 }
 
 export default new Tabs();

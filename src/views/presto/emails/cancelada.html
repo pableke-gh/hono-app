@@ -10,7 +10,7 @@
 	<div class="navbar">
 		<p>
 			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-			<br/>Se ha CANCELADO la solicitud <span th:text="${xs.codigo}"></span> de <span th:text="${xs.descCodigo}"></span>:
+			<br/>Se ha CANCELADO la solicitud <span th:text="${xs.codigo}"></span> de <span th:text="${msgs.get(xs.keyDesc)}"></span>:
 			<br/><b>Motivo de la cancelación:</b> (<span th:text="${fRechazo.fullName}"></span>) <span th:text="${fRechazo.info}"></span>
 		</p>
 	</div>

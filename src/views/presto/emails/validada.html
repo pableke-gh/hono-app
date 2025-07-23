@@ -8,7 +8,7 @@
 <body>
 	<header th:replace="presto/emails/general.html :: header"></header>
 	<div class="navbar">
-		<p>La siguiente solicitud de <span th:text="${xs.descCodigo}"></span> ha sido ACEPTADA por todos los firmantes y está pendiente de su contabilización en UXXIEC:</p>
+		<p>La siguiente solicitud de <span th:text="${msgs.get(xs.keyDesc)}"></span> ha sido ACEPTADA por todos los firmantes y está pendiente de su contabilización en UXXIEC:</p>
 	</div>
 
 	<div th:replace="presto/emails/general.html :: solicitud"></div>

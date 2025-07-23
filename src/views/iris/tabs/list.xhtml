@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></h2>
-	<h:form id="xeco-filter" prependId="false" onsubmit="loading();">
+	<form id="xeco-filter" action="/uae/iris">
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
@@ -16,38 +16,38 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.estado']}" escape="false" />:</div>
-				<h:selectOneMenu id="fEstado" value="#{iris.list.estado}" styleClass="ui-input ui-select ui-filter" tabindex="2" title="#{msg['tit.estado']}">
-					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="6" itemLabel="#{msg['uae.irse.filter.estado.6']}" itemEscaped="false"/>
-					<f:selectItem itemValue="5" itemLabel="#{msg['uae.irse.filter.estado.5']}" itemEscaped="false"/>
-					<f:selectItem itemValue="1" itemLabel="#{msg['uae.irse.filter.estado.1']}" itemEscaped="false"/>
-					<f:selectItem itemValue="2" itemLabel="#{msg['uae.irse.filter.estado.2']}" itemEscaped="false"/>
-					<f:selectItem itemValue="4" itemLabel="#{msg['uae.irse.filter.estado.4']}" itemEscaped="false"/>
-					<f:selectItem itemValue="7" itemLabel="#{msg['uae.irse.filter.estado.7']}" itemEscaped="false"/>
-					<f:selectItem itemValue="8" itemLabel="#{msg['uae.irse.filter.estado.8']}" itemEscaped="false"/>
-				</h:selectOneMenu>
+				<select name="estado" class="ui-input ui-select ui-filter" tabindex="2" title="#{msg['tit.estado']}">
+					<option value=""></option>
+					<option value="6">#{msg['uae.irse.filter.estado.6']}</option>
+					<option value="5">#{msg['uae.irse.filter.estado.5']}</option>
+					<option value="1">#{msg['uae.irse.filter.estado.1']}</option>
+					<option value="2">#{msg['uae.irse.filter.estado.2']}</option>
+					<option value="4">#{msg['uae.irse.filter.estado.4']}</option>
+					<option value="7">#{msg['uae.irse.filter.estado.7']}</option>
+					<option value="8">#{msg['uae.irse.filter.estado.8']}</option>
+				</select>
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
-				<h:selectOneMenu id="fMiFirma" value="#{iris.list.firma}" styleClass="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
-					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="5" itemLabel="#{irse.getMsg('lblPendiente')}" />
-					<f:selectItem itemValue="1" itemLabel="#{irse.getMsg('lblAceptada')}" />
-					<f:selectItem itemValue="2" itemLabel="#{irse.getMsg('lblRechazada')}" />
-				</h:selectOneMenu>
+				<select name="fmask" class="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
+					<option value=""></option>
+					<option value="5">#{irse.getMsg('lblPendiente')}</option>
+					<option value="1">#{irse.getMsg('lblAceptada')}</option>
+					<option value="2">#{irse.getMsg('lblRechazada')}</option>
+				</select>
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<h:inputText value="#{iris.list.codigo}" styleClass="ui-input ui-code ui-filter" tabindex="4" />
+				<input type="text" name="codigo" class="ui-input ui-code ui-filter" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" />:</div>
-				<h:inputText value="#{iris.list.organica}" styleClass="ui-input ui-code ui-filter" tabindex="5" />
+				<input type="text" name="org" class="ui-input ui-code ui-filter" tabindex="5" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<h:inputText id="f-min" value="#{iris.list.FMin}" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
-				<h:inputText id="f-max" value="#{iris.list.FMax}" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
+				<input type="text" name="f1" tabindex="6" class="ui-input ui-date ui-filter"/> ...
+				<input type="text" name="f2" tabindex="7" class="ui-input ui-date ui-filter"/>
 			</label>
 		</div>
 
@@ -57,35 +57,35 @@
 			</div>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
-				<h:inputText value="#{iris.list.interesado}" styleClass="ui-input ui-text ui-filter" tabindex="8" />
+				<input type="text" name="interesado" class="ui-input ui-text ui-filter" tabindex="8" />
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" /></div>
-				<h:selectOneMenu id="filtro-actividad" value="#{iris.list.actividad}" class="ui-input ui-select ui-filter" tabindex="10">
-					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
-					<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
-					<f:selectItem itemValue="MES" itemLabel="#{msg['uae.irse.tab0.act.mes']}" itemEscaped="false"/>
-					<f:selectItem itemValue="IAE" itemLabel="#{msg['uae.irse.tab0.act.iae']}" itemEscaped="false"/>
-					<f:selectItem itemValue="ATR" itemLabel="#{msg['uae.irse.tab0.act.atr']}" itemEscaped="false"/>
-					<f:selectItem itemValue="IAE+ATR" itemLabel="#{msg['uae.irse.tab0.act.iae.atr']}" itemEscaped="false"/>
-					<f:selectItem itemValue="AFO" itemLabel="#{msg['uae.irse.tab0.act.afo']}" itemEscaped="false"/>
-					<f:selectItem itemValue="IAE+AFO" itemLabel="#{msg['uae.irse.tab0.act.iae.afo']}" itemEscaped="false"/>
-					<f:selectItem itemValue="ACS" itemLabel="#{msg['uae.irse.tab0.act.acs']}" itemEscaped="false"/>
-					<f:selectItem itemValue="OCE" itemLabel="#{msg['uae.irse.tab0.act.col']}" itemEscaped="false"/>
-					<f:selectItem itemValue="IAE+OCE" itemLabel="#{msg['uae.irse.tab0.act.iae.col']}" itemEscaped="false"/>
-					<f:selectItem itemValue="A7J" itemLabel="#{msg['uae.irse.tab0.act.a7j']}" itemEscaped="false"/>
-					<f:selectItem itemValue="MOV" itemLabel="#{msg['uae.irse.tab0.act.mov']}" itemEscaped="false"/>
-				</h:selectOneMenu>
+				<select name="actividad" class="ui-input ui-select ui-filter" tabindex="10">
+					<option value=""></option>
+					<option value="COM">#{msg['uae.irse.tab0.act.com']}</option>
+					<option value="MUN">#{msg['uae.irse.tab0.act.mun']}</option>
+					<option value="MES">#{msg['uae.irse.tab0.act.mes']}</option>
+					<option value="IAE">#{msg['uae.irse.tab0.act.iae']}</option>
+					<option value="ATR">#{msg['uae.irse.tab0.act.atr']}</option>
+					<option value="IAE+ATR">#{msg['uae.irse.tab0.act.iae.atr']}</option>
+					<option value="AFO">#{msg['uae.irse.tab0.act.afo']}</option>
+					<option value="IAE+AFO">#{msg['uae.irse.tab0.act.iae.afo']}</option>
+					<option value="ACS">#{msg['uae.irse.tab0.act.acs']}</option>
+					<option value="OCE">#{msg['uae.irse.tab0.act.col']}</option>
+					<option value="IAE+OCE">#{msg['uae.irse.tab0.act.iae.col']}</option>
+					<option value="A7J">#{msg['uae.irse.tab0.act.a7j']}</option>
+					<option value="MOV">#{msg['uae.irse.tab0.act.mov']}</option>
+				</select>
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" /></div>
-				<h:selectOneMenu id="filtro-tramite" value="#{iris.list.tramite}" class="ui-input ui-select ui-filter" tabindex="11">
-					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
-					<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
-					<f:selectItem itemValue="AyL" itemLabel="#{msg['uae.irse.tab0.tramit.ayl']}" itemEscaped="false"/>
-				</h:selectOneMenu>
+				<select name="tramite" class="ui-input ui-select ui-filter" tabindex="11">
+					<option value=""></option>
+					<option value="AUT">#{msg['uae.irse.tab0.tramit.aut']}</option>
+					<option value="LIQ">#{msg['uae.irse.tab0.tramit.liq']}</option>
+					<option value="AyL">#{msg['uae.irse.tab0.tramit.ayl']}</option>
+				</select>
 			</label>
 		</div>
 
@@ -98,33 +98,32 @@
 			</c:if>
 			<a href="#tab-action-relist" class="btn btn-warn" tabindex="14"><i class="far fa-times-circle btn-icon-left"></i>Limpiar</a>
 		</div>
+	</form>
 
-		<table id="solicitudes" class="tb-xeco">
-			<thead>
-				<tr>
-					<th class="slim"></th>
-					<th><h:outputText value="#{msg['lbl.codigo']}" escape="false" /></th>
-					<th><h:outputText value="#{msg['lbl.estado']}" escape="false" /></th>
-					<th><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" /></th>
-					<th><span class="hide-sm"><h:outputText value="#{msg['lbl.sig.firma']}" escape="false" /></span></th>
-					<th class="hide-xs"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" /></th>
-					<th><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" /></th>
-					<th><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" /></th>
-					<th><span class="hide-sm"><h:outputText value="#{msg['lbl.objeto.act']}" escape="false" /></span></th>
-					<th><h:outputText value="#{msg['lbl.imp.liq']}" escape="false" /></th>
-					<th class="no-print"><h:outputText value="#{msg['lbl.acciones']}" escape="false" /></th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-			<tfoot></tfoot>
-		</table>
+	<table id="solicitudes" class="tb-xeco">
+		<thead>
+			<tr>
+				<th class="slim"></th>
+				<th><h:outputText value="#{msg['lbl.codigo']}" escape="false" /></th>
+				<th><h:outputText value="#{msg['lbl.estado']}" escape="false" /></th>
+				<th><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" /></th>
+				<th><span class="hide-sm"><h:outputText value="#{msg['lbl.sig.firma']}" escape="false" /></span></th>
+				<th class="hide-xs"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" /></th>
+				<th><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" /></th>
+				<th><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" /></th>
+				<th><span class="hide-sm"><h:outputText value="#{msg['lbl.objeto.act']}" escape="false" /></span></th>
+				<th><h:outputText value="#{msg['lbl.imp.liq']}" escape="false" /></th>
+				<th class="no-print"><h:outputText value="#{msg['lbl.acciones']}" escape="false" /></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot></tfoot>
+	</table>
 
-		<p:remoteCommand name="rcView" action="#{iris.view()}" oncomplete="viewIrse(xhr, status, args)" />
-		<p:remoteCommand name="rcReactivar" action="#{iris.list.reactivar()}" oncomplete="viewIrse(xhr, status, args)" /> 
-		<p:remoteCommand name="rcPaso8" action="#{iris.list.activarPaso8()}" oncomplete="viewIrse(xhr, status, args)" /> 
-		<p:remoteCommand name="rcFinalizar" action="#{iris.list.finalizar()}" oncomplete="openHtml(xhr, status, args, 'Informe IRIS')" />
-	</h:form>
-
+	<!--<p:remoteCommand name="rcView" action="#{iris.view()}" oncomplete="viewIrse(xhr, status, args)" />
+	<p:remoteCommand name="rcReactivar" action="#{iris.list.reactivar()}" oncomplete="viewIrse(xhr, status, args)" /> 
+	<p:remoteCommand name="rcPaso8" action="#{iris.list.activarPaso8()}" oncomplete="viewIrse(xhr, status, args)" /> 
+	<p:remoteCommand name="rcFinalizar" action="#{iris.list.finalizar()}" oncomplete="openHtml(xhr, status, args, 'Informe IRIS')" />-->
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 </html>

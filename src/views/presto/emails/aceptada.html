@@ -10,7 +10,7 @@
 	<div class="navbar">
 		<p>
 			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-			<br/>Se precisa su FIRMA como <span th:text="${firma.cargo}"></span> para la siguiente solicitud de <span th:text="${xs.descCodigo}"></span>:
+			<br/>Se precisa su FIRMA como <span th:text="${firma.cargo}"></span> para la siguiente solicitud de <span th:text="${msgs.get(xs.keyDesc)}"></span>:
 		</p>
 	</div>
 

@@ -10,9 +10,7 @@ export default function() {
 		return fnValue ? fnValue() : self.get(name);
 	}
 
-	this.init = globalThis.void; // init. data after setData
-	this.setData = data => { _data = data; self.init(data); return self; }
-
+	this.setData = data => { _data = data; return self; }
 	this.set = (name, value) => { _data[name] = value; return self; }
 	this.setValue = (name, value) => {
 		const fnValue = self["set" + name.charAt(0).toUpperCase() + name.slice(1)];

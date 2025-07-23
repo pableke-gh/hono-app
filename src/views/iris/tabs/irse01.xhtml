@@ -14,11 +14,10 @@
 			<span><h:outputText value="#{msg['uae.irse.tab2.msg.act']}" escape="false" /></span>
 		</h2>
 
-		<h:inputText id="rutas-json" value="#{iris.rutas.rutas}" styleClass="hide" />
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.objeto.act']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="memo" value="#{iris.form.objeto}" styleClass="ui-input ui-ta rows-2" tabindex="41" maxlength="600" title="Objeto de la actividad" />
+				<textarea name="memo" class="ui-input ui-ta rows-2" tabindex="41" maxlength="600" title="Objeto de la actividad"></textarea>
 				<span class="ui-errtip"></span>
 			</div>
 		</label>
@@ -42,8 +41,8 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.resp']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText value="#{iris.firmas.promotor.text}" tabindex="43" styleClass="ui-input ui-autocomplete ui-personal" />
-				<h:inputHidden value="#{iris.firmas.promotor.nif}" />
+				<input type="text" id="promotor" name="promotor" tabindex="43" class="ui-input ui-autocomplete" />
+				<input type="hidden" id="nifPromotor" name="nifPromotor" />
 				<ul role="list" class="results"></ul>
 			</div>
 		</label>
@@ -51,8 +50,8 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.tribunal']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText value="#{iris.firmas.tribunal.text}" tabindex="44" styleClass="ui-input ui-autocomplete ui-personal" />
-				<h:inputHidden value="#{iris.firmas.tribunal.nif}" />
+				<input type="text" id="tribunal" name="tribunal" tabindex="44" class="ui-input ui-autocomplete" />
+				<input type="hidden" id="nifTribunal" name="nifTribunal" />
 				<ul role="list" class="results"></ul>
 			</div>
 		</label>
@@ -60,8 +59,8 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.mesa']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText value="#{iris.firmas.mesa.text}" tabindex="45" styleClass="ui-input ui-autocomplete ui-personal" />
-				<h:inputHidden value="#{iris.firmas.mesa.nif}" />
+				<input type="text" id="mesa" name="mesa" tabindex="45" class="ui-input ui-autocomplete" />
+				<input type="hidden" id="nifMesa" name="nifMesa" />
 				<ul role="list" class="results"></ul>
 			</div>
 		</label>
@@ -106,8 +105,6 @@
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
 		<a href="#tab-action-save1" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
-		<p:remoteCommand name="rcPaso1" action="#{iris.form.paso1()}" oncomplete="updateIrse(xhr, status, args)" />
-		<p:remoteCommand name="rcSave1" action="#{iris.form.paso1()}" oncomplete="updateIrse(xhr, status, args, 1)" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

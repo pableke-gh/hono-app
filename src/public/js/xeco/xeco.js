@@ -20,10 +20,6 @@ function XecoForm() {
 	this.init = () => {
 		list.init();
 		firmas.init();
-
-		// hack editable inputs for PF
-		form.eachInput(".readonly-manual", el => { el.dataset.readonly = "manual"; });
-		form.eachInput(".editable-uae", el => { el.dataset.readonly = "is-editable-uae"; });
 	}
 
 	this.view = (data, principales) => {

@@ -10,7 +10,7 @@
 	<div class="navbar">
 		<p>
 			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-			<br/>Se ha producido un <b class="terr">ERROR</b> en la siguiente solicitud de <span th:text="${xs.descCodigo}"></span>:
+			<br/>Se ha producido un <b class="terr">ERROR</b> en la siguiente solicitud de <span th:text="${msgs.get(xs.keyDesc)}"></span>:
 		</p>
 	</div>
 

@@ -12,6 +12,9 @@ function PartidaInc() {
 	const partida = presto.getPartida();
 	const partidas = presto.getPartidas();
 
+	const _ecoInc = form.setDatalist("#idEcoInc");
+	_ecoInc.setEmptyOption("Seleccione una económica");
+
 	const fnSelect = item => {
 		form.setValue("#faInc", item.int & 1); // organica afectada
 		api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(_ecoInc.setItems); // load economicas inc.
@@ -24,10 +27,6 @@ function PartidaInc() {
 	}
 	const fnReset = () => { form.setValue("#faInc").setValue("#impInc"); _ecoInc.reset(); }
 	_acOrgInc.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect).setReset(fnReset);
-
-	const _ecoInc = form.setDatalist("#idEcoInc");
-	const fnEcoChange = item => form.setValue("#idEcoIncPF", item.value); 
-	_ecoInc.setEmptyOption("Seleccione una económica").setChange(fnEcoChange);
 
 	const _tblPartidasInc = form.setTable("#partidas-inc", partida.getTable());
 	_tblPartidasInc.setMsgEmpty("No existen partidas asociadas a la solicitud");

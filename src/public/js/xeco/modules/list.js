@@ -28,15 +28,14 @@ function List() {
 		api.init().json(model.getUrl("/view?id=" + data.id)).then(model.view);
 	}
 
-	const fnLoad = data => { tblSolicitudes.render(data); tabs.showTab("list"); } // render table
-	const fnCallList = () => { api.setJSON(form.getData()).json(model.getUrl("/list")).then(fnLoad); } // fetch list action
+	const fnLoadList = data => { tblSolicitudes.render(data); tabs.showTab("list"); } // render table
+	const fnCallList = () => { api.setJSON(form.getData()).json(model.getUrl("/list")).then(fnLoadList); } // fetch list action
 	const fnList = (estado, fmask) => { form.setData({ estado, fmask }, ".ui-filter"); fnCallList(); } // prepare filter and fetch
 	const fnProcesando = data => tblSolicitudes.refreshRow(model.setData(data).setProcesando()); // avoid reclicks
 
 	this.setCache = id => form.setCache(id); // set form cache
 	this.getTable = () => tblSolicitudes;
 	this.getId = tblSolicitudes.getId;
-	this.send = tblSolicitudes.send
 	this.loadFirmas = data => {
 		const row = tblSolicitudes.getCurrentItem();
 		if (form.isCached(row.id)) // checks if current item is cached
@@ -48,11 +47,9 @@ function List() {
 	this.init = () => {
 		uxxiec.init(); // expediente uxxiec
 		form.onKeydown(ev => ((ev.key == "Enter") && fnCallList()));
-		const divSolicitudes = tblSolicitudes.getTable().previousElementSibling;
-		tblSolicitudes.render(JSON.read(divSolicitudes?.innerHTML)); // preload data
 
-		// Actions for solicitudes table
-		tblSolicitudes.set("#rcView", fnView).set("#rcUxxiec", uxxiec.view)
+		// Show empty table and set handlers actions for solicitudes
+		tblSolicitudes.render().set("#rcView", fnView).set("#rcUxxiec", uxxiec.view)
 					.set("#tab-reject", data => fnLoadTab("reject", data));
 
 		const fnFirmar = id => api.init().json(model.getUrl("/firmar?id=" + id)).then(self.loadFirmas);
@@ -63,20 +60,19 @@ function List() {
 		tblSolicitudes.set("#pdf", data => api.setPdf().blob(model.getUrl("/pdf?id=" + data.id)).then(fnReport)); // report template service 
 
 		tblSolicitudes.set("#emails", data => api.init().json(model.getUrl("/emails?id=" + data.id)).then(form.showAlerts)); // admin test email
-		tblSolicitudes.set("#rcReactivar", data => (i18n.confirm("msgReactivar") && self.send(window.rcReactivar, data))); // reactivate call
+		//tblSolicitudes.set("#rcReactivar", data => (i18n.confirm("msgReactivar") && self.send(window.rcReactivar, data))); // reactivate call
 		tblSolicitudes.set("#integrar", data => (i18n.confirm("msgIntegrar") && fnProcesando(data) && api.init().json(model.getUrl("/ws?id=" + data.id)).then(form.showAlerts))); // llamada al servidor
 		tblSolicitudes.setRemove(data => api.init().json(model.getUrl("/remove?id=" + data.id)).then(msgs => tabs.showMsgs(msgs, "list"))); // remove true = confirm
 	}
 
-	const isEmptyEstado = () => { const value = form.getValueByName("estado"); return (!value || (value == "0")); }
-	tabs.setInitEvent("list", () => (tblSolicitudes.isEmpty() && isEmptyEstado() && setTimeout(form.loading, 1) && fnList("", "5")));
+	tabs.setAction("vinc", () => { ("1" == form.getValueByName("estado")) ? tabs.showTab("list") : fnList("1"); });
+	tabs.setInitEvent("list", () => fnList("", "5"));
 	tabs.setAction("list", fnCallList);
 	tabs.setAction("list-all", () => { form.reset(".ui-filter"); fnCallList(); });
 	tabs.setAction("relist", () => fnList("", "5"));
-	tabs.setAction("vinc", () => { ("1" == form.getValueByName("estado")) ? tabs.showTab("list") : fnList("1"); });
 
-	tabs.setAction("ejecutar", () => api.setJSON(uxxiec.getExpediente()).json(model.getUrl("/ejecutar?id=" + tblSolicitudes.getId())).then(tabs.showMsgs));
-	tabs.setAction("notificar", () => api.setJSON(uxxiec.getExpediente()).json(model.getUrl("/notificar?id=" + tblSolicitudes.getId())).then(tabs.showMsgs));
+	tabs.setAction("ejecutar", () => api.setJSON(uxxiec.getExpediente()).json(model.getUrl("/ejecutar?id=" + tblSolicitudes.getId())).then(form.showAlerts));
+	tabs.setAction("notificar", () => api.setJSON(uxxiec.getExpediente()).json(model.getUrl("/notificar?id=" + tblSolicitudes.getId())).then(form.showAlerts));
 
 	tabs.setAction("report", () => tblSolicitudes.invoke("#report"));
 	tabs.setAction("pdf", () => tblSolicitudes.invoke("#pdf"));

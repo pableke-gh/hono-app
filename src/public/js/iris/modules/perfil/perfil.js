@@ -1,6 +1,6 @@
 
 import tabs from "../../../components/Tabs.js";
-import pf from "../../../components/Primefaces.js";
+import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
@@ -16,7 +16,7 @@ function Perfil() {
 	const _acInteresado = form.setAutocomplete("#interesado", {
 		delay: 500, //milliseconds between keystroke occurs and when a search is performed
 		minLength: 5, //reduce matches
-		source: term => pf.sendTerm("rcFindInteresado", term),
+		source: term => api.init().json("/uae/iris/interesados", { term }).then(_acInteresado.render),
 		render: item => fnRender(item.nif, item.nombre),
 		select: item => { actividad.setColectivo(item.ci, item.email); return item.nif; },
 		onReset: () => actividad.setColectivo()
@@ -45,7 +45,10 @@ function Perfil() {
 		actividad.init();
 		organicas.init();
 
-		form.loadAcItems(".ui-personal", term => pf.sendTerm("rcFindPersonal", term));
+		const acPromotor = form.setAutocomplete("#promotor");
+		const fnPromotor = term => api.init().json("/uae/iris/personal", { term }).then(acPromotor.render);
+		acPromotor.setItemMode(4).setSource(fnPromotor);
+
 		form.set("is-isu", actividad.isIsu).set("not-isu", () => !actividad.isIsu()).set("is-maps", actividad.isMaps)
 			.set("is-paso8", iris.isPaso8).set("is-editable-paso8", () => (iris.isEditable() && iris.isPaso8()));
 

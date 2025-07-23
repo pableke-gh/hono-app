@@ -15,8 +15,6 @@
 			<div class="ui-blocks">
 				<label class="ui-block-xl autocomplete">
 					<div class="label">Solicitud IRSE:</div>
-					<p:remoteCommand name="rcSolicitudesIrse" action="#{irse.isu.findSolicitudesIrse()}" oncomplete="loadItems(xhr, status, args)" />
-					<p:remoteCommand name="rcLinkIrse" action="#{irse.isu.link()}" update="xeco-isu" oncomplete="showAlerts(xhr, status, args)" />
 					<h:inputText id="acIrse" value="#{irse.isu.acIrse}" styleClass="ui-input ui-autocomplete" tabindex="1" />
 					<h:inputHidden id="id-irse" value="#{irse.isu.idIrse}" />
 					<ul role="list" class="results"></ul>

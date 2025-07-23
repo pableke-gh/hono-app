@@ -57,20 +57,19 @@
 
 			<label class="ui-block">
 				<div class="label">#{iris.getMsg('lblUrg')}:</div>
-				<h:selectOneMenu id="urgente" value="#{iris.form.urgente}" class="ui-input ui-select" tabindex="181">
-					<f:selectItem itemValue="1" itemLabel="#{iris.getMsg('lblNormal')}" />
-					<f:selectItem itemValue="2" itemLabel="#{iris.getMsg('lblUrgente')}" />
-				</h:selectOneMenu>
+				<select id="urgente" name="urgente" class="ui-input ui-select" tabindex="15">
+					<option value="1">#{iris.getMsg('lblNormal')}</option>
+					<option value="2">#{iris.getMsg('lblUrgente')}</option>
+				</select>
 			</label>
-
 			<label class="ui-block form-refresh" data-refresh="is-urgente">
 				<div class="label required">#{iris.getMsg('lblFechaUrg')}:</div>
-				<h:inputText id="fMax" value="#{iris.form.FMax}" tabindex="183" styleClass="ui-input ui-date"/>
+				<input type="date" name="fMax" tabindex="16" class="ui-input ui-date"/>
 			</label>
 			<label class="ui-block-row form-refresh" data-refresh="is-urgente">
 				<div class="label required">#{iris.getMsg('lblMotivoUrg')}:</div>
-				<h:inputTextarea id="extra" value="#{iris.form.extra}" styleClass="ui-input ui-ta rows-2" tabindex="184"/>
-				<div class="hide ui-errtip"></div>
+				<textarea name="extra" class="ui-input ui-ta" tabindex="17"></textarea>
+				<div class="ui-errtip"></div>
 			</label>
 		</div>
 	</div>
@@ -85,8 +84,6 @@
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<a href="#tab-action-paso9" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.firmar.enviar']}">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcSave9" action="#{iris.form.save9()}" oncomplete="updateIrse(xhr, status, args, 9)" />
-		<p:remoteCommand name="rcPaso9" action="#{iris.form.paso9()}" oncomplete="showTab(xhr, status, args, 'init')" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 		<ui:include src="../parts/btn_doc.xhtml"></ui:include>
 	</div>

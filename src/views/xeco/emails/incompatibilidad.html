@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - Anulación de JG</title>
+	<style th:replace="uae/emails/general.html :: styles"></style>
+</head>
+<body>
+	<header>UNIVERSIDAD POLITÉCNICA DE CARTAGENA.<br/>Sistema de notificaciones de la Unidad de Asuntos Económicos.</header> 
+	<div class="navbar">
+		<p><a th:href="'mailto:' + ${xug.email}"><span th:text="${xug.fullName}"></span><a> ha solicitado el siguiente: <a th:href="@{${url}}"><span th:text="${cert}"></span></a>.</p>
+		<p th:text="${info}"></p>
+	</div>
+	<footer>Este correo electrónico se ha generado automáticamente. Por favor, no responda a la dirección del remitente.</footer>
+</body>
+</html>

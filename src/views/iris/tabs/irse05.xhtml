@@ -86,9 +86,7 @@
 				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 			</div>
 		</div>
-		<br class="clear"/>
 
-		<h:inputText id="gastos-json" value="#{iris.gastos.gastos}" styleClass="hide" />
 		<table id="tbl-gastos" class="tb-xeco table-xs">
 			<thead>
 				<tr>
@@ -116,8 +114,6 @@
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
 		<a href="#tab-action-save5" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
-		<p:remoteCommand name="rcPaso5" action="#{iris.form.paso5()}" oncomplete="updateIrse(xhr, status, args)" />
-		<p:remoteCommand name="rcSave5" action="#{iris.form.paso5()}" oncomplete="updateIrse(xhr, status, args, 5)" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

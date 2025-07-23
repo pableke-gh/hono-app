@@ -20,23 +20,23 @@
 		<div class="ui-blocks">
 			<div class="ui-block">
 				<div class="label">Ejercicio:</div>
-				<select id="ej030" name="ej030" readonly="readonly" class="ui-input ui-select ui-ej ui-030 readonly-manual disabled"></select>
+				<select id="ej030" name="ej030" readonly="readonly" class="ui-input ui-select ui-ej ui-030 disabled"></select>
 			</div>
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica 030:</div>
-				<input type="search" id="acOrg030" name="acOrg030" class="ui-input ui-autocomplete ui-030 editable-uae" tabindex="1" />
+				<input type="search" id="acOrg030" name="acOrg030" data-readonly="is-editable-uae" class="ui-input ui-autocomplete ui-030" tabindex="1" />
 				<input type="text" id="idOrg030" name="idOrg030" class="hide ui-number ui-030" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">Económica 030:</div>
-				<select id="idEco030" name="idEco030" class="ui-input ui-select ui-number ui-030 editable-uae" tabindex="2"></select>
+				<select id="idEco030" name="idEco030" data-readonly="is-editable-uae" class="ui-input ui-select ui-number ui-030" tabindex="2"></select>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe 030:</div>
-				<input type="text" id="imp030" name="imp030" maxlength="12" tabindex="3" class="ui-input ui-float ui-030 editable-uae"/> €
+				<input type="text" id="imp030" name="imp030" data-readonly="is-editable-uae" maxlength="12" tabindex="3" class="ui-input ui-float ui-030"/> €
 				<div class="ui-errtip"></div>
 			</label>
 		</div>

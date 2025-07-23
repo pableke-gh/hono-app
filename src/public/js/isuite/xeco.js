@@ -19,8 +19,8 @@ $(function() {
 				return tables.tbPush(tbConfig);
 			}
 
-			var data = keyRename(rf.save().n43(), "ttpp:ap:");
-			data["ttpp:ap:referencias"] = rf.references().join();
+			var data = rf.save().n43();
+			data.referencias = rf.references().join();
 			form.fbSet(data).find("[id$=read]").click();
 		}
 	};
@@ -75,8 +75,8 @@ $(function() {
 					if (this.numrows) {
 						var n43 = rf.n43();
 						delete n43.referencias;
-						delete n43["ttpp:ap:referencias"];
-						n43["ttpp:ap:incorporado"] = this.incorporado;
+						delete n43.referencias;
+						n43.incorporado = this.incorporado;
 						form.fbSet(rf.save().n43()); //guardo los datos incorporados
 						$(table).parents().removeClass("hide").show();
 					}

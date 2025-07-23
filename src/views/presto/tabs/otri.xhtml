@@ -7,15 +7,13 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h:form id="xeco-otri" prependId="false" onsubmit="loading();">
+	<form id="xeco-otri" action="/uae/otri">
 		<h2 class="underline">Consulta GCR para la OTRI</h2>
 
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-				<h:selectOneMenu value="#{presto.otri.ejercicio}" styleClass="ui-input ui-select" tabindex="1" title="#{msg['tit.ejercicio']}">
-					<f:selectItems value="#{presto.ejercicios}" />
-				</h:selectOneMenu>
+				<ui:include src="../parts/ejercicios.xhtml"></ui:include>
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.organica']}" escape="false" />:</div>
@@ -28,36 +26,33 @@
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 			<a href="#tab-action-list-otri" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
 			<a href="#tab-action-relist-otri" class="btn btn-warn" tabindex="14"><i class="far fa-times-circle btn-icon-left"></i>Limpiar</a>
-			<p:remoteCommand name="rcListOtri" action="#{presto.otri.list()}" oncomplete="loadOtri(xhr, status, args)" />
 		</div>
+	</form>
 
-		<table id="tbl-gcr" class="tb-xeco">
-			<thead>
-				<tr>
-					<th class="slim"></th>
-					<th>Código</th>
-					<th class="hide-sm">Tipo</th>
-					<th>Estado</th>
-					<th>Mi Firma</th>
-					<th class="hide-sm">Pendiente de</th>
-					<th>Orgánica que Aumenta</th>
-					<th>Eco.</th>
-					<th>Total €</th>
-					<th class="hide-xs">F. Solicitud</th>
-					<th class="hide-sm">Solicitante</th>
-					<th class="hide-md">Memoria</th>
-					<th class="no-print">Acciones</th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-			<tfoot>
-				<tr></tr>
-			</tfoot>
-		</table>
+	<table id="tbl-gcr" class="tb-xeco">
+		<thead>
+			<tr>
+				<th class="slim"></th>
+				<th>Código</th>
+				<th class="hide-sm">Tipo</th>
+				<th>Estado</th>
+				<th>Mi Firma</th>
+				<th class="hide-sm">Pendiente de</th>
+				<th>Orgánica que Aumenta</th>
+				<th>Eco.</th>
+				<th>Total €</th>
+				<th class="hide-xs">F. Solicitud</th>
+				<th class="hide-sm">Solicitante</th>
+				<th class="hide-md">Memoria</th>
+				<th class="no-print">Acciones</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot></tfoot>
+	</table>
 
-		<div class="navbar">
-			<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
-				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-		</div>
-	</h:form>
+	<div class="navbar">
+		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+	</div>
 </html>

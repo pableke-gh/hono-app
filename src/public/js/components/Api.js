@@ -42,7 +42,15 @@ function Api() {
 	this.setForm = fd => self.init().setPost().setBody(fd); // param fd = FormData instance
 	this.setPdf = () => self.init().setContentType(mt.pdf); // pdf type
 	this.setZip = () => self.init().setContentType(mt.zip); // zip type
-	this.fetch = url => globalThis.fetch(url, OPTS);
+
+	this.fetch = async (url, params) => {
+		self.setContentType(mt.json); // set content type header
+		const query = new URLSearchParams(params); // query params
+		const urlQueries = (query.size > 0) ? ("?" + query.toString()) : "";
+		const res = await globalThis.fetch(url + urlQueries, OPTS); // send call
+		// avoid error when json response is null: (SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input)
+		return res.ok ? res.json().catch(console.error) : fnError(res); // return promise
+	}
 
 	this.text = async url => {
 		alerts.loading(); // show loading indicator
@@ -51,14 +59,9 @@ function Api() {
 		const promise = res.ok ? res.text() : fnError(res); // get promise
 		return promise.finally(alerts.working); // Add default finally functions to promise
 	}
-	this.json = async (url, params) => {
+	this.json = (url, params) => {
 		alerts.loading(); // show loading indicator
-		self.setContentType(mt.json); // set content type header
-		const query = params ? ("?" + (new URLSearchParams(params)).toString()) : "";
-		const res = await globalThis.fetch(url + query, OPTS); // send api call
-		// avoid error when json response is null: (SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input)
-		const promise = res.ok ? res.json().catch(console.error) : fnError(res); // get promise
-		return promise.finally(alerts.working); // Add default finally functions to promise
+		return self.fetch(url, params).finally(alerts.working);
 	}
 	this.blob = async url => {
 		alerts.loading(); // show loading indicator

@@ -1,7 +1,7 @@
 
 import Form from "../../../components/forms/Form.js";
 import tabs from "../../../components/Tabs.js";
-import pf from "../../../components/Primefaces.js";
+import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
 import xlsx from "../../../services/xlsx.js";
 
@@ -28,7 +28,7 @@ function ListIsu() {
 
 	this.init = () => {
 		const acOrganicas = form.setAutocomplete("#organica-isu", otri.getAutocomplete());
-		acOrganicas.setSource(term => pf.sendTerm("rcFindOrg", term));
+		acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
 		tblIsu.render(); // render empty table
 	}
 

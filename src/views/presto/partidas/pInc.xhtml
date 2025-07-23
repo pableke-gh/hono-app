@@ -17,7 +17,7 @@
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
 			<input type="search" id="acOrgInc" name="acOrgInc" class="ui-input ui-autocomplete" tabindex="11" />
-			<h:inputText id="idOrgInc" value="#{presto.solicitud.idOrgInc}" styleClass="ui-input ui-number hide" />
+			<input type="text" name="idOrgInc" class="ui-input ui-number hide" />
 			<ul role="list" class="results"></ul>
 			<div class="ui-errtip"></div> 
 		</label>
@@ -27,7 +27,6 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<h:inputText id="idEcoIncPF" value="#{presto.solicitud.idEcoInc}" styleClass="ui-input ui-number hide" />
 			<select id="idEcoInc" name="idEcoInc" class="ui-input ui-select ui-number" tabindex="12"></select>
 			<div class="ui-errtip"></div>
 		</label>
@@ -42,7 +41,6 @@
 		</div>
 		</div>
 
-		<h:inputText id="partidas-json" value="#{presto.partidas.partidas}" styleClass="hide" />
 		<table id="partidas-inc" class="tb-xeco"></table>
 	</div>
 </html>

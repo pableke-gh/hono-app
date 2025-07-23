@@ -105,8 +105,6 @@
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
 		<a href="#tab-action-save3" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
-		<p:remoteCommand name="rcPaso3" action="#{iris.form.paso3()}" oncomplete="updateIrse(xhr, status, args)" />
-		<p:remoteCommand name="rcSave3" action="#{iris.form.paso3()}" oncomplete="updateIrse(xhr, status, args, 'isu')" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>
