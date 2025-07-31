@@ -1,5 +1,6 @@
 
 import tabs from "../../components/Tabs.js";
+import api from "../../components/Api.js";
 import dt from "../../components/types/DateBox.js";
 import i18n from "../i18n/langs.js";
 
@@ -8,50 +9,14 @@ import rutas from "../model/ruta/Rutas.js";
 import gastos from "../model/gasto/Gastos.js"; 
 
 import actividad from "./perfil/actividad.js";
-import gm from "./gastos/gastos.js";
 import xeco from "../../xeco/xeco.js";
 
 function Otri() {
-	const self = this; //self instance
+	//const self = this; //self instance
 	const form = xeco.getForm(); // form component
 	const _eCongreso = form.getInput("#congreso"); //congreso si/no
 	const _eF1Cong = form.getInput("#f1Cong"); //fecha inicio del congreso
 	const _eF2Cong = form.getInput("#f2Cong"); //fecha fin del congreso
-
-	const fnCongreso = () => (+_eCongreso.value > 0);
-	const isCongresoJustifi = () => {
-		if (!fnCongreso() || !_eF1Cong.value || !_eF2Cong.value)
-			return false; // no se justifica el congreso
-		const fIniCong = dt.toDate(_eF1Cong.value); // fecha inicio del congreso
-		const fFinCong = dt.toDate(_eF2Cong.value); // fecha fin del congreso
-		dt.addDays(fIniCong, -1).trunc(fIniCong).addDays(fFinCong, 2).trunc(fFinCong);
-		return dt.lt(rutas.salida(), fIniCong) || dt.lt(fFinCong, rutas.llegada());
-	}
-
-	const fnSave = data => {
-		if (form.isChanged())
-			gm.setSubvencion(data).setCongreso(data).save();
-		return true;
-	}
-	this.validate = data => {
-		const valid = i18n.getValidators();
-		valid.size("justifi", data.justifi, "errJustifiSubv");
-		if (form.fire("is-rutas-vp")) // debe justificar el uso del vp
-			valid.size("justifiVp", data.justifiVp, "errJustifiVp");
-		if (fnCongreso()) { // validaciones para el congreso
-			valid.gt0("impInsc", data.impInsc); // importe inscripcion
-			_eF1Cong.value || valid.isDate("f1Cong", data.f1Cong);
-			_eF2Cong.value || valid.isDate("f2Cong", data.f2Cong);
-		}
-		if (isCongresoJustifi())
-			valid.size("justifiCong", data.justifiCong, "errCongreso");
-		return valid.isOk() && fnSave(data);
-	}
-
-	/*********** subvención, congreso, asistencias/colaboraciones ***********/
-	tabs.setAction("paso3", () => { form.validate(self.validate) && form.sendTab(window.rcPaso3); });
-	tabs.setAction("save3", () => { form.validate(self.validate) && form.sendTab(window.rcSave3, 3); });
-	tabs.setActiveEvent("isu", actividad.isIsu);
 
 	this.init = () => {
 		const fnRefresh = () => form.refresh(iris);
@@ -65,6 +30,46 @@ function Otri() {
 			.set("tipoCongreso", gastos.getTipoCongreso()).set("impInsc", gastos.getImpInsc()).set("f1Cong", gastos.getF1Cong()).set("f2Cong", gastos.getF2Cong()).set("justifiCong", gastos.getJustifiCong()) // gasto congreso
 			.set("justifiVp", gastos.getJustifiVp()); // gasto asistencia / colaboraciones
 	}
+
+	const fnCongreso = () => (+_eCongreso.value > 0);
+	const isCongresoJustifi = () => {
+		if (!fnCongreso() || !_eF1Cong.value || !_eF2Cong.value)
+			return false; // no se justifica el congreso
+		const fIniCong = dt.toDate(_eF1Cong.value); // fecha inicio del congreso
+		const fFinCong = dt.toDate(_eF2Cong.value); // fecha fin del congreso
+		dt.addDays(fIniCong, -1).trunc(fIniCong).addDays(fFinCong, 2).trunc(fFinCong);
+		return dt.lt(rutas.salida(), fIniCong) || dt.lt(fFinCong, rutas.llegada());
+	}
+
+	const fnValidate = data => {
+		const valid = i18n.getValidators();
+		valid.size("justifi", data.justifi, "errJustifiSubv");
+		if (form.fire("is-rutas-vp")) // debe justificar el uso del vp
+			valid.size("justifiVp", data.justifiVp, "errJustifiVp");
+		if (fnCongreso()) { // validaciones para el congreso
+			valid.gt0("impInsc", data.impInsc); // importe inscripcion
+			_eF1Cong.value || valid.isDate("f1Cong", data.f1Cong);
+			_eF2Cong.value || valid.isDate("f2Cong", data.f2Cong);
+		}
+		if (isCongresoJustifi())
+			valid.size("justifiCong", data.justifiCong, "errCongreso");
+		return valid.isOk();
+	}
+	const fnPasoIsu = tab => {
+		const data = form.validate(fnValidate);
+		if (!data) // valido el formulario
+			return false; // error => no hago nada
+		if (!form.isChanged()) // compruebo cambios
+			return form.nextTab(tab); // no cambios => salto al siguiente paso
+		const temp = Object.assign(iris.getData(), data); // merge data to send
+		temp.gastos = gastos.setSubvencion(data).setCongreso(data).getGastos();
+		api.setJSON(temp).json("/uae/iris/save").then(data => iris.update(data, tab));
+	}
+
+	/*********** subvención, congreso, asistencias/colaboraciones ***********/
+	tabs.setAction("paso3", () => fnPasoIsu());
+	tabs.setAction("save3", () => fnPasoIsu("isu"));
+	tabs.setActiveEvent("isu", actividad.isIsu);
 }
 
 export default new Otri();

@@ -1,83 +1,104 @@
 
-import sb from "../../../components/types/StringBox.js";
-import ruta from "../../model/ruta/Ruta.js";
-import rutas from "../../model/ruta/Rutas.js";
-import iris from "../iris.js";
-import place from "./place.js";
+import coll from "../../../components/CollectionHTML.js";
+import xeco from "../../../xeco/xeco.js";
+import ct from "../../data/place-ct.js"
 
-// Initialize autocomplete places
+/**
+ * TRAVEL_MODE: Used for driving directions, this mode provides driving directions.
+ * ej: https://developers.google.com/maps/documentation/javascript/examples/directions-travel-modes
+ * 
+ * DRIVING: Used for passenger cars, this mode provides driving directions.
+ * WALKING: Used for pedestrians, this mode provides walking directions.
+ * BICYCLING: Used for motorized two-wheelers, this mode provides bicycling directions.
+ * TRANSIT: Used for public transportation, this mode provides transit directions, including bus, train, and subway routes.
+ * There is no FLIGHT travel mode in the Google Maps Javascript API v3.
+*/
+const DRIVING = "DRIVING";
+//const TRAVEL_MODE = [DRIVING, "WALKING", "BICYCLING", "TRANSIT"];
+//const TRAVEL_TYPE = ["Vehículo Propio", "Vehículo Alquiler", "Vehículo Ajeno", "Taxi Interurbano", "Bús Interurbano", "Tren", "Barco", "Avión", "Otros", "Transportes Públicos"]
+//const DRIVING_TYPE = ["1", "2", "3", "4"];
+
+const OPTIONS = { // Place autocomplete config.
+	fields: [ "address_component", "geometry" ],
+	types: [ "geocode", "establishment" ],
+	strictBounds: false
+};
+
+const CARTAGENA = [
+	"Cartagena", "30200", "30201", "30202", "30203", "30204", "30205", "30280", "30290", "30300", "30310", "30319", 
+	"30330", "30350", "30351", "30353", "30365", "30366", "30367", "30368", "30369", "30370", "30380", "30381", "30382", 
+	"30383", "30384", "30385", "30386", "30387", "30390", "30391", "30392", "30393", "30394", "30395", "30396", "30397", 
+	"30398", "30399", "30593", "30594", "30835", "30868"
+];
+
+//get address component from type
+const fnGetComponent = (place, type) => place.address_components.find(ac => ac.types.includes(type));
+const fnGetShortName = (place, type) => fnGetComponent(place, type)?.short_name;
+//const fnGetLongName = (place, type) => fnGetComponent(place, type)?.long_name;
+const fnGetPostalCode = place => fnGetShortName(place, "postal_code");
+//get postal code / locality short name from place (30XXX, Cartagena, Madrid,...)
+const fnLocality = place => fnGetPostalCode(place) || fnGetShortName(place, "locality");
+
+const fnMadrid = place => ("MD" == fnGetShortName(place, "administrative_area_level_1")); // CCAA de Madrid
+const fnBarcelona = place => ("B" == fnGetShortName(place, "administrative_area_level_2")); // Provincia de barcelona
+
+const setAutocomplete = (input, fn) => {
+	const autocomplete = new google.maps.places.Autocomplete(input, OPTIONS); // Get the autocomplete input
+	autocomplete.addListener("place_changed", () => fn(autocomplete.getPlace())); // Add event listener when place selected
+}
+
 let p1, p2; // from ... to
-window.afterInitMap = () => {
-	place.setAutocomplete("#origen", place => { p1 = place; }); // Origen autocomplete input 
-	place.setAutocomplete("#destino", place => { p2 = place; }); // Destino autocomplete input
+const MAPS = {
+	getOrigen: () => p1,
+	getDestino: () => p2,
+	getPlaceCT: () => ct, // CT place object
+	getDefaultMask: () => 4, // 4 = 0b100
+	getDefaultCountry: () => "ES", // spain
+	//isPlace: place => place && place.address_components, // valid selected place
+	isCartagena: place => CARTAGENA.includes(fnLocality(place)), // Localidad de cartagena
+	isSameLocality: (p1, p2) => (fnLocality(p1) == fnLocality(p2)), // Same postal code
+	getCountry: place => { //get country short name from place (ES, EN, GB, IT,...)
+		const pais = fnGetShortName(place, "country");
+		if ((pais == "ES") && fnMadrid(place))
+			return "ES-MD"; // Dieta para madrid comunidad
+		if ((pais == "ES") && fnBarcelona(place))
+			return "ES-BA"; // dieta para barcelona provincia
+		return pais;
+	}
 }
 
-const getPlaceDetails = async query => { // find a place by query 
-	const [errQuery, results] = await place.findPlaceFromQuery(query);
-	if (errQuery || !results[0])
-		return null; // no hay coincidencias
-	const [err, data] = await place.getDetails(results[0].place_id);
-	return err ? null : data;
-}
+window.initMap = function() {
+	const form = xeco.getForm();
 
-const validateFields = data => {
-	const valid = iris.getValidators();
-	valid.isDate("f2", data.f2).isTimeShort("h2", data.h2)
-		.isDate("f1", data.f1).isTimeShort("h1", data.h1).le10("desp", data.desp)
-		.size("destino", data.destino).size("origen", data.origen);
-	if ((data.desp == 1) && !data.matricula) // vehiculo propio sin matricula
-		valid.addRequired("matricula", "errMatricula");
-	return valid.isOk();
-}
+	// Initialize google maps services
+	const _distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
+	const _placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService
 
-place.validate = async () => {
-	const form = iris.getForm();
-	const valid = iris.getValidators();
-	const data = form.validate(validateFields, ".ui-ruta");
-	if (!data) // inputs validation
-		return false;
+	const findPlaceFromQuery = query => new Promise((resolve, reject) => {
+		const ok = google.maps.places.PlacesServiceStatus.OK;
+		const fnResults = (results, status) => (status === ok) ? resolve(results) : reject(status);
+		_placesService.findPlaceFromQuery({ query, fields: [ "place_id" ] }, fnResults);
+	});
+	const getDetails = placeId => new Promise((resolve, reject) => {
+		const ok = google.maps.places.PlacesServiceStatus.OK;
+		const fnGetPlace = (place, status) => (status === ok) ? resolve(place) : reject(status);
+		_placesService.getDetails({ placeId, fields: [ "address_components" ] }, fnGetPlace);
+	});
 
-	function loadOrigen(place, pais, mask) {
-		p1 = place;
-		data.pais1 = pais;
-		data.mask = mask;
+	MAPS.getDistance = (origen, destino) => {
+		const DISTANCE_OPTIONS = { origins: [origen], destinations: [destino], travelMode: DRIVING };
+		return _distanceService.getDistanceMatrix(DISTANCE_OPTIONS)
+				.then(response => ((response.rows[0].elements[0].distance.value) / 1000)) //to km
+				.catch(err => { throw "The calculated distance fails due to " + err; });
+	}
+	MAPS.getPlaceDetails = query => { // find a place by query 
+		return findPlaceFromQuery(query)
+					.then(results => getDetails(results[0].place_id))
+					.catch(err => { throw err; });
 	}
 
-	if (!p1 && rutas.isEmpty()) // primera ruta
-		loadOrigen(place.getPlaceCT(), place.getDefaultCountry(), place.getDefaultMask());
-	else if (p1) // ha seleccionado un origen?
-		loadOrigen(p1, place.getCountry(p1), place.isCartagena(p1) ? 4 : 0);
-	else if (rutas.size() > 0) { //origen = destino anterior
-		const last = rutas.getLlegada(); // ultima ruta del itinerario
-		last.p2 = last.p2 || await getPlaceDetails(last.destino); // valida si hay place
-		loadOrigen(last.p2, last.pais2, last.mask); // actualiza origen
-	}
-
-	p2 || valid.addRequired("destino", "errDestino"); //ha seleccionado un destino
-	p1 || valid.addRequired("origen", "errOrigen"); //ha seleccionado un origen
-	if (p1 && p2 && place.isSameLocality(p1, p2))
-		valid.addRequired("destino", "errItinerarioCiudad");
-	if (ruta.isVehiculoPropio(data) && !data.matricula)
-		valid.addRequired("matricula", "errMatricula");
-	if (valid.isError())
-		return false;
-
-	data.p2 = p2; // current destination place
-	data.dt1 = sb.toIsoDate(data.f1, data.h1);
-	data.dt2 = sb.toIsoDate(data.f2, data.h2);
-	data.pais2 = place.getCountry(p2);
-	data.mask = ((data.mask & 4) && place.isCartagena(p2)) ? 4 : 0;
-	return ruta.valid(data) && data;
+	setAutocomplete(form.getInput("#origen"), place => { p1 = place; }); // Origen autocomplete input 
+	setAutocomplete(form.getInput("#destino"), place => { p2 = place; }); // Destino autocomplete input
 }
 
-place.getDistance = async (origen, destino) => {
-	const [err, response] = await place.getDistanceMatrix(origen, destino);
-	if (err || !response.rows) { // error al calcular la distancia
-		const valid = iris.getValidators(); // get form validators
-		valid.addRequired("destino", "The calculated distance fails due to " + err);
-		return null;
-	}
-	return ((response.rows[0].elements[0].distance.value) / 1000); //to km
-}
-
-export default place;
+export default MAPS;

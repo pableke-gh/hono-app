@@ -39,6 +39,9 @@
 			<h2>Aplicaciones Económicas</h2>
 			<ul>
 				<li><a href="/uae/modules/irse/inicio.xhtml"><i class="fab fa-telegram-plane"></i> IRIS</a></li>
+				<c:if test="#{uae.admin}">
+					<li><a href="/uae/modules/iris/inicio.xhtml"><i class="fab fa-telegram-plane"></i> Nuevo módulo IRIS</a></li>
+				</c:if>
 				<li><a href="/uae/modules/presto/index.xhtml"><i class="fal fa-fw fa-money-check layout-menuitem-icon"></i> PRESTO</a></li>
 				<li><a href="/uae/modules/xeco/jb.xhtml"><i class="fa fa-euro fa-fw layout-menuitem-icon"></i> Justificaciones Bancarias + ICM</a></li>
 				<li><a href="https://campusvirtual.upct.es/uportal/ifPage.xhtml?module=PATRIMONIO#"><i class="fas fa-boxes"></i> Comunicaciones electrónicas de inventario</a></li>

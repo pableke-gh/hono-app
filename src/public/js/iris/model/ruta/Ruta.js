@@ -6,6 +6,7 @@ import paises from "../../data/paises/paises.js";
 
 function Ruta() {
 	const self = this; //self instance
+	const GASOLINA = .26; // € / kilometro
 	const TPL_FLAG = '<i class="fal fa-flag-checkered"></i>';
 	//const MIN_DATE = tb.now().add({ years: -1 }); //1 año antes
 	//const MAX_DATE = tb.now().add({ days: 180 }); //6 meses despues 
@@ -41,6 +42,9 @@ function Ruta() {
 	this.isDespConFactura = ruta => !self.isDespSinFactura(ruta); // desplazamiento que requiere factura
 	this.isUnlinked = ruta => (self.isLinkable(ruta) && !ruta.g); // rutas asociables a gasto sin gasto asociado
 	this.isLinkable = self.isDespConFactura; // rutas a las que se le puede asignar un gasto 
+
+	this.getImpGasolina = () => GASOLINA;
+	this.getImpKm = ruta => (ruta.km1 * GASOLINA);
 
 	this.isSalidaTemprana = ruta => (sb.getHours(ruta.dt1) < 14);
 	this.isSalidaTardia = ruta => (sb.getHours(ruta.dt1) > 21);
@@ -89,10 +93,12 @@ function Ruta() {
 			setTplPrincipal(data);
 		else
 			setTplOrdinaria(data);
-		resume.vp += self.isVehiculoPropio(data);
+		if (self.isVehiculoPropio(data)) {
+			resume.vp++;
+			resume.totKm += data.km1;
+			resume.totKmCalc += data.km2;
+		}
 		resume.unlinked += self.isUnlinked(data);
-		resume.totKm += self.isVehiculoPropio(data) ? data.km1 : 0;
-		resume.totKmCalc += self.isVehiculoPropio(data) ? data.km2 : 0;
 	}
 }
 

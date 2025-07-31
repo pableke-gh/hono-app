@@ -51,16 +51,16 @@ coll.ready(() => {
 		});
 	});
 
-	function fnValidate(msgConfirm, url, tab) {
+	function fnValidate(msgConfirm, url, fn) {
 		const data = form.validate(presto.validate);
 		if (!data || !i18n.confirm(msgConfirm))
 			return false; // Errores al validar o sin confirmacion
 		Object.clear(data, [ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ]); // clear info fields
 		const temp = Object.assign(presto.getData(), data); // merge data to send
 		temp.partidas = presto.getPartidas().setPrincipal().getData(); // primera partida = principal
-		return api.setJSON(temp).json(url).then(msgs => tabs.showMsgs(msgs, tab)); // send data
+		api.setJSON(temp).json(url).then(fn); // send data
 	}
-	tabs.setAction("send", () => fnValidate("msgSend", "/uae/presto/save", "init")); // send xeco-model form
-	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/presto/subsanar", "list")); // send from changes
+	tabs.setAction("send", () => fnValidate("msgSend", "/uae/presto/save", tabs.showInit)); // send xeco-model form
+	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/presto/subsanar", tabs.showList)); // send from changes
 	tabs.showTab(presto.isUxxiec() ? "init" : "list"); // Always init. list view for PAS/PDI
 });

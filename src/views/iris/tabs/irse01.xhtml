@@ -22,15 +22,15 @@
 			</div>
 		</label>
 	
-		<c:if test="#{iris.perfil.equipoGob}">
-		<label class="ui-blocks">
+		<label class="ui-blocks form-refresh" data-refresh="is-equipo-gobierno">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.dieta']}" escape="false" />:</div>
-			<select id="grupo-dieta" name="grupoDieta" class="ui-input ui-select ui-number ui-block-main" tabindex="42"> 
-				<option value="2">#{msg['uae.irse.tab2.grupo2']}</option>
-				<option value="1">#{msg['uae.irse.tab2.grupo1']}</option>
-			</select>
+			<div class="ui-block-main">
+				<select id="grupo-dieta" name="grupoDieta" class="ui-input ui-select ui-number" tabindex="42"> 
+					<option value="2">#{msg['uae.irse.tab2.grupo2']}</option>
+					<option value="1">#{msg['uae.irse.tab2.grupo1']}</option>
+				</select>
+			</div>
 		</label>
-		</c:if>
 	
 		<div class="notice notice-info">
 			<h:outputText value="#{msg['uae.irse.tab2.msg.resp1']}" escape="false" />
@@ -69,12 +69,12 @@
 		<div class="ui-blocks form-refresh" data-refresh="is-mun">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
-				<input type="text" class="ui-input ui-text ui-mun" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
+				<input type="text" name="origen" class="ui-input ui-text ui-mun" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select class="ui-input ui-select ui-mun" tabindex="47">
+				<select id="desp-mun" name="desp" class="ui-input ui-select ui-number ui-mun" tabindex="47">
 					<option value="1">#{irse.rutas.getMsgDesp(1)}</option>
 					<option value="10">#{irse.rutas.getMsgDesp(10)}</option>
 				</select>
@@ -86,12 +86,12 @@
 			</label>
 			<label class="ui-block form-refresh" data-refresh="is-matricula-mun">
 				<div class="label required">km:</div>
-				<input type="text" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun"/>
+				<input type="text" name="km1" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
-				<input type="date" class="ui-input ui-date ui-mun" tabindex="50" />
+				<input type="date" name="dt1" class="ui-input ui-date ui-mun" tabindex="50" />
 				<div class="ui-errtip"></div>
 			</label>
 		</div>

@@ -48,15 +48,15 @@ coll.ready(() => {
 	tabs.setAction("factura", () => factura.view(fnBuild(1, 14))); // create factura
 	tabs.setAction("cartap", () => factura.view(fnBuild(3, 13))); // create carta de pago
 
-	function fnValidate(msgConfirm, url, tab) {
+	function fnValidate(msgConfirm, url, fn) {
 		factura.setLineas(lineas.getTable()); // actualizo los conceptos
 		const data = form.validate(factura.validate);
 		if (!data || !i18n.confirm(msgConfirm))
 			return; // Errores al validar o sin confirmacion
 		const temp = Object.assign(factura.getData(), data);
 		temp.lineas = lineas.getTable().getData(); // lineas de la factura
-		return api.setJSON(temp).json(url).then(msgs => tabs.showMsgs(msgs, tab));
+		api.setJSON(temp).json(url).then(fn);
 	}
-	tabs.setAction("send", () => fnValidate("msgSend", "/uae/fact/save", "init")); // send xeco-model form
-	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/fact/subsanar", "list")); // send from changes
+	tabs.setAction("send", () => fnValidate("msgSend", "/uae/fact/save", tabs.showInit)); // send xeco-model form
+	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/fact/subsanar", tabs.showList)); // send from changes
 });

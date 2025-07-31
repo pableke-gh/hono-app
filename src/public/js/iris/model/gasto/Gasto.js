@@ -80,13 +80,12 @@ function Gasto() {
 
 	this.getGrupoDieta = gasto => gasto?.subtipo; // _gIban = grupo de la dieta = subtipo (default = 2)
 	this.getTipoDieta = gasto => gasto?.estado; // _gIban = tipo de dieta = estado (RD = 1, EUT = 2, UPCT = 9)
-	this.setTipoDieta = (gasto, tipo) => { gasto.estado = tipo; } // _gIban = tipo de dieta = estado (RD = 1, EUT = 2, UPCT = 9) 
 	this.getCodigoIban = gasto => gasto?.nombre; // _gIban = codigo iban (XXXX-XXXX-XXXX-XXXX) = nombre
 	this.getSwift = gasto => gasto?.cod; // _gIban = swift = cod = id_fichero
 	this.getObservaciones = gasto => gasto?.desc; // _gIban = observaciones = desc
 	this.setIban = (gIban, data) => {
 		gIban.subtipo = data.grupoDieta;
-		//gIban.estado = data.tipoDieta; // autocalculado por la organica
+		//gIban.estado = data.tipoDieta; // autocalculado por la organica en el servidor
 		gIban.nombre = data.iban;
 		gIban.cod = data.swift;
 		gIban.desc = data.observaciones;
@@ -144,8 +143,7 @@ function Gasto() {
 	this.row = (data, status, resume) => {
 		self.rowCalc(data, resume);
 		const link = `<a href="${data.fref}" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>`;
-		const remove = iris.isEditable() ? `<a href="#rcUnloadGasto" class="row-action"><i class="fas fa-times action text-red resize"></i></a>` : "";
-console.log(data);
+		const remove = iris.isEditable() ? `<a href="#unloadGasto" class="row-action"><i class="fas fa-times action text-red resize"></i></a>` : "";
 
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>

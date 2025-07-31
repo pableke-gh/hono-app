@@ -32,8 +32,8 @@ function Dietas() {
 		if (perfil.isEmpty() || perfil.isRutaUnica() || rutas.isEmpty())
 			return _tblDietas.reset(); // tabla vacia
 
-		const tipo = perfil.getTipoDieta();
-		const grupo = perfil.getGrupoDieta();
+		const tipo = gastos.getTipoDieta();
+		const grupo = gastos.getGrupoDieta();
 		let fDieta = tb.trunc(rutas.salida());
 		let fMax = tb.trunc(rutas.llegada());
 

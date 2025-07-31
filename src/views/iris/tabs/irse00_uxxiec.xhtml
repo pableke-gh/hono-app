@@ -15,19 +15,22 @@
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<input type="text" id="interesado" name="interesado" tabindex="1" class="ui-input ui-autocomplete" />
+				<input type="text" id="interesado" name="acInteresado" tabindex="1" class="ui-input ui-autocomplete" />
 				<input type="text" id="nif-interesado" name="nifInteresado" class="hide" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</div>
-			<div class="hide ui-block-info">[<span id="colectivo" class="icon">#{iris.perfil.colectivo}</span>]<a href="mailto:#{iris.perfil.usuEmail}" title="#{msg['tit.enviar.correo']}"><i class="fa fa-regular fa-envelope fa-lg icon"></i></a></div>
+			<div class="hide ui-block-info ui-perfil" data-refresh="text-render">
+				[<span class="icon">@getColectivo;</span>]
+				<a href="mailto:@getEmailInteresado;" title="#{msg['tit.enviar.correo']}"><i class="fa fa-regular fa-envelope fa-lg icon"></i></a>
+			</div>
 		</label>
 
-		<label id="add-org" class="ui-blocks form-refresh" data-refresh="is-add-org">
+		<label id="add-org" class="ui-blocks ui-perfil" data-refresh="is-add-org">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.ppto']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<input type="text" id="organica" name="organica" tabindex="4" class="ui-input ui-autocomplete" title="#{msg['uae.irse.index.msg.cd']}" /> 
+				<input type="text" id="organica" name="acOrganica" tabindex="4" class="ui-input ui-autocomplete" title="#{msg['uae.irse.index.msg.cd']}" /> 
 				<input type="text" id="id-organica" name="idOrganica" class="hide" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
@@ -43,7 +46,7 @@
 			<thead>
 				<tr>
 					<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
-					<th class="form-refresh" data-refresh="is-editable"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
+					<th class="ui-perfil" data-refresh="is-editable"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
 					<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
 					<th>#{msg['lbl.responsable.gasto']}</th><th>#{msg['lbl.nombre.apellidos']}</th>
 					<th class="no-print"></th>
@@ -54,45 +57,41 @@
 		</table>
 		</div>
 
-		<div class="hide">
-			<label for="financiacion" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.fin']}" escape="false" />:</label>
-			<input type="text" id="financiacion" name="financiacion" class="hide" />
-		</div>
-		<div class="notice notice-info form-refresh" data-refresh="is-fin-xsu"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
-		<div class="notice notice-info form-refresh" data-refresh="is-fin-isu"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
-		<div class="notice notice-info form-refresh" data-refresh="is-fin-x83"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
-		<div class="notice notice-info form-refresh" data-refresh="is-fin-a83"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
+		<div class="notice notice-info ui-perfil" data-refresh="is-fin-xsu"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
+		<div class="notice notice-info ui-perfil" data-refresh="is-fin-isu"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
+		<div class="notice notice-info ui-perfil" data-refresh="is-fin-x83"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
+		<div class="notice notice-info ui-perfil" data-refresh="is-fin-a83"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
 		<div class="notice notice-error"><h:outputText value="#{msg['uae.irse.tab0.org.info']}" escape="false" /></div>
 
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" />:</div>
 			<div class="ui-block">
-			<h:selectOneMenu id="actividad" value="#{iris.perfil.actividad}" styleClass="ui-input ui-select" tabindex="7">
-				<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
-				<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
-				<f:selectItem itemValue="MES" itemLabel="#{msg['uae.irse.tab0.act.mes']}" itemEscaped="false"/>
-				<f:selectItem itemValue="IAE" itemLabel="#{msg['uae.irse.tab0.act.iae']}" itemEscaped="false"/>
-				<f:selectItem itemValue="ATR" itemLabel="#{msg['uae.irse.tab0.act.atr']}" itemEscaped="false"/>
-				<f:selectItem itemValue="IAE+ATR" itemLabel="#{msg['uae.irse.tab0.act.iae.atr']}" itemEscaped="false"/>
-				<f:selectItem itemValue="AFO" itemLabel="#{msg['uae.irse.tab0.act.afo']}" itemEscaped="false"/>
-				<f:selectItem itemValue="IAE+AFO" itemLabel="#{msg['uae.irse.tab0.act.iae.afo']}" itemEscaped="false"/>
-				<f:selectItem itemValue="ACS" itemLabel="#{msg['uae.irse.tab0.act.acs']}" itemEscaped="false"/>
-				<f:selectItem itemValue="OCE" itemLabel="#{msg['uae.irse.tab0.act.col']}" itemEscaped="false"/>
-				<f:selectItem itemValue="IAE+OCE" itemLabel="#{msg['uae.irse.tab0.act.iae.col']}" itemEscaped="false"/>
-				<f:selectItem itemValue="A7J" itemLabel="#{msg['uae.irse.tab0.act.a7j']}" itemEscaped="false"/>
-				<f:selectItem itemValue="MOV" itemLabel="#{msg['uae.irse.tab0.act.mov']}" itemEscaped="false"/>
-			</h:selectOneMenu>
+			<select id="actividad" name="actividad" class="ui-input ui-select" tabindex="7">
+				<option value="COM">#{msg['uae.irse.tab0.act.com']}</option>
+				<option value="MUN">#{msg['uae.irse.tab0.act.mun']}</option>
+				<option value="MES">#{msg['uae.irse.tab0.act.mes']}</option>
+				<option value="IAE">#{msg['uae.irse.tab0.act.iae']}</option>
+				<option value="ATR">#{msg['uae.irse.tab0.act.atr']}</option>
+				<option value="IAE+ATR">#{msg['uae.irse.tab0.act.iae.atr']}</option>
+				<option value="AFO">#{msg['uae.irse.tab0.act.afo']}</option>
+				<option value="IAE+AFO">#{msg['uae.irse.tab0.act.iae.afo']}</option>
+				<option value="ACS">#{msg['uae.irse.tab0.act.acs']}</option>
+				<option value="OCE">#{msg['uae.irse.tab0.act.col']}</option>
+				<option value="IAE+OCE">#{msg['uae.irse.tab0.act.iae.col']}</option>
+				<option value="A7J">#{msg['uae.irse.tab0.act.a7j']}</option>
+				<option value="MOV">#{msg['uae.irse.tab0.act.mov']}</option>
+			</select>
 			</div>
 		</label>
 
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" />:</div>
 			<div class="ui-block">
-			<h:selectOneMenu id="tramite" value="#{iris.perfil.tramite}" styleClass="ui-input ui-select" tabindex="8">
-				<f:selectItem itemValue="AyL" itemLabel="#{msg['uae.irse.tab0.tramit.ayl']}" itemEscaped="false"/>
-				<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
-				<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
-			</h:selectOneMenu>
+			<select id="tramite" name="tramite" class="ui-input ui-select" tabindex="8">
+				<option value="AyL">#{msg['uae.irse.tab0.tramit.ayl']}</option>
+				<option value="AUT">#{msg['uae.irse.tab0.tramit.aut']}</option>
+				<option value="LIQ">#{msg['uae.irse.tab0.tramit.liq']}</option>
+			</select>
 			</div>
 		</label>
 	</div>

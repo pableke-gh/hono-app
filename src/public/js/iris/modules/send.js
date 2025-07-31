@@ -1,46 +1,22 @@
 
-import tabs from "../../components/Tabs.js";
 import sb from "../../components/types/StringBox.js";
+import tabs from "../../components/Tabs.js";
+import api from "../../components/Api.js";
 import i18n from "../i18n/langs.js";
 
 import iris from "../model/Iris.js";
 import gastos from "../model/gasto/Gastos.js"; 
 import paises from "../data/paises/paises.js";
 
-import mg from "../modules/gastos/gastos.js";
 import mgo from "./gastos/organicas.js";
 import xeco from "../../xeco/xeco.js";
 
 function Send() {
-	const self = this; //self instance
+	//const self = this; //self instance
 	const form = xeco.getForm(); // form component
 	const _cuentas = form.getInput("#cuentas"); // select cuentas comisionado
 	const _paises = form.getInput("#paises"); // select pais entidades bancarias
 	const isSpain = () => (_paises.value == "ES"); // codigo = españa
-
-	const fnSave = data => {
-		mgo.build(); //auto-build mono-organica
-		mg.setIban(data).setBanco(data).save();
-		return true;
-	}
-	this.validate = data => {
-		const valid = i18n.getValidators();
-		valid.size50("iban", data.iban, "errIban");
-		if (!_cuentas.value) {
-			if (isSpain())
-				valid.size("codigoEntidad", data.codigoEntidad, "errEntidad", 4);
-			else
-				valid.size("swift", data.swift, "errSwift").size("nombreEntidad", data.nombreEntidad);
-		}
-		if (data.urgente == "2") { // Solicitud urgente
-			valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
-			valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
-		}
-		return valid.isOk() && fnSave(data);
-	}
-
-	tabs.setAction("paso9", () => { form.validate(self.validate) && form.sendTab(window.rcPaso9); });
-	tabs.setAction("save9", () => { form.validate(self.validate) && form.sendTab(window.rcSave9, 9); });
 
 	this.init = () => {
 		const _entidades = form.getInput("#entidades");
@@ -75,9 +51,43 @@ function Send() {
 			.set("paisEntidad", gastos.getPaisEntidad()).set("nombreEntidad", gastos.getNombreEntidad()).set("codigoEntidad", gastos.getCodigoEntidad()); // gastos Banco
 	}
 
-	this.update = data => {
-		data && self.view(data);
+	const fnValidate = data => {
+		const valid = i18n.getValidators();
+		valid.size50("iban", data.iban, "errIban");
+		if (!_cuentas.value) {
+			if (isSpain())
+				valid.size("codigoEntidad", data.codigoEntidad, "errEntidad", 4);
+			else
+				valid.size("swift", data.swift, "errSwift").size("nombreEntidad", data.nombreEntidad);
+		}
+		if (data.urgente == "2") { // Solicitud urgente
+			valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
+			valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
+		}
+		return valid.isOk();
 	}
+
+	const fnSend = (data, url) => {
+		mgo.build(); // auto-build mono-organica
+		const temp = Object.assign(iris.getData(), data); // merge data to send
+		temp.gastos = gastos.setIban(data).setBanco(data).getGastos(); // update gastos
+		return api.setJSON(temp).json(url); // return promise
+	}
+	tabs.setAction("paso9", () => {
+		const data = form.validate(fnValidate);
+		if (!data) // valido el formulario
+			return false; // error => no hago nada
+		if (i18n.confirm("msgSend")) // si hay confirmacion => envio
+			fnSend(data, "/uae/iris/send").then(tabs.showList);
+	});
+	tabs.setAction("save9", () => {
+		const data = form.validate(fnValidate);
+		if (!data) // valido el formulario
+			return false; // error => no hago nada
+		if (form.isChanged()) // si ahy cambios => envio
+			fnSend(data, "/uae/iris/save").then(form.showAlerts);
+		form.setChanged(); // avoid recall
+	});
 }
 
 export default new Send();

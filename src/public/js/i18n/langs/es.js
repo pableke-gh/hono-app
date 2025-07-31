@@ -22,6 +22,10 @@ export default {
 	errRange: "Valor fuera del rango permitido",
 	notAllowed: "Valor no permitido",
 	notValid: "Valor Incorrecto",
+	errReport: "Error al visualizar el informe seleccionado.",
+	errDownload: "No se ha podido descargar el fichero seleccionada.",
+	errDoc: "No se ha podido descargar la documentación seleccionada.",
+	errAdjunto: "No se ha podido descargar adjunto seleccionado.",
 
 	//Confirm cuestions and messages
 	saveOk: "Datos actualizados correctamente",

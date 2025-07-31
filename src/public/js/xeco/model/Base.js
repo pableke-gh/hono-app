@@ -18,8 +18,9 @@ export default function() {
 	}
 
 	// Generc getters and setters
-	this.getId = () => _data.id;
-	this.getTipo = () => _data.tipo;
+	this.getId = () => _data.id; // id de la instancia
+	this.getNif = () => _data.usu; // nif del usuario de creacion
+	this.getTipo = () => _data.tipo; // tipo de la insaancia
 	this.setTipo = value => { _data.tipo = value; return self; }
 	this.getSubtipo = () => _data.subtipo;
 	this.setSubtipo = value => { _data.subtipo = value; return self; }

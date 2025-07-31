@@ -93,6 +93,16 @@ export default function(table, opts) {
 	this.getLastRow = () => tBody.lastElementChild;
 	this.getFooter = () => tFoot;
 
+	// Alerts helpers
+	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
+	this.working = () => { alerts.working(); return self; } // Encapsule working frame
+	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
+	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
+	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
+	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
+	this.showAlerts = alerts.showAlerts; // showAlerts synonym
+	this.resolve = alerts.resolve; // check if messages are ok
+
 	this.querySelector = selector => table.querySelector(selector);
 	this.querySelectorAll = selector => table.querySelectorAll(selector);
     this.getText = selector => dom.getText(table.querySelector(selector)); // read text

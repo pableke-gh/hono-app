@@ -7,30 +7,23 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h:form id="xeco-users" prependId="false" method="post">
-	<div class="card-xeco">
-		<h2>Gestión de permisos</h2>
-		<div id="msg-org" class="notice notice-info">@oCod; - @oDesc;</div>
+	<h2>Gestión de permisos</h2>
+	<h:form id="xeco-users" prependId="false" method="post" class="card-filter">
+		<div class="notice notice-info form-refresh" data-refresh="text-render">@oCod; - @oDesc;</div>
 
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Usuario:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<input type="search" id="ac-usuarios" name="usuario" class="ui-input ui-autocomplete" tabindex="1" />
-				<input type="hidden" id="nif-usuario" styleClass="ui-input" />
+				<input type="search" id="acUsuarios" name="usuario" class="ui-input ui-autocomplete" tabindex="1" />
+				<input type="hidden" id="nifUsuario" class="ui-input" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
-				<p:remoteCommand name="rcFindUsers" action="#{buzon.usuarios.find()}" oncomplete="loadItems(xhr, status, args)" />
 			</label>
 			<div class="ui-block-btn">
-				<a id="add-user" href="#" class="btn btn-green" tabindex="2" title="Asocia un nuevo habilitado a la organica"><i class="far fa-plus btn-icon-left"></i>Añadir</a>
+				<a href="#tab-action" data-action="add-user" class="btn btn-green" tabindex="2" title="Asocia un nuevo habilitado a la organica"><i class="far fa-plus btn-icon-left"></i>Añadir</a>
 			</div>
 		</div>
-	</div>
-
-	<p:remoteCommand name="rcAddUser" action="#{buzon.usuarios.add()}" oncomplete="updateUsuarios(xhr, status, args)" />
-	<p:remoteCommand name="rcRemoveUser" action="#{buzon.usuarios.remove()}" oncomplete="updateUsuarios(xhr, status, args);"/>
-	<p:remoteCommand name="rcToggle" action="#{buzon.usuarios.toggle()}" oncomplete="reloadAll(xhr, status, args)" />
 	</h:form>
 
 	<table id="usuarios" class="tb-xeco">

@@ -2,7 +2,6 @@
 import coll from "../components/Collection.js";
 import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
-import pf from "../components/Primefaces.js";
 import i18n from "./i18n/langs.js";
 import dom from "../lib/uae/dom-box.js";
 
@@ -18,7 +17,7 @@ import { viewTab5, initTab9, initTab12 } from "./modules/tabs.js";
 
 window.IRSE = {}; // global IRSE info
 const formIrse = new Form("#xeco-irse");
-pf.ready(list.init);
+coll.ready(list.init);
 
 /*********** Google Maps API ***********/
 const fnTabActive = tab => !tab.classList.contains("tab-excluded")
@@ -67,7 +66,7 @@ window.viewIrse = (xhr, status, args, tab) => {
 	rutas.init(formIrse);
 	organicas.init(formIrse);
 	tabs.nextTab(tab ?? IRSE.tab); // go to next tab
-	pf.showAlerts(xhr, status, args); // show alerts
+	window.showAlerts(xhr, status, args); // show alerts
 }
 
 //Global IRSE components

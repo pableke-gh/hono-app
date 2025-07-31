@@ -67,30 +67,29 @@ function Tabs() {
 	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
-	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
+	this.showAlerts = alerts.showAlerts; // Encapsule showAlerts message
+	this.resolve = alerts.resolve; // check if messages are ok
 
 	function fnShowTab(i) { //show tab by index
-        i = (i < 0) ? 0 : Math.min(i, tabs.length - 1);
-        const tab = tabs[i]; // get next tab
-        if (_tabIndex < i) { // go ahead
+		i = (i < 0) ? 0 : Math.min(i, tabs.length - 1);
+		if (_tabIndex == i)
+			return self; // tab already active
+		const tab = tabs[i]; // get next tab
+		if (_tabIndex < i) { // go ahead
 			if (!fnCallEvent("active", tab)) // is current tab active
-                return fnShowTab(i + 1); // recursive search for next active tab
+				return fnShowTab(i + 1); // recursive search for next active tab
             if (fnCallEvent("show", tab)) { // Validate event before change tab
-                tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
-                fnSetTab(tab, i); // set current tab
+            	tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
+            	fnSetTab(tab, i); // set current tab
             }
+			return self;
         }
-        else { // go back
-			if (!fnCallEvent("active", tab)) // is current tab active
-				return fnShowTab(i - 1); // recursive search for prev active tab
-			const currentTab = self.getCurrent();
-			if (currentTab) { // auto toggle off links actions
-				const toggleOff = "a[href='#tab-toggle'][data-off]";
-				currentTab.querySelectorAll(toggleOff).forEach(self.toggle);
-			}
-			fnSetTab(tab, i); // set current tab
-        }
-        return self;
+        // go back
+		if (!fnCallEvent("active", tab)) // is current tab active
+			return fnShowTab(i - 1); // recursive search for prev active tab
+		// auto toggle off links actions in current tab
+		self.getCurrent().querySelectorAll("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
+		return fnSetTab(tab, i); // set current tab
     }
 
 	this.showTab = id => fnShowTab(fnFindIndex(id)); //find by id selector
@@ -112,33 +111,30 @@ function Tabs() {
 		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
 		return self;
 	}
-    this.showMsgs = (msgs, tab) => {
-        const ok = !msgs?.msgError; // is error message
-        if (ok) // If message is ok => Show next tab
-            globalThis.isset(tab) ? self.showTab(tab) : self.nextTab();
-        alerts.showAlerts(msgs); // Always show alerts after change tab
-        return ok;
-    }
+
+	// if message is ok => go next tab, and always show alerts after change tab
+    this.showMsgs = (msgs, tab) => alerts.isOk(msgs) ? self.nextTab(tab).showAlerts(msgs) : alerts.showAlerts(msgs);
+    this.showInit = msgs => self.showMsgs(msgs, "init"); // show init view
+    this.showForm = msgs => self.showMsgs(msgs, "form"); // show form view
+    this.showList = msgs => self.showMsgs(msgs, "list"); // show list view
 
 	this.setActions = el => { // set default actions
-        el.querySelectorAll("[href^='#tab-']").forEach(link => {
-            link.onclick = ev => {
-                const href = link.getAttribute("href");
-				const id = href.substring(href.lastIndexOf("-") + 1);
-                if ((href == "#tab-back") || (href == "#tab-prev"))
-                    self.backTab();
-                else if (href == "#tab-next")
-                    self.nextTab();
-                else if (href == "#tab-last")
-                    self.lastTab();
-                else if (href == "#tab-toggle")
-                    self.toggle(link); // call toggle handler
-                else if (href.startsWith("#tab-action"))
-					EVENTS[link.dataset.action || id](link); // call handler
-                else
-                    self.showTab(id);
-                ev.preventDefault(); // no navigate
-            }
+        el.querySelectorAll("[href^='#tab-']").setClick((ev, link) => {
+			const href = link.getAttribute("href");
+			const id = href.substring(href.lastIndexOf("-") + 1);
+			if ((href == "#tab-back") || (href == "#tab-prev"))
+				self.backTab();
+			else if (href == "#tab-next")
+				self.nextTab();
+			else if (href == "#tab-last")
+				self.lastTab();
+			else if (href == "#tab-toggle")
+				self.toggle(link); // call toggle handler
+			else if (href.startsWith("#tab-action"))
+				EVENTS[link.dataset.action || id](link); // call handler
+			else
+				self.showTab(id);
+			ev.preventDefault(); // no navigate
         });
         return self;
     }

@@ -9,10 +9,11 @@ import uxxiec from "../model/Uxxiec.js";
 import firmas from "./firmas.js";
 
 function Uxxiec() {
+	const url = model.getUrl(); // url base path
     const form = new Form("#xeco-uxxi");
 	const tblUxxiec = new Table(form.getForm().nextElementSibling, uxxiec.getTable());
     const acUxxi = form.setAutocomplete("#uxxi", uxxiec.getAutocomplete());
-	acUxxi.setSource(term => api.init().json(model.getUrl("/uxxiec/docs/"), { ej: form.getValueByName("ej"), term }).then(acUxxi.render));
+	acUxxi.setSource(term => api.init().json(url + "/uxxiec/docs/", { ej: form.getValueByName("ej"), term }).then(acUxxi.render));
 
 	this.getForm = () => form;
 	this.getTable = () => tblUxxiec;
@@ -43,7 +44,7 @@ function Uxxiec() {
 		if (form.isCached(data.id)) // solicitud cacheada
 			return fnLoadUxxiec(data); // muestro la vista cacheada
 		const fnLoadDocs = docs => { tblUxxiec.render(docs); fnLoadUxxiec(data); }
-		api.init().json(model.getUrl("/uxxiec?id=" + data.id)).then(fnLoadDocs);
+		api.init().json(url + "/uxxiec?id=" + data.id).then(fnLoadDocs);
 	}
 }
 

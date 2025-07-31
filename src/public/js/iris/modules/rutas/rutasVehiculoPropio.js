@@ -33,8 +33,6 @@ function RutasVehiculoPropio() {
 	window.validateP6 = () => form.validate(self.validate);
  
 	this.init = () => {
-		const resume = _tblRutasVp.getResume();
-		iris.getImpKm = () => resume.impKm;
 		_tblRutasVp.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
 		form.set("is-rutas-vp", _tblRutasVp.size).set("is-justifi-km", self.isJustifiKm);
 	}

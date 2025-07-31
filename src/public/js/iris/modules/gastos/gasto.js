@@ -3,6 +3,7 @@ import tabs from "../../../components/Tabs.js";
 import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
+import ruta from "../../model/ruta/RutaGasto.js";
 import rutas from "../../model/ruta/Rutas.js";
 
 import transportes from "./transportes.js";
@@ -12,8 +13,9 @@ import xeco from "../../../xeco/xeco.js";
 function Gasto() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	const _eTipoGasto = form.getInput("#tipo-gasto");
+	const _eTipoGasto = form.getInput("#tipoGasto");
 	const _grpGasto = form.querySelectorAll(".grupo-gasto");
+	let _tblRutasGasto; // itinerario
 
 	const isInterurbano = () => (_eTipoGasto.value == "8"); //trayectos interurbanos
 	const isTaxi = () => (_eTipoGasto.value == "4"); //ISU y taxi
@@ -36,6 +38,12 @@ function Gasto() {
 			_grpGasto.mask(0b00001);
 	}
 
+	this.init = () => {
+		_eTipoGasto.onchange = fnChange; // Change event
+		iris.getTextGasto = () => i18n.get(isTaxi() ? "lblDescTaxi" : "lblDescObserv"); // label text
+		// set date range type inputs + upload gasto handler on change event
+		form.setDateRange("#fMinGasto", "#fMaxGasto").set("upload-gasto", fnChange);
+	}
 	this.reset = () => {
 		_grpGasto.mask(0);
 		_eTipoGasto.value = "";
@@ -45,10 +53,16 @@ function Gasto() {
 			.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start.substring(0, 10))
 			.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "max", end.substring(0, 10))
 			.setChanged().refresh(iris);
+		return self;
 	}
 
+	// update tabs events
+	tabs.setViewEvent(5, self.reset); // reset form on view tab 5
+	tabs.setInitEvent(12, () => { _tblRutasGasto = form.setTable("#rutas-out", ruta.getTable()); });
+	tabs.setViewEvent(12, () => { _tblRutasGasto.render(rutas.getRutasUnlinked()); });
+
 	// validación del tipo de gasto
-	this.validate = data => {
+	const fnValidate = data => {
 		const valid = form.getValidators();
 		if (isDoc()) // doc only
 			return valid.addRequired("txtGasto", "errDoc").isOk();
@@ -60,23 +74,15 @@ function Gasto() {
 			return pernoctas.validate(data);
 		return valid.isOk();
 	}
-
-	this.init = () => {
-		_eTipoGasto.onchange = fnChange; // Change event
-		iris.getTextGasto = () => i18n.get(isTaxi() ? "lblDescTaxi" : "lblDescObserv"); // label text
-		// set date range type inputs + upload gasto handler on change event
-		form.setDateRange("#fMinGasto", "#fMaxGasto").set("upload-gasto", fnChange);
+	this.validate = () => form.validate(fnValidate, ".ui-gasto");
+	this.isInterurbano = isInterurbano;
+	this.loadRutas = () => {
+		const data = self.validate();
+		if (!data) // datos del formulario
+			return !form.showError("errLinkRuta");
+		data.rutas = _tblRutasGasto.querySelectorAll(".link-ruta:checked").map(el => el.value);
+		return data;
 	}
-
-	tabs.setViewEvent(5, self.reset); // reset form on view tab 5
-	tabs.setAction("uploadGasto", () => {
-		if (!form.validate(self.validate))
-			return false; // Errores al validar los gastos
-		if (isInterurbano()) // trayectos interurbanos
-			tabs.showTab(12); // tabla de rutas pendientes
-		else
-			form.sendTab(window.rcUploadGasto);
-	});
 }
 
 export default new Gasto();

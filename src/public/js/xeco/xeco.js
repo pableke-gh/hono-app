@@ -12,6 +12,7 @@ import list from "./modules/list.js";
 
 function XecoForm() {
 	//const self = this; //self instance
+	const url = model.getUrl(); // url base path
 	const form = new Form("#xeco-model");
 
 	this.getForm = () => form;
@@ -22,20 +23,20 @@ function XecoForm() {
 		firmas.init();
 	}
 
-	this.view = (data, principales) => {
+	this.view = (data, principales, tab) => {
 		model.setData(data); // 1º carga los datos de la solicitud
 		firmas.view(principales); // 2º cargo la vista de firmas asociadas
 		// 2º force last action => update form views and go to tab form
 		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])");
 		setTimeout(() => form.setValues(data).setEditable().refresh(model), 1); // execute at the end
 		list.setCache(data.id); // filter form cache = xeco form cache!
-		tabs.showTab("form"); // go form tab
+		tabs.showTab(tab || "form"); // go form tab
 	}
 	this.update = (data, principales, tab) => {
 		data && model.setData(data); // 1º carga los datos de la solicitud
 		principales && firmas.view(principales); // 2º actualizo la vista de firmas asociadas
 		// 3º and last action => update views and go to specific tab
-		setTimeout(() => form.refresh(model).nextTab(tab), 1);
+		setTimeout(() => form.setChanged().refresh(model).nextTab(tab), 1);
 	}
 
 	const pfUpload = el => { // pf upload component
@@ -58,16 +59,17 @@ function XecoForm() {
 	tabs.setAction("firmar", () => {
 		if (!i18n.confirm("msgFirmar")) return; // confirmation
 		const data = Object.assign(model.getData(), form.getData());
-		api.setJSON(data).json(model.getUrl("/firmar")).then(list.loadFirmas);
+		api.setJSON(data).json(url + "/firmar").then(list.loadFirmas);
 	});
 
 	tabs.setAction("reject", () => list.getTable().invoke("#tab-reject")); // open reject tab from list
-	const fnRechazar = id => api.init().json(model.getUrl("/rechazar"), { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
+	const fnRechazar = id => api.init().json(url + "/rechazar", { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
 	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && fnRechazar(list.getId()); });
-	const fnCancelar = id => api.init().json(model.getUrl("/cancelar"), { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
+	const fnCancelar = id => api.init().json(url + "/cancelar", { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
 	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && fnCancelar(list.getId()); });
 	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable
 	//tabs.setAction("click-next", link => { link.nextElementSibling.click(); setTimeout(window.working, 450); });
+	tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
 }
 
 export default new XecoForm();

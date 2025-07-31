@@ -30,6 +30,12 @@ $(function() {
 	var fr = $("input#fichero").change(function() { fr.fbRead(); });
 	var ag = $("a#group, a#ungroup").click(function() { toggle(ag); return !tables.tbToggleGroup(tbConfig); });
 
+	const fnHideTable = table => $(table.parentNode).addClass("hide").hide();
+	const fnShowTable = table => {
+		$(table).parents().removeClass("hide").show();
+		table.querySelectorAll(".tb-resume-final").forEach(el => { el.nextElementSibling.style.display = "none"; });
+	}
+
 	//inicializo la configuracion y eventos de la tabla
 	var tbConfig = {
 		LatinFloatParse: toNumber, LatinFloat: nfLatin, LatinDateParse: toDate, LatinDate: dfLatin, 
@@ -43,8 +49,8 @@ $(function() {
 			n19: {
 				typeColumns: { fCobro: "DateTime", importe: "Number" },
 				styleColumns: { fCobro: "LatinDate", importe: "LatinFloat" },
-				afterPush: function(table) { $(table).parents().removeClass("hide").show(); },
-				afterReset: function(table) { $(table.parentNode).addClass("hide").hide(); }
+				afterPush: fnShowTable,
+				afterReset: fnHideTable
 			},
 			n43: {
 				typeColumns: { fCobro: "DateTime", importe: "Number" },
@@ -75,15 +81,14 @@ $(function() {
 					if (this.numrows) {
 						var n43 = rf.n43();
 						delete n43.referencias;
-						delete n43.referencias;
 						n43.incorporado = this.incorporado;
 						form.fbSet(rf.save().n43()); //guardo los datos incorporados
-						$(table).parents().removeClass("hide").show();
+						fnShowTable(table);
 					}
 					else
 						$(table).tbReset(tbConfig);
 				},
-				afterReset: function(table) { $(table.parentNode).addClass("hide").hide(); }
+				afterReset: fnHideTable
 			},
 			n57: {
 				typeColumns: { fCobro: "DateTime", idActividad: "Number", importe: "Number" },
@@ -98,9 +103,9 @@ $(function() {
 					return false; //no incorporo nada
 				},
 				afterRead: function(table) {
-					this.numrows ? $(table).parents().removeClass("hide").show() : $(table).tbReset(tbConfig);
+					this.numrows ? fnShowTable(table) : $(table).tbReset(tbConfig);
 				},
-				afterReset: function(table) { $(table.parentNode).addClass("hide").hide(); }
+				afterReset: fnHideTable
 			},
 			tpvs: {
 				typeColumns: { fCobro: "DateTime", importe: "Number" },
@@ -114,8 +119,8 @@ $(function() {
 					fila.forma = tpv || fila.forma; //actualizo el texto de agrupacion
 					rf.normalize(fila);
 				},
-				afterPush: function(table) { $(table).parents().removeClass("hide").show(); },
-				afterReset: function(table) { $(table.parentNode).addClass("hide").hide(); }
+				afterPush: fnShowTable,
+				afterReset: fnHideTable
 			},
 
 			ficheros: {
@@ -173,7 +178,7 @@ $(function() {
 				classColumns: { porGg: "text-right", drnAcum: "text-right", rnAcum: "text-right", orAcum: "text-right", maxHabilitar: "text-right", ctHabilitado: "text-right", txtHabilitar: "text-right" },
 
 				onRead: function(data, row) {
-					data.porGg = data.porGg || "";
+					data.porGg = data.porGg ?? "";
 					data.modalidad = attr(row, "modalidad");
 					data.impCpAcum = attr(row, "impCpAcum");
 					data.impHabilitar = attr(row, "impHabilitar");

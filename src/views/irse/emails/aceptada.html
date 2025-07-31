@@ -15,7 +15,7 @@
 
 	<div th:replace="emails/general.html :: comunicacion"></div>
 	<!-- if y replace no pueden ir en la misma etiqueta -->
-	<div th:if="${(xs.uaeRequired) and (firma.grupo == 4)}">
+	<div th:if="${isUaeRequired and (firma.grupo == 4)}">
 		<div th:replace="emails/general.html :: avisos"></div>
 	</div>
 	<div th:replace="emails/general.html :: actividad"></div>

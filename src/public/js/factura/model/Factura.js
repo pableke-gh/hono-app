@@ -6,7 +6,7 @@ import lineas from "./Lineas.js";
 
 const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso" ];
 
-solicitud.getUrl = path => "/uae/fact" + path;
+solicitud.getUrl = () => "/uae/fact";
 solicitud.getLineas = () => lineas;
 solicitud.setLineas = table => { lineas.setData(table.getData()); return solicitud; }
 solicitud.getLinea = lineas.getLinea;

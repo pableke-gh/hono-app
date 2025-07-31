@@ -7,7 +7,7 @@ import ruta from "./Ruta.js";
 
 function Rutas() {
 	const self = this; //self instance
-	let _rutas; // itinerario
+	let _rutas = []; // itinerario
 
 	this.getRutas = () => _rutas;
 	this.size = () => coll.size(_rutas);
@@ -76,6 +76,13 @@ function Rutas() {
 		_rutas.forEach(ruta.setOrdinaria);
 		ruta.setPrincipal(data);
 		return self;
+	}
+	this.build = ruta => { // reordena el itinerario con la nueva ruta
+		const temp = _rutas.concat(ruta); // añade la nueva ruta al final
+		return temp.sort((a, b) => sb.cmp(a.dt1, b.dt1)); // ordena rutas por fecha de salida
+	}
+	this.update = rutas => { // recarga el itinerario calculando la ruta principal
+		self.setRutas(rutas).setRutaPrincipal(self.findRutaPrincipal());
 	}
 
 	this.validate = rutas => {

@@ -77,7 +77,7 @@ function PartidaInc() {
 			return false; // not valid data
 		if (presto.isEditable()) // if editable => back to presto view, send table on tab-action-send
 			return tabs.backTab().showOk("Datos del documento 030 asociados correctamente.");
-		api.setJSON(_tblPartidasInc.getData()).json("/uae/presto/save/030").then(msgs => tabs.showMsgs(msgs, "form"));
+		api.setJSON(_tblPartidasInc.getData()).json("/uae/presto/save/030").then(tabs.showForm);
 	});
 }
 

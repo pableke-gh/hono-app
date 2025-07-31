@@ -6,12 +6,11 @@ import actividades from "../../data/perfiles/actividades.js"
 function Actividad() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	const _eColectivo = form.querySelector("#colectivo"); // span element
 
-	this.isEmpty = () => (!_eColectivo.innerText);
-	this.getRol = () => form.getval("#rol");
-	this.isPorCuentaPropia = () => (self.getRol() == "P");
-	this.isPorCuentaAjena = () => (self.getRol() == "A");
+	this.getRol = iris.getRol;
+	//this.isPorCuentaPropia = () => (self.getRol() == "P");
+	//this.isPorCuentaAjena = () => (self.getRol() == "A");
+	this.isEmpty = () => !iris.getColectivo();
 
 	this.getActividad = () => form.getval("#actividad");
 	this.isColaboracion = () => (self.getActividad() == "OCE") || (self.getActividad() == "IAE+OCE");
@@ -30,7 +29,7 @@ function Actividad() {
 	this.isMov = () => (self.getActividad() == "MOV");
 	this.is1Dia = () => (self.isMun() || self.isMes() || self.isAcs() || self.isAfo() || self.isAtr() || self.isCtp() || self.isOce());
 
-	this.getFinanciacion = () => form.getval("#financiacion");
+	this.getFinanciacion = iris.getFinanciacion;
 	this.isXsu = () => (self.getFinanciacion() == "xSU");
 	this.isFinIsu = () => (self.getFinanciacion() == "ISU");
 	this.isIsu = () => (self.isFinIsu() || self.isXsu());
@@ -50,20 +49,14 @@ function Actividad() {
 	this.isMaps = () => (!self.isLocalizaciones() && !self.is1Dia());
 	this.isFacturaUpct = () => true; // TODO: ver si es necesario
 
-	this.getColectivo = () => form.getText("#colectivo");
+	this.getColectivo = iris.getColectivo;
 	this.isPas = () => (self.getColectivo() == "PAS");
 	this.isPdiFu = () => (self.getColectivo() == "PDI-FU");
 	this.isPdiLa = () => (self.getColectivo() == "PDI-LA");
 	this.isPdi = () => (self.isPdiFu() || self.isPdiLa());
 	this.isAlumno = () => (self.getColectivo() == "ALU");
 	this.isExterno = () => (self.getColectivo() == "EXT");
-	this.setColectivo = (colectivo, email) => {
-		// Show mailto icon and update href attribute
-		_eColectivo.nextElementSibling.setVisible(email).setAttribute("href", "mailto:" + email);
-		_eColectivo.parentNode.setVisible(colectivo);
-		_eColectivo.innerText = colectivo || "";
-		return self.update();
-	}
+	this.setColectivo = interesado => { iris.setInteresado(interesado); return self.update(); }
 
 	this.update = () => { // actualizo la actividad y el tramite
 		form.select("#actividad", actividades(self.getRol(), self.getColectivo(), self.getFinanciacion()))
@@ -71,6 +64,7 @@ function Actividad() {
 			.closeAlerts();
 		iris.setPerfil(self.getRol(), self.getColectivo(), self.getActividad(), self.getTramite(), self.getFinanciacion());
 		iris.set("pasos", 2 + self.isIsu() + self.isMaps()); // set num pasos
+		form.refresh(iris, ".ui-perfil"); // actualizo el perfil de la solicitud
 		return self;
 	}
 

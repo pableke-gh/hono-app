@@ -22,7 +22,7 @@ base.setGrupo = val => { _grupo = val; return base; }
 base.setUser = ({ nif, grupo, admin }) => base.setNif(nif).setGrupo(grupo).setAdmin("1" == admin);
 base.isUsuEc = () => !!_grupo;
 base.isUxxiec = base.isUsuEc;
-base.getUrl = path => "/uae" + path;
+base.getUrl = () => "/uae";
 
 base.isDisabled = () => !base.isEditable();
 base.isEditable = () => (!base.getId() || (base.getEstado() == 6));

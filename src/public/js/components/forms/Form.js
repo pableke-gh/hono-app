@@ -33,7 +33,6 @@ export default function(form, opts) {
 	const EMPTY = ""; // Empty string
 	const INPUTS = "input,select,textarea"; // All input fields
 	const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
-	let _refreshList; // container elements
 	let _isChanged; // bool indicator
 
 	const $1 = selector => form.querySelector(selector);
@@ -77,20 +76,19 @@ export default function(form, opts) {
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
 	this.working = () => { alerts.working(); return self; } // Encapsule working frame
+	this.setOk = () => { alerts.showOk(opts.defaultMsgOk); return self; } // force ok message
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
 	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
-	this.showAlerts = data => { alerts.showAlerts(data); return self; } // Encapsule showAlerts message
+	this.showAlerts = alerts.showAlerts; // showAlerts synonym
+	this.resolve = alerts.resolve; // check if messages are ok
 	this.nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
-			return self.showOk(opts.defaultMsgOk); // show ok msg
+			return self.setOk(); // show ok msg
 		tabs.nextTab(tab); // go to next tab
 		return self;
 	}
-	//this.call = fnCall => { self.loading().setChanged(); fnCall([{ name: "id", value: opts.cache }]); } // invoke action
-	//this.invoke = fnInvoke => { self.loading().setChanged(); fnInvoke(); return self; } // invoke action
-	//this.sendTab = (fnInvoke, tab) => (self.isChanged() ? self.invoke(fnInvoke) : self.nextTab(tab));
 
 	this.getValidators = i18n.getValidation; // validator object
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard
@@ -101,7 +99,7 @@ export default function(form, opts) {
     this.setText = (selector, text) => { dom.text(fnQuery(selector), text); return self; }
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
 	this.render = (selector, data) => { $$(selector).render(data); return self; } // NodeList.prototype.render
-	this.refresh = model => { _refreshList.refresh(model, opts); return self; } // NodeList.prototype.refresh
+	this.refresh = (model, selector) => { $$(selector || opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
 
 	this.hide = selector => { $$(selector).hide(); return self; }
 	this.show = selector => { $$(selector).show(); return self; }
@@ -157,7 +155,10 @@ export default function(form, opts) {
 	this.setValue = (selector, value) => fnSetValue(fnQueryInput(selector), value);
 	this.setval = (selector, value) => fnAction(selector, el => fnSetValue(el, value));
 	this.setStrval = (selector, value) => fnAction(selector, el => fnSetval(el, value));
-	this.setData = (data, selector) => fnUpdate(selector, el => fnSetValue(el, data[el.name])).setChanged(); // force changed = false
+	this.reset = selector => fnUpdate(selector, el => fnSetval(el)); // reset inputs value, hidden to! use :not([type=hidden]) selector
+	this.restart = selector => fnAction(selector, el => { el.focus(); fnSetval(el); }); // remove value + focus
+	this.copy = (el1, el2) => fnAction(el1, el => fnSetval(el, self.getval(el2)));
+	this.setData = (data, selector) => (data ? fnUpdate(selector, el => fnSetValue(el, data[el.name])) : self.reset(selector)).setChanged(); // force changed = false 
 	this.setValues = (data, selector) => fnUpdate(selector, el => {
 		const value = el.name ? data[el.name] : null; // get value by name
 		globalThis.isset(value) && fnSetValue(el, value); // update defined data
@@ -199,10 +200,6 @@ export default function(form, opts) {
 		return data;
 	}
 
-	this.reset = selector => fnUpdate(selector, el => fnSetval(el)); // reset inputs value, hidden to! use :not([type=hidden]) selector
-	this.restart = selector => fnAction(selector, el => { el.focus(); fnSetval(el); }); // remove value + focus
-	this.copy = (el1, el2) => fnAction(el1, el => fnSetval(el, self.getval(el2)));
-
 	// Inputs helpers
 	this.setTable = (selector, opts) => new Table($1(selector), opts); // table
 	this.stringify = (selector, data, replacer) => self.setStrval(selector, JSON.stringify(data, replacer)).setChanged(true);
@@ -220,6 +217,8 @@ export default function(form, opts) {
 	const fnItems = (source, afterSelect, onReset) => ({ minLength: 4, source, render: item => item.label, select: item => item.value, afterSelect, onReset });
 	this.loadAcItems = (selector, fnSource, fnSelect, fnReset) => fnUpdate(selector, el => new Autocomplete(el, fnItems(fnSource, fnSelect, fnReset)));
 	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => self.setAutocomplete(selector, fnItems(fnSource, fnSelect, fnReset));
+	this.showModal = selector => $1(selector).showModal();
+	this.closeModal = () => $1("dialog[open]").close();
 
 	// Events handlers
 	const fnEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return self; }
@@ -307,13 +306,10 @@ export default function(form, opts) {
 	this.send = async url => {
 		const fd = new FormData(form); // Data container
 		const body = (form.enctype == "multipart/form-data") ? fd : new URLSearchParams(fd);
-		return await api.init().setMethod(form.method).setBody(body)
-						.send(url || form.action)
-						.catch(info => { self.setErrors(info); throw info; });
+		return await api.setForm(body).send(url || form.action).catch(info => { self.setErrors(info); throw info; });
 	}
 
 	this.update = () => { // Form initialization
-		_refreshList = $$(opts.refreshSelector);
 		form.elements.forEach(el => { // update inputs
 			if (fnContains(el, opts.floatFormatClass)) {
 				fnChange(el, ev => fnNumber(el, i18n.fmtFloat(el.value)));

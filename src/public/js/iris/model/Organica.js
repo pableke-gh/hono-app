@@ -55,6 +55,7 @@ function Organica() {
 		};
 		if (resume.size > 1)
 			_financiacion = MULTI_APLICACION[_financiacion]; // || "xOT"; // default = "xOT"
+		iris.setFinanciacion(_financiacion);
 	}
 
 	const msgEmptyTable = "No existen orgánicas asociadas a la comunicación.";

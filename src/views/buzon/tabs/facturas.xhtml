@@ -19,7 +19,7 @@
         <div class="ui-blocks">
         <div class="ui-block-row">
             <p:fileUpload id="fileFactura" value="#{buzon.facturas.factura}" fileUploadListener="#{buzon.facturas.uploadFactura}" mode="advanced" auto="true" styleClass="hide" />
-            <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Factura (PDF)</a>
+            <a href="#" class="btn btn-info form-refresh" data-refresh="pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Factura (PDF)</a>
             <span class="filename"></span>
         </div>
         </div>
@@ -39,22 +39,24 @@
             <div class="ui-blocks">
             <label class="ui-block-xl">
                 <div class="label required">¿A quién se va a pagar la factura?:</div>
-                <h:selectOneMenu id="tipo" value="#{buzon.facturas.tipo}" styleClass="ui-input ui-select" tabindex="1">
-                    <f:selectItem itemValue="1" itemLabel="Al proveedor, porque está pendiente de pago." />
-                    <f:selectItem itemValue="2" itemLabel="A #{uae.nombre}, porque he adelantado su pago." />
-                    <f:selectItem itemValue="3" itemLabel="Está pagada por la UPCT por un procedimiento de pago antes de recibir la factura." />
-                </h:selectOneMenu>
+                <select id="tipo" name="tipo" class="ui-input ui-select" tabindex="1">
+                    <option value="1">Al proveedor, porque está pendiente de pago.</option>
+                    <option value="2">A #{buzon.user.nombre}, porque he adelantado su pago.</option>
+                    <option value="3">Está pagada por la UPCT por un procedimiento de pago antes de recibir la factura.</option>
+                </select>
             </label>
             <div id="file-jp" class="ui-block-row">
                 <p:fileUpload id="fileJustPago" value="#{buzon.facturas.justPago}" fileUploadListener="#{buzon.facturas.uploadJustPago}" mode="advanced" auto="true" styleClass="hide" />
-                <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Adjuntar justificante de pago</a>
+                <a href="#" class="btn btn-info form-refresh" data-refresh="pf-upload"><i class="fas fa-search icon"></i>Adjuntar justificante de pago</a> 
                 <span class="filename"></span>
             </div>
             <label class="ui-block-xl show-cesionario">
                 <div class="label required"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
-                <h:selectOneMenu id="cuentas" value="#{buzon.facturas.iban}" styleClass="ui-input ui-select" tabindex="150">
-                    <f:selectItems value="#{buzon.facturas.cuentas}" />
-                </h:selectOneMenu>
+                <select id="cuentas" name="iban" class="ui-input ui-select" tabindex="150">
+					<c:forEach items="#{buzon.facturas.cuentas}" var="iban">
+						<option value="#{iban}">#{iban}</option>
+					</c:forEach>
+				</select>
             </label>
             <div class="ui-block-row show-cesionario">
                 <input type="checkbox" checked="checked" disabled="disabled" />
@@ -76,11 +78,8 @@
 
             <div class="ui-blocks">
             <label class="ui-block">
-                <h:inputHidden id="buzon-cod-org" value="#{buzon.facturas.codOrganica}" />
                 <div class="label required"><h:outputText value="#{msg['lbl.gestor.factura']}" escape="false" />:</div>
-                <h:selectOneMenu id="utFact" value="#{buzon.facturas.idUnidadTramit}" styleClass="ui-input ui-select" tabindex="1">
-                    <f:selectItems value="#{buzon.facturas.unidadesTramit}" var="ut" itemValue="#{ut.value}" itemLabel="#{ut.label}" />
-                </h:selectOneMenu>
+                <select id="utFact" name="ut" class="ui-input ui-select" tabindex="1"></select>
                 <div class="ui-errtip"></div>
             </label>
             </div>
@@ -98,12 +97,12 @@
             <div class="ui-blocks">
             <label class="ui-block-row">
                 <div class="label required">En todo caso indicar, la/s partida/s presupuestaria/s a la/s que imputar el gasto, además de otra información que consideres necesaria:</div>
-                <h:inputTextarea id="desc" value="#{buzon.facturas.desc}" styleClass="ui-input ui-ta" />
+                <textarea id="desc" name="desc" class="ui-input ui-ta"></textarea>
                 <div class="ui-errtip"></div>
             </label>
             <!--<div class="ui-block-row">
                 <p:fileUpload id="fileDatosExtra" value="#{buzon.facturas.datosExtra}" fileUploadListener="#{buzon.facturas.uploadDatosExtra}" mode="advanced" auto="true" styleClass="hide" />
-                <a href="#open-upload" class="btn btn-info pf-upload"><i class="fas fa-search icon"></i>Documentación complementaria</a>
+                <a href="#" class="btn btn-info form-refresh" data-refresh="pf-upload"><i class="fas fa-search icon"></i>Documentación complementaria</a>
                 <span class="filename"></span>
             </div>-->
             </div>
@@ -115,8 +114,20 @@
         </div>
     </div>
 
-    <!-- resumen de la factura -->
-    <div id="tab-6" class="tab-content">
-        <ui:include src="resumen.xhtml"></ui:include>
-    </div>
+	<!-- resumen de la factura -->
+	<div id="tab-6" class="tab-content">
+		<div id="resumen" class="card-xeco">
+			<h2>Resumen de la Solicitud</h2>
+			<p><b>¿A quién se va a pagar la factura?:</b> <span id="type-name">TYPE-NAME</span></p>
+			<p><b>Archivos que se van a enviar:</b> <span id="file-name">NAME-XXX</span></p>
+			<p><b>Partida presupuestaria para la factura:</b> <span id="org-desc">ORG-XXX</span></p>
+			<p><b>Unidad que va a tramitar la factura:</b> <span id="ut-desc">UT-XXX</span></p>
+			<p class="show-cesionario"><b>Cuenta bancaria:</b> <span id="iban">IBAN-XXX</span></p>
+			<p id="msg-gestor"><b>Observaciones para el gestor:</b> <span id="desc-gestor">DESC</span></p>
+		</div>
+		<div>
+			<a href="#tab-prev" class="btn btn-info" tabindex="20"><i class="fas fa-caret-left"></i></a>
+			<a href="#tab-action-upload" class="btn btn-green" tabindex="21">Enviar<i class="fas fa-paper-plane btn-icon-right"></i></a>
+		</div>
+	</div>
 </html>

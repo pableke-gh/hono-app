@@ -14,9 +14,7 @@
 			<h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
 			<ul>
 				<li>
-					<p:commandLink action="#{iris.create()}" oncomplete="viewIrse(xhr, status, args, 'form')">
-						<h:outputText value="#{msg['uae.irse.index.msg.new.comunicacion']}" escape="false" />
-					</p:commandLink>
+					<a href="#tab-action-create"><h:outputText value="#{msg['uae.irse.index.msg.new.comunicacion']}" escape="false" /></a>
 				</li>
 				<li>
 					<a href="#tab-list"><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></a >

@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></h2>
-	<form id="xeco-filter" action="/uae/iris">
+	<form id="xeco-filter" action="/uae/iris" class="card-filter">
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
@@ -94,7 +94,7 @@
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 			<a href="#tab-action-list" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
 			<c:if test="#{not iris.user.otri}">
-				<a href="#tab-action-list-all" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Ver Todos</a> 
+				<a href="#tab-action" class="btn btn-info" data-action="list-all" tabindex="13"><i class="far fa-search btn-icon-left"></i>Ver Todos</a> 
 			</c:if>
 			<a href="#tab-action-relist" class="btn btn-warn" tabindex="14"><i class="far fa-times-circle btn-icon-left"></i>Limpiar</a>
 		</div>
@@ -120,10 +120,6 @@
 		<tfoot></tfoot>
 	</table>
 
-	<!--<p:remoteCommand name="rcView" action="#{iris.view()}" oncomplete="viewIrse(xhr, status, args)" />
-	<p:remoteCommand name="rcReactivar" action="#{iris.list.reactivar()}" oncomplete="viewIrse(xhr, status, args)" /> 
-	<p:remoteCommand name="rcPaso8" action="#{iris.list.activarPaso8()}" oncomplete="viewIrse(xhr, status, args)" /> 
-	<p:remoteCommand name="rcFinalizar" action="#{iris.list.finalizar()}" oncomplete="openHtml(xhr, status, args, 'Informe IRIS')" />-->
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 </html>

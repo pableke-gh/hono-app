@@ -5,16 +5,15 @@ import ruta from "./Ruta.js";
 
 function RutaVehiculoPropio() {
 	const self = this; //self instance
-	const GASOLINA = .26; //euros/kilometro
 
-	this.getImpGasolina = () => GASOLINA;
-	this.getImpKm = ruta => (ruta.km1 * GASOLINA);
+	this.getImpGasolina = ruta.getImpGasolina;
+	this.getImpKm = ruta.getImpKm;
 
 	// render tables
 	this.beforeRender = ruta.beforeRender;
 	this.rowCalc = (data, resume) => {
 		ruta.rowCalc(data, resume); // common calculations
-		data.impKm = self.getImpKm(data);
+		data.impKm = ruta.getImpKm(data);
 		resume.impKm += data.impKm;
 	}
 
@@ -46,8 +45,9 @@ function RutaVehiculoPropio() {
 	}
 
 	this.afterRender = resume => {
-		resume.impKm = resume.totKm * GASOLINA;
+		resume.impKm = resume.totKm * ruta.getImpGasolina();
 		resume.justifi = (resume.totKmCalc + .01) < resume.totKm;
+		iris.getImpKm = () => resume.impKm;
 	}
 
 	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });

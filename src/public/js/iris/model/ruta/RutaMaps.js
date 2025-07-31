@@ -37,6 +37,10 @@ function RutaMaps() {
 		</tr>`;
 	}
 
+	this.afterRender = resume => {
+		resume.impKm = resume.totKm * ruta.getImpGasolina();
+	}
+
 	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
 }
 

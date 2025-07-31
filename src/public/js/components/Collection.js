@@ -101,7 +101,7 @@ globalThis.void = fnVoid;
 globalThis.isset = isset;
 globalThis.none = () => "";
 globalThis.catchError = promise => promise.then(data => [undefined, data]).catch(err => [err]);
-globalThis.catchPromise = fn => globalThis.catchError(new Promise(fn));
+globalThis.catchPromise = async fn => await globalThis.catchError(new Promise(fn));
 
 // Mute JSON
 JSON.size = sb.size;

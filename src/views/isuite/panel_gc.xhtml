@@ -16,9 +16,9 @@
 		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
-		<script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script> 
-		<script type="text/javascript" src="/uae/resources/js/isuite/uae-box.min.js"></script> 
-		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script> 
+		<script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+		<script type="text/javascript" src="/uae/resources/js/isuite/lib/uae-box.min.js"></script>
+		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script>
 	</ui:define>
 
 	<ui:define name="title">Extraeco</ui:define>
@@ -70,11 +70,8 @@
 					action="#{ctrl.loadGc()}" styleClass="hide btn-xeco" title="Aplica el filtro sobre la consulta" />
 				<p:commandLink id="clearFilter" action="#{ctrl.initGc()}" styleClass="btn btn-warn" title="Inicializa el filtro a sus valores por defecto">
 					<i class="fa fa-broom btn-icon-left"></i>Limpiar Filtro</p:commandLink>
-				<!-- <a id="excel" href="#" download="descarga.xls" aria-disabled="false" title="Exportar tabla a formato EXCEL"
-					class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn-xeco" role="button">
-					<span class="ui-button-icon-left ui-icon ui-c fa fa-file-excel"></span>
-					<span class="ui-button-text ui-c">Exportar a Excel</span>
-				</a>-->
+				<a id="excel" href="#" download="descarga.xls" class="btn btn-green" title="Exportar tabla a formato EXCEL">
+					<i class="fa fa-file-excel btn-icon-left"></i>Exportar a Excel</a>
 			</div>
 		</h:form>
 

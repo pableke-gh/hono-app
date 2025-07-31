@@ -60,7 +60,6 @@ function Gastos() {
 
 	this.getGrupoDieta = () => gasto.getGrupoDieta(_gIban);
 	this.getTipoDieta = () => gasto.getTipoDieta(_gIban);
-	this.setTipoDieta = tipo => gasto.setTipoDieta(_gIban, tipo);
 	this.getCodigoIban = () => gasto.getCodigoIban(_gIban);
 	this.getSwift = () => gasto.getSwift(_gIban);
 	this.getObservaciones = () => gasto.getObservaciones(_gIban);
@@ -70,6 +69,9 @@ function Gastos() {
 	this.getPaisEntidad = () => gasto.getPaisEntidad(_gBanco);
 	this.getCodigoEntidad = () => gasto.getCodigoEntidad(_gBanco);
 	this.setBanco = data => { gasto.setBanco(_gBanco, data); return self; }
+
+	// save gasto km (matricula) e iban (grupo dieta = 1 o 2)
+	this.setPaso1 = (data, resumen) => self.setKm(data, resumen).setIban(data);
 
 	this.getNumPernoctas = () => _gastos.reduce((num, row) => (num + (gasto.isPernocta(row) ? row.num : 0)), 0);
 	this.filter = fn => { _gastos = _gastos.filter(fn); return self; }

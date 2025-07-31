@@ -4,7 +4,7 @@ import firma from "../../xeco/model/Firma.js";
 import solicitud from "../../xeco/model/Solicitud.js";
 import partidas from "./Partidas.js";
 
-solicitud.getUrl = path => "/uae/presto" + path;
+solicitud.getUrl = () => "/uae/presto";
 solicitud.getPartidas = () => partidas;
 solicitud.getPartida = partidas.getPartida;
 

@@ -1,6 +1,6 @@
 
-import coll from "../../../components/CollectionHTML.js";
 import tabs from "../../../components/Tabs.js";
+import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
@@ -13,7 +13,6 @@ import resumen from "../resumen.js";
 import gp5 from "./gasto.js";
 
 import rmaps from "../rutas/rutasMaps.js";
-import rgastos from "../rutas/rutasGasto.js"; 
 import xeco from "../../../xeco/xeco.js";
 
 function Gastos() {
@@ -25,35 +24,15 @@ function Gastos() {
 	this.setGastos = data => { gastos.setGastos(data); _tblGastos.render(gastos.getPaso5()).setChanged(); }
 	this.update = gastos => { gastos && self.setGastos(gastos); }
 
-	this.setKm = data => { gastos.setKm(data, rmaps.getResume()); return self; } 
+	/*this.setKm = data => { gastos.setKm(data, rmaps.getResume()); return self; } 
 	this.setSubvencion = data => { gastos.setSubvencion(data); return self; } 
 	this.setCongreso = data => { gastos.setCongreso(data); return self; } 
 	this.setAsistencia = data => { gastos.setAsistencia(data); return self; } 
 	this.setIban = data => { gastos.setIban(data); return self; } 
-	this.setTipoDieta = tipo => { gastos.setTipoDieta(tipo); return self; }
-	this.setBanco = data => { gastos.setBanco(data); return self; } 
-	this.save = () => { } // send gastos
-
-	this.validate = data => {
-		const valid = form.getValidators();
-		if (!_tblGastos.getProp("adjuntos") && (rmaps.getTotKm() > 250))
-			valid.addRequired("adjuntos", "errDocFacturas"); // validacion de 250 km
-		_tblGastos.setChanged();
-		return valid.isOk();
-	}
-
-	tabs.setAction("paso5", () => { form.validate(self.validate) && form.sendTab(window.rcPaso5); });
-	tabs.setAction("save5", () => { form.validate(self.validate) && form.sendTab(window.rcSave5, 5); });
-
-	// update tabs events
-	tabs.setInitEvent(12, rgastos.init);
-	tabs.setViewEvent(12, rgastos.view);
+	this.setBanco = data => { gastos.setBanco(data); return self; } */
 
 	this.init = () => {
 		gp5.init(); // init fields for gasto
-		const fnUnload = () => { i18n.confirm("remove") && _tblGastos.send(window.rcUnloadGasto); }; 
-		_tblGastos.set("#rcUnloadGasto", fnUnload); // set table action
-
 		const resume = _tblGastos.getResume();
 		gastos.getNumPernoctas = () => resume.noches; // redefine calc
 		iris.getNumRutasOut = () => rutas.getNumRutasUnlinked(); // call function after redefined by rutasMaps modeule
@@ -64,27 +43,45 @@ function Gastos() {
 			.set("is-ac", globalThis.none).set("is-irpf", globalThis.none); // no aplica para esta version
 	}
 
-	window.addGasto = (xhr, status, args) => {
-		if (!window.showTab(xhr, status, args, 5))
-			return false; // Server error
-		const data = coll.parse(args.gasto);
-		if (!data || !data.id || !data.fref) // valido campos obligatorios
-			return !form.showError("Error al adjuntar el gasto a la comunicación.");
-		gastos.push(data); // añado el nuevo gasto a lista de gastos
-		rmaps.update(coll.parse(args.rutas)); // actualizo el registro de rutas
-		_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos (paso 5)
+	const fnAfterFile = data => { // update view
+		rmaps.update(data.rutas); // actualizo el registro de rutas
 		resumen.setFactComisionado(); // update facturas a nombre del comisionado
 		gp5.reset(); // clear fields
 	}
-	window.unloadGasto = (xhr, status, args) => {
-		if (!window.showAlerts(xhr, status, args))
-			return false; // Server error
-		gastos.removeById(_tblGastos.getCurrentItem()); // remove gasto from array
-		rmaps.update(coll.parse(args.rutas)); // actualizo el registro de rutas
-		_tblGastos.flush(); // remove and reload table gastos (paso 5)
-		resumen.setFactComisionado(); // update facturas a nombre del comisionado
-		gp5.reset(); // clear fields
+	const fnUpload = data => {
+		data && api.setJSON(data).json("/uae/iris/gasto/upload").then(form.resolve).then(data => {
+			gastos.push(data.gasto); // añado el nuevo gasto a lista de gastos
+			_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos (paso 5)
+			fnAfterFile(data); // actualizo tablas y formulario
+		});
 	}
+	tabs.setAction("uploadGasto", () => {
+		const data = gp5.validate();
+		if (data) // trayectos interurbanos => tabla de rutas pendientes
+			gp5.isInterurbano() ? tabs.showTab(12) : fnUpload(data);
+	});
+	tabs.setAction("gasto-rutas", () => fnUpload(gp5.loadRutas()));
+
+	const fnPaso5 = tab => {
+		const valid = form.getValidators();
+		if (!_tblGastos.getProp("adjuntos") && (rmaps.getTotKm() > 250))
+			valid.addRequired("adjuntos", "errDocFacturas"); // validacion de 250 km
+		if (valid.isError()) // valido el formulario
+			return !form.setErrors(); // error => no hago nada
+		_tblGastos.setChanged();
+		form.setChanged().nextTab(tab);
+	}
+	tabs.setAction("paso5", () => fnPaso5());
+	tabs.setAction("save5", () => fnPaso5(5));
+
+	_tblGastos.set("#unloadGasto", gasto => { // set table action
+		const url = "/uae/iris/gasto/unload?id=" + gasto.id;
+		i18n.confirm("remove") && api.init().json(url).then(form.resolve).then(data => {
+			gastos.removeById(gasto); // remove gasto from array
+			_tblGastos.flush(); // remove and reload table gastos (paso 5)
+			fnAfterFile(data); // actualizo tablas y formulario
+		});
+	});
 }
 
 export default new Gastos();

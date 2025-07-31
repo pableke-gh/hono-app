@@ -23,8 +23,7 @@
 			</div>
 			<label class="ui-block grupo-gasto hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
-				<h:inputHidden id="tipoGasto" value="#{iris.gastos.tipoGasto}" />
-				<select id="tipo-gasto" class="ui-input ui-select ui-pf" tabindex="100">
+				<select id="tipoGasto" name="tipoGasto" class="ui-input ui-select ui-gasto" tabindex="100">
 					<option value=""></option>
 					<optgroup label="Factura a nombre del comisionado" class="form-refresh" data-refresh="is-gastos-pendientes">
 						<option value="9" class="form-refresh" data-refresh="is-noches-pendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
@@ -66,23 +65,21 @@
 			</label>
 			<label class="ui-block grupo-gasto hide">
 				<div for="impGasto" class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
-				<h:inputText id="impGasto" value="#{iris.gastos.impGasto}" maxlength="12" tabindex="101" styleClass="ui-input ui-float" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
+				<input type="text" id="impGasto" name="impGasto" maxlength="12" tabindex="101" class="ui-input ui-float ui-gasto" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg grupo-gasto hide">
 				<div class="label required form-refresh" data-refresh="text-render">@getTextGasto;:</div>
-				<h:inputText id="txtGasto" value="#{iris.gastos.txtGasto}" maxlength="300" tabindex="102" styleClass="ui-input ui-text"/>
+				<input type="text" id="txtGasto" name="txtGasto" maxlength="300" tabindex="102" class="ui-input ui-text ui-gasto"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block grupo-gasto hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.check.in.out']}" escape="false" />:</div>
-				<h:inputText id="fMinGasto" value="#{iris.gastos.FMinGasto}" tabindex="102" styleClass="ui-input ui-date ui-pernocta" title="Límite inferior del rango de fechas"/> ...
-				<h:inputText id="fMaxGasto" value="#{iris.gastos.FMaxGasto}" tabindex="103" styleClass="ui-input ui-date ui-pernocta" title="Límite superior del rango de fechas"/>
+				<input type="date" id="fMinGasto" name="fMinGasto" tabindex="102" class="ui-input ui-date ui-gasto" title="Límite inferior del rango de fechas"/> ...
+				<input type="date" id="fMaxGasto" name="fMaxGasto" tabindex="103" class="ui-input ui-date ui-gasto" title="Límite superior del rango de fechas"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn grupo-gasto hide">
-				<p:remoteCommand name="rcUnloadGasto" action="#{iris.gastos.unload()}" oncomplete="unloadGasto(xhr, status, args)" />
-				<p:remoteCommand name="rcUploadGasto" action="#{iris.gastos.upload()}" oncomplete="addGasto(xhr, status, args)" />
 				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 			</div>
 		</div>

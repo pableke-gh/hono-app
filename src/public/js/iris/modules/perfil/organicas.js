@@ -14,6 +14,7 @@ function Organicas() {
 
 	this.size = _tblOrganicas.size; 
 	this.isEmpty = _tblOrganicas.isEmpty;
+	this.isChanged = _tblOrganicas.isChanged;
 	this.getFinanciacion = organica.getFinanciacion;
 	this.getGrupoDieta = () => form.getval("#grupo-dieta"); 
 	this.getTipoDieta = organica.getTipoDieta;
@@ -23,11 +24,8 @@ function Organicas() {
 	this.reset = self.setOrganicas;
 
 	const fnAfterRender = resume => {
-		// 1º recalculo la financiacion
-		organica.afterRender(resume); // actualiza la financiacion
-		form.setStrval("#financiacion", self.getFinanciacion());
-		// 2º actualizo la información del crédito disp.
-		const org = _tblOrganicas.getFirst();
+		organica.afterRender(resume); // 1º recalculo la financiacion
+		const org = _tblOrganicas.getFirst(); // 2º actualizo la información del crédito disp.
 		if (org) { // actualizo los responsables de la organica
 			const responsables = " " + _tblOrganicas.getData().map(org => org.r).join(", ");
 			iris.getResponsables = () => responsables; // listado de responsables de las organicas
@@ -36,15 +34,6 @@ function Organicas() {
 		else
 			iris.getImpCd = iris.getResponsables = globalThis.void;
 		actividad.update(); // 3º update actividad + tramite
-		if (_tblOrganicas.isChanged()) // render manual del usuario
-			xeco.refresh(); // 4º actualizo el perfil de la solicitud
-	}
-
-	this.save = () => {
-		if (_tblOrganicas.isChanged())
-			iris.set("organicas", _tblOrganicas.getData());
-		_tblOrganicas.setChanged(); // changed saved
-		return self
 	}
 
 	this.init = () => {

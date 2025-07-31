@@ -10,8 +10,8 @@
 
 	<ui:define name="metadata">
 		<f:metadata>
-            <f:viewParam name="lang" value="#{uae.lang}" />
-            <f:viewAction action="#{uae.initLang()}" />
+            <f:viewParam name="lang" value="#{buzon.lang}" />
+            <f:viewAction action="#{buzon.initLang()}" />
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
@@ -26,21 +26,30 @@
 	<ui:define name="semilla"><li class="active">UAE</li></ui:define>
 
 	<ui:define name="body">
-		<ui:include src="./msgs.xhtml"></ui:include>
+		<ui:include src="./parts/msgs.xhtml"></ui:include>
 
-		<!-- Organicas ancladas y recientes -->
-		<div id="tab-0" class="tab-content active">
-			<ui:include src="./organicas.xhtml"></ui:include>
-		</div>
+		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+			<!-- Organicas ancladas y recientes -->
+			<ui:include src="./tabs/organicas.xhtml"></ui:include>
 
-		<!-- Subida de facturas del tab1 al tab6 -->
-		<h:form id="xeco-factura" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
-			<ui:include src="./facturas.xhtml"></ui:include>
+			<!-- Subida de facturas del tab1 al tab6 -->
+			<ui:include src="./tabs/facturas.xhtml"></ui:include>
 		</h:form>
 
 		<!-- gastion de permisos tab10 -->
 		<div id="tab-10" class="tab-content">
-			<ui:include src="./usuarios.xhtml"></ui:include>
+			<ui:include src="./tabs/usuarios.xhtml"></ui:include>
+		</div>
+
+		<!-- listado de organicas -->
+		<div id="tab-list" class="tab-content">
+			<form id="xeco-filter" action="/uae/buzon"></form>
+			<table class="tb-xeco"></table>
+		</div>
+
+		<!-- vinculación con uxxiec -->
+		<div id="tab-uxxiec" class="tab-content" data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}" data-admin="#{presto.user.adminFlag}">
+			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 	</ui:define>
 </ui:composition>

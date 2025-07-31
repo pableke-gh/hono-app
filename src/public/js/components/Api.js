@@ -43,19 +43,22 @@ function Api() {
 	this.setPdf = () => self.init().setContentType(mt.pdf); // pdf type
 	this.setZip = () => self.init().setContentType(mt.zip); // zip type
 
-	this.fetch = async (url, params) => {
-		self.setContentType(mt.json); // set content type header
+	const fnFetch = (url, params) => {
 		const query = new URLSearchParams(params); // query params
 		const urlQueries = (query.size > 0) ? ("?" + query.toString()) : "";
-		const res = await globalThis.fetch(url + urlQueries, OPTS); // send call
+		return globalThis.fetch(url + urlQueries, OPTS); // send call
+	}
+	this.fetch = async (url, params) => {
+		self.setContentType(mt.json); // set content type header
+		const res = await fnFetch(url, params); // send call
 		// avoid error when json response is null: (SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input)
 		return res.ok ? res.json().catch(console.error) : fnError(res); // return promise
 	}
 
-	this.text = async url => {
+	this.text = async (url, params) => {
 		alerts.loading(); // show loading indicator
 		self.setContentType(mt.text); // set content type header
-		const res = await globalThis.fetch(url, OPTS); // send api call
+		const res = await fnFetch(url, params); // send call
 		const promise = res.ok ? res.text() : fnError(res); // get promise
 		return promise.finally(alerts.working); // Add default finally functions to promise
 	}
