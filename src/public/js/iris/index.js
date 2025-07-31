@@ -1,6 +1,5 @@
 
 import coll from "../components/CollectionHTML.js";
-import nav from "../components/Navigation.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
 
@@ -56,7 +55,7 @@ coll.ready(() => {
 
 	/*********** Extra list actions ***********/
 	list.getTable().set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id).then(iris.view))); // set table action
-	list.getTable().set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(nav.html)); // html report
+	list.getTable().set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // html report
 	tabs.setAction("rptFinalizar", () => list.getTable().invoke("#rptFinalizar")); // set tab action
 
 	/*********** Listado ISU - Justifi OTRI ***********/

@@ -16,11 +16,6 @@ function Navigation() {
 	this.isStatic = pathname => pathname.endsWith(".html");
 	this.isDynamic = pathname => !self.isStatic(pathname);
 	this.redirect = pathname => { window.location.href = pathname; }
-	this.html = data => { // open a new html tab
-		const wnd = window.open("about:blank", "_blank");
-		wnd.document.write(data); // parse all html
-		wnd.document.close(); // end write
-	}
 
 	this.setTheme = () => self.isDarkMode() ? self.setDarkMode() : self.setLightMode();
 	this.toggleMode = () => self.isDarkMode() ? self.setLightMode() : self.setDarkMode();

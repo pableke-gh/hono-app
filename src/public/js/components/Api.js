@@ -85,6 +85,21 @@ function Api() {
 		const data = await (type.includes(mt.json) ? res.json() : res.text());
 		return Promise.resolve(data).finally(alerts.working);
 	}
+
+	this.open = (url, err) => { // open external resource
+		url ? window.open(url, "_blank") : alerts.showError(err || "errReport");
+	};
+	this.html = data => { // open a new html tab
+		const wnd = window.open("about:blank", "_blank");
+		wnd.document.write(data); // parse all html
+		wnd.document.close(); // end write
+	}
+	this.download = (objectURL, name) => {
+		const link = document.createElement("a");
+		link.href = objectURL; // blob source
+		link.download = name;
+		link.click();
+	}
 }
 
 export default new Api();

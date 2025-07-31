@@ -26,8 +26,7 @@ coll.ready(() => { // on load view
 		tRecientes.render(data.filter(buzon.isReciente));
 		fnPaginate(form.getval("#pagina")); // current page size
 	}
-	const fnReport = url => (url ? window.open(url) : form.showError("No se ha podido abrir el informe seleccionado."));
-	const fnFetchReport = (ut, org) => api.init().text(`/uae/buzon/report?ut=${ut}&org=${org}`).then(fnReport);
+	const fnFetchReport = (ut, org) => api.init().text(`/uae/buzon/report?ut=${ut}&org=${org}`).then(api.open);
 	const fnLoadBuzon = () => {
 		fnLoadTables(tAncladas.getData().concat(tRecientes.getData())); // reload all tables
 		form.showOk("saveOk"); // datos actualizados correctamente

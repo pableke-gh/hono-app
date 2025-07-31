@@ -56,9 +56,8 @@ function List() {
 		const fnFirmar = id => api.init().json(url + "/firmar?id=" + id).then(self.loadFirmas);
 		tblSolicitudes.set("#firmar", data => (i18n.confirm("msgFirmar") && fnFirmar(data.id)));
 
-		const fnReport = url => (url ? window.open(url) : form.showError("No se ha podido abrir el informe seleccionado."));
-		tblSolicitudes.set("#report", data => api.init().text(url + "/report?id=" + data.id).then(fnReport)); // call report service
-		tblSolicitudes.set("#pdf", data => api.setPdf().blob(url + "/pdf?id=" + data.id).then(fnReport)); // report template service 
+		tblSolicitudes.set("#report", data => api.init().text(url + "/report?id=" + data.id).then(api.open)); // call report service
+		tblSolicitudes.set("#pdf", data => api.setPdf().blob(url + "/pdf?id=" + data.id).then(api.open)); // report template service 
 
 		tblSolicitudes.set("#emails", data => api.init().json(url + "/emails?id=" + data.id).then(form.showAlerts)); // admin test email
 		tblSolicitudes.set("#reactivar", data => (i18n.confirm("msgReactivar") && api.init().json(url + "/reactivar?id=" + data.id).then(model.view))); // reactivate call

@@ -1,6 +1,6 @@
 
 import coll from "./CollectionHTML.js";
-import stream from "./Stream.js";
+import api from "./Api.js";
 
 // Classes Configuration
 const ALERT_ACTIVE = "active";
@@ -79,11 +79,11 @@ function Alerts() {
 		return !self.showError(msg).working(); // show error
 	}
 	window.showAlerts = (xhr, status, args) => self.isLoaded(xhr, status, args) && self.showAlerts(coll.parse(args?.msgs)); // show all messages
-	window.openUrl = (xhr, status, args, name) => { window.showAlerts(xhr, status, args) && stream.redir(args?.url, name || args.name); }
-	window.openHtml = (xhr, status, args, title) => { window.showAlerts(xhr, status, args) && stream.html(args.data, title || args.title); }
-	window.openZip = (xhr, status, args, name) => { window.showAlerts(xhr, status, args) && stream.zip(args.data, name || args.name); }
+	window.openUrl = (xhr, status, args) => { window.showAlerts(xhr, status, args) && api.open(args?.url); }
+	//window.openHtml = (xhr, status, args, title) => { window.showAlerts(xhr, status, args) && stream.html(args.data, title || args.title); }
+	//window.openZip = (xhr, status, args, name) => { window.showAlerts(xhr, status, args) && stream.zip(args.data, name || args.name); }
 	//window.openBlob = (xhr, status, args, type) => { window.showAlerts(xhr, status, args) && stream.blob(args.data, type); }
-	window.openPdf = (xhr, status, args) => { window.showAlerts(xhr, status, args) && stream.pdf(args.data); }
+	//window.openPdf = (xhr, btatus, args) => { window.showAlerts(xhr, status, args) && stream.pdf(args.data); }
 }
 
 export default new Alerts();
