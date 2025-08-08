@@ -8,7 +8,8 @@ function Dieta() {
 	const TIPO_DIETA = 7; // tipo de gasto = dieta
 
 	this.getTipo = () => TIPO_DIETA; // dieta / muntencion = 7
-	this.getRegion = dieta => paises.getRegion(dieta.cod); // nombre del pais de la dieta
+	this.getRegionName = cod => paises.getRegion(cod); // nombre del pais de la dieta
+	this.getRegion = dieta => self.getRegionName(dieta.cod); // nombre del pais de la dieta
 	this.getImpDia = dieta => dieta.imp2;
 	this.getDieta = dieta => dieta.imp1;
 

@@ -107,10 +107,10 @@ function ListIsu() {
 
 			row.impTrans = resumen.getImpTrans();
 			row.noches = row.impNoche = "";
-			pernoctas.getPernoctasByPais().forEach((value, key) => {
-				const pais = ", " + key; // current name country/region
-				row.noches += pais + ": " + pernoctas.getTotalNoches(value) + " noches ";
-				row.impNoche += pais + ": " + i18n.isoFloat(pernocta.getImpNoche(value[0])) + " €/noche "; 
+			pernoctas.getPernoctasByPais().forEach((value, key) => { // array de pernoctas por pais (ES, FR, ...)
+				const pais = ", " + key; // current name country / region
+				row.noches += pais + ": " + pernoctas.getTotalNoches(value) + " noches "; // numero de noches
+				row.impNoche += pais + ": " + i18n.isoFloat(pernocta.getImpNoche(value[0])) + " €/noche "; // importe por noche
 			});
 			row.noches = row.noches.substring(2);
 			row.impNoche = row.impNoche.substring(2);
@@ -118,7 +118,7 @@ function ListIsu() {
 
 			row.dietas = row.impDieta = "";
 			dietas.getDietasByPais().forEach((value, key) => { // array de dietas por pais (ES, FR, ...)
-				const pais = ", " + dieta.getRegion(value[0] /*key*/); // current name country / region
+				const pais = ", " + dieta.getRegionName(key); // current name country / region
 				row.dietas += pais + ": " + i18n.isoFloat1(dietas.getTotalDias(value)) + " dietas "; // numero de dietas
 				row.impDieta += pais + ": " + i18n.isoFloat(dieta.getImpDia(value[0])) + " €/día "; // importe por dieta
 			});
