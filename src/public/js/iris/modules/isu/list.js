@@ -117,10 +117,10 @@ function ListIsu() {
 			row.impPern = pernoctas.getImporte();
 
 			row.dietas = row.impDieta = "";
-			dietas.getDietasByPais().forEach((value, key) => {
-				const pais = ", " + dieta.getRegion(value[0]); // current name country/region
-				row.dietas += pais + ": " + i18n.isoFloat1(dietas.getTotalDias(value)) + " dietas ";
-				row.impDieta += pais + ": " + i18n.isoFloat(dieta.getImpDia(value[0])) + " €/día ";
+			dietas.getDietasByPais().forEach((value, key) => { // array de dietas por pais (ES, FR, ...)
+				const pais = ", " + dieta.getRegion(value[0] /*key*/); // current name country / region
+				row.dietas += pais + ": " + i18n.isoFloat1(dietas.getTotalDias(value)) + " dietas "; // numero de dietas
+				row.impDieta += pais + ": " + i18n.isoFloat(dieta.getImpDia(value[0])) + " €/día "; // importe por dieta
 			});
 			row.dietas = row.dietas.substring(2);
 			row.impDieta = row.impDieta.substring(2);
