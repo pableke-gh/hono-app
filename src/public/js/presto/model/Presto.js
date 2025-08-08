@@ -76,7 +76,8 @@ solicitud.validate = data => {
 	}
 
 	const imp = data.imp ?? 0; // los importes pueden ser nulos segun el tipo de presto
-	const cd = solicitud.isAnt() ? imp : (data.cd ?? 0); // los anticipos no validan el CD
+	const notValidateCd = solicitud.isAnt() || solicitud.isSubsanable(); // anticipos / subsanaciones no validan el CD
+	const cd = notValidateCd ? imp : (data.cd ?? 0); // validación del crédito disponible
 	if (imp > cd)
 		valid.addError("imp", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
 	if (solicitud.isPartidaDec() && (partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
