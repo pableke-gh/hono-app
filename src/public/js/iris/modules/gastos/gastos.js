@@ -74,8 +74,12 @@ function Gastos() {
 	tabs.setAction("paso5", () => fnPaso5());
 	tabs.setAction("save5", () => fnPaso5(5));
 
-	_tblGastos.set("#unloadGasto", gasto => { // set table action
-		const url = "/uae/iris/gasto/unload?id=" + gasto.id;
+	_tblGastos.set("#adjunto", gasto => { // set table action
+		const url = "/uae/iris/download?id=" + gasto.cod; // uuid file
+		api.setBin().blob(url).then(objectURL => api.download(objectURL, gasto.nombre));
+	});
+	_tblGastos.set("#unload", gasto => { // set table action
+		const url = "/uae/iris/unload?id=" + gasto.id;
 		i18n.confirm("remove") && api.init().json(url).then(form.resolve).then(data => {
 			gastos.removeById(gasto); // remove gasto from array
 			_tblGastos.flush(); // remove and reload table gastos (paso 5)

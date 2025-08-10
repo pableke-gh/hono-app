@@ -142,8 +142,8 @@ function Gasto() {
 
 	this.row = (data, status, resume) => {
 		self.rowCalc(data, resume);
-		const link = `<a href="${data.fref}" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>`;
-		const remove = iris.isEditable() ? `<a href="#unloadGasto" class="row-action"><i class="fas fa-times action text-red resize"></i></a>` : "";
+		const link = `<a href="#adjunto" target="_blank" class="far fa-paperclip action resize row-action" title="Ver adjunto"></a>`;
+		const remove = iris.isEditable() ? `<a href="#unload" class="row-action"><i class="fas fa-times action text-red resize"></i></a>` : "";
 
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>

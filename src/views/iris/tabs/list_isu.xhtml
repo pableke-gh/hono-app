@@ -13,50 +13,43 @@
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<h:inputText id="organica-isu" value="#{iris.isu.organica}" styleClass="ui-input ui-autocomplete" tabindex="1" />
-				<input type="hidden" name="id"/>
+				<input type="search" id="org-isu" name="org-isu" class="ui-input ui-autocomplete" tabindex="1" />
+				<input type="hidden" name="organica"/>
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</label>
-			<label class="ui-block">
+			<div id="ejercicios" class="ui-block multiselect">
 				<div class="label required">Ejercicios:</div>
-				<p:selectCheckboxMenu id="filtro-ej-isu" value="#{iris.isu.ejercicio}"
-						label="Ejercicios" filter="true" filterMatchMode="startsWith" multiple="true" emptyLabel="Seleccione Ejercicio..." updateLabel="true"
-						styleClass="ui-select ui-filter" style="min-height: 36px" panelStyle="width: 16rem" tabindex="2" title="#{msg['tit.ejercicio']}">
-					<f:selectItems value="#{iris.isu.ejercicios}" />
-				</p:selectCheckboxMenu>
-			</label>
+				<button class="ui-input ui-select" tabindex="2"></button>
+				<ul class="options"></ul>
+			</div>
 		</div>
 
 		<div class="navbar">
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="btn-icon-left fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 			<a href="#tab-action-listIsu" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
-			<p:remoteCommand name="rcListIsu" action="#{iris.isu.list()}" oncomplete="loadFiltroIsu(xhr, status, args)" />
 		</div>
-
-		<table id="tbl-isu" class="tb-xeco table-xs">
-			<thead>
-				<tr>
-					<th class="hide-sm">Nº</th>
-					<th>ID</th>
-					<th>Nº JG</th>
-					<th>Nº Factura</th>
-					<th>NIF</th>
-					<th>Tercero</th>
-					<th>Total JG</th>
-					<th>F. Emisión</th>
-					<th class="hide-sm">Descripción</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-			<tfoot></tfoot>
-		</table>
-
-		<p:remoteCommand name="rcViewIsu" action="#{iris.isu.view()}" oncomplete="showTab(xhr, status, args, 'formIsu')" />
-		<p:remoteCommand name="rcExcel" action="#{iris.isu.excel()}" oncomplete="xlsx(xhr, status, args)" />
 	</h:form>
+
+	<table id="tbl-isu" class="tb-xeco table-xs">
+		<thead>
+			<tr>
+				<th class="hide-sm">Nº</th>
+				<th>ID</th>
+				<th>Nº JG</th>
+				<th>Nº Factura</th>
+				<th>NIF</th>
+				<th>Tercero</th>
+				<th>Total JG</th>
+				<th>F. Emisión</th>
+				<th class="hide-sm">Descripción</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot></tfoot>
+	</table>
 
 	<div class="navbar">
 		<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="100">

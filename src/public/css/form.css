@@ -115,44 +115,46 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 /* Inputs error styles */
 
 /* Autocomplete */
-.autocomplete { position: relative; }
-.autocomplete label { display: block; }
-.autocomplete .ui-autocomplete { top: auto; left: auto; }
-.autocomplete .results {
-	width: 100%; /* same width than ui-input */
-	position: absolute; margin: 0; padding: 0; z-index: 3;
-	font-weight: normal !important; color: black; background-color: #f7f7f7;
-}
-.autocomplete .results.active { border: solid 1px silver; animation: none; }
-.autocomplete li { padding: 3px; list-style: none; cursor: pointer; }
-.autocomplete li:hover, .autocomplete li.active {
-    color: white; background-color: #2196f3; animation: none;
-}
-
 input[type="search"]::-webkit-search-cancel-button { filter: invert(0); }
 input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); cursor: pointer; }
-/* Autocomplete */
+.autocomplete {
+	position: relative;
 
-/* Multiselect */
-.multiselect { position: relative; }
-.multiselect > .label { cursor: default; }
-.multiselect > button { display: flex; align-items: center; }
-.multiselect > button span.checked {
-    margin: 0 2px; padding: 0 3px;
-    border: solid 1px gold; border-radius: 5px;
-    color: black; background-color: yellow;
+	label { display: block; }
+	.ui-autocomplete { top: auto; left: auto; }
+	.results {
+		width: 100%; /* same width than ui-input */
+		position: absolute; margin: 0; padding: 0; z-index: 3;
+		font-weight: normal !important; color: black; background-color: #f7f7f7;
+	}
+	.results.active { border: solid 1px silver; }
+	li:hover, li.active { color: white; background-color: #2196f3; }
+	li { padding: 3px; list-style: none; cursor: pointer; transition: background-color 0.3s, color 0.3s; }
 }
-.multiselect > button [data-index] { cursor: pointer; }
 
-.multiselect > .options {
-    position: absolute; top: calc(100%); display: none; margin: 0; padding: 0;
-    color: black; border: solid 1px gray; background-color: white;
-    text-wrap: nowrap; list-style: none; cursor: pointer;
+.multiselect {
+	position: relative; min-width: 140px;
+
+	.icon { margin: 0 6px; }
+	.label { cursor: default; }
+	button { display: flex; justify-content: center; align-items: center; }
+	button [data-index] { cursor: pointer; }
+	button > .icon { margin-left: auto; }
+	button span.checked {
+		margin: 0 3px; padding: 0 3px;
+		border: solid 1px gold; border-radius: 5px;
+		color: black; background-color: yellow;
+	}
+
+	.options {
+		position: absolute; top: calc(100%); display: none; margin: 0; padding: 0;
+		color: black; border: solid 1px gray; background-color: white;
+		text-wrap: nowrap; list-style: none; cursor: pointer;
+	}
+	.options.active { display: block; min-width: 100%; z-index: 3; }
+	.options li:hover { color: white; background-color: #2196f3; }
+	.options li { padding: 3px; white-space: nowrap; transition: background-color 0.3s, color 0.3s; }
 }
-.options.active { display: block; min-width: 100%; z-index: 3; }
-.options li:hover { color: white; background-color: #2196f3; animation: none; }
-.multiselect .icon { margin: 0 6px; }
-/* Multiselect */
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 575.98px) {

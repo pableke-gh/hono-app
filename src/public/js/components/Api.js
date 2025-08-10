@@ -42,6 +42,7 @@ function Api() {
 	this.setForm = fd => self.init().setPost().setBody(fd); // param fd = FormData instance
 	this.setPdf = () => self.init().setContentType(mt.pdf); // pdf type
 	this.setZip = () => self.init().setContentType(mt.zip); // zip type
+	this.setBin = () => self.init().setContentType(mt.bin); // binary type
 
 	const fnFetch = (url, params) => {
 		const query = new URLSearchParams(params); // query params
@@ -66,9 +67,9 @@ function Api() {
 		alerts.loading(); // show loading indicator
 		return self.fetch(url, params).finally(alerts.working);
 	}
-	this.blob = async url => {
+	this.blob = async (url, params) => {
 		alerts.loading(); // show loading indicator
-		const res = await globalThis.fetch(url, OPTS); // send api call
+		const res = await fnFetch(url, params); // send call
 		const objectURL = res.ok ? URL.createObjectURL(await res.blob()) : null;
 		// then, catch and finally execute syncronously => revoke the object URL to free up memory at the end
 		const fnFinally = () => setTimeout(() => URL.revokeObjectURL(objectURL), 1); // force last execution

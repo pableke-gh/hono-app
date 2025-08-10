@@ -6,7 +6,6 @@ function Otri() {
 	const currency = "#,##0.00";
 
 	this.row = (data, status, resume) => {
-		//todo: href="#" => href="#rcViewIsu"
 		return `<tr class="tb-data">
 			<td data-cell="Nº" class="text-center hide-sm">${status.count}</td>
 			<td data-cell="ID"><a href="#" class="row-action">${data.cod}</a></td>
@@ -23,7 +22,7 @@ function Otri() {
 
 	this.tfoot = resume => `<tr><td colspan="99">Filas: ${resume.size}</td></tr>`;
 	this.getTable = () => ({ onRender: self.row, onFooter: self.tfoot });
-	this.getAutocomplete = () => ({ minLength: 4, render: item => item.o + " - " + item.dOrg, select: item => item.id });
+	this.getAutocomplete = () => ({ minLength: 4, render: item => item.o + " - " + item.dOrg, select: item => item.o });
 
 	this.xlsx = (worksheet, data, i) => {
 		const row = i + 2; // Titles row = 1

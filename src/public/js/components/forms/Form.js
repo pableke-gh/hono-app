@@ -193,8 +193,10 @@ export default function(form, opts) {
 				data[el.name].push(el.value); // Array type
 				return;
 			}
-			if (isSelect(el))
-				data[el.name + "Option"] = dom.getOptionText(el);
+			/*if (isSelect(el) && el.multiple) { // Array type
+				//data[el.name + "Option"] = dom.getOptionText(el);
+				data[el.name] = el.selectedOptions.map(opt => opt.value);
+			}*/
 			data[el.name] = fnParseValue(el);
 		});
 		return data;

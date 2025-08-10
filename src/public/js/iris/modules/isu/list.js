@@ -1,5 +1,6 @@
 
 import Form from "../../../components/forms/Form.js";
+import Table from "../../../components/Table.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
@@ -14,7 +15,7 @@ import pernocta from "../../model/gasto/Pernocta.js";
 import dieta from "../../model/gasto/Dieta.js";
 import iris from "../../model/Iris.js";
 
-import formIsu from "./form.js";
+//import formIsu from "./form.js";
 import rmaps from "../rutas/rutasMaps.js";
 import rvp from "../rutas/rutasVehiculoPropio.js"; 
 import pernoctas from "../gastos/pernoctas.js";
@@ -24,41 +25,28 @@ import xeco from "../../../xeco/xeco.js";
 
 function ListIsu() {
 	const form = new Form("#xeco-filtro-isu");
-	const tblIsu = form.setTable("#tbl-isu", otri.getTable());
+	const tblIsu = new Table(form.getForm().next("table"), otri.getTable());
+	const acOrganicas = form.setAutocomplete("#org-isu", otri.getAutocomplete());
+	acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
+	const ejercicios = form.setMultiSelectCheckbox("#ejercicios");
+	ejercicios.setLabels([ 2025, 2024, 2023, 2022, 2021, 2020 ], [ 2025 ]);
 
 	this.init = () => {
-		const acOrganicas = form.setAutocomplete("#organica-isu", otri.getAutocomplete());
-		acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
 		tblIsu.render(); // render empty table
 	}
 
 	this.view = () => {
 	}
 
-	const fnValidate = data => {
-		const valid = i18n.getValidators();
-		valid.isKey("organica-isu", data.id, "Debe seleccionar una orgánica y al menos un ejercicio para la consulta.");
-		return valid.isOk();
-	}
-
-	tabs.setInitEvent("formIsu", formIsu.init);
-	tabs.setAction("listIsu", () => form.validate(fnValidate) && window.rcListIsu());
-	tabs.setAction("excel", () => form.validate(fnValidate) && window.rcExcel());
-
-	window.loadFiltroIsu = (xhr, status, args) => {
-		window.showTab(xhr, status, args, "listIsu") && tblIsu.render(JSON.read(args.data));
-	}
-	window.xlsx = (xhr, status, args) => {
-		if (!window.showAlerts(xhr, status, args))
+	const fnExcel = data => {
+		if (!tabs.showAlerts(data))
 			return false; // Server error
-		if (!args.data) // no data loaded
-			return !form.showError("No se han encontrado IRIS asociados a la orgánica: " + form.getval("#organica-isu"));
 
 		// XLSX service
 		const sheet = "listado-isu";
 		const keys = [ // column order
 			"ej", "cod", "jg", "fact", "nif", "ter", "impJg", "fJg", "descJg", 
-			"fact", "int", "vinc", "gasto", "proy",
+			"fact", "interesado", "vinc", "gasto", "proy",
 			"dest", "pais", "itinerario", "start", "end", 
 			"loc", "impLoc", "km", 
 			"vp", "impKm",
@@ -77,18 +65,15 @@ function ListIsu() {
 			"TOTAL Manutención", "TOTAL (Locomoción+Alojamiento+Manutención)", "Observaciones (11)"
 		];
 
-		const data = JSON.parse(args.data);
 		const formIrse = xeco.getForm().resetCache();
-		const aux = data.map(row => {
+		const aux = data.iris.map((row, i) => {
 			iris.setData(row); // current iris
-			rmaps.setRutas(JSON.parse(row.rutas));
-			gastos.setGastos(JSON.parse(row.gastos));
+			Object.assign(row, tblIsu.getItem(i)); // add row data from isu table
+			rmaps.setRutas(data.rutas.filter(ruta => (ruta.fk = row.id)));
+			gastos.setGastos(data.gastos.filter(gasto => (gasto.fk = row.id)));
 			resumen.setResumen(); // paso 6 = resumen
-			delete row.rutas;
-			delete row.gastos;
 
 			row.fact = row.jg;
-			//row.int = row.ter; //nombre del interesado puede no coincidir ocn el tercero del JG
 			row.vinc = formIrse.getOptionTextByValue('select[name="vinc"]', gastos.getVinc());
 			row.gasto = formIrse.getOptionTextByValue('select[name="tipoSubv"]', gastos.getTipoSubv());
 			row.proy = gastos.getJustifi();
@@ -133,6 +118,17 @@ function ListIsu() {
 		xlsx.setValues(sheet, aux, otri.xlsx).setTitles(sheet, titles);
 		xlsx.download("Informe ISU.xlsx"); // download XLSX file
 	}
+
+	const fnValidate = data => {
+		const valid = i18n.getValidators();
+		const msg = "Debe seleccionar una orgánica y al menos un ejercicio para la consulta.";
+		ejercicios.isEmpty() && valid.addRequired("ejercicios", msg);
+		valid.size20("org-isu", data.organica, msg);
+		return valid.isOk();
+	}
+	//tabs.setInitEvent("formIsu", formIsu.init);
+	tabs.setAction("listIsu", () => form.validate(fnValidate) && api.init().json("/uae/iris/isu/list", { ej: ejercicios.getValues(), org: acOrganicas.getValue() }).then(tblIsu.render));
+	tabs.setAction("excel", () => form.validate(fnValidate) && api.init().json("/uae/iris/isu/excel", { id: tblIsu.getData().map(row => row.irse) }).then(fnExcel));
 }
 
 export default new ListIsu();

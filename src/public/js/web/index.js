@@ -6,7 +6,7 @@ import tabs from "../components/Tabs.js";
 import sb from "../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
 
-import maps from "./modules/maps.js";
+//import maps from "./modules/maps.js";
 import xlsx from "../services/xlsx.js";
 
 function fnIndex() {
@@ -46,7 +46,7 @@ function fnIndex() {
     /* Multi select options */
     const options = formPokemon.setMultiSelectCheckbox(".multi-options", { name: "animales" });
     const animales = [ { value: 1, label: "Perro" }, { value: 2, label: "Gato" }, { value: 3, label: "Girafa" }, { value: 4, label: "Leon" }, { value: 5, label: "Tiburón" } ];
-    options.setItems(animales);
+    options.setData(animales).setValues([1, 3, 5]); // set values to check
 
     /********************* EXCEL *********************/
 	$1('[href="#download"]').setClick(ev => {
@@ -75,7 +75,7 @@ function fnIndex() {
 		ev.preventDefault();
 	});
 
-	tabs.setInitEvent("maps", maps.init);
+	//tabs.setInitEvent("maps", maps.init);
 }
 
 // Register event on page load and export default handler
