@@ -1,4 +1,5 @@
 
+import sb from "../../../components/types/StringBox.js";
 import Form from "../../../components/forms/Form.js";
 import Table from "../../../components/Table.js";
 import tabs from "../../../components/Tabs.js";
@@ -29,7 +30,7 @@ function ListIsu() {
 	const acOrganicas = form.setAutocomplete("#org-isu", otri.getAutocomplete());
 	acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
 	const ejercicios = form.setMultiSelectCheckbox("#ejercicios");
-	ejercicios.setLabels([ 2025, 2024, 2023, 2022, 2021, 2020 ], [ 2025 ]);
+	ejercicios.setLabels(sb.getEjercicios(), [ 2025 ]);
 
 	this.init = () => {
 		tblIsu.render(); // render empty table
@@ -122,7 +123,7 @@ function ListIsu() {
 	const fnValidate = data => {
 		const valid = i18n.getValidators();
 		const msg = "Debe seleccionar una orgánica y al menos un ejercicio para la consulta.";
-		ejercicios.isEmpty() && valid.addRequired("ejercicios", msg);
+		ejercicios.isEmpty() && ejercicios.setError(msg);
 		valid.size20("org-isu", data.organica, msg);
 		return valid.isOk();
 	}

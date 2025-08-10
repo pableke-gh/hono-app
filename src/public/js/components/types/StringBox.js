@@ -98,6 +98,14 @@ function StringBox() {
 			return ((a < b) ? -1 : ((a > b) ? 1 : 0));
 		return globalThis.isset(a) ? -1 : 1; //nulls last
 	}
+	this.getEjercicios = num => {
+		num = num || 6; // default number of years
+		const ejercicios = []; // array of years
+		const year = +self.getYear();
+		for (let i = 0; i < num; i++)
+			ejercicios.push(year - i);
+		return ejercicios;
+	}
 
 	// Chunk string in multiple parts
 	this.test = (str, re) => re.test(str) ? str : null;

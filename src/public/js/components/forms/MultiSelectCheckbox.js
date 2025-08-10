@@ -7,12 +7,13 @@ export default function(container, opts) {
     opts.activeClassName = opts.activeClassName || "active";
     opts.checkedClassName = opts.checkedClassName || "checked";
 
-    opts.msgEmptyOption = opts.msgEmptyOption || "Select options...";
+    opts.msgEmptyOption = opts.msgEmptyOption || "selectOptions";
     opts.emptyOption = opts.emptyOption || `<span>${i18n.get(opts.msgEmptyOption)}</span>`;
 
     opts.dropdownIcon = opts.dropdownIcon || '<i class="fas fa-chevron-down icon"></i>';
     opts.checkedIcon = opts.checkedIcon || '<i class="far fa-square icon"></i>';
     opts.uncheckedIcon = opts.uncheckedIcon || '<i class="far fa-check-square icon"></i>';
+	opts.inputErrorClass = opts.inputErrorClass || "ui-error"; // Input error styles
 
     opts.onChange = opts.onChange || globalThis.void; // fired on change list
     opts.onReset = opts.onReset || globalThis.void; // fired on reset list
@@ -54,10 +55,12 @@ export default function(container, opts) {
     // Handlers
     this.getData = () => _data;
     this.setData = data => { _data = data; return self; };
-    this.getChecked = () => _data.filter(item => item.checked);
-    this.getSelected = self.getChecked; // sinonym for getChecked
-    this.size = () => (_data ? self.getChecked().length : 0); // get number of checked items
-    this.isEmpty = () => (self.size() === 0); // check if no items selected
+    this.size = () => (_data ? _data.length : 0); // get number of items
+    this.getChecked = () => (_data ? _data.filter(item => item.checked) : []); // get checked items
+    this.getSelected = self.getChecked; // sinonym for getChecked items
+    this.getNumChecked = () => self.getChecked().length; // get number of checked items
+    this.getNumSelected = self.getNumChecked; // sinonym for getNumChecked items
+    this.isEmpty = () => (self.getNumChecked() === 0); // check if no items selected
     this.getValues = () => self.getChecked().map(item => item.value); // get values from checked items
 	this.setValues = values => { // set values from array
 		_data.forEach(item => { item.checked = values.includes(item.value); }); // set checked
@@ -92,6 +95,19 @@ export default function(container, opts) {
 		const fnValues = label => ({ value: label, label, checked: values.includes(label) });
 		_data = labels.map(values ? fnValues : fnDefault); // build items
 		return fnRenderItems(); // render field
+	}
+
+	this.setDefault = () => {
+		button.classList.remove(opts.inputErrorClass); // remove error class
+		options.nextElementSibling.innerHTML = ""; // remove error message
+		return self;
+	}
+	this.setError = (msg, msgtip) => {
+		msgtip = msgtip || "errRequired"; // default error message
+		button.classList.add(opts.inputErrorClass); // add error class
+		options.nextElementSibling.innerHTML = i18n.get(msgtip); // set error message
+		i18n.getValidators().addError(opts.name, msgtip, msg); // add error to validators
+		return self;
 	}
 
 	// Events and handlers

@@ -42,6 +42,7 @@ export default {
 	reactivarOk: "Registro reactivado correctamente",
 	notFound: "Element not found!",
 	noResults: "No results founds",
+	selectOptions: "Select options...",
 	selectOption: "Select an option",
 
 	msgSave: "¿Confirma que desea guardar y enviar los datos seleccionados?",
