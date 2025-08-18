@@ -88,10 +88,10 @@ function StringBox() {
 	this.strTimeShort = str => str ? str.substring(11, 16) : EMPTY; //hh:MM
 	this.toIsoTime = str => str ? (str + ":00") : "00:00:00"; //hh:MM:ss
 	this.toIsoDate = (date, time) => (date + "T" + self.toIsoTime(time) + ".0Z"); //yyyy-mm-ddThh:MM:ss
-	this.getYear = str => (str || sysdate).substring(0, 4); //yyyy string format
-	this.getHours = str => +(str || sysdate).substring(11, 13); //hh int format
-	this.getMonth = str => +(str || sysdate).substring(5, 7); //mm int format
-	this.getMinutes = str => +(str || sysdate).substring(14, 16); //min int format
+	this.getYear = str => (str || sysdate).substring(0, 4); // yyyy string format
+	this.getHours = str => +(str || sysdate).substring(11, 13); // hh number format [0-23]
+	this.getMonth = str => +(str || sysdate).substring(5, 7); // mm number format [1-12]
+	this.getMinutes = str => +(str || sysdate).substring(14, 16); // min number format [0-59]
 	this.endDay = str => str ? (str.substring(0, 10) + "T23:59:59.999Z") : str;
 	this.cmp = function(a, b) {
 		if (globalThis.isset(a) && globalThis.isset(b))
@@ -99,12 +99,12 @@ function StringBox() {
 		return globalThis.isset(a) ? -1 : 1; //nulls last
 	}
 	this.getEjercicios = num => {
-		num = num || 6; // default number of years
-		const ejercicios = []; // array of years
-		const year = +self.getYear();
-		for (let i = 0; i < num; i++)
-			ejercicios.push(year - i);
-		return ejercicios;
+		let year = +self.getYear(); // current year
+		num = year - (num ?? 6); // default 6 years
+		const ejercicios = []; // array of years (container)
+		while (year > num) // iterate from current year to num
+			ejercicios.push(year--); // add year to array
+		return ejercicios; // return array of years
 	}
 
 	// Chunk string in multiple parts

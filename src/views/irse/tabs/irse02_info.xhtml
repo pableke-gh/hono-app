@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="notice notice-info"><h:outputText value="#{msg['lbl.domicilio']}" escape="false" />: #{irse.perfil.usuFullDir}, #{irse.perfil.usuCp}, #{irse.perfil.usuMunloc}, #{irse.perfil.usuProvincia} (#{irse.perfil.usuCodResidencia})</div>
+	<div class="notice notice-info"><h:outputText value="#{msg['lbl.domicilio']}" escape="false" />: #{iris.irse.perfil.usuFullDir}, #{iris.irse.perfil.usuCp}, #{iris.irse.perfil.usuMunloc}, #{iris.irse.perfil.usuProvincia} (#{iris.irse.perfil.usuCodResidencia})</div>
 	<div class="notice notice-info">
 		<h:outputText value="#{msg['uae.irse.tab2.msg.ruta']}" escape="false" />
 		<a id="msgs" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
@@ -29,8 +29,8 @@
 					<ul>
 						<li><b><h:outputText value="#{msg['lbl.origen']}" escape="false" /></b>: Cartagena</li>
 						<li><b><h:outputText value="#{msg['lbl.destino']}" escape="false" /></b>: Albacete</li>
-						<li><b><h:outputText value="#{msg['lbl.destino.viaje']}" escape="false" /></b>: #{irse.getMsg('lblNo')}</li>
-						<li><b><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></b>: #{irse.rutas.getMsgDesp(1)} (<h:outputText value="#{msg['lbl.sin.factura']}" escape="false" />).</li>
+						<li><b><h:outputText value="#{msg['lbl.destino.viaje']}" escape="false" /></b>: #{iris.getMsg('lblNo')}</li>
+						<li><b><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></b>: #{iris.irse.rutas.getMsgDesp(1)} (<h:outputText value="#{msg['lbl.sin.factura']}" escape="false" />).</li>
 					</ul>
 				</li>
 				<li>
@@ -38,8 +38,8 @@
 					<ul>
 						<li><b><h:outputText value="#{msg['lbl.origen']}" escape="false" /></b>: Albacete</li>
 						<li><b><h:outputText value="#{msg['lbl.destino']}" escape="false" /></b>: Madrid</li>
-						<li><b><h:outputText value="#{msg['lbl.destino.viaje']}" escape="false" /></b>: #{irse.getMsg('lblSi')}</li>
-						<li><b><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></b>: #{irse.rutas.getMsgDesp(6)} (<h:outputText value="#{msg['lbl.factura.tren']}" escape="false" />).</li>
+						<li><b><h:outputText value="#{msg['lbl.destino.viaje']}" escape="false" /></b>: #{iris.getMsg('lblSi')}</li>
+						<li><b><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></b>: #{iris.irse.rutas.getMsgDesp(6)} (<h:outputText value="#{msg['lbl.factura.tren']}" escape="false" />).</li>
 					</ul>
 				</li>
 				<li>
@@ -47,8 +47,8 @@
 					<ul>
 						<li><b><h:outputText value="#{msg['lbl.origen']}" escape="false" /></b>: Madrid</li>
 						<li><b><h:outputText value="#{msg['lbl.destino']}" escape="false" /></b>: Albacete</li>
-						<li><b><h:outputText value="#{msg['lbl.destino.viaje']}" escape="false" /></b>: #{irse.getMsg('lblNo')}</li>
-						<li><b><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></b>: #{irse.rutas.getMsgDesp(6)} (<h:outputText value="#{msg['lbl.factura.tren']}" escape="false" />).</li>
+						<li><b><h:outputText value="#{msg['lbl.destino.viaje']}" escape="false" /></b>: #{iris.getMsg('lblNo')}</li>
+						<li><b><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></b>: #{iris.irse.rutas.getMsgDesp(6)} (<h:outputText value="#{msg['lbl.factura.tren']}" escape="false" />).</li>
 					</ul>
 				</li>
 				<li>
@@ -56,8 +56,8 @@
 					<ul>
 						<li><b><h:outputText value="#{msg['lbl.origen']}" escape="false" /></b>: Albacete</li>
 						<li><b><h:outputText value="#{msg['lbl.destino']}" escape="false" /></b>: Cartagena</li>
-						<li><b><h:outputText value="#{msg['lbl.destino.viaje']}" escape="false" /></b>: #{irse.getMsg('lblNo')}</li>
-						<li><b><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></b>: #{irse.rutas.getMsgDesp(1)} (<h:outputText value="#{msg['lbl.sin.factura']}" escape="false" />).</li>
+						<li><b><h:outputText value="#{msg['lbl.destino.viaje']}" escape="false" /></b>: #{iris.getMsg('lblNo')}</li>
+						<li><b><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></b>: #{iris.irse.rutas.getMsgDesp(1)} (<h:outputText value="#{msg['lbl.sin.factura']}" escape="false" />).</li>
 					</ul>
 				</li>
 			</ul>

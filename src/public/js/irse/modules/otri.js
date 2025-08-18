@@ -9,11 +9,13 @@ import xlsx from "../../services/xlsx.js";
 
 import otri from "../model/Otri.js";
 import rutas from "./rutas.js";
+//import listIsu from "../../iris/modules/isu/list.js";
+import xeco from "../../xeco/xeco.js";
 
 function Otri() {
-	const self = this; //self instance
+	const form = xeco.getForm();
 
-	this.init = form => {
+	this.init = () => {
         const eCong = form.getInput("#congreso"); //congreso si/no
         const eIniCong = form.getInput("#fIniCong"); //fecha inicio del congreso
         const eFinCong = form.getInput("#fFinCong"); //fecha fin del congreso
@@ -52,26 +54,16 @@ function Otri() {
 				dom.required("#impInsc", "errNumber");
 			return dom.isOk() && loading();
         }
-        return self;
     }
 }
 
-/*********** Listado / FORM ISU ***********/
-function fnViewIsu() {
-    const formIsu = new Form("#xeco-isu");
-    const fnSource = term => pf.sendTerm("rcSolicitudesIrse", term);
-    const fnSelect = item => pf.sendId("rcLinkIrse", item.value);
-    formIsu.setAcItems("#acIrse", fnSource, fnSelect);
-}
-window.viewIsu = (xhr, status, args) => {
-    showAlerts(xhr, status, args) && fnViewIsu();
-}
-tabs.setInitEvent(16, () => {
+/*********** Listado ISU - Justifi OTRI ***********/
+//tabs.setInitEvent("listIsu", listIsu.init);
+tabs.setInitEvent("listIsu", () => {
     const formListIsu = new Form("#xeco-filtro-isu");
     const acOrganicas = formListIsu.setAutocomplete("#organica-isu", otri.getAutocomplete());
 	acOrganicas.setSource(term => pf.sendTerm("rcFindOrg", term));
 });
-tabs.setViewEvent(17, fnViewIsu);
 
 window.xlsx = (xhr, status, args) => {
     if (!window.showAlerts(xhr, status, args))

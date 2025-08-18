@@ -10,7 +10,7 @@ import firmas from "./firmas.js";
 
 function Uxxiec() {
 	const url = model.getUrl(); // url base path
-    const form = new Form("#xeco-uxxi");
+    const form = new Form("#xeco-uxxi"); // form element for expediente UXXI-EC
 	const tblUxxiec = new Table(form.getForm().nextElementSibling, uxxiec.getTable());
     const acUxxi = form.setAutocomplete("#uxxi", uxxiec.getAutocomplete());
 	acUxxi.setSource(term => api.init().json(url + "/uxxiec/docs/", { ej: form.getValueByName("ej"), term }).then(acUxxi.render));

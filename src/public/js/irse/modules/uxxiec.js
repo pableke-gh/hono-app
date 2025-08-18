@@ -3,14 +3,16 @@ import coll from "../../components/CollectionHTML.js";
 import pf from "../../components/Primefaces.js";
 import dom from "../../lib/uae/dom-box.js";
 import i18n from "../i18n/langs.js";
+import xeco from "../../xeco/xeco.js";
 
 function Uxxiec() {
 	const self = this; //self instance
     const RESUME = {}; // Resume table container
+	const form = xeco.getForm(); // Current form-model
     const STYLES = { imp: i18n.isoFloat, fUxxi: i18n.isoDate };
     var op, operaciones; // vinc. container
 
-    this.init = form => {
+    this.init = () => {
         form.setAutocomplete("#uxxi", {
             delay: 500, //milliseconds between keystroke occurs and when a search is performed
             minLength: 3, //reduce matches

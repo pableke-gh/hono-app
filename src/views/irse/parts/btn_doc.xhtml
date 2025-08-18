@@ -7,20 +7,20 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<c:if test="#{irse.form.documentable}">
-		<p:commandLink action="#{irse.list.report(irse.solicitud)}" oncomplete="openUrl(xhr, status, args)"
+	<c:if test="#{iris.irse.form.documentable}">
+		<p:commandLink action="#{iris.irse.list.report(iris.irse.solicitud)}" oncomplete="openUrl(xhr, status, args)"
 				styleClass="btn btn-error danger-btn" title="#{msg['tit.btn.informe']}" tabindex="195">
 			<i class="fal fa-file-pdf btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.informe']}" escape="false" /></p:commandLink>
-		<c:if test="#{not empty irse.gastos.gastosComisionado}">
+		<c:if test="#{not empty iris.irse.gastos.gastosComisionado}">
 			<p:commandButton value="#{msg['lbl.btn.zip1']}" ajax="false" icon="far fa-file-archive" styleClass="btn btn-warn warning-btn" 
 					onclick="setTimeout(working,400)" title="#{msg['tit.btn.zip1']}" tabindex="196" escape="false">
-				<p:fileDownload value="#{irse.gastos.zipCom()}"/>
+				<p:fileDownload value="#{iris.irse.gastos.zipCom()}"/>
 			</p:commandButton>
 		</c:if>
-		<c:if test="#{not empty irse.gastos.gastosDocumentacion}">
+		<c:if test="#{not empty iris.irse.gastos.gastosDocumentacion}">
 			<p:commandButton value="#{msg['lbl.btn.zip2']}" ajax="false" icon="far fa-file-check" styleClass="btn btn-warn warning-btn" 
 					onclick="setTimeout(working,400)" title="#{msg['lbl.btn.zip2']}" tabindex="197" escape="false">
-				<p:fileDownload value="#{irse.gastos.zipDoc()}"/>
+				<p:fileDownload value="#{iris.irse.gastos.zipDoc()}"/>
 			</p:commandButton>
 		</c:if>
 	</c:if>

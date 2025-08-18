@@ -55,6 +55,11 @@ function DateBox() {
 		return d1 ? -1 : 1; //nulls last
 	}
 
+	this.getYear = date => (date || sysdate).getFullYear(); // yyyy number format
+	this.getHours = date => (date || sysdate).getHours(); // hh number format [0-23]
+	this.getMonth = date => (date || sysdate).getMonth(); // mm number format [0-11]
+	this.getMinutes = date => (date || sysdate).getMinutes(); // min number format [0-59]
+
 	this.inYear = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getFullYear() == d2.getFullYear());
 	this.inMonth = (d1, d2) => self.inYear(d1, d2) && (d1.getMonth() == d2.getMonth());
 	this.inDay = (d1, d2) => self.inMonth(d1, d2) && (d1.getDate() == d2.getDate());

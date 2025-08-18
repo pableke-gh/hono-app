@@ -1,22 +1,21 @@
 
 import coll from "../components/Collection.js";
-import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
 import i18n from "./i18n/langs.js";
 import dom from "../lib/uae/dom-box.js";
 
 import list from "./modules/list.js";
-import uxxiec from "./modules/uxxiec.js";
 import perfil from "./modules/perfil.js";
 import rutas from "./modules/rutas.js";
 import dietas from "./modules/dietas.js";
 import maps from "./modules/maps.js";
 import otri from "./modules/otri.js";
 import organicas from "./modules/organicas.js";
-import { viewTab5, initTab9, initTab12 } from "./modules/tabs.js";
+import iTabs from "./modules/tabs.js";
+import xeco from "../xeco/xeco.js";
 
 window.IRSE = {}; // global IRSE info
-const formIrse = new Form("#xeco-irse");
+const formIrse = xeco.getForm();
 coll.ready(list.init);
 
 /*********** Google Maps API ***********/
@@ -26,24 +25,20 @@ tabs.setInitEvent(2, maps);
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
 tabs.setActiveEvent(3, fnTabActive);
-tabs.setInitEvent(3, () => otri.init(formIrse));
+tabs.setInitEvent(3, otri.init);
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
-tabs.setViewEvent(5, tab5 => viewTab5(tab5, formIrse));
+tabs.setViewEvent(5, iTabs.viewTab5);
 
 /*********** Tablas de resumen ***********/
 tabs.setViewEvent(6, dietas.render);
 
 /*********** Fin + IBAN ***********/
-tabs.setInitEvent(9, tab9 => initTab9(tab9, formIrse)); // init. all validations and inputs events only once
+tabs.setInitEvent(9, iTabs.initTab9); // init. all validations and inputs events only once
 tabs.setViewEvent(9, organicas.build); // always auto build table organicas/gastos (transporte, pernoctas, dietas)
 
 /*********** ASOCIAR RUTAS / GASTOS ***********/
-tabs.setInitEvent(12, tab12 => initTab12(tab12, formIrse)); // init. all validations and inputs events only once
-
-/*********** Expediente UXXI-EC ***********/
-tabs.setInitEvent("uxxiec", () => uxxiec.init(formIrse));
-tabs.setViewEvent("uxxiec", uxxiec.load);
+tabs.setInitEvent(12, iTabs.initTab12); // init. all validations and inputs events only once
 
 //PF needs confirmation in onclick attribute
 window.fnFirmar = () => i18n.confirm("msgFirmar") && loading();
@@ -72,7 +67,6 @@ window.viewIrse = (xhr, status, args, tab) => {
 //Global IRSE components
 window.ip = perfil;
 window.ir = rutas;
-window.io = organicas;
 
 // Hack old DomBox Module
 dom.confirm = i18n.confirm; // for remove action
@@ -91,16 +85,6 @@ dom.required = (el, msg) => {
 	el && i18n.getValidation().size250(el.name, el.value, msg);
 	return dom;
 }
-/*dom.login = (el, msg) => {
-	el = formIrse.getInput(el);
-	el && i18n.getValidation().isLogin(el.name, el.value, msg);
-	return dom;
-}
-dom.email = (el, msg) => {
-	el = formIrse.getInput(el);
-	el && i18n.getValidation().isEmail(el.name, el.value, msg);
-	return dom;
-}*/
 dom.intval = (el, msg) => {
 	el = formIrse.getInput(el);
 	el && i18n.getValidation().le10(el.name, +el.value, msg);

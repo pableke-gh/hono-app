@@ -30,7 +30,7 @@ function ListIsu() {
 	const acOrganicas = form.setAutocomplete("#org-isu", otri.getAutocomplete());
 	acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
 	const ejercicios = form.setMultiSelectCheckbox("#ejercicios");
-	ejercicios.setLabels(sb.getEjercicios(), [ 2025 ]);
+	ejercicios.setLabels(sb.getEjercicios()).setValue(+sb.getYear());
 
 	this.init = () => {
 		tblIsu.render(); // render empty table
@@ -129,7 +129,7 @@ function ListIsu() {
 	}
 	//tabs.setInitEvent("formIsu", formIsu.init);
 	tabs.setAction("listIsu", () => form.validate(fnValidate) && api.init().json("/uae/iris/isu/list", { ej: ejercicios.getValues(), org: acOrganicas.getValue() }).then(tblIsu.render));
-	tabs.setAction("excel", () => form.validate(fnValidate) && api.init().json("/uae/iris/isu/excel", { id: tblIsu.getData().map(row => row.irse) }).then(fnExcel));
+	tabs.setAction("excel", () => form.validate(fnValidate) && api.init().json("/uae/iris/isu/excel", { id: tblIsu.getIdList() }).then(fnExcel));
 }
 
 export default new ListIsu();

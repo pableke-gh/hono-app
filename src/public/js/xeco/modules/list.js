@@ -34,6 +34,7 @@ function List() {
 	const fnList = (estado, fmask) => { form.setData({ estado, fmask }, ".ui-filter"); fnCallList(); } // prepare filter and fetch
 	const fnProcesando = data => tblSolicitudes.refreshRow(model.setData(data).setProcesando()); // avoid reclicks
 
+	this.getForm = () => form; // get filter form
 	this.setCache = id => form.setCache(id); // set form cache
 	this.getTable = () => tblSolicitudes;
 	this.getId = tblSolicitudes.getId;

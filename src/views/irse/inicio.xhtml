@@ -10,8 +10,8 @@
 
 	<ui:define name="metadata">
 		<f:metadata>
-            <f:viewParam name="lang" value="#{irse.lang}" />
-            <f:viewAction action="#{irse.initLang()}" />
+            <f:viewParam name="lang" value="#{iris.lang}" />
+            <f:viewAction action="#{iris.initLang()}" />
         </f:metadata>
 	</ui:define>
 
@@ -31,77 +31,77 @@
 		<ui:include src="parts/msgs.xhtml"></ui:include>
 
 		<!-- Home tab -->
-		<div id="tab-13" class="tab-content active">
+		<div id="tab-init" class="tab-content active">
 			<ui:include src="tabs/init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
-		<div id="tab-14" class="tab-content">
+		<div id="tab-list" class="tab-content">
 			<ui:include src="tabs/list.xhtml"></ui:include>
 			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
 		<!-- Form IRSE -->
-		<h:form id="xeco-irse" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
 		<!-- Tab0 = perfil PAS / PDI -->
-		<p:remoteCommand name="rcFindInteresado" action="#{irse.perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
-		<p:remoteCommand name="rcFindOrg" action="#{irse.perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
+		<p:remoteCommand name="rcFindInteresado" action="#{iris.irse.perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
+		<p:remoteCommand name="rcFindOrg" action="#{iris.irse.perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:outputPanel id="tab-0" styleClass="tab-content update-irse">
-			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
+			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse00.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<!-- Itinerarios rutas de tab1 y tab2 -->
-		<p:remoteCommand name="rcFindPersonal" action="#{irse.form.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
+		<p:remoteCommand name="rcFindPersonal" action="#{iris.irse.form.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:outputPanel id="tab-1" styleClass="tab-content update-irse">
-			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
-			<h:inputHidden id="etapas" value="#{irse.input.rutas}" />
-			<div id="rutas-data" class="hide">#{irse.rutas.rutasJson}</div>
+			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
+			<h:inputHidden id="etapas" value="#{iris.irse.input.rutas}" />
+			<div id="rutas-data" class="hide">#{iris.irse.rutas.rutasJson}</div>
 
 			<c:choose>
-				<c:when test="#{irse.form.mun}"><ui:include src="tabs/irse01_mun.xhtml"></ui:include></c:when>
-				<c:when test="#{irse.form.colExt}"><ui:include src="tabs/irse01_col.xhtml"></ui:include></c:when>
-				<c:when test="#{irse.form.actividad1Dia}"><ui:include src="tabs/irse01_dia.xhtml"></ui:include></c:when>
+				<c:when test="#{iris.irse.form.mun}"><ui:include src="tabs/irse01_mun.xhtml"></ui:include></c:when>
+				<c:when test="#{iris.irse.form.colExt}"><ui:include src="tabs/irse01_col.xhtml"></ui:include></c:when>
+				<c:when test="#{iris.irse.form.actividad1Dia}"><ui:include src="tabs/irse01_dia.xhtml"></ui:include></c:when>
 				<c:otherwise><ui:include src="tabs/irse01_com.xhtml"></ui:include></c:otherwise>
 			</c:choose>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
-		<p:outputPanel id="tab-2" styleClass="tab-content update-irse #{irse.perfil.cssTab2}">
-		<c:if test="#{irse.perfil.tab2}"> <!-- evita la colision de id's de matricula -->
-			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
+		<p:outputPanel id="tab-2" styleClass="tab-content update-irse #{iris.irse.perfil.cssTab2}">
+		<c:if test="#{iris.irse.perfil.tab2}"> <!-- evita la colision de id's de matricula -->
+			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</c:if>
 		</p:outputPanel>
 
-		<p:outputPanel id="tab-3" styleClass="tab-content update-irse #{irse.perfil.cssTab3}">
-			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
+		<p:outputPanel id="tab-3" styleClass="tab-content update-irse #{iris.irse.perfil.cssTab3}">
+			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse03.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-5" styleClass="tab-content update-irse">
-			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
+			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse05.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-6" styleClass="tab-content update-irse">
-			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
+			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse06.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-9" styleClass="tab-content update-irse">
-			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
+			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse09.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
 		<p:outputPanel id="tab-12" styleClass="tab-content update-irse">
-			<h2 class="underline">#{irse.perfil.nombre} <i>#{irse.form.codigo}</i></h2>
+			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse12.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
@@ -119,9 +119,15 @@
 		</h:form>
 
 		<!-- listado ISU para la OTRI -->
-		<c:if test="#{irse.uae or irse.otri}">
-			<ui:include src="tabs/list_isu.xhtml"></ui:include>
-			<ui:include src="tabs/form_isu.xhtml"></ui:include>
+		<c:if test="#{iris.user.uae or iris.user.otri}">
+			<div id="tab-listIsu" class="tab-content">
+				<ui:include src="tabs/list_isu.xhtml"></ui:include>
+			</div>
 		</c:if>
+
+		<!-- vinculación con uxxiec -->
+		<div id="tab-uxxiec-v2" class="tab-content" data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
+			<ui:include src="tabs/uxxiec_v2.xhtml"></ui:include>
+		</div>
 	</ui:define>
 </ui:composition>
