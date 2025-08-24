@@ -1,6 +1,7 @@
 
 import sb from "../../../components/types/StringBox.js";
-import tb from "../../../components/types/TemporalBox.js";
+//import tb from "../../../components/types/TemporalBox.js";
+import dt from "../../../components/types/DateBox.js";
 import i18n from "../../i18n/langs.js";
 import paises from "../../data/paises/paises.js";
 
@@ -8,13 +9,13 @@ function Ruta() {
 	const self = this; //self instance
 	const GASOLINA = .26; // € / kilometro
 	const TPL_FLAG = '<i class="fal fa-flag-checkered"></i>';
-	//const MIN_DATE = tb.now().add({ years: -1 }); //1 año antes
-	//const MAX_DATE = tb.now().add({ days: 180 }); //6 meses despues 
+	const MIN_DATE = dt.addYears(new Date(), -1); //tb.now().add({ years: -1 }); //1 año antes
+	const MAX_DATE = dt.addDays(new Date(), 180); //tb.now().add({ days: 180 }); //6 meses despues 
 
 	this.getHoraSalida = ruta => ruta.dt1;
 	this.getHoraLlegada = ruta => ruta.dt2;
-	this.salida = ruta => tb.parse(self.getHoraSalida(ruta));
-	this.llegada = ruta => tb.parse(self.getHoraLlegada(ruta));
+	this.salida = ruta => dt.toDate(self.getHoraSalida(ruta)); //tb.parse(self.getHoraSalida(ruta));
+	this.llegada = ruta => dt.toDate(self.getHoraLlegada(ruta)); //tb.parse(self.getHoraLlegada(ruta));
 
 	// tipos de rutas
 	const setTplPrincipal = ruta => {
@@ -66,8 +67,8 @@ function Ruta() {
 		const valid = i18n.getValidation();
 		if (!ruta.origen || !ruta.pais1)
 			valid.addRequired("origen", "errOrigen");
-		//if (!tb.isBetween(self.salida(ruta), MIN_DATE, MAX_DATE)) 
-			//return valid.addError("f1", "errFechasRuta").isOk();
+		if (!dt.between(self.salida(ruta), MIN_DATE, MAX_DATE)) 
+			return valid.addError("f1", "errFechasRuta").isOk();
 		if (ruta.dt1 > ruta.dt2)
 			return valid.addError("f1", "errFechasOrden").isOk();
 		return valid.isOk();

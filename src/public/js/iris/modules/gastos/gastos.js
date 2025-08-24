@@ -24,13 +24,6 @@ function Gastos() {
 	this.setGastos = data => { gastos.setGastos(data); _tblGastos.render(gastos.getPaso5()).setChanged(); }
 	this.update = gastos => { gastos && self.setGastos(gastos); }
 
-	/*this.setKm = data => { gastos.setKm(data, rmaps.getResume()); return self; } 
-	this.setSubvencion = data => { gastos.setSubvencion(data); return self; } 
-	this.setCongreso = data => { gastos.setCongreso(data); return self; } 
-	this.setAsistencia = data => { gastos.setAsistencia(data); return self; } 
-	this.setIban = data => { gastos.setIban(data); return self; } 
-	this.setBanco = data => { gastos.setBanco(data); return self; } */
-
 	this.init = () => {
 		gp5.init(); // init fields for gasto
 		const resume = _tblGastos.getResume();
@@ -49,11 +42,14 @@ function Gastos() {
 		gp5.reset(); // clear fields
 	}
 	const fnUpload = data => {
-		data && api.setJSON(data).json("/uae/iris/gasto/upload").then(form.resolve).then(data => {
+		if (!data) return; // no data => no file
+		data.fk = iris.getId(); // id del formulario
+		api.setJSON(data).json("/uae/iris/upload").then(form.resolve).then(data => {
 			gastos.push(data.gasto); // añado el nuevo gasto a lista de gastos
 			_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos (paso 5)
 			fnAfterFile(data); // actualizo tablas y formulario
-		});
+			tabs.showTab(5); // vuelvo al paso 5
+		}).catch(globalThis.void); // catch error
 	}
 	tabs.setAction("uploadGasto", () => {
 		const data = gp5.validate();

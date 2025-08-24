@@ -16,14 +16,10 @@ function DateBox() {
 	this.toDate = str => str ? new Date(str) : null;
 	this.getTime = date => date ? date.getTime() : Date.now();
 	// Changes the Date object, and returns its new timestamp. If timeValue is NaN => Invalid Date
-	this.setTime = (date, time) => {
-		date = date || sysdate;
-		return date.setTime(time || Date.now());
-	}
+	this.setTime = (date, time) => (date || sysdate).setTime(time || Date.now());
 
 	this.clone = date => new Date(self.getTime(date));
 	this.isLeap = date => isLeapYear((date || sysdate).getFullYear());
-	this.getDays = (d1, d2) => Math.round(Math.abs((d1 - d2) / ONE_DAY));
 	this.daysInMonth = date => date ? daysInMonth(date.getFullYear(), date.getMonth()) : 0;
 
 	// Date to String
@@ -31,24 +27,29 @@ function DateBox() {
     this.isoTime = date => date.toISOString().substring(11, 19); //hh:MM:ss
     this.isoTimeShort = date => date.toISOString().substring(11, 16); //hh:MM
 
-	// Date transformations
-	this.trunc = function(date) { date && date.setHours(0, 0, 0, 0); return self; }
-	this.addHours = (date, hours) => { date && date.addHours(hours); return self; }
-	this.addDays = (date, days) => { date && date.addDays(days); return self; }
-
 	// Randoms
 	this.randTime = (d1, d2) => Math.floor(Math.random() * self.diffDate(d2, d1) + d1.getTime());
 	this.randDate = (d1, d2) => new Date(self.randTime(d1, d2));
 	this.rand = () => self.randDate(new Date(sysdate.getTime() - (ONE_DAY*30)), sysdate);
 
+	// Date transformations
+	this.trunc = date => { date && date.setHours(0, 0, 0, 0); return date; } // set time to 00:00:00.000
+	this.addHours = (date, hours) => { date.addHours(hours); return date; } // add hours to date
+	this.addDays = (date, days) => { date.addDays(days); return date; } // add days to date
+	this.addYears = (date, years) => { date.setFullYear(date.getFullYear() + years); return date; } // add years to date
+
 	// Equality operators == != === !== cannot be used to compare (the value of) dates
-	this.lt = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() < d2.getTime());
-	this.le = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() <= d2.getTime());
-	this.eq = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() == d2.getTime());
-	this.ge = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() >= d2.getTime());
-	this.gt = (d1, d2) => isDate(d1) && isDate(d2) && (d1.getTime() > d2.getTime());
-	this.inRange = (d, min, max) => ((min.getTime() <= d.getTime()) && (d.getTime() <= max.getTime()));
-	this.diffDate = (d1, d2) => (d1.getTime() - d2.getTime());
+	const _le = (d1, d2) => (d1.getTime() <= d2.getTime()); // less than or equal
+	this.le = (d1, d2) => (isDate(d1) && isDate(d2) && _le(d1, d2)); // d1 less than or equal to d2
+	this.lt = (d1, d2) => (isDate(d1) && isDate(d2) && (d1.getTime() < d2.getTime()));
+	this.eq = (d1, d2) => (isDate(d1) && isDate(d2) && (d1.getTime() == d2.getTime()));
+	this.gt = (d1, d2) => (isDate(d1) && isDate(d2) && (d1.getTime() > d2.getTime()));
+	this.ge = (d1, d2) => (isDate(d1) && isDate(d2) && (d1.getTime() >= d2.getTime()));
+	this.inRange = (date, min, max) => (_le(min, date) && (!max || _le(date, max))); // date in range [min, max]
+	this.between = self.inRange; // synonym for inRange function
+	this.diffDate = (d1, d2) => (d1.getTime() - d2.getTime()); // time difference in milliseconds (ej: 1737749220000)
+	this.getDays = (d1, d2) => (self.diffDate(d1, d2) / ONE_DAY); // Num of days between to dates (float value, ej: 4.25)
+	this.diffDays = (d1, d2) => Math.floor(self.getDays(d1, d2)); // Num of complete days between to dates (int value, ej: 4)
 	this.cmp = function(d1, d2) {
 		if (d1 && d2)
 			return self.diffDate(d1, d2);
@@ -67,19 +68,11 @@ function DateBox() {
 	this.geToday = date => self.inDay(date, sysdate) || self.ge(date, sysdate);
 	this.future = date => self.gt(date, sysdate);
 	this.past = date => self.lt(date, sysdate);
-}
 
-// Extends Date prototype
-Date.prototype.addHours = function(hours) {
-    this.setHours(this.getHours() + hours);
-    return this;
-}
-Date.prototype.addDays = function(days) {
-    this.setDate(this.getDate() + days);
-    return this;
-}
-Date.prototype.diffDays = function(date) { // Days between to dates
-    return Math.floor((date.getTime() - this.getTime()) / (1000 * 3600 * 24));
+	// Extends Date prototype
+	Date.prototype.addHours = function(hours) { this.setHours(this.getHours() + hours); return this; }
+	Date.prototype.addDays = function(days) { this.setDate(this.getDate() + days); return this; }
+	Date.prototype.diffDays = function(date) { return self.diffDays(this, date); }
 }
 
 export default new DateBox();

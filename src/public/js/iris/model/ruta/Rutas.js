@@ -1,6 +1,7 @@
 
 import coll from "../../../components/CollectionHTML.js";
 import tb from "../../../components/types/TemporalBox.js";
+import dt from "../../../components/types/DateBox.js";
 import sb from "../../../components/types/StringBox.js";
 import i18n from "../../i18n/langs.js";
 import ruta from "./Ruta.js";
@@ -26,7 +27,7 @@ function Rutas() {
 	this.getHoraLlegada = () => ruta.getHoraLlegada(self.getLlegada()); 
 	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(self.getLlegada());
 
-	const fnDiffDias = () => 0;//tb.getDays(tb.trunc(self.salida()), self.llegada());
+	const fnDiffDias = () => dt.diffDays(self.llegada(), dt.trunc(self.salida())); //tb.getDays(self.llegada(), tb.trunc(self.salida()));
 	this.getNumNoches = () => (self.isEmpty() ? 0 : Math.floor(fnDiffDias()));
 	this.getNumDias = () => (self.isEmpty() ? 0 : Math.ceil(fnDiffDias()));
 
