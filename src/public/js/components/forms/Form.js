@@ -82,7 +82,6 @@ export default function(form, opts) {
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = alerts.showAlerts; // showAlerts synonym
-	this.resolve = alerts.resolve; // check if messages are ok
 	this.nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return self.setOk(); // show ok msg

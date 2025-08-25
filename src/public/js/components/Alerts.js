@@ -37,13 +37,12 @@ function Alerts() {
 		return self;
 	}
 
+	this.isOk = data => (!data || (!data.msgError && !data.msgs?.msgError)); // check ok
 	this.showOk = msg => setAlert(alerts.children[0], msg); //green
 	this.showInfo = msg => setAlert(alerts.children[1], msg); //blue
 	this.showWarn = msg => setAlert(alerts.children[2], msg); //yellow
 	this.showError = msg => setAlert(alerts.children[3], msg); //red
-	this.isOk = data => (!data || (!data.msgError && !data.msgs?.msgError)); // check ok
-	this.showAlerts = data => {
-		self.working(); // hide loading frame
+	this.showMsgs = data => {
 		const msgs = data?.msgs || data; // msgs container
 		if (msgs) { // show posible multiple messages types
 			msgs.msgOk && fnShow(alerts.children[0], msgs.msgOk);
@@ -54,10 +53,9 @@ function Alerts() {
 		return true; // no error message
     }
 
+	this.showAlerts = data => self.working().showMsgs(data); // hide loading frame and show msgs container
 	this.closeAlerts = () => { texts.forEach(fnCloseParent); return self; } // fadeOut all alerts
     alerts.getElementsByClassName(ALERT_CLOSE).setClick((ev, link) => fnCloseParent(link)); // Set close click event
-    //const fnAlerts = () => texts.forEach(el => { el.innerHTML && fnShow(el.parentNode, el.innerHTML); }); // Alerts with contents
-    //coll.ready(() => setTimeout(fnAlerts, 1)); // Show posible server messages after DOMContentLoaded event
 
     // Global handlers
     window.loading = self.loading;
@@ -68,7 +66,6 @@ function Alerts() {
 		return promise.then(data => [undefined, data]).catch(err => [err]).finally(self.working);
 	}
 	window.catchPromise = async fn => await window.catchError(new Promise(fn));
-	this.resolve = data => self.showAlerts(data) ? data : Promise.reject(data);
 
     this.isLoaded = function(xhr, status, args) { // PF server error xhr
 		if (xhr && (status == "success"))

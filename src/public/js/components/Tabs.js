@@ -68,7 +68,6 @@ function Tabs() {
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = alerts.showAlerts; // Encapsule showAlerts message
-	this.resolve = alerts.resolve; // check if messages are ok
 
 	function fnShowTab(i) { //show tab by index
 		i = (i < 0) ? 0 : Math.min(i, tabs.length - 1);

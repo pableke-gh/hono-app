@@ -2,18 +2,19 @@
 import alerts from "./Alerts.js";
 import mt from "../data/mime-types.js";
 
+const fnMsgs = data => (alerts.showMsgs(data) ? data : Promise.reject(data));
+function fnError(res, msg) {
+	const error = res.statusText || msg || "Conection is not available.";
+	alerts.showError(error);
+	return Promise.reject(error);
+}
+
 function Api() {
 	const self = this; //self instance
 	const OPTS = {}; // Call options
 	const HEADER_TYPE = "content-type"; // content-type key
 	const HEADER_TOKEN = "x-access-token"; // Token key in header
 	const HEADERS = new Headers({ "x-requested-with": "XMLHttpRequest" }); // AJAX header
-
-	function fnError(res, msg) {
-		const error = res.statusText || msg || "Conection is not available.";
-		alerts.showError(error);
-		return Promise.reject(error);
-	}
 
 	this.get = name => OPTS[name];
 	this.set = (name, value) => { OPTS[name] = value; return self; }
@@ -65,7 +66,7 @@ function Api() {
 	}
 	this.json = (url, params) => {
 		alerts.loading(); // show loading indicator
-		return self.fetch(url, params).finally(alerts.working);
+		return self.fetch(url, params).then(fnMsgs).finally(alerts.working);
 	}
 	this.blob = async (url, params) => {
 		alerts.loading(); // show loading indicator
@@ -77,14 +78,13 @@ function Api() {
 		return promise.finally(alerts.working); // Add default finally functions to promise
 	}
 
-	this.send = async url => {
+	this.send = async (url, params) => {
 		alerts.loading(); // show loading indicator
-		const res = await globalThis.fetch(url, OPTS); // send api call
+		const res = await fnFetch(url, params); // send call
 		if (!res.ok) // connection error
 			return fnError(res).finally(alerts.working);
 		const type = res.headers.get(HEADER_TYPE) || ""; // get response mime type
-		const data = await (type.includes(mt.json) ? res.json() : res.text());
-		return Promise.resolve(data).finally(alerts.working);
+		return (type.includes(mt.json) ? res.json().then(fnMsgs) : res.text()).finally(alerts.working);
 	}
 
 	this.open = (url, err) => { // open external resource

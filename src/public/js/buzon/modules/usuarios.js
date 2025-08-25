@@ -18,7 +18,7 @@ function Usuarios() {
 
     const fnToggle = data => {
 		const params = { org: data.org, nif: data.nif, acc: data.acc };
-		api.init().json("/uae/buzon/user/toggle", params).then(form.resolve).then(tUsuarios.reload);
+		api.init().json("/uae/buzon/user/toggle", params).then(tUsuarios.reload);
 	}
 	tUsuarios.set("#toggleUsers", data => { buzon.setData(data).togglePermisoUser(); fnToggle(data); });
 	tUsuarios.set("#toggleGastos", data => { buzon.setData(data).toggleGastos(); fnToggle(data); });
@@ -33,7 +33,7 @@ function Usuarios() {
 	tabs.setAction("add-user", () => {
 		const params = { org: buzon.getOrganica(), ut: buzon.getUnidadTramit(), nif: acUser.getValue() };
 		const fnUsuarios = data => tUsuarios.render(data.usuarios).showOk("saveOk");
-		api.init().json("/uae/buzon/user/add", params).then(form.resolve).then(fnUsuarios);
+		api.init().json("/uae/buzon/user/add", params).then(fnUsuarios);
 		acUser.reload(); // clear data and autofocus
 	});
 	tabs.setAction("save-users", () => tabs.showTab(0).showOk("saveOk"));

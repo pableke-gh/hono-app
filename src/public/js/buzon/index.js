@@ -34,8 +34,8 @@ coll.ready(() => { // on load view
 	function fnAddActions(table) {
 		const fnAnclar = data => { buzon.setAnclado(data); fnLoadBuzon(); }
 		const fnDesanclar = data => { buzon.setReciente(data); fnLoadBuzon(); }
-		table.set("#anclar", data => api.init().json("/uae/buzon/anclar?org=" + data.org).then(form.resolve).then(() => fnAnclar(data)));
-		table.set("#desanclar", data => api.init().json("/uae/buzon/desanclar?org=" + data.org).then(form.resolve).then(() => fnDesanclar(data)));
+		table.set("#anclar", data => api.init().json("/uae/buzon/anclar?org=" + data.org).then(() => fnAnclar(data)));
+		table.set("#desanclar", data => api.init().json("/uae/buzon/desanclar?org=" + data.org).then(() => fnDesanclar(data)));
 		table.set("#users", bu.loadUsuarios);
 
 		const fnModal = data => { form.setItems("#utProv", data).showModal("dialog#ut"); }

@@ -102,7 +102,6 @@ export default function(table, opts) {
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = alerts.showAlerts; // showAlerts synonym
-	this.resolve = alerts.resolve; // check if messages are ok
 
 	this.querySelector = selector => table.querySelector(selector);
 	this.querySelectorAll = selector => table.querySelectorAll(selector);

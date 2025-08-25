@@ -44,7 +44,7 @@ function Gastos() {
 	const fnUpload = data => {
 		if (!data) return; // no data => no file
 		data.fk = iris.getId(); // id del formulario
-		api.setJSON(data).json("/uae/iris/upload").then(form.resolve).then(data => {
+		api.setJSON(data).json("/uae/iris/upload").then(data => {
 			gastos.push(data.gasto); // añado el nuevo gasto a lista de gastos
 			_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos (paso 5)
 			fnAfterFile(data); // actualizo tablas y formulario
@@ -76,7 +76,7 @@ function Gastos() {
 	});
 	_tblGastos.set("#unload", gasto => { // set table action
 		const url = "/uae/iris/unload?id=" + gasto.id;
-		i18n.confirm("remove") && api.init().json(url).then(form.resolve).then(data => {
+		i18n.confirm("remove") && api.init().json(url).then(data => {
 			gastos.removeById(gasto); // remove gasto from array
 			_tblGastos.flush(); // remove and reload table gastos (paso 5)
 			fnAfterFile(data); // actualizo tablas y formulario
