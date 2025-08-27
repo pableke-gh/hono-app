@@ -40,10 +40,18 @@ function Api() {
 	this.setPost = () => self.setMethod("POST");
 	this.setBody = data => self.set("body", data);
 	this.setJSON = data => self.init().setPost().setBody(JSON.stringify(data));
-	this.setForm = fd => self.init().setPost().setBody(fd); // param fd = FormData instance
 	this.setPdf = () => self.init().setContentType(mt.pdf); // pdf type
 	this.setZip = () => self.init().setContentType(mt.zip); // zip type
 	this.setBin = () => self.init().setContentType(mt.bin); // binary type
+
+	/**
+	 * @param {FormData} fd
+	 * 
+	 * Set form data. If the form contains file inputs, the FormData object will automatically set the correct multipart/form-data boundary in the request.
+	 * Note: When using FormData, do not manually set the Content-Type header to multipart/form-data, as this can lead to issues with how the browser formats the request.
+	 */
+	this.setFormData = fd => self.init().setPost().setBody(fd);
+	this.setForm = form => self.setFormData(new FormData(form));
 
 	const fnFetch = (url, params) => {
 		const query = new URLSearchParams(params); // query params

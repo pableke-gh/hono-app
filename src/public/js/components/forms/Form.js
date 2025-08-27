@@ -99,6 +99,7 @@ export default function(form, opts) {
 	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
 	this.render = (selector, data) => { $$(selector).render(data); return self; } // NodeList.prototype.render
 	this.refresh = (model, selector) => { $$(selector || opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
+	this.send = url => api.setForm(form).send(url || form.action).catch(info => { self.setErrors(info); throw info; });
 
 	this.hide = selector => { $$(selector).hide(); return self; }
 	this.show = selector => { $$(selector).show(); return self; }
@@ -162,6 +163,18 @@ export default function(form, opts) {
 		const value = el.name ? data[el.name] : null; // get value by name
 		globalThis.isset(value) && fnSetValue(el, value); // update defined data
 	});
+	this.setDateRange = (f1Selector, f2Selector, fnBlur) => {
+		fnBlur = fnBlur || globalThis.void;
+		const el1 = fnQueryInput(f1Selector);
+		const el2 = fnQueryInput(f2Selector);
+		if (el1 && el2) { // check if fields exist
+			fnEvent(el1, "blur", ev => { el2.setAttribute("min", el1.value); fnBlur(ev, el1, el2); });
+			fnEvent(el2, "blur", ev => { el1.setAttribute("max", el2.value); fnBlur(ev, el2, el1); });
+			el1.setAttribute("max", el2.value); el1.dataset.max = f2Selector; // save max reference
+			el2.setAttribute("min", el1.value); el2.dataset.min = f1Selector; // save min reference
+		}
+		return self;
+	}
 
 	this.getAttr = (selector, name) => dom.getAttr(fnQueryInput(selector), name);
 	this.delAttr = (selector, name) => { dom.delAttr(fnQueryInput(selector), name); return self; }
@@ -224,19 +237,6 @@ export default function(form, opts) {
 	// Events handlers
 	const fnEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return self; }
 	const fnChange = (el, fn) => fnEvent(el, "change", fn);
-
-	this.setDateRange = (f1Selector, f2Selector, fnBlur) => {
-		fnBlur = fnBlur || globalThis.void;
-		const el1 = fnQueryInput(f1Selector);
-		const el2 = fnQueryInput(f2Selector);
-		if (el1 && el2) { // check if fields exist
-			fnEvent(el1, "blur", ev => { el2.setAttribute("min", el1.value); fnBlur(ev, el1, el2); });
-			fnEvent(el2, "blur", ev => { el1.setAttribute("max", el2.value); fnBlur(ev, el2, el1); });
-			el1.setAttribute("max", el2.value); el1.dataset.max = f2Selector; // save max reference
-			el2.setAttribute("min", el1.value); el2.dataset.min = f1Selector; // save min reference
-		}
-		return self;
-	}
 
 	this.afterChange = fn => fnChange(form, fn); // add change event handler
 	this.onKeydown = fn => fnEvent(form, "keydown", fn); // add event handler
@@ -304,12 +304,6 @@ export default function(form, opts) {
 		return fnValidator(data) ? data : !self.setErrors(); // model preserve this
 	}
 
-	this.send = async url => {
-		const fd = new FormData(form); // Data container
-		const body = (form.enctype == "multipart/form-data") ? fd : new URLSearchParams(fd);
-		return await api.setForm(body).send(url || form.action).catch(info => { self.setErrors(info); throw info; });
-	}
-
 	this.update = () => { // Form initialization
 		form.elements.forEach(el => { // update inputs
 			if (fnContains(el, opts.floatFormatClass)) {
@@ -335,6 +329,5 @@ export default function(form, opts) {
 
 	// Form initialization
 	form.setAttribute("novalidate", "1");
-	self.update().afterChange(() => { _isChanged = true; })
-		.beforeReset(ev => self.closeAlerts().autofocus());
+	self.update().afterChange(() => { _isChanged = true; }).beforeReset(ev => self.closeAlerts().autofocus());
 }
