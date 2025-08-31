@@ -16,7 +16,7 @@ function List() {
 	}
 
 	/*********** Redefine handlers and add extra actions ***********/
-	const table = list.getTable();
+	const table = list.getTable(); // Current table of solicitudes
 	const fnIdParam = data => { loading(); return [{ name: "id", value: data.id }]; }
 	table.set("#view", data => (window.isCached(data.id, 0) || window.rcView(fnIdParam(data)))); // set table action
 	table.set("#paso8", data => (i18n.confirm("msgReactivarP8") && window.rcPaso8(fnIdParam(data)))); // set table action

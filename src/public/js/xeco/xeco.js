@@ -17,6 +17,7 @@ function XecoForm() {
 
 	this.getForm = () => form;
 	this.refresh = () => form.refresh(model);
+	this.getTable = list.getTable;
 
 	this.init = () => {
 		list.init();

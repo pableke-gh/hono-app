@@ -11,9 +11,7 @@ import resumen from "./modules/resumen.js";
 import sendTab from "./modules/send.js";
 import otri from "./modules/otri.js";
 import listIsu from "./modules/isu/list.js";
-
 import xeco from "../xeco/xeco.js";
-import list from "../xeco/modules/list.js";
 
 coll.ready(() => {
 	// init. modules actions
@@ -54,9 +52,10 @@ coll.ready(() => {
 	}
 
 	/*********** Extra list actions ***********/
-	list.getTable().set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id).then(iris.view))); // set table action
-	list.getTable().set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // html report
-	tabs.setAction("rptFinalizar", () => list.getTable().invoke("#rptFinalizar")); // set tab action
+	const table = xeco.getTable(); // Current table of solicitudes
+	table.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id).then(iris.view))); // set table action
+	table.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // html report
+	tabs.setAction("rptFinalizar", () => table.invoke("#rptFinalizar")); // set tab action
 
 	/*********** Listado ISU - Justifi OTRI ***********/
 	tabs.setInitEvent("listIsu", listIsu.init);
