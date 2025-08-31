@@ -36,9 +36,20 @@
 		</div>
 
 		<!-- listado de solicitudes -->
-		<div id="tab-list" class="tab-content">
+		<div id="tab-list-old" class="tab-content">
 			<ui:include src="tabs/list.xhtml"></ui:include>
 			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
+		</div>
+
+		<!-- listado de solicitudes v2 -->
+		<div id="tab-list" class="tab-content">
+			<ui:include src="tabs/list_v2.xhtml"></ui:include>
+			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
+		</div>
+
+		<!-- vinculación con uxxiec v2 -->
+		<div id="tab-uxxiec" class="tab-content" data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
+			<ui:include src="tabs/uxxiec_v2.xhtml"></ui:include>
 		</div>
 
 		<!-- Form IRSE -->
@@ -107,7 +118,7 @@
 		</p:outputPanel>
 
 		<!-- vinculación con uxxiec -->
-		<p:outputPanel id="tab-uxxiec" styleClass="tab-content update-irse">
+		<p:outputPanel id="tab-uxxiec-old" styleClass="tab-content update-irse">
 			<ui:include src="tabs/uxxiec.xhtml"></ui:include>
 		</p:outputPanel>
 
@@ -124,10 +135,5 @@
 				<ui:include src="tabs/list_isu.xhtml"></ui:include>
 			</div>
 		</c:if>
-
-		<!-- vinculación con uxxiec -->
-		<div id="tab-uxxiec-v2" class="tab-content" data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
-			<ui:include src="tabs/uxxiec_v2.xhtml"></ui:include>
-		</div>
 	</ui:define>
 </ui:composition>

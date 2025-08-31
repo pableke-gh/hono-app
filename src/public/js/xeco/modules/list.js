@@ -51,8 +51,7 @@ function List() {
 		form.onKeydown(ev => ((ev.key == "Enter") && fnCallList()));
 
 		// Show empty table and set handlers actions for solicitudes
-		tblSolicitudes.render().set("#rcView", fnView).set("#rcUxxiec", uxxiec.view)
-					.set("#tab-reject", data => fnLoadTab("reject", data));
+		tblSolicitudes.render().set("#view", fnView).set("#uxxiec", uxxiec.view).set("#tab-reject", data => fnLoadTab("reject", data));
 
 		const fnFirmar = id => api.init().json(url + "/firmar?id=" + id).then(self.loadFirmas);
 		tblSolicitudes.set("#firmar", data => (i18n.confirm("msgFirmar") && fnFirmar(data.id)));

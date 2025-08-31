@@ -45,7 +45,7 @@ solicitud.getNamePlataforma = () => (solicitud.isPlataforma() ? "Nombre de la pl
 solicitud.row = data => {
 	const acciones = solicitud.rowActions(data);
 	return `<tr class="tb-data">
-		<td class="text-center"><a href="#rcView" class="row-action">${data.codigo}</a></td>
+		<td class="text-center"><a href="#view" class="row-action">${data.codigo}</a></td>
 		<td class="hide-sm text-upper1">${solicitud.getTitulo()}</td>
 		<td class="${solicitud.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${solicitud.getDescEstado()}</td>
 		<td class="text-center">${firma.myFlag(data)}</td>

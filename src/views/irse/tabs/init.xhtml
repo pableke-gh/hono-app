@@ -21,15 +21,17 @@
 				<li>
 					<a href="#" onclick="clickList();"><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></a >
 				</li>
+				<c:if test="#{iris.user.admin}">
+					<li><a href="#tab-list">Consulta V.2.0</a></li>
+				</c:if>
 				<c:if test="#{iris.user.uae}">
-					<li>
-						<a href="#" onclick="clickVinc();"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a>
-					</li>
+					<li><a href="#" onclick="clickVinc();"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a></li>
+					<c:if test="#{iris.user.admin}">
+						<li><a href="#tab-action-vinc">Expediente V.2.0</a></li>
+					</c:if>
 				</c:if>
 				<c:if test="#{iris.user.uae or iris.user.otri}">
-					<li>
-						<a href="#tab-listIsu">Informe ISU</a>
-					</li>
+					<li><a href="#tab-listIsu">Informe ISU</a></li>
 				</c:if>
 			</ul>
 		</c:when>

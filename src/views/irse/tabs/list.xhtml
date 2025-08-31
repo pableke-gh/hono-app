@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></h2>
-	<h:form id="xeco-filter" prependId="false" class="card-filter" onsubmit="loading();">
+	<h:form id="xeco-filter-old" prependId="false" class="card-filter" onsubmit="loading();">
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
@@ -94,9 +94,9 @@
 		<div class="navbar">
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-				<p:commandButton id="filter-list" action="#{iris.irse.list.list()}" onclick="loading();" update="xeco-list" oncomplete="showTab(xhr, status, args, 'list');"
+				<p:commandButton id="filter-list" action="#{iris.irse.list.list()}" onclick="loading();" update="xeco-list" oncomplete="showTab(xhr, status, args, 'list-old');"
 					icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
-				<p:commandButton id="list-all" rendered="#{not iris.irse.otri}" action="#{iris.irse.list.list()}" onclick="onListAll();" update="xeco-list" oncomplete="showTab(xhr, status, args, 'list');" 
+				<p:commandButton id="list-all" rendered="#{not iris.irse.otri}" action="#{iris.irse.list.list()}" onclick="onListAll();" update="xeco-list" oncomplete="showTab(xhr, status, args, 'list-old');" 
 					icon="far fa-search" styleClass="btn btn-info" value="Ver Todos" tabindex="13"></p:commandButton>
 				<p:commandLink action="#{iris.irse.list.list()}" onclick="onList();" update="xeco-list" oncomplete="working();" 
 					styleClass="btn btn-warn warning-btn" tabindex="14">
@@ -105,7 +105,6 @@
 		</div>
 	</h:form>
 
-	<table class="hide"></table> <!-- a eliminar -->
 	<h:form id="xeco-list" prependId="false" onsubmit="loading();">
 	<table class="tb-xeco">
 		<thead>
@@ -217,7 +216,7 @@
 						<p:commandLink action="#{iris.irse.list.integrar(sol)}" onclick="if(!fnIntegrar(this)) return false;" oncomplete="showAlerts(xhr, status, args)" title="Lanza el proceso de integración con la capa SOA"><i class="far fa-save action resize text-blue"></i></p:commandLink>
 					</c:if>
 					<c:if test="#{iris.irse.isEjecutable(sol) and (iris.user.isUae() or sol.isFirmaGestor())}">
-						<p:commandLink action="#{iris.irse.list.uxxi(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'uxxiec');" title="Expediente asociado a la solicitud"><i class="fal fa-cog action text-blue resize"></i></p:commandLink>
+						<p:commandLink action="#{iris.irse.list.uxxi(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'uxxiec-old');" title="Expediente asociado a la solicitud"><i class="fal fa-cog action text-blue resize"></i></p:commandLink>
 					</c:if>
 					<c:if test="#{iris.user.admin}">
 						<p:commandLink action="#{iris.irse.list.emails(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" title="Envia una prueba de cada tipo de correo al administrador"><i class="fal fa-mail-bulk action text-blue resize"></i></p:commandLink>

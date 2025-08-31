@@ -33,7 +33,7 @@
 	</c:if>
 
 	<c:if test="#{iris.irse.form.removable}">
-		<p:commandButton action="#{iris.irse.list.remove()}" onclick="if (!fnRemove()) return false;" update="xeco-list" oncomplete="showTab(xhr, status, args, 'list');" 
+		<p:commandButton action="#{iris.irse.list.remove()}" onclick="if (!fnRemove()) return false;" update="xeco-list" oncomplete="showTab(xhr, status, args, 'list-old');" 
 			icon="fal fa-trash-alt" styleClass="btn btn-error danger-btn" value="Eliminar" tabindex="14" title="Borra la solicitud del sistema" />
 	</c:if>
 	<c:choose>

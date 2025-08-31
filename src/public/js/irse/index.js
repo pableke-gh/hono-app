@@ -12,9 +12,12 @@ import maps from "./modules/maps.js";
 import otri from "./modules/otri.js";
 import organicas from "./modules/organicas.js";
 import iTabs from "./modules/tabs.js";
+
+import irse from "./model/Irse.js";
 import xeco from "../xeco/xeco.js";
 
 window.IRSE = {}; // global IRSE info
+irse.setData(window.IRSE); // init model data
 const formIrse = xeco.getForm();
 coll.ready(list.init);
 

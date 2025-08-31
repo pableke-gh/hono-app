@@ -5,7 +5,7 @@ import firma from "../../xeco/model/Firma.js";
 import iris from "../../xeco/model/Solicitud.js";
 import perfiles from "../data/perfiles/perfiles.js"; 
 
-iris.getUrl = () => "/uae/iris";
+iris.getUrl = () => "/uae/iris"; // endpoint base path
 iris.isActivablePaso8 = () => (iris.isUae() && iris.isEditable()); // pueden mostrarse los campos del paso 8
 iris.isReactivable = () => (iris.isUae() && (iris.isInvalidada() || iris.isErronea())); // La solicitud se puede reactivar / subsanar
 iris.isResumable = () => (iris.isPendiente() || iris.isFirmada() || iris.isIntegrada()); // muestra el boton de resumen (paso 6)
@@ -55,7 +55,7 @@ iris.row = data => {
 		acciones += '<a href="#report" class="row-action" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
 	}
 	if (iris.isReactivable())
-		acciones += '<a href="#reactivar" class="row-action" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
+		acciones += '<a href="#clone" class="row-action" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
 	if (iris.isActivablePaso8())
 		acciones += '<a href="#paso8" class="row-action" title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></a>';
 
