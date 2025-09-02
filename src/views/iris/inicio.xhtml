@@ -35,15 +35,15 @@
 			<ui:include src="tabs/init.xhtml"></ui:include>
 		</div>
 
+		<!-- vinculación con uxxiec -->
+		<div id="tab-uxxiec" class="tab-content" data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
+			<ui:include src="tabs/uxxiec.xhtml"></ui:include>
+		</div>
+
 		<!-- listado de solicitudes -->
 		<div id="tab-list" class="tab-content">
 			<ui:include src="tabs/list.xhtml"></ui:include>
 			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
-		</div>
-
-		<!-- vinculación con uxxiec -->
-		<div id="tab-uxxiec" class="tab-content" data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
-			<ui:include src="tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
 		<!-- Form IRSE -->
@@ -98,18 +98,16 @@
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 
-		<!-- formulario de rechazo/cancelacion -->
+		<!-- formulario de rechazo / cancelacion -->
 		<div id="tab-reject" class="tab-content">
+			<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 			<ui:include src="tabs/reject.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 		</h:form>
 
 		<!-- listado ISU para la OTRI -->
-		<c:if test="#{iris.user.uae or iris.user.otri}">
-			<div id="tab-listIsu" class="tab-content">
-				<ui:include src="tabs/list_isu.xhtml"></ui:include>
-			</div>
-		</c:if>
+		<div id="tab-listIsu" class="tab-content">
+			<ui:include src="tabs/list_isu.xhtml"></ui:include>
+		</div>
 	</ui:define>
 </ui:composition>

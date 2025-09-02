@@ -42,8 +42,8 @@ function List() {
 		const row = tblSolicitudes.getCurrentItem();
 		if (form.isCached(row.id)) // checks if current item is cached
 			firmas.view(data.firmas); // update firmas blocks
-		tabs.showList(data.msgs); // force tab list
 		fnProcesando(row); // avoid reclick
+		tabs.showList(); // force tab list
 	}
 
 	this.init = () => {
@@ -51,7 +51,7 @@ function List() {
 		form.onKeydown(ev => ((ev.key == "Enter") && fnCallList()));
 
 		// Show empty table and set handlers actions for solicitudes
-		tblSolicitudes.render().set("#view", fnView).set("#uxxiec", uxxiec.view).set("#tab-reject", data => fnLoadTab("reject", data));
+		tblSolicitudes.render().set("#view", fnView).set("#uxxiec", uxxiec.view).set("#reject", data => fnLoadTab("reject", data));
 
 		const fnFirmar = id => api.init().json(url + "/firmar?id=" + id).then(self.loadFirmas);
 		tblSolicitudes.set("#firmar", data => (i18n.confirm("msgFirmar") && fnFirmar(data.id)));

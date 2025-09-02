@@ -9,7 +9,7 @@
 
 	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></h2>
 	<form id="xeco-filter" action="/uae/iris" class="card-filter">
-		<div class="ui-blocks">
+		<div class="ui-blocks"> <!-- filtros principales -->
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
 				<ui:include src="../parts/ejercicios.xhtml"></ui:include>
@@ -31,9 +31,9 @@
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
 				<select name="fmask" class="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
 					<option value=""></option>
-					<option value="5">#{irse.getMsg('lblPendiente')}</option>
-					<option value="1">#{irse.getMsg('lblAceptada')}</option>
-					<option value="2">#{irse.getMsg('lblRechazada')}</option>
+					<option value="5">#{iris.getMsg('lblPendiente')}</option>
+					<option value="1">#{iris.getMsg('lblAceptada')}</option>
+					<option value="2">#{iris.getMsg('lblRechazada')}</option>
 				</select>
 			</label>
 			<label class="ui-block">
@@ -51,7 +51,7 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks">
+		<div class="ui-blocks"> <!-- campos de filtrado extra -->
 			<div class="ui-block-row">
 				<a id="filtro" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['uae.irse.filter.lbl.extra']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
 			</div>
@@ -89,8 +89,8 @@
 			</label>
 		</div>
 
-		<div class="navbar">
-			<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
+		<div class="navbar"> <!-- acciones del filtro (botones) -->
+			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 			<a href="#tab-action-list" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
 			<c:if test="#{not iris.user.otri}">
@@ -120,6 +120,6 @@
 		<tfoot></tfoot>
 	</table>
 
-	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 </html>

@@ -15,29 +15,26 @@ function XecoForm() {
 	const url = model.getUrl(); // url base path
 	const form = new Form("#xeco-model");
 
+	this.getList = () => list;
+	this.getTable = () => list.getTable();
 	this.getForm = () => form;
 	this.refresh = () => form.refresh(model);
-	this.getTable = list.getTable;
+	this.getFirmas = () => firmas;
 
 	this.init = () => {
 		list.init();
 		firmas.init();
 	}
 
-	this.view = (data, principales, tab) => {
+	this.view = (data, principales) => {
 		model.setData(data); // 1º carga los datos de la solicitud
-		firmas.view(principales); // 2º cargo la vista de firmas asociadas
-		// 2º force last action => update form views and go to tab form
-		form.closeAlerts().setCache(data.id).setData(data, ":not([type=hidden])");
-		setTimeout(() => form.setValues(data).setEditable().refresh(model), 1); // execute at the end
 		list.setCache(data.id); // filter form cache = xeco form cache!
-		tabs.showTab(tab || "form"); // go form tab
+		firmas.view(principales); // 2º cargo la vista de firmas asociadas
+		form.setCache(data.id).setData(data, ":not([type=hidden])");
 	}
-	this.update = (data, principales, tab) => {
+	this.update = (data, principales) => {
 		data && model.setData(data); // 1º carga los datos de la solicitud
 		principales && firmas.view(principales); // 2º actualizo la vista de firmas asociadas
-		// 3º and last action => update views and go to specific tab
-		setTimeout(() => form.setChanged().refresh(model).nextTab(tab), 1);
 	}
 
 	const pfUpload = el => { // pf upload component
@@ -63,7 +60,7 @@ function XecoForm() {
 		api.setJSON(data).json(url + "/firmar").then(list.loadFirmas);
 	});
 
-	tabs.setAction("reject", () => list.getTable().invoke("#tab-reject")); // open reject tab from list
+	tabs.setAction("reject", () => list.getTable().invoke("#reject")); // open reject tab from list
 	const fnRechazar = id => api.init().json(url + "/rechazar", { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
 	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && fnRechazar(list.getId()); });
 	const fnCancelar = id => api.init().json(url + "/cancelar", { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);

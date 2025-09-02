@@ -35,21 +35,15 @@
 			<ui:include src="tabs/init.xhtml"></ui:include>
 		</div>
 
-		<!-- listado de solicitudes -->
-		<div id="tab-list-old" class="tab-content">
-			<ui:include src="tabs/list.xhtml"></ui:include>
-			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
+		<!-- vinculación con uxxiec v2 -->
+		<div id="tab-uxxiec" class="tab-content" data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
+			<ui:include src="tabs/uxxiec_v2.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes v2 -->
 		<div id="tab-list" class="tab-content">
 			<ui:include src="tabs/list_v2.xhtml"></ui:include>
 			<ui:include src="parts/leyenda_firmas.xhtml"></ui:include>
-		</div>
-
-		<!-- vinculación con uxxiec v2 -->
-		<div id="tab-uxxiec" class="tab-content" data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
-			<ui:include src="tabs/uxxiec_v2.xhtml"></ui:include>
 		</div>
 
 		<!-- Form IRSE -->
@@ -117,23 +111,16 @@
 			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</p:outputPanel>
 
-		<!-- vinculación con uxxiec -->
-		<p:outputPanel id="tab-uxxiec-old" styleClass="tab-content update-irse">
-			<ui:include src="tabs/uxxiec.xhtml"></ui:include>
-		</p:outputPanel>
-
-		<!-- formulario de rechazo/cancelacion -->
-		<p:outputPanel id="tab-reject" styleClass="tab-content update-irse">
+		<!-- formulario de rechazo / cancelacion -->
+		<div id="tab-reject" class="tab-content">
+			<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 			<ui:include src="tabs/reject.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 		</h:form>
 
 		<!-- listado ISU para la OTRI -->
-		<c:if test="#{iris.user.uae or iris.user.otri}">
-			<div id="tab-listIsu" class="tab-content">
-				<ui:include src="tabs/list_isu.xhtml"></ui:include>
-			</div>
-		</c:if>
+		<div id="tab-listIsu" class="tab-content">
+			<ui:include src="tabs/list_isu.xhtml"></ui:include>
+		</div>
 	</ui:define>
 </ui:composition>

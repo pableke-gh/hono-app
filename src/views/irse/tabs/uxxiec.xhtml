@@ -66,7 +66,7 @@
 	</table>
 
 	<br class="clear"/><br/>
-	<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
+	<a href="#tab-listOld" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<p:commandButton action="#{iris.irse.firma.ejecutar()}" icon="far fa-save" styleClass="btn btn-green success-btn" value="Ejecutar" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
 		tabindex="14" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud" />

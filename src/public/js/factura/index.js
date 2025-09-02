@@ -42,6 +42,7 @@ coll.ready(() => {
 				.setTercero(data.fact.idTer, data.fact.nif + " - " + data.fact.tercero)
 				.setSujeto(data.fact.sujeto) // update sujeto / exento
 				.setFace(data.fact.face); // update face inputs group
+		form.view(factura); // render form view
 	}
 
 	const fnBuild = (tipo, subtipo) => ({ fact: { tipo, subtipo, imp: 0, iva: 0 } });

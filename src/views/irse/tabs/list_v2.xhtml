@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></h2>
+	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /> V2</h2>
 	<form id="xeco-filter" action="/uae/iris" class="card-filter">
 		<div class="ui-blocks"> <!-- filtros principales -->
 			<label class="ui-block">
@@ -31,9 +31,9 @@
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
 				<select name="fmask" class="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
 					<option value=""></option>
-					<option value="5">#{irse.getMsg('lblPendiente')}</option>
-					<option value="1">#{irse.getMsg('lblAceptada')}</option>
-					<option value="2">#{irse.getMsg('lblRechazada')}</option>
+					<option value="5">#{iris.getMsg('lblPendiente')}</option>
+					<option value="1">#{iris.getMsg('lblAceptada')}</option>
+					<option value="2">#{iris.getMsg('lblRechazada')}</option>
 				</select>
 			</label>
 			<label class="ui-block">
@@ -51,7 +51,7 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks">  <!-- campos de filtrado extra -->
+		<div class="ui-blocks"> <!-- campos de filtrado extra -->
 			<div class="ui-block-row">
 				<a id="filtro" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['uae.irse.filter.lbl.extra']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
 			</div>
@@ -90,7 +90,7 @@
 		</div>
 
 		<div class="navbar"> <!-- acciones del filtro (botones) -->
-			<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
+			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 			<a href="#tab-action-list" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
 			<c:if test="#{not iris.user.otri}">
@@ -123,12 +123,11 @@
 	<!-- retrocompatibilidad -> a eliminar -->
 	<h:form id="irse-list" prependId="false" onsubmit="loading();">
 		<p:remoteCommand name="rcView" action="#{iris.irse.list.view()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" />
-		<p:remoteCommand name="rcPaso8" action="#{iris.irse.list.activePaso8()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcClone" action="#{iris.irse.list.clone()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)" />
-		<p:remoteCommand name="rcFirmar" action="#{iris.irse.list.firmar()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcConfirm" action="#{iris.irse.list.confirm()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'reject')" />
+		<p:remoteCommand name="rcClone" action="#{iris.irse.list.cloneSolicitud()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)" />
+		<!-- <p:remoteCommand name="rcPaso8" action="#{iris.irse.list.activePaso8()}" oncomplete="showAlerts(xhr, status, args)" />
+		<p:remoteCommand name="rcFirmar" action="#{iris.irse.list.firmar()}" oncomplete="showAlerts(xhr, status, args)" /> -->
 	</h:form>
 
-	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 </html>

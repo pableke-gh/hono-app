@@ -35,9 +35,8 @@ function Otri() {
 	const isCongresoJustifi = () => {
 		if (!fnCongreso() || !_eF1Cong.value || !_eF2Cong.value)
 			return false; // no se justifica el congreso
-		const fIniCong = dt.toDate(_eF1Cong.value); // fecha inicio del congreso
-		const fFinCong = dt.toDate(_eF2Cong.value); // fecha fin del congreso
-		dt.addDays(fIniCong, -1).trunc(fIniCong).addDays(fFinCong, 2).trunc(fFinCong);
+		const fIniCong = dt.trunc(dt.addDays(dt.toDate(_eF1Cong.value), -1)); // fecha inicio del congreso
+		const fFinCong = dt.trunc(dt.addDays(dt.toDate(_eF2Cong.value), 2)); // fecha fin del congreso
 		return dt.lt(rutas.salida(), fIniCong) || dt.lt(fFinCong, rutas.llegada());
 	}
 

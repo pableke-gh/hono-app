@@ -61,6 +61,9 @@ export default {
 	lblPais: "Country", lblDireccion: "Address", lblLocalidad: "Locality", lblCP: "Postal Code", lblProvincia: "Province", lblCCAA: "Administrative area",  
 
 	// IRIS Collections
+	descEstados: [
+		"-", "Aceptada", "Rechazada", "Ejecutada", "Integrada", "Pendiente", "Editable", "Rechazada UAE", "Caducada", "Error Capa SOA", "Error de Crédito Vinculante", "-", "-", "-", "-", "Subsanable", "Procesando..."
+	],
 	despMun: [ "Vehículo Propio", "Transportes Públicos" ],
 	despMaps: [ "Vehículo Propio", "Avión", "Tren", "Vehículo Alquiler", "Vehículo Ajeno", "Taxi Interurbano", "Bús Interurbano", "Barco", "Otros" ],
 	gastosTiketIsu: [ "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros" ],

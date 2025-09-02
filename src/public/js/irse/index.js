@@ -4,6 +4,7 @@ import tabs from "../components/Tabs.js";
 import i18n from "./i18n/langs.js";
 import dom from "../lib/uae/dom-box.js";
 
+import irse from "./model/Irse.js";
 import list from "./modules/list.js";
 import perfil from "./modules/perfil.js";
 import rutas from "./modules/rutas.js";
@@ -12,12 +13,9 @@ import maps from "./modules/maps.js";
 import otri from "./modules/otri.js";
 import organicas from "./modules/organicas.js";
 import iTabs from "./modules/tabs.js";
-
-import irse from "./model/Irse.js";
 import xeco from "../xeco/xeco.js";
 
 window.IRSE = {}; // global IRSE info
-irse.setData(window.IRSE); // init model data
 const formIrse = xeco.getForm();
 coll.ready(list.init);
 
@@ -44,27 +42,29 @@ tabs.setViewEvent(9, organicas.build); // always auto build table organicas/gast
 tabs.setInitEvent(12, iTabs.initTab12); // init. all validations and inputs events only once
 
 //PF needs confirmation in onclick attribute
-window.fnFirmar = () => i18n.confirm("msgFirmar") && loading();
+/*window.fnFirmar = () => i18n.confirm("msgFirmar") && loading();
 window.fnRechazar = () => dom.closeAlerts().required("#rechazo", "Debe indicar un motivo para el rechazo de la solicitud.").isOk() && i18n.confirm("msgRechazar");
-window.fnIntegrar = link => i18n.confirm("msgIntegrar") && loading() && link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");
+window.fnIntegrar = link => i18n.confirm("msgIntegrar") && loading() && link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");*/
 window.isCached = (id, tab) => formIrse.isCached(id) && !perfil.isEmpty() && tabs.showTab(tab); // if cached avoid navegation
-window.fnRemove = () => i18n.confirm("removeCom") && loading();
 window.fnUnlink = () => i18n.confirm("unlink") && loading();
-window.fnClone = () => i18n.confirm("reactivar") && loading();
+//window.fnRemove = () => i18n.confirm("removeCom") && loading();
+//window.fnClone = () => i18n.confirm("reactivar") && loading();
 window.saveTab = () => formIrse.showOk(i18n.get("saveOk")).working();
 
 window.viewIrse = (xhr, status, args, tab) => {
 	tabs.load(document); // load new tabs
-	Object.assign(IRSE, coll.parse(args.data)); // update server info
+	irse.setData(Object.assign(window.IRSE, coll.parse(args.data)));
 
-	// Init IRSE form
-	dom.setTables(formIrse.getForm()).setInputs(formIrse.getElements()); // Update tables and inputs
-	formIrse.update().render(".i18n-tr-h1").setCache(IRSE.id); // current cache id
+	// Init IRSE form, tables and inputs
+	dom.setTables(formIrse.getForm()).setInputs(formIrse.getElements());
+	xeco.getFirmas().view(coll.parse(args.firmas)); // update firmas view
+	formIrse.update().render(".i18n-tr-h1").setCache(IRSE.id).refresh(irse);
 	perfil.init(formIrse);
 	rutas.init(formIrse);
 	organicas.init(formIrse);
-	tabs.nextTab(tab ?? IRSE.tab); // go to next tab
-	window.showAlerts(xhr, status, args); // show alerts
+
+	if (window.showAlerts(xhr, status, args)) // alerts
+		tabs.nextTab(tab ?? IRSE.tab); // go to next tab
 }
 
 //Global IRSE components

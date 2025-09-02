@@ -16,39 +16,21 @@ function Tabs() {
 	const iframe = window.parent.document.querySelector("#ifPage-frame");
 
 	let tabs, _tabIndex;
+	let fnResize = tab => { // resize iframe height
+		iframe.style.height = ((tab?.scrollHeight || iframe.contentDocument.body) + 80) + "px";
+	}
 
 	const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
 	const fnActive = el => el.classList.contains(ACTIVE_CLASS); //active class
 	const fnFindIndex = id => tabs.findIndexBy("#tab-" + id); //find index tab by id
+	const fnNextIndex = id => (globalThis.isset(id) ? fnFindIndex(id) : (_tabIndex + 1)); //next index tab
 	const fnCurrentIndex = () => tabs.findIndex(fnActive); //current index tab
-	const fnResize = tab => { iframe.style.height = ((tab?.scrollHeight || iframe.contentDocument.body) + 80) + "px"; }
 	const autofocus = tab => {
 		const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
 		const el = tab.querySelectorAll(FOCUSABLED).find(el => el.isVisible());
 		el && el.focus();
 		return self;
 	}
-	const fnSetTab = (tab, index) => { // update tabs style
-		alerts.closeAlerts(); // Close all previous messages
-		tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
-		tab.classList.add(ACTIVE_CLASS); // active current tab only
-		_tabIndex = index ?? fnCurrentIndex(); // current tab index
-		if (!tab.dataset.loaded) { // event indicator
-			fnCallEvent("init", tab); // Fire once when show tab
-			tab.dataset.loaded = "1"; // avoid to fire event again
-		}
-		fnCallEvent("view", tab); // Fire when show tab
-		if (iframe) {
-			fnResize(tab); // resize iframe height
-			window.parent.scrollTo({ top: 0, behavior: "smooth" });
-		}
-		return autofocus(tab);
-	}
-
-    this.getCurrent = () => tabs[_tabIndex]; // current tab
-    this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
-    this.setActive = id => fnSetTab(self.getTab(id)); // Force active class whithot events and alerts
-    this.isActive = id => fnActive(self.getTab(id)); // is current tab active
 
     // Set events on tabs actions
     const fnCallEvent = (name, tab) => {
@@ -62,6 +44,24 @@ function Tabs() {
 	this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
 	this.setActiveEvent = (tab, fn) => fnSet("active-tab-" + tab, fn);
 
+	const fnGoTab = (tab, index) => { // update tabs style
+		tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
+		tab.classList.add(ACTIVE_CLASS); // active current tab only
+		_tabIndex = index ?? fnCurrentIndex(); // current tab index
+		if (!tab.dataset.loaded) { // event indicator
+			fnCallEvent("init", tab); // Fire once when show tab
+			tab.dataset.loaded = "1"; // avoid to fire event again
+		}
+		fnCallEvent("view", tab); // Fire when show tab
+		fnResize(tab); // resize iframe height
+		window.parent.scrollTo({ top: 0, behavior: "smooth" });
+		return autofocus(tab);
+	}
+	const fnSetTab = (tab, index) => { // update tabs style
+		alerts.closeAlerts(); // Close all previous messages
+		return fnGoTab(tab, index); // Show selected tab
+	}
+
 	// Alerts helpers
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
 	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
@@ -69,30 +69,59 @@ function Tabs() {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = alerts.showAlerts; // Encapsule showAlerts message
 
-	function fnShowTab(i) { //show tab by index
-		i = (i < 0) ? 0 : Math.min(i, tabs.length - 1);
-		if (_tabIndex == i)
+	this.getCurrent = () => tabs[_tabIndex]; // current tab
+	this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
+	this.setActive = id => fnGoTab(self.getTab(id)); // Force active class whithot events and alerts
+	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
+
+	const fnRange = i => ((i < 0) ? 0 : Math.min(i, tabs.length - 1));
+	function fnViewTab(i) { // show tab by index and preserve alerts
+		i = fnRange(i); // limit index range
+		if (_tabIndex == i) // is current tab
+			return self; // tab already active
+		const tab = tabs[i]; // get next tab
+		if (_tabIndex < i) { // go ahead
+			if (!fnCallEvent("active", tab)) // is current tab active
+				return fnViewTab(i + 1); // recursive search for next active tab
+			if (fnCallEvent("show", tab)) { // Validate event before change tab
+				tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
+				fnGoTab(tab, i); // set current tab
+			}
+			return self;
+		}
+		// go back
+		if (!fnCallEvent("active", tab)) // is current tab active
+			return fnViewTab(i - 1); // recursive search for prev active tab
+		// auto toggle off links actions in current tab
+		self.getCurrent().querySelectorAll("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
+		return fnGoTab(tab, i); // set current tab
+	}
+	function fnShowTab(i) { // show tab by index and close alerts
+		i = fnRange(i); // limit index range
+		if (_tabIndex == i) // is current tab
 			return self; // tab already active
 		const tab = tabs[i]; // get next tab
 		if (_tabIndex < i) { // go ahead
 			if (!fnCallEvent("active", tab)) // is current tab active
 				return fnShowTab(i + 1); // recursive search for next active tab
-            if (fnCallEvent("show", tab)) { // Validate event before change tab
-            	tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
-            	fnSetTab(tab, i); // set current tab
-            }
+			if (fnCallEvent("show", tab)) { // Validate event before change tab
+				tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
+				fnSetTab(tab, i); // set current tab
+			}
 			return self;
-        }
-        // go back
+		}
+		// go back
 		if (!fnCallEvent("active", tab)) // is current tab active
 			return fnShowTab(i - 1); // recursive search for prev active tab
 		// auto toggle off links actions in current tab
 		self.getCurrent().querySelectorAll("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
 		return fnSetTab(tab, i); // set current tab
-    }
+	}
 
-	this.showTab = id => fnShowTab(fnFindIndex(id)); //find by id selector
-	this.nextTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : (_tabIndex + 1));
+	this.viewTab = id => fnViewTab(fnFindIndex(id)); // find by id selector
+	this.showTab = id => fnShowTab(fnFindIndex(id)); // find by id selector
+	this.goTab = id => fnViewTab(fnNextIndex(id)); // find by id selector or next index tab
+	this.nextTab = id => fnShowTab(fnNextIndex(id)); // find by id selector or next index tab
 	this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
 	this.prevTab = self.backTab; // Synonym to go back to previous tab
 	this.lastTab = () => fnShowTab(tabs.length - 1);
@@ -111,11 +140,10 @@ function Tabs() {
 		return self;
 	}
 
-	// if message is ok => go next tab, and always show alerts after change tab
-    this.showMsgs = (msgs, tab) => alerts.isOk(msgs) ? self.nextTab(tab).showAlerts(msgs) : alerts.showAlerts(msgs);
-    this.showInit = msgs => self.showMsgs(msgs, "init"); // show init view
-    this.showForm = msgs => self.showMsgs(msgs, "form"); // show form view
-    this.showList = msgs => self.showMsgs(msgs, "list"); // show list view
+	// if message is ok => go tab and preserve alerts after change
+	this.showInit = () => self.viewTab("init"); // show init view
+	this.showForm = () => self.viewTab("form"); // show form view
+	this.showList = () => self.viewTab("list"); // show list view
 
 	this.setActions = el => { // set default actions
         el.querySelectorAll("[href^='#tab-']").setClick((ev, link) => {
@@ -144,13 +172,15 @@ function Tabs() {
     }
 
 	// Init. view and PF navigation (only for CV-UAE)
-	window.showTab = (xhr, status, args, tab) => (alerts.isLoaded(xhr, status, args) && self.showMsgs(coll.parse(args.msgs), tab));
+	window.showTab = (xhr, status, args, tab) => (alerts.isLoaded(xhr, status, args) && self.goTab(tab));
 	coll.ready(() => {
 		if (iframe) { // auto-adapt iframe height on resize event
 			const ro = new ResizeObserver(() => fnResize(self.getCurrent()));
 			ro.observe(iframe.contentDocument.body);
 			iframe.setAttribute("scrolling", "no");
 		}
+		else
+			fnResize = globalThis.void; // disable resize function
 		self.load(document); // Load all tabs by default
 	});
 }

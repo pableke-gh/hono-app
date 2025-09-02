@@ -9,6 +9,7 @@ iris.getUrl = () => "/uae/iris";
 iris.isActivablePaso8 = () => (iris.isUae() && iris.isEditable()); // pueden mostrarse los campos del paso 8
 iris.isReactivable = () => (iris.isUae() && (iris.isInvalidada() || iris.isErronea())); // La solicitud se puede reactivar / subsanar
 iris.isResumable = () => (iris.isPendiente() || iris.isFirmada() || iris.isIntegrada()); // muestra el boton de resumen (paso 6)
+iris.getInitTab = () => (iris.isResumable() ? "resumen" : "form"); // paso a mostrar
 
 iris.getRol = () => iris.get("rol");
 iris.getCodigoRol = nif => ((nif == iris.getNif()) ? "P" : "A");

@@ -6,7 +6,7 @@ import dom from "../../lib/uae/dom-box.js";
 import i18n from "../i18n/langs.js";
 
 import organica from "../model/Organica.js"
-import getActividad from "../data/actividades.js"
+import getActividad from "../data/perfiles/actividades.js"
 //import tribunales from "../data/irse/tribunales.js"
 
 function IrsePerfil() {

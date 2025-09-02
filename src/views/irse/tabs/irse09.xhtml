@@ -94,16 +94,6 @@
 		<p:commandButton action="#{iris.irse.list.send()}" onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 'init');" icon="far fa-file-signature" 
 			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.enviar']}" tabindex="193" title="#{msg['tit.btn.firmar.enviar']}" />
 	</c:if>
-	<c:choose>
-		<c:when test="#{iris.irse.form.firmable}">
-			<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-		</c:when>
-		<c:when test="#{iris.irse.form.cancelable}">
-			<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="194" title="#{msg['tit.btn.cancelar']}">
-				<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
-		</c:when>
-		<c:otherwise>
-		</c:otherwise>
-	</c:choose>
+	<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	<ui:include src="../parts/btn_doc.xhtml"></ui:include>
 </html>

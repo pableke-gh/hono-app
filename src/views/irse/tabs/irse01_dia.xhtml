@@ -36,8 +36,5 @@
 				<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 		</c:otherwise>
 	</c:choose>
-
-	<c:if test="#{iris.irse.form.firmable}">
-		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-	</c:if>
+	<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 </html>

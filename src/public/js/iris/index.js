@@ -28,9 +28,6 @@ coll.ready(() => {
 		.set("is-paso8", iris.isPaso8).set("is-editable-paso8", () => (iris.isEditable() && iris.isPaso8()));
 
 	iris.view = data => { // Init IRSE form
-		if (!tabs.showAlerts(data.msgs)) // show messages
-			return false; // error al actualizar la solicitud
-
 		iris.init(data.iris); // init perfil
 		xeco.view(data.iris, data.firmas); // load view
 		perfil.view(data.interesado, data.organicas);
@@ -40,20 +37,21 @@ coll.ready(() => {
 		otri.view(); // paso 3 = isu
 		resumen.view(); // update tables for paso 6
 		sendTab.view(data.cuentas);
+		form.view(iris, iris.getInitTab()); // render form view
 	}
 
 	iris.update = (data, tab) => { // update IRSE form
-		if (!tabs.showAlerts(data.msgs)) // show messages
-			return false; // error al actualizar la solicitud
-		xeco.update(data.iris, data.firmas, tab); // Update firmas blocks
+		xeco.update(data.iris, data.firmas); // Update firmas blocks
 		data.interesado && iris.setInteresado(data.interesado);
 		rutas.update(data.rutas);
 		gastos.update(data.gastos);
+		form.setChanged().refresh(iris);
+		tabs.goTab(tab);
 	}
 
 	/*********** Extra list actions ***********/
 	const table = xeco.getTable(); // Current table of solicitudes
-	table.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id).then(iris.view))); // set table action
+	table.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id))); // set table action
 	table.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // html report
 	tabs.setAction("rptFinalizar", () => table.invoke("#rptFinalizar")); // set tab action
 

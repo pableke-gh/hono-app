@@ -82,12 +82,6 @@ export default function(form, opts) {
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = alerts.showAlerts; // showAlerts synonym
-	this.nextTab = tab => { // change tab inside form
-		if (tab && tabs.isActive(tab)) // same tab
-			return self.setOk(); // show ok msg
-		tabs.nextTab(tab); // go to next tab
-		return self;
-	}
 
 	this.getValidators = i18n.getValidation; // validator object
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard
@@ -100,6 +94,17 @@ export default function(form, opts) {
 	this.render = (selector, data) => { $$(selector).render(data); return self; } // NodeList.prototype.render
 	this.refresh = (model, selector) => { $$(selector || opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
 	this.send = url => api.setForm(form).send(url || form.action).catch(info => { self.setErrors(info); throw info; });
+	this.view = (model, tab) => { // set inputs values and readonly
+		self.setValues(model.getData()).setEditable().refresh(model);
+		tabs.viewTab(tab ?? "form"); // show tab and preserve messages
+		return self;
+	}
+	this.nextTab = tab => { // change tab inside form
+		if (tab && tabs.isActive(tab)) // same tab
+			return self.setOk(); // show ok msg
+		tabs.nextTab(tab); // go to next tab
+		return self;
+	}
 
 	this.hide = selector => { $$(selector).hide(); return self; }
 	this.show = selector => { $$(selector).show(); return self; }

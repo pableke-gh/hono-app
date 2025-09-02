@@ -32,19 +32,7 @@
 			<h:outputText value="#{msg['lbl.btn.resumen']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 	</c:if>
 
-	<c:if test="#{iris.irse.form.removable}">
-		<p:commandButton action="#{iris.irse.list.remove()}" onclick="if (!fnRemove()) return false;" update="xeco-list" oncomplete="showTab(xhr, status, args, 'list-old');" 
-			icon="fal fa-trash-alt" styleClass="btn btn-error danger-btn" value="Eliminar" tabindex="14" title="Borra la solicitud del sistema" />
-	</c:if>
-	<c:choose>
-		<c:when test="#{iris.irse.form.firmable}">
-			<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-		</c:when>
-		<c:when test="#{iris.irse.form.cancelable}">
-			<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="14" title="#{msg['tit.btn.cancelar']}">
-				<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
-		</c:when>
-		<c:otherwise>
-		</c:otherwise>
-	</c:choose>
+	<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="is-removable" title="Borra la solicitud del sistema"> 
+		<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
+	<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 </html>

@@ -60,12 +60,6 @@
 	</c:otherwise>
 	</c:choose>
 
-	<c:if test="#{iris.irse.form.firmable}">
-		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-	</c:if>
-	<c:if test="#{iris.irse.form.cancelable}">
-		<a href="#tab-reject" class="btn btn-warn warning-btn" tabindex="134" title="#{msg['tit.btn.cancelar']}">
-			<i class="fas fa-times btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
-	</c:if>
+	<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	<ui:include src="../parts/btn_doc.xhtml"></ui:include>
 </html>

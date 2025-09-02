@@ -81,7 +81,7 @@ base.rowActions = data => {
 	let acciones = '<a href="#view" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
 	if (base.isFirmable()) {
 		acciones += '<a href="#firmar" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-check action resize text-green"></i></a>';
-		acciones += '<a href="#tab-reject" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-times action resize text-red"></i></a>';
+		acciones += '<a href="#reject" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-times action resize text-red"></i></a>';
 	}
 	if (base.isEjecutable())
 		acciones += '<a href="#uxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';

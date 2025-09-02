@@ -47,8 +47,8 @@ function Gastos() {
 		api.setJSON(data).json("/uae/iris/upload").then(data => {
 			gastos.push(data.gasto); // añado el nuevo gasto a lista de gastos
 			_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos (paso 5)
-			fnAfterFile(data); // actualizo tablas y formulario
-			tabs.showTab(5); // vuelvo al paso 5
+			fnAfterFile(data); // actualizo tablas de rutas y gastos, y los campos del formulario
+			tabs.setActive(5); // vuelvo al paso 5 mantenidendo los mensajes
 		}).catch(globalThis.void); // catch error
 	}
 	tabs.setAction("uploadGasto", () => {

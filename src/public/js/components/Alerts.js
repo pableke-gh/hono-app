@@ -37,22 +37,21 @@ function Alerts() {
 		return self;
 	}
 
-	this.isOk = data => (!data || (!data.msgError && !data.msgs?.msgError)); // check ok
 	this.showOk = msg => setAlert(alerts.children[0], msg); //green
 	this.showInfo = msg => setAlert(alerts.children[1], msg); //blue
 	this.showWarn = msg => setAlert(alerts.children[2], msg); //yellow
 	this.showError = msg => setAlert(alerts.children[3], msg); //red
-	this.showMsgs = data => {
-		const msgs = data?.msgs || data; // msgs container
-		if (msgs) { // show posible multiple messages types
-			msgs.msgOk && fnShow(alerts.children[0], msgs.msgOk);
-			msgs.msgInfo && fnShow(alerts.children[1], msgs.msgInfo);
-			msgs.msgWarn && fnShow(alerts.children[2], msgs.msgWarn);
-			return msgs.msgError ? fnShow(alerts.children[3], msgs.msgError) : true; // error message
-		}
-		return true; // no error message
+	this.setMsgs = msgs => {
+		if (!msgs) // msgs container
+			return true; // no messages => ok
+		// show multiple messages types (ok, info, etc...)
+		msgs.msgOk && fnShow(alerts.children[0], msgs.msgOk);
+		msgs.msgInfo && fnShow(alerts.children[1], msgs.msgInfo);
+		msgs.msgWarn && fnShow(alerts.children[2], msgs.msgWarn);
+		return msgs.msgError ? fnShow(alerts.children[3], msgs.msgError) : true; // error message
     }
 
+	this.showMsgs = data => self.setMsgs(data?.msgs || data); // msgs container
 	this.showAlerts = data => self.working().showMsgs(data); // hide loading frame and show msgs container
 	this.closeAlerts = () => { texts.forEach(fnCloseParent); return self; } // fadeOut all alerts
     alerts.getElementsByClassName(ALERT_CLOSE).setClick((ev, link) => fnCloseParent(link)); // Set close click event
@@ -67,15 +66,15 @@ function Alerts() {
 	}
 	window.catchPromise = async fn => await window.catchError(new Promise(fn));
 
-    this.isLoaded = function(xhr, status, args) { // PF server error xhr
-		if (xhr && (status == "success"))
-			return true; // status 200
+    this.isLoaded = (xhr, status, args) => { // PF hack
+		if (xhr && (status == "success")) // is PF server error xhr?
+			return self.showAlerts(coll.parse(args.msgs)); // status 200
 		var msg = "Error 500: Internal server error."; // default
 		msg = (globalThis.isstr(xhr) && (xhr.length < 100)) ? xhr : msg;
 		msg = (xhr && xhr.statusText) ? xhr.statusText : msg;
 		return !self.showError(msg).working(); // show error
 	}
-	window.showAlerts = (xhr, status, args) => self.isLoaded(xhr, status, args) && self.showAlerts(coll.parse(args?.msgs)); // show all messages
+	window.showAlerts = self.isLoaded; // show all messages
 	window.openUrl = (xhr, status, args) => { window.showAlerts(xhr, status, args) && api.open(args?.url); }
 	//window.openHtml = (xhr, status, args, title) => { window.showAlerts(xhr, status, args) && stream.html(args.data, title || args.title); }
 	//window.openZip = (xhr, status, args, name) => { window.showAlerts(xhr, status, args) && stream.zip(args.data, name || args.name); }

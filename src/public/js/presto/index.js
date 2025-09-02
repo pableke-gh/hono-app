@@ -30,6 +30,7 @@ coll.ready(() => {
 		xeco.view(data.presto, data.firmas); // load data-model before view
 		pDec.view(data.presto, data.economicas); // vista de la partida a decrementar
 		pInc.view(data.partidas); // cargo la tabla de partidas a incrementar
+		form.view(presto); // render form view
 	}
 
 	const DATA = {}; // build container
