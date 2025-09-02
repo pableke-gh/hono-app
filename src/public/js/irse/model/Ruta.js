@@ -4,8 +4,8 @@ import dom from "../../lib/uae/dom-box.js";
 
 function Ruta() {
 	const self = this; //self instance
-	const MIN_DATE = dt.clone().addDays(-365); //1 año antes
-	const MAX_DATE = dt.clone().addDays(180); //6 meses despues
+	const MIN_DATE = dt.addYears(new Date(), -1); //1 año antes
+	const MAX_DATE = dt.addDays(new Date(), 180); //6 meses despues 
 
 	this.isPrincipal = ruta => ((ruta.mask & 1) == 1);
 	this.setPrincipal = ruta => { ruta.mask |= 1; return self; }

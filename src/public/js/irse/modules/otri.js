@@ -16,31 +16,30 @@ function Otri() {
 	const form = xeco.getForm();
 
 	this.init = () => {
-        const eCong = form.getInput("#congreso"); //congreso si/no
-        const eIniCong = form.getInput("#fIniCong"); //fecha inicio del congreso
-        const eFinCong = form.getInput("#fFinCong"); //fecha fin del congreso
-        const eJustifiCong = form.querySelector(".justifi-congreso"); //justificacion del congreso
+		const eCong = form.getInput("#congreso"); //congreso si/no
+		const eIniCong = form.getInput("#fIniCong"); //fecha inicio del congreso
+		const eFinCong = form.getInput("#fFinCong"); //fecha fin del congreso
+		const eJustifiCong = form.querySelector(".justifi-congreso"); //justificacion del congreso
 
-        function validCong() {
-            let fIniCong = dt.toDate(eIniCong.value);
-            let fFinCong = dt.toDate(eFinCong.value);
-            dt.addDays(fIniCong, -1).trunc(fIniCong).addDays(fFinCong, 2).trunc(fFinCong);
-            return ((fIniCong && dt.lt(rutas.start(), fIniCong)) || (fFinCong && dt.lt(fFinCong, rutas.end())));
-        }
-        function fechasCong() {
-            eIniCong.setAttribute("max", eFinCong.value);
-            eFinCong.setAttribute("min", eIniCong.value);
-            dom.toggleHide(eJustifiCong, !validCong());
-        }
-        function updateCong() {
+		function validCong() {
+			const fIniCong = dt.trunc(dt.addDays(dt.toDate(eIniCong.value), -1)); // fecha inicio del congreso
+			const fFinCong = dt.trunc(dt.addDays(dt.toDate(eFinCong.value), 2)); // fecha fin del congreso
+			return ((fIniCong && dt.lt(rutas.start(), fIniCong)) || (fFinCong && dt.lt(fFinCong, rutas.end())));
+		}
+		function fechasCong() {
+			eIniCong.setAttribute("max", eFinCong.value);
+			eFinCong.setAttribute("min", eIniCong.value);
+			dom.toggleHide(eJustifiCong, !validCong());
+		}
+		function updateCong() {
 			dom.toggleHide(".grp-congreso", eCong.value == "0");
 			(+eCong.value > 0) ? fechasCong() : dom.hide(eJustifiCong);
-        }
+		}
 
-        eIniCong.onblur = fechasCong;
-        eFinCong.onblur = fechasCong;
-        eCong.onchange = updateCong;
-        updateCong();
+		eIniCong.onblur = fechasCong;
+		eFinCong.onblur = fechasCong;
+		eCong.onchange = updateCong;
+		updateCong();
 
         window.fnPaso3 = function() {
 			dom.closeAlerts().required("#justifi", "errJustifiSubv");
