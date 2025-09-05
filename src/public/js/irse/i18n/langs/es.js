@@ -53,12 +53,15 @@ export default {
 	errExtra: "Debe indicar un motivo para la urgencia de esta comunicación",
 	errFechaMax: "Debe indicar una fecha maxima de resolución para esta comunicación.",
 
-	lblPorAqui: "¡Por Aquí!",
-	lblPaso: "Paso", lblDe: "de", lblA: "a",
 	firstDay: "Primer día", medDay: "Días Intermedios", lastDay: "Último día",
-	lblDescObserv: "Descripción / observaciones:", lblDescTaxi: "Itinerario (para justificación del proyecto):",
-
-	lblPais: "Country", lblDireccion: "Address", lblLocalidad: "Locality", lblCP: "Postal Code", lblProvincia: "Province", lblCCAA: "Administrative area",  
+	lblTipoGasto: "Tipo de gasto", lblAdjunto: "Adjunto", lblPeriodo: "Periodo", lblDias: "Dias", lblNoches: "Noches",
+	lblDesc: "Descripción", lblDescObserv: "Descripción / observaciones", lblDescTaxi: "Itinerario (para justificación del proyecto)",
+	lblPais: "País", lblDireccion: "Dirección", lblDomicilio: "Domicilio", lblLocalidad: "Localidad", lblCP: "Código Postal", lblProvincia: "Provincia", lblCCAA: "Comunidad Autónoma",
+	lblPasos: "Paso @paso; de @pasos;", lblFactRutas: "@num; etapa/s asociados al gasto", lblRangoNoches: "Noches del @f1.d; al @f2.d;",
+	lblFactTransporte: "Factura a nombre del comisionado por transporte interurbano",
+	lblFactAlojamiento: "Factura a nombre del comisionado por alojamiento",
+	lblImpNoche: "Importe / noche", lblImpJustifi: "Importe justificado", lblImpPercibir: "Importe a percibir",
+	lblDietasPropuestas: "Dietas propuestas", lblImpDietaDia: "Importe dieta / día", lblImpPropuesto: "Importe propuesto", lblTusDietas: "Tus dietas", lblReduccion: "Reducción",
 
 	// IRIS Collections
 	descEstados: [

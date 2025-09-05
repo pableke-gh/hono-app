@@ -69,6 +69,8 @@ export default {
 	lblPasos: "Paso @paso; de @pasos;", lblFactRutas: "@num; etapa/s asociados al gasto", lblRangoNoches: "Noches del @f1.d; al @f2.d;",
 	lblFactTransporte: "Factura a nombre del comisionado por transporte interurbano",
 	lblFactAlojamiento: "Factura a nombre del comisionado por alojamiento",
+	lblImpNoche: "Importe / noche", lblImpJustifi: "Importe justificado", lblImpPercibir: "Importe a percibir",
+	lblDietasPropuestas: "Dietas propuestas", lblImpDietaDia: "Importe dieta / día", lblImpPropuesto: "Importe propuesto", lblTusDietas: "Tus dietas", lblReduccion: "Reducción",
 
 	// IRIS Collections
 	despMun: [ "Vehículo Propio", "Transportes Públicos" ],

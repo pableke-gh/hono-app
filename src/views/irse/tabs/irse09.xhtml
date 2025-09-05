@@ -89,9 +89,9 @@
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:if test="#{iris.irse.form.editable}">
-		<p:commandButton action="#{iris.irse.form.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="showAlerts(xhr, status, args);" icon="far fa-save" 
+		<p:commandButton action="#{iris.irse.form.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="showAlerts(xhr, status, args)" icon="far fa-save" 
 			styleClass="btn btn warn warning-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="192" title="#{msg['lbl.btn.no.enviar']}" />
-		<p:commandButton action="#{iris.irse.list.send()}" onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 'init');" icon="far fa-file-signature" 
+		<p:commandButton action="#{iris.irse.list.send()}" onclick="if (!fnSend()) return false;" oncomplete="showTab(xhr, status, args, 'init')" icon="far fa-file-signature" 
 			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.enviar']}" tabindex="193" title="#{msg['tit.btn.firmar.enviar']}" />
 	</c:if>
 	<ui:include src="../parts/btn_firmar.xhtml"></ui:include>

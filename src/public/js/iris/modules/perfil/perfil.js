@@ -60,11 +60,6 @@ function Perfil() {
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", () => form.copyToClipboard(url));
 		form.set("is-isu", actividad.isIsu).set("not-isu", () => !actividad.isIsu()).set("is-maps", actividad.isMaps);
-
-		// render steps functions
-		iris.getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), iris);
-		iris.getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), iris);
-		iris.getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + actividad.isIsu()).get("lblPasos"), iris);
 	}
 
 	this.view = (interesado, orgs) => {

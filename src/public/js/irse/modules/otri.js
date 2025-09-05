@@ -1,8 +1,8 @@
 
+import dt from "../../components/types/DateBox.js";
 import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
-import dt from "../../components/types/DateBox.js";
-import pf from "../../components/Primefaces.js";
+import api from "../../components/Api.js";
 
 import dom from "../../lib/uae/dom-box.js";
 import xlsx from "../../services/xlsx.js";
@@ -61,7 +61,7 @@ function Otri() {
 tabs.setInitEvent("listIsu", () => {
     const formListIsu = new Form("#xeco-filtro-isu");
     const acOrganicas = formListIsu.setAutocomplete("#organica-isu", otri.getAutocomplete());
-	acOrganicas.setSource(term => pf.sendTerm("rcFindOrg", term));
+	acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
 });
 
 window.xlsx = (xhr, status, args) => {

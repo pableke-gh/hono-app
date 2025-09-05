@@ -53,18 +53,18 @@ window.saveTab = () => formIrse.showOk(i18n.get("saveOk")).working();
 
 window.viewIrse = (xhr, status, args, tab) => {
 	tabs.load(document); // load new tabs
-	irse.setData(Object.assign(window.IRSE, coll.parse(args.data)));
+	irse.init(Object.assign(window.IRSE, coll.parse(args.data)));
 
-	// Init IRSE form, tables and inputs
-	dom.setTables(formIrse.getForm()).setInputs(formIrse.getElements());
+	// Init. IRSE form, tables and inputs
+	dom.setTables(formIrse.update().getForm())
+		.setInputs(formIrse.getElements());
+	perfil.init(formIrse); // perfil de la solicitud
+	rutas.init(formIrse); // rutas asociadas a la solicitud
+	organicas.init(formIrse); // tabla de organicas
 	xeco.getFirmas().view(coll.parse(args.firmas)); // update firmas view
-	formIrse.update().render(".i18n-tr-h1").setCache(IRSE.id).refresh(irse);
-	perfil.init(formIrse);
-	rutas.init(formIrse);
-	organicas.init(formIrse);
-
-	if (window.showAlerts(xhr, status, args)) // alerts
-		tabs.nextTab(tab ?? IRSE.tab); // go to next tab
+	formIrse.setCache(window.IRSE.id).refresh(irse); // configure view
+	tabs.nextTab(tab ?? IRSE.tab); // go to next tab
+	window.showAlerts(xhr, status, args); // alerts
 }
 
 //Global IRSE components

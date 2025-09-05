@@ -1,13 +1,13 @@
 
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
-import pf from "../../components/Primefaces.js";
+import api from "../../components/Api.js";
 import dom from "../../lib/uae/dom-box.js";
 import i18n from "../i18n/langs.js";
 
-import organica from "../model/Organica.js"
-import getActividad from "../data/perfiles/actividades.js"
-//import tribunales from "../data/irse/tribunales.js"
+import irse from "../model/Irse.js";
+import organica from "../model/Organica.js";
+import getActividad from "../data/perfiles/actividades.js";
 
 function IrsePerfil() {
 	const self = this; //self instance
@@ -34,11 +34,12 @@ function IrsePerfil() {
 	this.isMov = () => (eAct.value == "MOV");
 	this.is1Dia = () => (self.isMun() || self.isMes() || self.isAcs() || self.isAfo() || self.isAtr() || self.isCtp() || self.isOce())
 
-	this.isAut = () => (eTramit.value == "AUT");
+	this.getTramite = () => eTramit.value;
+	this.isAut = () => (self.getTramite() == "AUT");
 	this.isAutA7j = () => (self.isAut() || self.isA7j());
-
-	//this.getTribunales = () => tribunales;
-	//this.getTribunal = (name) => tribunales["at" + name] || 0;
+	this.isRutaUnica = () => (self.isAutA7j() || self.is1Dia());
+	this.isLocalizaciones = () => (self.isMun() || self.isAutA7j());
+	this.isMaps = () => (!self.isLocalizaciones() && !self.is1Dia());
 
 	this.getFinanciacion = () => eFin.value;
 	this.isIsu = () => (eFin.value == "ISU") || (eFin.value == "xSU");
@@ -97,10 +98,10 @@ function IrsePerfil() {
 			fnUpdatePerfil();
 		});
 
-		const acInteresado = form.setAutocomplete("#interesado", {
+		const _acInteresado = form.setAutocomplete("#interesado", {
 			delay: 500, //milliseconds between keystroke occurs and when a search is performed
 			minLength: 5, //reduce matches
-			source: term => pf.sendTerm("rcFindInteresado", term),
+			source: term => api.init().json("/uae/iris/interesados", { term }).then(_acInteresado.render),
 			render: item => item.nif + " - " + item.nombre,
 			select: item => {
 				const email = item.email;
@@ -112,19 +113,19 @@ function IrsePerfil() {
 			},
 			onReset: () => eCol.parentNode.hide()
 		});
-		const fnSource = term => pf.sendTerm("rcFindPersonal", term);
-		form.setAcItems("#promotor", fnSource);
-		form.setAcItems("#tribunal", fnSource);
-		form.setAcItems("#mesa", fnSource);
+
+		const acPromotor = form.setAutocomplete("#promotor");
+		const fnPromotor = term => api.init().json("/uae/iris/personal", { id: irse.getId(), term }).then(acPromotor.render);
+		acPromotor.setItemMode(4).setSource(fnPromotor);
 
 		function fnSave() {
 			current = null; //remove selected
 			fnUpdatePerfil(); //set new perfil
 			form.setval("#presupuesto", JSON.stringify(organicas));
 		}
-		form.setAutocomplete("#organica", {
+		const acOrganiaca = form.setAutocomplete("#organica", {
 			minLength: 4,
-			source: term => pf.sendTerm("rcFindOrg", term),
+			source: term => api.init().json("/uae/iris/organicas", { term }).then(acOrganiaca.render),
 			render: item => item.o + " - " + item.dOrg,
 			select: item => {
 				current = item;
@@ -142,6 +143,7 @@ function IrsePerfil() {
 		organicas = coll.parse(form.getText("#org-data")) || [];
 		const impCd = organicas[0]?.imp;
 		i18n.set("imp", impCd); //importe precargado
+		i18n.set("pasos", 2 + self.isIsu() + self.isMaps()); // set num pasos
 
 		// Register events after render table => avoid first render
 		dom.table("#organicas", organicas, resume, STYLES);
@@ -151,7 +153,7 @@ function IrsePerfil() {
 		});
 
 		fnUpdatePerfil(); // show first perfil for update
-		eCol.parentNode.setVisible(acInteresado.isLoaded()); //muestro el colectivo
+		eCol.parentNode.setVisible(_acInteresado.isLoaded()); //muestro el colectivo
 		eRol.addEventListener("change", fnUpdatePerfil);
 		eAct.addEventListener("change", fnUpdatePerfil);
 		form.querySelector(".msg-cd")?.render().setVisible(impCd);

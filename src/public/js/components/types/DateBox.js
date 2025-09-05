@@ -34,9 +34,9 @@ function DateBox() {
 
 	// Date transformations
 	this.trunc = date => { date && date.setHours(0, 0, 0, 0); return date; } // set time to 00:00:00.000
-	this.addHours = (date, hours) => { date.addHours(hours); return date; } // add hours to date
-	this.addDays = (date, days) => { date.addDays(days); return date; } // add days to date
-	this.addYears = (date, years) => { date.setFullYear(date.getFullYear() + years); return date; } // add years to date
+	this.addHours = (date, hours) => { date && date.addHours(hours); return date; } // add hours to date
+	this.addDays = (date, days) => { date && date.addDays(days); return date; } // add days to date
+	this.addYears = (date, years) => { date && date.setFullYear(date.getFullYear() + years); return date; } // add years to date
 
 	// Equality operators == != === !== cannot be used to compare (the value of) dates
 	const _le = (d1, d2) => (d1.getTime() <= d2.getTime()); // less than or equal

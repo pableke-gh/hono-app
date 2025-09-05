@@ -31,11 +31,11 @@ function Actividad() {
 
 	this.getFinanciacion = iris.getFinanciacion;
 	this.isXsu = () => (self.getFinanciacion() == "xSU");
-	this.isFinIsu = () => (self.getFinanciacion() == "ISU");
-	this.isIsu = () => (self.isFinIsu() || self.isXsu());
+	this.is1su = () => (self.getFinanciacion() == "ISU");
+	this.isIsu = () => (self.is1su() || self.isXsu());
 	this.isX83 = () => (self.getFinanciacion() == "x83");
-	this.isFinA83 = () => (self.getFinanciacion() == "A83");
-	this.isA83 = () => (self.isFinA83() || self.isX83()); 
+	this.is183 = () => (self.getFinanciacion() == "A83");
+	this.isA83 = () => (self.is183() || self.isX83()); 
 	this.isXac = () => (self.getFinanciacion() == "xAC");
 	this.isACA = () => ((self.getFinanciacion() == "ACA") || self.isXac());
 	this.isXot = () => (self.getFinanciacion() == "xOT");

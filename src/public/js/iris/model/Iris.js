@@ -31,6 +31,10 @@ iris.isMun = () => (iris.getActividad() == "MUN");
 iris.getTramite = () => iris.get("tramite");
 iris.getFinanciacion = () => iris.get("financiacion");
 iris.setFinanciacion = val => { iris.set("financiacion", val); return iris; }
+iris.isXsu = () => (iris.getFinanciacion() == "xSU");
+iris.is1su = () => (iris.getFinanciacion() == "ISU");
+iris.isIsu = () => (iris.is1su() || iris.isXsu());
+
 iris.getTitulo = () => perfiles.getTitulo(iris.getRol(), iris.getColectivo(), iris.getActividad(), iris.getTramite(), iris.getFinanciacion());
 iris.getPerfil = () => iris.get("perfil");
 iris.setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
@@ -45,6 +49,11 @@ iris.init = data => {
 iris.isConflicto = () => (iris.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
 iris.isPaso8 = () => (iris.getMask() & 4); // paso 8 activado manualmente por la uae
 iris.isMaxVigencia = () => (iris.getMask() & 8); //maxima fecha de vigencia en rrhh
+
+// render steps functions for tabs
+iris.getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), iris);
+iris.getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), iris);
+iris.getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + iris.isIsu()).get("lblPasos"), iris);
 
 iris.row = data => {
 	let acciones = iris.rowActions(data);

@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /> V2</h2>
+	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></h2>
 	<form id="xeco-filter" action="/uae/iris" class="card-filter">
 		<div class="ui-blocks"> <!-- filtros principales -->
 			<label class="ui-block">
@@ -124,8 +124,6 @@
 	<h:form id="irse-list" prependId="false" onsubmit="loading();">
 		<p:remoteCommand name="rcView" action="#{iris.irse.list.view()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" />
 		<p:remoteCommand name="rcClone" action="#{iris.irse.list.cloneSolicitud()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)" />
-		<!-- <p:remoteCommand name="rcPaso8" action="#{iris.irse.list.activePaso8()}" oncomplete="showAlerts(xhr, status, args)" />
-		<p:remoteCommand name="rcFirmar" action="#{iris.irse.list.firmar()}" oncomplete="showAlerts(xhr, status, args)" /> -->
 	</h:form>
 
 	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">

@@ -44,7 +44,14 @@ function Tabs() {
 	this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
 	this.setActiveEvent = (tab, fn) => fnSet("active-tab-" + tab, fn);
 
-	const fnGoTab = (tab, index) => { // update tabs style
+	// Alerts helpers
+	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
+	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
+	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
+	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
+	this.showAlerts = alerts.showAlerts; // Encapsule showAlerts message
+
+	const fnGoTab = (tab, index) => {
 		tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
 		tab.classList.add(ACTIVE_CLASS); // active current tab only
 		_tabIndex = index ?? fnCurrentIndex(); // current tab index
@@ -57,66 +64,30 @@ function Tabs() {
 		window.parent.scrollTo({ top: 0, behavior: "smooth" });
 		return autofocus(tab);
 	}
-	const fnSetTab = (tab, index) => { // update tabs style
-		alerts.closeAlerts(); // Close all previous messages
-		return fnGoTab(tab, index); // Show selected tab
+	const fnGoAhead = (tab, i) => {
+		tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
+		return fnGoTab(tab, i); // set current tab
 	}
-
-	// Alerts helpers
-	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
-	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
-	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
-	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
-	this.showAlerts = alerts.showAlerts; // Encapsule showAlerts message
-
-	this.getCurrent = () => tabs[_tabIndex]; // current tab
-	this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
-	this.setActive = id => fnGoTab(self.getTab(id)); // Force active class whithot events and alerts
-	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
-
-	const fnRange = i => ((i < 0) ? 0 : Math.min(i, tabs.length - 1));
-	function fnViewTab(i) { // show tab by index and preserve alerts
-		i = fnRange(i); // limit index range
-		if (_tabIndex == i) // is current tab
-			return self; // tab already active
-		const tab = tabs[i]; // get next tab
-		if (_tabIndex < i) { // go ahead
-			if (!fnCallEvent("active", tab)) // is current tab active
-				return fnViewTab(i + 1); // recursive search for next active tab
-			if (fnCallEvent("show", tab)) { // Validate event before change tab
-				tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
-				fnGoTab(tab, i); // set current tab
-			}
-			return self;
-		}
-		// go back
-		if (!fnCallEvent("active", tab)) // is current tab active
-			return fnViewTab(i - 1); // recursive search for prev active tab
-		// auto toggle off links actions in current tab
+	const fnGoBack = (tab, i) => {
+		// auto toggle off all links actions in current tab (before go back)
 		self.getCurrent().querySelectorAll("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
 		return fnGoTab(tab, i); // set current tab
 	}
-	function fnShowTab(i) { // show tab by index and close alerts
-		i = fnRange(i); // limit index range
+	const fnMoveToTab = i => { // show tab by index
+		i = ((i < 0) ? 0 : Math.min(i, tabs.length - 1)); // limit range
 		if (_tabIndex == i) // is current tab
-			return self; // tab already active
+			return false; // tab already active
 		const tab = tabs[i]; // get next tab
 		if (_tabIndex < i) { // go ahead
-			if (!fnCallEvent("active", tab)) // is current tab active
-				return fnShowTab(i + 1); // recursive search for next active tab
-			if (fnCallEvent("show", tab)) { // Validate event before change tab
-				tab.dataset.back = Math.max((_tabIndex < 0) ? (i - 1) : _tabIndex, 0);
-				fnSetTab(tab, i); // set current tab
-			}
-			return self;
+			if (fnCallEvent("active", tab)) // if tab active => fire validate event
+				return fnCallEvent("show", tab) && fnGoAhead(tab, i); // validator before change
+			return fnMoveToTab(i + 1); // recursive search for next active tab
 		}
-		// go back
-		if (!fnCallEvent("active", tab)) // is current tab active
-			return fnShowTab(i - 1); // recursive search for prev active tab
-		// auto toggle off links actions in current tab
-		self.getCurrent().querySelectorAll("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
-		return fnSetTab(tab, i); // set current tab
+		// go back if current tab active else recursive search for prev active tab
+		return fnCallEvent("active", tab) ? fnGoBack(tab, i) : fnMoveToTab(i - 1);
 	}
+	const fnViewTab = i => { fnMoveToTab(i); return self; } // show tab by index and preserve alerts
+	const fnShowTab = i => { fnMoveToTab(i) && alerts.closeAlerts(); return self; }; // show tab by index and close alerts
 
 	this.viewTab = id => fnViewTab(fnFindIndex(id)); // find by id selector
 	this.showTab = id => fnShowTab(fnFindIndex(id)); // find by id selector
@@ -125,6 +96,11 @@ function Tabs() {
 	this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
 	this.prevTab = self.backTab; // Synonym to go back to previous tab
 	this.lastTab = () => fnShowTab(tabs.length - 1);
+
+	this.getCurrent = () => tabs[_tabIndex]; // current tab
+	this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
+	this.setActive = id => fnGoTab(self.getTab(id)); // Force active class whithot events and alerts
+	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
 	this.toggle = el => {
 		const fnAction = EVENTS[el.dataset.action]; // search handler
 		if (fnAction && !el.dataset.off)  { // is hide
@@ -172,7 +148,7 @@ function Tabs() {
     }
 
 	// Init. view and PF navigation (only for CV-UAE)
-	window.showTab = (xhr, status, args, tab) => (alerts.isLoaded(xhr, status, args) && self.goTab(tab));
+	window.showTab = (xhr, status, args, tab) => (window.showAlerts(xhr, status, args) && self.goTab(tab));
 	coll.ready(() => {
 		if (iframe) { // auto-adapt iframe height on resize event
 			const ro = new ResizeObserver(() => fnResize(self.getCurrent()));

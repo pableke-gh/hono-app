@@ -49,8 +49,6 @@
 		<!-- Form IRSE -->
 		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
 		<!-- Tab0 = perfil PAS / PDI -->
-		<p:remoteCommand name="rcFindInteresado" action="#{iris.irse.perfil.findUsuarios()}" oncomplete="loadItems(xhr, status, args)" />
-		<p:remoteCommand name="rcFindOrg" action="#{iris.irse.perfil.findOrganica()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:outputPanel id="tab-0" styleClass="tab-content update-irse">
 			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<ui:include src="tabs/irse00.xhtml"></ui:include>
@@ -58,7 +56,6 @@
 		</p:outputPanel>
 
 		<!-- Itinerarios rutas de tab1 y tab2 -->
-		<p:remoteCommand name="rcFindPersonal" action="#{iris.irse.form.findPersonal()}" oncomplete="loadItems(xhr, status, args)" />
 		<p:outputPanel id="tab-1" styleClass="tab-content update-irse">
 			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
 			<h:inputHidden id="etapas" value="#{iris.irse.input.rutas}" />

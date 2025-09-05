@@ -98,8 +98,9 @@ function Collection() {
 
 // Client / Server global functions
 globalThis.void = fnVoid;
-globalThis.isset = isset;
 globalThis.none = () => "";
+globalThis.isset = isset;
+globalThis.isObject = obj => (obj && (typeof obj === "object") && !Array.isArray(obj));
 globalThis.catchError = promise => promise.then(data => [undefined, data]).catch(err => [err]);
 globalThis.catchPromise = async fn => await globalThis.catchError(new Promise(fn));
 

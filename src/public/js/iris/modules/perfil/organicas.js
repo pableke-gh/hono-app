@@ -51,8 +51,8 @@ function Organicas() {
 		});
 
 		form.set("is-add-org", _tblOrganicas.isEmpty);
-		form.set("is-fin-xsu", actividad.isXsu).set("is-fin-isu", actividad.isFinIsu)
-			.set("is-fin-x83", actividad.isX83).set("is-fin-a83", actividad.isFinA83);
+		form.set("is-fin-xsu", actividad.isXsu).set("is-fin-isu", actividad.is1su)
+			.set("is-fin-x83", actividad.isX83).set("is-fin-a83", actividad.is183);
 		form.addClick("a[href='#add-org']", ev => {
 			const organicas = _tblOrganicas.getData();
 			const current = acOrganiaca.getCurrentItem();
