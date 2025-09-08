@@ -6,7 +6,6 @@ import coll from "./CollectionHTML.js";
 const TAB_CLASS = "tab-content";
 const ACTIVE_CLASS = "active";
 //const PROGRESS_BAR = "progress-bar";
-const fnTrue = () => true; // always true
 
 function Tabs() {
 	const self = this; //self instance
@@ -34,8 +33,8 @@ function Tabs() {
 
     // Set events on tabs actions
     const fnCallEvent = (name, tab) => {
-        const fn = EVENTS[name + "-" + tab.id] || fnTrue;
-        return fn(tab, self);
+        const fn = EVENTS[name + "-" + tab.id]; // get handler
+        return fn ? fn(tab, self) : true; // if no event => true
     }
 
 	this.setAction = (name, fn) => fnSet(name, fn);
@@ -43,6 +42,7 @@ function Tabs() {
 	this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
 	this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
 	this.setActiveEvent = (tab, fn) => fnSet("active-tab-" + tab, fn);
+	this.invoke = name => EVENTS[name](); // action by name => must exists
 
 	// Alerts helpers
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message

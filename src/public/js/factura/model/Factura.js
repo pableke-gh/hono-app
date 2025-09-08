@@ -1,53 +1,53 @@
 
 import i18n from "../../i18n/langs.js";
 import firma from "../../xeco/model/Firma.js";
-import solicitud from "../../xeco/model/Solicitud.js";
+import fact from "../../xeco/model/Solicitud.js";
 import lineas from "./Lineas.js";
 
 const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso" ];
 
-solicitud.getUrl = () => "/uae/fact";
-solicitud.getLineas = () => lineas;
-solicitud.setLineas = table => { lineas.setData(table.getData()); return solicitud; }
-solicitud.getLinea = lineas.getLinea;
+fact.getUrl = () => "/uae/fact";
+fact.getLineas = () => lineas;
+fact.setLineas = table => { lineas.setData(table.getData()); return fact; }
+fact.getLinea = lineas.getLinea;
 
-solicitud.getTitulo = () => TITULOS[solicitud.getTipo()] || TITULOS[1];
-solicitud.isFactura = () => (solicitud.getTipo() == 1);
-//solicitud.isAbono = () => (solicitud.getTipo() == 2);
-solicitud.isCartaPago = () => (solicitud.getTipo() == 3);
-solicitud.isReciboCV = () => (solicitud.getTipo() == 4); // viene de CV
-solicitud.isCongresoCV = () => (solicitud.getTipo() == 5); // viene de CV
-solicitud.isFacturable = () => (solicitud.isFactura() || solicitud.isReciboCV() || solicitud.isCongresoCV());
-solicitud.isFirmaGaca = () => (solicitud.isReciboCV() && solicitud.isTtpp() && (solicitud.getMask() & 2));
-//solicitud.isReactivable = () => ((solicitud.isUae() && solicitud.isErronea()) || (solicitud.isGaca() && solicitud.isRechazada()));
+fact.getTitulo = () => TITULOS[fact.getTipo()] || TITULOS[1];
+fact.isFactura = () => (fact.getTipo() == 1);
+//fact.isAbono = () => (fact.getTipo() == 2);
+fact.isCartaPago = () => (fact.getTipo() == 3);
+fact.isReciboCV = () => (fact.getTipo() == 4); // viene de CV
+fact.isCongresoCV = () => (fact.getTipo() == 5); // viene de CV
+fact.isFacturable = () => (fact.isFactura() || fact.isReciboCV() || fact.isCongresoCV());
+fact.isFirmaGaca = () => (fact.isReciboCV() && fact.isTtpp() && (fact.getMask() & 2));
+//fact.isReactivable = () => ((fact.isUae() && fact.isErronea()) || (fact.isGaca() && fact.isRechazada()));
 
-solicitud.isTtpp = () => (solicitud.getSubtipo() == 3);
-solicitud.isTituloOficial = () => (solicitud.getSubtipo() == 4);
-solicitud.isExtension = () => (solicitud.getSubtipo() == 9);
-solicitud.isDeportes = () => (solicitud.getSubtipo() == 10);
-solicitud.isCongresoGdi = () => (solicitud.getSubtipo() == 24);
-solicitud.isRecibo = () => (solicitud.isTtpp() || solicitud.isTituloOficial() || solicitud.isExtension() || solicitud.isCongresoGdi());
-solicitud.setSujeto = val => solicitud.set("sujeto", val);
-solicitud.isExento = () => !solicitud.get("sujeto");
-solicitud.setExento = val => solicitud.set("exento", val);
+fact.isTtpp = () => (fact.getSubtipo() == 3);
+fact.isTituloOficial = () => (fact.getSubtipo() == 4);
+fact.isExtension = () => (fact.getSubtipo() == 9);
+fact.isDeportes = () => (fact.getSubtipo() == 10);
+fact.isCongresoGdi = () => (fact.getSubtipo() == 24);
+fact.isRecibo = () => (fact.isTtpp() || fact.isTituloOficial() || fact.isExtension() || fact.isCongresoGdi());
+fact.setSujeto = val => fact.set("sujeto", val);
+fact.isExento = () => !fact.get("sujeto");
+fact.setExento = val => fact.set("exento", val);
 
-solicitud.getIva = () => solicitud.get("iva");
-solicitud.setIva = imp => solicitud.set("iva", imp ?? 0);
-solicitud.setNifTercero = nif => solicitud.set("nif", nif); 
-solicitud.getImpIva = () => 0; // importes calculados default = 0
-solicitud.getImpTotal = () => 0; // importes calculados default = 0
+fact.getIva = () => fact.get("iva");
+fact.setIva = imp => fact.set("iva", imp ?? 0);
+fact.setNifTercero = nif => fact.set("nif", nif); 
+fact.getImpIva = () => 0; // importes calculados default = 0
+fact.getImpTotal = () => 0; // importes calculados default = 0
 
-solicitud.isFace = () => (solicitud.get("face") == 1); //factura electronica FACe
-solicitud.isPlataforma = () => (solicitud.get("face") == 2); //factura electronica Otras
-solicitud.setFace = val => solicitud.set("face", val); // update plataforma / FACe
-solicitud.getNamePlataforma = () => (solicitud.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor");
+fact.isFace = () => (fact.get("face") == 1); //factura electronica FACe
+fact.isPlataforma = () => (fact.get("face") == 2); //factura electronica Otras
+fact.setFace = val => fact.set("face", val); // update plataforma / FACe
+fact.getNamePlataforma = () => (fact.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor");
 
-solicitud.row = data => {
-	const acciones = solicitud.rowActions(data);
+fact.row = data => {
+	const acciones = fact.rowActions(data);
 	return `<tr class="tb-data">
 		<td class="text-center"><a href="#view" class="row-action">${data.codigo}</a></td>
-		<td class="hide-sm text-upper1">${solicitud.getTitulo()}</td>
-		<td class="${solicitud.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${solicitud.getDescEstado()}</td>
+		<td class="hide-sm text-upper1">${fact.getTitulo()}</td>
+		<td class="${fact.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${fact.getDescEstado()}</td>
 		<td class="text-center">${firma.myFlag(data)}</td>
 		<td class="hide-sm">${data.sig || ""}</td>
 		<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
@@ -59,23 +59,23 @@ solicitud.row = data => {
 	</tr>`;
 }
 
-solicitud.validate = data => { 
+fact.validate = data => { 
 	const valid = i18n.getValidators();
 	valid.isKey("acTercero", data.idTer, "Debe seleccionar un tercero válido"); // autocomplete required key
 	valid.isKey("delegacion", data.idDel, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
 	valid.isKey("acOrganica", data.idOrg, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
-	if (solicitud.isRecibo()) //subtipo = ttpp o extension
+	if (fact.isRecibo()) //subtipo = ttpp o extension
 		valid.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
-	/*if (solicitud.isDeportes()) {
+	/*if (fact.isDeportes()) {
 		valid.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
 		valid.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
 	}*/
-	//valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la solicitud."); // Required string
-	if (solicitud.isFace())
+	//valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la fact."); // Required string
+	if (fact.isFace())
 		valid.size("og", data.og) && valid.size("oc", data.oc) && valid.size("ut", data.ut);
-	if (solicitud.isPlataforma())
+	if (fact.isPlataforma())
 		valid.size("og", data.og);
 	return valid.isOk() && lineas.validate();
 }
 
-export default solicitud;
+export default fact;

@@ -7,11 +7,14 @@ export default {
 	errMulticomision: "No puede solicitar multicomisiones para esta comunicación.",
 	errTransporte: "Medio de Transporte incorrecto.",
 	errMatricula: "Debe indicar la matricula del vehiculo privado.",
-	msgRutasEmpty: "Aún no has añadido ninguna ETAPA a esta Comunicación.",
-	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta Comunicación.",
-	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta Comunicación.",
-	msgPernoctasEmpty: "No hay pernoctas asociadas a esta Comunicación.",
-	msgDietasEmpty: "No hay dietas / manutenciones asociadas a esta Comunicación.",
+
+	msgRutasEmpty: "Aún no has añadido ninguna ETAPA a esta comunicación.",
+	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta comunicación.",
+	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta comunicación.",
+	msgPernoctasEmpty: "No hay pernoctas asociadas a esta comunicación.",
+	msgDietasEmpty: "No hay dietas / manutenciones asociadas a esta comunicación.",
+	msgReactivar: "¿Confirma que desea reactivar esta comunicación?",
+	msgReactivarP8: "¿Confirma que desea activar: Otras Indemnizaciones Extraordinarias?",
 
 	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
 	docMovilidad: "Documentación acreditativa del programa de movilidad",
@@ -38,6 +41,7 @@ export default {
 	errFechasAloja: "No ha seleccionadas correctamente el periodo de fechas del alojamiento.",
 	errRangoAloja: "El periodo de fechas del gasto de alojamiento, esta fuera del rango de la solicitud.",
 	errDoc: "Debe asociar la documentación obligatoria",
+	errDocFacturas: "Tu comisión ha durado más de un día o tiene un kilometraje superior a 250 km (ida y vuelta). En ausencia de facturas es necesario aportar documentación acreditativa de la realización del viaje, como tickets de combustible, de cafetería o restaurante u otros justificantes emitidos en el destino final o lugar cercano. (Art. 61 NEP)",
 
 	errImputacion: "Error al generar la imputación asocuada a la comunicación.",
 	errMaxDietas: "Importe máximo para dietas excedido.",
@@ -48,10 +52,15 @@ export default {
 	errTipo: "No ha seleccionado correctamente el tipo de operación.",
 	errTipoGasto: "Debe seleccionar un tipo de gasto.",
 	errIban: "Debe indicar un IBAN válido.",
+	errEntidad: "Entidad bancaria no reconocida en el sistema.",
 	errSwift: "Debe indicar un swift válido.",
 
 	errExtra: "Debe indicar un motivo para la urgencia de esta comunicación",
 	errFechaMax: "Debe indicar una fecha maxima de resolución para esta comunicación.",
+
+	lblEtapas: "Etapas", lblOrigen: "Origen", lblDestino: "Destino", lblTransporte: "Medio de Transporte",
+	lblFechaSalida: "Fecha de salida", lblHoraSalida: "Hora de salida", lblFechaLlegada: "Fecha de llegada", lblHoraLlegada: "Hora de llegada",
+	lblFechaInicio: "Fecha inicio", lblFechaFin: "Fecha fin",
 
 	firstDay: "Primer día", medDay: "Días Intermedios", lastDay: "Último día",
 	lblTipoGasto: "Tipo de gasto", lblAdjunto: "Adjunto", lblPeriodo: "Periodo", lblDias: "Dias", lblNoches: "Noches",
@@ -64,14 +73,16 @@ export default {
 	lblDietasPropuestas: "Dietas propuestas", lblImpDietaDia: "Importe dieta / día", lblImpPropuesto: "Importe propuesto", lblTusDietas: "Tus dietas", lblReduccion: "Reducción",
 
 	// IRIS Collections
-	descEstados: [
-		"-", "Aceptada", "Rechazada", "Ejecutada", "Integrada", "Pendiente", "Editable", "Rechazada UAE", "Caducada", "Error Capa SOA", "Error de Crédito Vinculante", "-", "-", "-", "-", "Subsanable", "Procesando..."
-	],
 	despMun: [ "Vehículo Propio", "Transportes Públicos" ],
 	despMaps: [ "Vehículo Propio", "Avión", "Tren", "Vehículo Alquiler", "Vehículo Ajeno", "Taxi Interurbano", "Bús Interurbano", "Barco", "Otros" ],
 	gastosTiketIsu: [ "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros" ],
 	gastosTiket: [ "Tickets de transporte (peaje, aparcamiento, etc.)" ],
 	tiposDesp: ["", "Vehículo Propio", "Vehiculo de Alquiler", "Vehiculo Ajeno", "Taxi Interurbano", "Autobús Interurbano", "Tren", "Barco", "Avión", "Otros", "Transportes Públicos"],
 	tiposEstimaciones: ["-", "Estimación gastos por dietas", "Estimación gastos de alojamiento", "Estimación gastos de transporte"],
-	tiposMultiorganica: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"]
-}
+	tiposMultiorganica: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"],
+
+	tipoTickets: ["-", "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros", "-", "-", "Tickets de transporte (taxi, parking, peajes...)"],
+	tipoDocs: ["-", "Documentación obligatoria por ausencia de facturas", "Otra documentación (opcional)", "Justificación de dietas", "Facturas a nombre de la UPCT a pagar al proveedor", "Facturas a nombre de la UPCT a pagar al comisionado", "Documentación acreditativa del programa de movilidad"],
+	tipoExtra: ["-", "Gasto extraordinario por transporte", "Gasto extraordinario por alojamiento", "Gasto extraordinario por cena final españa", "Gasto extraordinario por otras dietas"],
+	tipoOrganica: ["-", "Dietas", "Alojamiento", "Transporte", "Asistencias"]
+	}

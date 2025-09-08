@@ -36,10 +36,10 @@ coll.ready(() => {
 
 		otri.view(); // paso 3 = isu
 		resumen.view(); // update tables for paso 6
-		sendTab.view(data.cuentas);
+		sendTab.view(data.cuentas); // paso 9
 		form.view(iris, iris.getInitTab()); // render form view
 	}
-
+		
 	iris.update = (data, tab) => { // update IRSE form
 		xeco.update(data.iris, data.firmas); // Update firmas blocks
 		data.interesado && iris.setInteresado(data.interesado);

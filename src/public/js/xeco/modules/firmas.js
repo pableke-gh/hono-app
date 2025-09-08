@@ -5,7 +5,7 @@ import firma from "../model/Firma.js";
 import xeco from "../xeco.js";
 
 function Firmas() {
-	//const self = this; //self instance
+	const self = this; //self instance
 
 	this.init = () => {
 		const form = xeco.getForm(); // current form after initialization
@@ -27,12 +27,18 @@ function Firmas() {
 			blocks.forEach(el => el.nextElementSibling.render(rechazo));
 		}
 		form.reset("#rechazo");
+		return self;
+	}
+
+	this.refresh = data => {
+		xeco.getForm().reset("#rechazo").refresh(model.setData(data));
+		return self;
 	}
 
 	this.update = data => {
 		const form = xeco.getForm();
 		form.set("has-firmas", () => form.isCached(data.id));
-		form.reset("#rechazo").refresh(model.setData(data));
+		return self.refresh(data);
 	}
 }
 

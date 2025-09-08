@@ -1,7 +1,6 @@
 
 import coll from "./CollectionHTML.js";
 import api from "./Api.js";
-import { sensitiveHeaders } from "http2";
 
 // Classes Configuration
 const ALERT_ACTIVE = "active";

@@ -43,12 +43,9 @@ tabs.setInitEvent(12, iTabs.initTab12); // init. all validations and inputs even
 
 //PF needs confirmation in onclick attribute
 /*window.fnFirmar = () => i18n.confirm("msgFirmar") && loading();
-window.fnRechazar = () => dom.closeAlerts().required("#rechazo", "Debe indicar un motivo para el rechazo de la solicitud.").isOk() && i18n.confirm("msgRechazar");
-window.fnIntegrar = link => i18n.confirm("msgIntegrar") && loading() && link.hide().closest("tr").querySelectorAll(".estado").text("Procesando...");*/
+window.fnRechazar = () => dom.closeAlerts().required("#rechazo", "Debe indicar un motivo para el rechazo de la solicitud.").isOk() && i18n.confirm("msgRechazar");*/
 window.isCached = (id, tab) => formIrse.isCached(id) && !perfil.isEmpty() && tabs.showTab(tab); // if cached avoid navegation
 window.fnUnlink = () => i18n.confirm("unlink") && loading();
-//window.fnRemove = () => i18n.confirm("removeCom") && loading();
-//window.fnClone = () => i18n.confirm("reactivar") && loading();
 window.saveTab = () => formIrse.showOk(i18n.get("saveOk")).working();
 
 window.viewIrse = (xhr, status, args, tab) => {
@@ -63,7 +60,7 @@ window.viewIrse = (xhr, status, args, tab) => {
 	organicas.init(formIrse); // tabla de organicas
 	xeco.getFirmas().view(coll.parse(args.firmas)); // update firmas view
 	formIrse.setCache(window.IRSE.id).refresh(irse); // configure view
-	tabs.nextTab(tab ?? IRSE.tab); // go to next tab
+	tabs.nextTab(tab ?? window.IRSE.tab); // go to next tab
 	window.showAlerts(xhr, status, args); // alerts
 }
 

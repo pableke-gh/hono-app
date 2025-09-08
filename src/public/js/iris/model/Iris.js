@@ -74,7 +74,7 @@ iris.row = data => {
 	return `<tr class="tb-data">
 		${info}
 		<td class="text-center"><a href="#view" class="row-action" title="${data.codigo}: ${data.name}">${sb.substr(data.codigo, 0, 9)}</a></td>
-		<td class="${iris.getStyleByEstado()} estado">${iris.getDescEstado()}</td>
+		<td class="${iris.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${iris.getDescEstado()}</td>
 		<td class="text-center">${firma.myFlag(data)}</td>
 		<td class="hide-sm">${data.sig || ""}</td>
 		<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
