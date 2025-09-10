@@ -95,7 +95,7 @@ export default function(form, opts) {
 	this.refresh = (model, selector) => { $$(selector || opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
 	this.send = url => api.setForm(form).send(url || form.action).catch(info => { self.setErrors(info); throw info; });
 	this.view = (model, tab) => { // set inputs values and readonly
-		self.setValues(model.getData()).setEditable().refresh(model);
+		self.closeAlerts().setValues(model.getData()).setEditable().refresh(model);
 		tabs.viewTab(tab ?? "form"); // show tab and preserve messages
 		return self;
 	}
