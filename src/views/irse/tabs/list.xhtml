@@ -8,104 +8,98 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></h2>
-	<h:form id="xeco-filter-old" prependId="false" class="card-filter" onsubmit="loading();">
-		<div class="ui-blocks">
+	<form id="xeco-filter" action="/uae/iris" class="card-filter">
+		<div class="ui-blocks"> <!-- filtros principales -->
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-				<h:selectOneMenu value="#{iris.irse.input.ejercicio}" styleClass="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
-					<f:selectItems value="#{iris.irse.input.ejercicios}" />
-				</h:selectOneMenu>
+				<ui:include src="../parts/ejercicios.xhtml"></ui:include>
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.estado']}" escape="false" />:</div>
-				<h:selectOneMenu id="estado" value="#{iris.irse.input.estado}" styleClass="ui-input ui-select ui-filter" tabindex="2" title="#{msg['tit.estado']}">
-					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="6" itemLabel="#{msg['uae.irse.filter.estado.6']}" itemEscaped="false"/>
-					<f:selectItem itemValue="5" itemLabel="#{msg['uae.irse.filter.estado.5']}" itemEscaped="false"/>
-					<f:selectItem itemValue="1" itemLabel="#{msg['uae.irse.filter.estado.1']}" itemEscaped="false"/>
-					<f:selectItem itemValue="2" itemLabel="#{msg['uae.irse.filter.estado.2']}" itemEscaped="false"/>
-					<f:selectItem itemValue="4" itemLabel="#{msg['uae.irse.filter.estado.4']}" itemEscaped="false"/>
-					<f:selectItem itemValue="7" itemLabel="#{msg['uae.irse.filter.estado.7']}" itemEscaped="false"/>
-					<f:selectItem itemValue="8" itemLabel="#{msg['uae.irse.filter.estado.8']}" itemEscaped="false"/>
-				</h:selectOneMenu>
+				<select name="estado" class="ui-input ui-select ui-filter" tabindex="2" title="#{msg['tit.estado']}">
+					<option value=""></option>
+					<option value="6">#{msg['uae.irse.filter.estado.6']}</option>
+					<option value="5">#{msg['uae.irse.filter.estado.5']}</option>
+					<option value="1">#{msg['uae.irse.filter.estado.1']}</option>
+					<option value="2">#{msg['uae.irse.filter.estado.2']}</option>
+					<option value="4">#{msg['uae.irse.filter.estado.4']}</option>
+					<option value="7">#{msg['uae.irse.filter.estado.7']}</option>
+					<option value="8">#{msg['uae.irse.filter.estado.8']}</option>
+				</select>
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
-				<h:selectOneMenu id="firma" value="#{iris.irse.input.firma}" styleClass="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
-					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="5" itemLabel="#{iris.getMsg('lblPendiente')}" />
-					<f:selectItem itemValue="1" itemLabel="#{iris.getMsg('lblAceptada')}" />
-					<f:selectItem itemValue="2" itemLabel="#{iris.getMsg('lblRechazada')}" />
-				</h:selectOneMenu>
+				<select name="fmask" class="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
+					<option value=""></option>
+					<option value="5">#{iris.getMsg('lblPendiente')}</option>
+					<option value="1">#{iris.getMsg('lblAceptada')}</option>
+					<option value="2">#{iris.getMsg('lblRechazada')}</option>
+				</select>
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<h:inputText value="#{iris.irse.input.codigo}" styleClass="ui-input ui-code ui-filter" tabindex="4" />
+				<input type="text" name="codigo" class="ui-input ui-code ui-filter" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" />:</div>
-				<h:inputText value="#{iris.irse.input.organica}" styleClass="ui-input ui-code ui-filter" tabindex="5" />
+				<input type="text" name="org" class="ui-input ui-code ui-filter" tabindex="5" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<h:inputText id="f-min" value="#{iris.irse.input.FMin}" tabindex="6" styleClass="ui-input ui-date ui-filter"/> ...
-				<h:inputText id="f-max" value="#{iris.irse.input.FMax}" tabindex="7" styleClass="ui-input ui-date ui-filter"/>
+				<input type="text" name="f1" tabindex="6" class="ui-input ui-date ui-filter"/> ...
+				<input type="text" name="f2" tabindex="7" class="ui-input ui-date ui-filter"/>
 			</label>
 		</div>
 
-		<div class="ui-blocks">
+		<div class="ui-blocks"> <!-- campos de filtrado extra -->
 			<div class="ui-block-row">
 				<a id="filtro" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['uae.irse.filter.lbl.extra']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
 			</div>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
-				<h:inputText value="#{iris.irse.input.interesado}" styleClass="ui-input ui-text ui-filter" tabindex="8" />
+				<input type="text" name="interesado" class="ui-input ui-text ui-filter" tabindex="8" />
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" /></div>
-				<h:selectOneMenu id="filtro-actividad" value="#{iris.irse.input.actividad}" class="ui-input ui-select ui-filter" tabindex="10">
-					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
-					<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
-					<f:selectItem itemValue="MES" itemLabel="#{msg['uae.irse.tab0.act.mes']}" itemEscaped="false"/>
-					<f:selectItem itemValue="IAE" itemLabel="#{msg['uae.irse.tab0.act.iae']}" itemEscaped="false"/>
-					<f:selectItem itemValue="ATR" itemLabel="#{msg['uae.irse.tab0.act.atr']}" itemEscaped="false"/>
-					<f:selectItem itemValue="IAE+ATR" itemLabel="#{msg['uae.irse.tab0.act.iae.atr']}" itemEscaped="false"/>
-					<f:selectItem itemValue="AFO" itemLabel="#{msg['uae.irse.tab0.act.afo']}" itemEscaped="false"/>
-					<f:selectItem itemValue="IAE+AFO" itemLabel="#{msg['uae.irse.tab0.act.iae.afo']}" itemEscaped="false"/>
-					<f:selectItem itemValue="ACS" itemLabel="#{msg['uae.irse.tab0.act.acs']}" itemEscaped="false"/>
-					<f:selectItem itemValue="OCE" itemLabel="#{msg['uae.irse.tab0.act.col']}" itemEscaped="false"/>
-					<f:selectItem itemValue="IAE+OCE" itemLabel="#{msg['uae.irse.tab0.act.iae.col']}" itemEscaped="false"/>
-					<f:selectItem itemValue="A7J" itemLabel="#{msg['uae.irse.tab0.act.a7j']}" itemEscaped="false"/>
-					<f:selectItem itemValue="MOV" itemLabel="#{msg['uae.irse.tab0.act.mov']}" itemEscaped="false"/>
-				</h:selectOneMenu>
+				<select name="actividad" class="ui-input ui-select ui-filter" tabindex="10">
+					<option value=""></option>
+					<option value="COM">#{msg['uae.irse.tab0.act.com']}</option>
+					<option value="MUN">#{msg['uae.irse.tab0.act.mun']}</option>
+					<option value="MES">#{msg['uae.irse.tab0.act.mes']}</option>
+					<option value="IAE">#{msg['uae.irse.tab0.act.iae']}</option>
+					<option value="ATR">#{msg['uae.irse.tab0.act.atr']}</option>
+					<option value="IAE+ATR">#{msg['uae.irse.tab0.act.iae.atr']}</option>
+					<option value="AFO">#{msg['uae.irse.tab0.act.afo']}</option>
+					<option value="IAE+AFO">#{msg['uae.irse.tab0.act.iae.afo']}</option>
+					<option value="ACS">#{msg['uae.irse.tab0.act.acs']}</option>
+					<option value="OCE">#{msg['uae.irse.tab0.act.col']}</option>
+					<option value="IAE+OCE">#{msg['uae.irse.tab0.act.iae.col']}</option>
+					<option value="A7J">#{msg['uae.irse.tab0.act.a7j']}</option>
+					<option value="MOV">#{msg['uae.irse.tab0.act.mov']}</option>
+				</select>
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" /></div>
-				<h:selectOneMenu id="filtro-tramite" value="#{iris.irse.input.tramite}" class="ui-input ui-select ui-filter" tabindex="11">
-					<f:selectItem itemValue="" itemLabel="" />
-					<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
-					<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
-					<f:selectItem itemValue="AyL" itemLabel="#{msg['uae.irse.tab0.tramit.ayl']}" itemEscaped="false"/>
-				</h:selectOneMenu>
+				<select name="tramite" class="ui-input ui-select ui-filter" tabindex="11">
+					<option value=""></option>
+					<option value="AUT">#{msg['uae.irse.tab0.tramit.aut']}</option>
+					<option value="LIQ">#{msg['uae.irse.tab0.tramit.liq']}</option>
+					<option value="AyL">#{msg['uae.irse.tab0.tramit.ayl']}</option>
+				</select>
 			</label>
 		</div>
 
-		<div class="navbar">
+		<div class="navbar"> <!-- acciones del filtro (botones) -->
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-				<p:commandButton id="filter-list" action="#{iris.irse.list.list()}" onclick="loading();" update="xeco-list" oncomplete="showTab(xhr, status, args, 'listOld');"
-					icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
-				<p:commandButton id="list-all" rendered="#{not iris.irse.otri}" action="#{iris.irse.list.list()}" onclick="onListAll();" update="xeco-list" oncomplete="showTab(xhr, status, args, 'listOld');" 
-					icon="far fa-search" styleClass="btn btn-info" value="Ver Todos" tabindex="13"></p:commandButton>
-				<p:commandLink action="#{iris.irse.list.list()}" onclick="onList();" update="xeco-list" oncomplete="working();" 
-					styleClass="btn btn-warn warning-btn" tabindex="14">
-				<i class="ui-button-icon-left ui-icon ui-c far fa-times-circle"></i><span class="ui-button-text ui-c">Limpiar</span>
-			</p:commandLink>
+			<a href="#tab-action-list" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
+			<c:if test="#{not iris.user.otri}">
+				<a href="#tab-action" class="btn btn-info" data-action="list-all" tabindex="13"><i class="far fa-search btn-icon-left"></i>Ver Todos</a> 
+			</c:if>
+			<a href="#tab-action-relist" class="btn btn-warn" tabindex="14"><i class="far fa-times-circle btn-icon-left"></i>Limpiar</a>
 		</div>
-	</h:form>
+	</form>
 
-	<h:form id="xeco-list" prependId="false" onsubmit="loading();">
 	<table class="tb-xeco">
 		<thead>
 			<tr>
@@ -122,119 +116,16 @@
 				<th class="no-print"><h:outputText value="#{msg['lbl.acciones']}" escape="false" /></th>
 			</tr>
 		</thead>
-		<tbody>
-			<c:if test="#{empty iris.irse.solicitudes}">
-				<tr><td class="no-data" colspan="99">No se han encontrado comunicaciones asociadas al filtro seleccionado</td></tr>
-			</c:if>
-			<c:forEach items="#{iris.irse.solicitudes}" var="sol">
-			<tr id="#{sol.idIrse}" class="tb-data">
-				<td class="text-center text-red text-xl">
-					<c:if test="#{sol.urgente}">
-						<c:choose>
-							<c:when test="#{iris.user.uae}">
-								<span class="texterr textbig textuc" title="#{iris.irse.list.getMsgUrgencia(sol)}">&#33;</span>
-							</c:when>
-							<c:otherwise>
-								<span class="texterr textbig textuc" title="#{iris.irse.list.getMsgUrgenciaShort(sol)}">&#33;</span>
-							</c:otherwise>
-						</c:choose>
-					</c:if>
-				</td>
-				<td>
-					<p:commandLink action="#{iris.irse.list.view(sol)}" onclick="if (isCached('#{sol.idIrse}', '#{iris.irse.form.getPaso(sol)}'))return false;loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)"
-							title="#{sol.codigo}: #{sol.fullName}">#{sol.codigoNum}</p:commandLink>
-				</td>
-				<td>
-					<c:choose>
-						<c:when test="#{sol.editable}">
-							<span class="estado text-warn"><h:outputText value="#{msg['uae.irse.list.estado.6']}" escape="false" /></span>
-						</c:when>
-						<c:when test="#{sol.aceptada}">
-							<span class="estado text-green"><h:outputText value="#{msg['uae.irse.list.estado.1']}" escape="false" /></span>
-						</c:when>
-						<c:when test="#{sol.rechazada}">
-							<span class="estado text-error"><h:outputText value="#{msg['uae.irse.list.estado.2']}" escape="false" /></span>
-						</c:when>
-						<c:when test="#{sol.ejecutada}">
-							<span class="estado text-green"><h:outputText value="#{msg['uae.irse.list.estado.3']}" escape="false" /></span>
-						</c:when>
-						<c:when test="#{sol.notificada}">
-							<span class="estado text-green"><h:outputText value="#{msg['uae.irse.list.estado.4']}" escape="false" /></span>
-						</c:when>
-						<c:when test="#{sol.cancelada}">
-							<span class="estado text-error"><h:outputText value="#{msg['uae.irse.list.estado.7']}" escape="false" /></span>
-						</c:when>
-						<c:when test="#{sol.caducada}">
-							<span class="estado text-error"><h:outputText value="#{msg['uae.irse.list.estado.8']}" escape="false" /></span>
-						</c:when>
-						<c:otherwise>
-							<span class="estado text-warn"><h:outputText value="#{msg['uae.irse.list.estado.5']}" escape="false" /></span>
-						</c:otherwise>
-					</c:choose>
-				</td>
-				<td class="text-center">
-					<c:choose>
-						<c:when test="#{sol.firmaAceptada}">
-							<i class="fas fa-flag fa-lg text-green" title="Solicitud firmada"></i>
-						</c:when>
-						<c:when test="#{sol.firmaRechazada or sol.cancelada}">
-							<i class="fas fa-flag fa-lg text-error" title="Solicitud rechazada"></i>
-						</c:when>
-						<c:otherwise>
-							<i class="fas fa-flag fa-lg text-warn" title="Solicitud pendiente de firma"></i>
-						</c:otherwise>
-					</c:choose>
-				</td>
-				<td><span class="hide-sm">#{sol.sigFirma}</span></td>
-				<td class="hide-xs">#{iris.irse.list.getFCreacion(sol)}</td>
-				<td>#{sol.organica}<span class="hide-sm"> #{sol.descOrganica}</span><c:if test="#{sol.multipartida}"><span> (y otras)</span></c:if></td>
-				<td>#{sol.fullNameInteresado}</td>
-				<td><span class="hide-sm">#{sol.memoria}</span></td>
-				<td class="text-right">#{iris.irse.list.getImporte(sol)} €</td>
-				<td class="text-right no-print">
-					<p:commandLink action="#{iris.irse.list.view(sol)}" onclick="if (isCached('#{sol.idIrse}', '#{iris.irse.form.getPaso(sol)}'))return false;loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" title="Acceso a la comunicación">
-							<i class="fas fa-search action text-blue resize"></i></p:commandLink>
-					<c:if test="#{sol.editable and iris.user.uae}">
-						<p:commandLink action="#{iris.irse.list.activePaso8(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
-							title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></p:commandLink>
-					</c:if>
-					<c:if test="#{iris.irse.isReactivable(sol)}">
-						<p:commandLink action="#{iris.irse.list.clone(sol)}" onclick="if (!fnClone()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)"
-								title="Subsanar la comunicación salvo cambio de presupuesto">
-							<i class="far fa-edit action text-blue resize"></i></p:commandLink>
-					</c:if>
-					<c:if test="#{sol.firmable}">
-						<p:commandLink action="#{iris.irse.list.firmar(sol)}" onclick="if (!fnFirmar()) return false;loading();" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Firmar rolicitud"><i class="fas fa-check action text-green resize"></i></p:commandLink>
-						<p:commandLink action="#{iris.irse.list.confirm(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'reject');" title="Ir al motivo de rechazo"><i class="fas fa-times action text-red resize"></i></p:commandLink>
-					</c:if>
-					<c:if test="#{sol.pendiente or sol.ejecutable}">
-						<p:commandLink action="#{iris.irse.list.report(sol)}" onclick="loading();" oncomplete="openUrl(xhr, status, args)" title="#{msg['tit.btn.informe']}">
-							<i class="fal fa-file-pdf action text-red resize"></i></p:commandLink>
-					</c:if>
-					<c:if test="#{iris.user.admin and iris.irse.isIntegrable(sol)}">
-						<p:commandLink action="#{iris.irse.list.rptFinalizar(sol)}" onclick="loading();" oncomplete="openHtml(xhr, status, args, 'Informe IRIS')" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></p:commandLink>
-						<p:commandLink action="#{iris.irse.list.integrar(sol)}" onclick="if(!fnIntegrar(this)) return false;" oncomplete="showAlerts(xhr, status, args)" title="Lanza el proceso de integración con la capa SOA"><i class="far fa-save action resize text-blue"></i></p:commandLink>
-					</c:if>
-					<c:if test="#{iris.irse.isEjecutable(sol) and (iris.user.isUae() or sol.isFirmaGestor())}">
-						<p:commandLink action="#{iris.irse.list.uxxi(sol)}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 'uxxiec-old');" title="Expediente asociado a la solicitud"><i class="fal fa-cog action text-blue resize"></i></p:commandLink>
-					</c:if>
-					<c:if test="#{iris.user.admin}">
-						<p:commandLink action="#{iris.irse.list.emails(sol)}" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" title="Envia una prueba de cada tipo de correo al administrador"><i class="fal fa-mail-bulk action text-blue resize"></i></p:commandLink>
-						<p:commandLink action="#{iris.irse.list.recalc(sol)}" onclick="if (!fnFirmar()) return false;loading();" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Recalcula las firmas asociadas a la comunicación"><i class="far fa-file-signature action text-green resize"></i></p:commandLink>
-					</c:if>
-					<c:if test="#{iris.irse.form.isRemovable(sol)}">
-						<p:commandLink action="#{iris.irse.list.remove(sol.idIrse)}" onclick="if (!fnRemove()) return false;" update="xeco-list" oncomplete="showAlerts(xhr, status, args)" title="Borra la comunicación del sistema"><i class="fal fa-trash-alt action text-red resize"></i></p:commandLink>
-					</c:if>
-				</td>
-			</tr>
-			</c:forEach>
-		</tbody>
-		<tfoot>
-			<tr><td colspan="11"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{iris.irse.numSolicitudes}</td></tr>
-		</tfoot>
+		<tbody></tbody>
+		<tfoot></tfoot>
 	</table>
+
+	<!-- retrocompatibilidad -> a eliminar -->
+	<h:form id="irse-list" prependId="false" onsubmit="loading();">
+		<p:remoteCommand name="rcView" action="#{iris.irse.list.view()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" />
+		<p:remoteCommand name="rcReset" action="#{iris.irse.list.reset()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)" />
 	</h:form>
 
-	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="100">
+	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 </html>

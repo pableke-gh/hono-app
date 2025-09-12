@@ -1,7 +1,6 @@
 
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
-import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
 import organicas from "./organicas.js";

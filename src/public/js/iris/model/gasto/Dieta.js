@@ -1,6 +1,11 @@
 
+import dt from "../../../components/types/DateBox.js";
 import i18n from "../../i18n/langs.js";
+
 import iris from "../../model/Iris.js";
+import rutas from "../../model/ruta/Rutas.js";
+
+import dietas from "../../data/dietas/dietas.js";  
 import paises from "../../data/paises/paises.js";
 
 function Dieta() {
@@ -13,10 +18,31 @@ function Dieta() {
 	this.getImpDia = dieta => dieta.imp2;
 	this.getDieta = dieta => dieta.imp1;
 
-	// nueva dieta => tipo 7 = dieta, subtipo = (1, 2 ó 3) (tipo de dia)
-	this.createDiaInicial = () => ({ tipo: TIPO_DIETA, subtipo: 1, periodo: i18n.get("firstDay") });
-	this.createDiaIntermedio = () => ({ tipo: TIPO_DIETA, subtipo: 2, periodo: i18n.get("medDay") });
-	this.createDiaFinal = () => ({ tipo: TIPO_DIETA, subtipo: 3, periodo: i18n.get("lastDay") });
+	// nueva dieta => tipo 7 = dieta, subtipo = (1, 2 ó 3) (tipo de dia), estado = 2 (dieta completa), num = 1 día, imp1 = 1 dieta
+	this.createDiaInicial = () => ({ tipo: TIPO_DIETA, subtipo: 1, estado: 2, num: 1, imp1: 1, desc: i18n.get("firstDay") });
+	this.createDiaIntermedio = () => ({ tipo: TIPO_DIETA, subtipo: 2, estado: 2, num: 1, imp1: 1, desc: i18n.get("medDay") });
+	this.createDiaFinal = () => ({ tipo: TIPO_DIETA, subtipo: 3, estado: 2, num: 1, imp1: 1, desc: i18n.get("lastDay") });
+
+	this.setDietaCompleta = dieta => { dieta.estado = 2; dieta.imp1 = 1; return dieta; } // poner media dieta
+	this.setMediaDieta = dieta => { dieta.estado = 1; dieta.imp1 = .5; return dieta; } // poner media dieta
+	this.setSinDieta = dieta => { dieta.estado = 0; dieta.imp1 = 0; return dieta; } // no hay dieta
+
+	this.set = (dieta, fecha, tipo, grupo) => {
+		dieta.cod = rutas.getPaisPernocta(fecha); // id del pais ej: ES
+		dieta.nombre = self.getRegionName(dieta.cod); // nombre del pais / region ej: España (Madrid)
+		dieta.imp2 = dietas.getImporte(tipo, dieta.cod, grupo); // importe dieta por dia
+		dieta.f1 = dieta.f2 = dt.toPlainDateTime(fecha); // fecha en formato plano
+		fecha.addDays(1); // incremento un día
+		return dieta;
+	}
+	this.add = (dieta, fecha) => { // añadir un día más de dieta
+		dieta.imp1++;
+		dieta.num++;
+		dieta.estado += 2; // sumo una dieta completa
+		dieta.f2 = dt.toPlainDateTime(fecha); // fecha en formato plano
+		fecha.addDays(1); // incremento un día
+		return dieta;
+	}
 
 	this.beforeRender = resume => {
 		resume.dias = resume.impMax = resume.reducido = resume.percibir =  0;
@@ -38,15 +64,14 @@ function Dieta() {
 	}
 
 	const fnDietas = (dieta, maxDietas) => {
-		let output = "";
+		let output = '<select name="dietas">';
 		for (let i = 0; i <= maxDietas; i += .5)
 			output += '<option value="' + i + ((dieta == i) ? '" selected>' : '">') + i18n.isoFloat1(i) + '</option>'
-		return output;
+		return output + "</select>";
 	}
 	this.row = (dieta, status, resume) => {
-		console.log('dieta: ', dieta);
 		self.rowCalc(dieta, resume, status.index);
-		const dietas = iris.isEditable() ? `<select name="dietas">${fnDietas(dieta.imp1, dieta.maxDietas)}</select>` : i18n.isoInt(dieta.imp1);
+		const dietas = iris.isEditable() ? fnDietas(dieta.imp1, dieta.maxDietas) : i18n.isoInt(dieta.imp1);
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="${i18n.get("lblPeriodo")}">${dieta.desc}</td>
 			<td data-cell="${i18n.get("lblPais")}">${dieta.nombre}</td>

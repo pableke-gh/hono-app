@@ -1,12 +1,11 @@
 
-import tb from "../../../components/types/TemporalBox.js";
+import dt from "../../../components/types/DateBox.js";
 
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
 import gastos from "../../model/gasto/Gastos.js";
 import dieta from "../../model/gasto/Dieta.js";
 
-import dietas from "../../data/dietas/dietas.js";  
 import perfil from "../perfil/perfil.js";
 import xeco from "../../../xeco/xeco.js";
 
@@ -20,13 +19,9 @@ function Dietas() {
 	this.getDietasByPais = () => Map.groupBy(_tblDietas.getData(), dieta => dieta.cod); // preserve/guarantee order keys
 	this.getTotalDias = dietas => dietas.reduce((sum, gasto) => (sum + dieta.getDieta(gasto)), 0); // acumulado de dias
 
-	const fnCreateDiaIntermedio = (fecha, tipo, grupo) => {
-		const row = dieta.createDiaIntermedio();
-		row.pais = rutas.getPaisPernocta(fecha);
-		row.imp1 = dietas.getImporte(tipo, pais, grupo);
-		fDieta = fDieta.add({ days: 1 });
-		return row;
-	}
+	// añado la nueva dieta a la lista de gastos
+	const fnAddDieta = (row, fecha, tipo, grupo) => { gastos.push(dieta.set(row, fecha, tipo, grupo)); return row; }
+	const fnCreateDiaIntermedio = (fecha, tipo, grupo) => fnAddDieta(dieta.createDiaIntermedio(), fecha, tipo, grupo);
 	this.build = () => {
 		gastos.removeByTipo(dieta.getTipo()); // remove gastos de tipo dieta
 		if (perfil.isEmpty() || perfil.isRutaUnica() || rutas.isEmpty())
@@ -34,35 +29,43 @@ function Dietas() {
 
 		const tipo = gastos.getTipoDieta();
 		const grupo = gastos.getGrupoDieta();
-		let fDieta = tb.trunc(rutas.salida());
-		let fMax = tb.trunc(rutas.llegada());
+		const fDieta = dt.trunc(rutas.salida());
+		const fMax = dt.trunc(rutas.llegada());
 
 		// primer día
-		if (tb.lt(fDieta, fMax) || fDieta.equals(fMax)) {
-			const row = dieta.createDiaInicial();
-			fDieta = fDieta.add({ days: 1 });
-			gastos.push(row);
+		if (dt.lt(fDieta, fMax) || dt.inDay(fDieta, fMax)) {
+			const row = fnAddDieta(dieta.createDiaInicial(), fDieta, tipo, grupo);
+			if (rutas.isSalidaTardia())
+				dieta.setSinDieta(row);
+			else if (!rutas.isSalidaTemprana())
+				dieta.setMediaDieta(row);
 		}
 
 		// primer día intermedio
-		if (tb.lt(fDieta, fMax) || fDieta.equals(fMax)) {
-			gastos.push(fnCreateDiaIntermedio(fDieta, tipo, grupo));
-		}
+		let prev = dt.lt(fDieta, fMax) ? fnCreateDiaIntermedio(fDieta, tipo, grupo) : null;
 
 		// resto de días intermedios
-		while (tb.lt(fDieta, fMax)) {
-			gastos.push(fnCreateDiaIntermedio(fDieta, tipo, grupo));
+		while (dt.lt(fDieta, fMax)) {
+			const pais = rutas.getPaisPernocta(fDieta);
+			if (pais == prev.cod) // cambio de país
+				dieta.add(prev, fDieta); // añado un día más a la dieta anterior
+			else
+				prev = fnCreateDiaIntermedio(fDieta, tipo, grupo);
 		}
 
 		// ultimo día
-		if (fDieta.equals(fMax)) {
-			const row = dieta.createDiaFinal();
-			gastos.push(row);
+		if (dt.inDay(fDieta, fMax)) {
+			const row = fnAddDieta(dieta.createDiaFinal(), fDieta, tipo, grupo);
+			if (rutas.isLlegadaTemprana())
+				dieta.setSinDieta(row);
+			else
+				dieta.setMediaDieta(row);
 		}
 
 		// update table view dietas
 		_tblDietas.render(gastos.getDietas());
 	}
+window.dietas = self; // debug
 
 	this.setDietas = () => {
 		_tblDietas.render(gastos.getDietas()).setChanged();

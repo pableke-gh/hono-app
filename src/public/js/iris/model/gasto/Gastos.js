@@ -76,7 +76,7 @@ function Gastos() {
 	this.getNumPernoctas = () => _gastos.reduce((num, row) => (num + (gasto.isPernocta(row) ? row.num : 0)), 0);
 	this.filter = fn => { _gastos = _gastos.filter(fn); return self; }
 	this.removeById = data => self.filter(gasto => (gasto.id != data.id));
-	this.removeByTipo = data => self.filter(gasto => (gasto.tipo != data.tipo));
+	this.removeByTipo = tipo => self.filter(gasto => (gasto.tipo != tipo));
 	this.push = data => { _gastos.push(data); return self; }
 }
 

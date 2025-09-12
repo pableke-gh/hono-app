@@ -29,7 +29,6 @@ export default function(table, opts) {
 	opts.onRender = opts.onRender || globalThis.void;
 	opts.onLastRow = opts.onLastRow || globalThis.none;
 	opts.onFooter = opts.onFooter || (() => table.tFoot.innerHTML);
-	opts.renderFooter = opts.renderFooter ?? true;
 	opts.afterRender = opts.afterRender || globalThis.void;
 	opts.onRemove = opts.onRemove || fnTrue;
 
@@ -116,7 +115,7 @@ export default function(table, opts) {
 		fnChange && fnChange(data, el, tr, i);
 	}
 	// Row listeners for change, find and remove items in body
-	function addRowEvents(tr, i) {
+	function setRowEvents(tr, i) {
 		tr.onchange = ev => {
 			_index = i; // update current item
 			fnChangeEvent(_rows[i], ev.target, tr, i);
@@ -145,7 +144,7 @@ export default function(table, opts) {
 		tBody.classList.add(opts.activeClass); // Add styles (animation)
 		_isChanged = true; // rendered force indicator
 
-		tBody.rows.forEach(addRowEvents);
+		tBody.rows.forEach(setRowEvents);
 		tFoot.rows.forEach((tr, i) => { // Row listeners for change footer
 			tr.onchange = ev => fnChangeEvent(RESUME, ev.target, tr, i);
 		});
@@ -160,9 +159,6 @@ export default function(table, opts) {
 	this.insert = (row, id) => { row.id = id; return self.push(row); } // New row with PK
 	this.update = data => { Object.assign(_rows[_index], data); return fnRender(_rows); }
 	this.save = (row, id) => (id ? self.insert(row, id) : self.update(row)); // Insert or update
-	this.remove = index => { index = index ?? _index; _rows.splice(index, 1); return fnRender(_rows); } // remove a row and reload table
-	const fnConfirmRemove = index => (i18n.confirm(opts.msgConfirmRemove) && opts.onRemove(_rows[index])); // confirmation message
-	this.removeRow = () => { fnConfirmRemove(_index) && self.remove(_index); return self; } // remove row and rebuild table
 
 	const fnRefresh = (el, data) => el.querySelectorAll(opts.refreshSelector).refresh(data, opts); // render table elements
 	this.refreshRow = data => { fnRefresh(tBody.rows[_index], data || _rows[_index]); return self; } // refresh a row
@@ -176,21 +172,23 @@ export default function(table, opts) {
 		return self.setChanged(true); // force refresh indicator
 	}
 
-	this.flush = index => {
-		index = index ?? _index;
-		_rows.splice(index, 1); // remove row
+	const fnRemove = index => { _rows.splice(index, 1); return fnRender(_rows); } // remove a row and reload table
+	const fnConfirmRemove = index => (i18n.confirm(opts.msgConfirmRemove) && opts.onRemove(_rows[index])); // confirmation message
+	this.remove = index => fnRemove(index ?? _index); // remove a row and reload table
+	this.removeRow = () => (fnConfirmRemove(_index) ? fnRemove(_index) : self); // remove row and rebuild table
+
+	const fnFlush = index => {
+		_rows.splice(index, 1); // remove row data
 		RESUME.size = _rows.length; // update size
-		tBody.removeChild(tBody.rows[index]); // remove row
+		tBody.removeChild(tBody.rows[index]); // remove tr element
 		if (_rows.length) // is empty table?
-			tBody.rows.forEach(addRowEvents); // update listeners
+			tBody.rows.forEach(setRowEvents); // update listeners
 		else
 			tBody.innerHTML = opts.rowEmptyTable; // empty body
 		return self.recalc().refreshFooter(); // refresh footer
 	}
-	this.flushRow = () => { // remove row and rebuild table
-		fnConfirmRemove(_index) && self.flush(_index);
-		return self;
-	}
+	this.flush = index => fnFlush(index ?? _index);
+	this.flushRow = () => (fnConfirmRemove(_index) ? fnFlush(_index) : self);
 
 	// Orderable columns system
 	const links = tHead.getElementsByClassName(opts.sortClass);

@@ -1,6 +1,5 @@
 
 import coll from "../../../components/CollectionHTML.js";
-import tb from "../../../components/types/TemporalBox.js";
 import dt from "../../../components/types/DateBox.js";
 import sb from "../../../components/types/StringBox.js";
 import i18n from "../../i18n/langs.js";
@@ -25,7 +24,10 @@ function Rutas() {
 	this.salida = () => ruta.salida(self.getSalida());
 	this.llegada = () => ruta.llegada(self.getLlegada());
 	this.getHoraLlegada = () => ruta.getHoraLlegada(self.getLlegada()); 
+	this.isSalidaTemprana = () => ruta.isSalidaTemprana(self.getSalida());
+	this.isSalidaTardia = () => ruta.isSalidaTardia(self.getSalida());
 	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(self.getLlegada());
+	this.isMismoDia = () => sb.inDay(self.getHoraSalida(), self.getHoraLlegada());
 
 	const fnDiffDias = () => dt.diffDays(self.llegada(), dt.trunc(self.salida())); //tb.getDays(self.llegada(), tb.trunc(self.salida()));
 	this.getNumNoches = () => (self.isEmpty() ? 0 : Math.floor(fnDiffDias()));
@@ -40,14 +42,14 @@ function Rutas() {
 	this.getItinerarioVp = () => (self.getRutasVehiculoPropio().map(ruta.getTrayectoPais).join("; "));
 
 	this.getRuta = fecha => { // Ruta asociada a fecha
-		if (rutas.isEmpty())
+		if (self.isEmpty())
 			return null; // itinerario vacio
-		let current = rutas[0]; // Ruta de salida
+		let current = _rutas[0]; // Ruta de salida
 		if (!fecha) return current; // ruta por defecto
-		const fMax = fecha.add({ hours: 29 }); // 5h del dia siguiente
+		const fMax = dt.clone(fecha).addHours(29); // 5h del dia siguiente
 		self.getRutas().forEach(aux => { // rutas ordenadas por fecha
 			// Ultima fecha de llegada mas proxima a fMax
-			current = tb.lt(ruta.llegada(aux), fMax) ? aux : current;
+			current = dt.lt(ruta.llegada(aux), fMax) ? aux : current;
 		});
 		return current;
 	}
@@ -55,7 +57,7 @@ function Rutas() {
 		const aux = self.getRuta(fecha);
 		if (aux) { // itinerario no vacio
 			const f2 = ruta.llegada(aux); // fecha de llegada
-			return tb.lt(fecha, f2) ? ruta.getPaisPernocta(aux) : ruta.getPaisllegada(aux);
+			return dt.lt(fecha, f2) ? ruta.getPaisPernocta(aux) : ruta.getPaisllegada(aux);
 		}
 		return "ES";
 	}

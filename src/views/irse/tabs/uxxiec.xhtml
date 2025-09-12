@@ -7,34 +7,30 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline">Consulta de Formación de Expediente #{iris.irse.form.codigo}</h2>
-	<p class="notice notice-info">#{iris.irse.solicitud.codigoDesc}</p>
-	<div class="ui-blocks">
-		<label class="ui-block">
-			<div class="label required">Ejercicio:</div>
-			<h:selectOneMenu id="ej-uxxi" value="#{iris.irse.input.ejUxxi}" styleClass="ui-input ui-select" tabindex="1">
-				<f:selectItems value="#{iris.irse.input.ejercicios}" />
-			</h:selectOneMenu>
-		</label>
-		<label class="ui-block-xl autocomplete">
-			<div class="label required">Operación UXXI-EC:</div>
-			<i class="fas fa-search ui-input-icon left"></i>
-			<h:inputText id="uxxi" value="#{iris.irse.input.acUxxi}" size="60" tabindex="2" styleClass="ui-input ui-autocomplete" title="Introduzca código ó descripción" />
-			<input type="hidden" name="id"/>
-			<ul role="list" class="results"></ul>
-			<div class="ui-errtip"></div> 
-			<p:remoteCommand name="rcFindUxxi" action="#{iris.irse.list.findUxxi()}" oncomplete="loadItems(xhr, status, args)" />
-		</label>
-		<div class="ui-block-btn">
-			<a id="add-uxxi" href="#" class="btn btn-green success-btn" tabindex="5" title="Asocia la operación a la solicitud">
-				<i class="far fa-plus btn-icon-left"></i>Añadir</a>
-		</div>
-	</div>
+	<form id="xeco-uxxi" action="/uae/iris">
+		<h2 class="underline">Consulta de Formación de Expediente</h2>
+		<p class="notice notice-info form-refresh" data-refresh="text-render">@codigo;: @memo;</p>
 
-	<br class="clear"/>
-	<p:outputPanel id="op-json" styleClass="hide">#{iris.irse.input.operaciones}</p:outputPanel>
-	<h:inputHidden id="operaciones" value="#{iris.irse.input.operaciones}" />
-	<table id="op-table" class="tb-xeco">
+		<div class="ui-blocks">
+			<label class="ui-block">
+				<div class="label required">Ejercicio:</div>
+				<ui:include src="../parts/ejercicios.xhtml"></ui:include>
+			</label>
+			<label class="ui-block-xl autocomplete">
+				<div class="label required">Operación UXXI-EC:</div>
+				<i class="fas fa-search ui-input-icon left"></i>
+				<input type="search" id="uxxi" name="uxxi" class="ui-input ui-autocomplete" tabindex="2" />
+				<input type="text" id="idUxxi" name="idUxxi" class="ui-number hide" />
+				<ul role="list" class="results"></ul>
+				<div class="errtip"></div>
+			</label>
+			<div class="ui-block-btn">
+				<a id="add-uxxi" href="#" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus btn-icon-left"></i> Añadir</a>
+			</div>
+		</div>
+	</form>
+
+	<table class="tb-xeco">
 		<thead>
 			<tr>
 				<th>Operación</th>
@@ -42,36 +38,21 @@
 				<th>Importe</th>
 				<th>F. Creación</th>
 				<th>Descripción</th>
-				<th></th>
+				<th>Acciones</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr class="tb-data">
-				<td class="tc">@num;</td>
-				<td>@uxxi;</td>
-				<td class="text-right">@imp; €</td>
-				<td class="tc">@fUxxi;</td>
-				<td>@desc;</td>
-				<td class="text-right">
-					<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>
-				</td>
-			</tr>
-		</tbody>
-		<tbody class="hide">
-			<tr><td class="no-data" colspan="99">No se han encontrado operaciones de UXXI-EC asociadas a la solicitud.</td></tr>
-		</tbody>
-		<tfoot>
-			<tr><td colspan="99">Operaciones: @size;</td></tr>
-		</tfoot>
+		<tbody></tbody>
+		<tfoot></tfoot>
 	</table>
 
-	<br class="clear"/><br/>
-	<a href="#tab-listOld" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
-		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-	<p:commandButton action="#{iris.irse.firma.ejecutar()}" icon="far fa-save" styleClass="btn btn-green success-btn" value="Ejecutar" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
-		tabindex="14" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud" />
-	<p:commandButton action="#{iris.irse.firma.notificar()}" icon="fal fa-paper-plane" styleClass="btn btn-green success-btn" value="Ejecutar y Notificar" onclick="loading();" oncomplete="showAlerts(xhr, status, args)" 
-		tabindex="15" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC" />
-	<a href="#tab-reject" class="btn btn-error danger-btn" tabindex="16" title="#{msg['tit.btn.cancelar']}">
-		<i class="fas fa-times-circle btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.cancelar']}" escape="false" /></a>
+	<div class="navbar">
+		<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+		<a href="#tab-action-ejecutar" class="btn btn-green" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
+			<i class="far fa-save btn-icon-left"></i>Guardar</a>
+		<a href="#tab-action-notificar" class="btn btn-green form-refresh" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
+			<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</a>
+		<a href="#tab-action-reject" class="table-action btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.rechazar']}">
+			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+	</div>
 </html>

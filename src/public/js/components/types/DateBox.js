@@ -27,6 +27,10 @@ function DateBox() {
     this.isoTime = date => date.toISOString().substring(11, 19); //hh:MM:ss
     this.isoTimeShort = date => date.toISOString().substring(11, 16); //hh:MM
 
+	const lpad = val => ((val < 10) ? ("0" + val) : val); // always 2 digits
+	this.toPlainDate = date => (date.getFullYear() + "-" + lpad(date.getMonth() + 1) + "-" + lpad(date.getDate())); //yyyy-mm-dd
+	this.toPlainDateTime = date => (self.toPlainDate(date) + " " + date.toLocaleTimeString()); //yyyy-mm-dd hh:MM:ss
+
 	// Randoms
 	this.randTime = (d1, d2) => Math.floor(Math.random() * self.diffDate(d2, d1) + d1.getTime());
 	this.randDate = (d1, d2) => new Date(self.randTime(d1, d2));
