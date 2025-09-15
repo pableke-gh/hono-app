@@ -10,14 +10,7 @@ const ACTIVE_CLASS = "active";
 function Tabs() {
 	const self = this; //self instance
 	const EVENTS = {}; //events tab container
-
-	// hack ifPage-frame styles for CV
-	const iframe = window.parent.document.querySelector("#ifPage-frame");
-
 	let tabs, _tabIndex;
-	let fnResize = tab => { // resize iframe height
-		iframe.style.height = ((tab?.scrollHeight || iframe.contentDocument.body) + 80) + "px";
-	}
 
 	const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
 	const fnActive = el => el.classList.contains(ACTIVE_CLASS); //active class
@@ -60,7 +53,6 @@ function Tabs() {
 			tab.dataset.loaded = "1"; // avoid to fire event again
 		}
 		fnCallEvent("view", tab); // Fire when show tab
-		fnResize(tab); // resize iframe height
 		window.parent.scrollTo({ top: 0, behavior: "smooth" });
 		return autofocus(tab);
 	}
@@ -150,14 +142,18 @@ function Tabs() {
 	// Init. view and PF navigation (only for CV-UAE)
 	window.showTab = (xhr, status, args, tab) => (window.showAlerts(xhr, status, args) && self.goTab(tab));
 	coll.ready(() => {
-		if (iframe) { // auto-adapt iframe height on resize event
-			const ro = new ResizeObserver(() => fnResize(self.getCurrent()));
-			ro.observe(iframe.contentDocument.body);
-			iframe.setAttribute("scrolling", "no");
-		}
-		else
-			fnResize = globalThis.void; // disable resize function
 		self.load(document); // Load all tabs by default
+		// hack ifPage-frame styles for CV prod.
+		const iframe = window.parent.document.querySelector("#ifPage-frame");
+		if (!iframe) return; // no iframe => exit
+		// auto-adapt iframe height on resize event
+		const ro = new ResizeObserver(() => {
+			const tab = self.getCurrent(); // current active tab
+			const height = (tab?.scrollHeight || iframe.contentDocument.body) + 80;
+			iframe.style.height = height + "px"; // set height
+		});
+		ro.observe(iframe.contentDocument.body);
+		iframe.setAttribute("scrolling", "no");
 	});
 }
 

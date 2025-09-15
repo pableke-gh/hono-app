@@ -1,7 +1,6 @@
 
 import tabs from "../../components/Tabs.js";
 import sb from "../../components/types/StringBox.js";
-import pf from "../../components/Primefaces.js";
 import dom from "../../lib/uae/dom-box.js";
 import i18n from "../i18n/langs.js";
 
@@ -53,9 +52,9 @@ function IrseTabs() {
 		eTipoGasto.onchange = fnChange; // Change event
 		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 				.setval("#fAloMin", start).setAttr("#fAloMin", "min", start).setAttr("#fAloMin", "max", end)
-				.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end).text(".filename", "");
-		pf.uploads(tab.querySelectorAll(".pf-upload"), fnChange);
-	
+				.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end)
+				.set("upload-gasto", fnChange);
+
 		window.fnPaso5 = function() {
 			dom.closeAlerts();
 			if (isDoc())

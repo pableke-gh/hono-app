@@ -73,6 +73,11 @@ export default {
 	lblDietasPropuestas: "Dietas propuestas", lblImpDietaDia: "Importe dieta / día", lblImpPropuesto: "Importe propuesto", lblTusDietas: "Tus dietas", lblReduccion: "Reducción",
 
 	// IRIS Collections
+	descEstados: [
+		"-", "Validada", "Rechazada", "Ejecutada", "Liquidada", "Enviada", "Sin Enviar", "Rechazada UAE", "Caducada", 
+		"Error Capa SOA", "Error de Crédito Vinculante", "-", "-", "-", "-", "Subsanable", "Procesando..."
+	],
+
 	despMun: [ "Vehículo Propio", "Transportes Públicos" ],
 	despMaps: [ "Vehículo Propio", "Avión", "Tren", "Vehículo Alquiler", "Vehículo Ajeno", "Taxi Interurbano", "Bús Interurbano", "Barco", "Otros" ],
 	gastosTiketIsu: [ "Peaje", "Aparcamiento", "Metro", "Taxi", "Autobús Urbano", "Tranvía", "Otros" ],

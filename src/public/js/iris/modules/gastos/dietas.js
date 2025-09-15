@@ -14,7 +14,7 @@ function Dietas() {
 	const form = xeco.getForm(); // form component
 	const _tblDietas = form.setTable("#tbl-dietas", dieta.getTable());
 
-	this.getGastos = () => _tblDietas.getData(); // array de gastos
+	this.getGastos = gastos.getGastos; // array de gastos
 	this.getImporte = () => _tblDietas.getProp("percibir"); // importe total de dietas (imp. a percibir)
 	this.getDietasByPais = () => Map.groupBy(_tblDietas.getData(), dieta => dieta.cod); // preserve/guarantee order keys
 	this.getTotalDias = dietas => dietas.reduce((sum, gasto) => (sum + dieta.getDieta(gasto)), 0); // acumulado de dias
@@ -35,6 +35,7 @@ function Dietas() {
 		// primer día
 		if (dt.lt(fDieta, fMax) || dt.inDay(fDieta, fMax)) {
 			const row = fnAddDieta(dieta.createDiaInicial(), fDieta, tipo, grupo);
+			// todo: dietas de 1 día ....
 			if (rutas.isSalidaTardia())
 				dieta.setSinDieta(row);
 			else if (!rutas.isSalidaTemprana())
@@ -64,6 +65,8 @@ function Dietas() {
 
 		// update table view dietas
 		_tblDietas.render(gastos.getDietas());
+console.log("dietas build:", _tblDietas.size());
+		return self;
 	}
 window.dietas = self; // debug
 

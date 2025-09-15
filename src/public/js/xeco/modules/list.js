@@ -22,8 +22,8 @@ function List() {
 	const fnLoadList = data => { tblSolicitudes.render(data); tabs.showTab("list"); } // render table
 	const fnCallList = () => { api.setJSON(form.getData()).json(url + "/list").then(fnLoadList); } // fetch list action
 	const fnList = (estado, fmask) => { form.setData({ estado, fmask }, ".ui-filter"); fnCallList(); } // prepare filter and fetch
-	const fnProcesando = data => tblSolicitudes.refreshRow(model.setData(data).setProcesando()); // avoid reclicks
 	const fnLoadTab = (tab, data) => { firmas.update(data); tabs.showTab(tab); } // set firmas and show selected tab
+	const fnProcesando = () => tblSolicitudes.refreshRow(model.setData(tblSolicitudes.getCurrentItem()).setProcesando()); // avoid reclicks
 	const fnView = data => {
 		if (form.isCached(data.id))
 			fnLoadTab("form", data);
@@ -46,10 +46,9 @@ function List() {
 	this.getTable = () => tblSolicitudes;
 	this.getId = tblSolicitudes.getId;
 	this.loadFirmas = data => {
-		const row = tblSolicitudes.getCurrentItem();
+		const row = fnProcesando().getCurrentItem(); // avoid reclick
 		if (form.isCached(row.id)) // checks if current item is cached
 			firmas.view(data.firmas).refresh(data); // refresh firmas blocks + buttons
-		fnProcesando(row); // avoid reclick
 		tabs.showList(); // force tab list
 	}
 
@@ -68,8 +67,8 @@ function List() {
 
 		const fnReset = data => { i18n.confirm("msgReactivar") && api.init().json(url + "/reset?id=" + data.id).then(model.view); }
 		tblSolicitudes.set("#reactivar", fnReactivar).set("#reset", fnReset); // acciones para reactivar / resetear solicitud
-		tblSolicitudes.set("#emails", data => api.init().json(url + "/emails?id=" + data.id).then(form.showAlerts)); // admin test email
-		tblSolicitudes.set("#integrar", data => (i18n.confirm("msgIntegrar") && fnProcesando(data) && api.init().json(url + "/ws?id=" + data.id).then(form.showAlerts))); // llamada al servidor
+		tblSolicitudes.set("#emails", data => api.init().json(url + "/emails?id=" + data.id)); // admin test email
+		tblSolicitudes.set("#integrar", data => (i18n.confirm("msgIntegrar") && api.init().json(url + "/ws?id=" + data.id).then(fnProcesando))); // llamada al servidor
 		tblSolicitudes.setRemove(data => api.init().json(url + "/remove?id=" + data.id).then(tabs.showList)); // remove true = confirm
 	}
 
@@ -79,8 +78,8 @@ function List() {
 	tabs.setAction("relist", () => fnList("", "5"));
 	tabs.setAction("vinc", () => { ("1" == form.getValueByName("estado")) ? tabs.showTab("list") : fnList("1"); });
 
-	tabs.setAction("ejecutar", () => api.setJSON(uxxiec.getExpediente()).json(url + "/ejecutar?id=" + tblSolicitudes.getId()).then(form.showAlerts));
-	tabs.setAction("notificar", () => api.setJSON(uxxiec.getExpediente()).json(url + "/notificar?id=" + tblSolicitudes.getId()).then(form.showAlerts));
+	tabs.setAction("ejecutar", () => uxxiec.ejecutar(tblSolicitudes.getCurrentItem()).then(tblSolicitudes.refreshRow));
+	tabs.setAction("notificar", () => uxxiec.notificar(tblSolicitudes.getCurrentItem()).then(tblSolicitudes.refreshRow));
 
 	tabs.setAction("report", () => tblSolicitudes.invoke("#report"));
 	tabs.setAction("pdf", () => tblSolicitudes.invoke("#pdf"));

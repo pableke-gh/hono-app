@@ -9,6 +9,7 @@ import uxxiec from "../model/Uxxiec.js";
 import firmas from "./firmas.js";
 
 function Uxxiec() {
+	const self = this; //self instance
 	const url = model.getUrl(); // url base path
     const form = new Form("#xeco-uxxi"); // form element for expediente UXXI-EC
 	const tblUxxiec = new Table(form.getForm().nextElementSibling, uxxiec.getTable());
@@ -17,7 +18,7 @@ function Uxxiec() {
 
 	this.getForm = () => form;
 	this.getTable = () => tblUxxiec;
-	this.getExpediente = () => tblUxxiec.getData();
+	this.getExpediente = tblUxxiec.getData;
 	this.setExpediente = tblUxxiec.render;
 	this.isCached = form.isCached;
 
@@ -46,6 +47,10 @@ function Uxxiec() {
 		const fnLoadDocs = docs => { tblUxxiec.render(docs); fnLoadUxxiec(data); }
 		api.init().json(url + "/uxxiec?id=" + data.id).then(fnLoadDocs);
 	}
+
+	const fnUpdate = (data, estado) => model.setData(data).setEstado(estado);
+	this.ejecutar = data => api.setJSON(self.getExpediente()).json(url + "/ejecutar?id=" + data.id).then(() => fnUpdate(data, 3));
+	this.notificar = data => api.setJSON(self.getExpediente()).json(url + "/notificar?id=" + data.id).then(() => fnUpdate(data, 4));
 }
 
 export default new Uxxiec();

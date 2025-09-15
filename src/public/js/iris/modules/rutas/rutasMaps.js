@@ -7,13 +7,14 @@ import ruta from "../../model/ruta/RutaMaps.js";
 import rro from "../../model/ruta/RutaReadOnly.js";
 import rutas from "../../model/ruta/Rutas.js";
 import gastos from "../../model/gasto/Gastos.js";
-import { CT } from "../../data/rutas.js";
+import xeco from "../../../xeco/xeco.js";
 
 import place from "./place.js";
 import rmun from "./rutasMun.js";
 import rvp from "./rutasVehiculoPropio.js";
-import xeco from "../../../xeco/xeco.js";
 import dietas from "../gastos/dietas.js";
+
+import { CT } from "../../data/rutas.js";
 
 function RutasMaps() {
 	const self = this; //self instance
@@ -62,26 +63,25 @@ function RutasMaps() {
 		const valid = form.getValidators();
 		if (rutas.size() < 2) // validate min rutas = 2
 			return !valid.addRequired("destino", "errMinRutas");
-		if (!rutas.validate()) // valido el itinerario completo
-			return false; // error al validar el itinerario completo
-		if (form.isChanged() || _tblRutas.isChanged()) { // hay cambios => build data
-			const keys = [ "id", "g", "origen", "pais1", "destino", "pais2", "km1", "km2", "desp", "mask", "dt1", "dt2" ];
-			data.rutas = rutas.getRutas().map(ruta => Object.clone(ruta, keys)); // actualizo las rutas
-			data.gastos = gastos.setPaso1(data, _tblRutas.getResume()).getGastos(); // set km / iban
-
-			_tblReadOnly.render(rutas.getRutas()); // fuerza la actualización de la tabla de consulta (paso 5)
-			rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
-			dietas.build(); // rebuild table of dietas
-		}
-		return true;
+		return rutas.validate(); // valido el itinerario completo
 	}
 	const fnPaso2 = tab => {
 		const data = form.validate(fnValidate);
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
-		if (!form.isChanged()) // compruebo cambios
+		if (!form.isChanged() && !_tblRutas.isChanged()) // compruebo cambios
 			return form.nextTab(tab); // no cambios => salto al siguiente paso
 		const temp = Object.assign(iris.getData(), data); // merge data to send
+		const keys = [ "id", "g", "origen", "pais1", "destino", "pais2", "km1", "km2", "desp", "mask", "dt1", "dt2" ];
+		temp.rutas = rutas.getRutas().map(ruta => Object.clone(ruta, keys)); // actualizo las rutas
+
+		if (_tblRutas.isChanged()) // si hay cambios en las rutas
+			dietas.build(); // recalculo las dietas
+		temp.gastos = gastos.setPaso1(data, _tblRutas.getResume()).getGastos(); // set km / iban
+
+		_tblReadOnly.render(rutas.getRutas()); // fuerza la actualización de la tabla de consulta (paso 5)
+		rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
+
 		api.setJSON(temp).json("/uae/iris/save").then(data => iris.update(data, tab));
 	}
 

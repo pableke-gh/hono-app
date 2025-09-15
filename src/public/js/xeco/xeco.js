@@ -38,10 +38,13 @@ function XecoForm() {
 	}
 
 	const pfUpload = el => { // pf upload component
-		const fnFile = form.get(el.dataset.file) || globalThis.void; // event change handler
 		const file = el.previousElementSibling.querySelector("[type='file']"); // input element
 		const setFilename = () => { el.nextElementSibling.innerHTML = file.files[0]?.name || ""; } // update filename
-		file.onchange = ev => { setFilename(); fnFile(ev, file, el); }
+		file.onchange = ev => {
+			setFilename(); // update filename element
+			const fnFile = form.get(el.dataset.file) || globalThis.void;
+			fnFile(ev, file, el); // event change handler
+		}
 		el.onclick = ev => { ev.preventDefault(); file.click(); }
 		setFilename(); // clear filename element
 		return true; // visible

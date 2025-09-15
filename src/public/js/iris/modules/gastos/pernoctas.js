@@ -17,7 +17,7 @@ function Pernoctas() {
 	const form = xeco.getForm(); // form component
 	const _tblPernoctas = form.setTable("#pernoctas", pernocta.getTable());
 
-	this.getGastos = () => _tblPernoctas.getData(); // array de gastos
+	//this.getGastos = () => _tblPernoctas.getData(); // array de gastos
 	this.getImporte = () => _tblPernoctas.getProp("impMin");
 	this.getNumNoches = () => _tblPernoctas.getProp("numNoches");
 	this.getImpNoche = (tipo, pais, dieta) => pernoctas.getImporte(tipo, pais, dieta);

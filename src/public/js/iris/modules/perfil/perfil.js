@@ -5,6 +5,7 @@ import api from "../../../components/Api.js";
 import iris from "../../model/Iris.js";
 import organicas from "./organicas.js";
 import actividad from "./actividad.js";
+import dietas from "../gastos/dietas.js";
 import xeco from "../../../xeco/xeco.js";
 
 function Perfil() {
@@ -44,6 +45,8 @@ function Perfil() {
 		if (!form.isChanged() && !organicas.isChanged())
 			return tabs.nextTab(); // no cambios => salto a paso 1
 		const temp = Object.assign(iris.getData(), data); // merge data to send
+		if (organicas.isChanged()) // recalculo las dietas
+			temp.gastos = dietas.build().getGastos();
 		temp.organicas = organicas.getOrganicas(); // lista de organicas
 		api.setJSON(temp).json("/uae/iris/save0").then(iris.update);
 	});

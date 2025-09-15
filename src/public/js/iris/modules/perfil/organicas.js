@@ -8,7 +8,7 @@ import actividad from "./actividad.js";
 import xeco from "../../../xeco/xeco.js";
 
 function Organicas() {
-	const self = this; //self instance
+	//const self = this; //self instance
 	const form = xeco.getForm(); // form component
 	const _tblOrganicas = form.setTable("#tbl-organicas", organica.getTable());
 
@@ -19,7 +19,8 @@ function Organicas() {
 	this.getGrupoDieta = () => form.getval("#grupo-dieta"); 
 	this.getTipoDieta = organica.getTipoDieta;
 
-	this.getOrganicas = () => _tblOrganicas.getData();
+	this.isChanged = _tblOrganicas.isChanged;
+	this.getOrganicas = _tblOrganicas.getData;
 	this.setOrganicas = organicas => { _tblOrganicas.render(organicas).setChanged(); }
 	this.reset = self.setOrganicas;
 
