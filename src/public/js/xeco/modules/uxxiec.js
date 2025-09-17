@@ -27,10 +27,12 @@ function Uxxiec() {
 		model.setUser(tabUxxi.dataset);
 
 		form.set("is-notificable", model.isNotificable).set("is-cancelable", model.isCancelable);
-		form.addClick("a#add-uxxi", () => {
+		form.setClick("a#add-uxxi", ev => {
+			ev.preventDefault(); // not navigate
 			const doc = acUxxi.getCurrentItem();
 			doc && tblUxxiec.add(doc); // Add and remove PK autocalculated in v_*_uxxiec
 			acUxxi.reload(); // Reload autocomplete
+			tabs.resize(); // resize current tab
 		});
 	}
 

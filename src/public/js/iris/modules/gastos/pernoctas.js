@@ -1,16 +1,15 @@
 
-import tb from "../../../components/types/TemporalBox.js";
+import dt from "../../../components/types/DateBox.js";
 
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
 import pernocta from "../../model/gasto/Pernocta.js";
 import gastos from "../../model/gasto/Gastos.js";
-
-import pernoctas from "../../data/pernoctas/pernoctas.js";
-import paises from "../../data/paises/paises.js";
+import xeco from "../../../xeco/xeco.js";
 
 import perfil from "../perfil/perfil.js";
-import xeco from "../../../xeco/xeco.js";
+import pernoctas from "../../data/pernoctas/pernoctas.js";
+import paises from "../../data/paises/paises.js";
 
 function Pernoctas() {
 	const self = this; //self instance
@@ -34,20 +33,20 @@ function Pernoctas() {
 		if (valid.isError()) // error en los campos
 			return false; // stop validations
 
+		const f2 = new Date(form.valueOf("#fMaxGasto")); // T00:00:00.000Z
+		const f1 = new Date(form.valueOf("#fMinGasto")); // T00:00:00.000Z
+		data.num = dt.diffDays(f2, f1); // número de noches (fechas truncadas)
+
 		const tipo = perfil.getTipoDieta();
 		const grupo = perfil.getGrupoDieta();
-		/*const f2 = tb.trunc(form.valueOf("#fMaxGasto"));
-		let f1 = tb.trunc(form.valueOf("#fMinGasto"));
 		const idPais1 = rutas.getPaisPernocta(f1);
-		while (tb.lt(f1, f2)) {
-			const idPais = rutas.getPaisPernocta(f1);
-			if (idPais != idPais1)
-				return !valid.addError("#fMinGasto", "errPais");
-			f1 = f1.add({ days: 1 });
+		while (dt.lt(f1, f2)) { // range date iterator
+			if (rutas.getPaisPernocta(f1) != idPais1)
+				return !valid.addError("fMinGasto", "errPais");
+			f1.addDays(1); // incremento un día
 		}
-		data.num = tb.getDays(f1, f2);
 		data.imp2 = self.getImpNoche(tipo, idPais1, grupo);
-		data.desc = paises.getPais(idPais1);*/
+		data.desc = paises.getRegion(idPais1);
 		return valid.isOk();
 	}
 

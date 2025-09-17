@@ -1,6 +1,6 @@
 
 import dt from "../../components/types/DateBox.js";
-import dom from "../../lib/uae/dom-box.js";
+import dom from "../lib/dom-box.js";
 
 function Ruta() {
 	const self = this; //self instance

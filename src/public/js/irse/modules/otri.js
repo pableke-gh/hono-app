@@ -4,7 +4,7 @@ import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
 
-import dom from "../../lib/uae/dom-box.js";
+import dom from "../lib/dom-box.js";
 import xlsx from "../../services/xlsx.js";
 
 import otri from "../model/Otri.js";

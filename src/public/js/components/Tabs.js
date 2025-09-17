@@ -10,6 +10,9 @@ const ACTIVE_CLASS = "active";
 function Tabs() {
 	const self = this; //self instance
 	const EVENTS = {}; //events tab container
+
+	// hack ifPage-frame styles for CV prod.
+	const iframe = window.parent.document.querySelector("#ifPage-frame");
 	let tabs, _tabIndex;
 
 	const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
@@ -44,6 +47,20 @@ function Tabs() {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = alerts.showAlerts; // Encapsule showAlerts message
 
+	const setHeight = tab => { // set iframe height
+		iframe.style.height = Math.max(tab.scrollHeight + 80, 520) + "px";
+	}
+	const fnResize = tab => {
+		if (!iframe)
+			return alerts.top(); // scroll to top
+		setHeight(tab); // auto-adapt iframe height on resize event
+		iframe.setAttribute("scrolling", "no"); // disable scrollbars
+		window.parent.scrollTo({ top: 0, behavior: "smooth" }); // parent to top
+	}
+	this.resize = () => { // resize current tab
+		setHeight(self.getCurrent());
+	}
+
 	const fnGoTab = (tab, index) => {
 		tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
 		tab.classList.add(ACTIVE_CLASS); // active current tab only
@@ -53,7 +70,7 @@ function Tabs() {
 			tab.dataset.loaded = "1"; // avoid to fire event again
 		}
 		fnCallEvent("view", tab); // Fire when show tab
-		window.parent.scrollTo({ top: 0, behavior: "smooth" });
+		fnResize(tab); // resize iframe if exists
 		return autofocus(tab);
 	}
 	const fnGoAhead = (tab, i) => {
@@ -68,7 +85,7 @@ function Tabs() {
 	const fnMoveToTab = i => { // show tab by index
 		i = ((i < 0) ? 0 : Math.min(i, tabs.length - 1)); // limit range
 		if (_tabIndex == i) // is current tab
-			return false; // tab already active
+			return self.resize(); // no change
 		const tab = tabs[i]; // get next tab
 		if (_tabIndex < i) { // go ahead
 			if (fnCallEvent("active", tab)) // if tab active => fire validate event
@@ -141,20 +158,7 @@ function Tabs() {
 
 	// Init. view and PF navigation (only for CV-UAE)
 	window.showTab = (xhr, status, args, tab) => (window.showAlerts(xhr, status, args) && self.goTab(tab));
-	coll.ready(() => {
-		self.load(document); // Load all tabs by default
-		// hack ifPage-frame styles for CV prod.
-		const iframe = window.parent.document.querySelector("#ifPage-frame");
-		if (!iframe) return; // no iframe => exit
-		// auto-adapt iframe height on resize event
-		const ro = new ResizeObserver(() => {
-			const tab = self.getCurrent(); // current active tab
-			const height = (tab?.scrollHeight || iframe.contentDocument.body) + 80;
-			iframe.style.height = height + "px"; // set height
-		});
-		ro.observe(iframe.contentDocument.body);
-		iframe.setAttribute("scrolling", "no");
-	});
+	coll.ready(() => self.load(document)); // Load all tabs by default
 }
 
 export default new Tabs();

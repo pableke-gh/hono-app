@@ -232,4 +232,13 @@ $(function() {
 
 	tbConfig.iSearch = $("[group=search]").keydown(function(ev) { if (ev.keyCode == 13) { ev.preventDefault(); fnSearch(); } });
 	var tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);
+
+	// hack ifPage-frame styles for CV prod.
+	const iframe = window.parent.document.querySelector("#ifPage-frame");
+	if (iframe) { // auto-adapt iframe height on resize event
+		iframe.contentDocument.body.addEventListener("click", () => {
+			iframe.style.height = iframe.contentDocument.body.offsetHeight + "px"; // set height
+		});
+		iframe.setAttribute("scrolling", "no");
+	}
 });

@@ -2,7 +2,7 @@
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
 import api from "../../components/Api.js";
-import dom from "../../lib/uae/dom-box.js";
+import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 
 import irse from "../model/Irse.js";

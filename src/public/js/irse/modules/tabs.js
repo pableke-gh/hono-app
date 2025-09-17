@@ -1,7 +1,7 @@
 
 import tabs from "../../components/Tabs.js";
 import sb from "../../components/types/StringBox.js";
-import dom from "../../lib/uae/dom-box.js";
+import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 
 import rutas from "./rutas.js";

@@ -72,7 +72,7 @@ function Gastos() {
 
 	_tblGastos.set("#adjunto", gasto => { // set table action
 		const url = "/uae/iris/download?id=" + gasto.cod; // uuid file
-		api.setBin().blob(url).then(objectURL => api.download(objectURL, gasto.nombre));
+		api.init().blob(url).then(objectURL => api.download(objectURL, gasto.nombre));
 	});
 	_tblGastos.set("#unload", gasto => { // set table action
 		const url = "/uae/iris/unload?id=" + gasto.id;

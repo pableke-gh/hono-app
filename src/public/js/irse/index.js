@@ -2,7 +2,7 @@
 import coll from "../components/Collection.js";
 import tabs from "../components/Tabs.js";
 import i18n from "./i18n/langs.js";
-import dom from "../lib/uae/dom-box.js";
+import dom from "./lib/dom-box.js";
 
 import irse from "./model/Irse.js";
 import list from "./modules/list.js";

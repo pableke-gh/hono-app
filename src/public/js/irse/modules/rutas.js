@@ -2,7 +2,7 @@
 import coll from "../../components/CollectionHTML.js";
 import nb from "../../components/types/NumberBox.js";
 import sb from "../../components/types/StringBox.js";
-import dom from "../../lib/uae/dom-box.js";
+import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 
 import perfil from "./perfil.js";

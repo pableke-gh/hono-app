@@ -63,7 +63,7 @@ function List() {
 		tblSolicitudes.set("#firmar", data => (i18n.confirm("msgFirmar") && fnFirmar(data.id)));
 
 		tblSolicitudes.set("#report", data => api.init().text(url + "/report?id=" + data.id).then(api.open)); // call report service
-		tblSolicitudes.set("#pdf", data => api.setPdf().blob(url + "/pdf?id=" + data.id).then(api.open)); // report template service 
+		tblSolicitudes.set("#pdf", data => api.init().blob(url + "/pdf?id=" + data.id).then(api.open)); // report template service 
 
 		const fnReset = data => { i18n.confirm("msgReactivar") && api.init().json(url + "/reset?id=" + data.id).then(model.view); }
 		tblSolicitudes.set("#reactivar", fnReactivar).set("#reset", fnReset); // acciones para reactivar / resetear solicitud

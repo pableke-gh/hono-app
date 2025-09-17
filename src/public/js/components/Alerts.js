@@ -19,7 +19,7 @@ function Alerts() {
 
 	// Scroll body to top on click and toggle back-to-top arrow
 	const _top = _loading.nextElementSibling;
-	this.top = () => { window.scrollTo({ top: 0, behavior: "smooth" }); }
+	this.top = () => window.scrollTo({ top: 0, behavior: "smooth" });
 	_top.addEventListener("click", ev => { self.top(); ev.preventDefault(); });
 	window.onscroll = function() { _top.setVisible(this.scrollY > 80); }
 
