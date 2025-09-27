@@ -12,7 +12,10 @@ function Firma() {
 	this.isRechazada = firma => fnRechazada(firma.mask, firma.info);
 	this.isFirmable = mask => (mask & 64); //puesto a la firma?
 
+	this.getNif = firma => firma.nif;
 	this.getNombre = firma => (firma.nombre + " " + (firma.ap1 || "") + " " + (firma.ap2 || "")).trim();
+	this.getFirmante = firma => (self.getNif(firma) + " - " + self.getNombre(firma));
+	this.getGrupo = firma => firma.grupo;
 	this.getInfo = firma => firma.info;
 
 	this.myFlag = data => {

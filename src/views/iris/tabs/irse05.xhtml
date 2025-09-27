@@ -29,34 +29,34 @@
 						<option value="9" class="form-refresh" data-refresh="is-noches-pendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
 						<option value="8" class="form-refresh" data-refresh="is-rutas-pendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
 					</optgroup>
-					<optgroup label="Tickets por transporte" class="ui-factura-upct">
-						<option value="1" class="form-refresh" data-refresh="is-isu">#{irse.gastos.getMsgTicket(1)}</option>
-						<option value="2" class="form-refresh" data-refresh="is-isu">#{irse.gastos.getMsgTicket(2)}</option>
-						<option value="3" class="form-refresh" data-refresh="is-isu">#{irse.gastos.getMsgTicket(3)}</option>
-						<option value="4" class="form-refresh" data-refresh="is-isu">#{irse.gastos.getMsgTicket(4)}</option>
-						<option value="5" class="form-refresh" data-refresh="is-isu">#{irse.gastos.getMsgTicket(5)}</option>
-						<option value="6" class="form-refresh" data-refresh="is-isu">#{irse.gastos.getMsgTicket(6)}</option>
-						<option value="7" class="form-refresh" data-refresh="is-isu">#{irse.gastos.getMsgTicket(7)}</option>
-						<option value="10" class="form-refresh" data-refresh="not-isu">#{irse.gastos.getMsgTicket(10)}</option>
+					<optgroup label="Tickets por transporte">
+						<option value="1" class="form-refresh" data-refresh="is-isu">#{iris.irse.gastos.getMsgTicket(1)}</option>
+						<option value="2" class="form-refresh" data-refresh="is-isu">#{iris.irse.gastos.getMsgTicket(2)}</option>
+						<option value="3" class="form-refresh" data-refresh="is-isu">#{iris.irse.gastos.getMsgTicket(3)}</option>
+						<option value="4" class="form-refresh" data-refresh="is-isu">#{iris.irse.gastos.getMsgTicket(4)}</option>
+						<option value="5" class="form-refresh" data-refresh="is-isu">#{iris.irse.gastos.getMsgTicket(5)}</option>
+						<option value="6" class="form-refresh" data-refresh="is-isu">#{iris.irse.gastos.getMsgTicket(6)}</option>
+						<option value="7" class="form-refresh" data-refresh="is-isu">#{iris.irse.gastos.getMsgTicket(7)}</option>
+						<option value="10" class="form-refresh" data-refresh="not-isu">#{iris.irse.gastos.getMsgTicket(10)}</option>
 					</optgroup>
 					<optgroup label="Otra Documentación">
-						<option value="201" class="ui-factura-upct"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
+						<option value="201"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
 						<option value="202"><h:outputText value="#{msg['lbl.doc.otra']}" escape="false" /></option>
 					</optgroup>
-					<!--<c:if test="#{irse.form.extAlu and irse.form.iaeExt}">
+					<!--<c:if test="#{iris.irse.form.extAlu and iris.irse.form.iaeExt}">
 						<optgroup label="Justificaciones">
 							<option value="203"><h:outputText value="#{msg['lbl.justifi.dietas']}" escape="false" /></option>
 						</optgroup>
 					</c:if>-->
 					<optgroup label="Gasto Extraordinario" class="form-refresh" data-refresh="is-paso8">
 						<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
-						<c:if test="#{not irse.form.mun}">
+						<c:if test="#{not iris.irse.form.mun}">
 							<option value="302"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
 						</c:if>
-						<c:if test="#{irse.rutas.llegadaCena and irse.gastos.extraCena}">
+						<c:if test="#{iris.irse.rutas.llegadaCena and iris.irse.gastos.extraCena}">
 							<option value="303"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
 						</c:if>
-						<c:if test="#{irse.form.alu or irse.form.ext}">
+						<c:if test="#{iris.irse.form.alu or iris.irse.form.ext}">
 							<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
 						</c:if>
 					</optgroup>

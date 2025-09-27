@@ -1,26 +1,25 @@
 
 import tabs from "../../../components/Tabs.js";
+import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaGasto.js";
 import rutas from "../../model/ruta/Rutas.js";
 
+import gastos from "./gastos.js";
 import transportes from "./transportes.js";
 import pernoctas from "./pernoctas.js";
 import xeco from "../../../xeco/xeco.js";
 
-function Gasto() {
-	const self = this; //self instance
+export default function(tab) {
 	const form = xeco.getForm(); // form component
 	const _eTipoGasto = form.getInput("#tipoGasto");
-	const _grpGasto = form.querySelectorAll(".grupo-gasto");
-	let _tblRutasGasto; // itinerario
+	const _grpGasto = tab.querySelectorAll(".grupo-gasto");
 
 	const isInterurbano = () => (_eTipoGasto.value == "8"); //trayectos interurbanos
-	const isTaxi = () => (_eTipoGasto.value == "4"); //ISU y taxi
-	const fnPernocta = val => (val == "9"); // valor == tipo pernocta
-	const isPernocta = () => fnPernocta(_eTipoGasto.value); // campo == tipo pernocta 
+	const isPernocta = () => (_eTipoGasto.value == "9"); // gasto tipo pernocta 
+	const isTaxi = () => (_eTipoGasto.value == "4"); // ISU y taxi
 	const isDoc = () => ["201", "202", "204", "205", "206"].includes(_eTipoGasto.value);
 	const isExtra = () => ["301", "302", "303", "304"].includes(_eTipoGasto.value);
 	const fnChange = () => {
@@ -37,14 +36,25 @@ function Gasto() {
 		else
 			_grpGasto.mask(0b00001);
 	}
-
-	this.init = () => {
-		_eTipoGasto.onchange = fnChange; // Change event
-		iris.getTextGasto = () => i18n.get(isTaxi() ? "lblDescTaxi" : "lblDescObserv"); // label text
-		// set date range type inputs + upload gasto handler on change event
-		form.setDateRange("#fMinGasto", "#fMaxGasto").set("upload-gasto", fnChange);
+	const fnUrl = () => {
+		if (isPernocta())
+			return "/uae/iris/upload/pernocta?id=" + iris.getId();
+		if (isInterurbano())
+			return "/uae/iris/upload/interurbano?id=" + iris.getId();
+		if (isDoc())
+			return "/uae/iris/upload/doc?id=" + iris.getId();
+		if (isExtra())
+			return "/uae/iris/upload/extra?id=" + iris.getId();
+		return "/uae/iris/upload/ticket?id=" + iris.getId();
 	}
-	this.reset = () => {
+
+	// Init tab 5
+	_eTipoGasto.onchange = fnChange; // Change event
+	iris.getTextGasto = () => i18n.get(isTaxi() ? "lblDescTaxi" : "lblDescObserv"); // label text
+	// set date range type inputs + upload gasto handler on change event
+	form.setDateRange("#fMinGasto", "#fMaxGasto").set("upload-gasto", fnChange);
+
+	const fnReset = () => {
 		_grpGasto.mask(0);
 		_eTipoGasto.value = "";
 		const start = rutas.getHoraSalida();
@@ -53,36 +63,41 @@ function Gasto() {
 			.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start.substring(0, 10))
 			.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "max", end.substring(0, 10))
 			.setChanged().refresh(iris);
-		return self;
 	}
-
-	// update tabs events
-	tabs.setViewEvent(5, self.reset); // reset form on view tab 5
-	tabs.setInitEvent(12, () => { _tblRutasGasto = form.setTable("#rutas-out", ruta.getTable()); });
-	tabs.setViewEvent(12, () => { _tblRutasGasto.render(rutas.getRutasUnlinked()); });
 
 	// validación del tipo de gasto
 	const fnValidate = data => {
 		const valid = form.getValidators();
 		if (isDoc()) // doc only
-			return valid.addRequired("txtGasto", "errDoc").isOk();
+			return valid.size500("txtGasto", data.txtGasto, "errDoc").isOk();
 		if (isExtra() || isTaxi()) // extra info (paso 8) o ISU+taxi
-			return valid.addRequired("txtGasto", "errDoc").gt0("impGasto", data.impGasto).isOk();
-		if (isInterurbano(data.tipoGasto))
+			return valid.size500("txtGasto", data.txtGasto, "errDoc").gt0("impGasto", data.impGasto).isOk();
+		if (isInterurbano())
 			return transportes.validate(data);
-		if (fnPernocta(data.tipoGasto))
+		if (isPernocta())
 			return pernoctas.validate(data);
 		return valid.isOk();
 	}
-	this.validate = () => form.validate(fnValidate, ".ui-gasto");
-	this.isInterurbano = isInterurbano;
-	this.loadRutas = () => {
-		const data = self.validate();
-		if (!data) // datos del formulario
-			return !form.showError("errLinkRuta");
-		data.rutas = _tblRutasGasto.querySelectorAll(".link-ruta:checked").map(el => el.value);
-		return data;
-	}
-}
 
-export default new Gasto();
+	// update tabs events
+	const fnUpload = data => api.setJSON(data).json(fnUrl()).catch(globalThis.void); // catch error
+	const fnAfterUpload = data => { fnReset(); gastos.addGasto(data.gasto, data.rutas); } // add gasto and update rutas
+	tabs.setViewEvent(5, fnReset); // reset form on view tab 5
+	tabs.setAction("uploadGasto", () => { // upload button
+		const data = form.validate(fnValidate, ".ui-gasto"); // valido los datos del gasto
+		if (data) // trayecto interurbano => tabla de rutas pendientes
+			isInterurbano() ? tabs.showTab(12) : fnUpload(data).then(fnAfterUpload);
+	});
+	tabs.setInitEvent(12, () => { // tabla de rutas pendientes
+		const _tblRutasGasto = form.setTable("#rutas-out", ruta.getTable()); // itinerario
+		tabs.setViewEvent(12, () => _tblRutasGasto.render(rutas.getRutasUnlinked()));
+		tabs.setAction("gasto-rutas", () => {
+			const rutas = _tblRutasGasto.querySelectorAll(".link-ruta:checked");
+			if (!rutas || !rutas.length) // no hay rutas seleccionadas
+				return form.showError("errLinkRuta"); // mensaje de error
+			const data = form.getData(".ui-gasto"); // obtengo los datos del gasto
+			data.rutas = rutas.map(el => el.value); // PK de las rutas seleccionadas
+			fnUpload(data).then(fnAfterUpload).then(() => { tabs.setActive(5); }); // vuelvo al paso 5
+		});
+	});
+}

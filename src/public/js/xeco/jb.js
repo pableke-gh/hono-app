@@ -1,7 +1,7 @@
 
 import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
-import pf from "../components/Primefaces.js";
+import pf from "../components/cv/Primefaces.js";
 
 pf.ready(() => {
     const formJb = new Form("#xeco-jb");

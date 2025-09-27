@@ -22,6 +22,7 @@ function Resumen() {
 	this.setFactComisionado = () => {
 		transportes.setTransportes(); // update changes paso 5
 		pernoctas.setPernoctas(); // update changes paso 5
+		xeco.refresh(); // refresh tab 6
 	}
 	this.setResumen = () => {
 		self.setFactComisionado(); // facturas a nombre del comisionado

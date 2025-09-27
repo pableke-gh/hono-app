@@ -1,6 +1,7 @@
 
 import alerts from "./Alerts.js";
 import coll from "./CollectionHTML.js";
+import cv from "./cv/Resize.js";
 
 // Classes Configuration
 const TAB_CLASS = "tab-content";
@@ -10,9 +11,6 @@ const ACTIVE_CLASS = "active";
 function Tabs() {
 	const self = this; //self instance
 	const EVENTS = {}; //events tab container
-
-	// hack ifPage-frame styles for CV prod.
-	const iframe = window.parent.document.querySelector("#ifPage-frame");
 	let tabs, _tabIndex;
 
 	const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
@@ -47,20 +45,6 @@ function Tabs() {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = alerts.showAlerts; // Encapsule showAlerts message
 
-	const setHeight = tab => { // set iframe height
-		iframe.style.height = Math.max(tab.scrollHeight + 80, 520) + "px";
-	}
-	const fnResize = tab => {
-		if (!iframe)
-			return alerts.top(); // scroll to top
-		setHeight(tab); // auto-adapt iframe height on resize event
-		iframe.setAttribute("scrolling", "no"); // disable scrollbars
-		window.parent.scrollTo({ top: 0, behavior: "smooth" }); // parent to top
-	}
-	this.resize = () => { // resize current tab
-		setHeight(self.getCurrent());
-	}
-
 	const fnGoTab = (tab, index) => {
 		tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
 		tab.classList.add(ACTIVE_CLASS); // active current tab only
@@ -70,7 +54,8 @@ function Tabs() {
 			tab.dataset.loaded = "1"; // avoid to fire event again
 		}
 		fnCallEvent("view", tab); // Fire when show tab
-		fnResize(tab); // resize iframe if exists
+		cv.resize(tab); // resize iframe height
+		//alerts.top(); // scroll to top
 		return autofocus(tab);
 	}
 	const fnGoAhead = (tab, i) => {
@@ -85,7 +70,7 @@ function Tabs() {
 	const fnMoveToTab = i => { // show tab by index
 		i = ((i < 0) ? 0 : Math.min(i, tabs.length - 1)); // limit range
 		if (_tabIndex == i) // is current tab
-			return self.resize(); // no change
+			return false; // no change tab
 		const tab = tabs[i]; // get next tab
 		if (_tabIndex < i) { // go ahead
 			if (fnCallEvent("active", tab)) // if tab active => fire validate event
@@ -110,18 +95,23 @@ function Tabs() {
 	this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
 	this.setActive = id => fnGoTab(self.getTab(id)); // Force active class whithot events and alerts
 	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
+	this.setHeight = () => cv.setHeight(self.getCurrent()); // current tab height
 	this.toggle = el => {
-		const fnAction = EVENTS[el.dataset.action]; // search handler
-		if (fnAction && !el.dataset.off)  { // is hide
+		if (!el.dataset.off)  { // is hide
+			fnCallEvent("init-tab", el); // Fire once when open
 			el.dataset.off = "1"; // avoid to call action again
-			fnAction(el); // call handler before show element
+		}
+		if (el.dataset.off == "1") {
+			fnCallEvent("view-tab", el); // Fire when show
+			el.dataset.off = "2"; // avoid call action on close
 		}
 		else
-			delete el.dataset.off; // allow to call action again
+			el.dataset.off = "1"; // allow call view action on open
 		const icon = el.querySelector(el.dataset.icon || "i"); // icon indicator
 		const fnToggle = el => { el.classList.toggle("hide") || autofocus(el); }; // toggle and set focus
 		$$(el.dataset.target || (".info-" + el.id)).eachPrev(fnToggle);
 		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
+		self.setHeight(); // recalc height
 		return self;
 	}
 

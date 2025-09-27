@@ -30,7 +30,7 @@ function PartidaInc() {
 
 	const _tblPartidasInc = form.setTable("#partidas-inc", partida.getTable());
 	_tblPartidasInc.setMsgEmpty("No existen partidas asociadas a la solicitud");
-	_tblPartidasInc.setAfterRender(resume => { partidas.setData(_tblPartidasInc); form.setEditable(); });
+	_tblPartidasInc.setAfterRender(() => { partidas.setData(_tblPartidasInc); form.setEditable(); });
 
 	this.getTable = () => _tblPartidasInc;
 	this.setAvisoFa = item => { //aviso para organicas afectadas en TCR o FCE

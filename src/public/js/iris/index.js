@@ -30,7 +30,7 @@ coll.ready(() => {
 	iris.view = data => { // Init IRSE form
 		iris.init(data.iris); // init perfil
 		xeco.view(data.iris, data.firmas); // load view
-		perfil.view(data.interesado, data.organicas);
+		perfil.view(data.interesado, data.organicas, data.firmas);
 		rutas.setRutas(data.rutas || []);
 		gastos.setGastos(data.gastos || []);
 

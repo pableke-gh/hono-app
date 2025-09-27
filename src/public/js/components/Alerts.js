@@ -1,6 +1,5 @@
 
 import coll from "./CollectionHTML.js";
-import api from "./Api.js";
 
 // Classes Configuration
 const ALERT_ACTIVE = "active";
@@ -75,7 +74,8 @@ function Alerts() {
 		return !self.showError(msg).working(); // show error
 	}
 	window.showAlerts = self.isLoaded; // show all messages
-	window.openUrl = (xhr, status, args) => { window.showAlerts(xhr, status, args) && api.open(args?.url); }
+	this.open = (url, err) => { url ? window.open(url, "_blank") : self.showError(err || "errReport"); } // open external resource
+	window.openUrl = (xhr, status, args) => { window.showAlerts(xhr, status, args) && self.open(args?.url); } // PF open url hack
 }
 
 export default new Alerts();

@@ -1,6 +1,6 @@
 
-import alerts from "./Alerts.js";
-import coll from "./CollectionHTML.js";
+import alerts from "../Alerts.js";
+import coll from "../CollectionHTML.js";
 
 function param(name, value) {
     return [{ name, value }];

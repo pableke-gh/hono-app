@@ -7,6 +7,10 @@ import xeco from "../xeco.js";
 function Firmas() {
 	const self = this; //self instance
 
+	this.getFirma = () => firma; // get firma model
+	this.getFirmante = firma.getFirmante; // "nif - name" String
+	this.findByGrupo = (grupo, firmas) => (firmas && firmas.find(f => (f.grupo === grupo)));
+
 	this.init = () => {
 		const form = xeco.getForm(); // current form after initialization
 		form.set("is-invalidada", model.isInvalidada).set("has-firmas", globalThis.void);

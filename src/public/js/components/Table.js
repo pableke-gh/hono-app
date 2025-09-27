@@ -2,6 +2,7 @@
 import dom from "./forms/DomBox.js";
 import coll from "./CollectionHTML.js";
 import alerts from "./Alerts.js";
+import tabs from "./Tabs.js";
 import i18n from "../i18n/langs.js";
 
 const fnTrue = () => true;
@@ -148,6 +149,7 @@ export default function(table, opts) {
 		tFoot.rows.forEach((tr, i) => { // Row listeners for change footer
 			tr.onchange = ev => fnChangeEvent(RESUME, ev.target, tr, i);
 		});
+		tabs.setHeight(); // resize iframe height
 		return self;
 	}
 

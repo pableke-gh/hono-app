@@ -4,15 +4,15 @@ import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
+import rutas from "../../model/ruta/Rutas.js";
+import rro from "../../model/ruta/RutaReadOnly.js";
 import gasto from "../../model/gasto/Gasto.js";
 import gastos from "../../model/gasto/Gastos.js";
-import rutas from "../../model/ruta/Rutas.js";
 
-import actividad from "../perfil/actividad.js";
-import resumen from "../resumen.js";
 import gp5 from "./gasto.js";
-
+import actividad from "../perfil/actividad.js";
 import rmaps from "../rutas/rutasMaps.js";
+import resumen from "../resumen.js";
 import xeco from "../../../xeco/xeco.js";
 
 function Gastos() {
@@ -24,8 +24,20 @@ function Gastos() {
 	this.setGastos = data => { gastos.setGastos(data); _tblGastos.render(gastos.getPaso5()).setChanged(); }
 	this.update = gastos => { gastos && self.setGastos(gastos); }
 
+	this.addGasto = (gasto, rutas) => {
+		gastos.push(gasto); // añado el nuevo gasto a lista de gastos
+		_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos (paso 5)
+		rmaps.update(rutas); // actualizo el registro de rutas
+		resumen.setFactComisionado(); // tablas del resumen
+	}
+	this.removeGasto = (gasto, rutas) => {
+		gastos.removeById(gasto); // remove gasto from array
+		_tblGastos.flush(); // remove and reload table gastos (paso 5)
+		rmaps.update(rutas); // actualizo el registro de rutas
+		resumen.setFactComisionado(); // tablas del resumen
+	}
+
 	this.init = () => {
-		gp5.init(); // init fields for gasto
 		const resume = _tblGastos.getResume();
 		gastos.getNumPernoctas = () => resume.noches; // redefine calc
 		iris.getNumRutasOut = () => rutas.getNumRutasUnlinked(); // call function after redefined by rutasMaps modeule
@@ -35,28 +47,6 @@ function Gastos() {
 			.set("is-zip-com", () => (iris.isDisabled() && resume.docComisionado)).set("is-zip-doc", () => (iris.isDisabled() && resume.otraDoc))
 			.set("is-ac", globalThis.none).set("is-irpf", globalThis.none); // no aplica para esta version
 	}
-
-	const fnAfterFile = data => { // update view
-		rmaps.update(data.rutas); // actualizo el registro de rutas
-		resumen.setFactComisionado(); // update facturas a nombre del comisionado
-		gp5.reset(); // clear fields
-	}
-	const fnUpload = data => {
-		if (!data) return; // no data => no file
-		data.fk = iris.getId(); // id del formulario
-		api.setJSON(data).json("/uae/iris/upload").then(data => {
-			gastos.push(data.gasto); // añado el nuevo gasto a lista de gastos
-			_tblGastos.render(gastos.getPaso5()); // actualizo la tabla de gastos (paso 5)
-			fnAfterFile(data); // actualizo tablas de rutas y gastos, y los campos del formulario
-			tabs.setActive(5); // vuelvo al paso 5 mantenidendo los mensajes
-		}).catch(globalThis.void); // catch error
-	}
-	tabs.setAction("uploadGasto", () => {
-		const data = gp5.validate();
-		if (data) // trayectos interurbanos => tabla de rutas pendientes
-			gp5.isInterurbano() ? tabs.showTab(12) : fnUpload(data);
-	});
-	tabs.setAction("gasto-rutas", () => fnUpload(gp5.loadRutas()));
 
 	const fnPaso5 = tab => {
 		const valid = form.getValidators();
@@ -69,6 +59,12 @@ function Gastos() {
 	}
 	tabs.setAction("paso5", () => fnPaso5());
 	tabs.setAction("save5", () => fnPaso5(5));
+	tabs.setInitEvent(5, gp5); // init fields for gasto
+	tabs.setInitEvent("itinerario", () => {
+		// actualiza la tabla de consulta (paso 5) al abrir la pestaña
+		const _tblReadOnly = form.setTable("#rutas-read", rro.getTable()); // itinerario
+		tabs.setViewEvent("itinerario", () => _tblReadOnly.render(rutas.getRutas()));
+	});
 
 	_tblGastos.set("#adjunto", gasto => { // set table action
 		const url = "/uae/iris/download?id=" + gasto.cod; // uuid file
@@ -76,11 +72,7 @@ function Gastos() {
 	});
 	_tblGastos.set("#unload", gasto => { // set table action
 		const url = "/uae/iris/unload?id=" + gasto.id;
-		i18n.confirm("remove") && api.init().json(url).then(data => {
-			gastos.removeById(gasto); // remove gasto from array
-			_tblGastos.flush(); // remove and reload table gastos (paso 5)
-			fnAfterFile(data); // actualizo tablas y formulario
-		});
+		i18n.confirm("remove") && api.init().json(url).then(data => self.removeGasto(gasto, data.rutas));
 	});
 }
 

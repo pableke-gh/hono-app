@@ -4,7 +4,6 @@ import api from "../../../components/Api.js";
 
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaMaps.js";
-import rro from "../../model/ruta/RutaReadOnly.js";
 import rutas from "../../model/ruta/Rutas.js";
 import gastos from "../../model/gasto/Gastos.js";
 import xeco from "../../../xeco/xeco.js";
@@ -20,7 +19,6 @@ function RutasMaps() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
 	const _tblRutas = form.setTable("#tbl-rutas", ruta.getTable()); // itinerario
-	const _tblReadOnly = form.setTable("#rutas-read", rro.getTable()); // itinerario
 
 	this.getRutas = rutas.getRutas;
 	this.isJustifiKm = rvp.isJustifiKm;
@@ -32,10 +30,9 @@ function RutasMaps() {
 		_tblRutas.refreshBody();
 	}
 
-	// actualizo el array y la tabla de rutas
-	const fnUpdate = data => { rutas.setRutas(data); _tblRutas.render(data).setChanged(); } // actualizo el registro de rutas y el itinerario (paso 2)
-	this.setRutas = data => { fnUpdate(data); _tblReadOnly.render(data); rvp.render(); } // actualizo la tabla de consulta (paso 5) y la de vehiculos propios (paso 6)
-	this.update = data => { data && fnUpdate(data); } // recalcula cambios en los gastos recibidos desde el servidor
+	// actualizo el registro de rutas y el itinerario (paso 2) y la tabla de vehiculos propios (paso 6)
+	this.setRutas = data => { rutas.setRutas(data); _tblRutas.render(data).setChanged(); rvp.render(); }
+	this.update = data => { data && self.setRutas(data); } // recalcula cambios en los gastos recibidos desde el servidor
 	this.build = data => { rutas.update(data); _tblRutas.render(data); } // actualizo el itinerario con la nueva ruta
 
 	function fnUpdateForm(resume) {
@@ -78,11 +75,8 @@ function RutasMaps() {
 		if (_tblRutas.isChanged()) // si hay cambios en las rutas
 			dietas.build(); // recalculo las dietas
 		temp.gastos = gastos.setPaso1(data, _tblRutas.getResume()).getGastos(); // set km / iban
-
-		_tblReadOnly.render(rutas.getRutas()); // fuerza la actualización de la tabla de consulta (paso 5)
-		rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
-
 		api.setJSON(temp).json("/uae/iris/save").then(data => iris.update(data, tab));
+		rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
 	}
 
 	tabs.setAction("add-ruta", () => place.addRuta().then(self.build).catch(form.setErrors));

@@ -31,7 +31,9 @@
 	.no-print { display: none; }
 
 	/* CV specific styles */
-	.layout-topbar, .layout-menu-container, .layout-footer, 
+	.layout-topbar, .layout-menu-container, .layout-footer,
+	.layout-wrapper.layout-mobile-active .layout-menu-container,
+	.layout-wrapper.layout-mobile-active .layout-mask,
 	.layout-main > .route-bar, .layout-main > form {
 		display: none !important;
 	}

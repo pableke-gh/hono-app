@@ -54,15 +54,21 @@ function Api() {
 	this.setForm = form => self.setFormData(new FormData(form));
 
 	const fnFetch = (url, params) => {
+		if (!params)
+			return globalThis.fetch(url, OPTS); // send call
 		const query = new URLSearchParams(params); // query params
-		const urlQueries = (query.size > 0) ? ("?" + query.toString()) : "";
-		return globalThis.fetch(url + urlQueries, OPTS); // send call
+		return globalThis.fetch(url + "?" + query.toString(), OPTS); // send call
 	}
 	this.fetch = async (url, params) => {
 		self.setContentType(mt.json); // set content type header
 		const res = await fnFetch(url, params); // send call
 		// avoid error when json response is null: (SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input)
 		return res.ok ? res.json().catch(console.error) : fnError(res); // return promise
+	}
+	this.msgs = (url, params) => self.fetch(url, params).then(fnMsgs)
+	this.json = (url, params) => {
+		alerts.loading(); // show loading indicator
+		return self.msgs(url, params).finally(alerts.working);
 	}
 
 	this.text = async (url, params) => {
@@ -71,10 +77,6 @@ function Api() {
 		const res = await fnFetch(url, params); // send call
 		const promise = res.ok ? res.text() : fnError(res); // get promise
 		return promise.finally(alerts.working); // Add default finally functions to promise
-	}
-	this.json = (url, params) => {
-		alerts.loading(); // show loading indicator
-		return self.fetch(url, params).then(fnMsgs).finally(alerts.working);
 	}
 	this.blob = async (url, params) => {
 		alerts.loading(); // show loading indicator
@@ -95,9 +97,8 @@ function Api() {
 		return (type.includes(mt.json) ? res.json().then(fnMsgs) : res.text()).finally(alerts.working);
 	}
 
-	this.open = (url, err) => { // open external resource
-		url ? window.open(url, "_blank") : alerts.showError(err || "errReport");
-	};
+	this.open = alerts.open; // open external resource
+	this.showMsgs = alerts.showMsgs; // show server response
 	this.html = data => { // open a new html tab
 		const wnd = window.open("about:blank", "_blank");
 		wnd.document.write(data); // parse all html

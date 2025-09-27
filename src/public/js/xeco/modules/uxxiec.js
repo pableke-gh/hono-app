@@ -32,7 +32,6 @@ function Uxxiec() {
 			const doc = acUxxi.getCurrentItem();
 			doc && tblUxxiec.add(doc); // Add and remove PK autocalculated in v_*_uxxiec
 			acUxxi.reload(); // Reload autocomplete
-			tabs.resize(); // resize current tab
 		});
 	}
 
