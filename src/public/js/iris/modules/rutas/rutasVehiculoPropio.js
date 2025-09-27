@@ -24,13 +24,12 @@ function RutasVehiculoPropio() {
 	}
 
 	this.validate = data => {
-		const resume = _tblRutasVp.getResume();
 		const valid = form.getValidators();
-		if (resume.justifi && !data.justifiKm) // justifi si distancia modificada al alza
-			valid.addRequired("justifiKm", "Debe justificar la rectificación al alza del kilometraje.");
+		const resume = _tblRutasVp.getResume();
+		if (resume.justifi) // justifi si distancia modificada al alza
+			valid.size("justifiKm", data.justifiKm, "errJustifiKm");
 		return valid.isOk();
 	}
-	window.validateP6 = () => form.validate(self.validate);
  
 	this.init = () => {
 		_tblRutasVp.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);

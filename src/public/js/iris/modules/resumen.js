@@ -1,12 +1,12 @@
 
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
-import i18n from "../i18n/langs.js";
 
 import iris from "../model/Iris.js";
 import gastos from "../model/gasto/Gastos.js"; 
 
 import rmaps from "./rutas/rutasMaps.js";
+import rvp from "./rutas/rutasVehiculoPropio.js";
 import transportes from "./gastos/transportes.js"; 
 import pernoctas from "./gastos/pernoctas.js"; 
 import dietas from "./gastos/dietas.js";
@@ -43,14 +43,8 @@ function Resumen() {
 		iris.set("matricula", gastos.getMatricula()).set("justifiKm", gastos.getJustifiKm()); // gastos Km
 	}
 
-	const fnValidate = data => {
-		const valid = i18n.getValidators();
-		if (rmaps.isJustifiKm())
-			valid.size("justifiKm", data.justifiKm, "errJustifiKm");
-		return valid.isOk();
-	}
 	const fnPasoResumen = tab => {
-		const data = form.validate(fnValidate);
+		const data = form.validate(rvp.validate);
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (!form.isChanged()) // compruebo cambios

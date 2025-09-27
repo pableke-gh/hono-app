@@ -47,8 +47,8 @@ fact.row = data => {
 	return `<tr class="tb-data">
 		<td class="text-center"><a href="#view" class="row-action">${data.codigo}</a></td>
 		<td class="hide-sm text-upper1">${fact.getTitulo()}</td>
-		<td class="${fact.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${fact.getDescEstado()}</td>
-		<td class="text-center">${firma.myFlag(data)}</td>
+		<td class="${fact.getStyleByEstado()} hide-xs table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${fact.getDescEstado()}</td>
+		<td class="text-center hide-xs">${firma.myFlag(data)}</td>
 		<td class="hide-sm">${data.sig || ""}</td>
 		<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
 		<td class="text-right">${i18n.isoFloat(data.imp)} €</td>

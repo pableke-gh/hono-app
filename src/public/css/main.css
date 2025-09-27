@@ -62,6 +62,7 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 
 .link { color: #2196F3; text-decoration-line: underline; }
 .link:hover { text-decoration-line: none; }
+.leyenda-firmas { display: flex; gap: 4px; flex-wrap: wrap; }
 /* Specific styles */
 
 /* Icons */
@@ -77,6 +78,7 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 	footer > .info { width: 98%; padding: 4px; }
 
 	.hide-xs, .hide-sm, .hide-md, .hide-lg { display: none !important; }
+	.leyenda-firmas { flex-direction: column; }
     .action { font-size: large; }
 
 	/* CV specific styles */

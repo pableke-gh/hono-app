@@ -55,11 +55,11 @@ presto.row = data => {
 		${info}
 		<td class="text-center"><a href="#view" class="row-action">${data.codigo}</a></td>
 		<td class="hide-sm">${presto.getTitulo()}</td>
-		<td class="${presto.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${presto.getDescEstado()}</td>
-		<td class="text-center">${firma.myFlag(data)}</td>
+		<td class="${presto.getStyleByEstado()} hide-xs table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${presto.getDescEstado()}</td>
+		<td class="text-center hide-xs">${firma.myFlag(data)}</td>
 		<td class="hide-sm">${data.sig || ""}</td>
 		<td title="${data.oIncDesc}">${data.orgInc}${otras}</td>
-		<td class="text-center" title="${data.eIncDesc}">${data.ecoInc}</td>
+		<td class="text-center hide-xs" title="${data.eIncDesc}">${data.ecoInc}</td>
 		<td class="text-right">${i18n.isoFloat(data.imp)} €</td>
 		<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
 		<td class="hide-sm">${data.name}</td>

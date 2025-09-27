@@ -63,8 +63,8 @@ function Tabs() {
 		return fnGoTab(tab, i); // set current tab
 	}
 	const fnGoBack = (tab, i) => {
-		// auto toggle off all links actions in current tab (before go back)
-		self.getCurrent().querySelectorAll("a[href='#tab-toggle'][data-off]").forEach(self.toggle);
+		// auto toggle off all active toggle-links in current tab (before go back)
+		self.getCurrent().querySelectorAll("a[href='#tab-toggle'][data-off='2']").forEach(self.toggle);
 		return fnGoTab(tab, i); // set current tab
 	}
 	const fnMoveToTab = i => { // show tab by index

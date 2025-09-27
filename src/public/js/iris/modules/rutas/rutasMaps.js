@@ -21,7 +21,6 @@ function RutasMaps() {
 	const _tblRutas = form.setTable("#tbl-rutas", ruta.getTable()); // itinerario
 
 	this.getRutas = rutas.getRutas;
-	this.isJustifiKm = rvp.isJustifiKm;
 	this.getResume = () => _tblRutas.getResume();
 	this.getTotKm = () => _tblRutas.getProp("totKm");
 	this.getImporte = () => _tblRutas.getProp("impKm");
@@ -57,10 +56,8 @@ function RutasMaps() {
 	}
 
 	const fnValidate = data => { // validaciones para los mapas
-		const valid = form.getValidators();
-		if (rutas.size() < 2) // validate min rutas = 2
-			return !valid.addRequired("destino", "errMinRutas");
-		return rutas.validate(); // valido el itinerario completo
+		const valid = form.getValidators(); // valido el itinerario completo => min rutas = 2
+		return (rutas.size() < 2) ? !valid.addRequired("destino", "errMinRutas") : rutas.validate();
 	}
 	const fnPaso2 = tab => {
 		const data = form.validate(fnValidate);
@@ -74,7 +71,7 @@ function RutasMaps() {
 
 		if (_tblRutas.isChanged()) // si hay cambios en las rutas
 			dietas.build(); // recalculo las dietas
-		temp.gastos = gastos.setPaso1(data, _tblRutas.getResume()).getGastos(); // set km / iban
+		temp.gastos = gastos.setPaso1(data, _tblRutas.setChanged().getResume()).getGastos(); // set km / iban
 		api.setJSON(temp).json("/uae/iris/save").then(data => iris.update(data, tab));
 		rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
 	}
