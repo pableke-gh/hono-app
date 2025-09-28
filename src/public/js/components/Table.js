@@ -128,7 +128,7 @@ export default function(table, opts) {
 			ev.preventDefault(); // avoid navigation
 		});
 	}
-    function fnRender(data) {
+    function fnView(data) {
 		_index = -1; // clear previous selects
 		_rows = data || []; // data to render on table
 		RESUME.size = _rows.length; // init. resume
@@ -143,16 +143,20 @@ export default function(table, opts) {
 		tFoot.innerHTML = opts.onFooter(RESUME); // update table footer
 		opts.afterRender(RESUME); // After body and footer is rendered
 		tBody.classList.add(opts.activeClass); // Add styles (animation)
-		_isChanged = true; // rendered force indicator
-
-		tBody.rows.forEach(setRowEvents);
-		tFoot.rows.forEach((tr, i) => { // Row listeners for change footer
-			tr.onchange = ev => fnChangeEvent(RESUME, ev.target, tr, i);
-		});
 		tabs.setHeight(); // resize iframe height
 		return self;
 	}
+    function fnRender(data) {
+		fnView(data); // render table data
+		tBody.rows.forEach(setRowEvents); // row listeners
+		tFoot.rows.forEach((tr, i) => { // change events on footer
+			tr.onchange = ev => fnChangeEvent(RESUME, ev.target, tr, i);
+		});
+		_isChanged = true; // rendered force indicator
+		return self;
+	}
 
+	this.view = fnView;
 	this.render = fnRender;
 	this.reset = () => fnRender();
 	this.reload = () => fnRender(_rows);

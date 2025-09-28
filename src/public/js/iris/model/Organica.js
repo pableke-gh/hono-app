@@ -35,11 +35,11 @@ function Organica() {
 		self.rowCalc(data, resume);
 		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : "";
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="#{msg['lbl.organica']}">${data.o}</td>
+			<td data-cell="Orgánica">${data.o}</td>
 			<td data-cell="Crédito Disp." class="form-refresh" data-refresh="is-editable">${i18n.isoFloat(data.imp)}</td>
-			<td data-cell="#{msg['lbl.descripcion']}">${data.dOrg}</td>
-			<td data-cell="#{msg['lbl.responsable.gasto']}">${data.resp}</td>
-			<td data-cell="#{msg['lbl.nombre.apellidos']}">${data.r}</td>
+			<td data-cell="${i18n.get("lblDesc")}">${data.dOrg}</td>
+			<td data-cell="Responsable del gasto">${data.resp}</td>
+			<td data-cell="Nombre">${data.r}</td>
 			<td data-cell="Acciones" class="no-print">${remove}</td>
 		</tr>`;
 	}

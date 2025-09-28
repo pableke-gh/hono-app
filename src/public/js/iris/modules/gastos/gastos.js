@@ -63,7 +63,7 @@ function Gastos() {
 	tabs.setInitEvent("itinerario", () => {
 		// actualiza la tabla de consulta (paso 5) al abrir la pestaña
 		const _tblReadOnly = form.setTable("#rutas-read", rro.getTable()); // itinerario
-		tabs.setViewEvent("itinerario", () => _tblReadOnly.render(rutas.getRutas()));
+		tabs.setViewEvent("itinerario", () => _tblReadOnly.view(rutas.getRutas()));
 	});
 
 	_tblGastos.set("#adjunto", gasto => { // set table action
