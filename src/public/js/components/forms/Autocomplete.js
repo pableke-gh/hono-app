@@ -1,12 +1,10 @@
 
-import alerts from "../Alerts.js";
 import coll from "../CollectionHTML.js";
 import sb from "../types/StringBox.js";
 
 const EMPTY = [];
 const fnEmpty = () => EMPTY;
 const fnParam = param => param;
-window.loadItems = globalThis.void; // Hack PF (only for CV-UAE)
 
 export default function(autocomplete, opts) {
     if (!autocomplete)
@@ -88,11 +86,6 @@ export default function(autocomplete, opts) {
         }
     }
     function fnSearch() {
-        alerts.loading(); // Show loading frame
-        window.loadItems = (xhr, status, args) => { // Only PF
-            window.loadItems = globalThis.void; // Avoid extra loads
-            self.render(coll.parse(args?.data)); // specific for PF
-        }
         opts.source(autocomplete.value, self); // Fire source
         _searching = false; // restore sarches
     }
@@ -121,7 +114,6 @@ export default function(autocomplete, opts) {
             li.addEventListener("click", ev => selectItem(li, i));
         });
         resultsHTML.classList.add(opts.activeClass);
-        alerts.working(); // Hide loading frame
         return self;
     }
 

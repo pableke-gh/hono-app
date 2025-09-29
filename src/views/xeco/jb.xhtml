@@ -34,7 +34,7 @@
 				<div class="ui-blocks">
 					<label class="ui-block">
 						<div class="label required"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-						<h:selectOneMenu value="#{jb.ejercicio}" styleClass="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
+						<h:selectOneMenu id="ejercicio" styleClass="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
 							<f:selectItems value="#{jb.ejercicios}" />
 						</h:selectOneMenu>
 					</label>
@@ -45,16 +45,15 @@
 						<h:inputHidden id="dc" value="#{jb.idDc}" class="ui-number" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div> 
-						<p:remoteCommand name="rcFindDcs" action="#{jb.findDcs()}" oncomplete="loadItems(xhr, status, args)" />
 					</label>
 				</div>
 
 				<div class="navbar">
 					<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" tabindex="12" title="#{msg['tit.btn.volver.ini']}">
 						<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-					<p:commandButton id="search" action="#{jb.search()}" onclick="if (!jbSearch())return false;" update="xeco-doc" oncomplete="jbLoaded();"
+					<p:commandButton id="search" action="#{jb.search()}" onclick="loading();" update="info-doc" oncomplete="jbLoaded();"
 							icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
-					<p:commandLink id="reset" action="#{jb.reset()}" onclick="jbReset();" update="xeco-doc" oncomplete="working();" styleClass="btn btn-warn warning-btn" tabindex="14">
+					<p:commandLink id="reset" action="#{jb.reset()}" onclick="jbReset();" update="info-doc" oncomplete="working();" styleClass="btn btn-warn warning-btn" tabindex="14">
 						<i class="far fa-times-circle btn-icon-left"></i>Limpiar</p:commandLink>
 				</div>
 
@@ -62,7 +61,7 @@
 				<dialog id="cm" class="dialog-modal">
 					<div class="dialog-header">
 						<h2>Justificantes de Gasto asociados al DC #{jb.doc.numDc}</h2>
-						<a href="#tab-close-cm" class="action text-gray"><i class="fas fa-times"></i></a>
+						<a href="#tab-action-closeModal" class="action text-gray"><i class="fas fa-times"></i></a>
 					</div>
 					<div class="dialog-body">
 					<div class="ui-blocks">
@@ -70,23 +69,21 @@
 							<div class="label required">Seleccione un Justificante de Gasto:</div>
 							<i class="fas fa-search ui-input-icon left"></i>
 							<input type="search" id="num-jg" name="numJg" class="ui-input ui-autocomplete" tabindex="1" />
-							<h:inputHidden id="jg" value="#{jb.numJg}" class="" />
+							<input type="hidden" id="jg" />
 							<ul role="list" class="results"></ul>
 							<div class="ui-errtip"></div> 
-							<p:remoteCommand name="rcFindJgs" action="#{jb.findJgs()}" oncomplete="loadItems(xhr, status, args)" />
-							<p:remoteCommand name="rcReportCm" action="#{jb.reportCm()}" oncomplete="openUrl(xhr, status, args)" />
 						</label>
 					</div>
 					</div>
 					<div class="dialog-footer">
-						<a href="#tab-close-cm" class="btn btn-info"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
+						<a href="#tab-action-closeModal" class="btn btn-info"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
 						<a href="#tab-action-report" class="btn btn-warn"><i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
 					</div>
 				</dialog>
 			</h:form>
 
 			<h:form id="xeco-doc" prependId="false" class="navbar" onsubmit="loading();">
-			<h:inputText id="id" value="#{jb.idDc}" styleClass="ui-input ui-number hide" />
+			<p:outputPanel id="info-doc">
 			<c:choose>
 				<c:when test="#{jb.docSelected}">
 					<h3>Datos encontrados en el sistema:</h3>
@@ -107,25 +104,27 @@
 								<c:if test="#{jb.doc.cm}">
 									<c:choose>
 									<c:when test="#{jb.doc.monoJgCm}">
-										<li><b>(ICM) Informe:</b> <a href="#{jb.getUrlCm()}" target="_blank">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
+										<li><b>(ICM) Informe:</b> <a href="#tab-action-report">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
 									</c:when>
 									<c:otherwise>
-										<li><b>(ICM) Informe:</b> <a href="#tab-open-cm">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
+										<li><b>(ICM) Informe:</b> <a href="#tab-action-cm">Informe de Contrato Menor<i class="far fa-file-pdf icon"></i></a></li>
 									</c:otherwise>
 									</c:choose>
 								</c:if>
 								<c:choose>
 								<c:when test="#{jb.adjunto}">
-									<li><b>(ZIP) Adjunto:</b> <a href="#{jb.getUrlAdjunto()}" target="_blank">Ver documentación del pago<i class="fas fa-arrow-alt-down icon"></i></a></li>
+									<li>
+										<b>(ZIP) Adjunto:</b>
+										<a href="#tab-action-download" data-id="#{adjunto.idAdjunto}" data-name="#{adjunto.nombre}">
+											Ver documentación del pago<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
+									</li>
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="#{jb.adjuntos}" var="adjunto" varStatus="loop">
 										<li>
 											<b>#{adjunto.tipo}:</b>
-											<p:commandLink ajax="false" onclick="setTimeout(working,400)" title="#{msg['tit.btn.zip1']}" tabindex="20">
-												#{adjunto.nombre}<i class="fas fa-arrow-alt-down btn-icon-right"></i>
-												<p:fileDownload value="#{jb.download(loop.index)}"/>
-											</p:commandLink>
+											<a href="#tab-action-download" data-id="#{adjunto.idAdjunto}" data-name="#{adjunto.nombre}">
+												#{adjunto.nombre}<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 										</li>
 									</c:forEach>
 								</c:otherwise>
@@ -139,6 +138,7 @@
 					<div class="notice notice-warn">Sistema de búsqueda de la documentación bancaria asociada a un Documento Contable (DC).</div>
 				</c:otherwise>
 			</c:choose>
+			</p:outputPanel>
 			</h:form>
 
 			<br class="clear"/><hr/>

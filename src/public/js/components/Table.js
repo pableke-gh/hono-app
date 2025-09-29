@@ -17,7 +17,6 @@ export default function(table, opts) {
 	opts.sortNoneClass = opts.sortNoneClass || "sort-none";
 
 	opts.activeClass = opts.activeClass || "active";
-	opts.rowActionClass = opts.rowActionClass || "row-action";
 	opts.msgConfirmRemove = opts.msgConfirmRemove || "remove";
 
 	opts.msgEmptyTable = opts.msgEmptyTable || "noResults"; // default empty table message
@@ -107,26 +106,26 @@ export default function(table, opts) {
 	this.querySelectorAll = selector => table.querySelectorAll(selector);
     this.getText = selector => dom.getText(table.querySelector(selector)); // read text
 	this.invoke = (name, data, el, tr, i) => {
-		const fnAction = opts[name]; // action by name => must exists
+		const fnAction = opts[name] || fnTrue; // action by name
 		fnAction(data || _rows[_index], el, tr, i); // call action
 	}
 
-	function fnChangeEvent(data, el, tr, i) {
-		const fnChange = opts[el.name + "Change"];
-		fnChange && fnChange(data, el, tr, i);
-	}
 	// Row listeners for change, find and remove items in body
+	function fnChangeEvent(data, el, tr, i) {
+		self.invoke(el.name + "Change", data, el, tr, i);
+	}
 	function setRowEvents(tr, i) {
 		tr.onchange = ev => {
 			_index = i; // update current item
 			fnChangeEvent(_rows[i], ev.target, tr, i);
 		}
-		tr.getElementsByClassName(opts.rowActionClass).setClick((ev, link) => {
+		tr.onclick = ev => {
 			_index = i; // update current item
-			const href = link.getAttribute("href");
-			self.invoke(href, _rows[i], link, tr, i); // Call action
+			const link = ev.target.closest("a");
+			const href = link?.getAttribute("href");
+			self.invoke(href, _rows[i], link, tr, i);
 			ev.preventDefault(); // avoid navigation
-		});
+		}
 	}
     function fnView(data) {
 		_index = -1; // clear previous selects
@@ -149,16 +148,15 @@ export default function(table, opts) {
     function fnRender(data) {
 		fnView(data); // render table data
 		tBody.rows.forEach(setRowEvents); // row listeners
-		tFoot.rows.forEach((tr, i) => { // change events on footer
+		tFoot.rows.forEach((tr, i) => { // change footer events
 			tr.onchange = ev => fnChangeEvent(RESUME, ev.target, tr, i);
 		});
-		_isChanged = true; // rendered force indicator
-		return self;
+		return self.setChanged(true); // rendered force indicator
 	}
 
 	this.view = fnView;
 	this.render = fnRender;
-	this.reset = () => fnRender();
+	this.reset = () => fnView();
 	this.reload = () => fnRender(_rows);
 	this.push = row => { _rows.push(row); return fnRender(_rows); } // Push data and render
 	this.add = row => { delete row.id; return self.push(row); } // Force insert => remove PK

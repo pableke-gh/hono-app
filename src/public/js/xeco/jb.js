@@ -1,35 +1,41 @@
 
+import coll from "../components/CollectionHTML.js";
 import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
-import pf from "../components/cv/Primefaces.js";
+import api from "../components/Api.js";
 
-pf.ready(() => {
-    const formJb = new Form("#xeco-jb");
-    const fnSourceDc = term => pf.sendTerm("rcFindDcs", term);
-    const fnSelect = () => formJb.click("#search");
-    const fnReset = () => formJb.click("#reset");
-    const acDocContable = formJb.setAcItems("#num-dc", fnSourceDc, fnSelect, fnReset);
+coll.ready(() => {
+    const form = new Form("#xeco-jb");
+    const acDocContable = form.setAutocomplete("#num-dc");
+    const fnSourceDc = term => api.init().json("/uae/jb/dcs", { ej: form.getval("#ejercicio"), term }).then(acDocContable.render);
+	acDocContable.setItemMode().setSource(fnSourceDc)
+				.setAfterSelect(() => form.click("#search"))
+				.setReset(() => form.click("#reset"));
 
-    const fnSourceJg = term => pf.sendTerm("rcFindJgs", term);
-    const acJgCm = formJb.setAcItems("#num-jg", fnSourceJg);
+    const acJustGast = form.setAutocomplete("#num-jg");
+    const fnSourceJg = term => api.init().json("/uae/jb/jgs", { ej: form.getval("#ejercicio"), term }).then(acJustGast.render);
+	acJustGast.setItemMode().setSource(fnSourceJg)
 
-	tabs.setViewEvent("cm", acJgCm.reload);
-	tabs.setAction("report", () => {
-		pf.sendId("rcReportCm", acJgCm.getValue());
-		tabs.closeModal(); // always close modal
+	tabs.setAction("cm", () => {
+		form.showModal("dialog#cm");
+		acJustGast.reload();
+	});
+	tabs.setAction("report", () => { // show report and close modal
+		api.init().text("/uae/jb/report?jg=" + acJustGast.getValue()).then(api.open).then(form.closeModal);
 	});
 
-    let formDoc; // dinamyc form
+	const formDoc = new Form("#xeco-doc");
     const fnBuildXecoDoc = () => {
-        formDoc = new Form("#xeco-doc");
+		tabs.load(formDoc.getForm()); // reload tab actions
 		const ulAdjuntos = formDoc.querySelector("ul#adjuntos");
 		if (ulAdjuntos && !ulAdjuntos.children.length)
 			ulAdjuntos.outerText = " -";
         window.working(); // hide loading frame
-    }
-
-    window.jbSearch = () => formDoc.isCached(acDocContable.getValue()) ? false : loading();
-    window.jbReset = () => { loading(); acDocContable.reload(); formDoc.resetCache(); }
-    window.jbLoaded = fnBuildXecoDoc;
+	}
+	window.jbReset = () => { loading(); acDocContable.reload(); }
+	window.jbLoaded = fnBuildXecoDoc;
     fnBuildXecoDoc();
+
+	tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
+	tabs.setAction("download", link => api.init().blob("/uae/jb/download?id=" + link.dataset.id).then(data => api.download(data, link.dataset.name)));
 });
