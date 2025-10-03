@@ -7,9 +7,6 @@ const fnEmpty = () => EMPTY;
 const fnParam = param => param;
 
 export default function(autocomplete, opts) {
-    if (!autocomplete)
-        return; // Input element not found
-
 	opts = opts || {}; // Config. container
 	opts.delay = opts.delay || 400; //milliseconds between keystroke occurs and when a search is performed
 	opts.minLength = opts.minLength || 3; //length to start
@@ -68,6 +65,7 @@ export default function(autocomplete, opts) {
             inputValue.value = autocomplete.value = "";
         return self;
     }
+    this.setItem = item => self.setValue(item.value, item.label);
 
     const isChildren = i => ((0 <= i) && (i < coll.size(resultsHTML.children)));
     const removeList = () => { resultsHTML.innerHTML = ""; resultsHTML.classList.remove(opts.activeClass); }

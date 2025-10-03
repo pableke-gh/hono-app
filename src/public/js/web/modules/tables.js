@@ -12,7 +12,7 @@ function fnTable() {
             <td data-cell="Título">${data.titulo}</td>
             <td data-cell="Icono" class="text-center">${data.icono || ""}</td>
             <td data-cell="Acciones" class="text-center no-print">
-				<div><a href="#remove" class="fas fa-times action text-red text-xl resize row-action" title="Desasociar partida"></a></div>
+				<div><a href="#remove" class="fas fa-times action text-red text-xl resize" title="Desasociar partida"></a></div>
 			</td>
         </tr>`;
     });

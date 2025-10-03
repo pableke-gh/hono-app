@@ -19,7 +19,7 @@ function Uxxiec() {
 			<td class="text-center">${i18n.isoDate(data.fUxxi)}</td>
 			<td>${data.desc}</td>
 			<td class="text-center">
-				<a href="#remove" class="row-action"><i class="fas fa-times action text-red"></i></a>
+				<a href="#remove"><i class="fas fa-times action text-red"></i></a>
 			</td>
 		</tr>`;
 	}

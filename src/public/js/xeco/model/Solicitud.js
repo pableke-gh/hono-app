@@ -50,11 +50,11 @@ base.isRemovable = () => (base.getId() && ((base.getEstado() == 6) || base.isAdm
 
 base.isUae = () => (_grupo == "2"); // UAE
 base.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") || (_grupo == "284")); // OTRI / UITT / UCCT / Catedras
+base.isGaca = () => ((_grupo == "54") || (_grupo == "288") || (_grupo == "290") || (_grupo == "287")); // GACA / BECAS / ACADEMICO / EID
 //base.isUtec = () => (_grupo == "6"); //grupo de la unidad tecnica
 //base.isEid = () => (_grupo == "287"); //Escuela Internacional de doctorado
 //base.isAcad = () => (_grupo == "290"); //SERVICIO DE GESTION ACADEMICA
 //base.isBecas = () => (_grupo == "288"); //BECAS
-//base.isGaca = () => ((_grupo == "54") || (_grupo == "288") || (_grupo == "290") || (_grupo == "287")); // GACA / BECAS / ACADEMICO / EID
 //base.isEut = () => (_grupo == "253"); //European University Of Technology (EUT+)
 //base.isEstudiantes = () => (_grupo == "9");
 //base.isContratacion = () => (_grupo == "68");
@@ -78,17 +78,17 @@ base.getStyleByEstado = () => (CSS_ESTADOS[base.getEstado()] || "text-warn");
 
 base.rowActions = data => {
 	base.setData(data); // initialize 
-	let acciones = '<a href="#view" class="row-action"><i class="fas fa-search action resize text-blue"></i></a>';
+	let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';
 	if (base.isFirmable()) {
-		acciones += '<a href="#firmar" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-check action resize text-green"></i></a>';
-		acciones += '<a href="#reject" class="row-action resize table-refresh" data-refresh="is-procesable"><i class="fas fa-times action resize text-red"></i></a>';
+		acciones += '<a href="#firmar" class="resize table-refresh" data-refresh="is-procesable"><i class="fas fa-check action resize text-green"></i></a>';
+		acciones += '<a href="#reject" class="resize table-refresh" data-refresh="is-procesable"><i class="fas fa-times action resize text-red"></i></a>';
 	}
 	if (base.isEjecutable())
-		acciones += '<a href="#uxxiec" class="row-action"><i class="fal fa-cog action resize text-green"></i></a>';
+		acciones += '<a href="#uxxiec"><i class="fal fa-cog action resize text-green"></i></a>';
 	if (base.isIntegrable())
-		acciones += '<a href="#integrar" class="row-action table-refresh" data-refresh="is-procesable"><i class="far fa-save action resize text-blue"></i></a>';
+		acciones += '<a href="#integrar" class="table-refresh" data-refresh="is-procesable"><i class="far fa-save action resize text-blue"></i></a>';
 	if (base.isAdmin())
-		acciones += '<a href="#emails" class="row-action"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove" class="row-action"><i class="fal fa-trash-alt action resize text-red"></i></a>';
+		acciones += '<a href="#emails"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 	return acciones;
 }
 base.tfoot = resume => `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`;

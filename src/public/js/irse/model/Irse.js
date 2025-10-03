@@ -59,21 +59,21 @@ iris.row = data => {
 	let acciones = iris.rowActions(data);
 	if (iris.isDocumentable()) {
 		if (iris.isAdmin()) {
-			acciones += '<a href="#rptFinalizar" class="row-action" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
-			//acciones += '<a href="#pdf" class="row-action" title="Informe IRIS"><i class="fas fa-file-pdf action text-red resize"></i></a>';
+			acciones += '<a href="#rptFinalizar" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
+			//acciones += '<a href="#pdf" title="Informe IRIS"><i class="fas fa-file-pdf action text-red resize"></i></a>';
 		}
-		acciones += '<a href="#report" class="row-action" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
+		acciones += '<a href="#report" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
 	}
 	if (iris.isReactivable())
-		acciones += '<a href="#reset" class="row-action" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
+		acciones += '<a href="#reset" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
 	if (iris.isActivablePaso8())
-		acciones += '<a href="#paso8" class="row-action" title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></a>';
+		acciones += '<a href="#paso8" title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></a>';
 
 	const info = iris.isUrgente() ? `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>` : "<td></td>";
 	const otras = iris.isMultilinea() ? "<span> (y otras)</span>" : "";
 	return `<tr class="tb-data">
 		${info}
-		<td class="text-center"><a href="#view" class="row-action" title="${data.codigo}: ${data.name}">${sb.substr(data.codigo, 0, 9)}</a></td>
+		<td class="text-center"><a href="#view" title="${data.codigo}: ${data.name}">${sb.substr(data.codigo, 0, 9)}</a></td>
 		<td class="${iris.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${iris.getDescEstado()}</td>
 		<td class="text-center">${firma.myFlag(data)}</td>
 		<td class="hide-sm">${data.sig || ""}</td>

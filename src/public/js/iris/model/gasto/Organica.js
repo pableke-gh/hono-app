@@ -20,7 +20,7 @@ function Pernocatas() {
 
 	this.row = (data, status, resume) => {
 		self.rowCalc(data, resume);
-		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : "";
+		const remove = iris.isEditable() ? '<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>' : "";
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>
 			<td data-cell="${i18n.get("lblTipoGasto")}">${i18n.getItem("tipoOrganica", data.subtipo) || "-"}</td>

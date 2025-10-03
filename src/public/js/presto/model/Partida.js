@@ -26,8 +26,8 @@ base.row = (data, status, resume) => {
 	const NO_APLICA = "N/A"; // default table float
 	const excedido = base.isExcedida(data) ? '<span class="text-warn text-xl" title="La cantidad solicitada excede el margen registrado por el Buzón de Ingresos">&#9888;</span>' : "";
 	const anticipada = base.isAnticipada(data) ? '<span class="text-xl" title="Este contrato ha gozado de anticipo en algún momento">&#65;</span>' : "";
-	const doc030 = presto.is030() ? '<a href="#doc030" class="fal fa-money-bill-alt action resize text-green row-action" title="Asociar los datos del documento 030"></a>' : "";
-	const remove = (presto.isEditable() && !presto.isAfc()) ? '<a href="#remove" class="fas fa-times action resize text-red row-action" title="Desasociar partida"></a>' : "";
+	const doc030 = presto.is030() ? '<a href="#doc030" class="fal fa-money-bill-alt action resize text-green" title="Asociar los datos del documento 030"></a>' : "";
+	const remove = (presto.isEditable() && !presto.isAfc()) ? '<a href="#remove" class="fas fa-times action resize text-red" title="Desasociar partida"></a>' : "";
 	resume.imp += data.imp; // sum
 
 	const output = presto.isPartidaExt()

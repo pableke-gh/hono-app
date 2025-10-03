@@ -12,8 +12,8 @@ function RutaMaps() {
 
 	this.row = (data, status, resume) => {
 		self.rowCalc(data, resume);
-		const destino = iris.isEditable() ? `<a href="#main" class="row-action">${data.destino}${data.tplFlag}</a>` : `${data.destino}${data.tplFlag}`;
-		const remove = iris.isEditable() ? '<a href="#flush" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
+		const destino = iris.isEditable() ? `<a href="#main">${data.destino}${data.tplFlag}</a>` : `${data.destino}${data.tplFlag}`;
+		const remove = iris.isEditable() ? '<a href="#flush"><i class="fas fa-times action text-red resize"></i></a>' : ""; // #{iris.form.editableP0}
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº" class="hide-sm">${status.count}</td>
 			<td data-cell="${i18n.get("lblOrigen")}">${data.origen}</td>

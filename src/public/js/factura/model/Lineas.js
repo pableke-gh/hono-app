@@ -19,7 +19,7 @@ function Lineas() {
     this.validate = () => { // Todas las solicitudes tienen partidas a incrementar
         const valid = i18n.getValidation(); // Continue with validation without reset
         const msg = "Debe detallar los conceptos asociados a la solicitud.";
-        return data.length ? valid : !valid.addError("desc", "errRequired", msg);
+        return data.length ? valid.isOk() : !valid.addError("desc", "errRequired", msg).addError("acTTPP", "errRequired", msg);
     }
 }
 

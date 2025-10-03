@@ -15,6 +15,7 @@
                 <li>Nueva solicitud de emisión factura o carta de pago:<ul>
                     <li><a href="#tab-action-factura">Solicitud Emisión de Factura</a></li>
                     <li><a href="#tab-action-cartap">Solicitud Emisión de Carta de Pago</a></li>
+					<c:if test="#{fact.user.tester}"><li><a href="#tab-action-ttpp">Títulos Propios Empresas</a></li></c:if>
                 </ul></li>
             </ul>
         </c:when>
@@ -25,6 +26,7 @@
                 <li>Nueva Solicitud:<ul>
                     <li>Solicitud Emisión de Factura</li>
                     <li>Solicitud Emisión de Carta de Pago</li>
+					<c:if test="#{fact.user.tester}"><li>Títulos Propios Empresas</li></c:if>
                 </ul></li>
             </ul>
         </c:otherwise>

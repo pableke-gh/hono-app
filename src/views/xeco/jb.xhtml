@@ -115,7 +115,7 @@
 								<c:when test="#{jb.adjunto}">
 									<li>
 										<b>(ZIP) Adjunto:</b>
-										<a href="#tab-action-download" data-id="#{adjunto.idAdjunto}" data-name="#{adjunto.nombre}">
+										<a id="#{adjunto.idAdjunto}" href="#tab-action-download" download="#{adjunto.nombre}">
 											Ver documentación del pago<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 									</li>
 								</c:when>
@@ -123,7 +123,7 @@
 									<c:forEach items="#{jb.adjuntos}" var="adjunto" varStatus="loop">
 										<li>
 											<b>#{adjunto.tipo}:</b>
-											<a href="#tab-action-download" data-id="#{adjunto.idAdjunto}" data-name="#{adjunto.nombre}">
+											<a id="#{adjunto.idAdjunto}" href="#tab-action-download" download="#{adjunto.nombre}">
 												#{adjunto.nombre}<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 										</li>
 									</c:forEach>

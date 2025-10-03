@@ -4,7 +4,7 @@ import firma from "../../xeco/model/Firma.js";
 import fact from "../../xeco/model/Solicitud.js";
 import lineas from "./Lineas.js";
 
-const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso" ];
+const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso", "factura de TTPP empresas" ];
 
 fact.getUrl = () => "/uae/fact";
 fact.getLineas = () => lineas;
@@ -17,19 +17,22 @@ fact.isFactura = () => (fact.getTipo() == 1);
 fact.isCartaPago = () => (fact.getTipo() == 3);
 fact.isReciboCV = () => (fact.getTipo() == 4); // viene de CV
 fact.isCongresoCV = () => (fact.getTipo() == 5); // viene de CV
-fact.isFacturable = () => (fact.isFactura() || fact.isReciboCV() || fact.isCongresoCV());
+fact.isTtppEmpresa = () => (fact.getTipo() == 6); // TTPP a empresa
+fact.isFacturable = () => (fact.isFactura() || fact.isReciboCV() || fact.isCongresoCV() || fact.isTtppEmpresa());
 fact.isFirmaGaca = () => (fact.isReciboCV() && fact.isTtpp() && (fact.getMask() & 2));
 //fact.isReactivable = () => ((fact.isUae() && fact.isErronea()) || (fact.isGaca() && fact.isRechazada()));
+fact.isEditableGaca = () => (fact.isEditableUae() || (fact.isGaca() && fact.isFirmable()));
 
 fact.isTtpp = () => (fact.getSubtipo() == 3);
 fact.isTituloOficial = () => (fact.getSubtipo() == 4);
 fact.isExtension = () => (fact.getSubtipo() == 9);
 fact.isDeportes = () => (fact.getSubtipo() == 10);
 fact.isCongresoGdi = () => (fact.getSubtipo() == 24);
-fact.isRecibo = () => (fact.isTtpp() || fact.isTituloOficial() || fact.isExtension() || fact.isCongresoGdi());
+fact.isRecibo = () => ((fact.isTtpp() || fact.isTituloOficial() || fact.isExtension() || fact.isCongresoGdi()) && !fact.isTtppEmpresa());
 fact.setSujeto = val => fact.set("sujeto", val);
 fact.isExento = () => !fact.get("sujeto");
 fact.setExento = val => fact.set("exento", val);
+fact.isMemo = () => (fact.isFirmaGaca() || fact.isTtppEmpresa());
 
 fact.getIva = () => fact.get("iva");
 fact.setIva = imp => fact.set("iva", imp ?? 0);
@@ -37,6 +40,8 @@ fact.setNifTercero = nif => fact.set("nif", nif);
 fact.getImpIva = () => 0; // importes calculados default = 0
 fact.getImpTotal = () => 0; // importes calculados default = 0
 
+fact.isConceptos = () => !fact.isTtppEmpresa();
+fact.isGrupoFace = () => (fact.isFacturable() && !fact.isTtppEmpresa());
 fact.isFace = () => (fact.get("face") == 1); //factura electronica FACe
 fact.isPlataforma = () => (fact.get("face") == 2); //factura electronica Otras
 fact.setFace = val => fact.set("face", val); // update plataforma / FACe
@@ -45,7 +50,7 @@ fact.getNamePlataforma = () => (fact.isPlataforma() ? "Nombre de la plataforma" 
 fact.row = data => {
 	const acciones = fact.rowActions(data);
 	return `<tr class="tb-data">
-		<td class="text-center"><a href="#view" class="row-action">${data.codigo}</a></td>
+		<td class="text-center"><a href="#view">${data.codigo}</a></td>
 		<td class="hide-sm text-upper1">${fact.getTitulo()}</td>
 		<td class="${fact.getStyleByEstado()} hide-xs table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${fact.getDescEstado()}</td>
 		<td class="text-center hide-xs">${firma.myFlag(data)}</td>
@@ -70,12 +75,13 @@ fact.validate = data => {
 		valid.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
 		valid.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
 	}*/
-	//valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la fact."); // Required string
+	if (fact.isTtppEmpresa()) // Required string
+		valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la fact.");
 	if (fact.isFace())
 		valid.size("og", data.og) && valid.size("oc", data.oc) && valid.size("ut", data.ut);
 	if (fact.isPlataforma())
 		valid.size("og", data.og);
-	return valid.isOk() && lineas.validate();
+	return lineas.validate();
 }
 
 export default fact;

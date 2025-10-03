@@ -38,8 +38,8 @@ presto.isExcedida = () => (presto.getMask() & 8);
 presto.row = data => {
 	let acciones = presto.rowActions(data);
 	if (presto.isDocumentable()) {
-		//acciones += presto.isAdmin() ? '<a href="#pdf" class="row-action" title="Informe PRESTO"><i class="fas fa-file-pdf action resize text-red"></i></a>' : "";
-		acciones += '<a href="#report" class="row-action" title="Informe PRESTO"><i class="fal fa-file-pdf action resize text-red"></i></a>';
+		//acciones += presto.isAdmin() ? '<a href="#pdf" title="Informe PRESTO"><i class="fas fa-file-pdf action resize text-red"></i></a>' : "";
+		acciones += '<a href="#report" title="Informe PRESTO"><i class="fal fa-file-pdf action resize text-red"></i></a>';
 	}
 
 	let info = '<td></td>';
@@ -53,7 +53,7 @@ presto.row = data => {
 	const otras = presto.isMultilinea() ? "<span> (y otras)</span>" : "";
 	return `<tr class="tb-data">
 		${info}
-		<td class="text-center"><a href="#view" class="row-action">${data.codigo}</a></td>
+		<td class="text-center"><a href="#view">${data.codigo}</a></td>
 		<td class="hide-sm">${presto.getTitulo()}</td>
 		<td class="${presto.getStyleByEstado()} hide-xs table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${presto.getDescEstado()}</td>
 		<td class="text-center hide-xs">${firma.myFlag(data)}</td>

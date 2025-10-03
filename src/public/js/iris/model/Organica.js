@@ -33,7 +33,7 @@ function Organica() {
 
 	this.row = (data, resume) => {
 		self.rowCalc(data, resume);
-		const remove = iris.isEditable() ? '<a href="#remove" class="row-action"><i class="fas fa-times action text-red resize"></i></a>' : "";
+		const remove = iris.isEditable() ? '<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>' : "";
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Orgánica">${data.o}</td>
 			<td data-cell="Crédito Disp." class="form-refresh" data-refresh="is-editable">${i18n.isoFloat(data.imp)}</td>

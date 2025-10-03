@@ -84,7 +84,7 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks form-refresh" data-refresh="show-factura">
+		<div class="ui-blocks form-refresh" data-refresh="show-grupo-face">
 			<label class="ui-block">
 				<div class="label">Factura electrónica:</div>
 				<select id="face" name="face" class="ui-input ui-select" tabindex="8">
@@ -115,10 +115,10 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks form-refresh" data-refresh="show-gaca">
+		<div class="ui-blocks form-refresh" data-refresh="show-memo">
 		<label class="ui-block-row">
 			<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
-			<textarea id="memo" name="memo" class="ui-input ui-ta" data-readonly="manual" tabindex="13" maxlength="600" title="Observaciones de la factura"></textarea>
+			<textarea id="memo" name="memo" class="ui-input ui-ta" data-readonly="is-editable-gaca" tabindex="13" maxlength="600" title="Observaciones de la factura"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 		</div>

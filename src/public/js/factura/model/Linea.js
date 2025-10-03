@@ -8,7 +8,7 @@ const base = new Base(); // model instance
 base.beforeRender = resume => { resume.imp = 0; }
 base.row = (data, status, resume) => {
 	resume.imp += data.imp; // sum
-	const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red row-action" title="Desasociar partida"></a>' : "";
+	const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red" title="Desasociar partida"></a>' : "";
 	return `<tr class="tb-data">
 		<td class="text-center">${status.count}</td>
 		<td>${data.desc}</td><td class="text-right">${i18n.isoFloat(data.imp)} €</td>

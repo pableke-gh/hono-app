@@ -39,8 +39,10 @@ function Fiscal() {
 	}
 
 	const fnFiscalidad = tercero => {
-		if (!factura.isFacturable()) // no es facturab
+		if (factura.isCartaPago()) // no es facturable
 			return fiscalidad.getCartaPago(); // default = carta de pago
+		if (factura.isTtppEmpresa()) // no es facturable
+			return fiscalidad.getTtppEmpresa(); // TTPP a empresa
         let key = "c" + tercero.imp; //caracter => persona fisica=1, persona juridica=2, est. publico=3
         key += (tercero.int & 256) ? "ep" : "no"; // Establecimiento permanente
         const ep_es = (tercero.int & 128) || (tercero.int & 256); //Establecimiento permanente o Residente

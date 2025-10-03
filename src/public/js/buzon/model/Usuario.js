@@ -6,12 +6,12 @@ function Usuario() {
 
 	this.row = data => {
         buzon.setData(data);
-        const classPermisoUser = buzon.isPermisoUser() ? "action resize text-purple row-action" : "action resize text-purple row-action text-disabled";
-        const classGastos = buzon.isGastos() ? "action resize text-warn row-action" : "action resize text-warn row-action text-disabled";
-        const classIngresos = buzon.isIngresos() ? "action resize text-green row-action" : "action resize text-green row-action text-disabled";
-        const classReportProv = buzon.isReportProv() ? "action resize text-blue row-action" : "action resize text-blue row-action text-disabled";
-        const classFactura = buzon.isFacturable() ? "action resize text-green row-action" : "action resize text-green row-action text-disabled";
-        const remove = buzon.isRemovable() ? '<a href="#remove" class="action resize text-red row-action" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
+        const classPermisoUser = buzon.isPermisoUser() ? "action resize text-purple" : "action resize text-purple text-disabled";
+        const classGastos = buzon.isGastos() ? "action resize text-warn" : "action resize text-warn text-disabled";
+        const classIngresos = buzon.isIngresos() ? "action resize text-green" : "action resize text-green text-disabled";
+        const classReportProv = buzon.isReportProv() ? "action resize text-blue" : "action resize text-blue text-disabled";
+        const classFactura = buzon.isFacturable() ? "action resize text-green" : "action resize text-green text-disabled";
+        const remove = buzon.isRemovable() ? '<a href="#remove" class="action resize text-red" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
         return `<tr class="tb-data">
             <td class="text-center">${data.nif}</td><td>${data.nombre}</td><td>${buzon.getRol()}</td>
             <td class="text-right">
