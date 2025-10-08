@@ -28,7 +28,7 @@ fact.isTituloOficial = () => (fact.getSubtipo() == 4);
 fact.isExtension = () => (fact.getSubtipo() == 9);
 fact.isDeportes = () => (fact.getSubtipo() == 10);
 fact.isCongresoGdi = () => (fact.getSubtipo() == 24);
-fact.isRecibo = () => ((fact.isTtpp() || fact.isTituloOficial() || fact.isExtension() || fact.isCongresoGdi()) && !fact.isTtppEmpresa());
+fact.isRecibo = () => (fact.isTtpp() || fact.isTituloOficial() || fact.isExtension() || fact.isCongresoGdi());
 fact.setSujeto = val => fact.set("sujeto", val);
 fact.isExento = () => !fact.get("sujeto");
 fact.setExento = val => fact.set("exento", val);

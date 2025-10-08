@@ -113,9 +113,17 @@ export default function(form, opts) {
 	this.readonly = (force, selector) => fnUpdate(selector, el => el.setReadonly(force));
 	this.eachInput = (selector, fn) => fnUpdate(selector, fn);
 	this.setEditable = selector => fnUpdate(selector, el => {
-		const value = el.dataset.readonly;
+		const value = /*el.dataset.disabled ||*/ el.dataset.readonly || el.dataset.editable;
 		if (value == "manual")
 			return; // skip evaluation (input manual)
+		/*if (el.dataset.disabled) {
+			const fnDisabled = self.get(value) || self.get("is-disabled");
+			return el.setDisabled(fnDisabled(el)); // recalc. disabled attribute by handler
+		}*/
+		if (el.dataset.readonly) {
+			const fnReadonly = self.get(value) || self.get("is-readonly");
+			return el.setReadonly(fnReadonly(el)); // recalc. readonly attribute by handler
+		}
 		const fnEditable = self.get(value) || self.get("is-editable");
 		el.setReadonly(!fnEditable(el)); // recalc. attribute by handler
 	});

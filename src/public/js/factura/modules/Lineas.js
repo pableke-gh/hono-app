@@ -13,12 +13,12 @@ function Lineas() {
 	const acRecibo = form.setAutocomplete("#acRecibo");
 	const fnSourceRecibo = term => {
 		const url = factura.isExtension() ? "/uae/fact/recibos/tpv" : "/uae/fact/recibos/ac";
-		api.init().json(url, { term }).then(acRecibo.render);
+		api.init().json(url, { id: form.getval("#idOrg"), term }).then(acRecibo.render);
 	}
 	acRecibo.setItemMode(4).setSource(fnSourceRecibo);
 
 	const acTTPP = form.setAutocomplete("#acTTPP");
-	const fnSource = term => api.init().json("/uae/fact/recibos/ttpp", { term }).then(acTTPP.render);
+	const fnSource = term => api.init().json("/uae/ttpp/recibos", { id: form.getval("#idOrg"), term }).then(acTTPP.render);
 	acTTPP.setItemMode(4).setSource(fnSource);
 
 	const lineas = form.setTable("#lineas-fact", linea.getTable());
@@ -47,15 +47,12 @@ function Lineas() {
 		if (factura.isTtppEmpresa()) {
 			form.closeAlerts(); // hide prev. errors
 			const recibo = acTTPP.getCurrentItem();
-			if (recibo) { // push recibo in the table
-				acRecibo.setItem(recibo); // update autocomplete
+			if (recibo) // push recibo in the table
 				lineas.push({ cod: recibo.value, desc: recibo.label, imp: recibo.imp });
-			}
 			return acTTPP.reload();
 		}
-		const data = form.validate(linea.validate);
-		if (data) // Hay errores al validar?
-			form.restart("#desc").setval("#imp", 0).setval("#memo", lineas.push(data).getItem(0).desc);
+		if (form.validate(linea.validate))
+			form.restart("#desc").setval("#imp", 0);
 	});
 }
 

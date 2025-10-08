@@ -34,12 +34,6 @@ function Collection() {
 	this.unique = arr => arr.filter((value, i) => (arr.indexOf(value) === i));
 	this.distinct = (arr, fn) => arr.filter((o1, i) => (arr.findIndex(o2 => fn(o1, o2)) === i));
 
-	/*this.remove = (arr, fn) => {
-		let i = self.findIndex(arr, fn);
-		(i < 0) || this.splice(i, 1);
-		return self;
-	}*/
-
     this.multisort = function(arr, fnSorts, dirs) {
 		dirs = dirs || []; // directions
 		arr.sort((a, b) => {

@@ -52,10 +52,10 @@ function XecoForm() {
 
 	/*** Init. actions for model form ***/
 	form.set("is-admin", model.isAdmin).set("is-uae", model.isUae).set("is-usu-ec", model.isUsuEc)
-		.set("is-disabled", model.isDisabled).set("is-editable", model.isEditable).set("is-editable-uae", model.isEditableUae)
+		.set("is-disabled", model.isDisabled).set("is-readonly", model.isReadonly).set("is-editable", model.isEditable)
 		.set("is-firmable", model.isFirmable).set("is-cancelable", model.isCancelable).set("is-invalidable", model.isInvalidable)
-		.set("is-documentable", model.isDocumentable).set("is-removable", model.isRemovable).set("pf-upload", pfUpload)
-		.set("is-reactivable", model.isReactivable).set("is-subsanable", model.isSubsanable);
+		.set("is-documentable", model.isDocumentable).set("is-removable", model.isRemovable).set("is-editable-uae", model.isEditableUae)
+		.set("is-reactivable", model.isReactivable).set("is-subsanable", model.isSubsanable).set("pf-upload", pfUpload);
 
 	tabs.setAction("firmar", () => {
 		if (!i18n.confirm("msgFirmar")) return; // confirmation

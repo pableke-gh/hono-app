@@ -25,6 +25,7 @@ base.isUxxiec = base.isUsuEc; // alias
 base.getUrl = () => "/uae"; // endpoint base path
 
 base.isDisabled = () => !base.isEditable();
+base.isReadonly = () => !base.isEditable();
 base.isEditable = () => (!base.getId() || (base.getEstado() == 6));
 base.isPendiente = () => (base.getEstado() == 5); // Pendiente de las firmas
 base.isAceptada = () => (base.getEstado() == 1); // Aceptada por todos los firmantes
@@ -45,7 +46,6 @@ base.isFirmada = () => (base.isAceptada() || base.isEjecutada());
 base.isValidada = () => (base.isFirmada() || base.isIntegrada());
 base.isInvalidada = () => (base.isRechazada() || base.isCancelada());
 base.isAnulada = () => (base.isInvalidada() || base.isCaducada());
-base.isReadOnly = () => (base.isAnulada() || base.isIntegrada());
 base.isRemovable = () => (base.getId() && ((base.getEstado() == 6) || base.isAdmin()));
 
 base.isUae = () => (_grupo == "2"); // UAE

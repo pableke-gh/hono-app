@@ -27,7 +27,7 @@ base.tfoot = resume => {
 			<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
 			<div class="ui-block-main text-right">IVA:</div>
 			<div class="ui-block">
-				<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-readonly="is-editable-uae"></select>
+				<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-editable="is-editable-uae"></select>
 			</div>
 			</label>
 		</td>
