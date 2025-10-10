@@ -79,4 +79,5 @@ function DateBox() {
 	Date.prototype.diffDays = function(date) { return self.diffDays(this, date); }
 }
 
+globalThis.isDate = isDate;
 export default new DateBox();

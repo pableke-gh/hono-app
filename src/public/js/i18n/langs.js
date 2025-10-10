@@ -2,6 +2,7 @@
 import en from "./langs/en.js";
 import es from "./langs/es.js";
 import validators from "./validators.js";
+import dt from "../components/types/DateBox.js";
 import nb from "../components/types/NumberBox.js";
 import sb from "../components/types/StringBox.js";
 
@@ -58,12 +59,15 @@ function Langs() {
 	// Add i18n Date formats
 	en.isoDate = str => str && str.substring(0, 10); //Iso string = yyyy-mm-dd
 	es.isoDate = str => str && (str.substring(8, 10) + "/" + str.substring(5, 7) + "/" + str.substring(0, 4)); //Iso string to dd/mm/yyyy
+	en.strDate = date => date && dt.isoDate(date); //Iso string = yyyy-mm-dd
+	es.strDate = date => date && es.isoDate(dt.isoDate(date)); //Iso string to dd/mm/yyyy
 
 	this.enDate = en.isoDate; //Iso string = yyyy-mm-dd
 	this.isoTime = str => str && str.substring(11, 19); //hh:MM:ss
 	this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
 	this.isoDate = str => _lang.isoDate(str); // String locale date
 	this.isoDateTime = str => self.isoDate(str) + " " + self.isoTime(str); //ISO date + hh:MM:ss
+	this.strDate = date => _lang.strDate(date); //ISO date
 
 	const BOOLEAN_TRUE = ["1", "true", "yes", "on"];
 	this.boolval = str => globalThis.isset(str) ? _lang.msgBool[+BOOLEAN_TRUE.includes("" + str)] : null;
@@ -113,8 +117,8 @@ function Langs() {
 			opts.matches += globalThis.isset(value); // increment matches
 			if (m.startsWith("$")) // float / currency
 				return self.isoFloat(value);
-			if (t == ".d") // Date in ISO string format
-				return self.isoDate(value); // substring = 0, 10
+			if (t == ".d") // Object Date or Date in ISO string format
+				return dt.isValid(value) ? self.strDate(value) : self.isoDate(value); // substring = 0, 10
 			//if (typeof value === "function") // function type
 				//return value(opts); // call function
 			return (value ?? opts[k] ?? ""); // Default = String

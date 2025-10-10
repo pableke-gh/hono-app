@@ -13,12 +13,12 @@ function Lineas() {
 	const acRecibo = form.setAutocomplete("#acRecibo");
 	const fnSourceRecibo = term => {
 		const url = factura.isExtension() ? "/uae/fact/recibos/tpv" : "/uae/fact/recibos/ac";
-		api.init().json(url, { id: form.getval("#idOrg"), term }).then(acRecibo.render);
+		api.init().json(url, { id: form.getval("#idOrg") || 0, term }).then(acRecibo.render);
 	}
 	acRecibo.setItemMode(4).setSource(fnSourceRecibo);
 
-	const acTTPP = form.setAutocomplete("#acTTPP");
-	const fnSource = term => api.init().json("/uae/ttpp/recibos", { id: form.getval("#idOrg"), term }).then(acTTPP.render);
+	const acTTPP = form.setAutocomplete("#acTTPP"); // si no ha seleccionado organica id = 0 (evita excepción en el servidor)
+	const fnSource = term => api.init().json("/uae/ttpp/recibos", { id: form.getval("#idOrg") || 0, term }).then(acTTPP.render);
 	acTTPP.setItemMode(4).setSource(fnSource);
 
 	const lineas = form.setTable("#lineas-fact", linea.getTable());
@@ -51,8 +51,10 @@ function Lineas() {
 				lineas.push({ cod: recibo.value, desc: recibo.label, imp: recibo.imp });
 			return acTTPP.reload();
 		}
-		if (form.validate(linea.validate))
-			form.restart("#desc").setval("#imp", 0);
+		const data = form.validate(linea.validate);
+		if (!data) return; // error en las validaciones
+		lineas.push(data); // añado la nueva linea
+		form.restart("#desc").setval("#imp", 0);
 	});
 }
 

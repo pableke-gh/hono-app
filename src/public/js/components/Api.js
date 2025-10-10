@@ -2,10 +2,9 @@
 import alerts from "./Alerts.js";
 import mt from "../data/mime-types.js";
 
-const MSG_ERROR = "Conection is not available.";
 const fnMsgs = data => (alerts.showMsgs(data) ? data : Promise.reject(data));
 function fnError(res, msg) {
-	const error = res.statusText || msg || MSG_ERROR;
+	const error = res.statusText || msg || "Conection is not available.";
 	alerts.showError(error);
 	return Promise.reject(error);
 }
@@ -64,7 +63,7 @@ function Api() {
 		self.setContentType(mt.json); // set content type header
 		const res = await fnFetch(url, params); // send call
 		// avoid error when json response is null: (SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input)
-		return res.ok ? res.json().catch(globalThis.void) : Promise.reject(res.statusText || MSG_ERROR); // return promise
+		return res.ok ? res.json().catch(globalThis.void) : fnError(res); // return promise
 	}
 	this.msgs = (url, params) => self.fetch(url, params).then(fnMsgs)
 	this.json = (url, params) => {

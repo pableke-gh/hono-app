@@ -1,13 +1,12 @@
 
 import coll from "./CollectionHTML.js";
 
-// Classes Configuration
-const ALERT_ACTIVE = "active";
-const ALERT_TEXT = "alert-text";
-const ALERT_CLOSE = "alert-close";
-
 function Alerts() {
 	const self = this; //self instance
+	const ALERT_ACTIVE = "active";
+	const ALERT_TEXT = "alert-text";
+	const ALERT_CLOSE = "alert-close";
+
 	const alerts = $1(".alerts"); // container
 	const texts = alerts.getElementsByClassName(ALERT_TEXT);
 

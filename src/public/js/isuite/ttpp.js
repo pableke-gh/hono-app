@@ -13,8 +13,8 @@ function RulesFactory() {
 		"300101": "GERENCIA", "300955": "SERVICIO DE GESTI&Oacute;N ACAD&Eacute;MICA",
 		"300101 1307.00": "TASAS POR DERECHOS DE EXAMEN"
 	};
-	var CS = "Contra&iacute;do simult&aacute;neo";
-	var NC = "No Conciliables - ";
+	const CS = "Contra&iacute;do simult&aacute;neo";
+	const NC = "No Conciliables - ";
 
 	// Helpers
 	function fnLines(str) { return str ? str.trim().split(/[\n\r]+/) : []; };
@@ -22,8 +22,8 @@ function RulesFactory() {
 	function dfLatin(date) { return date && (lpad(date.getDate()) + "/" + lpad(date.getMonth() + 1) + "/" + date.getFullYear()); } //dd/mm/yyyy
 
 	//Norma 19
-	var n19 = { id: "n19", files: 0, total: 0, numrows: 0, data: [] };
-	var n19Config = {
+	const n19 = { id: "n19", files: 0, total: 0, numrows: 0, data: [] };
+	const n19Config = {
 		nameColumns: ["InstdAmt", "ReqdColltnDt", "MndtId", "Ustrd", "Dbtr", "DbtrAcct", "Nm", "IBAN"],
 		tagRow: "TxInfAndSts",
 
@@ -49,21 +49,19 @@ function RulesFactory() {
 		return n19;
 	};
 
-	function n19Fetch() { return ""; };
 	function n19Reset() {
 		n19.files = n19.numrows = 0;
 		n19.data.reset();
-		return n19;
 	};
 	//********************************************//
 
 	//Norma 43
 	//var tpvs = [];
 	var referencias = [];
-	var n43 = { id: "n43", files: 0, total: 0, ncGdc: 0, ncElavon: 0, incorporado: 0, numrows: 0, data: [] }; //n43 header
-	var n43k1 = ["codigo", "entidad", "oficina", "cuenta", "fInicio", "fFin", "debe", "inicial", "divisa", "modalidad", "nombre"];
-	var n43k2 = ["codigo", "libre", "oficina", "fOperacion", "fValor", "comun", "propio", "debe", "importe", "documento", "ref1", "ref2"];
-	var n43k3 = ["codigo", "entidad", "oficina", "cuenta", "nDebes", "debe", "nHaber", "haber", "idFinal", "saldo", "divisa", "libre"];
+	const n43 = { id: "n43", files: 0, total: 0, ncGdc: 0, ncElavon: 0, incorporado: 0, numrows: 0, data: [] }; //n43 header
+	const n43k1 = ["codigo", "entidad", "oficina", "cuenta", "fInicio", "fFin", "debe", "inicial", "divisa", "modalidad", "nombre"];
+	const n43k2 = ["codigo", "libre", "oficina", "fOperacion", "fValor", "comun", "propio", "debe", "importe", "documento", "ref1", "ref2"];
+	const n43k3 = ["codigo", "entidad", "oficina", "cuenta", "nDebes", "debe", "nHaber", "haber", "idFinal", "saldo", "divisa", "libre"];
 
 	function n43Date(str) { return ("20" + str).toDate(); };
 	function dfN43(date) { return date.toArray().splice(0, 3).join("").substr(2, 6); }; //yymmdd
@@ -172,20 +170,17 @@ function RulesFactory() {
 	function n43Reset() {
 		n43.files = n43.total = n43.ncGdc = n43.ncElavon = n43.incorporado = n43.numrows = 0;
 		n43.data.reset();
-		return n43;
 	};
 	//********************************************//
 
 	//Norma 57
-	var n57 = { id: "n57", files: 0, total: 0, numrows: 0, data: [] }; //n57 header
-	var n57k1 = ["codigo", "op", "libre1", "emisor", "libre2", "libre3", "entidad", "libre4", "fecha", "libre5", "libre6", "libre7", "libre8"];
-	var n57k2 = ["codigo", "op", "libre1", "emisor", "sufijo", "libre2", "fecha",  "libre3", "libre4", "libre5", "libre6", "libre7", "libre8"];
-	var n57k3 = ["codigo", "op", "libre1", "emisor", "sufijo", "canal", "entidad", "oficina", "fCobro", "importe",  "idCobro", "dEntidad", "dSucursal", "dc", "dCuenta", "domiciliacion", "anulacion", "ref1", "ref2"];
-	var n57k4 = ["codigo", "op", "libre1", "emisor", "sufijo", "libre2", "numrows", "libre3", "importe", "libre4", "libre5", "libre6", "signo", "libre7"];
+	const n57 = { id: "n57", files: 0, total: 0, numrows: 0, data: [] }; //n57 header
+	const n57k1 = ["codigo", "op", "libre1", "emisor", "libre2", "libre3", "entidad", "libre4", "fecha", "libre5", "libre6", "libre7", "libre8"];
+	const n57k2 = ["codigo", "op", "libre1", "emisor", "sufijo", "libre2", "fecha",  "libre3", "libre4", "libre5", "libre6", "libre7", "libre8"];
+	const n57k3 = ["codigo", "op", "libre1", "emisor", "sufijo", "canal", "entidad", "oficina", "fCobro", "importe",  "idCobro", "dEntidad", "dSucursal", "dc", "dCuenta", "domiciliacion", "anulacion", "ref1", "ref2"];
+	//var n57k4 = ["codigo", "op", "libre1", "emisor", "sufijo", "libre2", "numrows", "libre3", "importe", "libre4", "libre5", "libre6", "signo", "libre7"];
 
 	function n57Date(str) { return Date.build(str.insertAt(4, "20").chunk(2, 2).swap(0, 2)); }
-	function dfN57(date) { return date.toArray().splice(0, 3).swap(0, 2).join("").replaceAt(4, 2, ""); }; //ddmmyy
-	function nfN57(val) { return Math.abs(val).toFixed(2).replace(".", "").lpad(14); }; //00000000005501
 	function n57Row60(fila) {
 		n57.fInicio = fila.fCobro.min(n57.fInicio);
 		n57.total += fila.importe;
@@ -217,19 +212,14 @@ function RulesFactory() {
 				setForma(fila, CS, getForma(fila)); //contraido simult. + forma de cobro
 				n57.data.push(n57Row60(setApplicacion(fila))); //add application info
 			}
-			/*else if (row.startsWith("80")) { //registro de totales emisora - sufijo
-				var fila = n57k4.combine(row.chunk(2, 2, 6, 8, 3, 1, 6, 8, 12, 6, 20, 1, 1, 13, 11).map(fnTrim));
-				n57.importe += (+fila.importe.insertAt(10, ".")) * ((fila.signo == "1") ? -1 : 1); //sumo sufijo
-			}*/
 		});
 		n57.fFin = n57.fecha;
 		n57.fRango = "Del " + dfLatin(n57.fInicio) + " al " + dfLatin(n57.fFin);
 		return n57;
 	};
 
-	function n57Fetch() { return ""; };
 	function n57ResetStats() { n57.files = n57.total = n57.numrows = 0; delete n57.fInicio; };
-	function n57Reset() { n57ResetStats(); n57.data.reset(); return n57; };
+	function n57Reset() { n57ResetStats(); n57.data.reset(); };
 	//********************************************//
 
 	//metodos propios de la factoria
@@ -327,78 +317,20 @@ function RulesFactory() {
 				nApuntesDebe.lpad(5), nfN43(totalDebe), nApuntesHaber.lpad(5), nfN43(totalHaber),
 				"2", nfN43(n43.inicial + totalHaber - totalDebe), n43.divisa, "    "]);
 		rows.length && rows.push(["88", "999999999999999999", rows.length.lpad(6), "".rput(54)]);
-		return rows.map(function(row) { return row.join(""); }).join("\n");
+		return rows.map(row => row.join("")).join("\n");
 	};
 
-	var factory = { n19: n19, n43: n43, n57: n57 };
-	this.references = function() { return referencias; };
-	this.n19 = function() { return n19; };
-	this.n43 = function() { return n43; };
-	this.n57 = function() { return n57; };
-	this.sizeN19 = function() { return n43.data.length; };
-	this.sizeN43 = function() { return n43.data.length; };
-	this.sizeN57 = function() { return n57.data.length; };
-	this.get = function(id) { return id ? factory[id] : factory; };
-	this.getTpv = function(row) { return row.concepto5 || (row.concepto2 && row.concepto2.split(/\W+/)[1]); };
-	this.isConciliable = function(row) { return !row.ji || !row.ji.startsWith(NC); };
-	this.save = function() { sessionStorage.rf = JSON.stringify(factory); return this; };
-	this.load = function() {
-		if (!sessionStorage.rf)
-			return this; //nada que cargar
-		try {
-			factory = JSON.parse(sessionStorage.rf);
-			n19 = factory.n19;
-			n43 = factory.n43;
-			n57 = factory.n57;
-
-			if (n19.files) {
-				n19.fecha = n19.fecha.toDateTime();
-				n19.data.forEach(function(fila) {
-					fila.fOperacion = fila.fOperacion.toDateTime();
-					fila.fCobro = fila.fCobro.toDateTime();
-				});
-			}
-
-			if (n43.files) {
-				n43.fInicio = n43.fInicio.toDateTime();
-				n43.fFin = n43.fFin.toDateTime();
-				n43.data.forEach(function(fila) {
-					fila.fOperacion = fila.fOperacion.toDateTime();
-					fila.fValor = fila.fValor.toDateTime();
-					fila.fCobro = fila.fCobro.toDateTime();
-				});
-			}
-
-			if (n57.files) {
-				n57.fInicio = n57.fInicio.toDateTime();
-				n57.fFin = n57.fFin.toDateTime();
-				n57.data.forEach(function(fila) {
-					fila.fOperacion = fila.fOperacion.toDateTime();
-					fila.fCobro = fila.fCobro.toDateTime();
-				});
-			}
-		} catch(e) {}
-		return this;
-	};
-
-	this.assign = function(obj) {
-		obj.n19 = obj.n19 || n19;
-		Object.assign(obj.n19, n19);
-		obj.n43 = obj.n43 || n43;
-		Object.assign(obj.n43, n43);
-		obj.n57 = obj.n57 || n57;
-		Object.assign(obj.n57, n57);
-		return this;
-	};
-
+	this.n19 = () => n19;
+	this.n43 = () => n43;
+	this.n57 = () => n57;
+	this.references = () => referencias;
+	this.getTpv = row => (row.concepto5 || (row.concepto2 && row.concepto2.split(/\W+/)[1]));
+	this.isConciliable = row => (!row.ji || !row.ji.startsWith(NC));;
 	this.reset = function() {
 		referencias.reset();
-		factory.n19 = n19Reset();
-		factory.n43 = n43Reset();
-		factory.n57 = n57Reset();
-		delete sessionStorage.rf;
+		n19Reset(); n43Reset(); n57Reset();
 		return this;
 	};
 };
 
-var rf = new RulesFactory();
+export default new RulesFactory();

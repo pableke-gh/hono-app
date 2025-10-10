@@ -1,43 +1,115 @@
 
+import coll from "../components/CollectionHTML.js";
+import tabs from "../components/Tabs.js";
+import api from "../components/Api.js";
+import rf from "./ttpp.js";
+
 //DOM is fully loaded
-$(function() {
-	function fnSearch() { return !tables.tbFilter(tbConfig); };
-	function fnReset() { tbConfig.iSearch.val(""); tables.tbReset(tbConfig); return !rf.reset(); };
-
-	//inicializo los campos y eventos del formulario
-	var fbConfig = {
-		LatinFloatParse: npLatin, LatinFloat: nfLatin, LatinDateParse: dpLatin, LatinDate: dfLatin,
-		onStart: fnReset,
-		onLoad: function(ev, file, i) { rf.parse(ev.target.result); }, //parse file contents
-		complete: function() {
-			if (location.pathname.endsWith("ttpp_tpvs.xhtml"))
-				return tables.tbPush(tbConfig);
-
-			var n19 = rf.n19();
-			if (n19.files) {
-				Object.assign(tbConfig.tables.n19, n19);
-				return tables.tbPush(tbConfig);
-			}
-
-			var data = rf.save().n43();
-			data.referencias = rf.references().join();
-			form.fbSet(data).find("[id$=read]").click();
-		}
-	};
-
-	$("a#reset").click(fnReset);
-	var form = $("form#ttpp").fbInit(fbConfig);
-	var fr = $("input#fichero").change(function() { fr.fbRead(); });
-	var ag = $("a#group, a#ungroup").click(function() { toggle(ag); return !tables.tbToggleGroup(tbConfig); });
-
-	const fnHideTable = table => $(table.parentNode).addClass("hide").hide();
-	const fnShowTable = table => {
-		$(table).parents().removeClass("hide").show();
-		table.querySelectorAll(".tb-resume-final").forEach(el => { el.nextElementSibling.style.display = "none"; });
+coll.ready(() => {
+	const btnSave = $1("a[href='#tab-action-save']");
+	const fnSearch = () => !tables.tbFilter(tbConfig);
+	const fnReset = () => {
+		btnSave.hide();
+		iSearch.val("");
+		tables.tbReset(tbConfig);
+		return !rf.reset();
+	}
+	const fnTable = (norma, table) => {
+		tbConfig.current = norma;
+		tables.tbPush(tbConfig);
+		delete norma.references;
+		table.data.reset();
+		btnSave.show();
 	}
 
-	//inicializo la configuracion y eventos de la tabla
-	var tbConfig = {
+	$("form#ttpp").fbInit({ // Inicializo los campos y eventos del formulario
+		LatinFloatParse: npLatin, LatinFloat: nfLatin, LatinDateParse: dpLatin, LatinDate: dfLatin,
+		onStart: fnReset,
+		onLoad: ev => rf.parse(ev.target.result), //parse file contents
+		complete: function() { // after parse file
+			const n19 = rf.n19();
+			if (n19.files) {
+				Object.assign(tbConfig.tables.n19, n19);
+				return fnTable(n19, tbConfig.tables.n19);
+			}
+
+			const n43 = rf.n43();
+			if (window.location.search == "?tpv=1") {
+				return api.init().json("/uae/ttpp/tpv").then(tpvs => {
+					tbConfig.tables.tpvs.data = n43.data.map(fila => {
+						const tpv = tpvs.find(item => item.value.startsWith(rf.getTpv(fila)));
+						fila.forma = tpv ? (tpv.value + " - " + tpv.label) : fila.forma; // actualizo el texto de agrupacion
+						return rf.normalize(fila);
+					});
+					fnTable(n43, tbConfig.tables.tpvs);
+				});
+			}
+			if (n43.files) {
+				n43.referencias = rf.references(); // referencias leidas del fichero bancario
+				const temp1 = n43.data.filter(rf.isConciliable); // filas conciliables
+				const aux = Object.copy({}, n43, [ "ccc", "fInicio", "fFin", "referencias" ]);
+				return api.setJSON(aux).json("/uae/ttpp/load").then(data => { // llamada post
+					const temp2 = data.recibos.filter(recibo => {
+						const fila = temp1.find(f => (recibo.refreb == f.ref1));
+						fila && rf.acLoad(fila, recibo); //aÃ±ado los datos de academico
+						if (!recibo.fCobro || ([18, 31].indexOf(recibo.pago) < 0))
+							return false; //recibo no de TPV
+						//primero ajusto el offset time zone (-1 o -2 horas) y luego sumo 1 dia
+						//recibo.fCobro.addHours(fCobro.getTimezoneOffset() / 60).addDate(1); //ajusto la hora de AC
+						recibo.fCobro = new Date(recibo.fCobro); // build date object
+						if (recibo.fCobro.trunc().getDay() == 5) recibo.fCobro.addDate(3); //si es viernes paso a lunes
+						else if (recibo.fCobro.getDay() == 6) recibo.fCobro.addDate(2); //si es sabado paso a lunes
+						else recibo.fCobro.addDate(1); //de domingo a jueves sumo 1 dia
+						if (!recibo.fCobro.between(n43.fInicio, n43.fFin))
+							return false; //recibo fuera del rango de fechas del fichero
+						recibo.codigo = "22"; //codigo por defecto
+						recibo.ref1 = recibo.refreb; // rename referencia
+						recibo.forma = "TPV Virtual"; // forma cobro
+						recibo.fOperacion = recibo.fCobro; //guardo la fecha de operacion en el recibo
+						n43.incorporado += recibo.importe; //importe incorporado de AC
+						return rf.normalize(recibo); //incorporo el recibo
+					});
+					n43.importe = n43.total + n43.incorporado; // importe recibos cancarios + incorporados
+					tbConfig.tables.n43.data = temp1.concat(temp2); // muestro todos los recibos
+					fnTable(n43, tbConfig.tables.n43);
+				});
+			}
+
+			const n57 = rf.n57();
+			if (n57.files) {
+				n57.referencias = rf.references(); // referencias leidas del fichero bancario
+				const temp1 = n57.data.filter(rf.isConciliable); // filas conciliables
+				const aux = Object.copy({}, n57, [ "ccc", "fInicio", "fFin", "referencias" ]);
+				return api.setJSON(aux).json("/uae/ttpp/load").then(data => { // llamada post
+					data.recibos.forEach(recibo => { //no incorporo nada
+						const fila = temp1.find(f => (recibo.refreb == f.ref1));
+						fila && rf.acLoad(fila, recibo); // añado los datos de academico
+					});
+					tbConfig.tables.n57.data = temp1;
+					fnTable(n57, tbConfig.tables.n57);
+				});
+			}
+		}
+	});
+
+	$("a#reset").click(fnReset);
+	const fr = $("input#fichero").change(() => fr.fbRead());
+	const ag = $("a#group, a#ungroup").click(function() { toggle(ag); return !tables.tbToggleGroup(tbConfig); });
+
+	tabs.setAction("save", () => api.init().json("/uae/ttpp/save"));
+	const fnHideTable = table => { table.parentNode.hide(); tabs.setHeight(); }
+	const fnShowTable = function(table) {
+		if (this.numrows) {
+			table.closest(".hide").show();
+			table.previousElementSibling.render(tbConfig.current);
+			table.querySelectorAll(".tb-resume-final").forEach(el => el.nextElementSibling.hide());
+		}
+		else
+			$(table).tbReset(tbConfig);
+		tabs.setHeight();
+	}
+
+	const tbConfig = { // Inicializo la configuracion y eventos de la tabla
 		LatinFloatParse: toNumber, LatinFloat: nfLatin, LatinDateParse: toDate, LatinDate: dfLatin, 
 		/*orderNameClass: "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s",*/ descNameClass: "ui-icon-triangle-1-s", ascNameClass: "ui-icon-triangle-1-n",
 		headColumns: '<td colspan="@columns_1;">@text;</td><td class="text-right">@importeSumFmt;</td>',
@@ -55,110 +127,20 @@ $(function() {
 			n43: {
 				typeColumns: { fCobro: "DateTime", importe: "Number" },
 				styleColumns: { fCobro: "LatinDate", importe: "LatinFloat" },
-				beforeRead: function(table) {
-					Object.assign(this, rf.load().n43());
-					this.data = this.data.filter(rf.isConciliable);
-				},
-				onRead: function(recibo, row) {
-					var fila = this.data.find(function(f) { return (recibo.refreb == f.ref1); });
-					fila && rf.acLoad(fila, recibo); //aÃ±ado los datos de academico
-					recibo.idFormaPago = +attr(row, "fp"); //forma de pago
-					if (!recibo.fCobro || ([18, 31].indexOf(recibo.idFormaPago) < 0))
-						return false; //recibo no de TPV
-					//primero ajusto el offset time zone (-1 o -2 horas) y luego sumo 1 dia
-					//recibo.fCobro.addHours(fCobro.getTimezoneOffset() / 60).addDate(1); //ajusto la hora de AC
-					if (recibo.fCobro.getDay() == 5) recibo.fCobro.addDate(3); //si es viernes paso a lunes
-					else if (recibo.fCobro.getDay() == 6) recibo.fCobro.addDate(2); //si es sabado paso a lunes
-					else recibo.fCobro.addDate(1); //de domingo a jueves sumo 1 dia
-					if (!recibo.fCobro.between(this.fInicio, this.fFin))
-						return false; //recibo fuera del rango de fechas del fichero
-					this.incorporado += recibo.importe; //importe incorporado de AC
-					recibo.fOperacion = recibo.fCobro; //guardo la fecha de operacion en el recibo
-					recibo.codigo = "22"; //codigo por defecto
-					return rf.normalize(recibo); //incorporo el recibo
-				},
-				afterRead: function(table) {
-					if (this.numrows) {
-						var n43 = rf.n43();
-						delete n43.referencias;
-						n43.incorporado = this.incorporado;
-						form.fbSet(rf.save().n43()); //guardo los datos incorporados
-						fnShowTable(table);
-					}
-					else
-						$(table).tbReset(tbConfig);
-				},
+				afterPush: fnShowTable,
 				afterReset: fnHideTable
 			},
 			n57: {
 				typeColumns: { fCobro: "DateTime", idActividad: "Number", importe: "Number" },
 				styleColumns: { fCobro: "LatinDate", idActividad: "Integer", importe: "LatinFloat" },
-				beforeRead: function(table) {
-					Object.assign(this, rf.n57());
-					this.data = this.data.filter(rf.isConciliable);
-				},
-				onRead: function(recibo, row) {
-					var fila = this.data.find(function(f) { return (recibo.refreb == f.ref1); });
-					fila && rf.acLoad(fila, recibo); //aÃ±ado los datos de academico
-					return false; //no incorporo nada
-				},
-				afterRead: function(table) {
-					this.numrows ? fnShowTable(table) : $(table).tbReset(tbConfig);
-				},
+				afterPush: fnShowTable,
 				afterReset: fnHideTable
 			},
 			tpvs: {
 				typeColumns: { fCobro: "DateTime", importe: "Number" },
 				styleColumns: { fCobro: "LatinDate", importe: "LatinFloat" },
-				beforePush: function() {
-					Object.assign(this, rf.n43());
-					this.tpvs = JSON.parse($("div#tpvsJSON").text());
-				},
-				onPush: function(fila) {
-					var tpv = tbConfig.tables.tpvs.tpvs.find(function(e) { return e.startsWith(rf.getTpv(fila)); });
-					fila.forma = tpv || fila.forma; //actualizo el texto de agrupacion
-					rf.normalize(fila);
-				},
 				afterPush: fnShowTable,
 				afterReset: fnHideTable
-			},
-
-			ficheros: {
-				headColumns: '<td colspan="3;">@text;</td><td class="text-right">@importeSumFmt;</td><td class="text-right">@ncGDCSumFmt;</td><td class="text-right">@ncElavonSumFmt;</td><td class="text-right">@incorporadoSumFmt;</td><td class="text-right">@conciliableSumFmt;</td><td class="text-right">@totalSumFmt;</td><td colspan="5"></td>',
-				footColumnsfinal: '<td colspan="3">Filas: @numrows;</td><td class="text-right">@importeSumFmt;</td><td class="text-right">@ncGDCSumFmt;</td><td class="text-right">@ncElavonSumFmt;</td><td class="text-right">@incorporadoSumFmt;</td><td class="text-right">@conciliableSumFmt;</td><td class="text-right">@totalSumFmt;</td><td colspan="5"></td>',
-				footColumns: '<td colspan="@columns;">Filas: @numrows;</td>',
-				primaryKey: "idFichero",
-
-				onRead: function(data, row) {
-					data.dias = Math.round(data.fInicio.trunc().days(data.fFin.trunc()));
-					data.acciones = row.cells[13].innerHTML;
-					return true;
-				},
-
-				createGroup: function(node, row) {
-					node.tpvAcum = node.cAcum = node.dias = node.i = 0;
-					delete node.fFinMax; delete node.fInicioMin;
-				},
-				onGroup: function(node, row) {
-					node.tpvAcum += row.difTpv;
-					node.cAcum += row.difConciliable;
-					row.tpvAcum = node.tpvAcum;
-					row.cAcum = node.cAcum;
-					node.dias += row.dias;
-					if (!$.mbHasError() && node.fInicioMin && (Math.round(node.fInicioMin.startYear().days(node.fFinMax.trunc())) != (node.dias + node.i)))
-						form.mbError(format("La cuenta @text;, tiene fechas intermedias fuera del rango del @fInicioMinFmt; al @fFinMaxFmt;", node));
-					node.i++;
-				},
-				afterGroup: function(table) {
-					$.mbHasError() || $(table).mbOk("Rango de fechas cubierto para todas las cuentas.");
-				}
-			},
-			movimientos: {
-				typeColumns: { fecha: "DateTime", importe: "Number" },
-				styleColumns: { fecha: "LatinDate", importe: "LatinFloat" },
-				footColumns: '<td colspan="6">Filas: @numrows;</td><td class="text-right">@importeSumFmt;</td><td colspan="2"></td>',
-				primaryKey: "idMovimiento",
-				onRead: function(data, row) { data.acciones = row.cells[8].innerHTML; return true; }
 			},
 
 			fcb: {
@@ -202,43 +184,22 @@ $(function() {
 					var ok = (i == 0) || ((i < 4) && (row.txtHabilitar == text($("option", elem).get(i))));
 					ok = ok || ((i == 4) && (row.txtHabilitar.endsWith("00")) && (row.impHabilitar == 0));
 					ok = ok || ((i == 5) && (row.impHabilitar > 0));
-					return ok && tbConfig.iSearch.ilike(row);
+					return ok && iSearch.ilike(row);
 				}
 			}
 		},
 
-		onFilter: function(row) { return tbConfig.iSearch.ilike(row); },
+		onFilter: function(row) { return iSearch.ilike(row); },
 		createGroup: function(node, row, name) { node.text += row[name + "Desc"] ? (" - " + row[name + "Desc"]) : ""; }
 	};
 
 	$("select[id$=ejercicio]").change(function() { $("[id$=srv-search]").click(); });
 	$("a#search").click(fnSearch);
-	$("a#clearSearch").click(function() { tbConfig.iSearch.val(""); return fnSearch(); });
+	$("a#clearSearch").click(function() { iSearch.val(""); return fnSearch(); });
 	var at = $("a#tabla, a#pivot").click(function() { toggle(at); return !toggle(tables); });
 	$("a#excel").click(function() { this.href = B64MT.xls + tables.filter(".tb-push").xls(tbConfig).utf8ToB64(); });
 	$("a#tr").click(function(){ this.href = B64MT.txt + rf.tr57to43().n43Fetch().utf8ToB64(); });
-	$("[name=multi]").fbMulti({
-		primaryKey: "idMovimiento",
-		idsInput: "filtro:ap:referencias",
-		jsonData: "op-uxxiec",
-		onFilter: function(data, term) { return olike(data, ["operacion", "tipo", "descripcion"], term); },
-		onRender: function(data, term) {
-			return data.operacion.iwrap(term, "<u><b>", "</b></u>") + " / " + data.tipo + " / " + nfLatin(data.importe) + " &euro;<br>" 
-					+ data.descripcion.iwrap(term, "<u><b>", "</b></u>");
-		},
-		onSort: function(a, b) { return cmp(a.operacion, b.operacion); },
-		onSelect: function(data) { return data.operacion; }
-	});
 
-	tbConfig.iSearch = $("[group=search]").keydown(function(ev) { if (ev.keyCode == 13) { ev.preventDefault(); fnSearch(); } });
-	var tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);
-
-	// hack ifPage-frame styles for CV prod.
-	const iframe = window.parent.document.querySelector("#ifPage-frame");
-	if (iframe) { // auto-adapt iframe height on resize event
-		iframe.contentDocument.body.addEventListener("click", () => {
-			iframe.style.height = iframe.contentDocument.body.offsetHeight + "px"; // set height
-		});
-		iframe.setAttribute("scrolling", "no");
-	}
+	const iSearch = $("[group=search]").keydown(ev => { ev.preventDefault(); (ev.keyCode == 13) && fnSearch(); });
+	const tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);
 });

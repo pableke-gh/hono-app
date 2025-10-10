@@ -18,7 +18,7 @@
 	<ui:define name="outputScript">
 		<script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 		<script type="text/javascript" src="/uae/resources/js/isuite/lib/uae-box.min.js"></script>
-		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script>
+		<script type="module" src="/uae/resources/js/isuite/xeco.js"></script>
 	</ui:define>
 
 	<ui:define name="title">Extraeco</ui:define>
@@ -26,6 +26,7 @@
 	<ui:define name="semilla"><li class="active">PANEL GC</li></ui:define>
 
 	<ui:define name="body">
+		<ui:include src="./parts/msgs.xhtml"></ui:include>
 		<h1>Generación de Crédito de Oficio</h1>
 		<c:set var="ctrl" value="#{xecomControlador}" />
 		<f:event type="preRenderView" listener="#{ctrl.readGc()}"/>

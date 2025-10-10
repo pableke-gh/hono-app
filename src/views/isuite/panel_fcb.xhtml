@@ -17,7 +17,7 @@
 	</ui:define>
 	<ui:define name="outputScript">
 		<script type="text/javascript" src="/uae/resources/js/isuite/lib/uae-box.min.js"></script> 
-		<script type="text/javascript" src="/uae/resources/js/isuite/xeco.js"></script> 
+		<script type="module" src="/uae/resources/js/isuite/xeco.js"></script> 
 	</ui:define>
 
 	<ui:define name="title">Extraeco</ui:define>
@@ -25,6 +25,7 @@
 	<ui:define name="semilla"><li class="active">PANEL FCB</li></ui:define>
 
 	<ui:define name="body">
+		<ui:include src="./parts/msgs.xhtml"></ui:include>
 		<h1>Panel del Fondo de Cobertura</h1>
 		<c:set var="ctrl" value="#{xecomControlador}" />
 		<f:event type="preRenderView" listener="#{ctrl.readFcb()}"/>
