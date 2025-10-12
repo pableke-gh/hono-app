@@ -48,6 +48,8 @@
 
 		<!-- Form IRSE -->
 		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+		<h:inputHidden id="idses" value="#{iris.irse.form.id}" />
+
 		<!-- Tab0 = perfil PAS / PDI -->
 		<p:outputPanel id="tab-0" styleClass="tab-content update-irse">
 			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>

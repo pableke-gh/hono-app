@@ -59,7 +59,7 @@ window.viewIrse = (xhr, status, args, tab) => {
 	rutas.init(formIrse); // rutas asociadas a la solicitud
 	organicas.init(formIrse); // tabla de organicas
 	xeco.getFirmas().view(coll.parse(args.firmas)); // update firmas view
-	formIrse.setCache(window.IRSE.id).refresh(irse); // configure view
+	formIrse.setStrval("#idses", window.IRSE.id).setCache(window.IRSE.id).refresh(irse); // configure view
 	tabs.nextTab(tab ?? window.IRSE.tab); // go to next tab
 	window.showAlerts(xhr, status, args); // alerts
 }

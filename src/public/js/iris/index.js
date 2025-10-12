@@ -25,7 +25,7 @@ coll.ready(() => {
 
 	const form = xeco.getForm();
 	form.set("is-resumable", iris.isResumable).set("is-urgente", iris.isUrgente).set("is-equipo-gobierno", iris.isEquipoGob)
-		.set("is-paso8", iris.isPaso8).set("is-editable-paso8", () => (iris.isEditable() && iris.isPaso8()));
+		.set("is-editable-p0", iris.isEditableP0).set("is-paso8", iris.isPaso8).set("is-editable-p8", () => (iris.isEditable() && iris.isPaso8()));
 
 	iris.view = data => { // Init IRSE form
 		iris.init(data.iris); // init perfil
@@ -39,7 +39,7 @@ coll.ready(() => {
 		sendTab.view(data.cuentas); // paso 9
 		form.view(iris, iris.getInitTab()); // render form view
 	}
-		
+
 	iris.update = (data, tab) => { // update IRSE form
 		xeco.update(data.iris, data.firmas); // Update firmas blocks
 		data.interesado && iris.setInteresado(data.interesado);

@@ -15,7 +15,7 @@
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<input type="text" id="interesado" name="acInteresado" tabindex="1" class="ui-input ui-autocomplete" />
+				<input type="text" id="interesado" name="acInteresado" tabindex="1" data-editable="is-editable-p0" class="ui-input ui-autocomplete" />
 				<input type="text" id="nif-interesado" name="nifInteresado" class="hide" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
@@ -46,7 +46,7 @@
 			<thead>
 				<tr>
 					<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
-					<th class="ui-perfil" data-refresh="is-editable"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
+					<th class="ui-perfil" data-refresh="is-editable-p0"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
 					<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
 					<th>#{msg['lbl.responsable.gasto']}</th><th>#{msg['lbl.nombre.apellidos']}</th>
 					<th class="no-print"></th>
@@ -66,7 +66,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" />:</div>
 			<div class="ui-block">
-			<select id="actividad" name="actividad" class="ui-input ui-select" tabindex="7">
+			<select id="actividad" name="actividad" data-editable="is-editable-p0" class="ui-input ui-select" tabindex="7">
 				<option value="COM">#{msg['uae.irse.tab0.act.com']}</option>
 				<option value="MUN">#{msg['uae.irse.tab0.act.mun']}</option>
 				<option value="MES">#{msg['uae.irse.tab0.act.mes']}</option>
@@ -87,7 +87,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" />:</div>
 			<div class="ui-block">
-			<select id="tramite" name="tramite" class="ui-input ui-select" tabindex="8">
+			<select id="tramite" name="tramite" data-editable="is-editable-p0" class="ui-input ui-select" tabindex="8">
 				<option value="AyL">#{msg['uae.irse.tab0.tramit.ayl']}</option>
 				<option value="AUT">#{msg['uae.irse.tab0.tramit.aut']}</option>
 				<option value="LIQ">#{msg['uae.irse.tab0.tramit.liq']}</option>

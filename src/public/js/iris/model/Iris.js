@@ -6,6 +6,9 @@ import iris from "../../xeco/model/Solicitud.js";
 import perfiles from "../data/perfiles/perfiles.js"; 
 
 iris.getUrl = () => "/uae/iris";
+iris.isEditable = () => (iris.getEstado() == 6); // redefine editable
+iris.isEditableP0 = () => (!iris.getId() && iris.isEditable());
+
 iris.isActivablePaso8 = () => (iris.isUae() && iris.isEditable()); // pueden mostrarse los campos del paso 8
 iris.isReactivable = () => (sb.inYear(iris.get("fCreacion")) && (iris.isInvalidada() || iris.isErronea())); // La solicitud se puede reactivar / subsanar
 iris.isResumable = () => (iris.isPendiente() || iris.isFirmada() || iris.isIntegrada()); // muestra el boton de resumen (paso 6)
