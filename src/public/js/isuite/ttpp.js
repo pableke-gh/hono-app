@@ -284,12 +284,6 @@ function RulesFactory() {
 		return this;
 	};
 
-	this.n57SantanderToN43 = function() {
-		n57ResetStats();
-		n57.data = n57.data.filter(function(fila) { return (fila.sufijo != "000") }).each(n57Row60);
-		return this.tr57to43();
-	};
-
 	this.n43Fetch = function() {
 		if (!n43.numrows) return ""; //hay norma 43?
 		var rows = []; //lines container to join

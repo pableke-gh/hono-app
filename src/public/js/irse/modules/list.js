@@ -23,8 +23,8 @@ function List() {
 	}
 
 	// download iris-facturas.zip / iris-doc.zip
-	tabs.setAction("zip-com", () => api.init().blob("/uae/iris/zip/com").then(data => api.download(data, "iris-facturas.zip")));
-	tabs.setAction("zip-doc", () => api.init().blob("/uae/iris/zip/doc").then(data => api.download(data, "iris-doc.zip")));
+	tabs.setAction("zip-com", () => api.init().blob("/uae/iris/zip/com", "iris-facturas.zip"));
+	tabs.setAction("zip-doc", () => api.init().blob("/uae/iris/zip/doc", "iris-doc.zip"));
 }
 
 export default new List();

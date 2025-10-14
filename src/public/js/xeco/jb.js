@@ -37,5 +37,5 @@ coll.ready(() => {
     fnBuildXecoDoc();
 
 	tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
-	tabs.setAction("download", link => api.init().blob("/uae/jb/download?id=" + link.id).then(data => api.download(data, link.download)));
+	tabs.setAction("download", link => api.init().blob("/uae/jb/download?id=" + link.id, link.download));
 });

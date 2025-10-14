@@ -36,23 +36,16 @@ export default function(tab) {
 		else
 			_grpGasto.mask(0b00001);
 	}
-	const fnUrl = () => {
-		if (isPernocta())
-			return "/uae/iris/upload/pernocta?id=" + iris.getId();
-		if (isInterurbano())
-			return "/uae/iris/upload/interurbano?id=" + iris.getId();
-		if (isDoc())
-			return "/uae/iris/upload/doc?id=" + iris.getId();
-		if (isExtra())
-			return "/uae/iris/upload/extra?id=" + iris.getId();
-		return "/uae/iris/upload/ticket?id=" + iris.getId();
-	}
 
 	// Init tab 5
 	_eTipoGasto.onchange = fnChange; // Change event
 	iris.getTextGasto = () => i18n.get(isTaxi() ? "lblDescTaxi" : "lblDescObserv"); // label text
 	// set date range type inputs + upload gasto handler on change event
-	form.setDateRange("#fMinGasto", "#fMaxGasto").set("upload-gasto", fnChange);
+	form.setDateRange("#fMinGasto", "#fMaxGasto");
+	form.onChangeFile("[name='fileGasto']", (ev, el, file) => {
+		el.nextElementSibling.innerHTML = file.name;
+		fnChange();
+	});
 
 	const fnReset = () => {
 		_grpGasto.mask(0);
@@ -80,23 +73,54 @@ export default function(tab) {
 	}
 
 	// update tabs events
-	const fnUpload = data => api.setJSON(data).json(fnUrl()).catch(globalThis.void); // catch error
-	const fnAfterUpload = data => { fnReset(); gastos.addGasto(data.gasto, data.rutas); } // add gasto and update rutas
+	const fnAfterUpload = data => {
+		fnReset(); // add gasto and update rutas
+		gastos.addGasto(data.gasto, data.rutas);
+	}
+
+	const fnUrl = () => {
+		if (isPernocta())
+			return "/uae/iris/upload/pernocta?id=" + iris.getId();
+		if (isInterurbano())
+			return "/uae/iris/upload/interurbano?id=" + iris.getId();
+		if (isDoc())
+			return "/uae/iris/upload/doc?id=" + iris.getId();
+		if (isExtra())
+			return "/uae/iris/upload/extra?id=" + iris.getId();
+		return "/uae/iris/upload/ticket?id=" + iris.getId();
+	}
+	const fnUpload = data => {
+		const fd = new FormData(form.getForm()); // merge data to send
+		["rutas", "num", "impGasto", "imp2", "desc"].forEach(key => {
+			const value = data[key];
+			value && fd.set(key, value);
+		});
+		const exclude = [
+			"memo", "justifi", "justifiVp", "justifiCong", "tipoSubv", "finalidad", "justifiKm",
+			"iban", "cuenta", "swift", "observaciones", "urgente", "fMax", "extra", "rechazo",
+			"paisEntidad", "nombreEntidad", "codigoEntidad", "acInteresado", "origen"
+		];
+		exclude.forEach(key => fd.delete(key));
+		return api.setFormData(fd).send(fnUrl());
+	}
 	tabs.setViewEvent(5, fnReset); // reset form on view tab 5
 	tabs.setAction("uploadGasto", () => { // upload button
 		const data = form.validate(fnValidate, ".ui-gasto"); // valido los datos del gasto
-		if (data) // trayecto interurbano => tabla de rutas pendientes
-			isInterurbano() ? tabs.showTab(12) : fnUpload(data).then(fnAfterUpload);
+		if (!data) // valido los datos del gasto
+			return;
+		if (isInterurbano()) // es trayecto interurbano
+			return tabs.showTab(12); // muestro la tabla de rutas pendientes
+		fnUpload(data).then(fnAfterUpload); // upload gasto
 	});
 	tabs.setInitEvent(12, () => { // tabla de rutas pendientes
 		const _tblRutasGasto = form.setTable("#rutas-out", ruta.getTable()); // itinerario
 		tabs.setViewEvent(12, () => _tblRutasGasto.render(rutas.getRutasUnlinked()));
-		tabs.setAction("gasto-rutas", () => {
-			const rutas = _tblRutasGasto.querySelectorAll(".link-ruta:checked");
+		tabs.setAction("rtog", () => {
+			const rutas = _tblRutasGasto.querySelectorAll(":checked");
 			if (!rutas || !rutas.length) // no hay rutas seleccionadas
 				return form.showError("errLinkRuta"); // mensaje de error
-			const data = form.getData(".ui-gasto"); // obtengo los datos del gasto
-			data.rutas = rutas.map(el => el.value); // PK de las rutas seleccionadas
+			const data = form.getData(".ui-gasto"); // datos del sub-formulario
+			data.rutas = rutas.map(el => el.value).join(); // PK de las rutas seleccionadas
 			fnUpload(data).then(fnAfterUpload).then(() => { tabs.setActive(5); }); // vuelvo al paso 5
 		});
 	});

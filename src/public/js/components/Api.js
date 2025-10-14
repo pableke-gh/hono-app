@@ -18,11 +18,12 @@ function Api() {
 
 	this.get = name => OPTS[name];
 	this.set = (name, value) => { OPTS[name] = value; return self; }
-	this.init = () => {
-		Object.clear(OPTS); // remove previous options
-		OPTS.headers = HEADERS; // set AJAX flag
-		OPTS.headers.delete(HEADER_TOKEN); // remove token
-		return self.set("cache", "default"); // Default options
+	this.init = () => { // set default options
+		Object.clear(OPTS);
+		OPTS.headers = HEADERS;
+		OPTS.headers.delete(HEADER_TYPE);
+		OPTS.headers.delete(HEADER_TOKEN);
+		return self.set("cache", "default");
 	}
 
 	this.getHeaders = () => OPTS.headers;
@@ -57,7 +58,8 @@ function Api() {
 		if (!params)
 			return globalThis.fetch(url, OPTS); // send call
 		const query = new URLSearchParams(params); // query params
-		return globalThis.fetch(url + "?" + query.toString(), OPTS); // send call
+		// then, catch and finally callbacks execute syncronously
+		return globalThis.fetch(url + "?" + query.toString(), OPTS);
 	}
 	this.fetch = async (url, params) => {
 		self.setContentType(mt.json); // set content type header
@@ -76,16 +78,18 @@ function Api() {
 		self.setContentType(mt.text); // set content type header
 		const res = await fnFetch(url, params); // send call
 		const promise = res.ok ? res.text() : fnError(res); // get promise
-		return promise.finally(alerts.working); // Add default finally functions to promise
+		return promise.finally(alerts.working); // Add default finally callback to promise
 	}
-	this.blob = async (url, params) => {
+	this.blob = async (url, filename) => {
 		alerts.loading(); // show loading indicator
-		const res = await fnFetch(url, params); // send call
+		const res = await globalThis.fetch(url, OPTS); // send call
 		const objectURL = res.ok ? URL.createObjectURL(await res.blob()) : null;
-		// then, catch and finally execute syncronously => revoke the object URL to free up memory at the end
-		const fnFinally = () => setTimeout(() => URL.revokeObjectURL(objectURL), 1); // force last execution
-		const promise = objectURL ? Promise.resolve(objectURL).finally(fnFinally) : fnError(res, "Invalid URL file.");
-		return promise.finally(alerts.working); // Add default finally functions to promise
+		if (!objectURL) // object URL is required
+			return fnError(res, "Invalid URL file.").finally(alerts.working);
+		// if filename is not defined, try to get it from Content-Disposition header
+		self.download(objectURL, filename || res.headers.get("Content-Disposition")?.split('"')[1]);
+		URL.revokeObjectURL(objectURL); // revoke the object URL to free up memory at the end
+		return Promise.resolve().finally(alerts.working); // return a resolve promise
 	}
 
 	this.send = async (url, params) => {
@@ -106,9 +110,9 @@ function Api() {
 	}
 	this.download = (objectURL, name) => {
 		const link = document.createElement("a");
-		link.href = objectURL; // blob source
-		link.download = name;
-		link.click();
+		link.href = objectURL; // set blob source
+		link.download = name || "download.pdf"; // force file name
+		link.click(); // download file to cliente
 	}
 }
 

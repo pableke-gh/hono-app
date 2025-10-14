@@ -18,7 +18,7 @@ function RutaGasto() {
 			<td data-cell="${i18n.get("lblFechaLlegada")}">${i18n.isoDate(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblHoraLlegada")}">${i18n.isoTimeShort(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblTransporte")}">${i18n.getItem("tiposDesp", data.desp)}</td>
-			<td data-cell="Asociar Etapa"><input type="checkbox" value="${data.id}" class="link-ruta" /></td>
+			<td data-cell="Asociar Etapa"><input type="checkbox" value="${data.id}"/></td>
 		</tr>`;
 	}
 

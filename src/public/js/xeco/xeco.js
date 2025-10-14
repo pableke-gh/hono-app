@@ -69,7 +69,7 @@ function XecoForm() {
 	const fnCancelar = id => api.init().json(url + "/cancelar", { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
 	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && fnCancelar(list.getId()); });
 	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable
-	//tabs.setAction("click-next", link => { link.nextElementSibling.click(); setTimeout(window.working, 450); });
+	tabs.setAction("clickNext", link => { link.nextElementSibling.click(); }); // fire click event for next sibling element
 	tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
 }
 

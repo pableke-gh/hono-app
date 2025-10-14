@@ -20,9 +20,11 @@ const fnRender = (el, data, opts) => {
 const fnRefresh = (el, data, opts) => {
 	if (el.dataset.refresh == "text-render")
 		return fnRender(el, data, initOptions(1)); // render contents only
+	if (el.dataset.refresh == "clear") // clear contents
+		return el.setText(""); // set element to empty
 	const fnRefresh = opts[el.dataset.refresh]; // handler
 	if (!fnRefresh) // no handler linked to element
-		el.setVisible(false); // element not renderizable yet!
+		fnHide(el); // element not renderizable yet!
 	else if (el.dataset.toggle) // toggle specific style class
 		el.classList.toggle(el.dataset.toggle, fnRefresh(el));
 	else // show / hide
@@ -87,9 +89,10 @@ NodeList.prototype.toggle = HTMLCollection.prototype.toggle;
 NodeList.prototype.mask = HTMLCollection.prototype.mask;
 
 // Extends HTMLElement prototype
-HTMLElement.prototype.setMsg = function(msg) { this.innerHTML = i18n.get(msg); return this }
-HTMLElement.prototype.show = function() { fnShow(this); return this }
-HTMLElement.prototype.hide = function() { fnHide(this); return this }
+HTMLElement.prototype.setText = function(text) { this.innerHTML = text; return this; }
+HTMLElement.prototype.setMsg = function(msg) { return this.setText(i18n.get(msg)); }
+HTMLElement.prototype.show = function() { fnShow(this); return this; }
+HTMLElement.prototype.hide = function() { fnHide(this); return this; }
 HTMLElement.prototype.toggle = function(name, force) { this.classList.toggle(name || HIDE_CLASS, force); return this; }
 //HTMLElement.prototype.trigger = function(name, detail) { this.dispatchEvent(detail ? new CustomEvent(name, { detail }) : new Event(name)); } //ev.detail
 HTMLElement.prototype.addClick = function(fn) { this.addEventListener("click", ev => fn(ev, this)); return this; }

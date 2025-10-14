@@ -271,18 +271,21 @@ export default function(form, opts) {
 	this.onChangeInput = self.onChange; // synonym
 
 	const fnChangeFile = (el, fn) => {
-		let file, index = 0; // file, position;
 		const reader = new FileReader();
+		let file, index; // file, position
+
 		const fnLoad = i => {
 			file = el.files[i]; // multifile
 			file && reader.readAsArrayBuffer(file); //reader.readAsText(file, "UTF-8");
 		}
 		reader.onload = ev => { // event on load file
-			fn(el, file, reader.result, index);
+			fn(ev, el, file, reader.result, index);
 			fnLoad(++index);
 		}
-		el.addEventListener("change", () => fnLoad(index));
-		return self; // self instance
+		el.addEventListener("change", () => {
+			index = 0; // restart index
+			fnLoad(index);
+		});
 	}
 	this.onChangeFile = (selector, fn) => fnAction(selector, el => fnChangeFile(el, fn));
 	this.onChangeFiles = (selector, fn) => fnUpdate(selector, el => fnChangeFile(el, fn));

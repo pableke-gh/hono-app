@@ -30,7 +30,8 @@
 		<c:set var="ctrl" value="#{xecomControlador}" />
 		<f:event type="preRenderView" listener="#{ctrl.readFcb()}"/>
 
-		<h:form id="filtro" styleClass="card-filter">
+		<div id="tab-fcb" class="tab-content active">
+		<h:form id="isuite" styleClass="card-filter">
 			<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label">Ejercicios:</div>
@@ -64,7 +65,7 @@
 			<div class="navbar">
 			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
 				<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
-			<a id="search" href="#" class="btn btn-info" title="Aplica el filtro sobre la consulta">
+			<a href="#tab-action-search" class="btn btn-info" title="Aplica el filtro sobre la consulta">
 				<i class="fa fa-search btn-icon-left"></i>Buscar</a>
 			<p:commandButton id="srv-search" value="Buscar" icon="fa fa-search" 
 				action="#{ctrl.loadFcb()}" styleClass="hide btn-xeco" title="Aplica el filtro sobre la consulta" />
@@ -74,7 +75,7 @@
 				<i class="fa fa-table btn-icon-left"></i>Tabla</a>
 			<a id="pivot" href="#" class="btn btn-info hide" title="Pivota la tabla sobre el Grupo de Gasto">
 				<i class="fa fa-cog btn-icon-left"></i>Mensual</a>
-			<a id="excel" href="#" download="descarga.xls" class="btn btn-green" title="Exportar tabla a formato EXCEL">
+			<a href="#tab-action-excel" download="panel_fcb.xls" class="btn btn-green" title="Exportar tabla a formato EXCEL">
 				<i class="fa fa-file-excel btn-icon-left"></i>Exportar a Excel</a>
 			</div>
 		</h:form>
@@ -145,6 +146,7 @@
 		<div class="navbar">
 			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
 				<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
+		</div>
 		</div>
 	</ui:define>
 </ui:composition>

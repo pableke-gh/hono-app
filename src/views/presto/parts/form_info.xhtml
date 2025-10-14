@@ -41,13 +41,14 @@
 				<option value="2">Por compromiso de ingreso</option>
 			</select>
 		</label>
-		<div class="ui-block-row form-refresh" data-refresh="text-render"> 
-			<a href="@adjunto;" class="btn btn-info" target="_blank" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
+		<div class="ui-block-row form-refresh" data-refresh="is-adjunto"> 
+			<a href="#tab-action-adjunto" class="btn btn-info" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
 		</div>
 		<div class="ui-block-row form-refresh" data-refresh="is-editable">
-			<p:fileUpload id="filePresto" label="" value="#{presto.form.adjunto}" fileUploadListener="#{presto.form.uploadAdjunto}" mode="advanced" auto="true" styleClass="hide"/> 
-			<a href="#" class="btn btn-info form-refresh" data-refresh="pf-upload"><i class="fas fa-search icon"></i>Adjuntar Documentación</a>
-			<span class="filename"></span>
+			<a href="#tab-action-clickNext" class="btn btn-info"><i class="fas fa-search btn-icon-left"></i>Adjuntar Documentación</a>
+			<input type="file" name="adjunto" class="hide" />
+			<span class="form-refresh" data-refresh="clear"></span>
+
 			<div class="notice notice-info">Formato preferente: PDF; Tamaño máximo 6 MB; Nombre de archivo breve; Evitar símbolos y caracteres especiales.</div>
 			<div class="notice notice-warn form-refresh" data-refresh="is-fce"><b>Advertencia:</b> es especialmente importante en caso que se requiera la utilización de fondos propios de la universidad adjuntar la documentación explicativa.</div>
 		</div>

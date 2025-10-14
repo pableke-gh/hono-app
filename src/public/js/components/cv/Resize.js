@@ -7,7 +7,7 @@ function Resize() {
 	const fnTop = wnd => wnd.scrollTo({ top: 0, behavior: "smooth" });
 
 	this.setHeight = tab => { // set iframe height
-		iframe.style.height = tab ? (Math.max(tab.scrollHeight + 80, 520) + "px") : iframe.style.height;
+		iframe.style.height = tab ? (Math.max(tab.scrollHeight + 90, 520) + "px") : iframe.style.height;
 	}
 	this.resize = tab => { // set iframe height
 		self.setHeight(tab); // recalc new height

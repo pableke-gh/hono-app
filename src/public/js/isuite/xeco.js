@@ -1,12 +1,15 @@
 
 import coll from "../components/CollectionHTML.js";
+import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
 import rf from "./ttpp.js";
 
 //DOM is fully loaded
 coll.ready(() => {
-	const btnSave = $1("a[href='#tab-action-save']");
+	const form = new Form("#isuite");
+	const btnSave = form.querySelector("a[href='#tab-action-save']");
+
 	const fnSearch = () => !tables.tbFilter(tbConfig);
 	const fnReset = () => {
 		btnSave.hide();
@@ -21,93 +24,94 @@ coll.ready(() => {
 		table.data.reset();
 		btnSave.show();
 	}
-
-	$("form#ttpp").fbInit({ // Inicializo los campos y eventos del formulario
-		LatinFloatParse: npLatin, LatinFloat: nfLatin, LatinDateParse: dpLatin, LatinDate: dfLatin,
-		onStart: fnReset,
-		onLoad: ev => rf.parse(ev.target.result), //parse file contents
-		complete: function() { // after parse file
-			const n19 = rf.n19();
-			if (n19.files) {
-				Object.assign(tbConfig.tables.n19, n19);
-				return fnTable(n19, tbConfig.tables.n19);
-			}
-
-			const n43 = rf.n43();
-			if (window.location.search == "?tpv=1") {
-				return api.init().json("/uae/ttpp/tpv").then(tpvs => {
-					tbConfig.tables.tpvs.data = n43.data.map(fila => {
-						const tpv = tpvs.find(item => item.value.startsWith(rf.getTpv(fila)));
-						fila.forma = tpv ? (tpv.value + " - " + tpv.label) : fila.forma; // actualizo el texto de agrupacion
-						return rf.normalize(fila);
-					});
-					fnTable(n43, tbConfig.tables.tpvs);
-				});
-			}
-			if (n43.files) {
-				n43.referencias = rf.references(); // referencias leidas del fichero bancario
-				const temp1 = n43.data.filter(rf.isConciliable); // filas conciliables
-				const aux = Object.copy({}, n43, [ "ccc", "fInicio", "fFin", "referencias" ]);
-				return api.setJSON(aux).json("/uae/ttpp/load").then(data => { // llamada post
-					const temp2 = data.recibos.filter(recibo => {
-						const fila = temp1.find(f => (recibo.refreb == f.ref1));
-						fila && rf.acLoad(fila, recibo); //aÃ±ado los datos de academico
-						if (!recibo.fCobro || ([18, 31].indexOf(recibo.pago) < 0))
-							return false; //recibo no de TPV
-						//primero ajusto el offset time zone (-1 o -2 horas) y luego sumo 1 dia
-						//recibo.fCobro.addHours(fCobro.getTimezoneOffset() / 60).addDate(1); //ajusto la hora de AC
-						recibo.fCobro = new Date(recibo.fCobro); // build date object
-						if (recibo.fCobro.trunc().getDay() == 5) recibo.fCobro.addDate(3); //si es viernes paso a lunes
-						else if (recibo.fCobro.getDay() == 6) recibo.fCobro.addDate(2); //si es sabado paso a lunes
-						else recibo.fCobro.addDate(1); //de domingo a jueves sumo 1 dia
-						if (!recibo.fCobro.between(n43.fInicio, n43.fFin))
-							return false; //recibo fuera del rango de fechas del fichero
-						recibo.codigo = "22"; //codigo por defecto
-						recibo.ref1 = recibo.refreb; // rename referencia
-						recibo.forma = "TPV Virtual"; // forma cobro
-						recibo.fOperacion = recibo.fCobro; //guardo la fecha de operacion en el recibo
-						n43.incorporado += recibo.importe; //importe incorporado de AC
-						return rf.normalize(recibo); //incorporo el recibo
-					});
-					n43.importe = n43.total + n43.incorporado; // importe recibos cancarios + incorporados
-					tbConfig.tables.n43.data = temp1.concat(temp2); // muestro todos los recibos
-					fnTable(n43, tbConfig.tables.n43);
-				});
-			}
-
-			const n57 = rf.n57();
-			if (n57.files) {
-				n57.referencias = rf.references(); // referencias leidas del fichero bancario
-				const temp1 = n57.data.filter(rf.isConciliable); // filas conciliables
-				const aux = Object.copy({}, n57, [ "ccc", "fInicio", "fFin", "referencias" ]);
-				return api.setJSON(aux).json("/uae/ttpp/load").then(data => { // llamada post
-					data.recibos.forEach(recibo => { //no incorporo nada
-						const fila = temp1.find(f => (recibo.refreb == f.ref1));
-						fila && rf.acLoad(fila, recibo); // añado los datos de academico
-					});
-					tbConfig.tables.n57.data = temp1;
-					fnTable(n57, tbConfig.tables.n57);
-				});
-			}
-		}
-	});
-
-	$("a#reset").click(fnReset);
-	const fr = $("input#fichero").change(() => fr.fbRead());
-	const ag = $("a#group, a#ungroup").click(function() { toggle(ag); return !tables.tbToggleGroup(tbConfig); });
-
-	tabs.setAction("save", () => api.init().json("/uae/ttpp/save"));
 	const fnHideTable = table => { table.parentNode.hide(); tabs.setHeight(); }
 	const fnShowTable = function(table) {
 		if (this.numrows) {
-			table.closest(".hide").show();
+			table.parentNode.show();
 			table.previousElementSibling.render(tbConfig.current);
-			table.querySelectorAll(".tb-resume-final").forEach(el => el.nextElementSibling.hide());
+			table.querySelectorAll(".tb-resume-final").forEach(el => { el.nextElementSibling.style.display = "none"; });
 		}
 		else
 			$(table).tbReset(tbConfig);
 		tabs.setHeight();
 	}
+
+	form.onChangeFile("#fichero", ev => { // after parse file
+		const decoder = new TextDecoder("utf-8"); // decode the ArrayBuffer into a UTF-8 string
+		rf.reset().parse(decoder.decode(ev.target.result)); // parse file contents
+
+		const n19 = rf.n19();
+		if (n19.files) {
+			Object.assign(tbConfig.tables.n19, n19);
+			return fnTable(n19, tbConfig.tables.n19);
+		}
+
+		const n43 = rf.n43();
+		if (window.location.search.endsWith("tpv=1")) {
+			return api.init().json("/uae/ttpp/tpv").then(tpvs => {
+				tbConfig.tables.tpvs.data = n43.data.map(fila => {
+					const tpv = tpvs.find(item => item.value.startsWith(rf.getTpv(fila)));
+					fila.forma = tpv ? (tpv.value + " - " + tpv.label) : fila.forma; // actualizo el texto de agrupacion
+					return rf.normalize(fila);
+				});
+				fnTable(n43, tbConfig.tables.tpvs);
+			});
+		}
+		if (n43.files) {
+			n43.referencias = rf.references().join(); // referencias leidas del fichero bancario
+			const temp1 = n43.data.filter(rf.isConciliable); // filas conciliables
+			const aux = Object.copy({}, n43, [ "ccc", "fInicio", "fFin", "referencias" ]);
+			return api.setJSON(aux).json("/uae/ttpp/load").then(data => { // llamada post
+				const temp2 = data.recibos.filter(recibo => {
+					const fila = temp1.find(f => (recibo.refreb == f.ref1));
+					fila && rf.acLoad(fila, recibo); //aÃ±ado los datos de academico
+					if (!recibo.fCobro || ([18, 31].indexOf(recibo.pago) < 0))
+						return false; //recibo no de TPV
+					//primero ajusto el offset time zone (-1 o -2 horas) y luego sumo 1 dia
+					//recibo.fCobro.addHours(fCobro.getTimezoneOffset() / 60).addDate(1); //ajusto la hora de AC
+					recibo.fCobro = new Date(recibo.fCobro); // build date object
+					if (recibo.fCobro.trunc().getDay() == 5) recibo.fCobro.addDate(3); //si es viernes paso a lunes
+					else if (recibo.fCobro.getDay() == 6) recibo.fCobro.addDate(2); //si es sabado paso a lunes
+					else recibo.fCobro.addDate(1); //de domingo a jueves sumo 1 dia
+					if (!recibo.fCobro.between(n43.fInicio, n43.fFin))
+						return false; //recibo fuera del rango de fechas del fichero
+					recibo.codigo = "22"; //codigo por defecto
+					recibo.ref1 = recibo.refreb; // rename referencia
+					recibo.forma = "TPV Virtual"; // forma cobro
+					recibo.fOperacion = recibo.fCobro; //guardo la fecha de operacion en el recibo
+					n43.incorporado += recibo.importe; //importe incorporado de AC
+					return rf.normalize(recibo); //incorporo el recibo
+				});
+				n43.importe = n43.total + n43.incorporado; // importe recibos cancarios + incorporados
+				tbConfig.tables.n43.data = temp1.concat(temp2); // muestro todos los recibos
+				fnTable(n43, tbConfig.tables.n43);
+			});
+		}
+
+		const n57 = rf.n57();
+		if (n57.files) {
+			n57.referencias = rf.references().join(); // referencias leidas del fichero bancario
+			const temp1 = n57.data.filter(rf.isConciliable); // filas conciliables
+			const aux = Object.copy({}, n57, [ "ccc", "fInicio", "fFin", "referencias" ]);
+			return api.setJSON(aux).json("/uae/ttpp/load").then(data => { // llamada post
+				data.recibos.forEach(recibo => { //no incorporo nada
+					const fila = temp1.find(f => (recibo.refreb == f.ref1));
+					fila && rf.acLoad(fila, recibo); // añado los datos de academico
+				});
+				tbConfig.tables.n57.data = temp1;
+				fnTable(n57, tbConfig.tables.n57);
+			});
+		}
+	});
+
+	$("select[id$=ejercicio]").change(function() { $("[id$=srv-search]").click(); });
+	tabs.setAction("search", fnSearch);
+	const at = $("a#tabla, a#pivot").click(function() { toggle(at); return !toggle(tables); });
+	tabs.setAction("reset", fnReset);
+	//const ag = $("a#group, a#ungroup").click(function() { toggle(ag); return !tables.tbToggleGroup(tbConfig); });
+	tabs.setAction("save", () => api.init().json("/uae/ttpp/save")); // read params from sesion => loaded by /uae/ttpp/load
+	tabs.setAction("excel", link => { api.download(B64MT.xls + tables.filter(".tb-push").xls(tbConfig).utf8ToB64(), link.download); });
+	tabs.setAction("tr", link => { api.download(B64MT.txt + rf.tr57to43().n43Fetch().utf8ToB64(), link.download); });
 
 	const tbConfig = { // Inicializo la configuracion y eventos de la tabla
 		LatinFloatParse: toNumber, LatinFloat: nfLatin, LatinDateParse: toDate, LatinDate: dfLatin, 
@@ -192,13 +196,6 @@ coll.ready(() => {
 		onFilter: function(row) { return iSearch.ilike(row); },
 		createGroup: function(node, row, name) { node.text += row[name + "Desc"] ? (" - " + row[name + "Desc"]) : ""; }
 	};
-
-	$("select[id$=ejercicio]").change(function() { $("[id$=srv-search]").click(); });
-	$("a#search").click(fnSearch);
-	$("a#clearSearch").click(function() { iSearch.val(""); return fnSearch(); });
-	var at = $("a#tabla, a#pivot").click(function() { toggle(at); return !toggle(tables); });
-	$("a#excel").click(function() { this.href = B64MT.xls + tables.filter(".tb-push").xls(tbConfig).utf8ToB64(); });
-	$("a#tr").click(function(){ this.href = B64MT.txt + rf.tr57to43().n43Fetch().utf8ToB64(); });
 
 	const iSearch = $("[group=search]").keydown(ev => { ev.preventDefault(); (ev.keyCode == 13) && fnSearch(); });
 	const tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);

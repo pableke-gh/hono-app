@@ -16,8 +16,11 @@ coll.ready(() => {
 	const form = xeco.getForm();
 	form.set("show-partida-dec", presto.isPartidaDec).set("show-imp-cd", presto.isImpCd)
 		.set("show-partida-inc", presto.showPartidasInc).set("show-memoria", () => !presto.isL83())
-		.set("is-fce", presto.isFce).set("is-urgente", presto.isUrgente)
+		.set("is-fce", presto.isFce).set("is-urgente", presto.isUrgente).set("is-adjunto", presto.getAdjunto)
 		.set("show-subtipo", () => (presto.isUae() && presto.isGcr()));
+
+	form.onChangeFile("[name='adjunto']", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
+	tabs.setAction("adjunto", () => api.init().blob("/uae/presto/adjunto?id=" + presto.getAdjunto()));
 
 	// Init. form events
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
@@ -25,7 +28,6 @@ coll.ready(() => {
 	form.onChangeInput("#urgente", fnUrgente).onChangeInputs(".ui-ej", fnSync);
 
 	presto.view = data => {
-		data.presto.adjunto = data.adjunto; // sync adjunto
 		form.setLabels("select.ui-ej", data.ejercicios); // update field values
 		xeco.view(data.presto, data.firmas); // load data-model before view
 		pDec.view(data.presto, data.economicas); // vista de la partida a decrementar
@@ -56,10 +58,14 @@ coll.ready(() => {
 		const data = form.validate(presto.validate);
 		if (!data || !i18n.confirm(msgConfirm))
 			return false; // Errores al validar o sin confirmacion
-		Object.clear(data, [ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ]); // clear info fields
+		const fd = new FormData(form.getForm());
 		const temp = Object.assign(presto.getData(), data); // merge data to send
-		temp.partidas = presto.getPartidas().setPrincipal().getData(); // primera partida = principal
-		api.setJSON(temp).json(url).then(fn); // send data
+		["id", "tipo", "subtipo", "mask"].forEach(key => fd.set(key, temp[key]));
+		// delete info fields => not to send to server
+		["acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd"].forEach(key => fd.delete(key));
+		// primera partida = principal y añado el json al form
+		fd.set("partidas", JSON.stringify(presto.getPartidas().setPrincipal().getData()));
+		api.setFormData(fd).send(url).then(fn); // send data
 	}
 	tabs.setAction("send", () => fnValidate("msgSend", "/uae/presto/save", tabs.showInit)); // send xeco-model form
 	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/presto/subsanar", tabs.showList)); // send from changes

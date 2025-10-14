@@ -67,8 +67,7 @@ function Gastos() {
 	});
 
 	_tblGastos.set("#adjunto", gasto => { // set table action
-		const url = "/uae/iris/download?id=" + gasto.cod; // uuid file
-		api.init().blob(url).then(objectURL => api.download(objectURL, gasto.nombre));
+		api.init().blob("/uae/iris/download?id=" + gasto.cod, gasto.nombre); // uuid file and name
 	});
 	_tblGastos.set("#unload", gasto => { // set table action
 		const url = "/uae/iris/unload?id=" + gasto.id;
