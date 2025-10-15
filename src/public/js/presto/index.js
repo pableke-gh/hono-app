@@ -58,12 +58,10 @@ coll.ready(() => {
 		const data = form.validate(presto.validate);
 		if (!data || !i18n.confirm(msgConfirm))
 			return false; // Errores al validar o sin confirmacion
-		const fd = new FormData(form.getForm());
-		const temp = Object.assign(presto.getData(), data); // merge data to send
-		["id", "tipo", "subtipo", "mask"].forEach(key => fd.set(key, temp[key]));
-		// delete info fields => not to send to server
-		["acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd"].forEach(key => fd.delete(key));
-		// primera partida = principal y añado el json al form
+		const include = [ "id", "tipo", "subtipo", "mask" ];
+		const exclude = [ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ];
+		const fd = form.getFormData(Object.assign(presto.getData(), data), include, exclude);
+		// primera partida = principal y serializo el json com un campo del form data
 		fd.set("partidas", JSON.stringify(presto.getPartidas().setPrincipal().getData()));
 		api.setFormData(fd).send(url).then(fn); // send data
 	}

@@ -218,13 +218,18 @@ export default function(form, opts) {
 				data[el.name].push(el.value); // Array type
 				return;
 			}
-			/*if (isSelect(el) && el.multiple) { // Array type
-				//data[el.name + "Option"] = dom.getOptionText(el);
-				data[el.name] = el.selectedOptions.map(opt => opt.value);
-			}*/
 			data[el.name] = fnParseValue(el);
 		});
 		return data;
+	}
+	this.getFormData = (data, include, exclude) => {
+		const fd = new FormData(form);
+		include.forEach(key => {
+			const value = data[key];
+			value && fd.set(key, value);
+		});
+		exclude.forEach(key => fd.delete(key));
+		return fd; // merge data to send
 	}
 
 	// Inputs helpers

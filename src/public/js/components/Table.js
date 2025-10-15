@@ -124,7 +124,7 @@ export default function(table, opts) {
 			const link = ev.target.closest("a");
 			const href = link?.getAttribute("href");
 			self.invoke(href, _rows[i], link, tr, i);
-			ev.preventDefault(); // avoid navigation
+			link && ev.preventDefault(); // avoid navigation
 		}
 	}
     function fnView(data) {

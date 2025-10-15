@@ -21,7 +21,7 @@ const fnRefresh = (el, data, opts) => {
 	if (el.dataset.refresh == "text-render")
 		return fnRender(el, data, initOptions(1)); // render contents only
 	if (el.dataset.refresh == "clear") // clear contents
-		return el.setText(""); // set element to empty
+		return el.setText(""); // set contents to empty
 	const fnRefresh = opts[el.dataset.refresh]; // handler
 	if (!fnRefresh) // no handler linked to element
 		fnHide(el); // element not renderizable yet!

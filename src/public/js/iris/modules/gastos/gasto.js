@@ -90,18 +90,14 @@ export default function(tab) {
 		return "/uae/iris/upload/ticket?id=" + iris.getId();
 	}
 	const fnUpload = data => {
-		const fd = new FormData(form.getForm()); // merge data to send
-		["rutas", "num", "impGasto", "imp2", "desc"].forEach(key => {
-			const value = data[key];
-			value && fd.set(key, value);
-		});
+		const include = [ "rutas", "num", "impGasto", "imp2", "desc" ];
 		const exclude = [
 			"memo", "justifi", "justifiVp", "justifiCong", "tipoSubv", "finalidad", "justifiKm",
 			"iban", "cuenta", "swift", "observaciones", "urgente", "fMax", "extra", "rechazo",
 			"paisEntidad", "nombreEntidad", "codigoEntidad", "acInteresado", "origen"
 		];
-		exclude.forEach(key => fd.delete(key));
-		return api.setFormData(fd).send(fnUrl());
+		const fd = form.getFormData(data, include, exclude); // merge data to send
+		return api.setFormData(fd).send(fnUrl()); // send call to server
 	}
 	tabs.setViewEvent(5, fnReset); // reset form on view tab 5
 	tabs.setAction("uploadGasto", () => { // upload button

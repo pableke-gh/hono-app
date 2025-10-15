@@ -49,6 +49,8 @@
 .ui-input:focus { border-color: rgb(147 197 253)/* blue-300 */; }
 
 .ui-check { margin: 0 1px; }
+input[type="checkbox"]:hover { cursor: pointer; }
+
 .ui-toggle {
     appearance: none;
     position: relative;
