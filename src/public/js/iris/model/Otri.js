@@ -13,7 +13,7 @@ function Otri() {
 			<td data-cell="Nº Factura">${data.fact}</td> 
 			<td data-cell="NIF">${data.nif}</td>
 			<td data-cell="Tercero">${data.ter}</td>
-			<td data-cell="${i18n.get("lblImporte")}" class="text-right">${i18n.isoFloat(data.impJg)} €</td>
+			<td data-cell="${i18n.get("lblImporte")}" class="currency">${i18n.isoFloat(data.impJg)} €</td>
 			<td data-cell="F. Emisión" class="text-center">${i18n.isoDate(data.fJg)}</td>
 			<td data-cell="${i18n.get("lblDesc")}" class="hide-sm">${data.descJg}</td>
 			<td class="text-center hide-sm"><a href="#"><i class="fas fa-search action resize text-blue"></i></a></td>

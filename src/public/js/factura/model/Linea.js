@@ -11,7 +11,7 @@ base.row = (data, status, resume) => {
 	const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red" title="Desasociar partida"></a>' : "";
 	return `<tr class="tb-data">
 		<td class="text-center">${status.count}</td>
-		<td>${data.desc}</td><td class="text-right">${i18n.isoFloat(data.imp)} €</td>
+		<td>${data.desc}</td><td class="currency">${i18n.isoFloat(data.imp)} €</td>
 		<td class="text-center">${remove}</td>
 	</tr>`;
 }
@@ -19,24 +19,24 @@ base.row = (data, status, resume) => {
 base.tfoot = resume => {
 	return `<tr>
 		<td colspan="2">Conceptos: ${resume.size}</td>
-		<td class="text-right">${i18n.isoFloat(resume.imp)} €</td>
+		<td class="currency">${i18n.isoFloat(resume.imp)} €</td>
 		<td></td>
 	</tr>
 	<tr class="table-refresh" data-refresh="show-factura">
 		<td colspan="2">
 			<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
-			<div class="ui-block-main text-right">IVA:</div>
+			<div class="ui-block-main currency">IVA:</div>
 			<div class="ui-block">
 				<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-editable="is-editable-uae"></select>
 			</div>
 			</label>
 		</td>
-		<td class="text-right table-refresh" data-refresh="text-render">$impIva; €</td> 
+		<td class="currency table-refresh" data-refresh="text-render">$impIva; €</td> 
 		<td></td>
 	</tr>
 	<tr class="table-refresh" data-refresh="show-factura">
-		<td class="text-right" colspan="2">Importe Total:</td>
-		<td class="text-right table-refresh" data-refresh="text-render">$impTotal; €</td>
+		<td class="currency" colspan="2">Importe Total:</td>
+		<td class="currency table-refresh" data-refresh="text-render">$impTotal; €</td>
 		<td></td>
 	</tr>`;
 }

@@ -210,7 +210,7 @@ function IrseRutas() {
 			.onRenderTable("#rutas", fnSave); // save after first render
 
 		form.setDateRange("#f1", "#f2").delAttr("#f1", "max") // Rango de fechas
-			.onChangeInput("#f1", ev => form.setStrval("#f2", ev.target.value))
+			.onChangeInput("#f1", ev => form.setval("#f2", ev.target.value))
 			.onChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))
 			.onChangeInput("#matricula", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
 		return self;

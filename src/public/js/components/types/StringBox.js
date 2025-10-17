@@ -1,22 +1,23 @@
 
-const EMPTY = "";
-const ESCAPE_HTML = /"|'|&|<|>|\\/g;
-const ESCAPE_MAP = { '"': "&#34;", "'": "&#39;", "&": "&#38;", "<": "&#60;", ">": "&#62;", "\\": "&#92;" };
-
-const fnSize = data => (data ? data.length : 0); // usfull for string o array
-const fnNormalize = str => str.normalize("NFD").replace(/\p{Diacritic}/gu, EMPTY);
-const fnLower = str => (str ? fnNormalize(str).toLowerCase() : EMPTY); // normalize and lower
-const fnWord = str => str.replace(/\W+/g, EMPTY); // remove all no alfanum characters
-const isstr = val => (typeof(val) === "string") || (val instanceof String);
-const insertAt = (str1, str2, i) => str1.substring(0, i) + str2 + str1.substring(i);
-const replaceAt = (str1, str2, i) => str1.substring(0, i) + str2 + str1.substring(i + str2.length);
-
 function StringBox() {
 	const self = this; //self instance
+	const EMPTY = ""; // empty string type
     const sysdate = (new Date()).toISOString(); //global sysdate
-
+	const ESCAPE_HTML = /"|'|&|<|>|\\/g;
+	const ESCAPE_MAP = { '"': "&#34;", "'": "&#39;", "&": "&#38;", "<": "&#60;", ">": "&#62;", "\\": "&#92;" };
+	
+	const fnSize = data => (data ? data.length : 0); // usfull for string o array
+	const fnNormalize = str => str.normalize("NFD").replace(/\p{Diacritic}/gu, EMPTY);
+	const fnLower = str => (str ? fnNormalize(str).toLowerCase() : EMPTY); // normalize and lower
+	const fnWord = str => str.replace(/\W+/g, EMPTY); // remove all no alfanum characters
+	const isstr = val => (typeof(val) === "string") || (val instanceof String);
+	const insertAt = (str1, str2, i) => str1.substring(0, i) + str2 + str1.substring(i);
+	const replaceAt = (str1, str2, i) => str1.substring(0, i) + str2 + str1.substring(i + str2.length);
+	
 	this.isstr = isstr;
-    this.size = fnSize;
+	globalThis.isstr = isstr;
+
+	this.size = fnSize;
     this.insertAt = insertAt;
     this.replaceAt = replaceAt;
 	this.isEmpty = str => (fnSize(str) < 1); // length > 0
@@ -27,8 +28,8 @@ function StringBox() {
 	this.substr = (str, i, n) => str ? str.substr(i, n) : str;
 	this.substring = (str, i, j) => str ? str.substring(i, j) : str;
 
-    this.iIndexOf = (str1, str2) => fnLower(str1).indexOf(fnLower(str2)); // Mute String class with insensitive index
-    this.ilike = (str1, str2) => (self.iIndexOf(str1, str2) > -1); // Mute String class with an insensitive search
+    this.iIndexOf = (str1, str2) => fnLower(str1).indexOf(fnLower(str2)); // insensitive index
+    this.ilike = (str1, str2) => (self.iIndexOf(str1, str2) > -1); // insensitive search
 	this.eq = (str1, str2) => (fnLower(str1) == fnLower(str2)); // insensitive equal
 	this.normalize = str => str ? fnNormalize(str) : str; // standar
 
@@ -115,5 +116,4 @@ function StringBox() {
 	this.words = str => self.split(str, /\s+/);
 }
 
-globalThis.isstr = isstr;
 export default new StringBox();

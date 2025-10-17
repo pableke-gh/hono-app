@@ -30,6 +30,7 @@ tfoot td:first-child { padding: .5rem; }
 .tb-xeco tbody.active { animation: fadeIn .8s forwards; }
 .tb-xeco .tb-data-tc { text-align: center; }
 .tb-xeco td { padding: 2px; }
+.tb-xeco td.currency { min-width: 72px; text-align: right; }
 .tb-xeco tfoot { font-weight: bold; border-top: 1px dashed #1976d2; }
 
 .sort {

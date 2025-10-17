@@ -56,6 +56,9 @@ coll.ready(() => {
 		temp.memo = temp.memo || temp.lineas.map(linea => sb.rtrim(linea.desc, "\\.").trim()).join(". ");
 		api.setJSON(temp).json(url).then(fn); // send call
 	}
-	tabs.setAction("send", () => fnValidate("msgSend", "/uae/fact/save", tabs.showInit)); // send xeco-model form
-	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/fact/subsanar", tabs.showList)); // send from changes
+	tabs.setAction("send", () => fnValidate("msgSend", "/uae/fact/save", tabs.showInit)); // send form
+	tabs.setAction("subsanar", () => {
+		const url = factura.isGaca() ? "/uae/fact/reset" : "/uae/fact/subsanar";
+		fnValidate("msgSave", url, tabs.showList); // send from changes
+	});
 });

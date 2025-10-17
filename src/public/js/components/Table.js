@@ -5,10 +5,16 @@ import alerts from "./Alerts.js";
 import tabs from "./Tabs.js";
 import i18n from "../i18n/langs.js";
 
-const fnTrue = () => true;
-
 export default function(table, opts) {
 	table = globalThis.isstr(table) ? $1(table) : table;
+	table = table || document.createElement("table");
+
+	const self = this; //self instance
+    const RESUME = {}; // Table parameters
+	const tHead = table.tHead || table.createTHead(); //header element
+	const tBody = table.tBodies[0] || table.createTBody(); //body element
+	const tFoot = table.tFoot || table.createTFoot(); //footer element
+	const fnTrue = () => true;
 
 	opts = opts || {}; // default options
 	opts.sortClass = opts.sortClass || "sort";
@@ -32,18 +38,13 @@ export default function(table, opts) {
 	opts.afterRender = opts.afterRender || globalThis.void;
 	opts.onRemove = opts.onRemove || fnTrue;
 
-	const self = this; //self instance
-    const RESUME = {}; // Table parameters
-	const tHead = table.tHead || table.createTHead(); //header element
-	const tBody = table.tBodies[0] || table.createTBody(); //body element
-	const tFoot = table.tFoot || table.createTFoot(); //footer element
-
     let _rows = []; // default = empty array
     let _index = -1; // current item position in data
 	let _isChanged; // bool indicator
 
 	this.get = name => opts[name];
 	this.set = (name, fn) => { opts[name] = fn; return self; }
+	this.setOptions = data => { Object.assign(opts, data); return self; }
 	this.clear = () => { _index = -1; return self; }
 
 	this.setRowEmpty = html => self.set("rowEmptyTable", html);
@@ -85,6 +86,7 @@ export default function(table, opts) {
 	this.setChanged = val => { _isChanged = val; return self; }
 
 	this.getTable = () => table;
+	this.addClass = name => { table.classList.add(name); return self; }
 	this.getHeader = () => tHead;
 	this.getBody = () => tBody;
 	this.getRow = i => tBody.rows[i ?? _index];
@@ -120,11 +122,13 @@ export default function(table, opts) {
 			fnChangeEvent(_rows[i], ev.target, tr, i);
 		}
 		tr.onclick = ev => {
-			_index = i; // update current item
 			const link = ev.target.closest("a");
-			const href = link?.getAttribute("href");
+			if (!link)
+				return; // no link clicked
+			_index = i; // update current item
+			const href = link.getAttribute("href");
 			self.invoke(href, _rows[i], link, tr, i);
-			link && ev.preventDefault(); // avoid navigation
+			ev.preventDefault(); // avoid navigation
 		}
 	}
     function fnView(data) {

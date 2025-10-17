@@ -84,8 +84,8 @@ iris.row = data => {
 		<td class="hide-sm">${data.org}<span class="hide-sm"> ${data.oDesc}</span>${otras}</td> 
 		<td class="hide-sm">${data.name}</td>
 		<td class="hide-md">${data.memo || ""}</td>
-		<td class="text-right">${i18n.isoFloat(data.imp) || "-"} €</td>
-		<td class="text-right no-print">${acciones}</td>
+		<td class="currency">${i18n.isoFloat(data.imp) || "-"} €</td>
+		<td class="currency no-print">${acciones}</td>
 	</tr>`;
 }
 

@@ -34,4 +34,5 @@ function ObjectBox() {
 	Object.extract = self.values;
 }
 
+globalThis.isObject = obj => (obj && (typeof obj === "object") && !Array.isArray(obj));
 export default new ObjectBox();

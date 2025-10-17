@@ -16,15 +16,15 @@ function Organica() {
         const user = /*buzon.isPermisoUser()*/(1==1) ? '<a href="#users" class="action resize text-purple" title="Gestión de permisos"><i class="fas fa-user"></i></a>' : ""; //TODO: change class for complete link
         return `<tr class="tb-data">
             <td>${data.oCod}</td><td class="hide-xs">${data.oDesc}</td>
-            <td class="text-right">${i18n.isoFloat(data.cd ?? 0)} €</td>
+            <td class="currency">${i18n.isoFloat(data.cd ?? 0)} €</td>
             <td class="text-center">${buzon.getRol()}</td>
-            <td class="text-right">${(data.mask & 2) ? desanclar : anclar}${user}${gastos}${ingresos}${reportProv}${factura}</td>
+            <td class="currency">${(data.mask & 2) ? desanclar : anclar}${user}${gastos}${ingresos}${reportProv}${factura}</td>
         </tr>`;
     }
     this.lastRow = () => {
         return `<tr class="tb-data">
             <td id="otras" colspan="4"><b>Tramitación específica</b> (imputación a varias orgánicas, abonos, aportación de documentación adicional y otras circunstancias)</td>
-            <td class="text-right">
+            <td class="currency">
                 <a href="#buzon-otros" class="action resize text-green" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
             </td>
         </tr>`;

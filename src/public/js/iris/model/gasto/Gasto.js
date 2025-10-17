@@ -151,7 +151,7 @@ function Gasto() {
 			<td data-cell="${i18n.get("lblDescObserv")}">${self.getDescGasto(data)}</td>
 			<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>
 			<td data-cell="${i18n.get("lblImporte")}">${i18n.isoFloat(data.imp1)} €</td>
-			<td data-cell="${i18n.get("lblAcciones")}" class="no-print">${link}${remove}</td>
+			<td data-cell="${i18n.get("lblAcciones")}" class="no-print"><span>${link}${remove}</span></td>
 		</tr>`;
 	}
 

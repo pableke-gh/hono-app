@@ -2,6 +2,9 @@
 import i18n from "../../i18n/langs.js";
 
 export default function(container, opts) {
+	container = globalThis.isstr(container) ? $1(container) : container;
+	container = container || createElement("div"); // todo: añadir estilos dinamicamente
+
 	opts = opts || {}; // Init. options
     opts.name = opts.name || "ms_test";
     opts.activeClassName = opts.activeClassName || "active";
@@ -19,9 +22,9 @@ export default function(container, opts) {
     opts.onReset = opts.onReset || globalThis.void; // fired on reset list
 
     const self = this; //self instance
-    const label = container.firstElementChild; // first = label element
-    const button = label.nextElementSibling; // second = button dropdown
-    const options = button.nextElementSibling; // third = selectable options
+    const label = container.firstElementChild || createElement("div"); // first = label element
+    const button = label.nextElementSibling || createElement("button"); // second = button dropdown
+    const options = button.nextElementSibling || createElement("ul"); // third = selectable options
     let _data; // items container
 
 	const fnEvent = ev => { ev.stopPropagation(); ev.preventDefault(); }
@@ -56,6 +59,7 @@ export default function(container, opts) {
 	this.getData = () => _data;
 	this.setData = data => { _data = data; return self; };
 	this.setLabels = labels => self.setData(labels.map(label => ({ value: label, label }))); // build items array from label array
+
 	const fnBuild = el => ({ value: el.value, label: el.textContent, checked: el.checked }); // build item from input element
 	this.build = () => self.setData(options.querySelectorAll("input").map(fnBuild)); // build items from li > input[type=checkbox]
 

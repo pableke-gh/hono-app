@@ -20,7 +20,9 @@ fact.isCongresoCV = () => (fact.getTipo() == 5); // viene de CV
 fact.isTtppEmpresa = () => (fact.getTipo() == 6); // TTPP a empresa
 fact.isFacturable = () => (fact.isFactura() || fact.isReciboCV() || fact.isCongresoCV() || fact.isTtppEmpresa());
 fact.isFirmaGaca = () => (fact.isReciboCV() && fact.isTtpp() && (fact.getMask() & 2));
-//fact.isReactivable = () => ((fact.isUae() && fact.isErronea()) || (fact.isGaca() && fact.isRechazada()));
+
+fact.isGaca = () => (fact.get("grupo") == 2); // grupo de firma = gaca
+fact.isReactivable = () => ((fact.isUae() && fact.isErronea()) || (fact.isGaca() && fact.isRechazada()));
 fact.isEditableGaca = () => (fact.isEditableUae() || (fact.isGaca() && fact.isFirmable()));
 
 fact.isTtpp = () => (fact.getSubtipo() == 3);
@@ -56,11 +58,11 @@ fact.row = data => {
 		<td class="text-center hide-xs">${firma.myFlag(data)}</td>
 		<td class="hide-sm">${data.sig || ""}</td>
 		<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
-		<td class="text-right">${i18n.isoFloat(data.imp)} €</td>
+		<td class="currency">${i18n.isoFloat(data.imp)} €</td>
 		<td>${data.nif}</td><td class="hide-xs">${data.tercero}</td>
 		<td>${data.org}</td><td class="hide-sm">${data.descOrg}</td>
 		<td class="hide-sm">${data.name}</td>
-		<td class="text-right no-print">${acciones}</td>
+		<td class="currency no-print">${acciones}</td>
 	</tr>`;
 }
 

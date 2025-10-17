@@ -16,12 +16,14 @@
 		</div>
 
 		<div class="navbar">
-			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
+			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
 				<i class="fa fa-arrow-left btn-icon-left"></i>Volver al Inicio</a>
 			<a href="#tab-action-excel" download="descarga.xls" class="btn btn-green" title="Exportar tabla a formato EXCEL">
 				<i class="fa fa-file-excel btn-icon-left"></i>Exportar a Excel</a>
 			<a href="#tab-action-tr" download="fichero.n43" class="btn btn-warn" title="Traduce ficheros con formato n57 a n43">
 				<i class="fas fa-arrow-down btn-icon-left"></i>Generar Fichero .N43</a>
+			<a href="#tab-ttpp" class="btn btn-info" title="Consultar el histórico de recibos bancarios">
+				Histórico<i class="fas fa-history btn-icon-right"></i></a>
 			<a href="#tab-action-save" class="btn btn-green hide" title="Guardar recibos en el histórico">
 				<i class="far fa-save btn-icon-left"></i>Guardar</a>
 		</div>
@@ -70,9 +72,9 @@
 			<li><b>Saldo Final:</b> $saldo; €</li>
 			<li>@fRango;</li>
 		</ul>
-		<table id="n43" class="tb-xeco tb-group" tb-resume="n43Resume" tb-groups="ji forma aplicacion"
-				tb-columns="ji fCobro forma ref1 concepto dnialu nombre organica economica descOrganica importe" 
-				tb-xls="ji fCobro forma ref1 concepto dnialu nombre organica economica descOrganica importe">
+		<table id="n43" class="tb-xeco tb-group" tb-resume="n43Resume" tb-groups="forma aplicacion"
+				tb-columns="ji fCobro forma ref1 concepto dnialu nombre org eco desc importe" 
+				tb-xls="ji fCobro forma ref1 concepto dnialu nombre org eco desc importe">
 			<thead>
 				<tr>
 					<th>&#8470; JI</th>
@@ -105,8 +107,8 @@
 			<li>@fRango;</li>
 		</ul>
 		<table id="n57" class="tb-xeco tb-group" tb-resume="n57Resume" tb-groups="aplicacion"
-				tb-columns="fCobro plan idActividad actNombre dnialu nombre organica economica importe" 
-				tb-xls="fCobro plan idActividad actNombre dnialu nombre organica economica importe">
+				tb-columns="fCobro plan idActividad actNombre dnialu nombre org eco importe" 
+				tb-xls="fCobro plan idActividad actNombre dnialu nombre org eco importe">
 			<thead>
 				<tr>
 					<th>F. Operación</th>

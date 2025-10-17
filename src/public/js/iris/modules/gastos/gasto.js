@@ -52,7 +52,7 @@ export default function(tab) {
 		_eTipoGasto.value = "";
 		const start = rutas.getHoraSalida();
 		const end = rutas.getHoraLlegada();
-		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
+		form.setValue("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 			.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start.substring(0, 10))
 			.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "max", end.substring(0, 10))
 			.setChanged().refresh(iris);

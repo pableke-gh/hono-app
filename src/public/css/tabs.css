@@ -5,31 +5,21 @@
 /* Tabs classes */
 
 /* Accordion */
-details {
-  padding: 0.5rem;
-  border: 1px solid gray;
-  border-radius: 0.4rem;
-}
+details { border-radius: 0.4rem; margin-bottom: 16px; }
+details:last-child{ margin-bottom: 0; }
 summary {
-  cursor: pointer;
+	display: flex; justify-content: space-between; padding: .8rem 1rem;
+	background: rgba(4,57,94,.8); color: white;
+	font-weight: bold; font-size: large; cursor: pointer;
+	border-radius: .4rem; box-shadow: 0 -1px 1px 1px;
 }
+summary:hover { background: rgba(4,57,94,1); }
+summary::after { content: "\276F"; text-align: center; transition: all 0.3s; }
+summary::marker { content: ""; }
 
-details[open] { background-color: aquamarine; }
-details[open] > summary { margin-bottom: 0.5rem; }
-
-/* summary icon left */
-summary::marker {
-  font-size: 1.5em;
-  content: "📬";
-}
-details[open] summary::marker {
-  font-size: 1.5em;
-  content: "📭";
-}
-
-details.icon-right summary::marker { content: ""; }
-details.icon-right summary::after { content: " ►"; }
-details.icon-right[open] summary:after { content: " ▼"; }
+details[open] > summary { border-radius: 8px 8px 0 0; }
+details[open] > summary::after{ transform: rotate(90deg); }
+details:last-child { margin: 4px; }
 /* Accordion */
 
 /* Cards */

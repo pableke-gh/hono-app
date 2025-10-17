@@ -50,7 +50,7 @@ base.isRemovable = () => (base.getId() && ((base.getEstado() == 6) || base.isAdm
 
 base.isUae = () => (_grupo == "2"); // UAE
 base.isOtri = () => ((_grupo == "8") || (_grupo == "286") || (_grupo == "134") || (_grupo == "284")); // OTRI / UITT / UCCT / Catedras
-base.isGaca = () => ((_grupo == "54") || (_grupo == "288") || (_grupo == "290") || (_grupo == "287")); // GACA / BECAS / ACADEMICO / EID
+//base.isGaca = () => ((_grupo == "54") || (_grupo == "288") || (_grupo == "290") || (_grupo == "287")); // GACA / BECAS / ACADEMICO / EID
 //base.isUtec = () => (_grupo == "6"); //grupo de la unidad tecnica
 //base.isEid = () => (_grupo == "287"); //Escuela Internacional de doctorado
 //base.isAcad = () => (_grupo == "290"); //SERVICIO DE GESTION ACADEMICA

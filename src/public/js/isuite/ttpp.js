@@ -1,19 +1,19 @@
 
 function RulesFactory() {
 	//asociaciones entre los campos del fichero bancario y las estructuras de sorolla
-	const DOMICILIACION = "Domiciliaci&oacute;n";
+	const DOMICILIACION = "Domiciliación";
 	const FORMA_COBRO = {
-		"043": "R&aacute;faga", "073": "R&aacute;faga", "2004575679800": "R&aacute;faga", 
+		"043": "Ráfaga", "073": "Ráfaga", "2004575679800": "Ráfaga", 
 		"128": "Intereses - 300101 1520.04", "173": DOMICILIACION, "174": DOMICILIACION, "239": DOMICILIACION, "620": DOMICILIACION, 
 		"709": "MIT", "579": "Comisiones Varias", "731": "Comisiones Varias", "767": "Comisiones Varias"
 	};
 	const ORGANICA = { "2004575679800": "300955", "173": "300955", "174": "300955", "099": "300101", "111": "300101" };
 	const ECONOMICA = { "2004575679800": "1303.00", "173": "1310.00", "174": "1310.00", "099": "1520.04", "111": "1307.00" };
 	const DESCRIPCIONES = {
-		"300101": "GERENCIA", "300955": "SERVICIO DE GESTI&Oacute;N ACAD&Eacute;MICA",
+		"300101": "GERENCIA", "300955": "SERVICIO DE GESTIÓN ACADÉMICA",
 		"300101 1307.00": "TASAS POR DERECHOS DE EXAMEN"
 	};
-	const CS = "Contra&iacute;do simult&aacute;neo";
+	const CS = "Contraído simultáneo";
 	const NC = "No Conciliables - ";
 
 	// Helpers
@@ -78,14 +78,14 @@ function RulesFactory() {
 	function getForma(fila) { return FORMA_COBRO[fila.ref1] || FORMA_COBRO[fila.propio] || "Otras"; };
 	function setForma(fila, ji, forma) { fila.ji = ji; fila.forma = forma; };
 	function setApplicacion(row) {
-		row.organica = row.organica || ORGANICA[row.sufijo] || ORGANICA[row.ref1] || ORGANICA[row.propio] || "";
-		row.economica = row.economica || ECONOMICA[row.sufijo] || ECONOMICA[row.ref1] || ECONOMICA[row.propio] || "Manual";
-		row.aplicacion = fnTrim(row.organica + " " + row.economica); //aplicacion a mostrar en la vista
-		row.descOrganica = row.descOrganica || DESCRIPCIONES[row.aplicacion] || DESCRIPCIONES[row.organica] || "";
+		row.org = row.org || ORGANICA[row.sufijo] || ORGANICA[row.ref1] || ORGANICA[row.propio] || "";
+		row.eco = row.eco || ECONOMICA[row.sufijo] || ECONOMICA[row.ref1] || ECONOMICA[row.propio] || "Manual";
+		row.aplicacion = fnTrim(row.org + " " + row.eco); //aplicacion a mostrar en la vista
+		row.desc = row.desc || DESCRIPCIONES[row.aplicacion] || DESCRIPCIONES[row.org] || "";
 		row.fCobro = (row.forma == DOMICILIACION) ? row.fCobro : row.fOperacion;
 		row.dnialu = row.dnialu || "";
 		row.nombre = row.nombre || "";
-		row.aplicacionDesc = row.descOrganica;
+		row.aplicacionDesc = row.desc;
 		return row;
 	};
 
@@ -236,14 +236,14 @@ function RulesFactory() {
 	this.acLoad = function(row, recibo) {
 		row.ji = recibo.ji ? ("Factura Previa - " + recibo.ji) : row.ji;
 		if (row.sufijo != "111") { //carga manual desde de fichero
-			row.organica = recibo.organica || row.organica;
-			row.economica = recibo.economica || row.economica;
-			row.descOrganica = recibo.descOrganica || row.descOrganica || DESCRIPCIONES[row.organica] || "";
-			row.aplicacion = fnTrim(row.organica + " " + row.economica); //aplicacion a mostrar en la vista
+			row.org = recibo.org || row.org;
+			row.eco = recibo.eco || row.eco;
+			row.desc = recibo.desc || row.desc || DESCRIPCIONES[row.org] || "";
+			row.aplicacion = fnTrim(row.org + " " + row.eco); //aplicacion a mostrar en la vista
 		}
 		row.dnialu = recibo.dnialu || row.dnialu;
 		row.nombre = recibo.nombre || row.nombre;
-		row.aplicacionDesc = row.descOrganica;
+		row.aplicacionDesc = row.desc;
 		row.plan = recibo.plan || row.plan;
 		row.idActividad = recibo.idActividad || row.idActividad;
 		row.actNombre = recibo.actNombre || row.actNombre;

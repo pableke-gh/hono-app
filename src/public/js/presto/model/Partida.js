@@ -31,11 +31,11 @@ base.row = (data, status, resume) => {
 	resume.imp += data.imp; // sum
 
 	const output = presto.isPartidaExt()
-			? `<td class="text-right">${i18n.isoFloat(data.ing) || NO_APLICA} €</td>
-				<td class="text-right">${i18n.isoFloat(data.gg) || NO_APLICA} €</td>
-				<td class="text-right">${i18n.isoFloat(data.mh) || NO_APLICA} €</td>
-				<td class="text-right">${i18n.isoFloat(data.ch) || NO_APLICA} €</td>
-				<td class="text-right">${i18n.isoFloat(data.ih) || NO_APLICA} €</td>`
+			? `<td class="currency">${i18n.isoFloat(data.ing) || NO_APLICA} €</td>
+				<td class="currency">${i18n.isoFloat(data.gg) || NO_APLICA} €</td>
+				<td class="currency">${i18n.isoFloat(data.mh) || NO_APLICA} €</td>
+				<td class="currency">${i18n.isoFloat(data.ch) || NO_APLICA} €</td>
+				<td class="currency">${i18n.isoFloat(data.ih) || NO_APLICA} €</td>`
 			: "";
 	return `<tr class="tb-data">
 		<td class="text-center">${excedido}${anticipada}</td>
@@ -46,7 +46,7 @@ base.row = (data, status, resume) => {
 		<td class="text-center">${data.e}</td>
 		<td class="hide-sm">${data.dEco}</td>
 		${output}
-		<td class="text-right">${i18n.isoFloat(data.imp)} €</td>
+		<td class="currency">${i18n.isoFloat(data.imp)} €</td>
 		<td class="text-center">${doc030}${remove}</td>
 	</tr>`;
 }
@@ -56,7 +56,7 @@ base.tfoot = resume => {
 		<td colspan="3">Partidas: ${resume.size}</td>
 		<td class="hide-sm"></td><td class="hide-sm"></td><td></td><td class="hide-sm"></td>
 		${output}
-		<td class="text-right">${i18n.isoFloat(resume.imp)} €</td><td></td>
+		<td class="currency">${i18n.isoFloat(resume.imp)} €</td><td></td>
 	</tr>`;
 }
 base.getTable = () => ({ beforeRender: base.beforeRender, onHeader: base.thead, onRender: base.row, onFooter: base.tfoot });

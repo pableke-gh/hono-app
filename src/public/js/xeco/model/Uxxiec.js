@@ -15,7 +15,7 @@ function Uxxiec() {
 		return `<tr class="tb-data">
 			<td>${data.num}</td>
 			<td>${data.uxxi}</td>
-			<td class="text-right">${i18n.isoFloat(data.imp) || "-"} €</td>
+			<td class="currency">${i18n.isoFloat(data.imp) || "-"} €</td>
 			<td class="text-center">${i18n.isoDate(data.fUxxi)}</td>
 			<td>${data.desc}</td>
 			<td class="text-center">

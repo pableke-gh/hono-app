@@ -1,17 +1,15 @@
 
 import sb from "../types/StringBox.js";
-import dom from "./DomBox.js";
-
-const EMPTY = [];
-const fnParam = param => param
+import isb from "./SelectBox.js";
 
 export default function(select, opts) {
     opts = opts || {}; // Init. options
-    opts.onChange = opts.onChange || fnParam; // fired on change select
-    opts.onReset = opts.onReset || fnParam; // fired on reset select
+    opts.onChange = opts.onChange || globalThis.void; // fired on change select
+    opts.onReset = opts.onReset || globalThis.void; // fired on reset select
 
-    const self = this; //self instance
-    let _data = EMPTY; // default = empty array
+	const self = this; //self instance
+	const EMPTY = []; // empty container
+	let _data = EMPTY; // default = empty array
 
 	const fnEmpty = () => (opts.emptyOption ? `<option>${opts.emptyOption}</option>` : "");
 	const fnChange = data => { opts.onChange(data, self); return self; }
@@ -48,21 +46,21 @@ export default function(select, opts) {
         if (!JSON.size(items))
             return self.reset();
         _data = items; // Init. datalist
-        dom.setItems(select, items);
+        isb.setItems(select, items);
         return fnChange(_data[0]);
 	}
     this.setData = data => {
         if (!data)
             return self.reset();
 		_data = Object.keys(data); // Init. datalist
-		dom.setData(select, data); // set options
+		isb.setData(select, data); // set options
         return fnChange(_data[0]);
     }
 	this.setLabels = labels => {
         if (!JSON.size(labels))
             return self.reset();
 		_data = labels; // set values
-		dom.setLabels(select, labels);
+		isb.setLabels(select, labels);
         return fnChange(_data[0]);
 	}
 	this.setRange = function(min, max, step, fnLabel) {

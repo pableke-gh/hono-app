@@ -14,7 +14,7 @@ function Usuario() {
         const remove = buzon.isRemovable() ? '<a href="#remove" class="action resize text-red" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
         return `<tr class="tb-data">
             <td class="text-center">${data.nif}</td><td>${data.nombre}</td><td>${buzon.getRol()}</td>
-            <td class="text-right">
+            <td class="currency">
                 <a href="#toggleUsers" class="${classPermisoUser}" title="Gestión de permisos"><i class="fas fa-user"></i></a>
                 <a href="#toggleGastos" class="${classGastos}" title="Avance de Gastos"><i class="fab fa-google"></i></a>
                 <a href="#toggleIngresos" class="${classIngresos}" title="Avance de Ingresos"><i class="fas fa-info"></i></a>

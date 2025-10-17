@@ -1,8 +1,13 @@
 
+import sb from "../components/types/StringBox.js";
 import coll from "../components/CollectionHTML.js";
 import Form from "../components/forms/Form.js";
+import Accordion from "../components/Accordion.js";
+import Table from "../components/Table.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
+
+import recibo from "./model/Recibo.js";
 import rf from "./ttpp.js";
 
 //DOM is fully loaded
@@ -116,8 +121,8 @@ coll.ready(() => {
 	const tbConfig = { // Inicializo la configuracion y eventos de la tabla
 		LatinFloatParse: toNumber, LatinFloat: nfLatin, LatinDateParse: toDate, LatinDate: dfLatin, 
 		/*orderNameClass: "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s",*/ descNameClass: "ui-icon-triangle-1-s", ascNameClass: "ui-icon-triangle-1-n",
-		headColumns: '<td colspan="@columns_1;">@text;</td><td class="text-right">@importeSumFmt;</td>',
-		footColumns: '<td colspan="@columns_1;">Filas: @numrows;</td><td class="text-right">@importeSumFmt;</td>',
+		headColumns: '<td colspan="@columns_1;">@text;</td><td class="currency">@importeSumFmt;</td>',
+		footColumns: '<td colspan="@columns_1;">Filas: @numrows;</td><td class="currency">@importeSumFmt;</td>',
 		classColumns: { importe: "text-right" },
 		primaryKey: "refreb",
 
@@ -150,17 +155,17 @@ coll.ready(() => {
 			fcb: {
 				typeColumns: { fAsiento: "DateTime", impAplicacion: "Number" },
 				styleColumns: { fAsiento: "LatinDate", impAplicacion: "LatinFloat" },
-				headColumns: '<td colspan="7">@text;</td><td class="text-right">@impAplicacionSumFmt;</td><td colspan="3"></td>',
-				footColumns: '<td colspan="7">Filas: @numrows;</td><td class="text-right">@impAplicacionSumFmt;</td><td colspan="3"></td>',
+				headColumns: '<td colspan="7">@text;</td><td class="currency">@impAplicacionSumFmt;</td><td colspan="3"></td>',
+				footColumns: '<td colspan="7">Filas: @numrows;</td><td class="currency">@impAplicacionSumFmt;</td><td colspan="3"></td>',
 				classColumns: { impAplicacion: "text-right" },
 				onRead: function(data) { Object.assign(data, data.fAsiento.toObject()); return true; }
 			},
 			fcbpivot: {
-				footColumns: '<td>Filas: @numrows;</td><td class="text-right">@EneroSumFmt;</td><td class="text-right">@FebreroSumFmt;</td><td class="text-right">@MarzoSumFmt;</td><td class="text-right">@AbrilSumFmt;</td><td class="text-right">@MayoSumFmt;</td><td class="text-right">@JunioSumFmt;</td><td class="text-right">@JulioSumFmt;</td><td class="text-right">@AgostoSumFmt;</td><td class="text-right">@SeptiembreSumFmt;</td><td class="text-right">@OctubreSumFmt;</td><td class="text-right">@NoviembreSumFmt;</td><td class="text-right">@DiciembreSumFmt;</td><td class="text-right">@impAplicacionSumFmt;</td>',
+				footColumns: '<td>Filas: @numrows;</td><td class="currency">@EneroSumFmt;</td><td class="currency">@FebreroSumFmt;</td><td class="currency">@MarzoSumFmt;</td><td class="currency">@AbrilSumFmt;</td><td class="currency">@MayoSumFmt;</td><td class="currency">@JunioSumFmt;</td><td class="currency">@JulioSumFmt;</td><td class="currency">@AgostoSumFmt;</td><td class="currency">@SeptiembreSumFmt;</td><td class="currency">@OctubreSumFmt;</td><td class="currency">@NoviembreSumFmt;</td><td class="currency">@DiciembreSumFmt;</td><td class="currency">@impAplicacionSumFmt;</td>',
 				classColumns: { number: "text-right", impAplicacion: "textuc text-right" }
 			},
 			gc: {
-				footColumns: '<td colspan="4">Filas: @numrows;</td><td class="text-right">@drnAcumSumFmt;</td><td class="text-right">@rnAcumSumFmt;</td><td></td><td class="text-right">@orAcumSumFmt;</td><td class="text-right">@ctHabilitadoSumFmt;</td><td colspan="3"></td>',
+				footColumns: '<td colspan="4">Filas: @numrows;</td><td class="currency">@drnAcumSumFmt;</td><td class="currency">@rnAcumSumFmt;</td><td></td><td class="currency">@orAcumSumFmt;</td><td class="currency">@ctHabilitadoSumFmt;</td><td colspan="3"></td>',
 				classColumns: { porGg: "text-right", drnAcum: "text-right", rnAcum: "text-right", orAcum: "text-right", maxHabilitar: "text-right", ctHabilitado: "text-right", txtHabilitar: "text-right" },
 
 				onRead: function(data, row) {
@@ -199,4 +204,25 @@ coll.ready(() => {
 
 	const iSearch = $("[group=search]").keydown(ev => { ev.preventDefault(); (ev.keyCode == 13) && fnSearch(); });
 	const tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);
+
+	tabs.setInitEvent("ttpp", tab => {
+		const form = new Form("#ttpp"); // filtro del historico de recibos
+		form.setLabels("#ejercicios", sb.getEjercicios()); // ultimos 6 ej
+
+		const accordion = new Accordion(); // agrupa el historico de recibos
+		accordion.setRender(recibo.accordion);
+		accordion.setOpen((data, details) => {
+			if (details.openings)
+				return; // recibos ya cargados
+			api.init().json("/uae/ttpp/historico/recibos?id=" + data.id).then(recibos => {
+				const tblRecibos = new Table();
+				tblRecibos.setOptions(recibo.getTable()).addClass("tb-xeco").view(recibos);
+				details.appendChild(tblRecibos.getTable());
+			});
+		});
+		api.init().json("/uae/ttpp/historico?ej=" + form.getval("#ejercicios")).then(data => {
+			accordion.setData(data).replace(tab.querySelector("#historico"));
+		});
+		//tabs.setViewEvent("ttpp", () => console.log("view"));
+	});
 });
