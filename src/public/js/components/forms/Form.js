@@ -14,6 +14,7 @@ import i18n from "../../i18n/langs.js";
 
 export default function(form, opts) {
 	form = globalThis.isstr(form) ? document.forms.findBy(form) : form; // Find by name
+	form = form || document.createElement("form"); // create empty form if not exist
 
 	opts = opts || {}; // default options
 	opts.defaultMsgOk = opts.defaultMsgOk || "saveOk"; // default key for message ok
@@ -48,11 +49,19 @@ export default function(form, opts) {
 		return fnFor(form.elements, el => el.matches(selector) && fn(el));
 	}
 
-	//this.isset = () => form;
 	this.getForm = () => form;
+	this.getNextElement = () => form.nextElementSibling;
+	this.getNext = selector => form.next(selector);
 	this.getElements = () => form.elements;
 	this.getElement = name => form.elements.find(el => (el.name == name));
 	this.getValueByName = name => input.val(self.getElement(name));
+	this.addClass = name => { form.classList.add(name); return self; }
+	this.getOptions = () => opts;
+	this.setOptions = data => {
+		Object.assign(opts, data);
+		input.setOptions(data);
+		return self;
+	}
 
 	this.focus = el => { input.focus(el); return self; }
 	this.setFocus = selector => fnAction(selector, el => el.focus());
@@ -127,7 +136,16 @@ export default function(form, opts) {
 	this.reset = selector => fnUpdate(selector, el => input.setval(el)); // reset inputs value, hidden to! use :not([type=hidden]) selector
 	this.restart = selector => fnAction(selector, el => { el.focus(); input.setval(el); }); // remove value + focus
 	this.copy = (el1, el2) => fnAction(el1, el => input.setval(el, self.getval(el2)));
-	this.setData = (data, selector) => (data ? fnUpdate(selector, el => input.setValue(el, data[el.name])) : self.reset(selector)).setChanged(); // force changed = false 
+	this.setData = (data, selector) => {
+		const fnSetValue = el => input.setValue(el, data[el.name]);
+		if (data && selector) // update a subgroup of inputs
+			fnUpdate(selector, fnSetValue);
+		else if (data) // update all inputs
+			form.elements.forEach(el => (el.name && fnSetValue(el)));
+		else
+			self.reset(selector); // clear selected inputs values
+		return self.setChanged(); // force changed = false 
+	}
 	this.setValues = (data, selector) => fnUpdate(selector, el => {
 		const value = el.name ? data[el.name] : null; // get value by name
 		globalThis.isset(value) && input.setValue(el, value); // update defined data
@@ -145,8 +163,8 @@ export default function(form, opts) {
 	this.setAttr = (selector, name, value) => { input.setAttr(fnQueryInput(selector), name, value); return self; }
 	this.setAttribute = self.setAttr;
 
-	this.getValue = el => el && input.getValue(el);
-	this.getval = selector => input.val(fnQueryInput(selector));
+	this.getValue = input.getValue;
+	this.getval = selector => fnQueryInput(selector).value;
 	this.valueOf = selector => self.getValue(fnQueryInput(selector));
 	this.loadModel = (model, selector) => fnUpdate(selector, el => model.set(el.name, input.getValue(el)));
 	this.setModel = (model, selector) => fnUpdate(selector, el => input.setValue(el, model.get(el.name)));
@@ -155,6 +173,8 @@ export default function(form, opts) {
 		fnUpdate(selector, el => input.load(el, data));
 		return data;
 	}
+
+	this.getUrlParams = () => new URLSearchParams(new FormData(form));
 	this.getFormData = (data, include, exclude) => {
 		const fd = new FormData(form);
 		include.forEach(key => {
@@ -174,14 +194,11 @@ export default function(form, opts) {
 	this.select = (selector, mask) => { isb.select(fnQueryInput(selector), mask); return self; }
 	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
 	this.setItems = (selector, items, emptyOption) => fnUpdate(selector, el => isb.setItems(el, items, emptyOption));
-	this.setOptions = (selector, data, emptyOption) => fnUpdate(selector, el => isb.setData(el, data, emptyOption));
+	this.setDataOptions = (selector, data, emptyOption) => fnUpdate(selector, el => isb.setData(el, data, emptyOption));
 	this.setLabels = (selector, labels, emptyOption) => fnUpdate(selector, el => isb.setLabels(el, labels, emptyOption));
 	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox($1(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(fnQueryInput(selector), opts); // Input type text / search
 
-	const fnItems = (source, afterSelect, onReset) => ({ minLength: 4, source, render: item => item.label, select: item => item.value, afterSelect, onReset });
-	this.loadAcItems = (selector, fnSource, fnSelect, fnReset) => fnUpdate(selector, el => new Autocomplete(el, fnItems(fnSource, fnSelect, fnReset)));
-	this.setAcItems = (selector, fnSource, fnSelect, fnReset) => self.setAutocomplete(selector, fnItems(fnSource, fnSelect, fnReset));
 	this.showModal = selector => $1(selector).showModal();
 	this.closeModal = () => $1("dialog[open]").close();
 

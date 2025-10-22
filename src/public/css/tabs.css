@@ -5,21 +5,20 @@
 /* Tabs classes */
 
 /* Accordion */
-details { border-radius: 0.4rem; margin-bottom: 16px; }
-details:last-child{ margin-bottom: 0; }
+details { margin-bottom: 12px; border: solid 1px rgba(4, 57, 94, .8); border-radius: 8px; }
+details[open] > summary { border-radius: 8px 8px 0 0; }
+details[open] > summary::after{ transform: rotate(90deg); }
+details > div {  padding: 0 12px; transition: all 0.3s; } /* contents for each accordion */
+
 summary {
 	display: flex; justify-content: space-between; padding: .8rem 1rem;
 	background: rgba(4,57,94,.8); color: white;
 	font-weight: bold; font-size: large; cursor: pointer;
-	border-radius: .4rem; box-shadow: 0 -1px 1px 1px;
+	border-radius: 8px; box-shadow: 0 -1px 1px 1px;
 }
 summary:hover { background: rgba(4,57,94,1); }
 summary::after { content: "\276F"; text-align: center; transition: all 0.3s; }
 summary::marker { content: ""; }
-
-details[open] > summary { border-radius: 8px 8px 0 0; }
-details[open] > summary::after{ transform: rotate(90deg); }
-details:last-child { margin: 4px; }
 /* Accordion */
 
 /* Cards */

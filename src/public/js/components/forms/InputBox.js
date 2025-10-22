@@ -6,6 +6,7 @@ import i18n from "../../i18n/langs.js";
 export default function(opts) {
 	opts = opts || {}; // default options
 	opts.dateClass = opts.dateClass || "ui-date"; // Date type
+	opts.boolClass = opts.boolClass || "ui-bool"; // Boolean type
 	opts.floatFormatClass = opts.floatFormatClass || "ui-float"; // Float i18n
 	opts.integerFormatClass = opts.integerFormatClass || "ui-integer"; // Integer i18n
 	opts.numberFormatClass = opts.numberFormatClass || "ui-number"; // Number type
@@ -21,6 +22,11 @@ export default function(opts) {
 	const fnNumber = (el, value) => {
 		el.value = value || ""; // Show formatted value and style
 		el.classList.toggle(opts.negativeNumClass, el.value.startsWith("-"));
+	}
+
+	this.setOptions = data => {
+		Object.assign(opts, data);
+		return self;
 	}
 
 	this.focus = el => { el?.focus(); return self; }

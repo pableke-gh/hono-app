@@ -28,6 +28,7 @@ function Rutas() {
 	this.isSalidaTardia = () => ruta.isSalidaTardia(self.getSalida());
 	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(self.getLlegada());
 	this.isMismoDia = () => sb.inDay(self.getHoraSalida(), self.getHoraLlegada());
+	this.isMedioDia = () => ruta.isMedioDia(self.getHoraSalida(), self.getHoraLlegada());
 
 	const fnDiffDias = () => dt.diffDays(self.llegada(), dt.trunc(self.salida())); //tb.getDays(self.llegada(), tb.trunc(self.salida()));
 	this.getNumNoches = () => (self.isEmpty() ? 0 : Math.floor(fnDiffDias()));

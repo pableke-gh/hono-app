@@ -22,7 +22,8 @@ coll.ready(() => {
 
 	const fnShowGestor = () => factura.isFace() || factura.isPlataforma();
 	const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
-	form.set("is-editable-gaca", factura.isEditableGaca).set("is-exento", factura.isExento)
+	const isEditableSubtipo = () => (factura.isEditable() && !factura.isTtppEmpresa());
+	form.set("is-editable-gaca", factura.isEditableGaca).set("is-exento", factura.isExento).set("is-subtipo", isEditableSubtipo)
 		.set("show-recibo", factura.isRecibo).set("show-factura-uae", fnShowFactUae).set("show-uae", factura.isUae).set("show-gestor", fnShowGestor)
 		.set("show-grupo-face", factura.isGrupoFace).set("show-face", factura.isFace).set("show-memo", factura.isMemo)
 		.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago).set("show-ttpp", factura.isTtppEmpresa)
@@ -49,16 +50,16 @@ coll.ready(() => {
 		factura.setLineas(lineas.getTable()); // actualizo los conceptos
 		const data = form.validate(factura.validate);
 		if (!data || !i18n.confirm(msgConfirm))
-			return; // Errores al validar o sin confirmacion
+			return Promise.reject(); // Error al validar o sin confirmacion
 		const temp = Object.assign(factura.getData(), data);
 		temp.lineas = lineas.getTable().getData(); // lineas de la factura
 		// si no hay descripcion => concateno los conceptos saneados y separados por punto
 		temp.memo = temp.memo || temp.lineas.map(linea => sb.rtrim(linea.desc, "\\.").trim()).join(". ");
-		api.setJSON(temp).json(url).then(fn); // send call
+		return api.setJSON(temp).json(url).then(fn); // send call
 	}
-	tabs.setAction("send", () => fnValidate("msgSend", "/uae/fact/save", tabs.showInit)); // send form
+	tabs.setAction("send", () => fnValidate("msgSend", "/uae/fact/save").then(tabs.showInit)); // send form
 	tabs.setAction("subsanar", () => {
 		const url = factura.isGaca() ? "/uae/fact/reset" : "/uae/fact/subsanar";
-		fnValidate("msgSave", url, tabs.showList); // send from changes
+		fnValidate("msgSave", url).then(tabs.showList); // send from changes
 	});
 });

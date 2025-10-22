@@ -3,7 +3,10 @@ import coll from "./CollectionHTML.js";
 import i18n from "../i18n/langs.js";
 import cv from "./cv/Resize.js";
 
-export default function Accordion(opts) {
+export default function Accordion(accordion, opts) {
+	accordion = globalThis.isstr(accordion) ? $1(accordion) : accordion;
+	accordion = accordion || document.createElement("div"); // default parent
+
 	opts = opts || {}; // default options
 	opts.msgEmpty = opts.msgEmpty || "noResults"; // default empty table message
 	opts.tplEmpty = opts.tplEmpty || `<p class="notice notice-warn">${i18n.get(opts.msgEmpty)}</p>`;
@@ -14,26 +17,28 @@ export default function Accordion(opts) {
 	const template = document.createElement("template");
 	let _data; // data container
 
+	this.getAccordion = () => accordion;
+	this.addClass = name => { accordion.classList.add(name); return self; }
+	this.setOptions = data => { Object.assign(opts, data); return self; }
 	this.setTplEmpty = html => { opts.tplEmpty = html; return self; }
 	this.setMsgEmpty = msg => self.setTplEmpty(`<p class="notice notice-warn">${i18n.get(msg)}</p>`);
 	this.setRender = fn => { opts.onRender = fn; return self; }
 	this.setOpen = fn => { opts.onOpen = fn; return self; }
 
-	const fnToggle = parent => {
-		parent.childNodes.forEach((details, i) => { // add toggle listeners to each details element
+	const fnEventToggle = () => {
+		accordion.childNodes.forEach((details, i) => { // add toggle listeners to each details element
 			details.openings = 0;
 			const fnToggle = ev => {
 				if (!ev.target.open)
 					return; // close action
 				opts.onOpen(_data[i], ev.target, i); // call open handler
-				//details.eachSibling(el => el.removeAttribute("open")); // only one open
+				details.eachSibling(el => el.removeAttribute("open")); // only one open
 				ev.target.openings++; // number of openings
+				cv.setHeight(); // resize iframe
 			}
 			// set useCapture parameter to true
 			details.addEventListener("toggle", fnToggle, true);
-			cv.setHeight(); // resize iframe
 		});
-		cv.setHeight(); // resize iframe
 		return self;
 	}
 
@@ -58,14 +63,12 @@ export default function Accordion(opts) {
 		return self;
 	}
 
-	this.append = parent => {
-		parent = globalThis.isstr(parent) ? $1(parent) : parent;
-		parent.appendChild(document.importNode(template.content, true));
-		return fnToggle(parent);
+	this.append = () => {
+		accordion.appendChild(document.importNode(template.content, true));
+		return fnEventToggle();
 	}
-	this.replace = parent => {
-		parent = globalThis.isstr(parent) ? $1(parent) : parent;
-		parent.replaceChildren(document.importNode(template.content, true));
-		return fnToggle(parent);
+	this.replace = () => {
+		accordion.replaceChildren(document.importNode(template.content, true));
+		return fnEventToggle();
 	}
 }

@@ -11,7 +11,7 @@ const fnEachPrev = (arr, fn) => {
 }
 
 function ArrayBox() {
-	const self = this; //self instance
+	//const self = this; //self instance
 
 	this.size = sb.size;
 	this.isEmpty = sb.isEmpty;
@@ -38,7 +38,6 @@ function ArrayBox() {
             }
             return result;
         });
-		return self;
 	}
 
 	this.render = (data, fnRender, resume) => {

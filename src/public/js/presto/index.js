@@ -57,15 +57,15 @@ coll.ready(() => {
 	function fnValidate(msgConfirm, url, fn) {
 		const data = form.validate(presto.validate);
 		if (!data || !i18n.confirm(msgConfirm))
-			return false; // Errores al validar o sin confirmacion
+			return Promise.reject(); // Error al validar o sin confirmacion
 		const include = [ "id", "tipo", "subtipo", "mask" ];
 		const exclude = [ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ];
 		const fd = form.getFormData(Object.assign(presto.getData(), data), include, exclude);
 		// primera partida = principal y serializo el json com un campo del form data
 		fd.set("partidas", JSON.stringify(presto.getPartidas().setPrincipal().getData()));
-		api.setFormData(fd).send(url).then(fn); // send data
+		return api.setFormData(fd).send(url).then(fn); // send data
 	}
-	tabs.setAction("send", () => fnValidate("msgSend", "/uae/presto/save", tabs.showInit)); // send xeco-model form
-	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/presto/subsanar", tabs.showList)); // send from changes
+	tabs.setAction("send", () => fnValidate("msgSend", "/uae/presto/save").then(tabs.showInit)); // send xeco-model form
+	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/presto/subsanar").then(tabs.showList)); // send from changes
 	tabs.showTab(presto.isUxxiec() ? "init" : "list"); // Always init. list view for PAS/PDI
 });

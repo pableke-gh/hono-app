@@ -28,8 +28,8 @@ function XecoForm() {
 
 	this.view = (data, principales) => {
 		model.setData(data); // 1º carga los datos de la solicitud
-		list.setCache(data.id); // filter form cache = xeco form cache!
 		firmas.view(principales); // 2º cargo la vista de firmas asociadas
+		list.setCache(data.id); // 3º set cache para la solicitud actual
 		form.setCache(data.id).setData(data, ":not([type=hidden])");
 	}
 	this.update = (data, principales) => {
@@ -58,16 +58,23 @@ function XecoForm() {
 		.set("is-reactivable", model.isReactivable).set("is-subsanable", model.isSubsanable).set("pf-upload", pfUpload);
 
 	tabs.setAction("firmar", () => {
-		if (!i18n.confirm("msgFirmar")) return; // confirmation
+		if (!i18n.confirm("msgFirmar")) return; // confirm
 		const data = Object.assign(model.getData(), form.getData());
-		api.setJSON(data).json(url + "/firmar").then(list.loadFirmas);
+		api.setJSON(data).json(url + "/firmar").then(list.firmar);
 	});
 
+	const fnInvalidar = (msg, accion, estado) => {
+		if (!form.validate(firma.validate) || !i18n.confirm(msg)) return; // stop action
+		const params = { id: list.getId(), rechazo: form.getValueByName("rechazo") } // url params
+		api.init().json(url + accion, params).then(data => {
+			model.setEstado(estado);
+			firmas.view(data.firmas);
+			list.update();
+		});
+	}
 	tabs.setAction("reject", () => list.getTable().invoke("#reject")); // open reject tab from list
-	const fnRechazar = id => api.init().json(url + "/rechazar", { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
-	tabs.setAction("rechazar", () => { form.validate(firma.validate) && i18n.confirm("msgRechazar") && fnRechazar(list.getId()); });
-	const fnCancelar = id => api.init().json(url + "/cancelar", { id, rechazo: form.getValueByName("rechazo") }).then(list.loadFirmas);
-	tabs.setAction("cancelar", () => { form.validate(firma.validate) && i18n.confirm("msgCancelar") && fnCancelar(list.getId()); });
+	tabs.setAction("rechazar", () => fnInvalidar("msgRechazar", "/rechazar", 2)); // call rechazar
+	tabs.setAction("cancelar", () => fnInvalidar("msgCancelar", "/cancelar", 7)); // call cancelar
 	tabs.setAction("reactivar", () => { model.setSubsanable(); form.setEditable().refresh(model); }); // set inputs to editable
 	tabs.setAction("clickNext", link => { link.nextElementSibling.click(); }); // fire click event for next sibling element
 	tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action

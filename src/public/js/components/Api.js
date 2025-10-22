@@ -51,8 +51,8 @@ function Api() {
 	 * Set form data. If the form contains file inputs, the FormData object will automatically set the correct multipart/form-data boundary in the request.
 	 * Note: When using FormData, do not manually set the Content-Type header to multipart/form-data, as this can lead to issues with how the browser formats the request.
 	 */
-	this.setFormData = fd => self.init().setPost().setBody(fd);
-	this.setForm = form => self.setFormData(new FormData(form));
+	this.setFormData = fd => self.init().setPost().setBody(fd); // set form data
+	this.setForm = form => self.setFormData(new FormData(form)); // set data by form element
 
 	const fnFetch = (url, params) => {
 		if (!params)

@@ -155,7 +155,7 @@ function Gasto() {
 		</tr>`;
 	}
 
-	this.tfoot = resume => `<tr><td colspan="99">Documentos: ${resume.size}</td></tr>`;
+	this.tfoot = resume => `<tr><td colspan="99" class="table-refresh" data-refresh="text-render" data-template="Documentos: @size;">Documentos: ${resume.size}</td></tr>`;
 	this.getTable = () => ({ msgEmptyTable: "msgGastosEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
 }
 

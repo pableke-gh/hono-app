@@ -10,13 +10,28 @@
 	<form id="ttpp" class="card-filter no-print">
 		<div class="ui-blocks">
 			<label class="ui-block">
-				<select id="ejercicios" class="ui-input ui-select"></select>
+				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
+				<select id="ejercicios" name="ej" class="ui-input ui-select"></select>
 				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label">Tipo:</div>
+				<select name="tipo" class="ui-input ui-select">
+					<option value="43">N43</option>
+					<option value="57">N57</option>
+				</select>
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label">Fecha:</div>
+				<input type="date" name="fecha" class="ui-input ui-date"/>
 			</label>
 		</div>
 
 		<div class="navbar">
 			<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver']}"><i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+			<a href="#tab-action-list" class="btn btn-info"><i class="far fa-search btn-icon-left"></i>Buscar</a>
+			<a href="#tab-action-relist" class="btn btn-warn"><i class="far fa-times-circle btn-icon-left"></i>Limpiar</a>
 		</div>
 	</form>
 	<div id="historico" class="navbar"></div>

@@ -4,7 +4,7 @@ function SelectBox() {
 
 	this.isSelect = el => (el && el.options);
 	this.getOption = select => (select && select.options[select.selectedIndex]); // get current option element
-	this.getOptionText = select => self.getOption(select).innerHTML; // get current option text
+	this.getOptionText = select => self.getOption(select)?.innerHTML; // get current option text
 	this.getOptionByValue = (select, value) => (select && select.options.find(option => (option.value == value))); // get option by value
 	this.getOptionTextByValue = (select, value) => self.getOptionByValue(select, value)?.innerHTML; // get option text by value
 	this.select = function(el, mask) {

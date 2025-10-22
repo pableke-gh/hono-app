@@ -33,6 +33,7 @@ function Dieta() {
 		dieta.imp2 = dietas.getImporte(tipo, dieta.cod, grupo); // importe dieta por dia
 		dieta.f1 = dieta.f2 = dt.toPlainDateTime(fecha); // fecha en formato plano
 		fecha.addDays(1); // incremento un día
+		dieta.mask = 0;
 		return dieta;
 	}
 	this.add = (dieta, fecha) => { // añadir un día más de dieta

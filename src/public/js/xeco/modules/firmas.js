@@ -30,19 +30,14 @@ function Firmas() {
 			rechazo.rejectedBy = firma.getNombre(rechazo);
 			blocks.forEach(el => el.nextElementSibling.render(rechazo));
 		}
-		form.reset("#rechazo");
-		return self;
-	}
-
-	this.refresh = data => {
-		xeco.getForm().reset("#rechazo").refresh(model.setData(data));
+		form.reset("#rechazo").refresh(model);
 		return self;
 	}
 
 	this.update = data => {
 		const form = xeco.getForm();
 		form.set("has-firmas", () => form.isCached(data.id));
-		return self.refresh(data);
+		form.reset("#rechazo").refresh(model);
 	}
 }
 

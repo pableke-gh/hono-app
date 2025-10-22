@@ -1,7 +1,11 @@
 
 function ObjectBox() {
 	const self = this; //self instance
+	const isset = val => ((typeof val !== "undefined") && (val !== null));
+	const isObject = obj => ((typeof obj === "object") && !Array.isArray(obj));
 
+	this.isset = isset;
+	this.isObject = isObject;
 	this.copy = function(output, data, keys) {
 		if (keys)
 			keys.forEach(key => { output[key] = data[key]; });
@@ -32,7 +36,10 @@ function ObjectBox() {
 	Object.clear = self.clear;
 	Object.merge = self.merge;
 	Object.extract = self.values;
+
+	// Client / Server global functions
+	globalThis.isset = isset;
+	globalThis.isObject = isObject;
 }
 
-globalThis.isObject = obj => (obj && (typeof obj === "object") && !Array.isArray(obj));
 export default new ObjectBox();

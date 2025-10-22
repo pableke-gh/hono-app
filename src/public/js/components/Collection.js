@@ -2,10 +2,10 @@
 import ob from "./types/ObjectBox.js";
 import ab from "./types/ArrayBox.js";
 
-const isset = val => ((typeof(val) !== "undefined") && (val !== null));
-
 function Collection() {
-	this.isset = isset;
+	this.isset = ob.isset;
+	this.isObject = ob.isObject;
+
 	this.size = ab.size;
 	this.isEmpty = ab.isEmpty;
 	this.parse = ab.parse;
@@ -32,7 +32,6 @@ function Collection() {
 }
 
 // Client / Server global functions
-globalThis.isset = isset;
 globalThis.void = () => {};
 globalThis.none = () => "";
 globalThis.catchError = promise => promise.then(data => [undefined, data]).catch(err => [err]);

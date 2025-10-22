@@ -25,7 +25,7 @@
 				<div class="errtip"></div>
 			</label>
 			<div class="ui-block-btn">
-				<a id="add-uxxi" href="#" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus btn-icon-left"></i> Añadir</a>
+				<a href="#tab-action-addUxxi" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus btn-icon-left"></i> Añadir</a>
 			</div>
 		</div>
 	</form>
@@ -48,11 +48,11 @@
 	<div class="navbar">
 		<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-		<a href="#tab-action-ejecutar" class="btn btn-green" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
+		<a href="#tab-action-ejecutar" class="btn btn-green form-refresh" data-refresh="is-ejecutable" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
 			<i class="far fa-save btn-icon-left"></i>Guardar</a>
 		<a href="#tab-action-notificar" class="btn btn-green form-refresh" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
 			<i class="fal fa-paper-plane btn-icon-left"></i>Notificar</a>
-		<a href="#tab-action-reject" class="table-action btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.rechazar']}">
-			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+		<a href="#tab-action-reject" class="table-action btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.cancelar']}">
+			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.cancelar']}</a>
 	</div>
 </html>

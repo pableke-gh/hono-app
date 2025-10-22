@@ -6,7 +6,8 @@ function Recibo() {
 
 	this.accordion = (data, status) => {
 		return `<details>
-			<summary>${status.count}. Recibos del ${i18n.isoDate(data.f1)} al ${i18n.isoDate(data.f2)}</summary>
+			<summary>${status.count}. Recibos del ${i18n.isoDate(data.f1)} al ${i18n.isoDate(data.f2)} (N${data.tipo})</summary>
+			<div></div>
 		</details>`;
 	}
 

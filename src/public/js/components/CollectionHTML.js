@@ -25,6 +25,8 @@ const fnRefresh = (el, data, opts) => {
 	const fnRefresh = opts[el.dataset.refresh]; // handler
 	if (!fnRefresh) // no handler linked to element
 		fnHide(el); // element not renderizable yet!
+	else if (el.dataset.refresh.startsWith("update"))
+		fnRefresh(el); // actualizo el elemento
 	else if (el.dataset.toggle) // toggle specific style class
 		el.classList.toggle(el.dataset.toggle, fnRefresh(el));
 	else // show / hide

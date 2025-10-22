@@ -1,5 +1,5 @@
 
-function RulesFactory() {
+function RecibosBancarios() {
 	//asociaciones entre los campos del fichero bancario y las estructuras de sorolla
 	const DOMICILIACION = "Domiciliación";
 	const FORMA_COBRO = {
@@ -22,7 +22,7 @@ function RulesFactory() {
 	function dfLatin(date) { return date && (lpad(date.getDate()) + "/" + lpad(date.getMonth() + 1) + "/" + date.getFullYear()); } //dd/mm/yyyy
 
 	//Norma 19
-	const n19 = { id: "n19", files: 0, total: 0, numrows: 0, data: [] };
+	const n19 = { tipo: 19, files: 0, total: 0, numrows: 0, data: [] };
 	const n19Config = {
 		nameColumns: ["InstdAmt", "ReqdColltnDt", "MndtId", "Ustrd", "Dbtr", "DbtrAcct", "Nm", "IBAN"],
 		tagRow: "TxInfAndSts",
@@ -58,7 +58,7 @@ function RulesFactory() {
 	//Norma 43
 	//var tpvs = [];
 	var referencias = [];
-	const n43 = { id: "n43", files: 0, total: 0, ncGdc: 0, ncElavon: 0, incorporado: 0, numrows: 0, data: [] }; //n43 header
+	const n43 = { tipo: 43, files: 0, total: 0, ncGdc: 0, ncElavon: 0, incorporado: 0, numrows: 0, data: [] }; //n43 header
 	const n43k1 = ["codigo", "entidad", "oficina", "cuenta", "fInicio", "fFin", "debe", "inicial", "divisa", "modalidad", "nombre"];
 	const n43k2 = ["codigo", "libre", "oficina", "fOperacion", "fValor", "comun", "propio", "debe", "importe", "documento", "ref1", "ref2"];
 	const n43k3 = ["codigo", "entidad", "oficina", "cuenta", "nDebes", "debe", "nHaber", "haber", "idFinal", "saldo", "divisa", "libre"];
@@ -174,7 +174,7 @@ function RulesFactory() {
 	//********************************************//
 
 	//Norma 57
-	const n57 = { id: "n57", files: 0, total: 0, numrows: 0, data: [] }; //n57 header
+	const n57 = { tipo: 57, files: 0, total: 0, numrows: 0, data: [] }; //n57 header
 	const n57k1 = ["codigo", "op", "libre1", "emisor", "libre2", "libre3", "entidad", "libre4", "fecha", "libre5", "libre6", "libre7", "libre8"];
 	const n57k2 = ["codigo", "op", "libre1", "emisor", "sufijo", "libre2", "fecha",  "libre3", "libre4", "libre5", "libre6", "libre7", "libre8"];
 	const n57k3 = ["codigo", "op", "libre1", "emisor", "sufijo", "canal", "entidad", "oficina", "fCobro", "importe",  "idCobro", "dEntidad", "dSucursal", "dc", "dCuenta", "domiciliacion", "anulacion", "ref1", "ref2"];
@@ -327,4 +327,4 @@ function RulesFactory() {
 	};
 };
 
-export default new RulesFactory();
+export default new RecibosBancarios();

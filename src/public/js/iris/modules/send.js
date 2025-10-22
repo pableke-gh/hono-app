@@ -26,7 +26,7 @@ function Send() {
 		}
 
 		form.set("is-new-iban", () => !_cuentas.value).set("is-es", isSpain).set("is-zz", () => !isSpain());
-		form.setOptions("#paises", paises.getPaises()) // update options
+		form.setDataOptions("#paises", paises.getPaises()) // update options
 			.onChangeInput(_paises, () => form.refresh(iris)); // refresh fields
 		form.onChangeInput("#urgente", ev => form.setVisible("[data-refresh='is-urgente']", ev.target.value == "2"))
 			.onChangeInput(_entidades, ev => form.setval("#banco", form.getOptionText(ev.target)))

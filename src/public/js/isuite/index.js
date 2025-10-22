@@ -1,14 +1,11 @@
 
-import sb from "../components/types/StringBox.js";
 import coll from "../components/CollectionHTML.js";
 import Form from "../components/forms/Form.js";
-import Accordion from "../components/Accordion.js";
-import Table from "../components/Table.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
 
-import recibo from "./model/Recibo.js";
-import rf from "./ttpp.js";
+import recibos from "./modules/recibos.js";
+import rb from "./lib/RecibosBancarios.js";
 
 //DOM is fully loaded
 coll.ready(() => {
@@ -20,7 +17,7 @@ coll.ready(() => {
 		btnSave.hide();
 		iSearch.val("");
 		tables.tbReset(tbConfig);
-		return !rf.reset();
+		return !rb.reset();
 	}
 	const fnTable = (norma, table) => {
 		tbConfig.current = norma;
@@ -29,7 +26,7 @@ coll.ready(() => {
 		table.data.reset();
 		btnSave.show();
 	}
-	const fnHideTable = table => { table.parentNode.hide(); tabs.setHeight(); }
+	const fnHideTable = table => table.parentNode.hide();
 	const fnShowTable = function(table) {
 		if (this.numrows) {
 			table.parentNode.show();
@@ -38,38 +35,39 @@ coll.ready(() => {
 		}
 		else
 			$(table).tbReset(tbConfig);
+		table.onclick = tabs.setHeight;
 		tabs.setHeight();
 	}
 
 	form.onChangeFile("#fichero", ev => { // after parse file
 		const decoder = new TextDecoder("utf-8"); // decode the ArrayBuffer into a UTF-8 string
-		rf.reset().parse(decoder.decode(ev.target.result)); // parse file contents
+		rb.reset().parse(decoder.decode(ev.target.result)); // parse file contents
 
-		const n19 = rf.n19();
+		const n19 = rb.n19();
 		if (n19.files) {
 			Object.assign(tbConfig.tables.n19, n19);
 			return fnTable(n19, tbConfig.tables.n19);
 		}
 
-		const n43 = rf.n43();
+		const n43 = rb.n43();
 		if (window.location.search.endsWith("tpv=1")) {
 			return api.init().json("/uae/ttpp/tpv").then(tpvs => {
 				tbConfig.tables.tpvs.data = n43.data.map(fila => {
-					const tpv = tpvs.find(item => item.value.startsWith(rf.getTpv(fila)));
+					const tpv = tpvs.find(item => item.value.startsWith(rb.getTpv(fila)));
 					fila.forma = tpv ? (tpv.value + " - " + tpv.label) : fila.forma; // actualizo el texto de agrupacion
-					return rf.normalize(fila);
+					return rb.normalize(fila);
 				});
 				fnTable(n43, tbConfig.tables.tpvs);
 			});
 		}
 		if (n43.files) {
-			n43.referencias = rf.references().join(); // referencias leidas del fichero bancario
-			const temp1 = n43.data.filter(rf.isConciliable); // filas conciliables
-			const aux = Object.copy({}, n43, [ "ccc", "fInicio", "fFin", "referencias" ]);
+			n43.referencias = rb.references().join(); // referencias leidas del fichero bancario
+			const temp1 = n43.data.filter(rb.isConciliable); // filas conciliables
+			const aux = Object.copy({}, n43, [ "tipo", "ccc", "fInicio", "fFin", "referencias" ]);
 			return api.setJSON(aux).json("/uae/ttpp/load").then(data => { // llamada post
 				const temp2 = data.recibos.filter(recibo => {
 					const fila = temp1.find(f => (recibo.refreb == f.ref1));
-					fila && rf.acLoad(fila, recibo); //aÃ±ado los datos de academico
+					fila && rb.acLoad(fila, recibo); //aÃ±ado los datos de academico
 					if (!recibo.fCobro || ([18, 31].indexOf(recibo.pago) < 0))
 						return false; //recibo no de TPV
 					//primero ajusto el offset time zone (-1 o -2 horas) y luego sumo 1 dia
@@ -85,7 +83,7 @@ coll.ready(() => {
 					recibo.forma = "TPV Virtual"; // forma cobro
 					recibo.fOperacion = recibo.fCobro; //guardo la fecha de operacion en el recibo
 					n43.incorporado += recibo.importe; //importe incorporado de AC
-					return rf.normalize(recibo); //incorporo el recibo
+					return rb.normalize(recibo); //incorporo el recibo
 				});
 				n43.importe = n43.total + n43.incorporado; // importe recibos cancarios + incorporados
 				tbConfig.tables.n43.data = temp1.concat(temp2); // muestro todos los recibos
@@ -93,15 +91,15 @@ coll.ready(() => {
 			});
 		}
 
-		const n57 = rf.n57();
+		const n57 = rb.n57();
 		if (n57.files) {
-			n57.referencias = rf.references().join(); // referencias leidas del fichero bancario
-			const temp1 = n57.data.filter(rf.isConciliable); // filas conciliables
-			const aux = Object.copy({}, n57, [ "ccc", "fInicio", "fFin", "referencias" ]);
+			n57.referencias = rb.references().join(); // referencias leidas del fichero bancario
+			const temp1 = n57.data.filter(rb.isConciliable); // filas conciliables
+			const aux = Object.copy({}, n57, [ "tipo", "ccc", "fInicio", "fFin", "referencias" ]);
 			return api.setJSON(aux).json("/uae/ttpp/load").then(data => { // llamada post
 				data.recibos.forEach(recibo => { //no incorporo nada
 					const fila = temp1.find(f => (recibo.refreb == f.ref1));
-					fila && rf.acLoad(fila, recibo); // añado los datos de academico
+					fila && rb.acLoad(fila, recibo); // añado los datos de academico
 				});
 				tbConfig.tables.n57.data = temp1;
 				fnTable(n57, tbConfig.tables.n57);
@@ -114,9 +112,10 @@ coll.ready(() => {
 	const at = $("a#tabla, a#pivot").click(function() { toggle(at); return !toggle(tables); });
 	tabs.setAction("reset", fnReset);
 	//const ag = $("a#group, a#ungroup").click(function() { toggle(ag); return !tables.tbToggleGroup(tbConfig); });
-	tabs.setAction("save", () => api.init().json("/uae/ttpp/save")); // read params from sesion => loaded by /uae/ttpp/load
-	tabs.setAction("excel", link => { api.download(B64MT.xls + tables.filter(".tb-push").xls(tbConfig).utf8ToB64(), link.download); });
-	tabs.setAction("tr", link => { api.download(B64MT.txt + rf.tr57to43().n43Fetch().utf8ToB64(), link.download); });
+	tabs.setAction("save", () => api.init().json("/uae/ttpp/save").then(btnSave.hide)); // read params from sesion => loaded by /uae/ttpp/load
+	tabs.setAction("excel", link => api.download(B64MT.xls + tables.filter(".tb-push").xls(tbConfig).utf8ToB64(), link.download));
+	tabs.setAction("tr", link => api.download(B64MT.txt + rb.tr57to43().n43Fetch().utf8ToB64(), link.download));
+	tabs.setInitEvent("ttpp", recibos.init);
 
 	const tbConfig = { // Inicializo la configuracion y eventos de la tabla
 		LatinFloatParse: toNumber, LatinFloat: nfLatin, LatinDateParse: toDate, LatinDate: dfLatin, 
@@ -137,7 +136,7 @@ coll.ready(() => {
 				typeColumns: { fCobro: "DateTime", importe: "Number" },
 				styleColumns: { fCobro: "LatinDate", importe: "LatinFloat" },
 				afterPush: fnShowTable,
-				afterReset: fnHideTable
+				afterReset: fnHideTable,
 			},
 			n57: {
 				typeColumns: { fCobro: "DateTime", idActividad: "Number", importe: "Number" },
@@ -204,25 +203,4 @@ coll.ready(() => {
 
 	const iSearch = $("[group=search]").keydown(ev => { ev.preventDefault(); (ev.keyCode == 13) && fnSearch(); });
 	const tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);
-
-	tabs.setInitEvent("ttpp", tab => {
-		const form = new Form("#ttpp"); // filtro del historico de recibos
-		form.setLabels("#ejercicios", sb.getEjercicios()); // ultimos 6 ej
-
-		const accordion = new Accordion(); // agrupa el historico de recibos
-		accordion.setRender(recibo.accordion);
-		accordion.setOpen((data, details) => {
-			if (details.openings)
-				return; // recibos ya cargados
-			api.init().json("/uae/ttpp/historico/recibos?id=" + data.id).then(recibos => {
-				const tblRecibos = new Table();
-				tblRecibos.setOptions(recibo.getTable()).addClass("tb-xeco").view(recibos);
-				details.appendChild(tblRecibos.getTable());
-			});
-		});
-		api.init().json("/uae/ttpp/historico?ej=" + form.getval("#ejercicios")).then(data => {
-			accordion.setData(data).replace(tab.querySelector("#historico"));
-		});
-		//tabs.setViewEvent("ttpp", () => console.log("view"));
-	});
 });

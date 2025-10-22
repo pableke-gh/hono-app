@@ -52,6 +52,12 @@ function Ruta() {
 	this.isLlegadaTemprana = ruta => (sb.getHours(ruta.dt2) < 14);
 	this.isLlegadaTardia = ruta => (sb.getHours(ruta.dt2) < 5);
 	this.isLlegadaCena = ruta => (sb.getHours(ruta.dt2) > 21);
+	this.isMismoDia = ruta => sb.inDay(ruta.dt1, ruta.dt2);
+	this.isMedioDia = (dt1, dt2) => {
+		const h1 = sb.getHours(dt1);
+		const h2 = sb.getHours(dt2);
+		return sb.inDay(dt1, dt2) && (h1 < 14) && (h2 > 15) && ((h2 - h1) >= 5); //14:00 a 15:59h
+	}
 
 	this.getOrigen = ruta => ruta.origen;
 	this.getPaisSalida = ruta => ruta.pais1;

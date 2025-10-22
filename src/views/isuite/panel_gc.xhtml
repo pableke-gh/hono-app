@@ -18,7 +18,7 @@
 	<ui:define name="outputScript">
 		<script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 		<script type="text/javascript" src="/uae/resources/js/isuite/lib/uae-box.min.js"></script>
-		<script type="module" src="/uae/resources/js/isuite/xeco.js"></script>
+		<script type="module" src="/uae/resources/js/isuite/index.js"></script>
 	</ui:define>
 
 	<ui:define name="title">Extraeco</ui:define>
@@ -40,6 +40,7 @@
 						<f:selectItems value="#{ctrl.ejercicios}" />
 					</h:selectOneMenu>
 				</label>
+
 				<label class="ui-block">
 					<div class="label">Orgánica:</div>
 					<input type="text" id="organica" name="organica" size="25" maxlength="20" group="search" class="ui-input ui-text" />

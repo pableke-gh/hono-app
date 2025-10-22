@@ -47,11 +47,12 @@ function Resumen() {
 		const data = form.validate(rvp.validate);
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
-		if (!form.isChanged()) // compruebo cambios
+		if (!form.isChanged() && !dietas.isChanged()) // compruebo cambios
 			return form.nextTab(tab); // no cambios => salto al ultimo paso
 		const temp = Object.assign(iris.getData(), data); // merge data to send
 		temp.gastos = gastos.setKm(data, rmaps.getResume()).getGastos(); // update gastos
 		api.setJSON(temp).json("/uae/iris/save").then(data => iris.update(data, tab));
+		dietas.setChanged(); // reset cambios dietas
 	}
 
 	tabs.setAction("paso6", () => fnPasoResumen());
