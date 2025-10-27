@@ -1,4 +1,5 @@
 
+import sb from "../../../components/types/StringBox.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
@@ -50,8 +51,8 @@ export default function(tab) {
 	const fnReset = () => {
 		_grpGasto.mask(0);
 		_eTipoGasto.value = "";
-		const start = rutas.getHoraSalida();
-		const end = rutas.getHoraLlegada();
+		const start = sb.isoDate(rutas.getHoraSalida());
+		const end = sb.isoDate(rutas.getHoraLlegada());
 		form.setValue("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 			.setval("#fMinGasto", start).setAttr("#fMinGasto", "min", start.substring(0, 10))
 			.setval("#fMaxGasto", end).setAttr("#fMaxGasto", "max", end.substring(0, 10))
@@ -91,12 +92,12 @@ export default function(tab) {
 	}
 	const fnUpload = data => {
 		const include = [ "rutas", "num", "impGasto", "imp2", "desc" ];
-		const exclude = [
+		const fd = form.getFormData(data, include); // merge data to send
+		fd.exclude([ // exclude fields
 			"memo", "justifi", "justifiVp", "justifiCong", "tipoSubv", "finalidad", "justifiKm",
 			"iban", "cuenta", "swift", "observaciones", "urgente", "fMax", "extra", "rechazo",
-			"paisEntidad", "nombreEntidad", "codigoEntidad", "acInteresado", "origen"
-		];
-		const fd = form.getFormData(data, include, exclude); // merge data to send
+			"paisEntidad", "nombreEntidad", "codigoEntidad", "acInteresado", "origen", "destino"
+		]);
 		return api.setFormData(fd).send(fnUrl()); // send call to server
 	}
 	tabs.setViewEvent(5, fnReset); // reset form on view tab 5

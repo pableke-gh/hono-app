@@ -12,10 +12,11 @@ import xeco from "../../xeco/xeco.js";
 function IrseTabs() {
 	const form = xeco.getForm();
 	const fnUpload = () => { // merge data to send
-		const fd = form.getFormData(null, [], [ // exclude fields
+		const fd = form.getFormData();
+		fd.exclude([ // exclude fields
 			"memo", "justifi", "justifiVp", "justifiCong", "tipoSubv", "finalidad", "justifiKm",
 			"iban", "cuenta", "swift", "observaciones", "urgente", "fMax", "extra", "rechazo",
-			"paisEntidad", "nombreEntidad", "codigoEntidad", "acInteresado", "origen"
+			"paisEntidad", "nombreEntidad", "codigoEntidad", "acInteresado", "origen", "destino"
 		]);
 		api.setFormData(fd).json("/uae/iris/upload/gasto").then(() => form.loading().click("#updateGasto"));
 	}

@@ -2,19 +2,19 @@
 import alerts from "./Alerts.js";
 import mt from "../data/mime-types.js";
 
-const fnMsgs = data => (alerts.showMsgs(data) ? data : Promise.reject(data));
-function fnError(res, msg) {
-	const error = res.statusText || msg || "Conection is not available.";
-	alerts.showError(error);
-	return Promise.reject(error);
-}
-
 function Api() {
 	const self = this; //self instance
 	const OPTS = {}; // Call options
 	const HEADER_TYPE = "content-type"; // content-type key
 	const HEADER_TOKEN = "x-access-token"; // Token key in header
 	const HEADERS = new Headers({ "x-requested-with": "XMLHttpRequest" }); // AJAX header
+
+	const fnMsgs = data => (alerts.showMsgs(data) ? data : Promise.reject(data));
+	function fnError(res, msg) {
+		const error = res.statusText || msg || "Conection is not available.";
+		alerts.showError(error);
+		return Promise.reject(error);
+	}
 
 	this.get = name => OPTS[name];
 	this.set = (name, value) => { OPTS[name] = value; return self; }
@@ -112,6 +112,18 @@ function Api() {
 		link.href = objectURL; // set blob source
 		link.download = name || "download.pdf"; // force file name
 		link.click(); // download file to cliente
+	}
+
+	URLSearchParams.prototype.clear = function(keys) {
+		keys = keys || [...this.keys()];
+		keys.forEach(key => this.delete(key));
+	}
+	URLSearchParams.prototype.load = function(data) {
+		for (const key in data) {
+			const value = data[key];
+			value && this.set(key, value);
+		}
+		return this;
 	}
 }
 

@@ -170,13 +170,18 @@ export default function(form, opts) {
 	}
 
 	this.getUrlParams = () => new URLSearchParams(new FormData(form));
-	this.getFormData = (data, include, exclude) => {
-		const fd = new FormData(form);
-		include.forEach(key => {
+	FormData.prototype.exclude = function(keys) {
+		keys.forEach(key => this.delete(key));
+	}
+	FormData.prototype.load = function(data, keys) {
+		keys.forEach(key => { // set slected keys
 			const value = data[key];
-			value && fd.set(key, value);
+			value && this.set(key, value);
 		});
-		exclude.forEach(key => fd.delete(key));
+	}
+	this.getFormData = (data, include) => {
+		const fd = new FormData(form);
+		data && fd.load(data, include);
 		return fd; // merge data to send
 	}
 

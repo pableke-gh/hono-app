@@ -56,9 +56,9 @@ coll.ready(() => {
 		const data = form.validate(presto.validate);
 		if (!data || !i18n.confirm(msgConfirm))
 			return Promise.reject(); // Error al validar o sin confirmacion
-		const include = [ "id", "tipo", "subtipo", "mask" ];
-		const exclude = [ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ];
-		const fd = form.getFormData(Object.assign(presto.getData(), data), include, exclude);
+		const include = [ "id", "tipo", "subtipo", "mask" ]; // fields to include
+		const fd = form.getFormData(Object.assign(presto.getData(), data), include);
+		fd.exclude([ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ]);
 		// primera partida = principal y serializo el json com un campo del form data
 		fd.set("partidas", JSON.stringify(presto.getPartidas().setPrincipal().getData()));
 		return api.setFormData(fd).send(url).then(fn); // send data
