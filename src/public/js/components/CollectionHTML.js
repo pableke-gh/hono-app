@@ -18,14 +18,15 @@ const fnRender = (el, data, opts) => {
 	return el; // current HTMLElement instance
 }
 const fnRefresh = (el, data, opts) => {
-	if (el.dataset.refresh == "text-render")
-		return fnRender(el, data, initOptions(1)); // render contents only
-	if (el.dataset.refresh == "clear") // clear contents
+	const value = el.dataset.refresh;
+	if (value == "text-render") // render contents
+		return fnRender(el, data, initOptions(1));
+	if (value == "clear") // clear contents
 		return el.setText(""); // set contents to empty
-	const fnRefresh = opts[el.dataset.refresh]; // handler
+	const fnRefresh = data[value] || opts[value]; // handler
 	if (!fnRefresh) // no handler linked to element
 		fnHide(el); // element not renderizable yet!
-	else if (el.dataset.refresh.startsWith("update"))
+	else if (value.startsWith("update"))
 		fnRefresh(el); // actualizo el elemento
 	else if (el.dataset.toggle) // toggle specific style class
 		el.classList.toggle(el.dataset.toggle, fnRefresh(el));

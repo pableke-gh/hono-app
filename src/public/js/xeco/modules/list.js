@@ -6,7 +6,6 @@ import api from "../../components/Api.js"
 import i18n from "../../i18n/langs.js";
 
 import model from "../model/Solicitud.js";
-import firmas from "./firmas.js";
 import uxxiec from "./uxxiec.js";
 
 function List() {
@@ -21,11 +20,10 @@ function List() {
 	const fnLoadList = data => { tblSolicitudes.render(data); tabs.showList(); } // render table
 	const fnCallList = () => { api.setJSON(form.getData()).json(url + "/list").then(fnLoadList); } // fetch list action
 	const fnList = (estado, fmask) => { form.setData({ estado, fmask }, ".ui-filter"); fnCallList(); } // prepare filter and fetch
-	const fnLoadTab = (tab, data) => { firmas.update(data); tabs.showTab(tab); } // set firmas and show selected tab
 	const fnUpdateRow = () => tblSolicitudes.refreshRow(model);
 	const fnView = data => {
 		if (form.isCached(data.id))
-			fnLoadTab("form", data);
+			self.showForm();
 		else
 			api.init().json(url + "/view?id=" + data.id).then(model.view);
 	}
@@ -40,38 +38,38 @@ function List() {
 		});
 	}
 
-	this.getForm = () => form; // get the filter form
 	this.setCache = form.setCache; // set cache on create and view
 	this.getTable = () => tblSolicitudes; // table module
-	this.getId = tblSolicitudes.getId;
-	this.update = () => {
-		fnUpdateRow(); // refresh current row
-		tabs.showList(); // force tab list
-	}
-	this.firmar = data => {
-		if (form.isCached(self.getId())) // checks if current item is cached
-			firmas.view(data.firmas); // update firmas blocks + buttons
-		else // el usuario intenta firmar un registro desde la tabla
-			model.setData(tblSolicitudes.getCurrentItem()); // load selected row
-		model.setProcesando(); // avoid reclicks
-		self.update(); // force tab list
-	}
+	this.getId = tblSolicitudes.getId; // current table id
+	//this.getData = tblSolicitudes.getCurrentItem; // selected data
+	this.setAction = (name, fn) => { tblSolicitudes.set(name, fn); return self; } // table handler
+	this.update = () => { fnUpdateRow(); tabs.showList(); } // refresh row and go list
+	this.setFirmas = () => { throw new Error("You have to implement the method setFirmas!"); }
+	this.showForm = () => { throw new Error("You have to implement the method showForm!"); }
 
 	this.init = () => {
 		uxxiec.init(); // expediente uxxiec
 		form.onKeydown(ev => ((ev.key == "Enter") && fnCallList()));
-		tblSolicitudes.view(); // initial render
+		// set view, uxxiec and reject handlers, and after run initial render
+		tblSolicitudes.set("#view", fnView).set("#uxxiec", uxxiec.view).set("#reject", tabs.getAction("reject")).view();
 	}
 
 	// Set handlers for actions in solicitudes table
-	tblSolicitudes.set("is-firmable", model.isFirmable).set("is-integrable", model.isIntegrable);
 	tblSolicitudes.set("update-estado", td => { // actualizo la celda del estado
 		td.className = model.getStyleByEstado() + " hide-xs table-refresh";
 		td.innerHTML = model.getDescEstado();
 	});
 
-	tblSolicitudes.set("#view", fnView).set("#uxxiec", uxxiec.view).set("#reject", data => fnLoadTab("reject", data));
-	tblSolicitudes.set("#firmar", data => i18n.confirm("msgFirmar") && api.init().json(url + "/firmar?id=" + data.id).then(self.firmar));
+	tblSolicitudes.set("#firmar", data => {
+		i18n.confirm("msgFirmar") && api.init().json(url + "/firmar?id=" + data.id).then(srv => {
+			if (form.isCached(data.id)) // checks if current item is cached
+				self.setFirmas(srv.firmas); // update firmas blocks + buttons
+			else // el usuario intenta firmar un registro desde la tabla
+				model.setData(data); // load selected row
+			model.setProcesando(); // avoid reclicks
+			self.update(); // force tab list
+		});
+	});
 
 	tblSolicitudes.set("#report", data => api.init().text(url + "/report?id=" + data.id).then(api.open)); // call report service
 	//tblSolicitudes.set("#pdf", data => api.init().blob(url + "/pdf?id=" + data.id).then(api.open)); // report template service 

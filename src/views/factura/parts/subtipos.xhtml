@@ -9,32 +9,32 @@
 
 	<label class="ui-block-xl">
 		<div class="label required">Tipos de Ingreso:</div>
-		<select id="subtipo" name="subtipo" data-editable="is-subtipo" class="ui-input ui-select ui-number" tabindex="4">
-			<option value="14" class="form-refresh" data-refresh="show-factura">MATRÍCULAS ENSEÑANZA OFICIAL - CONVENIOS EDUCATIVOS (SUBV. PRECIO)</option> 
-			<option value="4"  class="form-refresh" data-refresh="show-factura">MATRÍCULA ENSEÑANZA OFICIAL</option>
-			<option value="25" class="form-refresh" data-refresh="show-ttpp">TÍTULOS PROPIOS (INCLUYE IDIOMAS, EXTRANJEROS, CAP, …)</option>
-			<option value="3"  class="form-refresh" data-refresh="show-factura">TÍTULOS PROPIOS (INCLUYE IDIOMAS, EXTRANJEROS, CAP, …)</option>
-			<option value="15" class="form-refresh" data-refresh="show-factura">TÍTULOS PROPIOS CON CANON</option>
-			<option value="9"  class="form-refresh" data-refresh="show-factura">CURSOS DE EXTENSIÓN (VERANO, MAYORES, OTROS)</option>
-			<option value="16" class="form-refresh" data-refresh="show-factura">PATROCINIOS DE TÍTULOS PROPIOS</option>
-			<option value="17" class="form-refresh" data-refresh="show-factura">PATROCINIOS DE CURSOS DE VERANO</option>
-			<option value="18" class="form-refresh" data-refresh="show-factura">PATROCINIOS DE OTRAS ACTIVIDADES DE EXTENSIÓN</option>
-			<option value="5"  class="form-refresh" data-refresh="show-factura">SAIT PRESTACIONES DE SERVICIOS</option>
-			<option value="19" class="form-refresh" data-refresh="show-factura">SAIT ENTREGAS DE IMPRESIONES 3D, PIEZAS, PROTOTIPOS Y OTROS BIENES</option>
-			<option value="1"  class="form-refresh" data-refresh="show-factura" disabled>CONTRATO DE I+D+I</option>
-			<option value="20" class="form-refresh" data-refresh="show-factura">PRESTACIONES DE SERVICIOS DEL CPCD</option>
-			<option value="21" class="form-refresh" data-refresh="show-factura">PRESTAMO INTERBIBLIOTECARIO</option>
-			<option value="22" class="form-refresh" data-refresh="show-factura">VENTA DE LIBROS EN PAPEL</option>
-			<option value="23" class="form-refresh" data-refresh="show-factura">VENTA DE LIBROS ELECTRÓNICOS</option>
-			<option value="6"  class="form-refresh" data-refresh="show-factura">ALQUILER DE ESPACIOS</option>
-			<option value="2"  class="form-refresh" data-refresh="show-factura" disabled>LICENCIAS SOBRE PATENTES</option>
-			<option value="11" class="form-refresh" data-refresh="show-factura">OTROS (CANARIAS/CEUTA/MELILLA, MOOCs, DEPORTES, SYMPOSIUM, CENTROS ADSCRITOS, FOTOCOPIAS, CONCESIONES, ENAJENACIÓN DE BIENES)</option>
-			<option value="24" class="form-refresh" data-refresh="show-factura">ASISTENCIA A CONGRESOS</option>
-			<option value="12" class="form-refresh" data-refresh="show-cp" disabled>RED DE CÁTEDRAS</option>
-			<option value="13" class="form-refresh" data-refresh="show-cp">OTROS</option>
+		<select id="subtipo" name="subtipo" class="ui-input ui-select ui-number" tabindex="4">
+			<option value="14" class="form-refresh" data-refresh="isFacturable">MATRÍCULAS ENSEÑANZA OFICIAL - CONVENIOS EDUCATIVOS (SUBV. PRECIO)</option> 
+			<option value="4"  class="form-refresh" data-refresh="isFacturable">MATRÍCULA ENSEÑANZA OFICIAL</option>
+			<option value="3"  class="form-refresh" data-refresh="isFacturable">TÍTULOS PROPIOS (INCLUYE IDIOMAS, EXTRANJEROS, CAP, …)</option>
+			<option value="15" class="form-refresh" data-refresh="isFacturable">TÍTULOS PROPIOS CON CANON</option>
+			<option value="25" class="form-refresh" data-refresh="isFacturable">TÍTULOS PROPIOS EMPRESAS</option>
+			<option value="9"  class="form-refresh" data-refresh="isFacturable">CURSOS DE EXTENSIÓN (VERANO, MAYORES, OTROS)</option>
+			<option value="16" class="form-refresh" data-refresh="isFacturable">PATROCINIOS DE TÍTULOS PROPIOS</option>
+			<option value="17" class="form-refresh" data-refresh="isFacturable">PATROCINIOS DE CURSOS DE VERANO</option>
+			<option value="18" class="form-refresh" data-refresh="isFacturable">PATROCINIOS DE OTRAS ACTIVIDADES DE EXTENSIÓN</option>
+			<option value="5"  class="form-refresh" data-refresh="isFacturable">SAIT PRESTACIONES DE SERVICIOS</option>
+			<option value="19" class="form-refresh" data-refresh="isFacturable">SAIT ENTREGAS DE IMPRESIONES 3D, PIEZAS, PROTOTIPOS Y OTROS BIENES</option>
+			<option value="1"  class="form-refresh" data-refresh="isFacturable" disabled>CONTRATO DE I+D+I</option>
+			<option value="20" class="form-refresh" data-refresh="isFacturable">PRESTACIONES DE SERVICIOS DEL CPCD</option>
+			<option value="21" class="form-refresh" data-refresh="isFacturable">PRESTAMO INTERBIBLIOTECARIO</option>
+			<option value="22" class="form-refresh" data-refresh="isFacturable">VENTA DE LIBROS EN PAPEL</option>
+			<option value="23" class="form-refresh" data-refresh="isFacturable">VENTA DE LIBROS ELECTRÓNICOS</option>
+			<option value="6"  class="form-refresh" data-refresh="isFacturable">ALQUILER DE ESPACIOS</option>
+			<option value="2"  class="form-refresh" data-refresh="isFacturable" disabled>LICENCIAS SOBRE PATENTES</option>
+			<option value="11" class="form-refresh" data-refresh="isFacturable">OTROS (CANARIAS/CEUTA/MELILLA, MOOCs, DEPORTES, SYMPOSIUM, CENTROS ADSCRITOS, FOTOCOPIAS, CONCESIONES, ENAJENACIÓN DE BIENES)</option>
+			<option value="24" class="form-refresh" data-refresh="isFacturable">ASISTENCIA A CONGRESOS</option>
+			<option value="12" class="form-refresh" data-refresh="isCartaPago" disabled>RED DE CÁTEDRAS</option>
+			<option value="13" class="form-refresh" data-refresh="isCartaPago">OTROS</option>
 		</select>
 	</label>
-	<label class="autocomplete ui-block-md form-refresh" data-refresh="show-recibo">
+	<label class="autocomplete ui-block-md form-refresh" data-refresh="isRecibo">
 		<div class="label required">Recibo asociado a la factura:</div>
 		<input type="search" id="acRecibo" name="acRecibo" class="ui-input ui-autocomplete" tabindex="4" />
 		<input type="text" id="idRecibo" name="idRecibo" class="ui-input hide" /> 

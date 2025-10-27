@@ -3,9 +3,12 @@ import sb from "../types/StringBox.js";
 import isb from "./SelectBox.js";
 
 export default function(select, opts) {
-    opts = opts || {}; // Init. options
-    opts.onChange = opts.onChange || globalThis.void; // fired on change select
-    opts.onReset = opts.onReset || globalThis.void; // fired on reset select
+	select = globalThis.isstr(select) ? $1(select) : select; // search element
+	select = select || document.createElement("select"); // create select input
+
+	opts = opts || {}; // Init. options
+	opts.onChange = opts.onChange || globalThis.void; // fired on change select
+	opts.onReset = opts.onReset || globalThis.void; // fired on reset select
 
 	const self = this; //self instance
 	const EMPTY = []; // empty container
@@ -20,48 +23,48 @@ export default function(select, opts) {
 	this.setReset = fn => self.set("onReset", fn);
 
 	this.getItems = () => _data;
-    this.getItem = index => _data[index];
-    this.getIndex = () => select.selectedIndex;
+	this.getItem = index => _data[index];
+	this.getIndex = () => select.selectedIndex;
 	this.isOptional = () => !select.options[0]?.value;
-    this.getCurrentItem = () => _data[select.selectedIndex];
+	this.getCurrentItem = () => _data[select.selectedIndex];
 
-    this.getSelect = () => select; // get select element
-    this.getOption = () => select.options[self.getIndex()]; // current option element
+	this.getSelect = () => select; // get select element
+	this.getOption = () => select.options[self.getIndex()]; // current option element
 	this.getText = () => self.getOption()?.innerHTML; // current option text
 	this.getCode = sep => sb.getCode(self.getText(), sep);
 	this.getValue = () => select.value; // current value
 	this.setValue = value => {
-        select.value = value;
-        return fnChange(value);
-    }
-
-    this.reset = () => {
-        _data = EMPTY;
-        select.innerHTML = fnEmpty(); // Empty text = first option
-        opts.onReset(self); // Fire reset event
-        return self;
-    }
-
-    this.setItems = items => {
-        if (!JSON.size(items))
-            return self.reset();
-        _data = items; // Init. datalist
-        isb.setItems(select, items);
-        return fnChange(_data[0]);
+		select.value = value;
+		return fnChange(value);
 	}
-    this.setData = data => {
-        if (!data)
-            return self.reset();
+
+	this.reset = () => {
+		_data = EMPTY;
+		select.innerHTML = fnEmpty(); // Empty text = first option
+		opts.onReset(self); // Fire reset event
+		return self;
+	}
+
+	this.setItems = items => {
+		if (!JSON.size(items))
+			return self.reset();
+		_data = items; // Init. datalist
+		isb.setItems(select, items);
+		return fnChange(_data[0]);
+	}
+	this.setData = data => {
+		if (!data)
+			return self.reset();
 		_data = Object.keys(data); // Init. datalist
 		isb.setData(select, data); // set options
-        return fnChange(_data[0]);
-    }
+		return fnChange(_data[0]);
+	}
 	this.setLabels = labels => {
-        if (!JSON.size(labels))
-            return self.reset();
+		if (!JSON.size(labels))
+			return self.reset();
 		_data = labels; // set values
 		isb.setLabels(select, labels);
-        return fnChange(_data[0]);
+		return fnChange(_data[0]);
 	}
 	this.setRange = function(min, max, step, fnLabel) {
 		step = step || 1; // default step = 1
@@ -83,7 +86,7 @@ export default function(select, opts) {
 		return self;
 	}
 
-    select.addEventListener("change", ev => {
-        fnChange(self.getCurrentItem());
-    });
+	select.addEventListener("change", ev => {
+		fnChange(self.getCurrentItem());
+	});
 }

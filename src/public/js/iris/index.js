@@ -24,8 +24,7 @@ coll.ready(() => {
 	sendTab.init();
 
 	const form = xeco.getForm();
-	form.set("is-resumable", iris.isResumable).set("is-urgente", iris.isUrgente).set("is-equipo-gobierno", iris.isEquipoGob)
-		.set("is-editable-p0", iris.isEditableP0).set("is-paso8", iris.isPaso8).set("is-editable-p8", () => (iris.isEditable() && iris.isPaso8()));
+	form.set("is-editable-p8", () => (iris.isEditable() && iris.isPaso8()));
 
 	iris.view = data => { // Init IRSE form
 		iris.init(data.iris); // init perfil

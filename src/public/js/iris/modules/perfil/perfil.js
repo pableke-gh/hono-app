@@ -11,7 +11,6 @@ import xeco from "../../../xeco/xeco.js";
 function Perfil() {
 	//const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	const firmas = xeco.getFirmas(); // modulo de firmas
 
 	const fnInteresado = interesado => (interesado.nif + " - " + interesado.nombre);
 	const _acInteresado = form.setAutocomplete("#interesado", { // autocomplete field
@@ -24,7 +23,7 @@ function Perfil() {
 	});
 
 	const _acPromotor = form.setAutocomplete("#promotor");
-	const fnShowFirmas = data => firmas.view(data.firmas); // update firmas view
+	const fnShowFirmas = data => xeco.setFirmas(data.firmas); // update firmas view
 	const fnPromotor = term => api.init().json("/uae/iris/personal", { id: iris.getId(), term }).then(_acPromotor.render);
 	const fnSelect = item => api.init().msgs("/uae/iris/promotor?id=" + iris.getId() + "&nif=" + item.value).then(fnShowFirmas);
 	const fnReset = () => api.init().msgs("/uae/iris/promotor?id=" + iris.getId()).then(fnShowFirmas);
@@ -75,9 +74,9 @@ function Perfil() {
 		else // clear field value
 			_acInteresado.setValue();
 		organicas.setOrganicas(orgs); // 2º update financiacion
-		const promotor = firmas.findByGrupo(5, principales); // 3º firma del promotor
+		const promotor = xeco.findByGrupo(5, principales); // 3º firma del promotor
 		if (promotor)
-			_acPromotor.setValue(promotor.nif, firmas.getFirmante(promotor)); // set field value
+			_acPromotor.setValue(promotor.nif, xeco.getFirmante(promotor)); // set field value
 		else
 			_acPromotor.setValue(); // clear field value
 	}

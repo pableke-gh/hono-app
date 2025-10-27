@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="card-xeco form-refresh" data-refresh="show-partida-dec">
+	<div class="card-xeco form-refresh" data-refresh="isPartidaDec">
 		<h2>Partida que Disminuye</h2>
 		<div class="ui-blocks">
 		<label class="ui-block">
@@ -27,15 +27,15 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number ui-pf" data-editable="is-editable" tabindex="7"></select>
+			<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number ui-pf" data-editable="isEditable" tabindex="7"></select>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
 			<div class="label required">Importe:</div>
-			<input type="text" id="impDec" name="imp" maxlength="12" tabindex="8" class="ui-input ui-float" data-editable="is-editable"/> €
+			<input type="text" id="impDec" name="imp" maxlength="12" tabindex="8" class="ui-input ui-float" data-editable="isEditable"/> €
 			<div class="ui-errtip"></div>
 		</label>
-		<label class="ui-block form-refresh" data-refresh="show-imp-cd">
+		<label class="ui-block form-refresh" data-refresh="isImpCd">
 			<div class="label required">Importe Disponible:</div>
 			<input type="text" id="cd" name="cd" tabindex="-1" class="ui-input ui-float disabled" disabled /> €
 			<div class="ui-errtip"></div>

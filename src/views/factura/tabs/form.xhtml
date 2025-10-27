@@ -29,15 +29,15 @@
 		<div class="ui-blocks form-refresh" data-refresh="show-factura-uae">
 			<label class="ui-block">
 				<div class="label">Causas de no sujeción a IVA:</div>
-				<select id="sujeto" name="sujeto" data-editable="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="5">
+				<select id="sujeto" name="sujeto" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="5">
 					<option value="0">Seleccione una causa de no sujeción</option>
 					<option value="2">TAI Reglas Localización.</option>
 					<option value="1">Art. 7, 14, otros.</option>
 				</select>
 			</label>
-			<label class="ui-block form-refresh" data-refresh="is-exento">
+			<label class="ui-block form-refresh" data-refresh="isExento">
 				<div class="label">Causas de exención en IVA:</div>
-				<select id="exento" name="exento" data-editable="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="6">
+				<select id="exento" name="exento" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="6">
 					<option value="0">Seleccione una causa de exención</option>
 					<option value="1">E1 Exenta por el artículo 20.</option>
 					<option value="2">E2 Exenta por el artículo 21.</option>
@@ -49,7 +49,7 @@
 			</label>
 			<label class="ui-block-row form-refresh" data-refresh="show-factura-uae">
 				<div class="label">Modelo fiscal 349:</div>
-				<select id="m349" name="m349" data-editable="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="7">
+				<select id="m349" name="m349" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="7">
 					<option value="0">No</option>
 					<option value="1">D - Devoluciones de bienes desde otro Estado miembro al que previamente fueron enviados desde el TAI en el marco de acuerdos de ventas de bienes en consigna</option>
 					<option value="2">E - Entregas intracomunitarias</option>
@@ -62,10 +62,10 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks form-refresh" data-refresh="show-uae">
+		<div class="ui-blocks form-refresh" data-refresh="isUae">
 			<label class="ui-block-xl">
 				<div class="label">Económica:</div>
-				<select name="economica" data-editable="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="7">
+				<select name="economica" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="7">
 					<option value="">Seleccione una económica</option>
 					<c:forEach items="#{fact.form.economicas}" var="eco">
 						<option value="#{eco.value}">#{eco.label}</option>
@@ -75,7 +75,7 @@
 			</label>
 			<label class="ui-block-xl">
 				<div class="label">IBAN:</div>
-				<select name="iban" data-editable="is-editable-uae" class="ui-input ui-select ui-fiscal" tabindex="7">
+				<select name="iban" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="7">
 					<option value="">Seleccione un IBAN</option>
 					<c:forEach items="#{fact.form.getCuentasUpct()}" var="item">
 						<option value="#{item.value}">#{item.label}</option>
@@ -84,7 +84,7 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks form-refresh" data-refresh="show-grupo-face">
+		<div class="ui-blocks form-refresh" data-refresh="isGrupoFace">
 			<label class="ui-block">
 				<div class="label">Factura electrónica:</div>
 				<select id="face" name="face" class="ui-input ui-select" tabindex="8">
@@ -98,27 +98,27 @@
 				<input type="text" id="og" name="og" maxlength="20" tabindex="9" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
-			<label class="ui-block-md form-refresh" data-refresh="show-face">
+			<label class="ui-block-md form-refresh" data-refresh="isFace">
 				<div class="label">Oficina Contable:</div>
 				<input type="text" id="oc" name="oc" maxlength="20" tabindex="10" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
-			<label class="ui-block-md form-refresh" data-refresh="show-face">
+			<label class="ui-block-md form-refresh" data-refresh="isFace">
 				<div class="label">Unidad Tramitadora:</div>
 				<input type="text" id="ut" name="ut" maxlength="20" tabindex="11" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
-			<label class="ui-block-md form-refresh" data-refresh="show-face">
+			<label class="ui-block-md form-refresh" data-refresh="isFace">
 				<div class="label">Órgano Proponente:</div>
 				<input type="text" id="op" name="op" maxlength="20" tabindex="12" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
 		</div>
 
-		<div class="ui-blocks form-refresh" data-refresh="show-memo">
+		<div class="ui-blocks form-refresh" data-refresh="isMemo">
 		<label class="ui-block-row">
 			<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
-			<textarea id="memo" name="memo" class="ui-input ui-ta" data-editable="is-editable-gaca" tabindex="13" maxlength="600" title="Observaciones de la factura"></textarea>
+			<textarea id="memo" name="memo" class="ui-input ui-ta" data-editable="isEditableGaca" tabindex="13" maxlength="600" title="Observaciones de la factura"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 		</div>
@@ -128,22 +128,22 @@
 	<div class="navbar">
 		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-		<a href="#tab-action-send" class="btn btn-green form-refresh" data-refresh="is-editable" title="Poner solicitud a la firma">
+		<a href="#tab-action-send" class="btn btn-green form-refresh" data-refresh="isEditable" title="Poner solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
 
-		<a href="#tab-action-reactivar" class="btn btn-warn form-refresh" data-refresh="is-reactivable" title="Activa los campos modificables por la UAE">
+		<a href="#tab-action-reactivar" class="btn btn-warn form-refresh" data-refresh="isReactivable" title="Activa los campos modificables por la UAE">
 			<i class="fas fa-wrench btn-icon-left"></i>Reactivar</a>
-		<a href="#tab-action-subsanar" class="btn btn-green form-refresh" data-refresh="is-subsanable" title="Guarda los cambios realizados">
+		<a href="#tab-action-subsanar" class="btn btn-green form-refresh" data-refresh="isSubsanable" title="Guarda los cambios realizados">
 			<i class="far fa-save btn-icon-left"></i>Subsanar</a>
 
-		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="is-firmable" title="#{msg['tit.btn.firmar']}">
+		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.firmar']}">
 			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>
-		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="is-firmable" title="#{msg['tit.btn.rechazar']}">
+		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.rechazar']}">
 			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
-		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="is-cancelable" title="#{msg['tit.btn.cancelar']}">
+		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isCancelable" title="#{msg['tit.btn.cancelar']}">
 			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.cancelar']}</a>
 
-		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="is-removable" title="Borra la solicitud del sistema"> 
+		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="isRemovable" title="Borra la solicitud del sistema"> 
 			<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
 	</div>
 	<ui:include src="../parts/firmas.xhtml"></ui:include>

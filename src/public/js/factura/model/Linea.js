@@ -22,19 +22,19 @@ base.tfoot = resume => {
 		<td class="currency">${i18n.isoFloat(resume.imp)} €</td>
 		<td></td>
 	</tr>
-	<tr class="table-refresh" data-refresh="show-factura">
+	<tr class="table-refresh" data-refresh="isFacturable">
 		<td colspan="2">
 			<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
 			<div class="ui-block-main currency">IVA:</div>
 			<div class="ui-block">
-				<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-editable="is-editable-uae"></select>
+				<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-editable="isEditableUae"></select>
 			</div>
 			</label>
 		</td>
 		<td class="currency table-refresh" data-refresh="text-render">$impIva; €</td> 
 		<td></td>
 	</tr>
-	<tr class="table-refresh" data-refresh="show-factura">
+	<tr class="table-refresh" data-refresh="isFacturable">
 		<td class="currency" colspan="2">Importe Total:</td>
 		<td class="currency table-refresh" data-refresh="text-render">$impTotal; €</td>
 		<td></td>

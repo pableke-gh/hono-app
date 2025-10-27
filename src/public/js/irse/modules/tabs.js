@@ -1,6 +1,7 @@
 
-import tabs from "../../components/Tabs.js";
 import sb from "../../components/types/StringBox.js";
+import api from "../../components/Api.js";
+import tabs from "../../components/Tabs.js";
 import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 
@@ -10,6 +11,14 @@ import xeco from "../../xeco/xeco.js";
 
 function IrseTabs() {
 	const form = xeco.getForm();
+	const fnUpload = () => { // merge data to send
+		const fd = form.getFormData(null, [], [ // exclude fields
+			"memo", "justifi", "justifiVp", "justifiCong", "tipoSubv", "finalidad", "justifiKm",
+			"iban", "cuenta", "swift", "observaciones", "urgente", "fMax", "extra", "rechazo",
+			"paisEntidad", "nombreEntidad", "codigoEntidad", "acInteresado", "origen"
+		]);
+		api.setFormData(fd).json("/uae/iris/upload/gasto").then(() => form.loading().click("#updateGasto"));
+	}
 
 	this.viewTab5 = tab => { // View tab 5: gastos
 		const eTipoGasto = form.getInput("#tipo-gasto"); //select tipo
@@ -52,10 +61,13 @@ function IrseTabs() {
 		eTipoGasto.onchange = fnChange; // Change event
 		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 				.setval("#fAloMin", start).setAttr("#fAloMin", "min", start).setAttr("#fAloMin", "max", end)
-				.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end)
-				.set("upload-gasto", fnChange);
+				.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end);
+		form.onChangeFile("[name='fileGasto']", (ev, el, file) => {
+			el.nextElementSibling.innerHTML = file.name;
+			fnChange();
+		});
 
-		window.fnPaso5 = function() {
+		tabs.setAction("uploadGasto", () => {
 			dom.closeAlerts();
 			if (isDoc())
 				return dom.required("#txtGasto", "errDoc").isOk();
@@ -71,8 +83,8 @@ function IrseTabs() {
 				if (!form.valueOf("#fAloMin") || !form.valueOf("#fAloMax"))
 					return dom.addError("fAloMin", "errFechasAloja").isOk();
 			}
-			return loading();
-		}
+			fnUpload();
+		});
 	}
 
 	this.initTab9 = tab => { // Init tab 9: IBAN
@@ -125,10 +137,10 @@ function IrseTabs() {
 	this.initTab12 = tab => { // Init tab 12: asociar rutas
 		tab.querySelector("a#gasto-rutas").onclick = () => { // button in tab12
 			const etapas = tab.querySelectorAll(".link-ruta:checked").map(el => el.value).join(",");
-			if (etapas)
-				form.setval("#trayectos", etapas).click("#uploadGasto");
-			else
-				form.showError(i18n.get("errLinkRuta"));
+			if (!etapas)
+				return form.showError(i18n.get("errLinkRuta"));
+			form.setval("#trayectos", etapas);
+			fnUpload();
 		}
 	}
 }

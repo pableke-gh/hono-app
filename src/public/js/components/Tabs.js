@@ -31,12 +31,13 @@ function Tabs() {
         return fn ? fn(tab, self) : true; // if no event => true
     }
 
-	this.setAction = (name, fn) => fnSet(name, fn);
+	this.getAction = name => EVENTS[name]; // get event handler
+	this.setAction = (name, fn) => fnSet(name, fn); // set event handler
+	this.invoke = name => (self.getAction(name)()); // handler must exists
 	this.setShowEvent = (tab, fn) => fnSet("show-tab-" + tab, fn);
 	this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
 	this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
 	this.setActiveEvent = (tab, fn) => fnSet("active-tab-" + tab, fn);
-	this.invoke = name => EVENTS[name](); // action by name => must exists
 
 	// Alerts helpers
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message

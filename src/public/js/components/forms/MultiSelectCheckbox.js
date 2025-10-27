@@ -3,7 +3,7 @@ import i18n from "../../i18n/langs.js";
 
 export default function(container, opts) {
 	container = globalThis.isstr(container) ? $1(container) : container;
-	container = container || createElement("div"); // todo: añadir estilos dinamicamente
+	container = container || document.createElement("div"); // create empty container
 
 	opts = opts || {}; // Init. options
     opts.name = opts.name || "ms_test";

@@ -40,10 +40,10 @@ function Api() {
 	this.setMethod = method => self.set("method", method);
 	this.setPost = () => self.setMethod("POST");
 	this.setBody = data => self.set("body", data);
-	this.setJSON = data => self.init().setPost().setBody(JSON.stringify(data));
-	this.setPdf = () => self.init().setContentType(mt.pdf); // pdf type
-	this.setZip = () => self.init().setContentType(mt.zip); // zip type
-	this.setBin = () => self.init().setContentType(mt.bin); // binary type
+	this.setJSON = data => self.init().setPost().setContentType(mt.json).setBody(JSON.stringify(data));
+	//this.setPdf = () => self.init().setPost().setContentType(mt.pdf); // pdf type
+	//this.setZip = () => self.init().setPost().setContentType(mt.zip); // zip type
+	//this.setBin = () => self.init().setPost().setContentType(mt.bin); // binary type
 
 	/**
 	 * @param {FormData} fd
@@ -62,7 +62,6 @@ function Api() {
 		return globalThis.fetch(url + "?" + query.toString(), OPTS);
 	}
 	this.fetch = async (url, params) => {
-		self.setContentType(mt.json); // set content type header
 		const res = await fnFetch(url, params); // send call
 		// avoid error when json response is null: (SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input)
 		return res.ok ? res.json().catch(globalThis.void) : fnError(res); // return promise
@@ -75,7 +74,7 @@ function Api() {
 
 	this.text = async (url, params) => {
 		alerts.loading(); // show loading indicator
-		self.setContentType(mt.text); // set content type header
+		//self.setContentType(mt.text); // set content type header
 		const res = await fnFetch(url, params); // send call
 		const promise = res.ok ? res.text() : fnError(res); // get promise
 		return promise.finally(alerts.working); // Add default finally callback to promise

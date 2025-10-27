@@ -10,18 +10,18 @@
 	<div class="card-xeco">
 		<h2>Detalle por conceptos</h2>
 
-		<div class="ui-blocks form-refresh" data-refresh="is-editable">
-		<label class="ui-block-xl form-refresh" data-refresh="show-conceptos">
+		<div class="ui-blocks form-refresh" data-refresh="isEditable">
+		<label class="ui-block-xl form-refresh" data-refresh="isConceptos">
 			<div class="label required"><h:outputText value="#{msg['lbl.descripcion']}" escape="false" />:</div>
 			<input id="desc" name="desc" class="ui-input ui-linea" tabindex="30" maxlength="240"/>
 			<div class="ui-errtip"></div>
 		</label>
-		<label class="ui-block form-refresh" data-refresh="show-conceptos">
+		<label class="ui-block form-refresh" data-refresh="isConceptos">
 			<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
 			<input id="imp" name="imp" class="ui-input ui-float ui-linea" tabindex="31" maxlength="12"/>
 			<div class="ui-errtip"></div> 
 		</label>
-		<label class="autocomplete ui-block-xl form-refresh" data-refresh="show-ttpp">
+		<label class="autocomplete ui-block-xl form-refresh" data-refresh="isTtppEmpresa">
 			<div class="label required">Recibo asociado a la factura:</div>
 			<input type="search" id="acTTPP" name="acTTPP" class="ui-input ui-autocomplete" tabindex="30" />
 			<input type="text" id="idTTPP" name="idTTPP" class="ui-input hide" /> 

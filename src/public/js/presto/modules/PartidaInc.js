@@ -4,13 +4,13 @@ import api from "../../components/Api.js"
 
 import p030 from "./partida030.js";
 import presto from "../model/Presto.js";
+import partida from "../model/Partida.js";
+import partidas from "../model/Partidas.js";
 import xeco from "../../xeco/xeco.js";
 
 function PartidaInc() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
-	const partida = presto.getPartida();
-	const partidas = presto.getPartidas();
 
 	const _ecoInc = form.setDatalist("#idEcoInc");
 	_ecoInc.setEmptyOption("Seleccione una económica");
@@ -30,7 +30,7 @@ function PartidaInc() {
 
 	const _tblPartidasInc = form.setTable("#partidas-inc", partida.getTable());
 	_tblPartidasInc.setMsgEmpty("No existen partidas asociadas a la solicitud");
-	_tblPartidasInc.setAfterRender(() => { partidas.setData(_tblPartidasInc); form.setEditable(); });
+	_tblPartidasInc.setAfterRender(() => { partidas.setData(_tblPartidasInc); form.setEditable(presto); });
 
 	this.getTable = () => _tblPartidasInc;
 	this.setAvisoFa = item => { //aviso para organicas afectadas en TCR o FCE

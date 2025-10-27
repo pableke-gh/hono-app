@@ -17,8 +17,7 @@ fact.isFactura = () => (fact.getTipo() == 1);
 fact.isCartaPago = () => (fact.getTipo() == 3);
 fact.isReciboCV = () => (fact.getTipo() == 4); // viene de CV
 fact.isCongresoCV = () => (fact.getTipo() == 5); // viene de CV
-fact.isTtppEmpresa = () => (fact.getTipo() == 6); // TTPP a empresa
-fact.isFacturable = () => (fact.isFactura() || fact.isReciboCV() || fact.isCongresoCV() || fact.isTtppEmpresa());
+fact.isFacturable = () => (fact.isFactura() || fact.isReciboCV() || fact.isCongresoCV());
 fact.isFirmaGaca = () => (fact.isReciboCV() && fact.isTtpp() && (fact.getMask() & 2));
 
 fact.isGaca = () => (fact.get("grupo") == 2); // grupo de firma = gaca
@@ -27,6 +26,7 @@ fact.isEditableGaca = () => (fact.isEditableUae() || (fact.isGaca() && fact.isFi
 
 fact.isTtpp = () => (fact.getSubtipo() == 3);
 fact.isTituloOficial = () => (fact.getSubtipo() == 4);
+fact.isTtppEmpresa = () => (fact.getSubtipo() == 25); // TTPP a empresa
 fact.isExtension = () => (fact.getSubtipo() == 9);
 fact.isDeportes = () => (fact.getSubtipo() == 10);
 fact.isCongresoGdi = () => (fact.getSubtipo() == 24);

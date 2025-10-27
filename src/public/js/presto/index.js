@@ -14,9 +14,7 @@ coll.ready(() => {
 	xeco.init(); pDec.init(); pInc.init();
 
 	const form = xeco.getForm();
-	form.set("show-partida-dec", presto.isPartidaDec).set("show-imp-cd", presto.isImpCd)
-		.set("show-partida-inc", presto.showPartidasInc).set("show-memoria", () => !presto.isL83())
-		.set("is-fce", presto.isFce).set("is-urgente", presto.isUrgente).set("is-adjunto", presto.getAdjunto)
+	form.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto)
 		.set("show-subtipo", () => (presto.isUae() && presto.isGcr()));
 
 	form.onChangeFile("[name='adjunto']", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
@@ -24,7 +22,7 @@ coll.ready(() => {
 
 	// Init. form events
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
-	const fnUrgente = ev => form.setVisible("[data-refresh='is-urgente']", ev.target.value == "2");
+	const fnUrgente = ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2");
 	form.onChangeInput("#urgente", fnUrgente).onChangeInputs(".ui-ej", fnSync);
 
 	presto.view = data => {

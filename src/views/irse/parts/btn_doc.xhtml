@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<a href="#tab-action-report" class="btn btn-danger form-refresh" data-refresh="is-documentable" title="#{msg['tit.btn.informe']}">
+	<a href="#tab-action-report" class="btn btn-danger form-refresh" data-refresh="isDocumentable" title="#{msg['tit.btn.informe']}">
 		<i class="fal fa-file-pdf btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.informe']}" escape="false" /></a>
 	<c:if test="#{not empty iris.irse.gastos.gastosComisionado}">
 		<a href="#tab-action" class="btn btn-warn" data-action="zip-com">

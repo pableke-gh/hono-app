@@ -19,8 +19,8 @@
 			<div class="ui-blocks">
 				<div class="ui-block-btn">
 					<h:inputHidden id="tipoGasto" value="#{iris.irse.input.tipoGasto}" />
-					<p:fileUpload id="fileGasto" value="#{iris.irse.input.fileGasto}" fileUploadListener="#{iris.irse.input.uploadFileGasto}" mode="advanced" auto="true" styleClass="hide" />
-					<a href="#" class="btn btn-green form-refresh" data-refresh="pf-upload" data-file="upload-gasto" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
+					<a href="#tab-action-clickNext" class="btn btn-green" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
+					<input type="file" name="fileGasto" class="ui-gasto hide" />
 					<div class="filename" style="position: absolute; margin: 0 4px;"></div>
 				</div>
 				<label class="ui-block grupo-gasto hide">
@@ -104,9 +104,8 @@
 				</label>
 				<div class="ui-block-btn grupo-gasto hide">
 					<h:inputHidden id="trayectos" value="#{iris.irse.input.etapas}" />
-					<p:commandButton id="uploadGasto"
-						onclick="if (!fnPaso5()) return false;" action="#{iris.irse.form.uploadGasto()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);"
-						icon="fas fa-arrow-alt-down" iconPos="right" value="Añadir" styleClass="btn btn-green success-btn" tabindex="104" />
+					<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
+					<p:commandButton id="updateGasto" action="#{iris.irse.form.updateGasto()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);" styleClass="hide" />
 				</div>
 			</div>
 			<br class="clear"/>

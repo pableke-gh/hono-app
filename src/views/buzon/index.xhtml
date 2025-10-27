@@ -40,16 +40,5 @@
 		<div id="tab-10" class="tab-content">
 			<ui:include src="./tabs/usuarios.xhtml"></ui:include>
 		</div>
-
-		<!-- listado de organicas -->
-		<div id="tab-list" class="tab-content">
-			<form id="xeco-filter" action="/uae/buzon"></form>
-			<table class="tb-xeco"></table>
-		</div>
-
-		<!-- vinculación con uxxiec -->
-		<div id="tab-uxxiec" class="tab-content" data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}" data-admin="#{presto.user.adminFlag}">
-			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
-		</div>
 	</ui:define>
 </ui:composition>

@@ -54,9 +54,9 @@ gulp.task("minify-views", done => {
 	gulp.src("dist/public").pipe(gulp.symlink("dist/views")); // static server links
 	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest(VIEW_DEST)).on("end", () => {
 		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
-		const CV_XECO_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/uae/emails";
+		//const CV_XECO_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/uae/emails";
 		deployCV("dist/views/xeco/**/*", CV_XECO, fnNone); // deploy xeco XHTML in Campus Virtual
-		deployCV("dist/views/xeco/emails/**/*", CV_XECO_EMAILS, fnNone); // deploy xeco XHTML in CV
+		//deployCV("dist/views/xeco/emails/**/*", CV_XECO_EMAILS, fnNone); // deploy xeco XHTML in CV
 
 		const CV_ISUITE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-xeco/src/main/resources/META-INF/resources/modules/xecom";
 		deployCV("dist/views/isuite/**/*", CV_ISUITE, fnNone); // deploy xeco XHTML in Campus Virtual

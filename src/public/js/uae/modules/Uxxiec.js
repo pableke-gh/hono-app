@@ -1,15 +1,6 @@
 
-import Form from "../../components/forms/Form.js";
-import Table from "../../components/Table.js";
-import tabs from "../../components/Tabs.js";
-import api from "../../components/Api.js"
-
-import model from "../model/Solicitud.js";
-import uxxiec from "../model/Uxxiec.js";
-
-function Uxxiec() {
-	const self = this; //self instance
-	const url = model.getUrl(); // url base path
+export default class Uxxiec extends Base {
+	/*const url = model.getUrl(); // url base path
     const form = new Form("#xeco-uxxi"); // form element for expediente UXXI-EC
 	const tblUxxiec = new Table(form.getNextElement(), uxxiec.getTable());
     const acUxxi = form.setAutocomplete("#uxxi", uxxiec.getAutocomplete());
@@ -17,14 +8,13 @@ function Uxxiec() {
 
 	this.getForm = () => form;
 	this.getTable = () => tblUxxiec;
-	this.getExpediente = tblUxxiec.getData;
-	this.setExpediente = tblUxxiec.render;
 	this.isCached = form.isCached;
 
 	this.init = () => {
 		const tabUxxi = tabs.getTab("uxxiec");
 		model.setUser(tabUxxi.dataset);
-		form.set("is-ejecutable", tblUxxiec.size).set("is-notificable", () => (tblUxxiec.size() && model.isNotificable()));
+		form.set("isCancelable", model.isCancelable).set("is-ejecutable", tblUxxiec.size)
+			.set("is-notificable", () => (tblUxxiec.size() && model.isNotificable()));
 	}
 
 	const fnUpdateButtons = () => { // refresh buttons navbar
@@ -52,7 +42,5 @@ function Uxxiec() {
 
 	const fnUpdate = estado => { model.setEstado(estado); fnUpdateButtons(); } // set estado + buttons navbar
 	this.ejecutar = id => api.setJSON(self.getExpediente()).json(url + "/ejecutar?id=" + id).then(() => fnUpdate(3));
-	this.notificar = id => api.setJSON(self.getExpediente()).json(url + "/notificar?id=" + id).then(() => fnUpdate(4));
+	this.notificar = id => api.setJSON(self.getExpediente()).json(url + "/notificar?id=" + id).then(() => fnUpdate(4));*/
 }
-
-export default new Uxxiec();

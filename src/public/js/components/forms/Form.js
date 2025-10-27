@@ -57,15 +57,6 @@ export default function(form, opts) {
 	this.getValueByName = name => input.val(self.getElement(name));
 	this.addClass = name => { form.classList.add(name); return self; }
 	this.getOptions = () => opts;
-	this.setOptions = data => {
-		Object.assign(opts, data);
-		input.setOptions(data);
-		return self;
-	}
-
-	this.focus = el => { input.focus(el); return self; }
-	this.setFocus = selector => fnAction(selector, el => el.focus());
-	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
 
     this.get = name => opts[name];
     this.set = (name, fn) => { opts[name] = fn; return self; }
@@ -85,6 +76,10 @@ export default function(form, opts) {
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
 	this.showAlerts = alerts.showAlerts; // showAlerts synonym
 
+	this.focus = el => { input.focus(el); return self; }
+	this.setFocus = selector => fnAction(selector, el => el.focus());
+	this.autofocus = () => self.focus(form.elements.find(el => el.isVisible(FOCUSABLED)));
+
 	this.getValidators = i18n.getValidation; // validator object
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard
 	this.getHtml = selector => dom.getHtml(fnQuery(selector));
@@ -96,11 +91,6 @@ export default function(form, opts) {
 	this.render = (selector, data) => { $$(selector).render(data); return self; } // NodeList.prototype.render
 	this.refresh = (model, selector) => { $$(selector || opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
 	this.send = url => api.setForm(form).send(url || form.action).catch(info => { self.setErrors(info); throw info; });
-	this.view = (model, tab) => { // set inputs values and readonly
-		self.closeAlerts().setValues(model.getData()).setEditable().refresh(model);
-		tabs.viewTab(tab ?? "form"); // show tab and preserve messages
-		return self;
-	}
 	this.nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return self.setOk(); // show ok msg
@@ -114,21 +104,26 @@ export default function(form, opts) {
 	this.disabled = (force, selector) => fnUpdate(selector, el => el.setDisabled(force));
 	this.readonly = (force, selector) => fnUpdate(selector, el => el.setReadonly(force));
 	this.eachInput = (selector, fn) => fnUpdate(selector, fn);
-	this.setEditable = selector => fnUpdate(selector, el => {
-		const value = /*el.dataset.disabled ||*/ el.dataset.readonly || el.dataset.editable;
+	this.setEditable = (model, selector) => fnUpdate(selector, el => {
+		const value = el.dataset.disabled || el.dataset.readonly || el.dataset.editable;
 		if (value == "manual")
 			return; // skip evaluation (input manual)
-		/*if (el.dataset.disabled) {
-			const fnDisabled = self.get(value) || self.get("is-disabled");
-			return el.setDisabled(fnDisabled(el)); // recalc. disabled attribute by handler
-		}*/
-		if (el.dataset.readonly) {
-			const fnReadonly = self.get(value) || self.get("is-readonly");
-			return el.setReadonly(fnReadonly(el)); // recalc. readonly attribute by handler
+		if (el.dataset.disabled) {
+			const fnDisabled = model[value] || model.isDisabled;
+			return el.setDisabled(fnDisabled()); // recalc. disabled attribute by handler
 		}
-		const fnEditable = self.get(value) || self.get("is-editable");
-		el.setReadonly(!fnEditable(el)); // recalc. attribute by handler
+		if (el.dataset.readonly) {
+			const fnReadonly = model[value] || model.isReadonly;
+			return el.setReadonly(fnReadonly()); // recalc. readonly attribute by handler
+		}
+		const fnEditable = model[value] || model.isEditable;
+		el.setReadonly(!fnEditable()); // recalc. attribute by handler
 	});
+	this.view = (model, tab) => { // set inputs values and readonly
+		self.closeAlerts().setValues(model.getData()).setEditable(model).refresh(model);
+		tabs.viewTab(tab ?? "form"); // show tab and preserve messages
+		return self;
+	}
 
 	// Value property
 	this.setval = (selector, value) => fnAction(selector, el => input.setval(el, value));
@@ -166,8 +161,8 @@ export default function(form, opts) {
 	this.getValue = input.getValue;
 	this.getval = selector => fnQueryInput(selector).value;
 	this.valueOf = selector => self.getValue(fnQueryInput(selector));
-	this.loadModel = (model, selector) => fnUpdate(selector, el => model.set(el.name, input.getValue(el)));
-	this.setModel = (model, selector) => fnUpdate(selector, el => input.setValue(el, model.get(el.name)));
+	//this.loadModel = (model, selector) => fnUpdate(selector, el => model.set(el.name, input.getValue(el)));
+	//this.setModel = (model, selector) => fnUpdate(selector, el => input.setValue(el, model.get(el.name)));
 	this.getData = selector => {
 		const data = {}; // Results container
 		fnUpdate(selector, el => input.load(el, data));

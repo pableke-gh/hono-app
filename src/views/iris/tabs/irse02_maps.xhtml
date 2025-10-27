@@ -15,7 +15,7 @@
 		</h2>
 
 		<ui:include src="./irse02_info.xhtml"></ui:include>
-		<div class="ui-blocks no-print form-refresh" data-refresh="is-editable">
+		<div class="ui-blocks no-print form-refresh" data-refresh="isEditable">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.sali']}" escape="false" />:</div>
 				<input type="search" id="origen" name="origen" class="ui-input ui-autocomplete ui-ruta" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{irse.getMsg('ph.ubicacion')}" />
@@ -100,7 +100,7 @@
 
 		<a href="#tab-action-paso2" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			#{msg['lbl.btn.siguiente']}<i class="fas fa-caret-right btn-icon-right"></i></a>
-		<a href="#tab-action-save2" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.no.enviar']}">
+		<a href="#tab-action-save2" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>

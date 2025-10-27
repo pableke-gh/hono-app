@@ -7,6 +7,9 @@ const fnEmpty = () => EMPTY;
 const fnParam = param => param;
 
 export default function(autocomplete, opts) {
+	autocomplete = globalThis.isstr(autocomplete) ? $1(autocomplete) : autocomplete;
+	autocomplete = autocomplete || document.createElement("input"); // create input element
+
 	opts = opts || {}; // Config. container
 	opts.delay = opts.delay || 400; //milliseconds between keystroke occurs and when a search is performed
 	opts.minLength = opts.minLength || 3; //length to start
@@ -15,25 +18,26 @@ export default function(autocomplete, opts) {
 	opts.optionClass = opts.optionClass || "option"; // child name class
 	opts.activeClass = opts.activeClass || "active"; // active option class
 
-    opts.source = opts.source || fnEmpty; //empty source by default
-    opts.render = opts.render || fnParam; //render label on autocomplete
-    opts.select = opts.select || fnParam; //set value in id input
-    opts.afterSelect = opts.afterSelect || globalThis.void; //fired after load inputs
-    opts.onReset = opts.onReset || globalThis.void; //fired when no value selected
+	opts.source = opts.source || fnEmpty; //empty source by default
+	opts.render = opts.render || fnParam; //render label on autocomplete
+	opts.select = opts.select || fnParam; //set value in id input
+	opts.afterSelect = opts.afterSelect || globalThis.void; //fired after load inputs
+	opts.onReset = opts.onReset || globalThis.void; //fired when no value selected
 
 	const self = this; //self instance
-    const inputValue = autocomplete.nextElementSibling;
-    const resultsHTML = inputValue.nextElementSibling;
+	const inputValue = autocomplete.nextElementSibling || document.createElement("input");
+	const resultsHTML = inputValue.nextElementSibling || document.createElement("ul");
 
-    // Force default props/attr
-    autocomplete.type = "search";
-    autocomplete.setAttribute("autocomplete", "off");
+	// Force default props / attr
+	inputValue.type = "hidden";
+	autocomplete.type = "search";
+	autocomplete.setAttribute("autocomplete", "off");
 
-    let _searching, _time; // call and time indicator (reduce calls)
-    let _results = EMPTY; // default = empty array
-    let _index = -1 // current item position in results
+	let _searching, _time; // call and time indicator (reduce calls)
+	let _results = EMPTY; // default = empty array
+	let _index = -1 // current item position in results
 
-    this.set = (name, fn) => { opts[name] = fn; return self; }
+	this.set = (name, fn) => { opts[name] = fn; return self; }
 	this.setDelay = delay => self.set("delay", delay);
 	this.setMinLength = min => self.set("minLength", min);
 	this.setSource = fn => { opts.source = fn; return self; }
@@ -44,49 +48,49 @@ export default function(autocomplete, opts) {
 	this.setItemMode = minLength => self.setMinLength(minLength || opts.minLength).setSelect(item => item.value).setRender(item => item.label); 
 
 	this.getData = () => _results;
-    this.getIndex = () => _index;
-    this.getItem = i => _results[i ?? _index];
-    this.getCurrentItem = () => _results[_index];
-    this.getCurrentOption = () => resultsHTML.children[_index];
+	this.getIndex = () => _index;
+	this.getItem = i => _results[i ?? _index];
+	this.getCurrentItem = () => _results[_index];
+	this.getCurrentOption = () => resultsHTML.children[_index];
 	this.getCode = sep => sb.getCode(autocomplete.value, sep);
 
 	this.isset = () => autocomplete;
-    this.isItem = () => (_index > -1);
-    this.isLoaded = () => inputValue.value;
-    this.getInputValue = () => inputValue;
-    this.getAutocomplete = () => autocomplete;
-    this.getValue = () => inputValue.value;
-    this.setValue = (value, label) => {
-        if (value) {
-            inputValue.value = value;
-            autocomplete.value = label;
-        }
-        else
-            inputValue.value = autocomplete.value = "";
-        return self;
-    }
-    this.setItem = item => self.setValue(item.value, item.label);
+	this.isItem = () => (_index > -1);
+	this.isLoaded = () => inputValue.value;
+	this.getInputValue = () => inputValue;
+	this.getAutocomplete = () => autocomplete;
+	this.getValue = () => inputValue.value;
+	this.setValue = (value, label) => {
+		if (value) {
+			inputValue.value = value;
+			autocomplete.value = label;
+		}
+		else
+			inputValue.value = autocomplete.value = "";
+		return self;
+	}
+	this.setItem = item => self.setValue(item.value, item.label);
 
-    const isChildren = i => ((0 <= i) && (i < coll.size(resultsHTML.children)));
-    const removeList = () => { resultsHTML.innerHTML = ""; resultsHTML.classList.remove(opts.activeClass); }
-    const fnClear = () => { _index = -1; inputValue.value = ""; removeList(); return self; }
+	const isChildren = i => ((0 <= i) && (i < coll.size(resultsHTML.children)));
+	const removeList = () => { resultsHTML.innerHTML = ""; resultsHTML.classList.remove(opts.activeClass); }
+	const fnClear = () => { _index = -1; inputValue.value = ""; removeList(); return self; }
 
-    function activeItem(i) {
-        _index = isChildren(i) ? i : _index; // current item
-        resultsHTML.children.forEach((li, i) => li.classList.toggle(opts.activeClass, i == _index));
-    }
-    function selectItem(li, i) {
-        if (li && isChildren(i)) {
-            _index = i; // Update current index
-            self.setValue(opts.select(_results[i], self), li.innerText);
-            opts.afterSelect(_results[i], self); // fired after update inputs
-            removeList();
-        }
-    }
-    function fnSearch() {
-        opts.source(autocomplete.value, self); // Fire source
-        _searching = false; // restore sarches
-    }
+	function activeItem(i) {
+		_index = isChildren(i) ? i : _index; // current item
+		resultsHTML.children.forEach((li, i) => li.classList.toggle(opts.activeClass, i == _index));
+	}
+	function selectItem(li, i) {
+		if (li && isChildren(i)) {
+			_index = i; // Update current index
+			self.setValue(opts.select(_results[i], self), li.innerText);
+			opts.afterSelect(_results[i], self); // fired after update inputs
+			removeList();
+		}
+	}
+	function fnSearch() {
+		opts.source(autocomplete.value, self); // Fire source
+		_searching = false; // restore sarches
+	}
 
 	this.reset = () => {
 		if (inputValue.value) // is selected data
@@ -96,24 +100,24 @@ export default function(autocomplete, opts) {
 		return self;
 	}
 	this.reload = () => {
-    	self.reset(); // 1º Reset all data
+		self.reset(); // 1º Reset all data
 		autocomplete.value = ""; // Clear input
-    	autocomplete.focus(); // Set focus
-    	return self;
-    }
-    this.render = data => {
-        fnClear(); // clear previous results
-        _results = data || EMPTY; // Force not unset var
-        _results.slice(0, opts.maxResults).forEach((data, i) => {
-            const label = sb.wrap(opts.render(data, i, _results), autocomplete.value);
-            resultsHTML.innerHTML += `<li class="${opts.optionClass}">${label}</li>`;
-        });
-        resultsHTML.children.forEach((li, i) => {
-            li.addEventListener("click", ev => selectItem(li, i));
-        });
-        resultsHTML.classList.add(opts.activeClass);
-        return self;
-    }
+		autocomplete.focus(); // Set focus
+		return self;
+	}
+	this.render = data => {
+		fnClear(); // clear previous results
+		_results = data || EMPTY; // Force not unset var
+		_results.slice(0, opts.maxResults).forEach((data, i) => {
+			const label = sb.wrap(opts.render(data, i, _results), autocomplete.value);
+			resultsHTML.innerHTML += `<li class="${opts.optionClass}">${label}</li>`;
+		});
+		resultsHTML.children.forEach((li, i) => {
+			li.addEventListener("click", ev => selectItem(li, i));
+		});
+		resultsHTML.classList.add(opts.activeClass);
+		return self;
+	}
 
 	// Event fired before char is writen in text
 	autocomplete.onkeydown = ev => {
@@ -138,14 +142,14 @@ export default function(autocomplete, opts) {
 	autocomplete.oninput = ev => {
 		if (_searching) // Avoid new searchs
 			return ev.preventDefault();
-        const size = coll.size(autocomplete.value);
-        if (size < opts.minLength)
-            return self.reset(); // Min legnth required
-        if (size < opts.maxLength) { // Reduce server calls
+		const size = coll.size(autocomplete.value);
+		if (size < opts.minLength)
+			return self.reset(); // Min legnth required
+		if (size < opts.maxLength) { // Reduce server calls
 			_searching = true; // Avoid new searchs
-            clearTimeout(_time); // Clear previous searches
-            _time = setTimeout(fnSearch, opts.delay);
-        }
+			clearTimeout(_time); // Clear previous searches
+			_time = setTimeout(fnSearch, opts.delay);
+		}
 	}
 	// Event occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
 	/*autocomplete.onsearch = ev => { autocomplete.value || self.reset(); }*/

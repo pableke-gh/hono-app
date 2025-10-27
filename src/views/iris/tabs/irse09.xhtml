@@ -62,11 +62,11 @@
 					<option value="2">#{iris.getMsg('lblUrgente')}</option>
 				</select>
 			</label>
-			<label class="ui-block form-refresh" data-refresh="is-urgente">
+			<label class="ui-block form-refresh" data-refresh="isUrgente">
 				<div class="label required">#{iris.getMsg('lblFechaUrg')}:</div>
 				<input type="date" name="fMax" tabindex="16" class="ui-input ui-date"/>
 			</label>
-			<label class="ui-block-row form-refresh" data-refresh="is-urgente">
+			<label class="ui-block-row form-refresh" data-refresh="isUrgente">
 				<div class="label required">#{iris.getMsg('lblMotivoUrg')}:</div>
 				<textarea name="extra" class="ui-input ui-ta" tabindex="17"></textarea>
 				<div class="ui-errtip"></div>
@@ -80,9 +80,9 @@
 		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 
-		<a href="#tab-action-save9" class="btn btn-warn form-refresh" data-refresh="is-editable" title="#{msg['lbl.btn.no.enviar']}">
+		<a href="#tab-action-save9" class="btn btn-warn form-refresh" data-refresh="isEditable" title="#{msg['lbl.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i>#{msg['lbl.btn.no.enviar']}</a>
-		<a href="#tab-action-paso9" class="btn btn-green form-refresh" data-refresh="is-editable" title="#{msg['tit.btn.firmar.enviar']}">
+		<a href="#tab-action-paso9" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.firmar.enviar']}">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 		<ui:include src="../parts/btn_doc.xhtml"></ui:include>

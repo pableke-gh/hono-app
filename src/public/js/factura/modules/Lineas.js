@@ -22,7 +22,7 @@ function Lineas() {
 	acTTPP.setItemMode(4).setSource(fnSource);
 
 	const lineas = form.setTable("#lineas-fact", linea.getTable());
-	lineas.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago);
+	lineas.set("isFacturable", factura.isFacturable);
 	lineas.setAfterRender(() => {
 		const fnChangeIva = ev => self.setIva(+ev.target.value);
 		form.setLabels("#iva", [0, 4, 10, 21]).setField("#iva", factura.getIva(), fnChangeIva);

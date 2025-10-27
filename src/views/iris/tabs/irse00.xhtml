@@ -16,15 +16,15 @@
 		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 
-		<button type="reset" class="btn btn-light form-refresh" data-refresh="is-editable-p0" title="#{msg['tit.btn.limpiar']}">
+		<button type="reset" class="btn btn-light form-refresh" data-refresh="isEditableP0" title="#{msg['tit.btn.limpiar']}">
 			<i class="far fa-broom btn-icon-left"></i>#{msg['lbl.btn.limpiar']}</button>
 		<a href="#tab-action-paso0" class="btn btn-green" title="#{msg['tit.btn.empezar']}">
 			#{msg['lbl.btn.empezar']}<i class="fas fa-caret-right btn-icon-right"></i></a>
 
-		<a href="#tab-resumen" class="btn btn-info form-refresh" data-refresh="is-resumable" title="#{msg['tit.btn.resumen']}">
+		<a href="#tab-resumen" class="btn btn-info form-refresh" data-refresh="isResumable" title="#{msg['tit.btn.resumen']}">
 			<h:outputText value="#{msg['lbl.btn.resumen']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="is-removable" title="Borra la solicitud del sistema"> 
+		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="isRemovable" title="Borra la solicitud del sistema"> 
 			<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
 	</div>
 </html>

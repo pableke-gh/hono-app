@@ -22,19 +22,13 @@ coll.ready(() => {
 
 	const fnShowGestor = () => factura.isFace() || factura.isPlataforma();
 	const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
-	const isEditableSubtipo = () => (factura.isEditable() && !factura.isTtppEmpresa());
-	form.set("is-editable-gaca", factura.isEditableGaca).set("is-exento", factura.isExento).set("is-subtipo", isEditableSubtipo)
-		.set("show-recibo", factura.isRecibo).set("show-factura-uae", fnShowFactUae).set("show-uae", factura.isUae).set("show-gestor", fnShowGestor)
-		.set("show-grupo-face", factura.isGrupoFace).set("show-face", factura.isFace).set("show-memo", factura.isMemo)
-		.set("show-factura", factura.isFacturable).set("show-cp", factura.isCartaPago).set("show-ttpp", factura.isTtppEmpresa)
-		.set("show-conceptos", factura.isConceptos);
+	form.set("show-factura-uae", fnShowFactUae).set("show-gestor", fnShowGestor);
 
 	factura.view = data => {
 		xeco.view(data.fact, data.firmas); // load data-model before view
 		acOrganica.setValue(data.fact.idOrg, data.fact.org + " - " + data.fact.descOrg);
 		lineas.setLineas(data); // Load conceptos and iva input
-		// cargo los datos del tercero y de las delegaciones
-		fiscal.load(data.tercero, data.delegaciones)
+		fiscal.load(data.tercero, data.delegaciones) // tercero + delegaciones
 				.setTercero(data.fact.idTer, data.fact.nif + " - " + data.fact.tercero)
 				.setSujeto(data.fact.sujeto) // update sujeto / exento
 				.setFace(data.fact.face); // update face inputs group
@@ -44,7 +38,7 @@ coll.ready(() => {
 	const fnBuild = (tipo, subtipo) => ({ fact: { tipo, subtipo, imp: 0, iva: 0 } });
 	tabs.setAction("factura", () => factura.view(fnBuild(1, 14))); // create factura
 	tabs.setAction("cartap", () => factura.view(fnBuild(3, 13))); // create carta de pago
-	tabs.setAction("ttpp", () => factura.view(fnBuild(6, 25))); // TTPP a empresa
+	//tabs.setAction("ttpp", () => factura.view(fnBuild(6, 25))); // TTPP a empresa
 
 	function fnValidate(msgConfirm, url, fn) {
 		factura.setLineas(lineas.getTable()); // actualizo los conceptos

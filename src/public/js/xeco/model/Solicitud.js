@@ -84,13 +84,13 @@ base.rowActions = data => {
 	base.setData(data); // initialize 
 	let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';
 	if (base.isFirmable()) {
-		acciones += '<a href="#firmar" class="resize table-refresh" data-refresh="is-firmable"><i class="fas fa-check action resize text-green"></i></a>';
-		acciones += '<a href="#reject" class="resize table-refresh" data-refresh="is-firmable"><i class="fas fa-times action resize text-red"></i></a>';
+		acciones += '<a href="#firmar" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-check action resize text-green"></i></a>';
+		acciones += '<a href="#reject" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-times action resize text-red"></i></a>';
 	}
 	if (base.isEjecutable())
 		acciones += '<a href="#uxxiec"><i class="fal fa-cog action resize text-green"></i></a>';
 	if (base.isIntegrable())
-		acciones += '<a href="#integrar" class="table-refresh" data-refresh="is-integrable"><i class="far fa-save action resize text-blue"></i></a>';
+		acciones += '<a href="#integrar" class="table-refresh" data-refresh="isIntegrable"><i class="far fa-save action resize text-blue"></i></a>';
 	if (base.isAdmin())
 		acciones += '<a href="#emails"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 	return acciones;

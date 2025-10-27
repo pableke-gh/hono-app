@@ -7,10 +7,11 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="navbar form-refresh" data-refresh="has-firmas">
-		<hr/><h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
-		<div class="ui-blocks ui-firmantes"></div>
-		<p class="notice notice-error form-refresh" data-refresh="is-invalidada">
+	<div class="navbar form-refresh" data-refresh="update-firmas">
+		<hr/>
+		<h3><h:outputText value="#{msg['lbl.firmantes']}" escape="false" />:</h3>
+		<div class="ui-blocks"></div>
+		<p class="notice notice-error">
 			<h:outputText value="#{msg['msg.motivo.rechazo']}" escape="false" />: (@rejectedBy;) @info;
 		</p>
 		<ui:include src="./leyenda_firmas.xhtml"></ui:include>
