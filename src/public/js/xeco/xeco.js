@@ -29,6 +29,7 @@ function XecoForm() {
 			el.children[2].innerHTML = tpl; // render block
 			if (model.isInvalidada()) { // rechazado o cancelado
 				const rechazo = firmas.find(firma.isRechazada);
+				if (!rechazo) return; // clausula de guarda
 				rechazo.rejectedBy = firma.getNombre(rechazo);
 				el.children[3].render(rechazo);
 			}

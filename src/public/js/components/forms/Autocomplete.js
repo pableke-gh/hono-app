@@ -33,7 +33,7 @@ export default function(autocomplete, opts) {
 	autocomplete.type = "search";
 	autocomplete.setAttribute("autocomplete", "off");
 
-	let _searching, _time; // call and time indicator (reduce calls)
+	let _time; // call and time indicator (reduce calls)
 	let _results = EMPTY; // default = empty array
 	let _index = -1 // current item position in results
 
@@ -87,10 +87,6 @@ export default function(autocomplete, opts) {
 			removeList();
 		}
 	}
-	function fnSearch() {
-		opts.source(autocomplete.value, self); // Fire source
-		_searching = false; // restore sarches
-	}
 
 	this.reset = () => {
 		if (inputValue.value) // is selected data
@@ -116,7 +112,7 @@ export default function(autocomplete, opts) {
 			li.addEventListener("click", ev => selectItem(li, i));
 		});
 		resultsHTML.classList.add(opts.activeClass);
-		return self;
+		_time = 0; // restore sarches
 	}
 
 	// Event fired before char is writen in text
@@ -140,16 +136,13 @@ export default function(autocomplete, opts) {
 	// Event fired when value changes, ignore ctrl, alt, etc...
 	// also occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
 	autocomplete.oninput = ev => {
-		if (_searching) // Avoid new searchs
+		if (_time) // Avoid new searchs
 			return ev.preventDefault();
 		const size = coll.size(autocomplete.value);
 		if (size < opts.minLength)
 			return self.reset(); // Min legnth required
-		if (size < opts.maxLength) { // Reduce server calls
-			_searching = true; // Avoid new searchs
-			clearTimeout(_time); // Clear previous searches
-			_time = setTimeout(fnSearch, opts.delay);
-		}
+		if (size < opts.maxLength) // Reduce server calls and fire source
+			_time = setTimeout(() => opts.source(autocomplete.value, self), opts.delay);
 	}
 	// Event occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
 	/*autocomplete.onsearch = ev => { autocomplete.value || self.reset(); }*/

@@ -114,7 +114,7 @@ function Api() {
 		link.click(); // download file to cliente
 	}
 
-	URLSearchParams.prototype.clear = function(keys) {
+	/*URLSearchParams.prototype.clear = function(keys) {
 		keys = keys || [...this.keys()];
 		keys.forEach(key => this.delete(key));
 	}
@@ -124,7 +124,7 @@ function Api() {
 			value && this.set(key, value);
 		}
 		return this;
-	}
+	}*/
 }
 
 export default new Api();

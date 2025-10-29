@@ -99,7 +99,7 @@ function IrsePerfil() {
 		});
 
 		const _acInteresado = form.setAutocomplete("#interesado", {
-			delay: 500, //milliseconds between keystroke occurs and when a search is performed
+			delay: 600, //milliseconds between keystroke occurs and when a search is performed
 			minLength: 5, //reduce matches
 			source: term => api.init().json("/uae/iris/interesados", { term }).then(_acInteresado.render),
 			render: item => item.nif + " - " + item.nombre,

@@ -71,13 +71,13 @@ function IrseTabs() {
 		tabs.setAction("uploadGasto", () => {
 			dom.closeAlerts();
 			if (isDoc())
-				return dom.required("#txtGasto", "errDoc").isOk();
+				return dom.required("#txtGasto", "errDoc").isOk() && fnUpload();
 			if (dom.gt0("#impGasto", "errGt0").required("#tipo-gasto", "errTipoGasto").isError())
 				return false; // required inputs error
 			if (isTaxi()) //ISU y taxi
-				return dom.required("#txtGasto", "errRequired").isOk();
+				return dom.required("#txtGasto", "errRequired").isOk() && fnUpload();
 			if (isExtra())
-				return dom.required("#txtExtra", "errJustifiExtra", "errRequired").isOk();
+				return dom.required("#txtExtra", "errJustifiExtra", "errRequired").isOk() && fnUpload();
 			if ((eTipoGasto.value == "8") && !form.valueOf("#trayectos")) //factura sin trayectos asociados => tab-12
 				return !tabs.showTab(12);
 			if (isPernocta()) {

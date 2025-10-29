@@ -181,7 +181,8 @@ function IrseRutas() {
 				dom.table("#rutas", rutas, resume, STYLES);
 			}).onRenderTable("#rutas", table => {
 				const last = fnResume().last(rutas) || CT;
-				form.setval("#origen", last.destino).setval("#f1", last.dt2).setval("#h1", last.dt2)
+				form.setval("#origen", last.destino)
+					.setval("#f1", sb.isoDate(last.dt2)).setval("#h1", sb.isoTimeShort(last.dt2))
 					.setval("#destino").copy("#f2", "#f1").setval("#h2").delAttr("#f1", "max")
 					.setval("#principal", "0").setval("#desp").hide(".grupo-matricula");
 				if (!last.dt1)
