@@ -78,7 +78,7 @@ function Send() {
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (i18n.confirm("msgSend")) // si hay confirmacion => envio
-			fnSend(data, "/uae/iris/send").then(tabs.showList);
+			fnSend(data, "/uae/iris/send").then(xeco.reset);
 	});
 	tabs.setAction("save9", () => {
 		const data = form.validate(fnValidate);

@@ -14,8 +14,8 @@ function List() {
 	const form = new Form("#xeco-filter"); // filter form element
 
 	const msgEmptyTable = "No se han encontrado solicitudes para a la búsqueda seleccionada";
-	const opts = { msgEmptyTable, onRender: model.row, onFooter: model.tfoot };
-	const tblSolicitudes = new Table(form.getNext("table"), opts);
+	const OPTS = { msgEmptyTable, onRender: model.row, onFooter: model.tfoot };
+	const tblSolicitudes = new Table(form.getNext("table"), OPTS);
 
 	const fnLoadList = data => { tblSolicitudes.render(data); tabs.showList(); } // render table
 	const fnCallList = () => { api.setJSON(form.getData()).json(url + "/list").then(fnLoadList); } // fetch list action
@@ -43,6 +43,7 @@ function List() {
 	this.getId = tblSolicitudes.getId; // current table id
 	//this.getData = tblSolicitudes.getCurrentItem; // selected data
 	this.setAction = (name, fn) => { tblSolicitudes.set(name, fn); return self; } // table handler
+	this.reset = () => { form.resetCache(); tblSolicitudes.clear(); return self; } // reset info
 	this.update = () => { fnUpdateRow(); tabs.showList(); } // refresh row and go list
 	this.setFirmas = () => { throw new Error("You have to implement the method setFirmas!"); }
 	this.showForm = () => { throw new Error("You have to implement the method showForm!"); }

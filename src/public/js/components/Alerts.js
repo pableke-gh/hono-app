@@ -64,7 +64,7 @@ function Alerts() {
 	}
 	window.catchPromise = async fn => await window.catchError(new Promise(fn));
 
-    this.isLoaded = (xhr, status, args) => { // PF hack
+	window.showAlerts = (xhr, status, args) => { // PF hack => show all messages
 		if (xhr && (status == "success")) // is PF server error xhr?
 			return self.showAlerts(coll.parse(args.msgs)); // status 200
 		var msg = "Error 500: Internal server error."; // default
@@ -72,9 +72,8 @@ function Alerts() {
 		msg = (xhr && xhr.statusText) ? xhr.statusText : msg;
 		return !self.showError(msg).working(); // show error
 	}
-	window.showAlerts = self.isLoaded; // show all messages
 	this.open = (url, err) => { url ? window.open(url, "_blank") : self.showError(err || "errReport"); } // open external resource
-	window.openUrl = (xhr, status, args) => { window.showAlerts(xhr, status, args) && self.open(args?.url); } // PF open url hack
+	//window.openUrl = (xhr, status, args) => { window.showAlerts(xhr, status, args) && self.open(args?.url); } // PF open url hack
 }
 
 export default new Alerts();

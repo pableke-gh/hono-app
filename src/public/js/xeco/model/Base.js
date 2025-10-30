@@ -1,21 +1,20 @@
 
+import i18n from '../../i18n/langs.js';
+
 export default function() {
 	const self = this; //self instance
 	let _data; // current data container
 
-	this.getData = () => _data;
 	this.get = name => _data[name];
+	this.set = (name, value) => { _data[name] = value; return self; }
+	this.getData = () => _data;
+	this.setData = data => { _data = data; return self; }
 	this.getValue = name => {
 		const fnValue = self[name]; // calculated value
 		return fnValue ? fnValue() : self.get(name);
 	}
 
-	this.setData = data => { _data = data; return self; }
-	this.set = (name, value) => { _data[name] = value; return self; }
-	this.setValue = (name, value) => {
-		const fnValue = self["set" + name.charAt(0).toUpperCase() + name.slice(1)];
-		return fnValue ? fnValue(value) : self.set(name, value); // set value
-	}
+	this.render = (template, opts) => i18n.render(template, self, opts);
 
 	// Generc getters and setters
 	this.getId = () => _data.id; // id de la instancia

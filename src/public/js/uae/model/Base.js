@@ -1,24 +1,23 @@
 
+import i18n from '../../i18n/langs.js';
+
 export default class Base {
 	#data; // private data container
 
 	constructor(data) {
-		this.#data = data;
+		#data = data;
 	}
 
-	//getData = () => this.#data;
 	get = name => this.#data[name];
+	set = (name, value) => { this.#data[name] = value; return self; }
+	getData = () => this.#data;
+	setData = data => { this.#data = data; return self; }
 	getValue = name => {
 		const fnValue = this[name]; // calculated value
 		return fnValue ? fnValue() : this.get(name);
 	}
 
-	//setData = data => { this.#data = data; return this; }
-	set = (name, value) => { this.#data[name] = value; return this; }
-	setValue = (name, value) => {
-		const fnValue = this["set" + name.charAt(0).toUpperCase() + name.slice(1)];
-		return fnValue ? fnValue(value) : this.set(name, value); // set value
-	}
+	render = (template, opts) => i18n.render(template, this, opts);
 
 	// Generc getters and setters
 	getId = () => this.#data.id; // id de la instancia

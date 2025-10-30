@@ -18,6 +18,8 @@ function XecoForm() {
 	this.getTable = () => list.getTable();
 	this.getForm = () => form;
 	this.refresh = () => form.refresh(model);
+	this.reset = () => { form.resetCache(); list.reset(); tabs.showInit(); }
+	window.closeForm = (xhr, status, args) => (window.showAlerts(xhr, status, args) && self.reset()); // PF hack for old version compatibility => remove
 
 	this.getFirmante = firma.getFirmante; // "nif - name" String
 	this.findByGrupo = (grupo, firmas) => (firmas && firmas.find(f => (f.grupo === grupo)));

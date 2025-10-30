@@ -59,15 +59,15 @@ function Langs() {
 	// Add i18n Date formats
 	en.isoDate = str => str && str.substring(0, 10); //Iso string = yyyy-mm-dd
 	es.isoDate = str => str && (str.substring(8, 10) + "/" + str.substring(5, 7) + "/" + str.substring(0, 4)); //Iso string to dd/mm/yyyy
-	en.strDate = date => date && dt.isoDate(date); //Iso string = yyyy-mm-dd
-	es.strDate = date => date && es.isoDate(dt.isoDate(date)); //Iso string to dd/mm/yyyy
+	en.strDate = date => date && dt.isoDate(date); //Date type to iso string = yyyy-mm-dd
+	es.strDate = date => date && es.isoDate(dt.isoDate(date)); //Date to string dd/mm/yyyy
 
 	this.enDate = en.isoDate; //Iso string = yyyy-mm-dd
 	this.isoTime = str => str && str.substring(11, 19); //hh:MM:ss
 	this.isoTimeShort = str => str && str.substring(11, 16); //hh:MM
 	this.isoDate = str => _lang.isoDate(str); // String locale date
 	this.isoDateTime = str => self.isoDate(str) + " " + self.isoTime(str); //ISO date + hh:MM:ss
-	this.strDate = date => _lang.strDate(date); //ISO date
+	this.strDate = date => _lang.strDate(date); //Date to string
 
 	const BOOLEAN_TRUE = ["1", "true", "yes", "on"];
 	this.boolval = str => globalThis.isset(str) ? _lang.msgBool[+BOOLEAN_TRUE.includes("" + str)] : null;
@@ -103,8 +103,9 @@ function Langs() {
 
 	// Render styled string
 	const RE_VAR = /[@$](\w+)(\.\w+)?;/g;
+	const OPTS = { size: 1, index: 0 }; // default options
 	this.render = function(str, data, opts) {
-		opts = opts || {};
+		opts = opts || OPTS;
 		opts.size = opts.size || 1;
 		opts.index = opts.index || 0;
 		opts.count = opts.index + 1;
@@ -124,11 +125,27 @@ function Langs() {
 			return (value ?? opts[k] ?? ""); // Default = String
         });
     }
-
+	
 	// Init. private vars
 	_current = self.getLanguage(); // get current language
 	_langs = _appLangs = { en, es }; // Default langs container
 	_lang = _appLang = _langs[_current]; // Default language = en
+
+	// Extends HTMLElement prototype
+	HTMLElement.prototype.setText = function(text) { this.innerHTML = text; return this; }
+	HTMLElement.prototype.setMsg = function(msg) { return this.setText(self.get(msg)); }
+	HTMLElement.prototype.render = function(data, opts) {
+		opts = opts || OPTS; // default options
+		this.dataset.template = this.dataset.template || this.innerHTML; // save current template
+		this.innerHTML = self.render(this.dataset.template, data, opts); // display new data
+		return this.setVisible(opts.matches); // hide if empty
+	}
+	HTMLCollection.prototype.render = function(data) {
+		OPTS.size = this.length; // array length
+		this.forEach((el, i) => { OPTS.index = i; el.render(data, OPTS); });
+		OPTS.size = OPTS.index = 0; // reset options
+	}
+	NodeList.prototype.render = HTMLCollection.prototype.render;
 }
 
 export default new Langs();
