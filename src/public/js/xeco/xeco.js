@@ -9,7 +9,7 @@ import model from "./model/Solicitud.js";
 import firma from "./model/Firma.js";
 import list from "./modules/list.js";
 
-function XecoForm() {
+function ModuleForm() {
 	const self = this; //self instance
 	const url = model.getUrl(); // url base path
 	const form = new Form("#xeco-model");
@@ -86,4 +86,4 @@ function XecoForm() {
 	});
 }
 
-export default new XecoForm();
+export default new ModuleForm();

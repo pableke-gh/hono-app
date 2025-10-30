@@ -1,30 +1,36 @@
 
 import i18n from '../../i18n/langs.js';
 
-export default function() {
-	const self = this; //self instance
-	let _data; // current data container
+export default class Base {
+	#data; // private data container
 
-	this.get = name => _data[name];
-	this.set = (name, value) => { _data[name] = value; return self; }
-	this.getData = () => _data;
-	this.setData = data => { _data = data; return self; }
-	this.getValue = name => {
-		const fnValue = self[name]; // calculated value
-		return fnValue ? fnValue() : self.get(name);
+	constructor(data) {
+		this.#data = data;
 	}
 
-	this.render = (template, opts) => i18n.render(template, self, opts);
+	get = name => this.#data[name];
+	set(name, value) { this.#data[name] = value; return this; }
+	getData = () => this.#data;
+	setData(data) { this.#data = data; return this; }
+
+	// arrow functions do not have their own this binding; instead, they lexically inherit the this value from the enclosing scope
+	// Even if the method is assigned to a variable or destructured, this context remains correctly bound to the instance => not suport super
+	getValue = name => {
+		const fnValue = this[name]; // calculated value
+		return fnValue ? fnValue() : this.get(name);
+	}
+
+	render = (template, opts) => i18n.render(template, this, opts);
 
 	// Generc getters and setters
-	this.getId = () => _data.id; // id de la instancia
-	this.getNif = () => _data.usu; // nif del usuario de creacion
-	this.getTipo = () => _data.tipo; // tipo de la insaancia
-	this.setTipo = value => { _data.tipo = value; return self; }
-	this.getSubtipo = () => _data.subtipo;
-	this.setSubtipo = value => { _data.subtipo = value; return self; }
-	this.getEstado = () => _data.estado;
-	this.setEstado = value => { _data.estado = value; return self; }
-	this.getMask = () => _data.mask;
-	this.setMask = value => { _data.mask = value; return self; }
+	getId = () => this.#data.id; // id de la instancia
+	getNif = () => this.#data.usu; // nif del usuario de creacion
+	getTipo = () => this.#data.tipo; // tipo de la insaancia
+	setTipo(value) { this.#data.tipo = value; return this; }
+	getSubtipo = () => this.#data.subtipo;
+	setSubtipo(value) { this.#data.subtipo = value; return this; }
+	getEstado = () => this.#data.estado;
+	setEstado(value) { this.#data.estado = value; return this; }
+	getMask = () => this.#data.mask;
+	setMask(value) { this.#data.mask = value; return this; }
 }

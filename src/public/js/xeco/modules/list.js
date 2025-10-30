@@ -41,9 +41,8 @@ function List() {
 	this.setCache = form.setCache; // set cache on create and view
 	this.getTable = () => tblSolicitudes; // table module
 	this.getId = tblSolicitudes.getId; // current table id
-	//this.getData = tblSolicitudes.getCurrentItem; // selected data
+	this.reset = () => { form.resetCache(); tblSolicitudes.clear(); } // reset cache and list
 	this.setAction = (name, fn) => { tblSolicitudes.set(name, fn); return self; } // table handler
-	this.reset = () => { form.resetCache(); tblSolicitudes.clear(); return self; } // reset info
 	this.update = () => { fnUpdateRow(); tabs.showList(); } // refresh row and go list
 	this.setFirmas = () => { throw new Error("You have to implement the method setFirmas!"); }
 	this.showForm = () => { throw new Error("You have to implement the method showForm!"); }

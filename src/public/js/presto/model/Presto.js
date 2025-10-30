@@ -34,8 +34,9 @@ presto.isGeneracion = () => (presto.isGcr() || presto.isAnt());
 presto.isAnticipada = () => (presto.getMask() & 4);
 presto.isExcedida = () => (presto.getMask() & 8);
 
+const fnSuperActions = presto.row; // parent method
 presto.row = data => {
-	let acciones = presto.rowActions(data);
+	let acciones = fnSuperActions(data);
 	if (presto.isDocumentable()) {
 		//acciones += presto.isAdmin() ? '<a href="#pdf" title="Informe PRESTO"><i class="fas fa-file-pdf action resize text-red"></i></a>' : "";
 		acciones += '<a href="#report" title="Informe PRESTO"><i class="fal fa-file-pdf action resize text-red"></i></a>';

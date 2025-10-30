@@ -49,8 +49,9 @@ fact.isPlataforma = () => (fact.get("face") == 2); //factura electronica Otras
 fact.setFace = val => fact.set("face", val); // update plataforma / FACe
 fact.getNamePlataforma = () => (fact.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor");
 
+const fnSuperActions = fact.row; // parent method
 fact.row = data => {
-	const acciones = fact.rowActions(data);
+	let acciones = fnSuperActions(data);
 	return `<tr class="tb-data">
 		<td class="text-center"><a href="#view">${data.codigo}</a></td>
 		<td class="hide-sm text-upper1">${fact.getTitulo()}</td>

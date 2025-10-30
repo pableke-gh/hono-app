@@ -58,8 +58,9 @@ iris.getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), iris);
 iris.getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), iris);
 iris.getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + iris.isIsu()).get("lblPasos"), iris);
 
+const fnSuperActions = iris.row; // parent method
 iris.row = data => {
-	let acciones = iris.rowActions(data);
+	let acciones = fnSuperActions(data);
 	if (iris.isDocumentable()) {
 		if (iris.isAdmin()) {
 			acciones += '<a href="#rptFinalizar" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
