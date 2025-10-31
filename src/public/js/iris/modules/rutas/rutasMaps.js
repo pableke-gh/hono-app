@@ -37,13 +37,11 @@ function RutasMaps() {
 	function fnUpdateForm(resume) {
 		const last = rutas.getLlegada() || CT;
 		rutas.getNumRutasUnlinked = () => resume.unlinked; // redefine calc
-		form.setval("#origen", last.destino).setval("#f1", last.dt2).setval("#h1", last.dt2)
+		form.setval("#origen", last.destino).setValue("#f1", last.dt2).setValue("#h1", last.dt2)
 			.setval("#destino").copy("#f2", "#f1").setval("#h2").delAttr("#f1", "max")
 			.setval("#principal", "0").setval("#desp").hide(".grupo-matricula");
 		if (!last.dt1)
 			form.setFocus("#f1");
-		else if (ruta.isPrincipal(last))
-			form.restart("#h1");
 		else
 			form.setFocus("#destino");
 	}

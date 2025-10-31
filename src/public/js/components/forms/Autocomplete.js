@@ -70,6 +70,7 @@ export default function(autocomplete, opts) {
 		return self;
 	}
 	this.setItem = item => self.setValue(item.value, item.label);
+	//this.after = el => el.after(autocomplete, inputValue, resultsHTML);
 
 	const isChildren = i => ((0 <= i) && (i < coll.size(resultsHTML.children)));
 	const removeList = () => { resultsHTML.innerHTML = ""; resultsHTML.classList.remove(opts.activeClass); }

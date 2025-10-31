@@ -19,6 +19,7 @@ presto.is030 = () => (presto.isUae() && (presto.isGcr() || presto.isAnt()));
 
 const superIsIntegrable = presto.isIntegrable; // save parent method
 presto.isIntegrable = () => (!presto.isAfc() && superIsIntegrable());
+presto.isReactivable = () => (presto.isUae() && !presto.isAfc() && !presto.isFce() && presto.isErronea());
 presto.isImpCd = () => (presto.isEditable() && !presto.isAnt());
 presto.getAdjunto = () => presto.get("file");
 
