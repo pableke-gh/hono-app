@@ -8,9 +8,6 @@ function DomBox() {
 	this.ismediaLg = () => ((991 < window.innerWidth) && (window.innerWidth < 1200));
 	this.isMediaXl = () => (window.innerWidth > 1199);
 
-	this.$1 = (el, selector) => (el && el.querySelector(selector));
-	this.$$ = (el, selector) => (el && el.querySelectorAll(selector));
-
 	this.focus = el => { el && el.focus(); return self; }
 	this.getAttr = (el, name) => (el && el.getAttribute(name));
 	this.setAttr = (el, name, value) => { el && el.setAttribute(name, value); return self; }
@@ -45,7 +42,7 @@ function DomBox() {
         return self;
     }
 
-	this.isSelect = el => el && el.options;
+	/*this.isSelect = el => el && el.options;
 	this.getOption = select => select && select.options[select.selectedIndex]; // get current option element
 	this.getOptionText = select => self.getHtml(self.getOption(select)); // get current option text
 	this.getOptionByValue = (select, value) => select && select.options.find(option => (option.value == value)); // get option by value
@@ -76,7 +73,7 @@ function DomBox() {
 		const fnLabel = label => `<option value="${label}">${label}</option>`; // label list
         select.innerHTML = fnEmpty(emptyOption) + labels.map(fnLabel).join(""); // Render labels
 		return self;
-	}
+	}*/
 
 	// Events handlers
 	const fnQuery = el => globalThis.isstr(el) ? $1(el) : el;

@@ -28,7 +28,7 @@ function Uxxiec() {
 	}
 
 	const fnUpdateButtons = () => { // refresh buttons navbar
-		form.getNext("div").querySelectorAll(".form-refresh").refresh(model, form.getOptions());
+		form.getNext("div").$$(".form-refresh").refresh(model, form.getOptions());
 	}
 	const fnLoadUxxiec = data => { // refresh form and buttons
 		form.setCache(data.id).refresh(model.setData(data));

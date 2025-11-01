@@ -181,13 +181,11 @@ function IrseRutas() {
 				dom.table("#rutas", rutas, resume, STYLES);
 			}).onRenderTable("#rutas", table => {
 				const last = fnResume().last(rutas) || CT;
-				form.setval("#origen", last.destino).setValue("#f1", last.dt2).setValue("#h1", last.dt2)
-					.setval("#destino").copy("#f2", "#f1").setval("#h2").delAttr("#f1", "max")
-					.setval("#principal", "0").setval("#desp").hide(".grupo-matricula");
-				if (!last.dt1)
+				const matricula = form.getval("#matricula");
+				form.setData({ origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula }, ".ui-ruta")
+					.delAttr("#f1", "max").restart("#destino").hide(".grupo-matricula");
+				if (!last.dt1) // primera ruta?
 					form.setFocus("#f1");
-				else
-					form.setFocus("#destino");
 			});
 
 			// tabla resumen de vehiculo propio del paso 6

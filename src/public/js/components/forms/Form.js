@@ -30,20 +30,17 @@ export default function(form, opts) {
 	const input = new Input(opts); // inputs helper
 	let _isChanged; // bool indicator
 
-	const $1 = selector => form.querySelector(selector);
-	const $$ = selector => form.querySelectorAll(selector);
-
-	this.querySelector = $1; // Form child element
-	this.querySelectorAll = $$; // Form children elements
+	this.querySelector = selector => form.$1(selector); // Form child element
+	this.querySelectorAll = selector => form.$$(selector); // Form children elements
 	this.getInput = selector => form.elements.findBy(selector); // find an element
 	this.getInputs = selector => form.elements.filterBy(selector); // filter elements
 
 	// Actions to update form view (inputs, texts, ...)
-	const fnQuery = el => globalThis.isstr(el) ? $1(el) : el;
+	const fnQuery = el => globalThis.isstr(el) ? form.$1(el) : el;
 	const fnQueryInput = el => globalThis.isstr(el) ? self.getInput(el) : el;
 	const fnAction = (el, fn) => { el = fnQueryInput(el); el && fn(el); return self; }
 	const fnFor = (list, fn) => { list.forEach(fn); return self; }
-	const fnEach = (selector, fn) => fnFor($$(selector), fn);
+	const fnEach = (selector, fn) => fnFor(form.$$(selector), fn);
 	const fnUpdate = (selector, fn) => {
 		selector = selector || INPUTS; // Default = inputs type
 		return fnFor(form.elements, el => el.matches(selector) && fn(el));
@@ -82,14 +79,14 @@ export default function(form, opts) {
 
 	this.getValidators = i18n.getValidation; // validator object
 	this.copyToClipboard = dom.copyToClipboard; // to clipboard
-	this.getHtml = selector => dom.getHtml(fnQuery(selector));
-    this.setHtml = (selector, text) => { dom.html(fnQuery(selector), text); return self; }
-	this.html = (selector, text) => { $$(selector).html(text); return self; } // Update all texts info in form
-    this.getText = selector => dom.getText(fnQuery(selector));
-    this.setText = (selector, text) => { dom.text(fnQuery(selector), text); return self; }
-	this.text = (selector, text) => { $$(selector).text(text); return self; } // Update all texts info in form
-	this.render = (selector, data) => { $$(selector).render(data); return self; } // NodeList.prototype.render
-	this.refresh = (model, selector) => { $$(selector || opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
+	this.getHtml = selector => fnQuery(selector).innerHTML;
+    this.setHtml = (selector, text) => { fnQuery(selector).innerHTML = text; return self; }
+	this.html = (selector, text) => { form.$$(selector).html(text); return self; } // Update all texts info in form
+    this.getText = selector => fnQuery(selector).innerText;
+    this.setText = (selector, text) => { fnQuery(selector).innerText = text; return self; }
+	this.text = (selector, text) => { form.$$(selector).text(text); return self; } // Update all texts info in form
+	this.render = (selector, data) => { form.$$(selector).render(data); return self; } // NodeList.prototype.render
+	this.refresh = (model, selector) => { form.$$(selector || opts.refreshSelector).refresh(model, opts); return self; } // NodeList.prototype.refresh
 	this.send = url => api.setForm(form).send(url || form.action).catch(info => { self.setErrors(info); throw info; });
 	this.nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
@@ -98,8 +95,8 @@ export default function(form, opts) {
 		return self;
 	}
 
-	this.hide = selector => { $$(selector).hide(); return self; }
-	this.show = selector => { $$(selector).show(); return self; }
+	this.hide = selector => { form.$$(selector).hide(); return self; }
+	this.show = selector => { form.$$(selector).show(); return self; }
 	this.setVisible = (selector, force) => force ? self.show(selector) : self.hide(selector);
 	this.disabled = (force, selector) => fnUpdate(selector, el => el.setDisabled(force));
 	this.readonly = (force, selector) => fnUpdate(selector, el => el.setReadonly(force));
@@ -126,11 +123,22 @@ export default function(form, opts) {
 	}
 
 	// Value property
+	this.getValue = input.getValue;
+	this.getval = selector => fnQueryInput(selector).value;
+	this.valueOf = selector => self.getValue(fnQueryInput(selector));
+	//this.loadModel = (model, selector) => fnUpdate(selector, el => model.set(el.name, input.getValue(el)));
+	//this.setModel = (model, selector) => fnUpdate(selector, el => input.setValue(el, model.get(el.name)));
+	this.getData = selector => {
+		const data = {}; // Results container
+		fnUpdate(selector, el => input.load(el, data));
+		return data;
+	}
+
 	this.setval = (selector, value) => fnAction(selector, el => input.setval(el, value));
 	this.setValue = (selector, value) => fnAction(selector, el => input.setValue(el, value));
 	this.reset = selector => fnUpdate(selector, el => input.setval(el)); // reset inputs value, hidden to! use :not([type=hidden]) selector
-	this.restart = selector => fnAction(selector, el => { el.focus(); input.setval(el); }); // remove value + focus
-	this.copy = (el1, el2) => fnAction(el1, el => input.setval(el, self.getval(el2)));
+	this.restart = selector => { const el = fnQueryInput(selector); input.setval(el); el.focus(); return self; }; // remove value + focus
+	this.copy = (el1, el2) => { input.setval(fnQueryInput(el1), self.getval(el2)); return self; } // copy value from el2 to el1
 	this.setData = (data, selector) => {
 		const fnSetValue = el => input.setValue(el, data[el.name]);
 		if (data && selector) // update a subgroup of inputs
@@ -158,17 +166,6 @@ export default function(form, opts) {
 	this.setAttr = (selector, name, value) => { input.setAttr(fnQueryInput(selector), name, value); return self; }
 	this.setAttribute = self.setAttr;
 
-	this.getValue = input.getValue;
-	this.getval = selector => fnQueryInput(selector).value;
-	this.valueOf = selector => self.getValue(fnQueryInput(selector));
-	//this.loadModel = (model, selector) => fnUpdate(selector, el => model.set(el.name, input.getValue(el)));
-	//this.setModel = (model, selector) => fnUpdate(selector, el => input.setValue(el, model.get(el.name)));
-	this.getData = selector => {
-		const data = {}; // Results container
-		fnUpdate(selector, el => input.load(el, data));
-		return data;
-	}
-
 	this.getUrlParams = () => new URLSearchParams(new FormData(form));
 	FormData.prototype.exclude = function(keys) {
 		keys.forEach(key => this.delete(key));
@@ -186,21 +183,21 @@ export default function(form, opts) {
 	}
 
 	// Inputs helpers
-	this.setTable = (selector, opts) => new Table($1(selector), opts); // table
+	this.setTable = (selector, opts) => new Table(form.$1(selector), opts); // table
 	this.stringify = (selector, data, replacer) => self.setval(selector, JSON.stringify(data, replacer)).setChanged(true);
 	this.saveTable = (selector, table, replacer) => self.stringify(selector, table.getData(), replacer);
 	this.getOptionText = selector => isb.getOptionText(fnQueryInput(selector));
 	this.getOptionTextByValue = (selector, value) => isb.getOptionTextByValue(fnQueryInput(selector), value);
 	this.select = (selector, mask) => { isb.select(fnQueryInput(selector), mask); return self; }
-	this.setDatalist = (selector, opts) => new Datalist($1(selector), opts); // select / optgroup
+	this.setDatalist = (selector, opts) => new Datalist(form.$1(selector), opts); // select / optgroup
 	this.setItems = (selector, items, emptyOption) => fnUpdate(selector, el => isb.setItems(el, items, emptyOption));
 	this.setDataOptions = (selector, data, emptyOption) => fnUpdate(selector, el => isb.setData(el, data, emptyOption));
 	this.setLabels = (selector, labels, emptyOption) => fnUpdate(selector, el => isb.setLabels(el, labels, emptyOption));
-	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox($1(selector), opts); // multi select checkbox
+	this.setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox(form.$1(selector), opts); // multi select checkbox
 	this.setAutocomplete = (selector, opts) => new Autocomplete(fnQueryInput(selector), opts); // Input type text / search
 
-	this.showModal = selector => $1(selector).showModal();
-	this.closeModal = () => $1("dialog[open]").close();
+	this.showModal = selector => form.$1(selector).showModal();
+	this.closeModal = () => form.$1("dialog[open]").close();
 
 	// Events handlers
 	const fnEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return self; }
@@ -216,10 +213,10 @@ export default function(form, opts) {
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));
 
 	this.addClickAll = (selector, fn) => fnEach(selector, el => el.addClick(fn));
-	this.addClick = (selector, fn) => { dom.addAction($1(selector), fn); return self; }
+	this.addClick = (selector, fn) => { dom.addAction(form.$1(selector), fn); return self; }
 	this.setClickAll = (selector, fn) => fnEach(selector, el => el.setClick(fn));
-	this.setClick = (selector, fn) => { dom.setAction($1(selector), fn); return self; }
-	this.click = selector => { $1(selector).click(); return self; } // Fire event only for PF
+	this.setClick = (selector, fn) => { dom.setAction(form.$1(selector), fn); return self; }
+	this.click = selector => { form.$1(selector).click(); return self; } // Fire event only for PF
 
 	this.onChange = (selector, fn) => fnAction(selector, el => fnChange(el, fn));
 	this.onChangeInputs = (selector, fn) => fnUpdate(selector, el => fnChange(el, fn));

@@ -133,6 +133,8 @@ HTMLElement.prototype.sibling = function(selector) { return this.prev(selector) 
 // Commons initializations in the HTML client
 window.$1 = selector => document.querySelector(selector);
 window.$$ = selector => document.querySelectorAll(selector);
+HTMLElement.prototype.$1 = HTMLElement.prototype.querySelector;
+HTMLElement.prototype.$$ = HTMLElement.prototype.querySelectorAll;
 
 coll.dom = dom; // add reference
 coll.ready = dom.ready; // shortcut

@@ -36,14 +36,12 @@ function RutasMaps() {
 
 	function fnUpdateForm(resume) {
 		const last = rutas.getLlegada() || CT;
+		const matricula = form.getval("#matricula-maps");
 		rutas.getNumRutasUnlinked = () => resume.unlinked; // redefine calc
-		form.setval("#origen", last.destino).setValue("#f1", last.dt2).setValue("#h1", last.dt2)
-			.setval("#destino").copy("#f2", "#f1").setval("#h2").delAttr("#f1", "max")
-			.setval("#principal", "0").setval("#desp").hide(".grupo-matricula");
-		if (!last.dt1)
+		form.setData({ origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula }, ".ui-ruta")
+			.delAttr("#f1", "max").restart("#destino").hide(".grupo-matricula");
+		if (!last.dt1) // primera ruta?
 			form.setFocus("#f1");
-		else
-			form.setFocus("#destino");
 	}
 	this.init = () => {
 		rmun.init(); // formulario mun (paso 1)

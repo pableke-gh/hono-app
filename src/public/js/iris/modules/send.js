@@ -85,7 +85,9 @@ function Send() {
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (form.isChanged()) // si ahy cambios => envio
-			fnSend(data, "/uae/iris/save").then(form.showAlerts);
+			fnSend(data, "/uae/iris/save");
+		else
+			form.nextTab(9);
 		form.setChanged(); // avoid recall
 	});
 }
