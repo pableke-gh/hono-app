@@ -63,8 +63,8 @@ function Perfil() {
 		organicas.init();
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
-		form.setClick("a#reg-externo", () => form.copyToClipboard(url));
-		form.set("is-isu", actividad.isIsu).set("not-isu", () => !actividad.isIsu()).set("is-maps", actividad.isMaps);
+		form.setClick("a#reg-externo", ev => { form.copyToClipboard(url); ev.preventDefault(); });
+		form.set("not-isu", () => !actividad.isIsu());
 	}
 
 	this.view = (interesado, orgs, principales) => {

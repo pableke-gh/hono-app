@@ -1,7 +1,7 @@
 
 import en from "./langs/en.js";
 import es from "./langs/es.js";
-import validators from "./validators.js";
+import valid from "./validators.js";
 import dt from "../components/types/DateBox.js";
 import nb from "../components/types/NumberBox.js";
 import sb from "../components/types/StringBox.js";
@@ -10,7 +10,6 @@ function Langs() {
 	const self = this; //self instance
 	const DEFAULT = "en"; // Default iso lang
 	const KEYS = [ "es", DEFAULT ]; // Accepted lang keys
-	const valid = validators(self); // closure
 
 	let _current = DEFAULT; // _current = default
 	let _langs, _appLangs; // All langs containers

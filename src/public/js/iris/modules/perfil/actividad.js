@@ -70,7 +70,6 @@ function Actividad() {
 
 	this.init = () => {
 		form.onChangeInput("#actividad", self.update);
-		form.set("is-mun", self.isMun).set("is-tribunal", self.isTribunal).set("is-mesa", globalThis.void);
 	}
 }
 

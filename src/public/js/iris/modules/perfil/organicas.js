@@ -1,5 +1,6 @@
 
 import api from "../../../components/Api.js";
+import tabs from "../../../components/Tabs.js";
 
 import iris from "../../model/Iris.js";
 import organica from "../../model/Organica.js";
@@ -11,6 +12,17 @@ function Organicas() {
 	const self = this; //self instance
 	const form = xeco.getForm(); // form component
 	const _tblOrganicas = form.setTable("#tbl-organicas", organica.getTable());
+	const acOrganiaca = form.setAutocomplete("#organica", {
+		minLength: 4,
+		source: term => api.init().json("/uae/iris/organicas", { term }).then(acOrganiaca.render),
+		render: item => item.o + " - " + item.dOrg,
+		select: item => {
+			if (!iris.isUxxiec())
+				_tblOrganicas.render([item]);
+			return item.id;
+		},
+		onReset: xeco.refresh
+	});
 
 	this.size = _tblOrganicas.size; 
 	this.isEmpty = _tblOrganicas.isEmpty;
@@ -39,30 +51,16 @@ function Organicas() {
 
 	this.init = () => {
 		_tblOrganicas.setAfterRender(fnAfterRender);
-		const acOrganiaca = form.setAutocomplete("#organica", {
-			minLength: 4,
-			source: term => api.init().json("/uae/iris/organicas", { term }).then(acOrganiaca.render),
-			render: item => item.o + " - " + item.dOrg,
-			select: item => {
-				if (!iris.isUxxiec())
-					_tblOrganicas.render([item]);
-				return item.id;
-			},
-			onReset: xeco.refresh
-		});
-
 		form.set("is-add-org", _tblOrganicas.isEmpty);
-		form.set("is-fin-xsu", actividad.isXsu).set("is-fin-isu", actividad.is1su)
-			.set("is-fin-x83", actividad.isX83).set("is-fin-a83", actividad.is183);
-		form.addClick("a[href='#add-org']", ev => {
-			const organicas = _tblOrganicas.getData();
-			const current = acOrganiaca.getCurrentItem();
-			if (current && !organicas.find(org => (org.id == current.id)))
-				_tblOrganicas.push(current);
-			acOrganiaca.reload();
-			ev.preventDefault();
-		});
 	}
+
+	tabs.setAction("addOrganica", () => {
+		const organicas = _tblOrganicas.getData();
+		const current = acOrganiaca.getCurrentItem();
+		if (current && !organicas.find(org => (org.id == current.id)))
+			_tblOrganicas.push(current);
+		acOrganiaca.reload();
+	});
 }
 
 export default new Organicas();

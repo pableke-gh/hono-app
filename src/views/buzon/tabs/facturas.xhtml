@@ -17,12 +17,12 @@
         </div>
 
         <div class="ui-blocks">
-        <div class="ui-block-row">
-            <p:fileUpload id="fileFactura" value="#{buzon.facturas.factura}" fileUploadListener="#{buzon.facturas.uploadFactura}" mode="advanced" auto="true" styleClass="hide" />
-            <a href="#" class="btn btn-info form-refresh" data-refresh="pf-upload"><i class="fas fa-search icon"></i>Seleccionar 1 Factura (PDF)</a>
-            <span class="filename"></span>
-        </div>
-        </div>
+		<div class="ui-block-row">
+			<a href="#tab-action-clickNext" class="btn btn-info"><i class="fas fa-search btn-icon-left"></i>Seleccionar 1 Factura (PDF)</a>
+			<input type="file" name="factura" class="hide" accept="application/pdf" />
+			<span class="filename form-refresh" data-refresh="clear"></span>
+		</div>
+		</div>
     </div>
 
     <div class="navbar">
@@ -45,11 +45,11 @@
                     <option value="3">Está pagada por la UPCT por un procedimiento de pago antes de recibir la factura.</option>
                 </select>
             </label>
-            <div id="file-jp" class="ui-block-row">
-                <p:fileUpload id="fileJustPago" value="#{buzon.facturas.justPago}" fileUploadListener="#{buzon.facturas.uploadJustPago}" mode="advanced" auto="true" styleClass="hide" />
-                <a href="#" class="btn btn-info form-refresh" data-refresh="pf-upload"><i class="fas fa-search icon"></i>Adjuntar justificante de pago</a> 
-                <span class="filename"></span>
-            </div>
+			<div id="file-jp" class="ui-block-row">
+				<a href="#tab-action-clickNext" class="btn btn-info"><i class="fas fa-search btn-icon-left"></i>Adjuntar justificante de pago</a>
+				<input type="file" name="justPago" class="hide" />
+				<span class="filename form-refresh" data-refresh="clear"></span>
+			</div>
             <label class="ui-block-xl show-cesionario">
                 <div class="label required"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
                 <select id="cuentas" name="iban" class="ui-input ui-select" tabindex="150">

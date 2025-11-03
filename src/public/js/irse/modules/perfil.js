@@ -81,7 +81,7 @@ function IrsePerfil() {
 
 	this.init = form => {
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
-		form.setClick("a#reg-externo", () => coll.dom.copyToClipboard(url));
+		form.setClick("a#reg-externo", ev => { coll.dom.copyToClipboard(url); ev.preventDefault(); });
 
 		eRol = form.getInput("#rol");
 		eCol = form.querySelector("#colectivo");

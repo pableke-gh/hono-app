@@ -71,6 +71,14 @@ export default function(autocomplete, opts) {
 	}
 	this.setItem = item => self.setValue(item.value, item.label);
 	//this.after = el => el.after(autocomplete, inputValue, resultsHTML);
+	/*this.append = parent => {
+		const label = document.createElement("label");
+		label.append('<div class="label required">**Titulo**:</div>');
+		label.append(autocomplete, inputValue, resultsHTML);
+		label.append('<div class="ui-errtip"></div>');
+		parent.appendChild(label);
+		return self;
+	}*/
 
 	const isChildren = i => ((0 <= i) && (i < coll.size(resultsHTML.children)));
 	const removeList = () => { resultsHTML.innerHTML = ""; resultsHTML.classList.remove(opts.activeClass); }

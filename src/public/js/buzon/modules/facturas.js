@@ -69,15 +69,15 @@ function Facturas() {
 	}
 
 	// Init. form factura
+	form.onChangeFiles("[type=file]", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
 	tabs.setShowEvent(2, fnShowTab2); // tab fichero factura
 	tabs.setActiveEvent(4, buzon.isActiveTab4).setShowEvent(4, fnValidateJustPago);
 	tabs.setActiveEvent(5, () => _isActiveTab5).setShowEvent(5, fnValidateJustPago);
 	tabs.setShowEvent(6, fnShowTab6).setViewEvent(6, fnViewTab6); // tab resumen
-	form.getInput("#fileFactura_input").setAttribute("accept", "application/pdf"); // PDF only
 	tabs.setAction("upload", () => {
-		const org = buzon.isFacturaOtros() ? "" : buzon.getOrganica();
-		const fnResponse = msgs => form.showAlerts(msgs) && form.fireReset().nextTab(0); // clear inputs and message
-		api.setJSON(form.getData()).json("/uae/buzon/upload?org=" + org).then(fnResponse); // upload form
+		const fd = form.getFormData();
+		fd.append("org", buzon.isFacturaOtros() ? "" : buzon.getOrganica()); // organica seleccionada
+		api.setFormData(fd).json("/uae/buzon/upload").then(() => form.fireReset().nextTab(0)); // upload form + clear inputs
 	});
 }
 

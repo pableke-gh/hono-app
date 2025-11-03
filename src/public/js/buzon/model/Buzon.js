@@ -5,7 +5,7 @@ const ROL = [ "Responsable", "UXXIEC", "Comprador", "Habilidato", "Habilidato en
 
 function Buzon() {
 	const self = this; //self instance
-    var _data, _isFacturaOtros, _tipoPago, _justPagoRequired, _isChanged;
+    var _data, _isFacturaOtros, _tipoPago, _justPagoRequired;//, _isChanged;
 
     this.getData = () => _data;
     this.setData = data => { _data = data; return self; }
@@ -15,8 +15,8 @@ function Buzon() {
 	this.getUnidadTramit = () => _data.ut;
 	this.getNif = () => _data.nif;
 
-    this.isChanged = () => _isChanged;
-    this.setChanged = val => { _isChanged = val; return self; }
+    //this.isChanged = () => _isChanged;
+    //this.setChanged = val => { _isChanged = val; return self; }
     this.isFacturaOtros = () => _isFacturaOtros;
     this.setFacturaOtros = val => { _isFacturaOtros = val; return self; }
     this.isIsu = () => sb.starts(_data.oCod, "300518") && ((_data.omask & 8) == 8);

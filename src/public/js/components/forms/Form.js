@@ -66,8 +66,8 @@ export default function(form, opts) {
 	// Alerts helpers
 	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
 	this.working = () => { alerts.working(); return self; } // Encapsule working frame
-	this.setOk = () => { alerts.showOk(opts.defaultMsgOk); return self; } // force ok message
 	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
+	this.setOk = () => self.showOk(opts.defaultMsgOk); // Force ok message
 	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
 	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
 	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
@@ -124,7 +124,7 @@ export default function(form, opts) {
 
 	// Value property
 	this.getValue = input.getValue;
-	this.getval = selector => fnQueryInput(selector).value;
+	this.getval = selector => fnQueryInput(selector)?.value;
 	this.valueOf = selector => self.getValue(fnQueryInput(selector));
 	//this.loadModel = (model, selector) => fnUpdate(selector, el => model.set(el.name, input.getValue(el)));
 	//this.setModel = (model, selector) => fnUpdate(selector, el => input.setValue(el, model.get(el.name)));
@@ -137,7 +137,7 @@ export default function(form, opts) {
 	this.setval = (selector, value) => fnAction(selector, el => input.setval(el, value));
 	this.setValue = (selector, value) => fnAction(selector, el => input.setValue(el, value));
 	this.reset = selector => fnUpdate(selector, el => input.setval(el)); // reset inputs value, hidden to! use :not([type=hidden]) selector
-	this.restart = selector => { const el = fnQueryInput(selector); input.setval(el); el.focus(); return self; }; // remove value + focus
+	this.restart = selector => fnAction(selector, el => { input.setval(el); el.focus(); }); // remove value + focus
 	this.copy = (el1, el2) => { input.setval(fnQueryInput(el1), self.getval(el2)); return self; } // copy value from el2 to el1
 	this.setData = (data, selector) => {
 		const fnSetValue = el => input.setValue(el, data[el.name]);
@@ -213,9 +213,9 @@ export default function(form, opts) {
 	this.afterReset = fn => fnEvent(form, "reset", ev => setTimeout(() => fn(ev), 1));
 
 	this.addClickAll = (selector, fn) => fnEach(selector, el => el.addClick(fn));
-	this.addClick = (selector, fn) => { dom.addAction(form.$1(selector), fn); return self; }
+	this.addClick = (selector, fn) => { fnQuery(selector)?.addClick(fn); return self; }
 	this.setClickAll = (selector, fn) => fnEach(selector, el => el.setClick(fn));
-	this.setClick = (selector, fn) => { dom.setAction(form.$1(selector), fn); return self; }
+	this.setClick = (selector, fn) => { fnQuery(selector)?.setClick(fn); return self; }
 	this.click = selector => { form.$1(selector).click(); return self; } // Fire event only for PF
 
 	this.onChange = (selector, fn) => fnAction(selector, el => fnChange(el, fn));
