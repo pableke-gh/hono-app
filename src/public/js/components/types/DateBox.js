@@ -1,4 +1,7 @@
 
+// Intl.RelaviveTimeFormat could be used for more complex formatting needs
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat
+
 function DateBox() {
 	const self = this; //self instance
 	const sysdate = new Date(); //global sysdate readonly

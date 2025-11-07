@@ -44,7 +44,7 @@
 			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
-		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+		<form id="xeco-model" method="post" enctype="multipart/form-data">
 			<!-- Form PRESTO -->
 			<div id="tab-form" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>
@@ -57,7 +57,7 @@
 			<div id="tab-reject" class="tab-content">
 				<ui:include src="./tabs/reject.xhtml"></ui:include>
 			</div>
-		</h:form>
+		</form>
 
 		<!-- formulario de GCR para la OTRI -->
 		<c:if test="#{presto.user.admin}">

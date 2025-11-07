@@ -47,7 +47,7 @@
 		</div>
 
 		<!-- Form IRSE -->
-		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+		<form id="xeco-model" method="post" enctype="multipart/form-data">
 		<!-- Tab0 = perfil PAS / PDI -->
 		<div id="tab-form" class="tab-content">
 			<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
@@ -103,7 +103,7 @@
 			<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 			<ui:include src="tabs/reject.xhtml"></ui:include>
 		</div>
-		</h:form>
+		</form>
 
 		<!-- listado ISU para la OTRI -->
 		<div id="tab-listIsu" class="tab-content">

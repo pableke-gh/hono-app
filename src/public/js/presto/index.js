@@ -59,7 +59,7 @@ coll.ready(() => {
 		const include = [ "id", "tipo", "subtipo", "mask" ]; // fields to include
 		const fd = form.getFormData(Object.assign(presto.getData(), data), include);
 		fd.exclude([ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ]);
-		// primera partida = principal y serializo el json com un campo del form data
+		// primera partida = principal y serializo el json (FormData only supports flat values)
 		fd.set("partidas", JSON.stringify(presto.getPartidas().setPrincipal().getData()));
 		return api.setFormData(fd).send(url).then(fn); // send data
 	}
