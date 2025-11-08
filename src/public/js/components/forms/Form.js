@@ -167,8 +167,11 @@ export default function(form, opts) {
 	this.setAttribute = self.setAttr;
 
 	this.getUrlParams = () => new URLSearchParams(new FormData(form));
+	FormData.prototype.setJSON = function(name, data) {
+		this.set(name, JSON.stringify(data)); // FormData only supports flat values
+	}
 	FormData.prototype.exclude = function(keys) {
-		keys.forEach(key => this.delete(key));
+		keys.forEach(key => this.delete(key)); // delete selected keys
 	}
 	FormData.prototype.load = function(data, keys) {
 		keys.forEach(key => { // set slected keys
