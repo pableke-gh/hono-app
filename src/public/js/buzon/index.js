@@ -43,7 +43,9 @@ coll.ready(() => { // on load view
 		table.set("#report", data => fnFetchReport(data.ut, data.org)); // call report service
 
 		table.set("#buzon", data => {
-			const fnOrganica = uts => bf.init(uts, data.ut, data.oCod + " / " + data.oDesc).setFactuaOrganica(data)
+			const fnOrganica = uts => (coll.size(uts) > 0)
+											? bf.init(uts, data.ut, data.oCod + " / " + data.oDesc).setFactuaOrganica(data)
+											: form.showError("La orgánica " + data.oCod + " no tiene unidades tramitadoras asociadas.");
 			api.init().json("/uae/buzon/ut?id=" + data.org).then(fnOrganica);
 		});
 		table.set("#buzon-otros", () => {

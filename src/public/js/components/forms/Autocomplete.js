@@ -93,8 +93,8 @@ export default function(autocomplete, opts) {
 			_index = i; // Update current index
 			self.setValue(opts.select(_results[i], self), li.innerText);
 			opts.afterSelect(_results[i], self); // fired after update inputs
-			removeList();
 		}
+		removeList();
 	}
 
 	this.reset = () => {

@@ -24,7 +24,7 @@ export default class Base {
 
 	// Generc getters and setters
 	getId = () => this.#data.id; // id de la instancia
-	getNif = () => this.#data.usu; // nif del usuario de creacion
+	getNif = () => this.#data.nif; // nif del usuario de creacion
 	getTipo = () => this.#data.tipo; // tipo de la insaancia
 	setTipo(value) { this.#data.tipo = value; return this; }
 	getSubtipo = () => this.#data.subtipo;
