@@ -36,7 +36,7 @@ function Organica() {
 		const remove = iris.isEditableP0() ? '<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>' : "";
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Orgánica">${data.o}</td>
-			<td data-cell="Crédito Disp." class="form-refresh" data-refresh="isEditableP0">${i18n.isoFloat(data.imp)}</td>
+			<td data-cell="Crédito Disp." class="form-refresh" data-refresh="isEditable">${i18n.isoFloat(data.imp)}</td>
 			<td data-cell="${i18n.get("lblDesc")}">${data.dOrg}</td>
 			<td data-cell="Responsable del gasto">${data.resp}</td>
 			<td data-cell="Nombre">${data.r}</td>

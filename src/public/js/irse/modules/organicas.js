@@ -23,7 +23,7 @@ function IrseOrganicas() {
 		imp1: i18n.isoFloat,
 		subtipo: val => i18n.getItem("tiposMultiorganica", val)
 	};
-	let organicas;
+	const organicas = [];
 
 	this.getImpTransporte = function() { return resume.totTransporte; }
 	this.getImpPernoctas = function() { return resume.totPernoctas; }
@@ -50,35 +50,7 @@ function IrseOrganicas() {
 			return dom.addError("#imp1-org", "errImpBruto").isOk();
 		return true;
 	}
-	this.add = function() {
-		dom.closeAlerts()
-			.intval("#tipo-org", "errTipo", "errRequired")
-			.fk("#organicas", "errOrganicas", "errRequired")
-			.gt0("#imp1-org", "errGt0", "errRequired");
-		if (dom.isOk()) {
-			const gasto = dom.getData();
-			//validacion de importes
-			if ((gasto.subtipo == "1") && ((gasto.imp1 + resume.totManutenciones) > self.getTotDietas()))
-				return dom.addError("#imp1-org", "errMaxDietas").isOk();
-			if ((gasto.subtipo == "2") && ((gasto.imp1 + resume.totPernoctas) > self.getTotPernoctas()))
-				return dom.addError("#imp1-org", "errMaxAloja").isOk();
-			if ((gasto.subtipo == "3") && ((gasto.imp1 + resume.totTransporte) > self.getTotTransporte()))
-				return dom.addError("#imp1-org", "errMaxTrans").isOk();
-			if ((gasto.subtipo == "4") && ((gasto.imp1 + resume.totAc) > IRSE.totAc))
-				return dom.addError("#imp1-org", "errMaxAsist").isOk();
-			if ((gasto.imp1 + resume.imp1) > IRSE.bruto)
-				return dom.addError("#imp1-org", "errImpBruto").isOk();
 
-			//completo los datos e inserto el gasto
-			gasto.cod = dom.getOptText("#organicas");
-			let org = perfil.getOrganica(+gasto.num);
-			gasto.nombre = imputacion.get(gasto.subtipo, org);
-			gasto.desc = org && org.dOrg;
-			organicas.push(gasto);
-			dom.table("#multiorganicas", organicas, resume, STYLES);
-		}
-		return false;
-	}
 	this.build = function() {
 		if (perfil.isEmpty())
 			return dom.addError("#imp1-org", "errImputacion").isOk();
@@ -122,8 +94,6 @@ function IrseOrganicas() {
 
 	this.init = form => {
 		dietas.init(); // init dietas
-		const divGastos = form.querySelector("#gastos-org");
-		organicas = coll.parse(divGastos.innerText) || [];
 		dom.onRenderTable("#multiorganicas", table => {
 			resume.imp1 = 0;
 			resume.totManutenciones = resume.totPernoctas = 0;
@@ -136,8 +106,7 @@ function IrseOrganicas() {
 				resume.totAc += (gasto.subtipo == "4") ? gasto.imp1 : 0;
 			});
 
-			divGastos.innerText = JSON.stringify(organicas);
-			dom.setValue("#imp-org", divGastos.innerText)
+			dom.setValue("#imp-org", JSON.stringify(organicas))
 				.setValue("#imp1-org", "").setFocus("#tipo-org");
 		});
 		return self;

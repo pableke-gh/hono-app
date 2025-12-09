@@ -141,8 +141,7 @@ function IrsePerfil() {
 		});
 
 		organicas = coll.parse(form.getText("#org-data")) || [];
-		const impCd = organicas[0]?.imp;
-		i18n.set("imp", impCd); //importe precargado
+		i18n.set("imp", organicas[0]?.imp); //importe precargado
 		i18n.set("pasos", 2 + self.isIsu() + self.isMaps()); // set num pasos
 
 		// Register events after render table => avoid first render
@@ -156,7 +155,7 @@ function IrsePerfil() {
 		eCol.parentNode.setVisible(_acInteresado.isLoaded()); //muestro el colectivo
 		eRol.addEventListener("change", fnUpdatePerfil);
 		eAct.addEventListener("change", fnUpdatePerfil);
-		form.querySelector(".msg-cd")?.render().setVisible(impCd);
+		form.querySelector(".msg-cd")?.render();
 		return self;
 	}
 }

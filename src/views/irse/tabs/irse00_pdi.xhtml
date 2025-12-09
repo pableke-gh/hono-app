@@ -26,7 +26,9 @@
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</div>
-			<div class="msg-cd hide ui-block-info"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /> @lblA; @fCache.d;: $imp; €</div>
+			<c:if test="#{iris.irse.form.editable}">
+				<div class="msg-cd hide ui-block-info"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /> @lblA; @fCache.d;: $imp; €</div>
+			</c:if>
 		</label>
 
 		<div id="org-data" class="hide">#{iris.irse.perfil.organicasJson}</div>

@@ -12,7 +12,7 @@ coll.ready(() => {
 	const form = new Form("#isuite");
 	const btnSave = form.querySelector("a[href='#tab-action-save']");
 
-	const fnSearch = () => !tables.tbFilter(tbConfig);
+	const fnSearch = () => tables.tbFilter(tbConfig);
 	const fnReset = () => {
 		btnSave.hide();
 		iSearch.val("");
@@ -107,8 +107,8 @@ coll.ready(() => {
 		}
 	});
 
-	$("select[id$=ejercicio]").change(function() { $("[id$=srv-search]").click(); });
 	tabs.setAction("search", fnSearch);
+	$("select[id$=ejercicio]").change(function() { $("[id$=srv-search]").click(); });
 	const at = $("a#tabla, a#pivot").click(function() { toggle(at); return !toggle(tables); });
 	tabs.setAction("reset", fnReset);
 	//const ag = $("a#group, a#ungroup").click(function() { toggle(ag); return !tables.tbToggleGroup(tbConfig); });
@@ -201,6 +201,6 @@ coll.ready(() => {
 		createGroup: function(node, row, name) { node.text += row[name + "Desc"] ? (" - " + row[name + "Desc"]) : ""; }
 	};
 
-	const iSearch = $("[group=search]").keydown(ev => { ev.preventDefault(); (ev.keyCode == 13) && fnSearch(); });
+	const iSearch = $("[group=search]").keydown(ev => { if (ev.keyCode == 13) { ev.preventDefault(); fnSearch(); } });
 	const tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);
 });

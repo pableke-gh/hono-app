@@ -20,7 +20,7 @@ fact.isCongresoCV = () => (fact.getTipo() == 5); // viene de CV
 fact.isFacturable = () => (fact.isFactura() || fact.isReciboCV() || fact.isCongresoCV());
 fact.isFirmaGaca = () => (fact.isReciboCV() && fact.isTtpp() && (fact.getMask() & 2));
 
-fact.isGaca = () => (fact.get("grupo") == 2); // grupo de firma = gaca
+fact.isGaca = () => (fact.get("grp") == 2); // grupo de firma = gaca
 fact.isReactivable = () => ((fact.isUae() && fact.isErronea()) || (fact.isGaca() && fact.isRechazada()));
 fact.isEditableGaca = () => (fact.isEditableUae() || (fact.isGaca() && fact.isFirmable()));
 

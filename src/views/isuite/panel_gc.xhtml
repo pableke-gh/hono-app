@@ -32,7 +32,7 @@
 		<f:event type="preRenderView" listener="#{ctrl.readGc()}"/>
 
 		<div id="tab-gc" class="tab-content active">
-		<h:form id="isuite" styleClass="card-filter">
+		<h:form id="isuite" styleClass="card-filter" onsubmit="loading();">
 			<div class="ui-blocks">
 				<label class="ui-block">
 					<div class="label">Ejercicios:</div>

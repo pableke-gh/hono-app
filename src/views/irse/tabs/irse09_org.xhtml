@@ -8,10 +8,9 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h:inputHidden id="imp-org" value="#{iris.irse.input.impOrg}" />
-	<div id="gastos-org" class="hide">#{iris.irse.gastos.organicasJson}</div>
 	<div class="#{iris.irse.form.cssGastosOrganica}">
 		<h2><h:outputText value="#{msg['lbl.multiorganica']}" escape="false" /></h2>
-		<c:if test="#{iris.irse.form.editable}">
+		<!--<c:if test="#{iris.irse.form.editable}">
 			<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.multiorganicas']}" escape="false" /></div>
 			<div class="ui-blocks">
 			<label class="ui-block">
@@ -49,7 +48,7 @@
 					<i class="fas fa-plus btn-icon-left"></i><h:outputText value="#{msg['lbl.add']}" escape="false" /></a>
 			</div>
 			</div>
-		</c:if>
+		</c:if>-->
 
 		<table id="multiorganicas" class="tb-xeco table-xs">
 			<thead>
