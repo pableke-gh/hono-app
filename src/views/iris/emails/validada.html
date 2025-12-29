@@ -89,6 +89,13 @@
 			<li><b>Ordinal perceptor:</b> <span th:text="${gastos.ibanLopd}"></span> <span th:text="${gastos.swift}"></span></li>
 		</ul>
 	</div>
+	<!--<div class="navbar">
+		<p><b>Datos Adicionales</b></p>
+		<ul>
+			<li><b>Interesado:</b> <a th:href="'mailto:' + ${xs.emailint}"><span th:text="${xs.emailint}"></span><a></li>
+			<li th:if="${matricula != null}"><b>Matrícula:</b> <span th:text="${matricula}"></span></li>
+		</ul>
+	</div>-->
 	<footer th:replace="emails/general.html :: footer"></footer>
 </body>
 </html>
