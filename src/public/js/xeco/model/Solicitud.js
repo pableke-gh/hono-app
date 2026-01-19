@@ -1,4 +1,5 @@
 
+
 import i18n from "../../i18n/langs.js";
 import Base from "./Base.js";
 import firma from "./Firma.js";
@@ -12,8 +13,16 @@ const CSS_ESTADOS = [
     TEXT_WARN, "text-green", TEXT_ERROR, "text-green", "text-green", TEXT_WARN, TEXT_WARN, TEXT_ERROR, TEXT_ERROR, TEXT_ERROR, TEXT_ERROR
 ];
 
-class Solicitud extends Base {
+export default class Solicitud extends Base {
 	#nif; #grupo; #admin; // User params
+
+	build = () => new Solicitud(); // create a new instance
+	load = obj => this.setData(obj.getData()).setNif(obj.getNif()).setGrupo(obj.getGrupo()).setAdmin(obj.isAdmin()); // load from other Solicitud
+	clone = () => this.build().load(this); // Clone Solicitud instance
+
+	beforeView = globalThis.void; // optional hook method
+	onView = globalThis.void; // optional hook method
+	onUpdate = globalThis.void; // optional hook method
 
 	getNif = () => this.#nif;
 	setNif = val => { this.#nif = val; return this; } 
@@ -31,16 +40,16 @@ class Solicitud extends Base {
 	isPendiente = () => (this.getEstado() == 5); // Pendiente de las firmas
 	isAceptada = () => (this.getEstado() == 1); // Aceptada por todos los firmantes
 	isRechazada = () => (this.getEstado() == 2); // Rechazada no llega a estado finalizada
-	//this.setRechazada = () => this.setEstado(2); // marca la solicitud como rechazada
+	setRechazada = () => this.setEstado(2); // marca la solicitud como rechazada
 	isEjecutada = () => (this.getEstado() == 3); // Documentos creados en uxxiec y asociados a la solicitud
 	isIntegrada = () => (this.getEstado() == 4); // Solicitud integrada en uxxiec y notificada a los firmantes
 	isCancelada = () => (this.getEstado() == 7); // Solicitud cancelada por la UAE
-	//this.setCancelada = () => this.setEstado(7); // marca la solicitud como cancelada
+	setCancelada = () => this.setEstado(7); // marca la solicitud como cancelada
 	isCaducada = () => (this.getEstado() == 8); // Solicitud caducada por expiración
 	isErronea = () => ((this.getEstado() == 9) || (this.getEstado() == 10)); // estado de error
 	isReactivable = () => (this.isUae() && this.isErronea()); // La solicitud se puede reactivar / subsanar
-	//this.isProcesable = () => (this.getEstado() != PROCESANDO); // Solicitud en estado procesable
-	//this.isProcesando = () => (this.getEstado() == PROCESANDO); // Solicitud procesando tarea
+	//isProcesable = () => (this.getEstado() != PROCESANDO); // Solicitud en estado procesable
+	//isProcesando = () => (this.getEstado() == PROCESANDO); // Solicitud procesando tarea
 	setProcesando = () => this.setEstado(PROCESANDO); // solicitud ejecutando tarea
 	isSubsanable = () => (this.getEstado() == SUBSANABLE); // Solicitud subsanable en el cliente
 	setSubsanable = () => this.setEstado(SUBSANABLE); // marca la solicitud como subsanable
@@ -69,10 +78,10 @@ class Solicitud extends Base {
 	isEditableUae = () => (this.isEditable() || this.isSubsanable() || (this.isUae() && this.isFirmable()));
 	isEjecutable = () => (this.isUae() && [1, 3, 4, 5, 9, 10].includes(this.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
 	isNotificable = () => (this.isUae() && [1, 3, 4, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada, integrada ó Erronea
-	isIntegrable =() => (this.isUae() && [1, 3, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada ó Erronea
+	isIntegrable = () => (this.isUae() && [1, 3, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada ó Erronea
 	isDocumentable = () => (this.isPendiente() || this.isValidada() || this.isErronea()); // muestra el boton de informe pdf
 	isUrgente = () => (this.get("fMax") && this.get("extra")); //solicitud urgente?
-	//this.setUrgente = ({ fMax, extra }) => { _data.fMax = fMax; _data.extra = extra; return this; }
+	isIntegrableSolicitud = this.isIntegrable; // alias for child classes
 
 	getCodigo = () => this.get("codigo");
 	getMemoria = () => this.get("memo");
@@ -80,7 +89,8 @@ class Solicitud extends Base {
 	getStyleByEstado = () => (CSS_ESTADOS[this.getEstado()] || TEXT_WARN);
 	validate = () => { throw new Error("You have to implement the method validate!"); }
 
-	row = data => { // super not defined in arrow functions
+	row = globalThis.void;
+	getTplActions = data => { // super not defined in arrow functions
 		let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';
 		if (this.setData(data).isFirmable()) { // initialize and verify state
 			acciones += '<a href="#firmar" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-check action resize text-green"></i></a>';
@@ -94,7 +104,4 @@ class Solicitud extends Base {
 			acciones += '<a href="#emails"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 		return acciones;
 	}
-	tfoot = resume => `<tr><td colspan="99">Solicitudes: ${resume.size}</td></tr>`;
 }
-
-export default new Solicitud();

@@ -1,11 +1,11 @@
 
 import iris from "../../model/Iris.js";
-import xeco from "../../../xeco/xeco.js";
+import sf from "../../../xeco/modules/SolicitudForm.js";
 import actividades from "../../data/perfiles/actividades.js"
 
 function Actividad() {
 	const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 
 	this.getRol = iris.getRol;
 	//this.isPorCuentaPropia = () => (self.getRol() == "P");

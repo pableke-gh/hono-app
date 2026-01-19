@@ -1,14 +1,14 @@
 
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
+import i18n from "../../i18n/langs.js";
 
 import buzon from "../model/Buzon.js";
-import xeco from "../../xeco/xeco.js";
-import i18n from "../../i18n/langs.js";
+import sf from "../../xeco/modules/SolicitudForm.js";
 
 function Facturas() {
 	const self = this; //self instance
-    const form = xeco.getForm();
+    const form = sf.getForm();
 	const elTipo = form.getInput("#tipo");
 	const fileNames = form.querySelectorAll(".filename");
 	let _isActiveTab5; // bool indicators

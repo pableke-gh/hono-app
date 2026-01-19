@@ -41,6 +41,36 @@
 					<th style="width: 120px;">Importe</th><th></th>
 				</tr>
 			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr>
+					<td colspan="2" class="table-refresh" data-refresh="text-render">Conceptos: @size;</td>
+					<td class="currency table-refresh" data-refresh="text-render">$imp; €</td>
+					<td></td>
+				</tr>
+				<tr class="form-refresh" data-refresh="isFacturable">
+					<td colspan="2">
+						<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
+							<div>IVA:</div>
+							<div>
+								<select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-editable="isEditableUae">
+									<option value="0">0 %</option>
+									<option value="4">4 %</option>
+									<option value="10">10 %</option>
+									<option value="21">21 %</option>
+								</select>
+							</div>
+						</label>
+					</td>
+					<td class="currency table-refresh" data-refresh="text-render">$impIva; €</td> 
+					<td></td>
+				</tr>
+				<tr class="form-refresh" data-refresh="isFacturable">
+					<td class="currency" colspan="2">Importe Total:</td>
+					<td class="currency table-refresh" data-refresh="text-render">$impTotal; €</td>
+					<td></td>
+				</tr>
+			</tfoot>
 		</table>
 	</div>
 </html>

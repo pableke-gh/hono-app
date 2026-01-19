@@ -8,13 +8,14 @@ import i18n from "../i18n/langs.js";
 import factura from "./model/Factura.js";
 import lineas from "./modules/lineas.js";
 import fiscal from "./modules/fiscal.js";
-import xeco from "../xeco/xeco.js";
+import SolicitudesList from "../xeco/modules/SolicitudesList.js";
 
-coll.ready(() => {
-	// init. modules actions
-	xeco.init(); fiscal.init();
+coll.ready(() => { // init. fact modules
+	const list = new SolicitudesList(factura);
+	const sf = list.init().getForm();
+	fiscal.init();
 
-	const form = xeco.getForm();
+	const form = sf.getForm();
 	const acOrganica = form.setAutocomplete("#acOrganica");
 	// los usuarios de ttpp/gaca solo pueden ver las organicas de su unidad 300906XXXX
 	const fnSourceOrg = term => api.init().json("/uae/fact/organicas", { term }).then(acOrganica.render);
@@ -24,21 +25,16 @@ coll.ready(() => {
 	const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
 	form.set("show-factura-uae", fnShowFactUae).set("show-gestor", fnShowGestor);
 
-	factura.view = data => {
-		xeco.view(data.fact, data.firmas); // load data-model before view
-		acOrganica.setValue(data.fact.idOrg, data.fact.org + " - " + data.fact.descOrg);
-		lineas.setLineas(data); // Load conceptos and iva input
-		fiscal.load(data.tercero, data.delegaciones) // tercero + delegaciones
-				.setTercero(data.fact.idTer, data.fact.nif + " - " + data.fact.tercero)
-				.setSujeto(data.fact.sujeto) // update sujeto / exento
-				.setFace(data.fact.face); // update face inputs group
-		form.view(factura); // render form view
+	factura.onView = data => {
+		const fact = data.solicitud; // datos del servidor
+		acOrganica.setValue(fact.idOrg, fact.org + " - " + fact.descOrg);
+		fiscal.view(data); // tercero + delegaciones +  sujeto/exento + face
 	}
 
-	const fnBuild = (tipo, subtipo) => ({ fact: { tipo, subtipo, imp: 0, iva: 0 } });
-	tabs.setAction("factura", () => factura.view(fnBuild(1, 14))); // create factura
-	tabs.setAction("cartap", () => factura.view(fnBuild(3, 13))); // create carta de pago
-	//tabs.setAction("ttpp", () => factura.view(fnBuild(6, 25))); // TTPP a empresa
+	const fnBuild = (tipo, subtipo) => ({ solicitud: { tipo, subtipo, imp: 0, iva: 0 } });
+	tabs.setAction("factura", () => sf.view(fnBuild(1, 14))); // create factura
+	tabs.setAction("cartap", () => sf.view(fnBuild(3, 13))); // create carta de pago
+	//tabs.setAction("ttpp", () => sf.view(fnBuild(6, 25))); // TTPP a empresa
 
 	function fnValidate(msgConfirm, url, fn) {
 		factura.setLineas(lineas.getTable()); // actualizo los conceptos

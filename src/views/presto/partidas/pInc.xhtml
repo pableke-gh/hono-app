@@ -41,6 +41,28 @@
 		</div>
 		</div>
 
-		<table id="partidas-inc" class="tb-xeco"></table>
+		<table id="partidas-inc" class="tb-xeco">
+			<thead>
+				<tr>
+					<th class="slim"></th><th>Ej.</th><th>Orgánica</th><th class="hide-sm">Descripción Orgánica</th>
+					<th class="hide-sm">FA</th><th>Eco.</th><th class="hide-sm">Descripción Económica</th>
+					<th class="form-refresh" data-refresh="isPartidaExt">Prev. Ingresos (A)</th><th class="form-refresh" data-refresh="isPartidaExt">GG &#37; (B)</th>
+					<th class="form-refresh" data-refresh="isPartidaExt">Max. Habilitar (C=A-B)</th><th class="form-refresh" data-refresh="isPartidaExt">Crédito Habilitado (D)</th>
+					<th class="form-refresh" data-refresh="isPartidaExt">Margen (E=C-D)</th>
+					<th>Importe</th><th></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3" class="table-refresh" data-refresh="text-render">Partidas: @size;</td>
+					<td class="hide-sm"></td><td class="hide-sm"></td><td></td><td class="hide-sm"></td>
+					<td class="form-refresh" data-refresh="isPartidaExt"></td><td class="form-refresh" data-refresh="isPartidaExt"></td>
+					<td class="form-refresh" data-refresh="isPartidaExt"></td><td class="form-refresh" data-refresh="isPartidaExt"></td>
+					<td class="form-refresh" data-refresh="isPartidaExt"></td>
+					<td class="currency table-refresh" data-refresh="text-render">$imp; €</td><td></td>
+				</tr>
+			</tfoot>
+		</table>
 	</div>
 </html>

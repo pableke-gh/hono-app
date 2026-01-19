@@ -34,6 +34,7 @@ function Collection() {
 // Client / Server global functions
 globalThis.void = () => {};
 globalThis.none = () => "";
+globalThis.isFunc = fn => (typeof fn === "function");
 globalThis.catchError = promise => promise.then(data => [undefined, data]).catch(err => [err]);
 globalThis.catchPromise = async fn => await globalThis.catchError(new Promise(fn));
 export default new Collection();

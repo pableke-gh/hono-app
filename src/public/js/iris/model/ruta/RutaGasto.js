@@ -22,11 +22,7 @@ function RutaGasto() {
 		</tr>`;
 	}
 
-	this.tfoot = resume => {
-		return `<tr><td colspan="99">${i18n.get("lblEtapas")}: ${resume.size}</td></tr>`;
-	}
-
-	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
 }
 
 export default new RutaGasto();

@@ -7,11 +7,11 @@ import gastos from "../../model/gasto/Gastos.js";
 import dieta from "../../model/gasto/Dieta.js";
 
 import perfil from "../perfil/perfil.js";
-import xeco from "../../../xeco/xeco.js";
+import sf from "../../../xeco/modules/SolicitudForm.js";
 
 function Dietas() {
 	const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 	const _tblDietas = form.setTable("#tbl-dietas", dieta.getTable());
 
 	this.getGastos = gastos.getGastos; // array de gastos

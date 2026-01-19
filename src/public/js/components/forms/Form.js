@@ -106,18 +106,18 @@ export default function(form, opts) {
 		if (value == "manual")
 			return; // skip evaluation (input manual)
 		if (el.dataset.disabled) {
-			const fnDisabled = model[value] || model.isDisabled;
+			const fnDisabled = model[value] || opts[value] || model.isDisabled;
 			return el.setDisabled(fnDisabled()); // recalc. disabled attribute by handler
 		}
 		if (el.dataset.readonly) {
-			const fnReadonly = model[value] || model.isReadonly;
+			const fnReadonly = model[value] || opts[value] || model.isReadonly;
 			return el.setReadonly(fnReadonly()); // recalc. readonly attribute by handler
 		}
-		const fnEditable = model[value] || model.isEditable;
+		const fnEditable = model[value] || opts[value] || model.isEditable;
 		el.setReadonly(!fnEditable()); // recalc. attribute by handler
 	});
 	this.view = (model, tab) => { // set inputs values and readonly
-		self.closeAlerts().setValues(model.getData()).setEditable(model).refresh(model);
+		self.closeAlerts().setEditable(model).refresh(model);
 		tabs.viewTab(tab ?? "form"); // show tab and preserve messages
 		return self;
 	}

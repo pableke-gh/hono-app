@@ -16,31 +16,8 @@ base.row = (data, status, resume) => {
 	</tr>`;
 }
 
-base.tfoot = resume => {
-	return `<tr>
-		<td colspan="2">Conceptos: ${resume.size}</td>
-		<td class="currency">${i18n.isoFloat(resume.imp)} €</td>
-		<td></td>
-	</tr>
-	<tr class="table-refresh" data-refresh="isFacturable">
-		<td colspan="2">
-			<label class="ui-blocks" style="justify-content: flex-end; align-items: center;">
-				<div>IVA:</div>
-				<div><select id="iva" name="iva" class="ui-input ui-select ui-number ui-fiscal" data-editable="isEditableUae"></select></div>
-			</label>
-		</td>
-		<td class="currency table-refresh" data-refresh="text-render">$impIva; €</td> 
-		<td></td>
-	</tr>
-	<tr class="table-refresh" data-refresh="isFacturable">
-		<td class="currency" colspan="2">Importe Total:</td>
-		<td class="currency table-refresh" data-refresh="text-render">$impTotal; €</td>
-		<td></td>
-	</tr>`;
-}
-
 const msgEmptyTable = "No existen conceptos asociados a la solicitud";
-base.getTable = () => ({ msgEmptyTable, beforeRender: base.beforeRender, onRender: base.row, onFooter: base.tfoot });
+base.getTable = () => ({ msgEmptyTable, beforeRender: base.beforeRender, onRender: base.row });
 
 base.validate = function(data) {
 	const valid = i18n.getValidators();

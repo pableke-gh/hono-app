@@ -8,8 +8,8 @@ const ECO_133001 = "133001";
 const ECO_131200 = "131200";
 
 const DEFAULT_FACT = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban:   0, iva: 0 }; // Default values
-//const DEFAULT_CP   = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban:  10, iva: 0 }; // Cartas de pago
-const CARTA_PAGO   = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban:  10, iva: 0 }; // Cartas de pago
+const MECENAZGO    = { economica: "144200",   sujeto: 0, exento: 0, m349: 0, iban:  10, iva: 0 }; // Cartas de pago mecenazgo
+const CARTA_PAGO   = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban:  10, iva: 0 }; // Cartas de pago por defecto
 const TTPP_EMPRESA = { economica: ECO_131200, sujeto: 0, exento: 1, m349: 0, iban: 446, iva: 0 }; // TTPP a empresa
 
 const NP_010  = { economica: ECO_323003, sujeto: 0, exento: 1, m349: 0, iban:  0, iva:  0 };
@@ -25,6 +25,8 @@ const C2T17   = { economica: "139001",   sujeto: 0, exento: 0, m349: 0, iban: 10
 const C2UET17 = { economica: "139001",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
 const C2T18   = { economica: "139002",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
 const C2UET18 = { economica: "139002",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
+const C2T26   = { economica: "139003",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
+const C2UET26 = { economica: "139003",   sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
 const C1T5    = { economica: ECO_131600, sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 21 };
 const C1UET5  = { economica: ECO_131600, sujeto: 2, exento: 0, m349: 6, iban: 10, iva:  0 };
 const C1ZZT5  = { economica: ECO_131600, sujeto: 2, exento: 0, m349: 0, iban: 10, iva:  0 };
@@ -68,6 +70,7 @@ const FACTURAS = {
 	c2epes9: NP_010, c2noes9: NP_010, c2noue9: NP_206, c2nozz9: NP_010, 
 	c3epes9: NP_010, c3noes9: NP_010, c3noue9: NP_206, c3nozz9: NP_010,
 
+	// PATROCINIOS
 	c2epes16: C2T16, c2noes16: C2T16, c2noue16: C2UET16, c2nozz16: C2UET16, 
 	c3epes16: C2T16, c3noes16: C2T16, c3noue16: C2UET16, c3nozz16: C2UET16,
 
@@ -77,6 +80,10 @@ const FACTURAS = {
 	c2epes18: C2T18, c2noes18: C2T18, c2noue18: C2UET18, c2nozz18: C2UET18, 
 	c3epes18: C2T18, c3noes18: C2T18, c3noue18: C2UET18, c3nozz18: C2UET18,
 
+	c2epes26: C2T26, c2noes26: C2T26, c2noue26: C2UET26, c2nozz26: C2UET26, 
+	c3epes26: C2T26, c3noes26: C2T26, c3noue26: C2UET26, c3nozz26: C2UET26,
+
+	// SAIT
 	c1epes5: C1T5, c1noes5: C1T5, c1noue5: C1T5, c1nozz5: C1T5, 
 	c2epes5: C1T5, c2noes5: C1T5, c2noue5: C1UET5, c2nozz5: C1ZZT5, 
 	c3epes5: C1T5, c3noes5: C1T5, c3noue5: C1UET5, c3nozz5: C1ZZT5,
@@ -114,7 +121,7 @@ const FACTURAS = {
 //const CARTAS_PAGO = { }
 
 export default {
-	getCartaPago: () => CARTA_PAGO,
 	getTtppEmpresa: () => TTPP_EMPRESA,
-	get: (key, subtipo) => (FACTURAS[key + subtipo] || DEFAULT_FACT)
+	get: (key, subtipo) => (FACTURAS[key + subtipo] || DEFAULT_FACT),
+	getCartaPago: subtipo => ((subtipo == 27) ? MECENAZGO : CARTA_PAGO)
 }

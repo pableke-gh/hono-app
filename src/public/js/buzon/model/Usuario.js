@@ -24,8 +24,6 @@ function Usuario() {
             </td>
         </tr>`;
     }
-    this.tfoot = resume => `<tr><td colspan="99">Usuarios: ${resume.size}</td></tr>`;
-	this.getTable = () => ({ onRender: self.row, onFooter: self.tfoot });
 }
 
 export default new Usuario();

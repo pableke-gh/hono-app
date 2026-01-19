@@ -6,11 +6,11 @@ import iris from "../../model/Iris.js";
 import organica from "../../model/Organica.js";
 
 import actividad from "./actividad.js";
-import xeco from "../../../xeco/xeco.js";
+import sf from "../../../xeco/modules/SolicitudForm.js";
 
 function Organicas() {
 	const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 	const _tblOrganicas = form.setTable("#tbl-organicas", organica.getTable());
 	const acOrganiaca = form.setAutocomplete("#organica", {
 		minLength: 4,
@@ -21,7 +21,7 @@ function Organicas() {
 				_tblOrganicas.render([item]);
 			return item.id;
 		},
-		onReset: xeco.refresh
+		onReset: sf.refresh
 	});
 
 	this.size = _tblOrganicas.size; 

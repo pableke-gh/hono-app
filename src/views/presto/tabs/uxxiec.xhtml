@@ -42,12 +42,16 @@
 			</tr>
 		</thead>
 		<tbody></tbody>
-		<tfoot></tfoot>
+		<tfoot>
+			<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Operaciones: @size;</td></tr>
+		</tfoot>
 	</table>
 
 	<div class="navbar">
 		<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+		<a href="#tab-action-view" class="btn btn-info" title="Muestra los datos de la solicitud">
+			<i class="fas fa-search btn-icon-left"></i>Ver</a>
 		<a href="#tab-action-ejecutar" class="btn btn-green form-refresh" data-refresh="is-ejecutable" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
 			<i class="far fa-save btn-icon-left"></i>Guardar</a>
 		<a href="#tab-action-notificar" class="btn btn-green form-refresh" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">

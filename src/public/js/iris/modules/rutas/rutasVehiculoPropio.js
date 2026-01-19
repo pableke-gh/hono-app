@@ -3,11 +3,11 @@ import i18n from "../../i18n/langs.js";
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaVehiculoPropio.js";
 import rutas from "../../model/ruta/Rutas.js";
-import xeco from "../../../xeco/xeco.js";
+import sf from "../../../xeco/modules/SolicitudForm.js";
 
 function RutasVehiculoPropio() {
 	const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 	const _tblRutasVp = form.setTable("#tbl-rutas-vp", ruta.getTable()); // itinerario
 
 	this.getImporte = () => _tblRutasVp.getProp("impKm");

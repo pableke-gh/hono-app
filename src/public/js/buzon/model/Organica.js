@@ -29,9 +29,7 @@ function Organica() {
             </td>
         </tr>`;
     }
-    this.tfoot = resume => `<tr><td colspan="99">Filas: ${resume.size}</td></tr>`;
-	this.getTableAncladas = () => ({ onRender: self.row, onFooter: self.tfoot });
-	this.getTableRecientes = () => ({ rowEmptyTable: self.lastRow(), onRender: self.row, onLastRow: self.lastRow, onFooter: self.tfoot });
+	this.getTableRecientes = () => ({ rowEmptyTable: self.lastRow(), onRender: self.row, onLastRow: self.lastRow });
 
     this.validate = data => {
         const valid = i18n.getValidators();

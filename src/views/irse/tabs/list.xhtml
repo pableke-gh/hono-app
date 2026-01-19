@@ -120,13 +120,15 @@
 			</tr>
 		</thead>
 		<tbody></tbody>
-		<tfoot></tfoot>
+		<tfoot>
+			<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Solicitudes: @size;</td></tr>
+		</tfoot>
 	</table>
 
 	<!-- retrocompatibilidad -> a eliminar -->
 	<h:form id="irse-list" prependId="false" onsubmit="loading();">
 		<p:remoteCommand name="rcView" action="#{iris.irse.list.view()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args)" />
-		<p:remoteCommand name="rcReset" action="#{iris.irse.list.cloneSolicitud()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)" />
+		<p:remoteCommand name="rcClone" action="#{iris.irse.list.cloneSolicitud()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 0)" />
 	</h:form>
 
 	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">

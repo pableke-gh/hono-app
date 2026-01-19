@@ -32,15 +32,8 @@ function Pernocatas() {
 		</tr>`
 	}
 
-	this.tfoot = resume => {
-		return `<tr>
-			<td colspan="4">Organicas: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.imp1)} €</td><td colspan="2"></td>
-		</tr>`;
-	}
-
 	const msgEmptyTable = "No existen orgánicas asociadas a la comunicación.";
-	this.getTable = () => ({ msgEmptyTable, beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable, beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
 }
 
 export default new Pernocatas();

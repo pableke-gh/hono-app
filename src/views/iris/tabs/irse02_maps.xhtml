@@ -89,7 +89,13 @@
 				</tr>
 			</thead>
 			<tbody></tbody>
-			<tfoot></tfoot>
+			<tfoot>
+				<tr>
+					<td class="table-refresh" colspan="8" data-refresh="text-render">#{msg['lbl.etapas']}: @size;</td>
+					<td class="tb-data-tc hide-xs hide-sm table-refresh" data-refresh="text-render">@totKmCalcFmt;</td>
+					<td class="hide-sm no-print"></td>
+				</tr>
+			</tfoot>
 		</table>
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab2.info.principal']}" escape="false" /></div>
 	</div>

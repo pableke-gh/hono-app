@@ -5,7 +5,7 @@ import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
 import pernocta from "../../model/gasto/Pernocta.js";
 import gastos from "../../model/gasto/Gastos.js";
-import xeco from "../../../xeco/xeco.js";
+import sf from "../../../xeco/modules/SolicitudForm.js";
 
 import perfil from "../perfil/perfil.js";
 import pernoctas from "../../data/pernoctas/pernoctas.js";
@@ -13,7 +13,7 @@ import paises from "../../data/paises/paises.js";
 
 function Pernoctas() {
 	const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 	const _tblPernoctas = form.setTable("#pernoctas", pernocta.getTable());
 
 	//this.getGastos = () => _tblPernoctas.getData(); // array de gastos

@@ -88,20 +88,7 @@ function Dieta() {
 		</tr>`;
 	}
 
-	this.tfoot = resume => {
-		return `<tr>
-		<td class="hide-xs" colspan="4">Dietas / manutención</td>
-		<td class="tb-data-tc hide-xs">${resume.dias}</td>
-		<td></td>
-		<td></td>
-		<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.impMax)} €</td>
-		<td></td>
-		<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render" data-template="$reducido; €">${i18n.isoFloat(resume.reducido)} €</td>
-		<td data-cell="${i18n.get("lblImpTotal")}" class="tb-data-tc table-refresh" data-refresh="text-render" data-template="$percibir; €">${i18n.isoFloat(resume.percibir)} €</td>
-	</tr>`;
-	}
-
-	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
 }
 
 export default new Dieta();

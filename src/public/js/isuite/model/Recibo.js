@@ -33,10 +33,13 @@ function Recibo() {
 		</tr>`
 	}
 	this.tfoot = resumen => {
-		return `<tr><td colspan="8">Recibos: ${resumen.size}</td><td class="currency">${i18n.isoFloat(resumen.importe)} €</td></tr>`;
+		return `<tr>
+			<td colspan="8" class="table-refresh" data-refresh="text-render">Recibos: @size;</td>
+			<td class="currency table-refresh" data-refresh="text-render">$importe; €</td>
+		</tr>`;
 	}
 
-	this.getTable = () => ({ beforeRender: self.beforeRender, rowCalc: self.rowCalc, onHeader: self.thead, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
 }
 
 export default new Recibo();

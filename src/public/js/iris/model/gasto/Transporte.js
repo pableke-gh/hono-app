@@ -25,15 +25,8 @@ function Transporte() {
 		</tr>`
 	}
 
-	this.tfoot = resume => {
-		return `<tr>
-			<td colspan="4">Facturas / Tickets: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.imp1)} €</td>
-		</tr>`;
-	}
-
 	const msgEmptyTable = "msgTransportesEmpty"; // #{msg['msg.no.fac.tickets']} 
-	this.getTable = () => ({ msgEmptyTable, beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable, beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
 }
 
 export default new Transporte();

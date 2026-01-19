@@ -2,7 +2,7 @@
 import i18n from "../i18n/langs.js";
 
 function Otri() {
-	const self = this; //self instance
+	//const self = this; //self instance
 	const currency = "#,##0.00";
 
 	this.row = (data, status, resume) => {
@@ -20,8 +20,6 @@ function Otri() {
 		</tr>`;
 	}
 
-	this.tfoot = resume => `<tr><td colspan="99">Filas: ${resume.size}</td></tr>`;
-	this.getTable = () => ({ onRender: self.row, onFooter: self.tfoot });
 	this.getAutocomplete = () => ({ minLength: 4, render: item => item.o + " - " + item.dOrg, select: item => item.o });
 
 	this.xlsx = (worksheet, data, i) => {

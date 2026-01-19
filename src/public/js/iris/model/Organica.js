@@ -44,8 +44,6 @@ function Organica() {
 		</tr>`;
 	}
 
-	this.tfoot = resume => `<tr><td colspan="99">Filas: ${resume.size}</td></tr>`;
-
 	this.afterRender = resume => {
 		const MULTI_APLICACION = {
 			"ISU": "xSU",
@@ -59,7 +57,7 @@ function Organica() {
 	}
 
 	const msgEmptyTable = "No existen orgánicas asociadas a la comunicación.";
-	this.getTable = () => ({ msgEmptyTable, beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable, beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
 }
 
 export default new Organica();

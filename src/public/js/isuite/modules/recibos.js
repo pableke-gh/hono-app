@@ -23,9 +23,9 @@ function Recibos() {
 			if (details.openings)
 				return; // recibos ya cargados
 			api.init().json("/uae/ttpp/historico/recibos?id=" + data.id).then(recibos => {
-				const tblRecibos = new Table(); // build new table dynamically
-				details.lastElementChild.appendChild(tblRecibos.getTable()); // append table to details
-				tblRecibos.setOptions(recibo.getTable()).addClass("tb-xeco").view(recibos); // show data
+				const tblRecibos = new Table(); // instance new table dynamically
+				details.lastElementChild.appendChild(tblRecibos.setOptions(recibo.getTable()).getTable()); // append table to details
+				tblRecibos.setHeader(recibo.thead()).setFooter(recibo.tfoot()).addClass("tb-xeco").view(recibos); // build table contents
 			});
 		});
 

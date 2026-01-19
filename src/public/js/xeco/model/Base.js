@@ -10,7 +10,9 @@ export default class Base {
 
 	get = name => this.#data[name];
 	set(name, value) { this.#data[name] = value; return this; }
-	getData = () => this.#data;
+	reset = () => { this.#data = null; return this; }
+	isLoaded = () => this.#data; // has data object
+	getData = () => this.#data; // get data object
 	setData(data) { this.#data = data; return this; }
 
 	// arrow functions do not have their own this binding; instead, they lexically inherit the this value from the enclosing scope
@@ -24,6 +26,7 @@ export default class Base {
 
 	// Generc getters and setters
 	getId = () => this.#data.id; // id de la instancia
+	eq = id => (this.isLoaded() && (this.#data.id == id)); // equal id
 	getNif = () => this.#data.nif; // nif del usuario de creacion
 	getTipo = () => this.#data.tipo; // tipo de la insaancia
 	setTipo(value) { this.#data.tipo = value; return this; }

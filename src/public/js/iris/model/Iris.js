@@ -2,92 +2,95 @@
 import sb from "../../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
 import firma from "../../xeco/model/Firma.js";
-import iris from "../../xeco/model/Solicitud.js";
+import Solicitud from "../../xeco/model/Solicitud.js";
 import perfiles from "../data/perfiles/perfiles.js"; 
 
-iris.getUrl = () => "/uae/iris";
-iris.isEditable = () => (iris.getEstado() == 6); // redefine editable
-iris.isEditableP0 = () => (!iris.getId() && iris.isEditable());
+class Iris extends Solicitud {
+	build = () => new Iris(); // Override create a new instance
+	getUrl = () => "/uae/iris"; // Override base url path
+	isEditable = () => ((this.getEstado() == 6) || (this.isSubsanable())); // redefine editable
+	isEditableP0 = () => (!this.getId() && this.isEditable());
 
-iris.isActivablePaso8 = () => (iris.isUae() && iris.isEditable()); // pueden mostrarse los campos del paso 8
-iris.isReactivable = () => (sb.inYear(iris.get("fCreacion")) && (iris.isInvalidada() || iris.isErronea())); // La solicitud se puede reactivar / subsanar
-iris.isResumable = () => (iris.isPendiente() || iris.isFirmada() || iris.isIntegrada()); // muestra el boton de resumen (paso 6)
-iris.getInitTab = () => (iris.isResumable() ? "resumen" : "form"); // paso a mostrar
+	isActivablePaso8 = () => (this.isUae() && this.isEditable()); // pueden mostrarse los campos del paso 8
+	isReactivable = () => (sb.inYear(this.get("fCreacion")) && (this.isInvalidada() || this.isErronea())); // La solicitud se puede reactivar / subsanar
+	isRseteable = () => (sb.inYear(this.get("fCreacion")) && this.isPendiente() && (this.get("grp") == 1)); // La solicitud se puede resetear / subsanar
+	isResumable = () => (this.isPendiente() || this.isFirmada() || this.isIntegrada()); // muestra el boton de resumen (paso 6)
+	getInitTab = () => (this.isResumable() ? "resumen" : "form"); // paso a mostrar
 
-iris.getRol = () => iris.get("rol");
-iris.getCodigoRol = nif => ((nif == iris.getNif()) ? "P" : "A");
-iris.getColectivo = () => iris.get("colectivo");
-iris.getInteresado = () => iris.get("interesado");
-iris.setInteresado = data => iris.set("interesado", data).setPerfil(iris.getCodigoRol(data?.nif), data?.ci, iris.getActividad(), iris.getTramite(), iris.getFinanciacion()); 
-iris.getNombreInt = () => iris.getInteresado()?.nombre;
-iris.getNifInteresado = () => iris.getInteresado()?.nif;
-iris.getEmailInteresado = () => iris.getInteresado()?.email;
-iris.isEquipoGob = () => ((iris.getInteresado()?.cargos & 64) == 64);
-iris.getDirInteresado = () => {
-	const interesado = iris.isEditable() && iris.getInteresado();
-	const tpl = "@lblDomicilio;: @dir;, @cp;, @municipio;, @provincia; (@residencia;)";
-	return interesado ? i18n.render(tpl, interesado) : null; // parser info
-}
-
-iris.getActividad = () => iris.get("actividad");
-iris.isMun = () => (iris.getActividad() == "MUN");
-iris.getTramite = () => iris.get("tramite");
-iris.getFinanciacion = () => iris.get("financiacion");
-iris.setFinanciacion = val => { iris.set("financiacion", val); return iris; }
-iris.isXsu = () => (iris.getFinanciacion() == "xSU");
-iris.is1su = () => (iris.getFinanciacion() == "ISU");
-iris.isIsu = () => (iris.is1su() || iris.isXsu());
-
-iris.getTitulo = () => perfiles.getTitulo(iris.getRol(), iris.getColectivo(), iris.getActividad(), iris.getTramite(), iris.getFinanciacion());
-iris.getPerfil = () => iris.get("perfil");
-iris.setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
-	iris.set("rol", rol).set("colectivo", colectivo).set("actividad", actividad).set("tramite", tramit).setFinanciacion(financiacion);
-	return iris.set("perfil", rol + "," + colectivo + "," + actividad + "," + tramit + "," + financiacion);
-}
-iris.init = data => {
-	const parts = sb.split(iris.setData(data).getPerfil()); // ROL/COLECTIVO/ACTIVIDAD/TRAMITE/FINANCIACION
-	return parts ? iris.setPerfil(parts[0], parts[1], parts[2], parts[3], parts[4]) : iris;
-}
-
-iris.isConflicto = () => (iris.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
-iris.isPaso8 = () => (iris.getMask() & 4); // paso 8 activado manualmente por la uae
-iris.isMaxVigencia = () => (iris.getMask() & 8); //maxima fecha de vigencia en rrhh
-
-// render steps functions for tabs
-iris.getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), iris);
-iris.getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), iris);
-iris.getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + iris.isIsu()).get("lblPasos"), iris);
-
-const fnSuperActions = iris.row; // parent method
-iris.row = data => {
-	let acciones = fnSuperActions(data);
-	if (iris.isDocumentable()) {
-		if (iris.isAdmin()) {
-			acciones += '<a href="#rptFinalizar" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
-			//acciones += '<a href="#pdf" title="Informe IRIS"><i class="fas fa-file-pdf action text-red resize"></i></a>';
-		}
-		acciones += '<a href="#report" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
+	getRol = () => this.get("rol");
+	getCodigoRol = nif => ((nif == this.getNif()) ? "P" : "A");
+	getColectivo = () => this.get("colectivo");
+	getInteresado = () => this.get("interesado");
+	setInteresado = data => this.set("interesado", data).setPerfil(this.getCodigoRol(data?.nif), data?.ci, this.getActividad(), this.getTramite(), this.getFinanciacion()); 
+	getNombreInt = () => this.getInteresado()?.nombre;
+	getNifInteresado = () => this.getInteresado()?.nif;
+	getEmailInteresado = () => this.getInteresado()?.email;
+	isEquipoGob = () => ((this.getInteresado()?.cargos & 64) == 64);
+	getDirInteresado = () => {
+		const interesado = this.isEditable() && this.getInteresado();
+		const tpl = "@lblDomicilio;: @dir;, @cp;, @municipio;, @provincia; (@residencia;)";
+		return interesado ? i18n.render(tpl, interesado) : null; // parser info
 	}
-	if (iris.isReactivable())
-		acciones += '<a href="#reactivar" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
-	if (iris.isActivablePaso8())
-		acciones += '<a href="#paso8" title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></a>';
 
-	const info = iris.isUrgente() ? `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>` : "<td></td>";
-	const otras = iris.isMultilinea() ? "<span> (y otras)</span>" : "";
-	return `<tr class="tb-data">
-		${info}
-		<td class="text-center"><a href="#view" title="${data.codigo}: ${data.name}">${sb.substr(data.codigo, 0, 9)}</a></td>
-		<td class="${iris.getStyleByEstado()} table-refresh" data-refresh="update-estado">${iris.getDescEstado()}</td>
-		<td class="text-center">${firma.myFlag(data)}</td>
-		<td class="hide-sm">${data.sig || ""}</td>
-		<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
-		<td class="hide-sm">${data.org}<span class="hide-sm"> ${data.oDesc}</span>${otras}</td> 
-		<td class="hide-sm">${data.name}</td>
-		<td class="hide-md">${data.memo || ""}</td>
-		<td class="currency">${i18n.isoFloat(data.imp) || "-"} €</td>
-		<td class="currency no-print">${acciones}</td>
-	</tr>`;
+	getActividad = () => this.get("actividad");
+	isMun = () => (this.getActividad() == "MUN");
+	getTramite = () => this.get("tramite");
+	getFinanciacion = () => this.get("financiacion");
+	setFinanciacion = val => { this.set("financiacion", val); return this; }
+	isXsu = () => (this.getFinanciacion() == "xSU");
+	is1su = () => (this.getFinanciacion() == "ISU");
+	isIsu = () => (this.is1su() || this.isXsu());
+
+	getTitulo = () => perfiles.getTitulo(this.getRol(), this.getColectivo(), this.getActividad(), this.getTramite(), this.getFinanciacion());
+	getPerfil = () => this.get("perfil");
+	setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
+		this.set("rol", rol).set("colectivo", colectivo).set("actividad", actividad).set("tramite", tramit).setFinanciacion(financiacion);
+		return this.set("perfil", rol + "," + colectivo + "," + actividad + "," + tramit + "," + financiacion);
+	}
+	beforeVirew = data => { // Override
+		const parts = sb.split(this.setData(data.solicitud).getPerfil()); // ROL/COLECTIVO/ACTIVIDAD/TRAMITE/FINANCIACION
+		return parts ? this.setPerfil(parts[0], parts[1], parts[2], parts[3], parts[4]) : this;
+	}
+
+	isConflicto = () => (this.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
+	isPaso8 = () => (this.getMask() & 4); // paso 8 activado manualmente por la uae
+	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
+
+	// render steps functions for tabs
+	getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), this);
+	getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), this);
+	getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isIsu()).get("lblPasos"), this);
+
+	row = data => { //Override
+		let acciones = this.getTplActions(data);
+		if (this.isDocumentable()) {
+			if (this.isAdmin()) {
+				acciones += '<a href="#rptFinalizar" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
+				//acciones += '<a href="#pdf" title="Informe IRIS"><i class="fas fa-file-pdf action text-red resize"></i></a>';
+			}
+			acciones += '<a href="#report" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
+		}
+		if (this.isReactivable() || this.isRseteable())
+			acciones += '<a href="#reactivar" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
+		if (this.isActivablePaso8())
+			acciones += '<a href="#paso8" title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></a>';
+
+		const info = this.isUrgente() ? `<td class="text-center text-red text-xl" title="${data.name}: ${data.extra}">&#33;</td>` : "<td></td>";
+		const otras = this.isMultilinea() ? "<span> (y otras)</span>" : "";
+		return `<tr class="tb-data">
+			${info}
+			<td class="text-center"><a href="#view" title="${data.codigo}: ${data.name}">${sb.substr(data.codigo, 0, 9)}</a></td>
+			<td class="${this.getStyleByEstado()} table-refresh" data-refresh="update-estado">${this.getDescEstado()}</td>
+			<td class="text-center">${firma.myFlag(data)}</td>
+			<td class="hide-sm">${data.sig || ""}</td>
+			<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
+			<td class="hide-sm">${data.org}<span class="hide-sm"> ${data.oDesc}</span>${otras}</td> 
+			<td class="hide-sm">${data.name}</td>
+			<td class="hide-md">${data.memo || ""}</td>
+			<td class="currency">${i18n.isoFloat(data.imp) || "-"} €</td>
+			<td class="currency no-print">${acciones}</td>
+		</tr>`;
+	}
 }
 
-export default iris;
+export default new Iris();

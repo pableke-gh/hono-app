@@ -119,7 +119,7 @@ function Langs() {
 				return self.isoFloat(value);
 			if (t == ".d") // Object Date or Date in ISO string format
 				return dt.isValid(value) ? self.strDate(value) : self.isoDate(value); // substring = 0, 10
-			//if (typeof value === "function") // function type
+			//if (globalThis.isFunc(value)) // function type
 				//return value(opts); // call function
 			return (value ?? opts[k] ?? ""); // Default = String
         });

@@ -6,11 +6,11 @@ import iris from "../../model/Iris.js";
 import organicas from "./organicas.js";
 import actividad from "./actividad.js";
 import dietas from "../gastos/dietas.js";
-import xeco from "../../../xeco/xeco.js";
+import sf from "../../../xeco/modules/SolicitudForm.js";
 
 function Perfil() {
 	//const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 
 	const fnInteresado = interesado => (interesado.nif + " - " + interesado.nombre);
 	const _acInteresado = form.setAutocomplete("#interesado", { // autocomplete field
@@ -23,7 +23,7 @@ function Perfil() {
 	});
 
 	const _acPromotor = form.setAutocomplete("#promotor");
-	const fnShowFirmas = data => xeco.setFirmas(data.firmas); // update firmas view
+	const fnShowFirmas = data => sf.setFirmas(data.firmas); // update firmas view
 	const fnPromotor = term => api.init().json("/uae/iris/personal", { id: iris.getId(), term }).then(_acPromotor.render);
 	const fnSelect = item => api.init().msgs("/uae/iris/promotor?id=" + iris.getId() + "&nif=" + item.value).then(fnShowFirmas);
 	const fnReset = () => api.init().msgs("/uae/iris/promotor?id=" + iris.getId()).then(fnShowFirmas);
@@ -45,7 +45,7 @@ function Perfil() {
     }
 
 	form.afterReset(() => { _acInteresado.setValue(); actividad.setColectivo(); organicas.reset(); });
-	tabs.setAction("create", () => api.init().json("/uae/iris/create").then(iris.view));
+	tabs.setAction("create", () => api.init().json("/uae/iris/create").then(sf.view));
 	tabs.setAction("paso0", () => {
 		const data = form.validate(fnValidate);
 		if (!data) return; // error => no hago nada
@@ -55,7 +55,7 @@ function Perfil() {
 		if (organicas.isChanged()) // recalculo las dietas
 			temp.gastos = dietas.build().getGastos();
 		temp.organicas = organicas.getOrganicas(); // lista de organicas
-		api.setJSON(temp).json("/uae/iris/save0").then(iris.update);
+		api.setJSON(temp).json("/uae/iris/save0").then(sf.update);
 	});
 
 	this.init = () => {
@@ -74,9 +74,11 @@ function Perfil() {
 		else // clear field value
 			_acInteresado.setValue();
 		organicas.setOrganicas(orgs); // 2º update financiacion
-		const promotor = xeco.findByGrupo(5, principales); // 3º firma del promotor
-		if (promotor)
-			_acPromotor.setValue(promotor.nif, xeco.getFirmante(promotor)); // set field value
+		const promotor = principales ? principales.find(f => (f.grupo === 5)) : null; // 3º firma del promotor
+		if (promotor) {
+			const label = (promotor.nif + " - " + promotor.nombre + " " + (promotor.ap1 || "") + " " + (promotor.ap2 || "")).trim();
+			_acPromotor.setValue(promotor.nif, label); // set field value
+		}
 		else
 			_acPromotor.setValue(); // clear field value
 	}

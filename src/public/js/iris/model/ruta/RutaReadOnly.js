@@ -23,15 +23,11 @@ function RutaReadOnly() {
 		</tr>`;
 	}
 
-	this.tfoot = resume => {
-		const totKmCalc = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
-		return `<tr>
-			<td colspan="8">${i18n.get("lblEtapas")}: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs hide-sm">${totKmCalc}</td>
-		</tr>`;
+	this.afterRender = resume => {
+		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
 	}
 
-	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, afterRender: self.afterRender });
 }
 
 export default new RutaReadOnly();

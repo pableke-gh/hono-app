@@ -10,8 +10,8 @@ import usuario from "../model/Usuario.js";
 function Usuarios() {
 	//const self = this; //self instance
     const form = new Form("#xeco-users");
-	const tUsuarios = new Table("#usuarios", usuario.getTable());
-	tUsuarios.setRemove(data => { // remove handler
+	const tUsuarios = new Table("#usuarios");
+	tUsuarios.setRender(usuario.row).setRemove(data => { // remove handler
 		api.init().text("/uae/buzon/user/remove", { org: data.oCod, nif: data.nif }).then(form.setOk);
 		return buzon.setData(data).setChanged(true); // force reload table
 	});

@@ -40,9 +40,8 @@
 					<option value="7">Cancelada</option>
 					<option value="8">Caducada</option>
 					<c:if test="#{presto.user.uae}">
-						<optgroup label="--------------------------------">
+						<optgroup label="---------------------------">
 							<option value="9">Error Capa SOA</option>
-							<option value="10">Error Crédito Vinculante</option>
 						</optgroup>
 					</c:if>
 				</select>
@@ -96,7 +95,9 @@
 			</tr>
 		</thead>
 		<tbody></tbody>
-		<tfoot></tfoot>
+		<tfoot>
+			<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Solicitudes: @size;</td></tr>
+		</tfoot>
 	</table>
 
 	<c:if test="#{presto.user.uxxiec}">

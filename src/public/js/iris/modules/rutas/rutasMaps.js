@@ -6,7 +6,7 @@ import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaMaps.js";
 import rutas from "../../model/ruta/Rutas.js";
 import gastos from "../../model/gasto/Gastos.js";
-import xeco from "../../../xeco/xeco.js";
+import sf from "../../../xeco/modules/SolicitudForm.js";
 
 import place from "./place.js";
 import rmun from "./rutasMun.js";
@@ -17,7 +17,7 @@ import { CT } from "../../data/rutas.js";
 
 function RutasMaps() {
 	const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 	const _tblRutas = form.setTable("#tbl-rutas", ruta.getTable()); // itinerario
 
 	this.getRutas = rutas.getRutas;
@@ -42,6 +42,7 @@ function RutasMaps() {
 			.delAttr("#f1", "max").restart("#destino").hide(".grupo-matricula");
 		if (!last.dt1) // primera ruta?
 			form.setFocus("#f1");
+		ruta.afterRender(resume);
 	}
 	this.init = () => {
 		rmun.init(); // formulario mun (paso 1)
@@ -68,7 +69,7 @@ function RutasMaps() {
 		if (_tblRutas.isChanged()) // si hay cambios en las rutas
 			dietas.build(); // recalculo las dietas
 		temp.gastos = gastos.setPaso1(data, _tblRutas.setChanged().getResume()).getGastos(); // set km / iban
-		api.setJSON(temp).json("/uae/iris/save").then(data => iris.update(data, tab));
+		api.setJSON(temp).json("/uae/iris/save").then(data => sf.update(data, tab));
 		rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
 	}
 

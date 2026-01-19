@@ -23,8 +23,7 @@ function Uxxiec() {
 			</td>
 		</tr>`;
 	}
-	this.tfoot = resume => `<tr><td colspan="99">Operaciones: ${resume.size}</td></tr>`;
-	this.getTable = () => ({ msgEmptyTable, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable, onRender: self.row });
 
 	const fnRender = item => (item.num + " - " + item.uxxi + "<br>" + item.desc);
 	this.getAutocomplete = () => ({ minLength: 4, render: fnRender, select: item => item.id });

@@ -38,7 +38,7 @@ function IrseRutas() {
 	//necesario para recalculo de dietas
 	this.getImpKm = () => resume.impKm;
 	this.getTotKm = () => resume.totKm;
-	this.getTotKmCalc = () => resume.totKmCalc;
+	this.totKmCalcFmt = () => resume.totKmCalc;
 
 	this.getAll = () => rutas;
 	this.getResume = () => resume;

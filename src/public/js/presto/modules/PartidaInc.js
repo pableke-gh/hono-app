@@ -6,11 +6,11 @@ import p030 from "./partida030.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 import partidas from "../model/Partidas.js";
-import xeco from "../../xeco/xeco.js";
+import sf from "../../xeco/modules/SolicitudForm.js";
 
 function PartidaInc() {
 	const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 
 	const _ecoInc = form.setDatalist("#idEcoInc");
 	_ecoInc.setEmptyOption("Seleccione una económica");

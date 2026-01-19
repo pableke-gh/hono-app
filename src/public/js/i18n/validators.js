@@ -73,16 +73,17 @@ class Validators extends Msgs {
 		return ok ? this : this.addFormatError(name, msg);
 	}
 
-	word = (name, value, msg) => {
-		if (!this.#size(name, value, 50, msg))
-			return this; // size message error
-		const ok = /\w+/.test(value); // RE_WORD format
+	word = (name, value, msg, size) => {
+		size = size ?? 50; // default word length = 50
+		const ok = this.#size(name, value, size, msg) && /\w+/.test(value); // RE_WORD format
 		return ok ? this : this.addFormatError(name, msg);
 	}
-	words = (name, value, msg) => {
-		if (!this.#size(name, value, 200, msg))
-			return this; // size message error
-		const ok = /^\w+(,\w+)*$/.test(value); // RE_WORDS format
+	word9 = (name, value, msg) => this.word(name, value, msg, 9);
+	word10 = (name, value, msg) => this.word(name, value, msg, 10);
+	word20 = (name, value, msg) => this.word(name, value, msg, 20);
+	words = (name, value, msg, size) => {
+		size = size ?? 200; // default max length = 200
+		const ok = this.#size(name, value, size, msg) && /^\w+(,\w+)*$/.test(value); // RE_WORDS format
 		return ok ? this : this.addFormatError(name, msg);
 	}
 	digits = (name, value, msg) => {

@@ -6,17 +6,16 @@ import i18n from "../i18n/langs.js";
 
 import presto from "./model/Presto.js";
 import pDec from "./modules/partidaDec.js";
-import pInc from "./modules/partidaInc.js";
-import xeco from "../xeco/xeco.js";
+import SolicitudesList from "../xeco/modules/SolicitudesList.js";
 
-coll.ready(() => {
-	// init. modules actions
-	xeco.init(); pDec.init(); pInc.init();
+coll.ready(() => { // init. presto modules
+	const list = new SolicitudesList(presto);
+	const sf = list.init().getForm();
+	pDec.init(); // init. sub-modules
 
-	const form = xeco.getForm();
+	const form = sf.getForm();
 	form.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto)
 		.set("show-subtipo", () => (presto.isUae() && presto.isGcr()));
-
 	form.onChangeFile("[name='adjunto']", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
 	tabs.setAction("adjunto", () => api.init().blob("/uae/presto/adjunto?id=" + presto.getAdjunto()));
 
@@ -25,24 +24,16 @@ coll.ready(() => {
 	const fnUrgente = ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2");
 	form.onChangeInput("#urgente", fnUrgente).onChangeInputs(".ui-ej", fnSync);
 
-	presto.view = data => {
-		form.setLabels("select.ui-ej", data.ejercicios); // update field values
-		xeco.view(data.presto, data.firmas); // load data-model before view
-		pDec.view(data.presto, data.economicas); // vista de la partida a decrementar
-		pInc.view(data.partidas); // cargo la tabla de partidas a incrementar
-		form.view(presto); // render form view
-	}
-
 	const DATA = {}; // build container
 	api.init().fetch("/uae/presto/ejercicios").then(ejercicios => { DATA.ejercicios = ejercicios; }); // hide call
-	const fnBuild = (tipo, memo) => { DATA.presto = { tipo, memo }; return DATA; }; // build container befor view
-	const fnBuildAfc = () => { DATA.partidas = [ DATA.fcb ]; presto.view(fnBuild(8)); }  // set partida unica + view
+	const fnBuild = (tipo, memo) => { DATA.solicitud = { tipo, memo }; return DATA; }; // build container befor view
+	const fnBuildAfc = () => { DATA.partidas = [ DATA.fcb ]; sf.view(fnBuild(8)); }  // set partida unica + view
 
-	tabs.setAction("tcr", () => presto.view(fnBuild(1))); // create TCR
-	tabs.setAction("fce", () => presto.view(fnBuild(6))); // create FCE
-	tabs.setAction("l83", () => presto.view(fnBuild(3, "Liquidación contrato artículo 83"))); // create L83
-	tabs.setAction("gcr", () => presto.view(fnBuild(4, "Generación de crédito electrónica"))); // create GCR
-	tabs.setAction("ant", () => presto.view(fnBuild(5))); // create ANT
+	tabs.setAction("tcr", () => sf.view(fnBuild(1))); // create TCR
+	tabs.setAction("fce", () => sf.view(fnBuild(6))); // create FCE
+	tabs.setAction("l83", () => sf.view(fnBuild(3, "Liquidación contrato artículo 83"))); // create L83
+	tabs.setAction("gcr", () => sf.view(fnBuild(4, "Generación de crédito electrónica"))); // create GCR
+	tabs.setAction("ant", () => sf.view(fnBuild(5))); // create ANT
 	tabs.setAction("afc", () => { // create AFC
 		if (DATA.fcb) // aplicación fondo de cobertura
 			return fnBuildAfc(); // load view AFC

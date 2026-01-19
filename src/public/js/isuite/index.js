@@ -112,7 +112,7 @@ coll.ready(() => {
 	const at = $("a#tabla, a#pivot").click(function() { toggle(at); return !toggle(tables); });
 	tabs.setAction("reset", fnReset);
 	//const ag = $("a#group, a#ungroup").click(function() { toggle(ag); return !tables.tbToggleGroup(tbConfig); });
-	tabs.setAction("save", () => api.init().json("/uae/ttpp/save").then(btnSave.hide)); // read params from sesion => loaded by /uae/ttpp/load
+	tabs.setAction("save", () => api.init().json("/uae/ttpp/save").then(() => btnSave.hide())); // read params from sesion => loaded by /uae/ttpp/load
 	tabs.setAction("excel", link => api.download(B64MT.xls + tables.filter(".tb-push").xls(tbConfig).utf8ToB64(), link.download));
 	tabs.setAction("tr", link => api.download(B64MT.txt + rb.tr57to43().n43Fetch().utf8ToB64(), link.download));
 	tabs.setInitEvent("ttpp", recibos.init);

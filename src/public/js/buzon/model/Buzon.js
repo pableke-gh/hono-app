@@ -7,6 +7,11 @@ const ROL = [ "Responsable", "UXXIEC", "Comprador", "Habilidato", "Habilidato en
 class Buzon extends Base {
 	#isFacturaOtros; #tipoPago; #justPagoRequired;
 
+	build = () => new Buzon(); // Override create a new instance
+	clone = () => this.build().setData(this.getData()); // Override
+	setUser = () => this; // to be setted externally
+	getUrl = () => "/uae/buzon";
+
 	getIdOrganica = () => this.get("org");
 	getOrganica = () => this.get("oCod");
 	getUnidadTramit = () => this.get("ut");

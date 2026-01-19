@@ -35,22 +35,13 @@ function RutaVehiculoPropio() {
 		</tr>`;
 	}
 
-    this.tfoot = resume => {
-		return `<tr>
-			<td colspan="7">${i18n.get("lblEtapas")}: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render" data-template="$totKmCalc;">${i18n.isoFloat(resume.totKmCalc)}</td>
-			<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render" data-template="$totKm;">${i18n.isoFloat(resume.totKm)}</td>
-			<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render" data-template="$impKm; €">${i18n.isoFloat(resume.impKm)} €</td>
-		</tr>`;
-	}
-
 	this.afterRender = resume => {
 		resume.impKm = resume.totKm * ruta.getImpGasolina();
 		resume.justifi = (resume.totKmCalc + .01) < resume.totKm;
 		iris.getImpKm = () => resume.impKm;
 	}
 
-	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
 }
 
 export default new RutaVehiculoPropio();

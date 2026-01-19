@@ -2,11 +2,10 @@
 import api from "../../components/Api.js"
 import pInc from "./partidaInc.js";
 import presto from "../model/Presto.js";
-import xeco from "../../xeco/xeco.js";
+import sf from "../../xeco/modules/SolicitudForm.js";
 
 function PartidaDec() {
-	//const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 	const partidas = pInc.getTable(); // table partidas
 
 	const fnAutoloadErr = msg => { _orgDec.isItem() && form.showError(msg); }
@@ -46,14 +45,19 @@ function PartidaDec() {
 	_ecoDec.setEmptyOption("Seleccione una económica").setChange(fnEcoChange).setReset(fnEcoReset);
 
 	this.init = () => { // Init. form events
+		pInc.init(); // tabla de partidas a incrementar
 		form.onChangeInput("#ejDec", _orgDec.reload);
 		form.onChangeInput("#impDec", ev => { presto.isAutoLoadImp() && pInc.autoload(null, form.getValue(ev.target)); }); //importe obligatorio
-		partidas.setRemove(() => (presto.isAutoLoadInc() ? _orgDec.reload() : true)); // force reload organica
+		partidas.setRemove(() => { presto.isAutoLoadInc() && _orgDec.reload(); return Promise.resolve(); }); // force reload organica
+		presto.onView = this.view; // define specific presto view method
 	}
 
-	this.view = (data, economicas) => {
-        _orgDec.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);
-		_ecoDec.setItems(economicas);
+	this.view = data => {
+		const solicitud = data.solicitud; // datos del servidor
+		form.setLabels("select.ui-ej", data.ejercicios); // update field values
+        _orgDec.setValue(solicitud.idOrgDec, solicitud.orgDec + " - " + solicitud.dOrgDec);
+		_ecoDec.setItems(data.economicas); // cargo el desplegable de economicas
+		pInc.view(data.partidas); // cargo la tabla de partidas a incrementar
 	}
 }
 

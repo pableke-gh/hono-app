@@ -84,8 +84,8 @@ function Tabs() {
 	const fnViewTab = i => { fnMoveToTab(i); return self; } // show tab by index and preserve alerts
 	const fnShowTab = i => { fnMoveToTab(i) && alerts.closeAlerts(); return self; }; // show tab by index and close alerts
 
-	this.viewTab = id => fnViewTab(fnFindIndex(id)); // find by id selector
-	this.showTab = id => fnShowTab(fnFindIndex(id)); // find by id selector
+	this.viewTab = id => fnViewTab(fnFindIndex(id)); // find by id selector and preserve alerts
+	this.showTab = id => fnShowTab(fnFindIndex(id)); // find by id selector and close alerts
 	this.goTab = id => fnViewTab(fnNextIndex(id)); // find by id selector or next index tab
 	this.nextTab = id => fnShowTab(fnNextIndex(id)); // find by id selector or next index tab
 	this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));

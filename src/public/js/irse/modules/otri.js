@@ -10,10 +10,10 @@ import xlsx from "../../services/xlsx.js";
 import otri from "../model/Otri.js";
 import rutas from "./rutas.js";
 //import listIsu from "../../iris/modules/isu/list.js";
-import xeco from "../../xeco/xeco.js";
+import sf from "../../xeco/modules/SolicitudForm.js";
 
 function Otri() {
-	const form = xeco.getForm();
+	const form = sf.getForm();
 
 	this.init = () => {
 		const eCong = form.getInput("#congreso"); //congreso si/no

@@ -22,18 +22,18 @@ import rvp from "../rutas/rutasVehiculoPropio.js";
 import pernoctas from "../gastos/pernoctas.js";
 import dietas from "../gastos/dietas.js";
 import resumen from "../resumen.js";
-import xeco from "../../../xeco/xeco.js";
+import sf from "../../../xeco/modules/SolicitudForm.js";
 
 function ListIsu() {
 	const form = new Form("#xeco-filtro-isu");
-	const tblIsu = new Table(form.getForm().next("table"), otri.getTable());
+	const tblIsu = new Table(form.getForm().next("table"));
 	const acOrganicas = form.setAutocomplete("#org-isu", otri.getAutocomplete());
 	acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
 	const ejercicios = form.setMultiSelectCheckbox("#ejercicios");
 	ejercicios.setLabels(sb.getEjercicios()).setValue(+sb.getYear());
 
 	this.init = () => {
-		tblIsu.render(); // render empty table
+		tblIsu.setRender(otri.row).render(); // render empty table
 	}
 
 	this.view = () => {
@@ -66,7 +66,7 @@ function ListIsu() {
 			"TOTAL Manutención", "TOTAL (Locomoción+Alojamiento+Manutención)", "Observaciones (11)"
 		];
 
-		const formIrse = xeco.getForm().resetCache();
+		const formIrse = sf.getForm();//.resetCache();
 		const aux = data.iris.map((row, i) => {
 			iris.setData(row); // current iris
 			Object.assign(row, tblIsu.getItem(i)); // add row data from isu table

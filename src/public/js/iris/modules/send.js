@@ -9,11 +9,11 @@ import gastos from "../model/gasto/Gastos.js";
 import paises from "../data/paises/paises.js";
 
 import mgo from "./gastos/organicas.js";
-import xeco from "../../xeco/xeco.js";
+import sf from "../../xeco/modules/SolicitudForm.js";
 
 function Send() {
 	//const self = this; //self instance
-	const form = xeco.getForm(); // form component
+	const form = sf.getForm(); // form component
 	const _cuentas = form.getInput("#cuentas"); // select cuentas comisionado
 	const _paises = form.getInput("#paises"); // select pais entidades bancarias
 	const isSpain = () => (_paises.value == "ES"); // codigo = españa
@@ -78,7 +78,7 @@ function Send() {
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (i18n.confirm("msgSend")) // si hay confirmacion => envio
-			fnSend(data, "/uae/iris/send").then(xeco.reset);
+			fnSend(data, "/uae/iris/send").then(sf.reset);
 	});
 	tabs.setAction("save9", () => {
 		const data = form.validate(fnValidate);

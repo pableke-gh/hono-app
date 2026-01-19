@@ -97,7 +97,9 @@
 				</tr>
 			</thead>
 			<tbody></tbody>
-			<tfoot></tfoot>
+			<tfoot>
+				<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Documentos: @size;</td></tr>
+			</tfoot>
 		</table>
 		<div class="navbar form-refresh" data-refresh="is-rutas-gt-1">
 			<p class="form-refresh" data-refresh="text-render">* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @getNumRutasOut;, <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @getNumNochesPendientes; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>

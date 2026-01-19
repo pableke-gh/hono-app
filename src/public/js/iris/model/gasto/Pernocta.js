@@ -38,19 +38,11 @@ function Pernocatas() {
 		</tr>`
 	}
 
-	this.tfoot = resume => {
-		const impTotal = resume.imp2 * resume.numNoches; // importe total por noche
-		return `<tr>
-			<td colspan="4">Alojamientos: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs">${resume.numNoches}</td>
-			<td class="hide-xs"></td>
-			<td class="tb-data-tc hide-xs">${i18n.isoFloat(impTotal)} €</td>
-			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.imp1)} €</td>
-			<td class="tb-data-tc hide-xs">${i18n.isoFloat(resume.impMin)} €</td>
-		</tr>`;
+	this.afterRender = resume => {
+		resume.impTotal = resume.imp2 * resume.numNoches; // importe total por noche
 	}
 
-	this.getTable = () => ({ msgEmptyTable: "msgPernoctasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable: "msgPernoctasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, afterRender: self.afterRender });
 }
 
 export default new Pernocatas();

@@ -28,20 +28,12 @@ function RutaMaps() {
 		</tr>`;
 	}
 
-	this.tfoot = resume => {
-		resume.getTotKmCalc = () => ((resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-");
-		return `<tr>
-			<td class="table-refresh" colspan="8" data-refresh="text-render" data-template="@lblEtapas;: @size;">${i18n.get("lblEtapas")}: ${resume.size}</td>
-			<td class="tb-data-tc hide-xs hide-sm table-refresh" data-refresh="text-render" data-template="@getTotKmCalc;">${resume.getTotKmCalc()}</td>
-			<td class="hide-sm no-print"></td>
-		</tr>`;
-	}
-
 	this.afterRender = resume => {
 		resume.impKm = resume.totKm * ruta.getImpGasolina();
+		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
 	}
 
-	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row, onFooter: self.tfoot });
+	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
 }
 
 export default new RutaMaps();

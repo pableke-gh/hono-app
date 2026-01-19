@@ -2,13 +2,11 @@
 import api from "../../components/Api.js"
 import factura from "../model/Factura.js";
 import lineas from "./lineas.js";
-import xeco from "../../xeco/xeco.js";
+import sf from "../../xeco/modules/SolicitudForm.js";
 import fiscalidad from "../data/fiscal.js"
 
 function Fiscal() {
-	const self = this; //self instance
-	const form = xeco.getForm();
-
+	const form = sf.getForm();
 	const delegaciones = form.setDatalist("#delegacion");
 	const fnChange = item => form.setValue("#idDelegacion", item.value); 
 	delegaciones.setEmptyOption("Seleccione una delegación").setChange(fnChange);
@@ -17,31 +15,16 @@ function Fiscal() {
 	const fnSource = term => api.init().json("/uae/fact/terceros", { term }).then(acTercero.render);
 	const fnSelect = tercero => {
 		api.init().json(`/uae/fact/delegaciones?ter=${tercero.value}`).then(delegaciones.setItems);
-		self.update(factura.getSubtipo(), tercero);
+		fnUpdate(factura.getSubtipo(), tercero);
 	}
 	acTercero.setDelay(500).setItemMode(5)
 			.setSource(fnSource).setAfterSelect(fnSelect)
 			.setReset(delegaciones.reset);
 
-	this.setTercero = (id, label) => {
-		acTercero.setValue(id, label);
-		return self;
-	}
-	this.setSujeto = sujeto => {
-		factura.setSujeto(sujeto);
-		form.refresh(factura);
-		return self;
-	}
-	this.setFace = face => {
-		factura.setFace(face);
-		form.refresh(factura);
-		return self;
-	}
-
 	const fnFiscalidad = tercero => {
 		if (factura.isCartaPago()) // no es facturable
-			return fiscalidad.getCartaPago(); // default = carta de pago
-		if (factura.isTtppEmpresa()) // no es facturable
+			return fiscalidad.getCartaPago(factura.getSubtipo());
+		if (factura.isTtppEmpresa())
 			return fiscalidad.getTtppEmpresa(); // TTPP a empresa
         let key = "c" + tercero.imp; //caracter => persona fisica=1, persona juridica=2, est. publico=3
         key += (tercero.int & 256) ? "ep" : "no"; // Establecimiento permanente
@@ -51,25 +34,35 @@ function Fiscal() {
         return fiscalidad.get(key, factura.getSubtipo()); // complete key
     }
 	const fnUpdateFiscalidad = tercero => {
-		if (!tercero) return self; // nada que modificar
+		if (!tercero) return; // nada que modificar
 		const data = fnFiscalidad(tercero); // new data
         form.setData(data, ".ui-fiscal"); // update fields
 		lineas.setIva(data.iva); // actualizo el nuevo iva
-		return self.setSujeto(data.sujeto);
+		factura.setSujeto(data.sujeto);
 	}
-	this.update = (subtipo, tercero) => {
-		form.refresh(factura.setSubtipo(subtipo).setNifTercero(acTercero.getCode())); 
-		return fnUpdateFiscalidad(tercero || acTercero.getCurrentItem());
+	const fnUpdate = (subtipo, tercero) => {
+		factura.setSubtipo(subtipo).setNifTercero(acTercero.getCode());
+		fnUpdateFiscalidad(tercero || acTercero.getCurrentItem());
+		form.refresh(factura); // force refresh view
 	}
-	this.load = (tercero, del) => {
-		delegaciones.setItems(del); // cargo las delegaciones
-		return fnUpdateFiscalidad(tercero);
+	this.view = data => {
+		const fact = data.solicitud; // datos del servidor
+		acTercero.setValue(fact.idTer, fact.nif + " - " + fact.tercero)
+		delegaciones.setItems(data.delegaciones); // cargo las delegaciones
+		fnUpdateFiscalidad(data.tercero); // actualizo la fiscalidad por defecto
+		factura.setSujeto(fact.sujeto).setFace(fact.face); // sujeto / exento + face
+		lineas.view(data); // Load conceptos and iva input
 	}
 
 	this.init = () => {
-		form.onChangeInput("#subtipo", ev => self.update(+ev.target.value))
-			.onChangeInput("#sujeto", ev => self.setSujeto(+ev.target.value))
-			.onChangeInput("#face", ev => self.setFace(+ev.target.value));
+		lineas.init(); // init. lineas module
+		form.set("update-face", el => { // handler to update face inputs group
+			el.innerHTML = factura.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor";
+			el.nextElementSibling.setAttribute("maxlength", factura.isPlataforma() ? 20 : 9);
+		});
+		form.onChangeInput("#subtipo", ev => fnUpdate(+ev.target.value))
+			.onChangeInput("#sujeto", ev => { factura.setSujeto(+ev.target.value); form.refresh(factura); })
+			.onChangeInput("#face", ev => { factura.setFace(+ev.target.value); form.refresh(factura); });
 	}
 }
 
