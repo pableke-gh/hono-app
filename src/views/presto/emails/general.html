@@ -36,7 +36,7 @@
 			<li th:if="${xs.isUrgente()}"><b>Urgencia:</b> <span th:text="${xs.extra}"></span></li>
 			<li th:if="${xs.isUrgente()}"><b>Fecha Límite:</b> <span th:text="${dt.toEsDate(xs.FMax)}"></span></li>
 			<li><b>Memoria:</b> <span th:text="${xs.memoria}"></span></li>
-			<li th:if="${error}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
+			<li th:if="${error != null}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
 		</ul>
 	</div>
 

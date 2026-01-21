@@ -7,7 +7,8 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="card-xeco">
+	<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<p:outputPanel styleClass="card-xeco update-irse">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
 			<span class="text-warn form-refresh" data-refresh="text-render">@getPasoIsu;</span>
@@ -95,8 +96,9 @@
 				</div>
 			</label>
 		</div>
-	</div>
+	</p:outputPanel>
 
+	<p:outputPanel styleClass="update-irse">
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="70">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	<c:choose>
@@ -114,4 +116,5 @@
 		</c:otherwise>
 	</c:choose>
 	<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
+	</p:outputPanel>
 </html>

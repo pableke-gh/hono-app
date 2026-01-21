@@ -7,7 +7,8 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="navbar">
+	<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<p:outputPanel styleClass="navbar update-irse">
 		<p class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab12.info']}" escape="false" /></p>
 		<table id="rutas-out" class="tb-xeco table-xs">
 			<thead>
@@ -45,5 +46,5 @@
 			<a id="gasto-rutas" href="#" class="btn btn-green success-btn" title="#{msg['tit.btn.select.etapas']}" tabindex="202">
 				<i class="fas fa-plus"></i>#{msg['lbl.btn.select']}</a>
 		</div>
-	</div>
+	</p:outputPanel>
 </html>

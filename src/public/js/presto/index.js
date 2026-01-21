@@ -10,10 +10,9 @@ import SolicitudesList from "../xeco/modules/SolicitudesList.js";
 
 coll.ready(() => { // init. presto modules
 	const list = new SolicitudesList(presto);
-	const sf = list.init().getForm();
+	const form = list.init().getForm();
 	pDec.init(); // init. sub-modules
 
-	const form = sf.getForm();
 	form.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto)
 		.set("show-subtipo", () => (presto.isUae() && presto.isGcr()));
 	form.onChangeFile("[name='adjunto']", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
@@ -27,13 +26,13 @@ coll.ready(() => { // init. presto modules
 	const DATA = {}; // build container
 	api.init().fetch("/uae/presto/ejercicios").then(ejercicios => { DATA.ejercicios = ejercicios; }); // hide call
 	const fnBuild = (tipo, memo) => { DATA.solicitud = { tipo, memo }; return DATA; }; // build container befor view
-	const fnBuildAfc = () => { DATA.partidas = [ DATA.fcb ]; sf.view(fnBuild(8)); }  // set partida unica + view
+	const fnBuildAfc = () => { DATA.partidas = [ DATA.fcb ]; list.create(fnBuild(8)); }  // set partida unica + view
 
-	tabs.setAction("tcr", () => sf.view(fnBuild(1))); // create TCR
-	tabs.setAction("fce", () => sf.view(fnBuild(6))); // create FCE
-	tabs.setAction("l83", () => sf.view(fnBuild(3, "Liquidación contrato artículo 83"))); // create L83
-	tabs.setAction("gcr", () => sf.view(fnBuild(4, "Generación de crédito electrónica"))); // create GCR
-	tabs.setAction("ant", () => sf.view(fnBuild(5))); // create ANT
+	tabs.setAction("tcr", () => list.create(fnBuild(1))); // create TCR
+	tabs.setAction("fce", () => list.create(fnBuild(6))); // create FCE
+	tabs.setAction("l83", () => list.create(fnBuild(3, "Liquidación contrato artículo 83"))); // create L83
+	tabs.setAction("gcr", () => list.create(fnBuild(4, "Generación de crédito electrónica"))); // create GCR
+	tabs.setAction("ant", () => list.create(fnBuild(5))); // create ANT
 	tabs.setAction("afc", () => { // create AFC
 		if (DATA.fcb) // aplicación fondo de cobertura
 			return fnBuildAfc(); // load view AFC

@@ -18,14 +18,15 @@ export default class SolicitudesList {
 		uxxiec.setSolicitud(solicitud); // specific type of solicitud
 	}
 
-	getForm = () => form;
+	getForm = form.getForm;
 	setData = form.setData;
 	isCached = form.isCached;
 	getTable = () => this.#solicitudes;
-	reject = () => form.reject(this.#solicitudes.getCurrentItem());
 	reset = () => { this.#solicitudes.clear(); form.reset(); }
+	create = form.view; // prepare a new solicitud
 	view = () => form.view(this.#solicitudes.getCurrentItem());
 	firmar = () => form.firmar(this.#solicitudes.getCurrentItem());
+	reject = () => form.reject(this.#solicitudes.getCurrentItem());
 	rechazar = () => form.rechazar(this.#solicitudes.getCurrentItem());
 	reactivar = () => form.reactivar(this.#solicitudes.getCurrentItem());
 	cancelar = () => form.cancelar(this.#solicitudes.getCurrentItem());
@@ -80,8 +81,8 @@ export default class SolicitudesList {
 		tabs.setAction("vinc", () => { ("1" == this.#filter.getValueByName("estado")) ? tabs.showList() : fnList("1"); });
 
 		tabs.setAction("view", this.view);
-		tabs.setAction("reject", this.reject); tabs.setAction("rechazar", this.rechazar); tabs.setAction("cancelar", this.cancelar);
-		tabs.setAction("reactivar", this.reactivar);
+		tabs.setAction("reject", this.reject).setAction("rechazar", this.rechazar).setAction("cancelar", this.cancelar);
+		tabs.setAction("reactivar", this.reactivar).setAction("reset", this.reactivar);
 		tabs.setAction("report", this.report); //tabs.setAction("pdf", this.pdf);
 		tabs.setAction("remove", this.#solicitudes.remove);
 

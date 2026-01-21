@@ -1,7 +1,5 @@
 
-import dom from "./forms/DomBox.js";
 import coll from "./CollectionHTML.js";
-import alerts from "./Alerts.js";
 import tabs from "./Tabs.js";
 import i18n from "../i18n/langs.js";
 
@@ -94,18 +92,7 @@ export default function(table, opts) {
 	this.getLastRow = () => tBody.lastElementChild;
 	this.getFooter = () => tFoot;
 
-	// Alerts helpers
-	this.loading = () => { alerts.loading(); return self; } // Encapsule loading frame
-	this.working = () => { alerts.working(); return self; } // Encapsule working frame
-	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
-	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
-	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
-	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
-	this.showAlerts = alerts.showAlerts; // showAlerts synonym
-
-	this.querySelector = selector => table.querySelector(selector);
-	this.querySelectorAll = selector => table.querySelectorAll(selector);
-    this.getText = selector => dom.getText(table.querySelector(selector)); // read text
+    this.getText = selector => table.$1(selector)?.innerText; // read text
 	this.invoke = (name, data, el, tr, i) => {
 		const fnAction = opts[name] || globalThis.void; // action by name
 		fnAction(data || _rows[_index], el, tr, i); // call action
@@ -117,15 +104,12 @@ export default function(table, opts) {
 			_index = i; // update current item
 			self.invoke(ev.target.name + "Change", _rows[i], ev.target, tr, i);
 		}
-		tr.onclick = ev => {
-			const link = ev.target.closest("a");
-			if (!link)
-				return; // no link clicked
+		tr.$$("a[href]").setClick((ev, link) => {
 			_index = i; // update current item
 			const href = link.getAttribute("href");
 			self.invoke(href, _rows[i], link, tr, i);
 			ev.preventDefault(); // avoid navigation
-		}
+		});
 	}
     function fnView(data) {
 		_index = -1; // clear previous selects
@@ -161,7 +145,7 @@ export default function(table, opts) {
 	this.replace = (data, i) => { _rows[i ?? _index] = data; return self; }
 	this.save = (row, id) => (id ? self.insert(row, id) : self.update(row)); // Insert or update
 
-	const fnRefresh = (el, data) => el.querySelectorAll(opts.refreshSelector).refresh(data, opts); // render table elements
+	const fnRefresh = (el, data) => el.$$(opts.refreshSelector).refresh(data, opts); // render table elements
 	this.refreshHeader = data => { fnRefresh(tHead, data || RESUME); return self; } // refresh table header
 	this.refreshRow = data => { fnRefresh(tBody.rows[_index], data || _rows[_index]); return self; } // refresh a row
 	this.refreshBody = () => { tBody.rows.forEach((tr, i) => fnRefresh(tr, _rows[i])); return self.setChanged(true); } // refresh each row

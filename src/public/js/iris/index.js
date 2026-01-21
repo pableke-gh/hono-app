@@ -15,7 +15,7 @@ import SolicitudesList from "../xeco/modules/SolicitudesList.js";
 
 coll.ready(() => { // init. iris modules actions
 	const list = new SolicitudesList(iris);
-	const form = list.init().getForm().getForm();
+	const form = list.init().getForm();
 	perfil.init(); rutas.init(); gastos.init();
 	otri.init(); resumen.init(); sendTab.init();
 

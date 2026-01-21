@@ -13,7 +13,7 @@ import SolicitudesList from "../xeco/modules/SolicitudesList.js";
 
 coll.ready(() => { // on load view
 	const list = new SolicitudesList(buzon);
-	const form = list.init().getForm().getForm();
+	const form = list.init().getForm();
 	const tAncladas = form.setTable("#ancladas").setRender(organica.row);
 	const tRecientes = form.setTable("#recientes", organica.getTableRecientes());
 

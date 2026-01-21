@@ -53,6 +53,7 @@ export default class Solicitud extends Base {
 	setProcesando = () => this.setEstado(PROCESANDO); // solicitud ejecutando tarea
 	isSubsanable = () => (this.getEstado() == SUBSANABLE); // Solicitud subsanable en el cliente
 	setSubsanable = () => this.setEstado(SUBSANABLE); // marca la solicitud como subsanable
+	isModificable = () => (this.isEditable() || this.isSubsanable()); // la solicitud se puede modificar
 	isFinalizada = () => [1, 3, 4, 9, 10].includes(this.getEstado()); // Aceptada, Ejecutada, Notificada ó Erronea
 	isFirmada = () => (this.isAceptada() || this.isEjecutada());
 	isValidada = () => (this.isFirmada() || this.isIntegrada());

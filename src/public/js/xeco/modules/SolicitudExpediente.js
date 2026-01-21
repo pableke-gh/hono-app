@@ -4,11 +4,11 @@ import Table from "../../components/Table.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 
-import Solicitud from "../model/Solicitud.js";
+//import Solicitud from "../model/Solicitud.js";
 import uxxiec from "../model/Uxxiec.js";
 
 class SolicitudExpediente {
-	#solicitud = new Solicitud(); // create instance
+	#solicitud;// = new Solicitud(); // create instance
 	#form = new Form("#xeco-uxxi"); // uxxiec form module
 	#acUxxi = this.#form.setAutocomplete("#uxxi", uxxiec.getAutocomplete());
 	#documentos = new Table(this.#form.getNextElement(), uxxiec.getTable());

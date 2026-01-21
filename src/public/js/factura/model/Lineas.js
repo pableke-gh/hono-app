@@ -2,25 +2,21 @@
 import i18n from "../../i18n/langs.js";
 import linea from "./Linea.js";
 
-function Lineas() {
-	const self = this; //self instance
+class Lineas {
+	#data; // Current presto data type
+	
+	getData = () => this.#data;
+	setData = lineas => { this.#data = lineas; return this; }
 
-    let data; // Current presto data type
-    this.getData = () => data;
-    this.setData = lineas => {
-        data = lineas;
-        return self;
-    }
+	getLinea = () => linea;
+	size = () => JSON.size(this.#data);
+	isEmpty = () => !this.size();
 
-    this.getLinea = () => linea;
-    this.size = () => JSON.size(data);
-    this.isEmpty = () => !self.size();
-
-    this.validate = () => { // Todas las solicitudes tienen partidas a incrementar
-        const valid = i18n.getValidation(); // Continue with validation without reset
-        const msg = "Debe detallar los conceptos asociados a la solicitud.";
-        return data.length ? valid.isOk() : !valid.addError("desc", "errRequired", msg).addError("acTTPP", "errRequired", msg);
-    }
+	validate = () => { // Todas las solicitudes tienen partidas a incrementar
+		const valid = i18n.getValidation(); // Continue with validation without reset
+		const msg = "Debe detallar los conceptos asociados a la solicitud.";
+		return this.#data.length ? valid.isOk() : !valid.addError("desc", "errRequired", msg).addError("acTTPP", "errRequired", msg);
+	}
 }
 
 export default new Lineas();

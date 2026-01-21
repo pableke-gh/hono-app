@@ -3,15 +3,13 @@ import alerts from "./Alerts.js";
 import coll from "./CollectionHTML.js";
 import cv from "./cv/Resize.js";
 
-// Classes Configuration
-const TAB_CLASS = "tab-content";
-const ACTIVE_CLASS = "active";
-//const PROGRESS_BAR = "progress-bar";
-
 function Tabs() {
 	const self = this; //self instance
 	const EVENTS = {}; //events tab container
-	let tabs, _tabIndex;
+	const ACTIVE_CLASS = "active";
+	//const PROGRESS_BAR = "progress-bar";
+	const tabs = document.getElementsByClassName("tab-content");
+	let _tabIndex = -1; // no tab selected
 
 	const fnSet = (name, fn) => { EVENTS[name] = fn; return self; }
 	const fnActive = el => el.classList.contains(ACTIVE_CLASS); //active class
@@ -19,8 +17,7 @@ function Tabs() {
 	const fnNextIndex = id => (globalThis.isset(id) ? fnFindIndex(id) : (_tabIndex + 1)); //next index tab
 	const fnCurrentIndex = () => tabs.findIndex(fnActive); //current index tab
 	const autofocus = tab => {
-		const FOCUSABLED = "[tabindex]:not([type=hidden],[readonly],[disabled])";
-		const el = tab.querySelectorAll(FOCUSABLED).find(el => el.isVisible());
+		const el = tab.$$("[tabindex]:not([type=hidden],[readonly],[disabled])").find(el => el.isVisible());
 		el && el.focus();
 		return self;
 	}
@@ -38,13 +35,6 @@ function Tabs() {
 	this.setInitEvent = (tab, fn) => fnSet("init-tab-" + tab, fn);
 	this.setViewEvent = (tab, fn) => fnSet("view-tab-" + tab, fn);
 	this.setActiveEvent = (tab, fn) => fnSet("active-tab-" + tab, fn);
-
-	// Alerts helpers
-	this.showOk = msg => { alerts.showOk(msg); return self; } // Encapsule showOk message
-	this.showInfo = msg => { alerts.showInfo(msg); return self; } // Encapsule showInfo message
-	this.showWarn = msg => { alerts.showWarn(msg); return self; } // Encapsule showWarn message
-	this.showError = msg => { alerts.showError(msg); return self; } // Encapsule showError message
-	this.showAlerts = alerts.showAlerts; // Encapsule showAlerts message
 
 	const fnGoTab = (tab, index) => {
 		tabs.forEach(tab => tab.classList.remove(ACTIVE_CLASS));
@@ -65,7 +55,7 @@ function Tabs() {
 	}
 	const fnGoBack = (tab, i) => {
 		// auto toggle off all active toggle-links in current tab (before go back)
-		self.getCurrent().querySelectorAll("a[href='#tab-toggle'][data-off='2']").forEach(self.toggle);
+		self.getCurrent().$$("a[href='#tab-toggle'][data-off='2']").forEach(self.toggle);
 		return fnGoTab(tab, i); // set current tab
 	}
 	const fnMoveToTab = i => { // show tab by index
@@ -108,7 +98,7 @@ function Tabs() {
 		}
 		else
 			el.dataset.off = "1"; // allow call view action on open
-		const icon = el.querySelector(el.dataset.icon || "i"); // icon indicator
+		const icon = el.$1(el.dataset.icon || "i"); // icon indicator
 		const fnToggle = el => { el.classList.toggle("hide") || autofocus(el); }; // toggle and set focus
 		$$(el.dataset.target || (".info-" + el.id)).eachPrev(fnToggle);
 		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
@@ -121,8 +111,8 @@ function Tabs() {
 	this.showForm = () => self.viewTab("form"); // show form view
 	this.showList = () => self.viewTab("list"); // show list view
 
-	this.setActions = el => { // set default actions
-        el.querySelectorAll("[href^='#tab-']").setClick((ev, link) => {
+	this.load = el => { // set default actions
+		el.querySelectorAll("[href^='#tab-']").setClick((ev, link) => {
 			const href = link.getAttribute("href");
 			const id = href.substring(href.lastIndexOf("-") + 1);
 			if ((href == "#tab-back") || (href == "#tab-prev"))
@@ -136,20 +126,18 @@ function Tabs() {
 			else if (href.startsWith("#tab-action"))
 				EVENTS[link.dataset.action || id](link); // call handler
 			else
-				self.showTab(id);
+				self.showTab(id); // default action
 			ev.preventDefault(); // no navigate
         });
         return self;
     }
-    this.load = el => {
-        tabs = el.getElementsByClassName(TAB_CLASS);
-        _tabIndex = fnCurrentIndex(); // current index tab
-        return self.setActions(el); // update actions
-    }
 
 	// Init. view and PF navigation (only for CV-UAE)
 	window.showTab = (xhr, status, args, tab) => (window.showAlerts(xhr, status, args) && self.goTab(tab));
-	coll.ready(() => self.load(document)); // Load all tabs by default
+	coll.ready(() => { // when dom is fully loaded
+		_tabIndex = fnCurrentIndex(); // current index tab
+		self.load(document); // set tab actions
+	});
 }
 
 export default new Tabs();

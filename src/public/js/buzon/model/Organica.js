@@ -2,10 +2,8 @@
 import i18n from "../../i18n/langs.js";
 import buzon from "./Buzon.js";
 
-function Organica() {
-	const self = this; //self instance
-
-	this.row = data => {
+class Organica {
+	row = data => {
         const report = buzon.setData(data).isMultigrupo() ? "#modal" : "#report"; // organica multigrupo / monogrupo
         const anclar = '<a href="#anclar" class="action resize text-red" title="Marca la orgánica como favorita"><i class="fas fa-thumbtack action resize text-blue"></i></a>';
         const desanclar = '<a href="#desanclar" class="action resize text-red" title="Marca la orgánica como normal"><i class="fas fa-thumbtack action resize text-green"></i></a>';
@@ -21,7 +19,7 @@ function Organica() {
             <td class="currency">${(data.mask & 2) ? desanclar : anclar}${user}${gastos}${ingresos}${reportProv}${factura}</td>
         </tr>`;
     }
-    this.lastRow = () => {
+	lastRow = () => {
         return `<tr class="tb-data">
             <td id="otras" colspan="4"><b>Tramitación específica</b> (imputación a varias orgánicas, abonos, aportación de documentación adicional y otras circunstancias)</td>
             <td class="currency">
@@ -29,9 +27,9 @@ function Organica() {
             </td>
         </tr>`;
     }
-	this.getTableRecientes = () => ({ rowEmptyTable: self.lastRow(), onRender: self.row, onLastRow: self.lastRow });
+	getTableRecientes = () => ({ rowEmptyTable: this.lastRow(), onRender: this.row, onLastRow: this.lastRow });
 
-    this.validate = data => {
+	validate = data => {
         const valid = i18n.getValidators();
         valid.isKey("organica", data.idOrg, "No ha seleccionado correctamente la orgánica"); // autocomplete required number
         valid.isKey("tramit", data.tramit, "Unidad tramitadora no encontrada"); // select required number

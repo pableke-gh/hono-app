@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<p:outputPanel styleClass="update-irse">
+		<h:inputHidden id="etapas" value="#{iris.irse.input.rutas}" />
+		<div id="rutas-data" class="hide">#{iris.irse.rutas.rutasJson}</div>
+
+		<c:choose>
+			<c:when test="#{iris.irse.form.mun}"><ui:include src="./irse01_mun.xhtml"></ui:include></c:when>
+			<c:when test="#{iris.irse.form.colExt}"><ui:include src="./irse01_col.xhtml"></ui:include></c:when>
+			<c:when test="#{iris.irse.form.actividad1Dia}"><ui:include src="./irse01_dia.xhtml"></ui:include></c:when>
+			<c:otherwise><ui:include src="./irse01_com.xhtml"></ui:include></c:otherwise>
+		</c:choose>
+	</p:outputPanel>
+</html>

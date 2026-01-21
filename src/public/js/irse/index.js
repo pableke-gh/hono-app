@@ -13,17 +13,16 @@ import maps from "./modules/maps.js";
 import otri from "./modules/otri.js";
 import organicas from "./modules/organicas.js";
 import iTabs from "./modules/tabs.js";
+import sf from "../xeco/modules/SolicitudForm.js";
 import SolicitudesList from "../xeco/modules/SolicitudesList.js";
 
 window.IRSE = {}; // global IRSE info
 coll.ready(() => {
-	const sl = new SolicitudesList(irse);
-	const sf = sl.init().getForm();
-	const formIrse = sf.getForm();
-	i18n.set("fCache", (new Date()).addDays(-1).toISOString()); // fecha de la cache
+	const list = new SolicitudesList(irse);
+	const formIrse = list.init().getForm();
 
 	/*********** Redefine handlers and add extra actions ***********/
-	const table = sl.getTable(); // Current table of solicitudes
+	const table = list.getTable(); // Current table of solicitudes
 	const fnIdParam = data => { loading(); return [{ name: "id", value: data.id }]; }
 	const fnCached = (id, tab) => formIrse.isCached(id) && !perfil.isEmpty() && tabs.showTab(tab); // if cached avoid navegation
 	table.set("#view", data => (fnCached(data.id, irse.setData(data).getInitTab()) || window.rcView(fnIdParam(data)))); // set table action
@@ -33,13 +32,10 @@ coll.ready(() => {
 	tabs.setAction("rptFinalizar", () => table.invoke("#rptFinalizar")); // set tab action
 
 	/*********** Google Maps API ***********/
-	const fnTabActive = tab => !tab.classList.contains("tab-excluded")
-	tabs.setActiveEvent(2, fnTabActive);
-	tabs.setInitEvent(2, maps);
+	tabs.setActiveEvent(2, perfil.isMaps).setInitEvent(2, maps);
 
 	/*********** subvención, congreso, asistencias/colaboraciones ***********/
-	tabs.setActiveEvent(3, fnTabActive);
-	tabs.setInitEvent(3, otri.init);
+	tabs.setActiveEvent(3, perfil.isIsu).setInitEvent(3, otri.init);
 
 	/*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
 	tabs.setViewEvent(5, iTabs.viewTab5);
@@ -60,11 +56,9 @@ coll.ready(() => {
 	//PF needs confirmation in onclick attribute
 	window.fnUnlink = () => i18n.confirm("unlink") && loading();
 	window.saveTab = () => formIrse.showOk(i18n.get("saveOk")).working();
-
 	window.viewIrse = (xhr, status, args, tab) => {
-		tabs.load(document); // load new tabs
+		tabs.load(formIrse.getForm()); // reload tabs events
 		irse.init(Object.assign(window.IRSE, coll.parse(args.data)));
-
 		// Init. IRSE form, tables and inputs
 		dom.setTables(formIrse.update().getForm())
 			.setInputs(formIrse.getElements());

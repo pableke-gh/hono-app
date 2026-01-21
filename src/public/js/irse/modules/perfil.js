@@ -12,7 +12,7 @@ import getActividad from "../data/perfiles/actividades.js";
 function IrsePerfil() {
 	const self = this; //self instance
 	const resume = {};
-	const STYLES = { remove: "removeOrg", imp: i18n.isoFloat, resp: sb.lopd, fCache: i18n.isoDate };
+	const STYLES = { remove: "removeOrg", imp: i18n.isoFloat, resp: sb.lopd };
 
 	let eRol, eCol, eFin, eAct, eTramit;
 	let organicas, current;
@@ -94,7 +94,7 @@ function IrsePerfil() {
 			i18n.set("imp", "");
 			eCol.parentNode.hide();
 			dom.table("#organicas", organicas, resume, STYLES);
-			form.querySelector(".msg-cd").hide();
+			form.querySelector(".msg-cd")?.hide();
 			fnUpdatePerfil();
 		});
 
@@ -134,7 +134,7 @@ function IrsePerfil() {
 					coll.reset(organicas).push(current);
 					fnSave();
 				}
-				form.querySelector(".msg-cd").render().show();
+				form.querySelector(".msg-cd")?.render().show();
 				return item.id;
 			},
 			onReset: () => { i18n.set("imp", null); form.hide(".msg-cd"); }

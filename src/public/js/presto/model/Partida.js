@@ -13,14 +13,15 @@ class Partida extends Base {
 	isAfectada = mask => (mask & 1); // Es afectada? Si/No
 
 	beforeRender = resume => { resume.imp = 0; }
+	rowCalc = (data, resume) => { resume.imp += data.imp; }
 	row = (data, status, resume) => {
+		this.rowCalc(data, resume);
 		const NO_APLICA = "N/A"; // default table float
 		const css = presto.isPartidaExt() ? "currency" : "hide";
 		const excedido = this.isExcedida(data) ? '<span class="text-warn text-xl" title="La cantidad solicitada excede el margen registrado por el Buzón de Ingresos">&#9888;</span>' : "";
 		const anticipada = this.isAnticipada(data) ? '<span class="text-xl" title="Este contrato ha gozado de anticipo en algún momento">&#65;</span>' : "";
 		const doc030 = presto.is030() ? '<a href="#doc030" class="fal fa-money-bill-alt action resize text-green" title="Asociar los datos del documento 030"></a>' : "";
 		const remove = (presto.isEditable() && !presto.isAfc()) ? '<a href="#remove" class="fas fa-times action resize text-red" title="Desasociar partida"></a>' : "";
-		resume.imp += data.imp; // sum
 
 		return `<tr class="tb-data">
 			<td class="text-center">${excedido}${anticipada}</td>
@@ -39,7 +40,7 @@ class Partida extends Base {
 			<td class="text-center">${doc030}${remove}</td>
 		</tr>`;
 	}
-	getTable = () => ({ beforeRender: this.beforeRender, onRender: this.row });
+	getTable = () => ({ beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row });
 
 	validate = data => {
 		const valid = i18n.getValidators();

@@ -38,7 +38,7 @@
 			<li><b>Orgánica:</b> <span th:text="${xs.codOrganica}"></span> - <span th:text="${xs.descOrganica}"></span></li>
 			<li><b>Solicitante:</b> <span th:text="${xs.usuFullName}"></span></li>
 			<li><b>Memoria:</b> <span th:text="${xs.memoria}"></span></li>
-			<li th:if="${error}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
+			<li th:if="${error != null}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
 		</ul>
 	</div>
 

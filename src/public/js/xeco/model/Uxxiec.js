@@ -1,17 +1,8 @@
 
 import i18n from "../../i18n/langs.js";
 
-function Uxxiec() {
-	const self = this; //self instance
-	const msgEmptyTable = "No se han encontrado documentos de UXXI-EC asociadas a la solicitud";
-
-	/*let _data; // Current presto data type
-	this.getData = () => _data;
-	this.get = name => _data[name];
-	this.setData = documentos => { _data = documentos; return self; }
-	this.set = (name, value) => { _data[name] = value; return self; }*/
-
-	this.row = data => {
+class Uxxiec {
+	row = data => {
 		return `<tr class="tb-data">
 			<td>${data.num}</td>
 			<td>${data.uxxi}</td>
@@ -23,10 +14,12 @@ function Uxxiec() {
 			</td>
 		</tr>`;
 	}
-	this.getTable = () => ({ msgEmptyTable, onRender: self.row });
+	getTable = () => ({ msgEmptyTable: "No se han encontrado documentos de UXXI-EC asociadas a la solicitud", onRender: self.row });
 
-	const fnRender = item => (item.num + " - " + item.uxxi + "<br>" + item.desc);
-	this.getAutocomplete = () => ({ minLength: 4, render: fnRender, select: item => item.id });
+	getAutocomplete = () => ({
+		minLength: 4, select: item => item.id, 
+		render: item => (item.num + " - " + item.uxxi + "<br>" + item.desc)
+	});
 }
 
 export default new Uxxiec();

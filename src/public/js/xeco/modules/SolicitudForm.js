@@ -5,11 +5,11 @@ import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import i18n from "../../i18n/langs.js";
 
-import Solicitud from "../model/Solicitud.js";
+//import Solicitud from "../model/Solicitud.js";
 import firma from "../model/Firma.js";
 
 class SolicitudForm {
-	#solicitud = new Solicitud(); // create instance
+	#solicitud;// = new Solicitud(); // create instance
 	#form = new Form("#xeco-model"); // form module
 
 	getForm = () => this.#form; // get form
@@ -92,7 +92,7 @@ class SolicitudForm {
 	reactivar = data => { // set inputs to editable and update view
 		if (!i18n.confirm("msgReactivar"))
 			return; // cancel by user
-		if (this.isCached(data.id) && this.#solicitud.isSubsanable()) // solicitud pre-loaded
+		if (this.isCached(data.id) && this.#solicitud.isModificable()) // solicitud pre-loaded
 			return this.#form.view(this.#solicitud); // show current data
 		const url = this.#solicitud.getUrl() + "/reactivar?id=" + data.id; // url
 		api.init().json(url).then(this.#showView).then(this.list.replace); // get method

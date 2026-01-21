@@ -12,10 +12,9 @@ import SolicitudesList from "../xeco/modules/SolicitudesList.js";
 
 coll.ready(() => { // init. fact modules
 	const list = new SolicitudesList(factura);
-	const sf = list.init().getForm();
+	const form = list.init().getForm();
 	fiscal.init();
 
-	const form = sf.getForm();
 	const acOrganica = form.setAutocomplete("#acOrganica");
 	// los usuarios de ttpp/gaca solo pueden ver las organicas de su unidad 300906XXXX
 	const fnSourceOrg = term => api.init().json("/uae/fact/organicas", { term }).then(acOrganica.render);
@@ -32,9 +31,9 @@ coll.ready(() => { // init. fact modules
 	}
 
 	const fnBuild = (tipo, subtipo) => ({ solicitud: { tipo, subtipo, imp: 0, iva: 0 } });
-	tabs.setAction("factura", () => sf.view(fnBuild(1, 14))); // create factura
-	tabs.setAction("cartap", () => sf.view(fnBuild(3, 13))); // create carta de pago
-	//tabs.setAction("ttpp", () => sf.view(fnBuild(6, 25))); // TTPP a empresa
+	tabs.setAction("factura", () => list.create(fnBuild(1, 14))); // create factura
+	tabs.setAction("cartap", () => list.create(fnBuild(3, 13))); // create carta de pago
+	//tabs.setAction("ttpp", () => list.create(fnBuild(6, 25))); // TTPP a empresa
 
 	function fnValidate(msgConfirm, url, fn) {
 		factura.setLineas(lineas.getTable()); // actualizo los conceptos

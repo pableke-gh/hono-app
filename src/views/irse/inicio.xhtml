@@ -51,69 +51,52 @@
 		<h:inputHidden id="idses" value="#{iris.irse.form.id}" />
 
 		<!-- Tab0 = perfil PAS / PDI -->
-		<p:outputPanel id="tab-0" styleClass="tab-content update-irse">
-			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
+		<div id="tab-0" class="tab-content">
 			<ui:include src="tabs/irse00.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
 		<!-- Itinerarios rutas de tab1 y tab2 -->
-		<p:outputPanel id="tab-1" styleClass="tab-content update-irse">
-			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
-			<h:inputHidden id="etapas" value="#{iris.irse.input.rutas}" />
-			<div id="rutas-data" class="hide">#{iris.irse.rutas.rutasJson}</div>
-
-			<c:choose>
-				<c:when test="#{iris.irse.form.mun}"><ui:include src="tabs/irse01_mun.xhtml"></ui:include></c:when>
-				<c:when test="#{iris.irse.form.colExt}"><ui:include src="tabs/irse01_col.xhtml"></ui:include></c:when>
-				<c:when test="#{iris.irse.form.actividad1Dia}"><ui:include src="tabs/irse01_dia.xhtml"></ui:include></c:when>
-				<c:otherwise><ui:include src="tabs/irse01_com.xhtml"></ui:include></c:otherwise>
-			</c:choose>
+		<div id="tab-1" class="tab-content">
+			<ui:include src="tabs/irse01.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-2" styleClass="tab-content update-irse #{iris.irse.perfil.cssTab2}">
-		<c:if test="#{iris.irse.perfil.tab2}"> <!-- evita la colision de id's de matricula -->
-			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
+		<div id="tab-2" class="tab-content">
 			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</c:if>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-3" styleClass="tab-content update-irse #{iris.irse.perfil.cssTab3}">
-			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
+		<div id="tab-3" class="tab-content">
 			<ui:include src="tabs/irse03.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-5" styleClass="tab-content update-irse">
-			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
+		<div id="tab-5" class="tab-content">
 			<ui:include src="tabs/irse05.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-6" styleClass="tab-content update-irse">
-			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
+		<div id="tab-6" class="tab-content">
 			<ui:include src="tabs/irse06.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-9" styleClass="tab-content update-irse">
-			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
+		<div id="tab-9" class="tab-content">
 			<ui:include src="tabs/irse09.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
-		<p:outputPanel id="tab-12" styleClass="tab-content update-irse">
-			<h2 class="underline">#{iris.irse.perfil.nombre} <i>#{iris.irse.form.codigo}</i></h2>
+		<div id="tab-12" class="tab-content">
 			<ui:include src="tabs/irse12.xhtml"></ui:include>
 			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</p:outputPanel>
+		</div>
 
 		<!-- formulario de rechazo / cancelacion -->
 		<div id="tab-reject" class="tab-content">
-			<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+			<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 			<ui:include src="tabs/reject.xhtml"></ui:include>
+			<ui:include src="parts/firmas.xhtml"></ui:include>
 		</div>
 		</h:form>
 

@@ -7,7 +7,8 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="card-xeco">
+	<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<p:outputPanel styleClass="card-xeco update-irse">
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab6.tit']}" escape="false" /></h2>
 
 		<div class="#{iris.irse.gastos.cssAc}">
@@ -39,8 +40,9 @@
 		<div class="#{iris.irse.form.cssIrpf}">
 			<ui:include src="irse06_irpf.xhtml"></ui:include>
 		</div>
-	</div>
+	</p:outputPanel>
 
+	<p:outputPanel styleClass="update-irse">
 	<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="129"><i class="fas fa-arrow-to-left"></i></a>
 	<a href="#tab-5" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="130">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
@@ -62,4 +64,5 @@
 
 	<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	<ui:include src="../parts/btn_doc.xhtml"></ui:include>
+	</p:outputPanel>
 </html>

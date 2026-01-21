@@ -8,7 +8,7 @@ import perfiles from "../data/perfiles/perfiles.js";
 class Iris extends Solicitud {
 	build = () => new Iris(); // Override create a new instance
 	getUrl = () => "/uae/iris"; // Override base url path
-	isEditable = () => ((this.getEstado() == 6) || (this.isSubsanable())); // redefine editable
+	//isEditable = this.isModificable; // redefine editable
 	isEditableP0 = () => (!this.getId() && this.isEditable());
 
 	isActivablePaso8 = () => (this.isUae() && this.isEditable()); // pueden mostrarse los campos del paso 8

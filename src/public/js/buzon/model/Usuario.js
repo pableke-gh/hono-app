@@ -1,10 +1,8 @@
 
 import buzon from "./Buzon.js";
 
-function Usuario() {
-	const self = this; //self instance
-
-	this.row = data => {
+class Usuario {
+	row = data => {
         buzon.setData(data);
         const classPermisoUser = buzon.isPermisoUser() ? "action resize text-purple" : "action resize text-purple text-disabled";
         const classGastos = buzon.isGastos() ? "action resize text-warn" : "action resize text-warn text-disabled";
