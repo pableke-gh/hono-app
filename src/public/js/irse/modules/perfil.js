@@ -143,6 +143,7 @@ function IrsePerfil() {
 		organicas = coll.parse(form.getText("#org-data")) || [];
 		i18n.set("imp", organicas[0]?.imp); //importe precargado
 		i18n.set("pasos", 2 + self.isIsu() + self.isMaps()); // set num pasos
+		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + self.isMaps()).get("lblPasos"), irse);
 
 		// Register events after render table => avoid first render
 		dom.table("#organicas", organicas, resume, STYLES);

@@ -28,6 +28,7 @@ function Tabs() {
         return fn ? fn(tab, self) : true; // if no event => true
     }
 
+	this.getTabs = () => tabs; // tabs array
 	this.getAction = name => EVENTS[name]; // get event handler
 	this.setAction = (name, fn) => fnSet(name, fn); // set event handler
 	this.invoke = name => (self.getAction(name)()); // handler must exists
@@ -81,12 +82,6 @@ function Tabs() {
 	this.backTab = id => fnShowTab(globalThis.isset(id) ? fnFindIndex(id) : +(tabs[_tabIndex].dataset.back ?? (_tabIndex - 1)));
 	this.prevTab = self.backTab; // Synonym to go back to previous tab
 	this.lastTab = () => fnShowTab(tabs.length - 1);
-
-	this.getCurrent = () => tabs[_tabIndex]; // current tab
-	this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
-	this.setActive = id => fnGoTab(self.getTab(id)); // Force active class whithot events and alerts
-	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
-	this.setHeight = () => cv.setHeight(self.getCurrent()); // current tab height
 	this.toggle = el => {
 		if (!el.dataset.off)  { // is hide
 			fnCallEvent("init-tab", el); // Fire once when open
@@ -103,6 +98,18 @@ function Tabs() {
 		$$(el.dataset.target || (".info-" + el.id)).eachPrev(fnToggle);
 		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
 		self.setHeight(); // recalc height
+		return self;
+	}
+
+	this.getCurrent = () => tabs[_tabIndex]; // current tab
+	this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
+	this.setActive = id => fnGoTab(self.getTab(id)); // Force active class whithot events and alerts
+	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
+	this.setHeight = () => cv.setHeight(self.getCurrent()); // current tab height
+	this.reset = ids => {
+		const temp = ids ? ids.map(self.getTab) : tabs; // get tabs array
+		temp.forEach(tab => { delete tab.dataset.loaded; }); // reset loaded events
+		_tabIndex = -1; // no tab selected
 		return self;
 	}
 

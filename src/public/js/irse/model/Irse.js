@@ -55,8 +55,9 @@ class Iris extends Solicitud {
 
 	// render steps functions for tabs
 	getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), this);
-	getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), this);
 	getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isIsu()).get("lblPasos"), this);
+	getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), this);
+	getPasoMaps = globalThis.void;
 
 	row = data => {
 		let acciones = Solicitud.prototype.row.call(this, data);

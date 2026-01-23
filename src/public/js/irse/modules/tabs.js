@@ -132,6 +132,7 @@ function IrseTabs() {
 		}
 		window.fnPaso9 = () => isValidPaso9() && loading();
 		window.fnSend = () => isValidPaso9() && i18n.confirm("msgFirmarEnviar") && loading();
+		organicas.build();
 	}
 
 	this.initTab12 = tab => { // Init tab 12: asociar rutas

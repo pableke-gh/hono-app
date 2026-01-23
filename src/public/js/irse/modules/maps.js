@@ -1,6 +1,7 @@
 
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
+import tabs from "../../components/Tabs.js";
 import dom from "../lib/dom-box.js";
 
 import place from "./place.js";
@@ -23,14 +24,11 @@ const DRIVING = "DRIVING";
 
 //initialize google maps
 window.initMap = () => {
-	const elAddRuta = $1("#add-ruta"); // html button
-	if (!elAddRuta) return true; // readonly mode
-
 	var p1, p2; // from ... to
 	const distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
 	const placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService
-	place.setAutocomplete($1("#origen"), origen => { p1 = origen.getPlace(); }) // Origen autocomplete input 
-		.setAutocomplete($1("#destino"), destino => { p2 = destino.getPlace(); }); // Destino autocomplete input
+	place.setAutocomplete(dom.getInput("#origen"), origen => { p1 = origen.getPlace(); }) // Origen autocomplete input 
+		.setAutocomplete(dom.getInput("#destino"), destino => { p2 = destino.getPlace(); }); // Destino autocomplete input
 
 	function getPlaceDetails(query) { // find a place by query
 		const PLACES_OPTIONS = { query, fields: [ "place_id" ] };
@@ -49,8 +47,7 @@ window.initMap = () => {
 	}
 
 	//*************** rutas / trayectos - maps ***************//
-	elAddRuta.onclick = async ev => {
-		ev.preventDefault(); // stop event
+	tabs.setAction("addRuta", async () => {
 		dom.closeAlerts().intval("#desp", "errTransporte", "errRequired")
 			.required("#f2", "errDate").required("#h2", "errDate")
 			.required("#f1", "errDate").required("#h1", "errDate")
@@ -108,7 +105,7 @@ window.initMap = () => {
 			return dom.addError("#origen", "The calculated distance fails due to " + err).isOk();
 		ruta.km2 = response.rows[0].elements[0].distance.value / 1000; //to km
 		rutas.add(ruta, ruta.km2); // add to table
-	}
+	});
 }
 
 export default place.setScript;

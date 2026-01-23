@@ -8,15 +8,14 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
-	<p:outputPanel styleClass="card-xeco update-irse">
-		<c:if test="#{iris.irse.form.editable and iris.irse.perfil.tab2}">
+	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
-			<span class="text-warn form-refresh" data-refresh="text-render">@getPaso;</span>
+			<span class="text-warn form-refresh" data-refresh="text-render">@getPasoMaps;</span>
 			<span><h:outputText value="#{msg['uae.irse.tab2.msg.tit.maps']}" escape="false" /></span>
 		</h2>
 		<ui:include src="./irse02_info.xhtml"></ui:include>
-		<div class="ui-blocks no-print">
+		<div class="ui-blocks no-print form-refresh" data-refresh="isEditable">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.sali']}" escape="false" />:</div>
 				<input type="search" id="origen" name="origen" class="ui-input ui-autocomplete ui-ruta" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
@@ -63,17 +62,18 @@
 				</select>
 				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block hide grupo-matricula">
+			<p:outputLabel styleClass="ui-block hide grupo-matricula update-irse">
+			<c:if test="#{iris.irse.form.editable and iris.irse.perfil.tab2}">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
 				<h:inputText id="matricula" value="#{iris.irse.gastos.matricula}" maxlength="10" tabindex="38" styleClass="ui-input ui-short ui-ruta"/>
 				<div class="ui-errtip"></div>
-			</label>
+			</c:if>
+			</p:outputLabel>
 			<div class="ui-block-btn">
-				<a id="add-ruta" href="#" class="btn btn-green success-btn" tabindex="39">
+				<a href="#tab-action-addRuta" class="btn btn-green success-btn" tabindex="39">
 					<i class="fas fa-arrow-alt-down btn-icon-left"></i><h:outputText value="#{msg['lbl.add.tabla']}" escape="false" /></a>
 			</div>
 		</div>
-		</c:if>
 
 		<table id="rutas" class="tb-xeco table-xs rutas-maps">
 			<thead>
@@ -123,7 +123,7 @@
 
 		<br/>
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab2.info.principal']}" escape="false" /></div>
-	</p:outputPanel>
+	</div>
 
 	<p:outputPanel styleClass="update-irse">
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="57">

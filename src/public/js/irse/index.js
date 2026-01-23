@@ -52,16 +52,13 @@ coll.ready(() => {
 	window.fnUnlink = () => i18n.confirm("unlink") && loading();
 	window.saveTab = () => form.showOk(i18n.get("saveOk")).working();
 	window.viewIrse = (xhr, status, args, tab) => {
-		tabs.load(form.getForm()); // reload tabs events
 		irse.setData(Object.assign(window.IRSE, coll.parse(args.data)));
-		// Init. IRSE form, tables and inputs
 		dom.setTables(form.init().getForm()).setInputs(form.getElements());
 		perfil.init(form); // perfil de la solicitud
 		rutas.init(form); // rutas asociadas a la solicitud
 		organicas.init(form); // tabla de organicas
-		form.onChangeInput("#urgente", ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2"));
 		form.setval("#idses", window.IRSE.id).setFirmas(coll.parse(args.firmas)).refresh(irse); // configure view
-		tabs.nextTab(tab ?? window.IRSE.tab); // go to next tab
+		tabs.reset([0, 1, 3, 5, 6, 9, 12]).load(form.getForm()).nextTab(tab ?? window.IRSE.tab); // reload tabs
 		window.showAlerts(xhr, status, args); // alerts
 	}
 
