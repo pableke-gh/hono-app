@@ -7,10 +7,9 @@ import i18n from "../i18n/langs.js";
 
 import rutas from "./rutas.js";
 import organicas from "./organicas.js";
-import sf from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/SolicitudForm.js";
 
 function IrseTabs() {
-	const form = sf.getForm();
 	const fnUpload = () => { // merge data to send
 		const fd = form.getFormData();
 		fd.exclude([ // exclude fields

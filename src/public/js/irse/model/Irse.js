@@ -8,6 +8,11 @@ import perfiles from "../data/perfiles/perfiles.js";
 class Iris extends Solicitud {
 	build = () => new Iris(); // Override create a new instance
 	getUrl = () => "/uae/iris"; // endpoint base path
+	setData(data) { // Override
+		const parts = sb.split(super.setData(data).getPerfil()); // ROL/COLECTIVO/ACTIVIDAD/TRAMITE/FINANCIACION
+		return parts ? this.setPerfil(parts[0], parts[1], parts[2], parts[3], parts[4]) : this;
+	}
+
 	isActivablePaso8 = () => (this.isUae() && this.isEditable()); // pueden mostrarse los campos del paso 8
 	isReactivable = () => (sb.inYear(this.get("fCreacion")) && (this.isInvalidada() || this.isErronea())); // La solicitud se puede reactivar / subsanar
 	isResumable = () => (this.isPendiente() || this.isFirmada() || this.isIntegrada()); // muestra el boton de resumen (paso 6)
@@ -43,10 +48,6 @@ class Iris extends Solicitud {
 		this.set("rol", rol).set("colectivo", colectivo).set("actividad", actividad).set("tramite", tramit).setFinanciacion(financiacion);
 		return this.set("perfil", rol + "," + colectivo + "," + actividad + "," + tramit + "," + financiacion);
 	}
-	init = data => {
-		const parts = sb.split(this.setData(data).getPerfil()); // ROL/COLECTIVO/ACTIVIDAD/TRAMITE/FINANCIACION
-		return parts ? this.setPerfil(parts[0], parts[1], parts[2], parts[3], parts[4]) : this;
-	}
 
 	isConflicto = () => (this.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
 	isPaso8 = () => (this.getMask() & 4); // paso 8 activado manualmente por la uae
@@ -58,7 +59,7 @@ class Iris extends Solicitud {
 	getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isIsu()).get("lblPasos"), this);
 
 	row = data => {
-		let acciones = this.getTplActions(data);
+		let acciones = Solicitud.prototype.row.call(this, data);
 		if (this.isDocumentable()) {
 			if (this.isAdmin()) {
 				acciones += '<a href="#rptFinalizar" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 

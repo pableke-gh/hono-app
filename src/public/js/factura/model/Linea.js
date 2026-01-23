@@ -1,9 +1,8 @@
 
 import i18n from "../../i18n/langs.js";
-import Base from "../../xeco/model/Base.js";
 import factura from "./Factura.js";
 
-class Linea extends Base {
+class Linea {
 	beforeRender = resume => { resume.imp = 0; }
 	rowCalc = (data, resume) => { resume.imp += data.imp; }
 

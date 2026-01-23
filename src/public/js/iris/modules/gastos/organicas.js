@@ -6,12 +6,11 @@ import gastos from "../../model/gasto/Gastos.js";
 
 import actividad from "../perfil/actividad.js";
 import organicas from "../perfil/organicas.js";
-import sf from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/SolicitudForm.js";
 
 function Organicas() {
 	const self = this; //self instance
 	const TIPO_ORGANICA = 19; // tipo de gasto = organica
-	const form = sf.getForm(); // form component
 	const _tblMultiorg = form.setTable("#multiorganicas", organica.getTable());
 
 	//TIPO = dietas=1, alojamiento=2, transporte=3

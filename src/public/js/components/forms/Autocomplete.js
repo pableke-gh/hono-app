@@ -121,7 +121,6 @@ export default function(autocomplete, opts) {
 			li.addEventListener("click", ev => selectItem(li, i));
 		});
 		resultsHTML.classList.add(opts.activeClass);
-		_time = 0; // restore sarches
 	}
 
 	// Event fired before char is writen in text
@@ -145,8 +144,7 @@ export default function(autocomplete, opts) {
 	// Event fired when value changes, ignore ctrl, alt, etc...
 	// also occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
 	autocomplete.oninput = ev => {
-		if (_time) // Avoid new searchs
-			return ev.preventDefault();
+		clearTimeout(_time);  // remove previous search
 		const size = coll.size(autocomplete.value);
 		if (size < opts.minLength)
 			return self.reset(); // Min legnth required

@@ -9,14 +9,14 @@
 
 	<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 	<p:outputPanel styleClass="card-xeco update-irse">
+		<c:if test="#{iris.irse.form.editable and iris.irse.perfil.tab2}">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
 			<span class="text-warn form-refresh" data-refresh="text-render">@getPaso;</span>
 			<span><h:outputText value="#{msg['uae.irse.tab2.msg.tit.maps']}" escape="false" /></span>
 		</h2>
-		<c:if test="#{iris.irse.form.editable and iris.irse.perfil.tab2}">
-			<ui:include src="./irse02_info.xhtml"></ui:include>
-			<div class="ui-blocks no-print">
+		<ui:include src="./irse02_info.xhtml"></ui:include>
+		<div class="ui-blocks no-print">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.sali']}" escape="false" />:</div>
 				<input type="search" id="origen" name="origen" class="ui-input ui-autocomplete ui-ruta" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
@@ -72,7 +72,7 @@
 				<a id="add-ruta" href="#" class="btn btn-green success-btn" tabindex="39">
 					<i class="fas fa-arrow-alt-down btn-icon-left"></i><h:outputText value="#{msg['lbl.add.tabla']}" escape="false" /></a>
 			</div>
-			</div>
+		</div>
 		</c:if>
 
 		<table id="rutas" class="tb-xeco table-xs rutas-maps">

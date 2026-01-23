@@ -1,11 +1,10 @@
 
 import iris from "../../model/Iris.js";
-import sf from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/SolicitudForm.js";
 import actividades from "../../data/perfiles/actividades.js"
 
 function Actividad() {
 	const self = this; //self instance
-	const form = sf.getForm(); // form component
 
 	this.getRol = iris.getRol;
 	//this.isPorCuentaPropia = () => (self.getRol() == "P");
@@ -64,7 +63,7 @@ function Actividad() {
 			.closeAlerts();
 		iris.setPerfil(self.getRol(), self.getColectivo(), self.getActividad(), self.getTramite(), self.getFinanciacion());
 		iris.set("pasos", 2 + self.isIsu() + self.isMaps()); // set num pasos
-		form.refresh(iris, ".ui-perfil"); // actualizo el perfil de la solicitud
+		form.refresh(iris); // actualizo el perfil de la solicitud
 		return self;
 	}
 

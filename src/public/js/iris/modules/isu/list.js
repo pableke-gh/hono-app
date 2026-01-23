@@ -22,7 +22,7 @@ import rvp from "../rutas/rutasVehiculoPropio.js";
 import pernoctas from "../gastos/pernoctas.js";
 import dietas from "../gastos/dietas.js";
 import resumen from "../resumen.js";
-import sf from "../../../xeco/modules/SolicitudForm.js";
+import formIrse from "../../../xeco/modules/SolicitudForm.js";
 
 function ListIsu() {
 	const form = new Form("#xeco-filtro-isu");
@@ -66,7 +66,6 @@ function ListIsu() {
 			"TOTAL Manutención", "TOTAL (Locomoción+Alojamiento+Manutención)", "Observaciones (11)"
 		];
 
-		const formIrse = sf.getForm();//.resetCache();
 		const aux = data.iris.map((row, i) => {
 			iris.setData(row); // current iris
 			Object.assign(row, tblIsu.getItem(i)); // add row data from isu table

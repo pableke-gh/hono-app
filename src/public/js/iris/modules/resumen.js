@@ -10,11 +10,10 @@ import rvp from "./rutas/rutasVehiculoPropio.js";
 import transportes from "./gastos/transportes.js"; 
 import pernoctas from "./gastos/pernoctas.js"; 
 import dietas from "./gastos/dietas.js";
-import sf from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/SolicitudForm.js";
 
 function Resumen() {
 	const self = this; //self instance
-	const form = sf.getForm(); // form component
 
 	this.getImpTrans = () => (rmaps.getImporte() + transportes.getImporte());
 	this.getImpBruto = () => (self.getImpTrans() + pernoctas.getImporte() + dietas.getImporte() /*+ extras.getImporte()*/); // todo: modulo extras
@@ -22,7 +21,7 @@ function Resumen() {
 	this.setFactComisionado = () => {
 		transportes.setTransportes(); // update changes paso 5
 		pernoctas.setPernoctas(); // update changes paso 5
-		sf.refresh(); // refresh tab 6
+		form.refresh(); // refresh tab 6
 	}
 	this.setResumen = () => {
 		self.setFactComisionado(); // facturas a nombre del comisionado
@@ -51,7 +50,7 @@ function Resumen() {
 			return form.nextTab(tab); // no cambios => salto al ultimo paso
 		const temp = Object.assign(iris.getData(), data); // merge data to send
 		temp.gastos = gastos.setKm(data, rmaps.getResume()).getGastos(); // update gastos
-		api.setJSON(temp).json("/uae/iris/save").then(data => sf.update(data, tab));
+		api.setJSON(temp).json("/uae/iris/save").then(data => form.update(data, tab));
 		dietas.setChanged(); // reset cambios dietas
 	}
 

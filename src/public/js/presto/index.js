@@ -6,11 +6,11 @@ import i18n from "../i18n/langs.js";
 
 import presto from "./model/Presto.js";
 import pDec from "./modules/partidaDec.js";
-import SolicitudesList from "../xeco/modules/SolicitudesList.js";
+import partidas from "./modules/partidas.js";
+import list from "../xeco/modules/SolicitudesList.js";
 
 coll.ready(() => { // init. presto modules
-	const list = new SolicitudesList(presto);
-	const form = list.init().getForm();
+	const form = list.init(presto).getForm();
 	pDec.init(); // init. sub-modules
 
 	form.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto)
@@ -42,16 +42,16 @@ coll.ready(() => { // init. presto modules
 		});
 	});
 
-	function fnValidate(msgConfirm, url, fn) {
-		const data = form.validate(presto.validate);
+	function fnValidate(msgConfirm, url) {
+		const data = form.validate(partidas.validate);
 		if (!data || !i18n.confirm(msgConfirm))
 			return Promise.reject(); // Error al validar o sin confirmacion
 		const include = [ "id", "tipo", "subtipo", "mask" ]; // fields to include
 		const fd = form.getFormData(Object.assign(presto.getData(), data), include);
 		fd.exclude([ "acOrgDec", "faDec", "ejInc", "acOrgInc", "faInc", "cd" ]);
 		// primera partida = principal y serializo el json (FormData only supports flat values)
-		fd.setJSON("partidas", presto.getPartidas().setPrincipal().getData());
-		return api.setFormData(fd).send(url).then(fn); // send data
+		fd.setJSON("partidas", partidas.setPrincipal().getData());
+		return api.setFormData(fd).send(url); // send data
 	}
 	tabs.setAction("send", () => fnValidate("msgSend", "/uae/presto/save").then(tabs.showInit)); // send xeco-model form
 	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/presto/subsanar").then(tabs.showList)); // send from changes

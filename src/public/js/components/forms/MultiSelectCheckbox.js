@@ -22,9 +22,9 @@ export default function(container, opts) {
     opts.onReset = opts.onReset || globalThis.void; // fired on reset list
 
     const self = this; //self instance
-    const label = container.firstElementChild || createElement("div"); // first = label element
-    const button = label.nextElementSibling || createElement("button"); // second = button dropdown
-    const options = button.nextElementSibling || createElement("ul"); // third = selectable options
+    const label = container.firstElementChild || document.createElement("div"); // first = label element
+    const button = label.nextElementSibling || document.createElement("button"); // second = button dropdown
+    const options = button.nextElementSibling || document.createElement("ul"); // third = selectable options
     let _data; // items container
 
 	const fnEvent = ev => { ev.stopPropagation(); ev.preventDefault(); }

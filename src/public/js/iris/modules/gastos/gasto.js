@@ -11,10 +11,9 @@ import rutas from "../../model/ruta/Rutas.js";
 import gastos from "./gastos.js";
 import transportes from "./transportes.js";
 import pernoctas from "./pernoctas.js";
-import sf from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/SolicitudForm.js";
 
 export default function(tab) {
-	const form = sf.getForm(); // form component
 	const _eTipoGasto = form.getInput("#tipoGasto");
 	const _grpGasto = tab.querySelectorAll(".grupo-gasto");
 

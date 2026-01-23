@@ -17,10 +17,9 @@ export default class Solicitud extends Base {
 	#nif; #grupo; #admin; // User params
 
 	build = () => new Solicitud(); // create a new instance
-	load = obj => this.setData(obj.getData()).setNif(obj.getNif()).setGrupo(obj.getGrupo()).setAdmin(obj.isAdmin()); // load from other Solicitud
+	load(obj) { return super.setData(obj.getData()).setNif(obj.getNif()).setGrupo(obj.getGrupo()).setAdmin(obj.isAdmin()); } // load from other Solicitud
 	clone = () => this.build().load(this); // Clone Solicitud instance
 
-	beforeView = globalThis.void; // optional hook method
 	onView = globalThis.void; // optional hook method
 	onUpdate = globalThis.void; // optional hook method
 
@@ -79,10 +78,9 @@ export default class Solicitud extends Base {
 	isEditableUae = () => (this.isEditable() || this.isSubsanable() || (this.isUae() && this.isFirmable()));
 	isEjecutable = () => (this.isUae() && [1, 3, 4, 5, 9, 10].includes(this.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
 	isNotificable = () => (this.isUae() && [1, 3, 4, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada, integrada ó Erronea
-	isIntegrable = () => (this.isUae() && [1, 3, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada ó Erronea
+	isIntegrable() { return (this.isUae() && [1, 3, 9, 10].includes(this.getEstado())); } // uae + Aceptada, Ejecutada ó Erronea
 	isDocumentable = () => (this.isPendiente() || this.isValidada() || this.isErronea()); // muestra el boton de informe pdf
 	isUrgente = () => (this.get("fMax") && this.get("extra")); //solicitud urgente?
-	isIntegrableSolicitud = this.isIntegrable; // alias for child classes
 
 	getCodigo = () => this.get("codigo");
 	getMemoria = () => this.get("memo");
@@ -90,10 +88,9 @@ export default class Solicitud extends Base {
 	getStyleByEstado = () => (CSS_ESTADOS[this.getEstado()] || TEXT_WARN);
 	validate = () => { throw new Error("You have to implement the method validate!"); }
 
-	row = globalThis.void;
-	getTplActions = data => { // super not defined in arrow functions
+	row(data) { // to simulate super keyword from arrow function, 'row' must be defined as a function
 		let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';
-		if (this.setData(data).isFirmable()) { // initialize and verify state
+		if (super.setData(data).isFirmable()) { // initialize and verify state
 			acciones += '<a href="#firmar" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-check action resize text-green"></i></a>';
 			acciones += '<a href="#reject" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-times action resize text-red"></i></a>';
 		}

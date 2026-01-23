@@ -14,7 +14,7 @@ class Uxxiec {
 			</td>
 		</tr>`;
 	}
-	getTable = () => ({ msgEmptyTable: "No se han encontrado documentos de UXXI-EC asociadas a la solicitud", onRender: self.row });
+	getTable = () => ({ msgEmptyTable: "No se han encontrado documentos de UXXI-EC asociadas a la solicitud", onRender: this.row });
 
 	getAutocomplete = () => ({
 		minLength: 4, select: item => item.id, 

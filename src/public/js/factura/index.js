@@ -8,11 +8,10 @@ import i18n from "../i18n/langs.js";
 import factura from "./model/Factura.js";
 import lineas from "./modules/lineas.js";
 import fiscal from "./modules/fiscal.js";
-import SolicitudesList from "../xeco/modules/SolicitudesList.js";
+import list from "../xeco/modules/SolicitudesList.js";
 
 coll.ready(() => { // init. fact modules
-	const list = new SolicitudesList(factura);
-	const form = list.init().getForm();
+	const form = list.init(factura).getForm();
 	fiscal.init();
 
 	const acOrganica = form.setAutocomplete("#acOrganica");
@@ -35,16 +34,15 @@ coll.ready(() => { // init. fact modules
 	tabs.setAction("cartap", () => list.create(fnBuild(3, 13))); // create carta de pago
 	//tabs.setAction("ttpp", () => list.create(fnBuild(6, 25))); // TTPP a empresa
 
-	function fnValidate(msgConfirm, url, fn) {
-		factura.setLineas(lineas.getTable()); // actualizo los conceptos
-		const data = form.validate(factura.validate);
+	function fnValidate(msgConfirm, url) {
+		const data = form.validate(lineas.validate);
 		if (!data || !i18n.confirm(msgConfirm))
 			return Promise.reject(); // Error al validar o sin confirmacion
 		const temp = Object.assign(factura.getData(), data);
-		temp.lineas = lineas.getTable().getData(); // lineas de la factura
+		temp.lineas = lineas.getData(); // lineas de la factura
 		// si no hay descripcion => concateno los conceptos saneados y separados por punto
 		temp.memo = temp.memo || temp.lineas.map(linea => sb.rtrim(linea.desc, "\\.").trim()).join(". ");
-		return api.setJSON(temp).json(url).then(fn); // send call
+		return api.setJSON(temp).json(url); // send call
 	}
 	tabs.setAction("send", () => fnValidate("msgSend", "/uae/fact/save").then(tabs.showInit)); // send form
 	tabs.setAction("subsanar", () => {

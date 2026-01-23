@@ -9,11 +9,10 @@ import rutas from "../model/ruta/Rutas.js";
 import gastos from "../model/gasto/Gastos.js"; 
 
 import actividad from "./perfil/actividad.js";
-import sf from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/SolicitudForm.js";
 
 function Otri() {
 	//const self = this; //self instance
-	const form = sf.getForm(); // form component
 	const _eCongreso = form.getInput("#congreso"); //congreso si/no
 	const _eF1Cong = form.getInput("#f1Cong"); //fecha inicio del congreso
 	const _eF2Cong = form.getInput("#f2Cong"); //fecha fin del congreso
@@ -62,7 +61,7 @@ function Otri() {
 			return form.nextTab(tab); // no cambios => salto al siguiente paso
 		const temp = Object.assign(iris.getData(), data); // merge data to send
 		temp.gastos = gastos.setSubvencion(data).setCongreso(data).getGastos();
-		api.setJSON(temp).json("/uae/iris/save").then(data => sf.update(data, tab));
+		api.setJSON(temp).json("/uae/iris/save").then(data => form.update(data, tab));
 	}
 
 	/*********** subvención, congreso, asistencias/colaboraciones ***********/

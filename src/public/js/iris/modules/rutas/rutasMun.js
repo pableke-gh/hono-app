@@ -7,11 +7,10 @@ import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/Ruta.js";
 import rutas from "../../model/ruta/Rutas.js";
 import gastos from "../../model/gasto/Gastos.js";
-import sf from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/SolicitudForm.js";
 
 function RutasMun() {
 	//const self = this; //self instance
-	const form = sf.getForm(); // form component
 	const valid = form.getValidators();
 
 	this.init = () => {
@@ -62,7 +61,7 @@ function RutasMun() {
 		if (!form.isChanged()) // compruebo cambios
 			return form.nextTab(tab); // no cambios => salto al siguiente paso
 		const temp = Object.assign(iris.getData(), data); // merge data to send
-		api.setJSON(temp).json("/uae/iris/save").then(data => sf.update(data, tab));
+		api.setJSON(temp).json("/uae/iris/save").then(data => form.update(data, tab));
 	}
 
 	tabs.setAction("paso1", () => fnPaso1());

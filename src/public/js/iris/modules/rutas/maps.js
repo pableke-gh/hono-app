@@ -1,6 +1,6 @@
 
 import coll from "../../../components/CollectionHTML.js";
-import sf from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/SolicitudForm.js";
 import ct from "../../data/place-ct.js"
 
 /**
@@ -68,8 +68,6 @@ const MAPS = {
 }
 
 window.initMap = function() {
-	const form = sf.getForm();
-
 	// Initialize google maps services
 	const _distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
 	const _placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService

@@ -1,6 +1,6 @@
 
 import sb from "../types/StringBox.js";
-import isb from "./SelectBox.js";
+import sbx from "./SelectBox.js";
 
 export default function(select, opts) {
 	select = globalThis.isstr(select) ? $1(select) : select; // search element
@@ -49,21 +49,21 @@ export default function(select, opts) {
 		if (!JSON.size(items))
 			return self.reset();
 		_data = items; // Init. datalist
-		isb.setItems(select, items);
+		sbx.setItems(select, items);
 		return fnChange(_data[0]);
 	}
 	this.setData = data => {
 		if (!data)
 			return self.reset();
 		_data = Object.keys(data); // Init. datalist
-		isb.setData(select, data); // set options
+		sbx.setData(select, data); // set options
 		return fnChange(_data[0]);
 	}
 	this.setLabels = labels => {
 		if (!JSON.size(labels))
 			return self.reset();
 		_data = labels; // set values
-		isb.setLabels(select, labels);
+		sbx.setLabels(select, labels);
 		return fnChange(_data[0]);
 	}
 	this.setRange = function(min, max, step, fnLabel) {

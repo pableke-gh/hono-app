@@ -2,13 +2,10 @@
 import i18n from "../i18n/langs.js";
 import firma from "../../xeco/model/Firma.js";
 import Solicitud from "../../xeco/model/Solicitud.js";
-import partidas from "./Partidas.js";
 
 class Presto extends Solicitud {
 	build = () => new Presto(); // Override create a new instance
 	getUrl = () => "/uae/presto"; // Override base url path
-	getPartidas = () => partidas; // partidas list
-	getPartida = partidas.getPartida; // partida instance
 
 	getTitulo = () => i18n.getItem("descTipos", this.getTipo());
 	isTcr = () => (this.getTipo() == 1);
@@ -19,14 +16,14 @@ class Presto extends Solicitud {
 	isAfc = () => (this.getTipo() == 8);
 	is030 = () => (this.isUae() && (this.isGcr() || this.isAnt()));
 
-	isIntegrable = () => (!this.isAfc() && this.isIntegrableSolicitud());
+	isIntegrable() { return !this.isAfc() && super.isIntegrable(); }
 	isReactivable = () => (this.isUae() && !this.isAfc() && !this.isFce() && this.isErronea());
 	isImpCd = () => (this.isEditable() && !this.isAnt());
 	getAdjunto = () => this.get("file");
 
 	isPartidaDec = () => (this.isTcr() || this.isL83() || this.isAnt() || this.isAfc());
 	isTipoMultipartida = () => (this.isTcr() || this.isFce() || this.isGcr());
-	showPartidasInc = () => (this.isTipoMultipartida() && this.isEditable() && (partidas.size() < 20));
+	showPartidasInc = () => (this.isTipoMultipartida() && this.isEditable() /*&& (partidas.size() < 20)*/);
 	isPartidaExt = () => (this.isGcr() || this.isAnt());
 	isDisableEjInc = () => (this.isDisabled() || this.isTcr() /*|| this.isFce()*/);
 	isAutoLoadImp = () => (this.isL83() || this.isAnt() || this.isAfc());
@@ -37,7 +34,7 @@ class Presto extends Solicitud {
 	isExcedida = () => (this.getMask() & 8);
 
 	row = data => {
-		let acciones = this.getTplActions(data);
+		let acciones = Solicitud.prototype.row.call(this, data);
 		if (this.isDocumentable()) {
 			//acciones += this.isAdmin() ? '<a href="#pdf" title="Informe PRESTO"><i class="fas fa-file-pdf action resize text-red"></i></a>' : "";
 			acciones += '<a href="#report" title="Informe PRESTO"><i class="fal fa-file-pdf action resize text-red"></i></a>';
@@ -70,25 +67,22 @@ class Presto extends Solicitud {
 	}
 
 	validate = data => {
-		const valid = i18n.getValidators();
+		const valid = i18n.getValidation(); // continue validation
 		if (this.isPartidaDec()) { // valido la partida a disminuir
 			valid.isKey("acOrgDec", data.idOrgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
 			valid.isKey("idEcoDec", data.idEcoDec, "Debe seleccionar la económica que disminuye"); // select required number
 		}
-
 		const imp = data.imp ?? 0; // los importes pueden ser nulos segun el tipo de presto
 		const notValidateCd = this.isAnt() || this.isSubsanable(); // anticipos / subsanaciones no validan el CD
 		const cd = notValidateCd ? imp : (data.cd ?? 0); // validación del crédito disponible
 		if (imp > cd)
 			valid.addError("imp", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
-		if (this.isPartidaDec() && (partidas.getImporte() != imp)) // Valido los importes a decrementar e incrementar
-			valid.addError("imp", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
 		valid.size("memo", data.memo, "Debe asociar una memoria justificativa a la presto."); // Required string
 		if (data.urgente == "2") { // Solicitud urgente
 			valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta presto."); // Required string
 			valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta presto."); // Required date
 		}
-		return valid.isOk() && partidas.validate();
+		return valid.isOk();
 	}
 }
 

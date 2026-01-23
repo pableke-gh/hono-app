@@ -34,6 +34,11 @@ function SelectBox() {
         select.innerHTML = fnEmpty(emptyOption) + labels.map(fnLabel).join(""); // Render labels
 		return self;
 	}
+	this.setArrays = (select, values, labels, emptyOption) => {
+		const fnBuild = (value, i) => `<option value="${value}">${labels[i]}</option>`; // label list
+        select.innerHTML = fnEmpty(emptyOption) + values.map(fnBuild).join(""); // Render labels
+		return self;
+	}
 }
 
 export default new SelectBox();

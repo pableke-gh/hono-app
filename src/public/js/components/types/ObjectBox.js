@@ -1,45 +1,44 @@
 
-function ObjectBox() {
-	const self = this; //self instance
-	const isset = val => ((typeof val !== "undefined") && (val !== null));
-	const isObject = obj => ((typeof obj === "object") && !Array.isArray(obj));
+const isset = val => ((typeof val !== "undefined") && (val !== null));
+const isObject = obj => ((typeof obj === "object") && !Array.isArray(obj));
 
-	this.isset = isset;
-	this.isObject = isObject;
-	this.copy = function(output, data, keys) {
-		if (keys)
-			keys.forEach(key => { output[key] = data[key]; });
-		else
-			Object.assign(output, data);
-		return output;
+// Extends Object
+Object.copy = (output, data, keys) => {
+	if (keys)
+		keys.forEach(key => { output[key] = data[key]; });
+	else
+		Object.assign(output, data);
+	return output;
+};
+Object.clone = (data, keys)  => this.copy({}, data, keys);
+Object.clear = (data, keys) => {
+	if (keys)
+		keys.forEach(key => delete data[key]);
+	else {
+		for (let key in data)
+			delete data[key];
 	}
-	this.clone = (data, keys)  => self.copy({}, data, keys);
-	this.values = (data, keys) => keys ? keys.map(key => data[key]) : Object.values(data);
-	this.clear = (data, keys) => {
-		if (keys)
-			keys.forEach(key => delete data[key]);
-		else {
-			for (let key in data)
-				delete data[key];
-		}
-		return data;
-	}
-	this.merge = (keys, values, data) => {
-		data = data || {}; // Output
-		keys.forEach((k, i) => { data[k] = values[i]; });
-		return data;
-	}
-
-	// Extends Object
-	Object.copy = self.copy;
-	Object.clone = self.clone;
-	Object.clear = self.clear;
-	Object.merge = self.merge;
-	Object.extract = self.values;
-
-	// Client / Server global functions
-	globalThis.isset = isset;
-	globalThis.isObject = isObject;
+	return data;
 }
+Object.merge = (keys, values, data) => {
+	data = data || {}; // Output
+	keys.forEach((k, i) => { data[k] = values[i]; });
+	return data;
+}
+
+class ObjectBox {
+	isset = isset;
+	isObject = isObject;
+
+	copy = Object.copy;
+	clone = Object.clone;
+	values = (data, keys) => keys ? keys.map(key => data[key]) : Object.values(data);
+	clear = Object.clear;
+	merge = Object.merge;
+}
+
+// Client / Server global functions
+globalThis.isset = isset;
+globalThis.isObject = isObject;
 
 export default new ObjectBox();

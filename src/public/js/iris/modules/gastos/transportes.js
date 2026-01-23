@@ -3,11 +3,10 @@ import i18n from "../../i18n/langs.js";
 import iris from "../../model/Iris.js";
 import transporte from "../../model/gasto/Transporte.js";
 import gastos from "../../model/gasto/Gastos.js";
-import sf from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/SolicitudForm.js";
 
 function Transportes() {
 	const self = this; //self instance
-	const form = sf.getForm(); // form component
 	const _tblTransporte = form.setTable("#transportes", transporte.getTable());
 
 	this.getImporte = () => _tblTransporte.getProp("imp1");

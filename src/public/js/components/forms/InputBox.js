@@ -1,9 +1,9 @@
 
-import select from "./SelectBox.js";
 import sb from "../types/StringBox.js";
 import i18n from "../../i18n/langs.js";
+import sbx from "./SelectBox.js";
 
-export default function(opts) {
+function InputBox(opts) {
 	opts = opts || {}; // default options
 	opts.dateClass = opts.dateClass || "ui-date"; // Date type
 	opts.boolClass = opts.boolClass || "ui-bool"; // Boolean type
@@ -16,7 +16,6 @@ export default function(opts) {
 	//opts.checkAllClass = opts.checkAllClass || "ui-check-all"; // Check all related checkboxes
 
 	const self = this; //self instance
-
 	const fnContains = (el, name) => el.classList.contains(name);
 	const isCheckbox = el => (el.type == "checkbox");
 	const fnNumber = (el, value) => {
@@ -65,12 +64,13 @@ export default function(opts) {
 	}
 
 	this.setval = (el, value) => {
-		if (select.isSelect(el) && !value)
+		if (sbx.isSelect(el) && !value)
 			el.selectedIndex = 0; // first option
 		else
 			el.value = value || ""; // force String
 		return self;
 	}
+	this.reset = el => self.setval(el);
 	this.setValue = (el, value) => {
 		if (el.type == "date") { // input type date
 			el.value = sb.strDate(value); // yyyy-mm-dd
@@ -147,3 +147,5 @@ export default function(opts) {
 		return self;
 	}
 }
+
+export default new InputBox();

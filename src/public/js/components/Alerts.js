@@ -58,11 +58,11 @@ function Alerts() {
     window.loading = self.loading;
     window.working = self.working;
 
-	window.catchError = promise => {
+	/*window.catchError = promise => {
 		self.loading(); // redefine global catchError with loading / working
 		return promise.then(data => [undefined, data]).catch(err => [err]).finally(self.working);
 	}
-	window.catchPromise = async fn => await window.catchError(new Promise(fn));
+	window.catchPromise = async fn => await window.catchError(new Promise(fn));*/
 
 	window.showAlerts = (xhr, status, args) => { // PF hack => show all messages
 		if (xhr && (status == "success")) // is PF server error xhr?

@@ -2,16 +2,12 @@
 import i18n from "../../i18n/langs.js";
 import firma from "../../xeco/model/Firma.js";
 import Solicitud from "../../xeco/model/Solicitud.js";
-import lineas from "./Lineas.js";
 
 const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso", "factura de TTPP empresas" ];
 
 class Factura extends Solicitud {
 	build = () => new Factura(); // Override create a new instance
 	getUrl = () => "/uae/fact"; // Override url base path
-	getLineas = () => lineas; // lineas de factura
-	setLineas = table => { lineas.setData(table.getData()); return this; }
-	getLinea = lineas.getLinea;
 
 	getTitulo = () => TITULOS[this.getTipo()] || TITULOS[1];
 	isFactura = () => (this.getTipo() == 1);
@@ -51,7 +47,7 @@ class Factura extends Solicitud {
 	setFace = val => this.set("face", val); // update plataforma / FACe
 
 	row = data => {
-		let acciones = this.getTplActions(data);
+		let acciones = Solicitud.prototype.row.call(this, data);
 		return `<tr class="tb-data">
 			<td class="text-center"><a href="#view">${data.codigo}</a></td>
 			<td class="hide-sm text-upper1">${this.getTitulo()}</td>
@@ -68,7 +64,7 @@ class Factura extends Solicitud {
 	}
 
 	validate = data => { 
-		const valid = i18n.getValidators();
+		const valid = i18n.getValidation(); // continue validation
 		valid.isKey("acTercero", data.idTer, "Debe seleccionar un tercero válido"); // autocomplete required key
 		valid.isKey("delegacion", data.idDel, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
 		valid.isKey("acOrganica", data.idOrg, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
@@ -84,7 +80,7 @@ class Factura extends Solicitud {
 			valid.word20("og", data.og).word9("oc", data.oc).word9("ut", data.ut).word10("op", data.op);
 		if (this.isPlataforma())
 			valid.size("og", data.og);
-		return lineas.validate();
+		return valid.ok();
 	}
 }
 

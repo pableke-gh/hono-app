@@ -5,11 +5,10 @@ import i18n from "../../i18n/langs.js";
 
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
-import sf from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/SolicitudForm.js";
 
 function Partida030() {
 	const self = this; //self instance
-	const form = sf.getForm();
 	let _ej030;
 
 	const acOrg030 = form.setAutocomplete("#acOrg030");

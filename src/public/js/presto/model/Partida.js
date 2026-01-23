@@ -1,10 +1,9 @@
 
 import sb from "../../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
-import Base from "../../xeco/model/Base.js";
 import presto from "./Presto.js";
 
-class Partida extends Base {
+class Partida {
 	isPrincipal = partida => (partida.mask & 1);
 	setPrincipal = partida => { partida.mask |= 1; }
 
@@ -40,7 +39,10 @@ class Partida extends Base {
 			<td class="text-center">${doc030}${remove}</td>
 		</tr>`;
 	}
-	getTable = () => ({ beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row });
+	getTable = () => ({
+		msgEmptyTable: "No existen partidas a incrementar asociadas a la solicitud",
+		beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row
+	});
 
 	validate = data => {
 		const valid = i18n.getValidators();

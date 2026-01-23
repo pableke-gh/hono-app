@@ -20,13 +20,13 @@
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</div>
-			<div class="hide ui-block-info ui-perfil" data-refresh="text-render">
+			<div class="hide ui-block-info form-refresh" data-refresh="text-render">
 				[<span class="icon">@getColectivo;</span>]
 				<a href="mailto:@getEmailInteresado;" title="#{msg['tit.enviar.correo']}"><i class="fa fa-regular fa-envelope fa-lg icon"></i></a>
 			</div>
 		</label>
 
-		<label id="add-org" class="ui-blocks ui-perfil" data-refresh="is-add-org">
+		<label id="add-org" class="ui-blocks form-refresh" data-refresh="is-add-org">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.ppto']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
@@ -46,7 +46,7 @@
 			<thead>
 				<tr>
 					<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
-					<th class="ui-perfil form-refresh" data-refresh="isEditable"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
+					<th class="form-refresh" data-refresh="isEditable"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
 					<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
 					<th>#{msg['lbl.responsable.gasto']}</th><th>#{msg['lbl.nombre.apellidos']}</th>
 					<th class="no-print"></th>
@@ -59,10 +59,10 @@
 		</table>
 		</div>
 
-		<div class="notice notice-info ui-perfil" data-refresh="isXsu"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
-		<div class="notice notice-info ui-perfil" data-refresh="is1su"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
-		<div class="notice notice-info ui-perfil" data-refresh="isX83"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
-		<div class="notice notice-info ui-perfil" data-refresh="is183"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="isXsu"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is1su"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="isX83"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
+		<div class="notice notice-info form-refresh" data-refresh="is183"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
 		<div class="notice notice-error"><h:outputText value="#{msg['uae.irse.tab0.org.info']}" escape="false" /></div>
 
 		<label class="ui-blocks">

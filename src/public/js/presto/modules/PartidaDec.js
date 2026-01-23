@@ -1,13 +1,11 @@
 
 import api from "../../components/Api.js"
-import pInc from "./partidaInc.js";
 import presto from "../model/Presto.js";
-import sf from "../../xeco/modules/SolicitudForm.js";
+import pInc from "./partidaInc.js";
+import partidas from "./partidas.js";
+import form from "../../xeco/modules/SolicitudForm.js";
 
 function PartidaDec() {
-	const form = sf.getForm(); // form component
-	const partidas = pInc.getTable(); // table partidas
-
 	const fnAutoloadErr = msg => { _orgDec.isItem() && form.showError(msg); }
 	const fnAutoloadL83 = data => { data ? pInc.autoload(data, _ecoDec.getItem(0).imp) : fnAutoloadErr("Aplicación AIP no encontrada en el sistema."); }
 	const fnAutoloadAnt = data => { data ? pInc.autoload(data, Math.max(0, data.ih)) : fnAutoloadErr("No se ha encontrado el anticipo en el sistema."); }

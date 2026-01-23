@@ -50,15 +50,13 @@
 					</c:if>-->
 					<optgroup label="Gasto Extraordinario" class="form-refresh" data-refresh="isPaso8">
 						<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
-						<c:if test="#{not iris.irse.form.mun}">
-							<option value="302"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
-						</c:if>
-						<c:if test="#{iris.irse.rutas.llegadaCena and iris.irse.gastos.extraCena}">
+						<option value="302" class="form-refresh" data-refresh="isMun"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
+						<!--<c:if test="#{iris.irse.rutas.llegadaCena and iris.irse.gastos.extraCena}">
 							<option value="303"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
 						</c:if>
 						<c:if test="#{iris.irse.form.alu or iris.irse.form.ext}">
 							<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
-						</c:if>
+						</c:if>-->
 					</optgroup>
 				</select>
 				<div class="ui-errtip"></div>

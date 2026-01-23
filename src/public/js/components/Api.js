@@ -86,9 +86,12 @@ function Api() {
 		if (!objectURL) // object URL is required
 			return fnError(res, "Invalid URL file.").finally(alerts.working);
 		// if filename is not defined, try to get it from Content-Disposition header
-		self.download(objectURL, filename || res.headers.get("Content-Disposition")?.split('"')[1]);
-		URL.revokeObjectURL(objectURL); // revoke the object URL to free up memory at the end
-		return Promise.resolve().finally(alerts.working); // return a resolve promise
+		filename = filename || res.headers.get("Content-Disposition")?.split('"')[1];
+		filename && self.download(objectURL, filename); // filename => direct download file
+		const promise = Promise.resolve(objectURL); // create resolved promise
+		// revoke the object URL to free up memory at the end of the end of promise chain
+		setTimeout(() => { promise.finally(() => { URL.revokeObjectURL(objectURL); alerts.working(); }); }, 1);
+		return promise;
 	}
 
 	this.send = async (url, params) => {

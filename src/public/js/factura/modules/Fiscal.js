@@ -1,12 +1,11 @@
 
 import api from "../../components/Api.js"
 import factura from "../model/Factura.js";
-import lineas from "./lineas.js";
-import sf from "../../xeco/modules/SolicitudForm.js";
+import lineas from "./lineaAdd.js";
+import form from "../../xeco/modules/SolicitudForm.js";
 import fiscalidad from "../data/fiscal.js"
 
 function Fiscal() {
-	const form = sf.getForm();
 	const delegaciones = form.setDatalist("#delegacion");
 	const fnChange = item => form.setValue("#idDelegacion", item.value); 
 	delegaciones.setEmptyOption("Seleccione una delegación").setChange(fnChange);

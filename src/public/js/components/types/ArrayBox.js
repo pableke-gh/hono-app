@@ -10,37 +10,35 @@ const fnEachPrev = (arr, fn) => {
     return arr;
 }
 
-function ArrayBox() {
-	//const self = this; //self instance
+export default class ArrayBox {
+	size = sb.size;
+	isEmpty = sb.isEmpty;
+	parse = fnParse;
+	split = sb.split;
+	eachPrev = fnEachPrev;
+	get = (arr, i) => arr ? arr[i] : null;
+	last = arr => arr ? arr.last() : null;
+	reset = arr => arr ? fnReset(arr) : [];
+	at = (arr, index) => arr ? arr.at(index) : null;
+	shuffle = arr => arr.sort(() => (0.5 - Math.random()));
+	findIndex = (arr, fn) => arr ? arr.findIndex(fn) : -1;
+	indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
+	unique = arr => arr.filter((value, i) => (arr.indexOf(value) === i));
+	distinct = (arr, fn) => arr.filter((o1, i) => (arr.findIndex(o2 => fn(o1, o2)) === i));
 
-	this.size = sb.size;
-	this.isEmpty = sb.isEmpty;
-	this.parse = fnParse;
-	this.split = sb.split;
-	this.eachPrev = fnEachPrev;
-	this.get = (arr, i) => arr ? arr[i] : null;
-	this.last = arr => arr ? arr.last() : null;
-	this.reset = arr => arr ? fnReset(arr) : [];
-	this.at = (arr, index) => arr ? arr.at(index) : null;
-	this.shuffle = arr => arr.sort(() => (0.5 - Math.random()));
-	this.findIndex = (arr, fn) => arr ? arr.findIndex(fn) : -1;
-	this.indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;
-	this.unique = arr => arr.filter((value, i) => (arr.indexOf(value) === i));
-	this.distinct = (arr, fn) => arr.filter((o1, i) => (arr.findIndex(o2 => fn(o1, o2)) === i));
-
-    this.multisort = function(arr, fnSorts, dirs) {
+	multisort = (arr, fnSorts, dirs) => {
 		dirs = dirs || []; // directions
 		arr.sort((a, b) => {
-            let result = 0; // compare result
-            for (let i = 0; (i < fnSorts.length) && (result == 0); i++) {
-                const fn = fnSorts[i]; // cmp function = [-1, 0, 1]
-                result = (dirs[i] == "desc") ? fn(b, a) : fn(a, b);
-            }
-            return result;
-        });
+			let result = 0; // compare result
+        	for (let i = 0; (i < fnSorts.length) && (result == 0); i++) {
+				const fn = fnSorts[i]; // cmp function = [-1, 0, 1]
+				result = (dirs[i] == "desc") ? fn(b, a) : fn(a, b);
+        	}
+        	return result;
+    	});
 	}
 
-	this.render = (data, fnRender, resume) => {
+	render = (data, fnRender, resume) => {
 		const status = {};
 		resume = resume || status;
 		status.size = resume.size = data.length;
@@ -60,5 +58,3 @@ JSON.read = fnParse;
 Array.prototype.reset = function () { return fnReset(this); }
 Array.prototype.eachPrev = function(fn) { return fnEachPrev(this, fn); }
 Array.prototype.last = function() { return this.at(-1); }
-
-export default new ArrayBox();

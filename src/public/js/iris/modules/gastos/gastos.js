@@ -13,11 +13,10 @@ import gp5 from "./gasto.js";
 import actividad from "../perfil/actividad.js";
 import rmaps from "../rutas/rutasMaps.js";
 import resumen from "../resumen.js";
-import sf from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/SolicitudForm.js";
 
 function Gastos() {
 	const self = this; //self instance
-	const form = sf.getForm(); // form component
 	const _tblGastos = form.setTable("#tbl-gastos", gasto.getTable());
 
 	this.getNochesPendientes = () => (rutas.getNumNoches() - gastos.getNumPernoctas());
