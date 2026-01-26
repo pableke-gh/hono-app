@@ -7,11 +7,13 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
+<div class="#{iris.irse.form.cssIrpf}">
 	<h3>
 	<a id="p6-irpf" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
 		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.irpf']}" escape="false" />: <b class="texterr">#{iris.irse.form.retencionIrpfI18n} €</b>
 	</a>
 	</h3>
+
 	<table id="gastos" class="info-p6-irpf hide table-xs">
 		<thead>
 		<tr>
@@ -32,4 +34,5 @@
 			</tr>
 		</tbody>
 	</table>
+</div>
 </html>

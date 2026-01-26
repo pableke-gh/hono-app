@@ -112,7 +112,7 @@ export default function(tab) {
 		const _tblRutasGasto = form.setTable("#rutas-out", ruta.getTable()); // itinerario
 		tabs.setViewEvent(12, () => _tblRutasGasto.render(rutas.getRutasUnlinked()));
 		tabs.setAction("rtog", () => {
-			const rutas = _tblRutasGasto.querySelectorAll(":checked");
+			const rutas = _tblRutasGasto.getBody().$$(":checked");
 			if (!rutas || !rutas.length) // no hay rutas seleccionadas
 				return form.showError("errLinkRuta"); // mensaje de error
 			const data = form.getData(".ui-gasto"); // datos del sub-formulario

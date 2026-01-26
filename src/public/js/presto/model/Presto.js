@@ -16,7 +16,7 @@ class Presto extends Solicitud {
 	isAfc = () => (this.getTipo() == 8);
 	is030 = () => (this.isUae() && (this.isGcr() || this.isAnt()));
 
-	isIntegrable() { return !this.isAfc() && super.isIntegrable(); }
+	isIntegrable = () => (!this.isAfc() && Solicitud.prototype.isIntegrable.call(this));
 	isReactivable = () => (this.isUae() && !this.isAfc() && !this.isFce() && this.isErronea());
 	isImpCd = () => (this.isEditable() && !this.isAnt());
 	getAdjunto = () => this.get("file");

@@ -109,7 +109,6 @@ function Tabs() {
 	this.reset = ids => {
 		const temp = ids ? ids.map(self.getTab) : tabs; // get tabs array
 		temp.forEach(tab => { delete tab.dataset.loaded; }); // reset loaded events
-		_tabIndex = -1; // no tab selected
 		return self;
 	}
 

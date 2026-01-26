@@ -22,9 +22,6 @@ function IrseTabs() {
 
 	this.viewTab5 = tab => { // View tab 5: gastos
 		const eTipoGasto = form.getInput("#tipo-gasto"); //select tipo
-		if (!eTipoGasto)
-			return; // modo solo consulta
-	
 		const isTaxi = () => (eTipoGasto.value == "4"); //ISU y taxi
 		const isPernocta = () => (eTipoGasto.value == "9"); //Tipo pernocta
 		const isDoc = () => ["201", "202", "204", "205", "206"].includes(eTipoGasto.value);

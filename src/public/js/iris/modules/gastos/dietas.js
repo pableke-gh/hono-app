@@ -1,4 +1,5 @@
 
+import Table from "../../../components/Table.js";
 import dt from "../../../components/types/DateBox.js";
 
 import iris from "../../model/Iris.js";
@@ -9,30 +10,31 @@ import dieta from "../../model/gasto/Dieta.js";
 import perfil from "../perfil/perfil.js";
 import form from "../../../xeco/modules/SolicitudForm.js";
 
-function Dietas() {
-	const self = this; //self instance
-	const _tblDietas = form.setTable("#tbl-dietas", dieta.getTable());
+class Dietas extends Table {
+	constructor() {
+		super(form.querySelector("#tbl-dietas"), dieta.getTable());
+	}
 
-	this.getGastos = gastos.getGastos; // array de gastos
-	this.getDietas = gastos.getDietas; // array de gastos tipo dieta
-	this.isChanged = _tblDietas.isChanged; // la tabla dietas ha cambiado
-	this.setChanged = _tblDietas.setChanged; // tabla de dietas actualizada
-	this.getImporte = () => _tblDietas.getProp("percibir"); // importe total de dietas (imp. a percibir)
-	this.getDietasByPais = () => Map.groupBy(_tblDietas.getData(), dieta => dieta.cod); // preserve/guarantee order keys
-	this.getTotalDias = dietas => dietas.reduce((sum, gasto) => (sum + dieta.getDieta(gasto)), 0); // acumulado de dias
+	getGastos = gastos.getGastos; // array de gastos
+	getDietas = gastos.getDietas; // array de gastos tipo dieta
+	setDietas = () => this.render(gastos.getDietas());
+	getImporte = () => this.getProp("percibir"); // importe total de dietas (imp. a percibir)
+	getDietasByPais = () => Map.groupBy(this.getData(), dieta => dieta.cod); // preserve/guarantee order keys
+	getTotalDias = dietas => dietas.reduce((sum, gasto) => (sum + dieta.getDieta(gasto)), 0); // acumulado de dias
 
-	// añado la nueva dieta a la lista de gastos
-	const fnAddDieta = (row, fecha, tipo, grupo) => { gastos.push(dieta.set(row, fecha, tipo, grupo)); return row; }
-	const fnCreateDiaIntermedio = (fecha, tipo, grupo) => fnAddDieta(dieta.createDiaIntermedio(), fecha, tipo, grupo);
-	this.build = () => {
+	build() {
 		gastos.removeByTipo(dieta.getTipo()); // remove gastos de tipo dieta
 		if (perfil.isEmpty() || perfil.isRutaUnica() || rutas.isEmpty())
-			return _tblDietas.reset(); // tabla vacia
+			return super.reset(); // tabla vacia
 
 		const tipo = gastos.getTipoDieta();
 		const grupo = gastos.getGrupoDieta();
 		const fDieta = dt.trunc(rutas.salida());
 		const fMax = dt.trunc(rutas.llegada());
+
+		// añado la nueva dieta a la lista de gastos
+		const fnAddDieta = (row, fecha, tipo, grupo) => { gastos.push(dieta.set(row, fecha, tipo, grupo)); return row; }
+		const fnCreateDiaIntermedio = (fecha, tipo, grupo) => fnAddDieta(dieta.createDiaIntermedio(), fecha, tipo, grupo);
 
 		// primer día
 		if (dt.lt(fDieta, fMax) || dt.inDay(fDieta, fMax)) {
@@ -73,25 +75,19 @@ function Dietas() {
 		}
 
 		// update table view dietas
-		_tblDietas.render(gastos.getDietas());
-		return self;
-	}
-window.dietas = self; // debug
-
-	this.setDietas = () => {
-		_tblDietas.render(gastos.getDietas()).setChanged();
+		return super.render(gastos.getDietas());
 	}
 
-	const fnChangeDietas = (dieta, element) => {
-		dieta.imp1 = +element.value;
-		_tblDietas.refresh();
-		form.refresh(iris);
-	}
+	init = () => {
+		this.setChange("dietas", (dieta, element) => {
+			dieta.imp1 = +element.value;
+			this.refresh();
+			form.refresh(iris);
+		});
 
-	this.init = () => {
-		_tblDietas.setChange("dietas", fnChangeDietas);
-		iris.getImpDietas = self.getImporte;
-		form.set("is-dietas", _tblDietas.size);
+		iris.getImpDietas = this.getImporte;
+		form.set("is-dietas", this.size);
+		window.dietas = this; // debug
 	}
 }
 

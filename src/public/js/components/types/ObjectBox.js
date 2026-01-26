@@ -10,7 +10,7 @@ Object.copy = (output, data, keys) => {
 		Object.assign(output, data);
 	return output;
 };
-Object.clone = (data, keys)  => this.copy({}, data, keys);
+Object.clone = (data, keys)  => Object.copy({}, data, keys);
 Object.clear = (data, keys) => {
 	if (keys)
 		keys.forEach(key => delete data[key]);

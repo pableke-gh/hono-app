@@ -58,14 +58,17 @@ coll.ready(() => {
 		rutas.init(form); // rutas asociadas a la solicitud
 		organicas.init(form); // tabla de organicas
 		form.setval("#idses", window.IRSE.id).setFirmas(coll.parse(args.firmas)).refresh(irse); // configure view
-		tabs.reset([0, 1, 3, 5, 6, 9, 12]).load(form.getForm()).nextTab(tab ?? window.IRSE.tab); // reload tabs
+		tab = tab ?? window.IRSE.tab; // get next tab to show
+		tabs.reset([ 0, 1, 3, 5, 6, 9 ]).load(form.getForm()); // reload tabs from server
+		tabs.isActive(tab) ? tabs.setActive(tab) : tabs.nextTab(tab); // IMPORTANTE! tab5 autoreload tab
 		window.showAlerts(xhr, status, args); // alerts
 	}
 
-	//Global IRSE components
+	// Global initializations
 	window.ip = perfil;
 	window.ir = rutas;
-
+	irse.getNumRutasVp = () => (!perfil.isMun() && rutas.getNumRutasVp()); // show / hide rutas con vehiculo propio
+	
 	// Hack old DomBox Module
 	dom.confirm = i18n.confirm; // for remove action
 	dom.getData = selector => form.getData(selector); // parse form data

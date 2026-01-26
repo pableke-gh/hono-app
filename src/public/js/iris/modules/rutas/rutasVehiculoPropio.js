@@ -1,38 +1,40 @@
 
+import Table from "../../../components/Table.js";
 import i18n from "../../i18n/langs.js";
+
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaVehiculoPropio.js";
 import rutas from "../../model/ruta/Rutas.js";
 import form from "../../../xeco/modules/SolicitudForm.js";
 
-function RutasVehiculoPropio() {
-	const self = this; //self instance
-	const _tblRutasVp = form.setTable("#tbl-rutas-vp", ruta.getTable()); // itinerario
-
-	this.getImporte = () => _tblRutasVp.getProp("impKm");
-	this.isJustifiKm = () => _tblRutasVp.getProp("justifi");
-	this.render = () => { _tblRutasVp.render(rutas.getRutasVehiculoPropio()); }
-
-	const fnChangeKm = (data, el) => {
-		data.km1 = i18n.toFloat(el.value);
-		_tblRutasVp.refresh(); // update table
-	}
-	const fnAfterRenderVp = resume => {
-		ruta.afterRender(resume);
-		form.refresh(iris);
+class RutasVehiculoPropio extends Table {
+	constructor() {
+		super(form.querySelector("#tbl-rutas-vp"), ruta.getTable());
 	}
 
-	this.validate = data => {
+	getImporte = () => this.getProp("impKm");
+	isJustifiKm = () => this.getProp("justifi");
+	// super keyword simulation for arrow function
+	render = () => Table.prototype.render.call(this, rutas.getRutasVehiculoPropio());
+
+	validate = data => {
 		const valid = form.getValidators();
-		const resume = _tblRutasVp.getResume();
+		const resume = this.getResume();
 		if (resume.justifi) // justifi si distancia modificada al alza
 			valid.size("justifiKm", data.justifiKm, "errJustifiKm");
 		return valid.isOk();
 	}
- 
-	this.init = () => {
-		_tblRutasVp.setAfterRender(fnAfterRenderVp).setChange("km1", fnChangeKm);
-		form.set("is-rutas-vp", _tblRutasVp.size).set("is-justifi-km", self.isJustifiKm);
+
+	init = () => {
+		form.set("is-rutas-vp", this.size).set("is-justifi-km", this.isJustifiKm);
+		this.setAfterRender(resume => {
+			ruta.afterRender(resume);
+			form.refresh(iris);
+		});
+		this.setChange("km1", (data, el) => {
+			data.km1 = i18n.toFloat(el.value);
+			refresh(); // update table
+		});
 	}
 }
 

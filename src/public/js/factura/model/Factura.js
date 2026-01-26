@@ -80,7 +80,7 @@ class Factura extends Solicitud {
 			valid.word20("og", data.og).word9("oc", data.oc).word9("ut", data.ut).word10("op", data.op);
 		if (this.isPlataforma())
 			valid.size("og", data.og);
-		return valid.ok();
+		return valid.isOk();
 	}
 }
 

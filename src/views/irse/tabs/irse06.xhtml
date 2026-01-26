@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 	<p:outputPanel styleClass="card-xeco update-irse">
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab6.tit']}" escape="false" /></h2>
 
@@ -15,31 +15,15 @@
 			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.ac']}" escape="false" />: <b class="text-green">#{iris.irse.gastos.totAcI18n} €</b></h3>
 		</div>
 
-		<c:choose>
-			<c:when test="#{iris.irse.form.mun}">
-				<div class="navbar">
-					<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green">#{iris.irse.gastos.kmCalcI18n} €</b></h3>
-				</div>
-			</c:when>
-			<c:otherwise>
-				<ui:include src="irse06_km.xhtml"></ui:include>
-			</c:otherwise>
-		</c:choose>
-
+		<div class="navbar form-refresh" data-refresh="isMun">
+			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green">#{iris.irse.gastos.kmCalcI18n} €</b></h3>
+		</div>
+		<ui:include src="irse06_km.xhtml"></ui:include>
 		<ui:include src="irse06_transporte.xhtml"></ui:include>
 		<ui:include src="irse06_pernoctas.xhtml"></ui:include>
-
-		<div class="#{iris.irse.perfil.cssTab7}">
-			<ui:include src="irse07.xhtml"></ui:include>
-		</div>
-
-		<c:if test="#{iris.irse.perfil.tab8}">
-			<ui:include src="irse08.xhtml"></ui:include>
-		</c:if>
-
-		<div class="#{iris.irse.form.cssIrpf}">
-			<ui:include src="irse06_irpf.xhtml"></ui:include>
-		</div>
+		<ui:include src="irse07.xhtml"></ui:include>
+		<ui:include src="irse08.xhtml"></ui:include>
+		<ui:include src="irse06_irpf.xhtml"></ui:include>
 	</p:outputPanel>
 
 	<p:outputPanel styleClass="update-irse">

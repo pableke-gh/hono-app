@@ -52,12 +52,13 @@ class Iris extends Solicitud {
 	isConflicto = () => (this.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
 	isPaso8 = () => (this.getMask() & 4); // paso 8 activado manualmente por la uae
 	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
+	getNumRutasVp = globalThis.void; // redefined by index module
 
 	// render steps functions for tabs
 	getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), this);
 	getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isIsu()).get("lblPasos"), this);
 	getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), this);
-	getPasoMaps = globalThis.void;
+	getPasoMaps = globalThis.void; // redefined by perfil module
 
 	row = data => {
 		let acciones = Solicitud.prototype.row.call(this, data);

@@ -39,7 +39,7 @@ export default class Table {
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
-	setTable = table => {
+	setTable(table) {
 		if (!table) return this; // nada que hacer
 		this.#table = globalThis.isstr(table) ? $1(table) : (table || document.createElement("table"));
 		this.#tHead = this.#table.tHead || this.#table.createTHead(); //header element
@@ -65,7 +65,7 @@ export default class Table {
 			const fnAsc = (a, b) => ((a[column] < b[column]) ? -1 : ((a[column] > b[column]) ? 1 : 0)); // Default sort
 			const fnAux = this.#opts["sort-" + column] || fnAsc; // Load specific sort function
 			const fnSort = (dir == sortDescClass) ? ((a, b) => fnAux(b, a)) : fnAux; // Set direction
-			this.#fnRender(this.#rows.sort(fnSort)); // render sorted table
+			this.render(this.#rows.sort(fnSort)); // render sorted table
 			ev.preventDefault();
 		});
 		return this;
@@ -141,7 +141,7 @@ export default class Table {
 			ev.preventDefault(); // avoid navigation
 		});
 	}
-    #fnView = data => {
+	view(data) {
 		this.#index = -1; // clear previous selects
 		this.#rows = data || []; // data to render on table
 		this.#RESUME.size = this.#rows.length; // init. resume
@@ -158,26 +158,24 @@ export default class Table {
 		tabs.setHeight(); // resize iframe height
 		return this;
 	}
-    #fnRender = data => {
-		this.#fnView(data); // render table data
+	render(data) {
+		this.view(data); // render table data
 		this.#tBody.rows.forEach(this.#setRowEvents); // row listeners
 		return this.setChanged(true); // rendered force indicator
 	}
 
-	view = this.#fnView;
-	render = this.#fnRender;
-	reset = () => this.#fnView();
-	reload = () => this.#fnRender(this.#rows);
-	push = row => { this.#rows.push(row); return this.#fnRender(this.#rows); } // Push data and render
+	reset = this.view; // reset table
+	reload = () => this.render(this.#rows);
+	push = row => { this.#rows.push(row); return this.reload(); } // Push data and render
 	add = row => { delete row.id; return this.push(row); } // Force insert => remove PK
 	insert = (row, id) => { row.id = id; return this.push(row); } // New row with PK
-	update = data => { Object.assign(this.getCurrent(), data); return this.#fnRender(this.#rows); }
+	update = data => { Object.assign(this.getCurrent(), data); return this.reload(); }
 	replace(data, i) { this.#rows[i ?? this.#index] = data; return this; } // replace current row position
 	save = (row, id) => (id ? this.insert(row, id) : this.update(row)); // Insert or update
 
 	#fnRefresh = (el, data) => { el.$$(this.#opts.refreshSelector).refresh(data, this.#opts); return this; } // render table elements
 	refreshHeader = data => this.#fnRefresh(this.#tHead, data || this.#RESUME); // refresh table header
-	refreshRow = data => this.#fnRefresh(this.#tBody.rows[this.#index], data || this.getCurrent()); // refresh a row
+	refreshRow = data => this.#fnRefresh(this.getCurrentRow(), data || this.getCurrent()); // refresh a row
 	refreshBody = () => { this.#tBody.rows.forEach((tr, i) => this.#fnRefresh(tr, this.#rows[i])); return this.setChanged(true); } // refresh each row
 	refreshFooter = () => this.#fnRefresh(this.#tFoot, this.#RESUME); // refresh footer only
 	refresh = () => this.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer

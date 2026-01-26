@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline form-refresh hide" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
@@ -75,6 +75,8 @@
 			</div>
 		</div>
 
+		<!-- Tabla de rutas -->
+		<p:outputPanel styleClass="update-irse">
 		<table id="rutas" class="tb-xeco table-xs rutas-maps">
 			<thead>
 				<tr>
@@ -120,11 +122,13 @@
 				</tr>
 			</tfoot>
 		</table>
+		</p:outputPanel>
 
 		<br/>
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab2.info.principal']}" escape="false" /></div>
 	</div>
 
+	<!-- Botones -->
 	<p:outputPanel styleClass="update-irse">
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="57">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>

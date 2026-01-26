@@ -143,14 +143,14 @@ function Gasto() {
 	this.row = (data, status, resume) => {
 		self.rowCalc(data, resume);
 		const link = `<a href="#adjunto" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>`;
-		const remove = iris.isEditable() ? `<a href="#unload"><i class="fas fa-times action text-red resize"></i></a>` : "";
+		const remove = iris.isEditable() ? `<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>` : "";
 
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº">${status.count}</td>
 			<td data-cell="${i18n.get("lblTipoGasto")}">${self.getDescSubtipo(data)}</td>
 			<td data-cell="${i18n.get("lblDescObserv")}">${self.getDescGasto(data)}</td>
 			<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>
-			<td data-cell="${i18n.get("lblImporte")}">${i18n.isoFloat(data.imp1)} €</td>
+			<td data-cell="${i18n.get("lblImporte")}">${i18n.isoFloat(data.imp1) ?? "-"} €</td>
 			<td data-cell="${i18n.get("lblAcciones")}" class="no-print"><span>${link}${remove}</span></td>
 		</tr>`;
 	}

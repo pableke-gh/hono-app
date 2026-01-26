@@ -206,7 +206,7 @@ export default class Form {
 	getOptionText = selector => sbx.getOptionText(this.#fnQueryInput(selector));
 	getOptionTextByValue = (selector, value) => sbx.getOptionTextByValue(this.#fnQueryInput(selector), value);
 	select = (selector, mask) => { sbx.select(this.#fnQueryInput(selector), mask); return this; }
-	setDatalist = (selector, opts) => new Datalist(this.#form.$1(selector), opts); // select / optgroup
+	setDatalist = (selector, opts) => new Datalist(this.#fnQueryInput(selector), opts); // select / optgroup
 	setItems = (selector, items, emptyOption) => this.#fnUpdate(selector, el => sbx.setItems(el, items, emptyOption));
 	setDataOptions = (selector, data, emptyOption) => this.#fnUpdate(selector, el => sbx.setData(el, data, emptyOption));
 	setLabels = (selector, labels, emptyOption) => this.#fnUpdate(selector, el => sbx.setLabels(el, labels, emptyOption));
@@ -237,6 +237,7 @@ export default class Form {
 
 	onChange = (selector, fn) => this.#fnAction(selector, el => this.#fnChange(el, fn));
 	onChangeInputs = (selector, fn) => this.#fnUpdate(selector, el => this.#fnChange(el, fn));
+	setChangeInput = (selector, fn) => this.#fnAction(selector, el => { el.onchange = fn; });
 	onChangeInput = this.onChange; // synonym
 
 	onChangeFile = (selector, fn) => this.#fnAction(selector, el => input.file(el, fn));

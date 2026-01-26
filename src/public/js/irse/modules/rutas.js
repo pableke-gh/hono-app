@@ -144,10 +144,9 @@ function IrseRutas() {
 			resume.sizeOut = resume.out.length; // size table footer
 			resume.vp = rutas.filter(ruta => (ruta.desp == 1)); //rutas en vp
 			resume.sizeVp = resume.vp.length; // size table footer
-	
+
 			// Actualizo las tablas relacionadas
 			dom.table("#rutas-out", resume.out, resume, STYLES).table("#vp", resume.vp, resume, STYLES);
-			form.querySelectorAll(".rutas-vp").toggle("hide", self.getNumRutasVp() < 1); // show / hide rutas con vehiculo propio
 			resume.size = rutas.length; // save global size
 			return fnRecalc();
 		}
@@ -157,22 +156,16 @@ function IrseRutas() {
 			form.setval("#etapas", divData.innerText); // load input value
 		}
 
-		fnResume(); // Actualizo rutas e importes
 		if (perfil.isAutA7j() || perfil.is1Dia()) {
 			const ruta = Object.assign({}, getLoc(), rutas[0]);
 			rutas[0] = ruta; // Save new data (routes.length = 1)
-
 			form.afterChange(ev => { fnResume(); fnSave(); }) // Any input change => save all rutas
 				.setVisible(".grupo-matricula", ruta.desp == 1) // grupo asociado al vehiculo propio
 				.setField("#origen", ruta.origen, ev => { ruta.origen = ruta.destino = ev.target.value; })
-				.setField("#desp", ruta.desp, ev => { ruta.desp = +ev.target.value; })
-				.setField("#dist", ruta.km1, ev => { ruta.km1 = ruta.km2 = i18n.toFloat(ev.target.value); })
-				.setField("#f2", ruta.dt2, ev => { ruta.dt2 = sb.endDay(ev.target.value); })
-				.setField("#f1", ruta.dt1, ev => {
-					ruta.dt1 = ev.target.value;
-					//si no hay f2 considero el dia completo de f1 => afecta a las validaciones
-					ruta.dt2 = form.getInput("#f2") ? ruta.dt2 : sb.endDay(ruta.dt1);
-				});
+				.setField("#desp", ruta.desp, ev => { ruta.desp = +ev.target.value; }) // tipo de transporte
+				.setField("#dist", ruta.km1, ev => { ruta.km1 = ruta.km2 = i18n.toFloat(ev.target.value); }) // sync km2 with km1
+				.setField("#f1", ruta.dt1, ev => { ruta.dt1 = ev.target.value; ruta.dt2 = sb.endDay(ruta.dt1); }); // sync f2 with f1 at the end of the day
+			fnResume(); // Actualizo importes
 		}
 		else {
 			// Table Events handlers paso 2 y 6
@@ -204,12 +197,10 @@ function IrseRutas() {
 		//load rutas vp/out and autoload fechas del itinerario (paso 5 y 6)
 		dom.table("#rutas", rutas, resume, STYLES) // render rutas
 			.onRenderTable("#rutas", fnSave); // save after first render
-
 		form.setDateRange("#f1", "#f2").delAttr("#f1", "max") // Rango de fechas
-			.onChangeInput("#f1", ev => form.setval("#f2", ev.target.value))
-			.onChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))
+			.setChangeInput("#f1", ev => form.setval("#f2", ev.target.value))
+			.setChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))
 			.onChangeInput("#matricula", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
-		return self;
 	}
 }
 
