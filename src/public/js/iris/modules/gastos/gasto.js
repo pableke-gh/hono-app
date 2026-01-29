@@ -60,7 +60,7 @@ export default function(tab) {
 
 	// validación del tipo de gasto
 	const fnValidate = data => {
-		const valid = form.getValidators();
+		const valid = i18n.getValidators();
 		if (isDoc()) // doc only
 			return valid.size500("txtGasto", data.txtGasto, "errDoc").isOk();
 		if (isExtra() || isTaxi()) // extra info (paso 8) o ISU+taxi

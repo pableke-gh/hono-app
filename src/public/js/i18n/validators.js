@@ -1,18 +1,16 @@
 
 import Msgs from "./msgs.js";
 import banks from "./validators/banks.js";
-import personId from "./validators/personId.js";
 
 // RegEx for validating
 /*const RE_IPv4 = /^([0-9]{1,3}\.){3}[0-9]{1,3}(\/([0-9]|[1-2][0-9]|3[0-2]))?$/;
 const RE_IPv6 = /^([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}$/;
 const RE_URL = /(http|fttextp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;*/
 
-class Validators extends Msgs {
+export default class Validators extends Msgs {
 	#sysdate = (new Date()).toISOString();
 
 	// read only instance validators
-	getPersonId = () => personId;
 	getBanks = () => banks;
 
 	gt = (name, value, min, msgtip, msg) => { // required gt min
@@ -166,5 +164,3 @@ class Validators extends Msgs {
 		return strength; //0 = bad, 1 = week, 2-3 = good, 4 = strong, 5 = very strong
 	}
 }
-
-export default new Validators();

@@ -18,7 +18,7 @@ class RutasVehiculoPropio extends Table {
 	render = () => Table.prototype.render.call(this, rutas.getRutasVehiculoPropio());
 
 	validate = data => {
-		const valid = form.getValidators();
+		const valid = i18n.getValidators();
 		const resume = this.getResume();
 		if (resume.justifi) // justifi si distancia modificada al alza
 			valid.size("justifiKm", data.justifiKm, "errJustifiKm");

@@ -14,6 +14,7 @@ export default class Base {
 	isLoaded = () => this.#data; // has data object
 	getData = () => this.#data; // get data object
 	setData(data) { this.#data = data; return this; }
+	validate = data => console.error("Validate method must be implemented!", data); // override in subclass
 
 	// arrow functions do not have their own this binding; instead, they lexically inherit the this value from the enclosing scope
 	// Even if the method is assigned to a variable or destructured, this context remains correctly bound to the instance => not suport super

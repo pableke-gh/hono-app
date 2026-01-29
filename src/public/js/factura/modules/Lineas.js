@@ -1,6 +1,6 @@
 
 import Table from "../../components/Table.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 
 import factura from "../model/Factura.js";
 import linea from "../model/Linea.js";

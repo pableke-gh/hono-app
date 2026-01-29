@@ -8,7 +8,8 @@ class Buzon extends Base {
 	#isFacturaOtros; #tipoPago; #justPagoRequired;
 
 	build = () => new Buzon(); // Override create a new instance
-	clone = () => this.build().setData(this.getData()); // Override
+	load = obj => this.setData(obj.getData());  // load from other instance
+	clone = () => this.build().load(this); // Override
 	setUser = () => this; // to be setted externally
 	getUrl = () => "/uae/buzon";
 

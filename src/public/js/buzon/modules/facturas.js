@@ -1,7 +1,7 @@
 
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 
 import buzon from "../model/Buzon.js";
 import form from "../../xeco/modules/SolicitudForm.js";

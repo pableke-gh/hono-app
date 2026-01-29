@@ -2,7 +2,6 @@
 import api from "../components/Api.js";
 import Form from "../components/forms/Form.js";
 import nav from "../components/Navigation.js";
-import tabs from "../components/Tabs.js";
 import sb from "../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
 

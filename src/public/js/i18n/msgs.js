@@ -1,5 +1,5 @@
 
-import lang from "../i18n/langs.js";
+import lang from "./langs.js";
 
 const KEY_ERR = "msgError"; // Error key
 

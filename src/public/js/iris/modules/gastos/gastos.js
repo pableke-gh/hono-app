@@ -2,6 +2,7 @@
 import Table from "../../../components/Table.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
+import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
@@ -50,7 +51,7 @@ class Gastos extends Table {
 			.set("is-ac", globalThis.none).set("is-irpf", globalThis.none); // no aplica para esta version
 
 		const fnPaso5 = tab => {
-			const valid = form.getValidators();
+			const valid = i18n.getValidators();
 			if (!this.getProp("adjuntos") && (rmaps.getTotKm() > 250))
 				valid.addRequired("adjuntos", "errDocFacturas"); // validacion de 250 km
 			if (valid.isError()) // valido el formulario

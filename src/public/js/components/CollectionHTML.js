@@ -1,7 +1,6 @@
 
 import dom from "./forms/DomBox.js";
 import coll from "./Collection.js";
-import i18n from "../i18n/langs.js";
 
 const HIDE_CLASS = "hide";
 const divNull = document.createElement("div");
@@ -139,6 +138,5 @@ HTMLElement.prototype.$$ = HTMLElement.prototype.querySelectorAll;
 coll.dom = dom; // add reference
 coll.ready = dom.ready; // shortcut
 coll.getDivNull = () => divNull; // readonly element
-coll.ready(i18n.setLanguage); // Load client language
 
 export default coll;

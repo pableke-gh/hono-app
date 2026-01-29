@@ -2,6 +2,7 @@
 import sb from "../../../components/types/StringBox.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
+import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/Ruta.js";
@@ -11,7 +12,7 @@ import form from "../../../xeco/modules/SolicitudForm.js";
 
 function RutasMun() {
 	//const self = this; //self instance
-	const valid = form.getValidators();
+	const valid = i18n.getValidators();
 
 	this.init = () => {
 		const elDesp = form.getInput("#desp-mun");

@@ -40,8 +40,8 @@ export default class Table {
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
 	setTable(table) {
-		if (!table) return this; // nada que hacer
-		this.#table = globalThis.isstr(table) ? $1(table) : (table || document.createElement("table"));
+		this.#table = globalThis.isstr(table) ? $1(table) : table;
+		this.#table = this.#table || document.createElement("table");
 		this.#tHead = this.#table.tHead || this.#table.createTHead(); //header element
 		this.#tBody = this.#table.tBodies[0] || this.#table.createTBody(); //body element
 		this.#tFoot = this.#table.tFoot || this.#table.createTFoot(); //footer element

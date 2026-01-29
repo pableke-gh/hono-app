@@ -9,11 +9,10 @@ import organica from "./model/Organica.js";
 
 import bu from "./modules/usuarios.js";
 import bf from "./modules/facturas.js";
-import SolicitudesList from "../xeco/modules/SolicitudesList.js";
+import list from "../xeco/modules/SolicitudesList.js";
 
 coll.ready(() => { // on load view
-	const list = new SolicitudesList(buzon);
-	const form = list.init().getForm();
+	const form = list.init(buzon).getForm();
 	const tAncladas = form.setTable("#ancladas").setRender(organica.row);
 	const tRecientes = form.setTable("#recientes", organica.getTableRecientes());
 

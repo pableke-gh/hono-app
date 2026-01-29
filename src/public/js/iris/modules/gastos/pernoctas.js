@@ -1,6 +1,7 @@
 
 import Table from "../../../components/Table.js";
 import dt from "../../../components/types/DateBox.js";
+import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
@@ -26,7 +27,7 @@ class Pernoctas extends Table {
 	setPernoctas = () => this.render(gastos.getPernoctas());
 
 	validate = data => {
-		const valid = form.getValidators();
+		const valid = i18n.getValidators();
 		valid.gt0("impGasto", data.impGasto)
 			.isDate("fMinGasto", data.fMinGasto).isDate("fMaxGasto", data.fMaxGasto);
 		if (data.fMinGasto > data.fMaxGasto)

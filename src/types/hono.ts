@@ -1,7 +1,7 @@
 
 import { Context } from "hono";
 import Msgs from "../public/js/i18n/msgs.js";
-import Validators from "../public/js/i18n/validators.js";
+import Validators from "../public/js/i18n/Validators.js";
 
 export declare class ContextMsgs extends Context {
     xhr: () => boolean;

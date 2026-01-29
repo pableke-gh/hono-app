@@ -1,7 +1,7 @@
 
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";

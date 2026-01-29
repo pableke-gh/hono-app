@@ -1,5 +1,5 @@
 
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 import firma from "../../xeco/model/Firma.js";
 import Solicitud from "../../xeco/model/Solicitud.js";
 

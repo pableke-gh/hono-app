@@ -3,7 +3,7 @@ import sb from "../components/types/StringBox.js";
 import coll from "../components/CollectionHTML.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js"
-import i18n from "../i18n/langs.js";
+import i18n from "./i18n/langs.js";
 
 import factura from "./model/Factura.js";
 import lineas from "./modules/lineas.js";

@@ -2,6 +2,7 @@
 import Table from "../../../components/Table.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
+import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaMaps.js";
@@ -48,7 +49,7 @@ class RutasMaps extends Table {
 		form.set("is-rutas-gt-1", fnRutasGt1).set("is-editable-rutas-gt-1", () => (iris.isEditable() && fnRutasGt1()));
 
 		const fnValidate = data => { // validaciones para los mapas
-			const valid = form.getValidators(); // valido el itinerario completo => min rutas = 2
+			const valid = i18n.getValidators(); // valido el itinerario completo => min rutas = 2
 			return (rutas.size() < 2) ? !valid.addRequired("destino", "errMinRutas") : rutas.validate();
 		}
 		const fnPaso2 = tab => {

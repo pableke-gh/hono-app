@@ -9,7 +9,7 @@ import sbx from "./SelectBox.js";
 import Datalist from "./Datalist.js";
 import Autocomplete from "./Autocomplete.js";
 import MultiSelectCheckbox from "./MultiSelectCheckbox.js";
-import i18n from "../../i18n/langs.js";
+import lang from "../../i18n/langs.js";
 
 FormData.prototype.setJSON = function(name, data) {
 	this.set(name, JSON.stringify(data)); // FormData only supports flat values
@@ -28,7 +28,8 @@ export default class Form {
 	#form; #opts; // form element + options
 
 	constructor(form, opts) { // Find form element or create empty form
-		this.#form = globalThis.isstr(form) ? document.forms.findBy(form) : (form || document.createElement("form"));
+		this.#form = globalThis.isstr(form) ? document.forms.findBy(form) : form;
+		this.#form = this.#form || document.createElement("form");
 
 		this.#opts = opts || {}; // default options
 		this.#opts.defaultMsgOk = this.#opts.defaultMsgOk || "saveOk"; // default key for message ok
@@ -100,8 +101,6 @@ export default class Form {
 	focus = el => { input.focus(el); return this; }
 	setFocus = selector => this.#fnAction(selector, el => el.focus());
 	autofocus = () => this.focus(this.#form.elements.find(el => el.isVisible("[tabindex]:not([type=hidden],[readonly],[disabled])")));
-
-	getValidators = i18n.getValidation; // validator object
 	copyToClipboard = str => navigator.clipboard.writeText(str)
 									.then(() => console.log("Text copied to clipboard!"))
 									.catch(err => console.error("Error copying text to clipboard:", err));
@@ -254,7 +253,7 @@ export default class Form {
 	setErrors = messages => {
 		if (globalThis.isstr(messages)) // simple message text
 			return this.showError(messages); // show error message
-		const valid = this.getValidators(); // get form validators
+		const valid = lang.getValidation(); // get form validators
 		// Style error inputs and set focus on first error
 		messages = messages || valid.getMsgs(); // default messages
 		this.#form.elements.eachPrev(el => input.setError(el, messages[el.name]));

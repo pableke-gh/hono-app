@@ -2,7 +2,7 @@
 import en from "./en.js";
 import es from "./es.js";
 // referencia local a i18n en la parte publica (cliente)
-import i18n from "#client/i18n/langs.js";
+import i18n from "#client/i18n/langs.old.js";
 
 // ¡¡Importante!!
 // usar siempre la referencia: #client/i18n/langs.js en el servidor
