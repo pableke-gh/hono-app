@@ -57,7 +57,12 @@ export default class Base {
 	isoInt = num => Base.#lang.isoInt(num); // Int to String formated
 	fmtInt = str => Base.#lang.fmtInt(str); // String to String formated (reformated)
 
-	//#valid = new Validators(); //validators instance
+	// Simulate msgs / validators interface
+	isOk() { throw new Error("Method 'isOk()' must be implemented!"); }
+	isError() { throw new Error("Method 'isError()' must be implemented!"); }
+	reset() { throw new Error("Method 'reset()' must be implemented!"); }
+	isKey() { throw new Error("Method 'isKey()' must be implemented!"); }
+	size() { throw new Error("Method 'size()' must be implemented!"); }
 	getValidation = () => Base.#lang; // Current validators
 	getValidators = () => Base.#lang.reset(); // Init. messages
 
