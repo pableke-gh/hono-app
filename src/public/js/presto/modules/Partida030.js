@@ -4,12 +4,11 @@ import api from "../../components/Api.js"
 import i18n from "../i18n/langs.js";
 
 import presto from "../model/Presto.js";
-import partida from "../model/Partida.js";
 import form from "../../xeco/modules/SolicitudForm.js";
 
 function Partida030() {
 	const self = this; //self instance
-	let _ej030;
+	let _ej030, _partida080;
 
 	const acOrg030 = form.setAutocomplete("#acOrg030");
 	const fnSource = term => api.init().json("/uae/presto/organicas/030", { ej: form.getval("#ej030"), term}).then(acOrg030.render);
@@ -17,9 +16,8 @@ function Partida030() {
 	acOrg030.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect);
 
 	this.validate = data030 => {
-		const data = partida.getData();
 		const valid = i18n.getValidators();
-		if (!data) // Debo cargar previamente la partida seleccionada
+		if (!_partida080) // Debo cargar previamente la partida seleccionada
 			return !valid.setError("No se ha encontrado la partida asociada al documento 080.");
 		const ERR_ORGANICA = "No ha seleccionado correctamente la orgánica";
 		valid.isKey("acOrg030", data030.idOrg030, ERR_ORGANICA); // autocomplete required key
@@ -28,14 +26,14 @@ function Partida030() {
 		const label = data030.acOrg030?.split(" - ");
 		if (!label) // Code separator
 			return !valid.addError("acOrg030", ERR_ORGANICA, "No ha seleccionada correctamente la aplicación para el DC 030.");
-		if (data.imp < data030.imp030)
+		if (_partida080.imp < data030.imp030)
 			return !valid.addError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.");
 
 		// If ok => update partida a incrementar
-		data.idOrg030 = +data030.idOrg030;
-		[ data.o030, data.dOrg030 ] = label;
-		data.idEco030 = data030.idEco030;
-		data.imp030 = data030.imp030;
+		_partida080.idOrg030 = +data030.idOrg030;
+		[ _partida080.o030, _partida080.dOrg030 ] = label;
+		_partida080.idEco030 = data030.idEco030;
+		_partida080.imp030 = data030.imp030;
 		return valid.isOk();
 	}
 
@@ -53,6 +51,7 @@ function Partida030() {
 		tabs.showTab("030"); // change tab
 	}
 	this.view = partida => { // load tab 030
+		_partida080 = partida; // guardo partida 080
 		if (self.isLoaded(partida.ej))
 			return fnLoad(partida);
 		// actualizo las economicas de ingresos 030 para el nuevo ejercicio

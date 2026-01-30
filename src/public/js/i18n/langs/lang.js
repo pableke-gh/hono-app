@@ -1,22 +1,30 @@
 
 import nb from "../../components/types/NumberBox.js";
-import Validators from "../Validators.js";
 
 const RE_VAR = /[@$](\w+)(\.\w+)?;/g;
 const OPTS = { size: 1, index: 0 }; // default options
 
 export default class Base {
 	static #lang; // default language instance
+	static #langs; // all accepted languages
 	static getLang = () => Base.#lang; // current language instance
-	static setLang(lang) { Base.#lang = lang; return Base.#lang; } // set current language
+
+	getLanguage = () => document.documentElement.getAttribute("lang") || navigator.language || "es";
+	setLang(lang) { // Load especific language by key
+		lang = lang || this.getLanguage(); // get key lang (es, en, etc.)
+		Base.#lang = lang.startsWith("en") ? Base.#langs.en : Base.#langs.es; // default es
+		return this;
+	}
+	setLangs(langs, lang) {
+		Base.#langs = langs; // init. languages
+		return this.setLang(lang); // set current language
+	}
 
 	get(key) { return Base.#lang.get(key); }
 	set(name, msg) { return Base.#lang.set(name, msg); }
 	getItem = (key, index) => this.get(key)[index];
-	confirm = msg => (msg ? confirm(this.get(msg)) : true);
+	confirm = msg => (msg ? confirm(this.get(msg)) : true); // if no param => true confirm
 	boolval = str => (globalThis.isset(str) ? this.getItem("msgBool", +["1", "true", "yes", "on"].includes("" + str)) : null);
-
-	isDefault = () => Base.#lang.isDefault();
 	getIsoLang = () => Base.#lang.getIsoLang();
 
 	// Date formats
@@ -49,10 +57,9 @@ export default class Base {
 	isoInt = num => Base.#lang.isoInt(num); // Int to String formated
 	fmtInt = str => Base.#lang.fmtInt(str); // String to String formated (reformated)
 
-	#valid = new Validators(); //validators instance
-	getValidation = () => this.#valid; // Current validators
-	getValidators = () => this.#valid.reset(); // Init. messages
-	setValidators(valid) { this.#valid = valid; return this; }
+	//#valid = new Validators(); //validators instance
+	getValidation = () => Base.#lang; // Current validators
+	getValidators = () => Base.#lang.reset(); // Init. messages
 
 	// Render styled string
 	render = (str, data, opts) => {

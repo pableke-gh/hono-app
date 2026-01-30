@@ -1,15 +1,15 @@
 
-import lang from "./langs.js";
+import Lang from "./langs/lang.js";
 
 const KEY_ERR = "msgError"; // Error key
 
-export default class Msgs {
+export default class Msgs extends Lang {
 	#MSGS = {}; // Messages container
 	#errors = 0; // Errors counter
 
 	getMsgs = () => this.#MSGS;
 	getMsg = name => this.#MSGS[name];
-	setMsg = (name, msg) => { this.#MSGS[name] = lang.get(msg); return this; }
+	setMsg = (name, msg) => { this.#MSGS[name] = this.get(msg); return this; }
 	reset = () => {
 		this.#errors = 0;
 		Object.clear(this.#MSGS);
@@ -18,7 +18,7 @@ export default class Msgs {
 
 	isOk = () => (this.#errors == 0);
 	isError = () => (this.#errors > 0);
-	getError = name => MSGS[name || KEY_ERR];
+	getError = name => this.#MSGS[name || KEY_ERR];
 
 	setOk = msg => this.setMsg("msgOk", msg);
 	setInfo = msg => this.setMsg("msgInfo", msg);

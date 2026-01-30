@@ -1,9 +1,7 @@
 
 import sb from "../../../components/types/StringBox.js";
-//import tb from "../../../components/types/TemporalBox.js";
 import dt from "../../../components/types/DateBox.js";
 import i18n from "../../i18n/langs.js";
-import paises from "../../data/paises/paises.js";
 
 function Ruta() {
 	const self = this; //self instance
@@ -63,7 +61,7 @@ function Ruta() {
 	this.getPaisSalida = ruta => ruta.pais1;
 	this.getDestino = ruta => ruta.destino;
 	this.getPaisllegada = ruta => ruta.pais2;
-	this.getPaisDestino = ruta => paises.getPais(ruta.pais2);
+	this.getPaisDestino = ruta => i18n.getPais(ruta.pais2);
 	this.getMedioTransporte = ruta => i18n.getItem("tiposDesp", ruta.desp);
 	this.getTrayecto = ruta => (ruta.origen + " - " + ruta.destino);
 	this.getTrayectoPais = ruta => `${ruta.origen} (${ruta.pais1}) - ${ruta.destino} (${ruta.pais2})`;

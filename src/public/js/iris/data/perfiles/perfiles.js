@@ -1,97 +1,5 @@
 
-import i18n from "../../i18n/langs.js";
-
 //const DEFAULT = "P,PDI-FU,COM,AyL,OTR"; // titulo = 0
-
-// Titles for language
-const TITULOS = {
-	es: [
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio - Investigación Subvencionada",
-		"Comunicación de Datos para Autorización y Anticipo por Comisión de Servicio",
-		"Comunicación de Datos para Autorización y Anticipo por Comisión de Servicio - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación Previo Anticipo por Comisión de Servicio",
-		"Comunicación de Datos y Documentación para Liquidación Previo Anticipo por Comisión de Servicio - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Investigación Subvencionada",
-		"Comunicación de Datos para Liquidación por Participación en Mesa Electoral",
-		"Comunicación de Datos para Liquidación por Participación en Mesa Electoral - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación por Programa de Movilidad",
-		"Comunicación de Datos y Documentación para Liquidación por Programa de Movilidad - Investigación Subvencionada",
-		"Comunicación de Datos para Anticipo para Programa de Movilidad",
-		"Comunicación de Datos para Anticipo para Programa de Movilidad - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación Previo Anticipo por Programa de Movilidad",
-		"Comunicación de Datos y Documentación para Liquidación Previo Anticipo por Programa de Movilidad - Investigación Subvencionada",
-		"Solicitud de Liquidación de Movilidad exenta Art.7.j LIRPF",
-		"Solicitud de Liquidación de Movilidad exenta Art.7.j LIRPF - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Asistencia a Tribunales - Externos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Formación a Trabajadores - Externos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Conferencias de Títulos Propios Similares - Externos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Colaboración Externa - Externos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Colaboración Externa - Externos - Investigación Subvencionada",
-		"Comunicación de Datos para Liquidación de Retribuciones por Conferencias de Títulos Propios y Similares - Externos",
-		"Comunicación de Datos para Liquidación de Retribuciones por Colaboración Externa - Externos",
-		"Comunicación de Datos para Liquidación de Retribuciones por Colaboración Externa - Externos - Investigación Subvencionada",
-		"Comunicación de Datos para Liquidación de Asistencia a Tribunales - Externos",
-		"Comunicación de Datos para Liquidación de Asistencia por Formación a Trabajadores - Externos",
-		"Comunicación de Datos para Liquidación de Asistencia a Consejo Social - Externos",
-		"Comunicación de Datos para Liquidación por Comisión de Servicio - Externos",
-		"Comunicación de Datos para Liquidación por Comisión de Servicio - Externos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Externos",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Externos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Alumnos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Colaboración Externa - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Colaboración Externa - Alumnos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación de Retribuciones por Colaboración Externa - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación de Retribuciones por Colaboración Externa - Alumnos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio - Alumnos - Investigación Subvencionada"
-	],
-	en: [
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio - Investigación Subvencionada",
-		"Comunicación de Datos para Autorización y Anticipo por Comisión de Servicio",
-		"Comunicación de Datos para Autorización y Anticipo por Comisión de Servicio - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación Previo Anticipo por Comisión de Servicio",
-		"Comunicación de Datos y Documentación para Liquidación Previo Anticipo por Comisión de Servicio - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Investigación Subvencionada",
-		"Comunicación de Datos para Liquidación por Participación en Mesa Electoral",
-		"Comunicación de Datos para Liquidación por Participación en Mesa Electoral - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación por Programa de Movilidad",
-		"Comunicación de Datos y Documentación para Liquidación por Programa de Movilidad - Investigación Subvencionada",
-		"Comunicación de Datos para Anticipo para Programa de Movilidad",
-		"Comunicación de Datos para Anticipo para Programa de Movilidad - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación Previo Anticipo por Programa de Movilidad",
-		"Comunicación de Datos y Documentación para Liquidación Previo Anticipo por Programa de Movilidad - Investigación Subvencionada",
-		"Solicitud de Liquidación de Movilidad exenta Art.7.j LIRPF",
-		"Solicitud de Liquidación de Movilidad exenta Art.7.j LIRPF - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Asistencia a Tribunales - Externos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Formación a Trabajadores - Externos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Conferencias de Títulos Propios Similares - Externos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Colaboración Externa - Externos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Colaboración Externa - Externos - Investigación Subvencionada",
-		"Comunicación de Datos para Liquidación de Retribuciones por Conferencias de Títulos Propios y Similares - Externos",
-		"Comunicación de Datos para Liquidación de Retribuciones por Colaboración Externa - Externos",
-		"Comunicación de Datos para Liquidación de Retribuciones por Colaboración Externa - Externos - Investigación Subvencionada",
-		"Comunicación de Datos para Liquidación de Asistencia a Tribunales - Externos",
-		"Comunicación de Datos para Liquidación de Asistencia por Formación a Trabajadores - Externos",
-		"Comunicación de Datos para Liquidación de Asistencia a Consejo Social - Externos",
-		"Comunicación de Datos para Liquidación por Comisión de Servicio - Externos",
-		"Comunicación de Datos para Liquidación por Comisión de Servicio - Externos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Externos",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Externos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación por Desplazamiento Dentro del Término Municipal - Alumnos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Colaboración Externa - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio y Retribuciones por Colaboración Externa - Alumnos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación de Retribuciones por Colaboración Externa - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación de Retribuciones por Colaboración Externa - Alumnos - Investigación Subvencionada",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio - Alumnos",
-		"Comunicación de Datos y Documentación para Liquidación de Comisión de Servicio - Alumnos - Investigación Subvencionada"
-	]
-}
 
 // BD de perfiles
 const PERFILES = {
@@ -331,20 +239,8 @@ const PERFILES = {
 	"P,PIN,COM,AyL,ISU": 1, "P,PIN,MUN,AyL,ISU": 7,
 	"P,PIN,COM,AyL,A83": 0, "P,PIN,MUN,AyL,A83": 6,
 	"P,PIN,COM,AyL,ACA": 0, "P,PIN,MUN,AyL,ACA": 6,
+};
+
+export default (rol, colectivo, actividad, tramite, financiacion) => {
+	return PERFILES[rol + "," + colectivo + "," + actividad + "," + tramite + "," + financiacion] || 0; // default = 0
 }
-
-function Perfiles() {
-	const self = this; //self instance
-
-	this.getPerfil = (rol, colectivo, actividad, tramite, financiacion) => {
-		const perfil = rol + "," + colectivo + "," + actividad + "," + tramite + "," + financiacion;
-		return PERFILES[perfil] || 0; // default = 0
-	}
-
-	this.getTitulo = (rol, colectivo, actividad, tramite, financiacion) => {
-		const perfil = self.getPerfil(rol, colectivo, actividad, tramite, financiacion);
-		return TITULOS[i18n.getIsoLang()][perfil];
-	}
-}
-
-export default new Perfiles();

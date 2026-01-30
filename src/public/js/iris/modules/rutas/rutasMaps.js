@@ -38,7 +38,7 @@ class RutasMaps extends Table {
 	setRutaPrincipal = data => { rutas.setRutaPrincipal(data); this.refreshBody(); }
 
 	// actualizo el registro de rutas y el itinerario (paso 2) y la tabla de vehiculos propios (paso 6)
-	setRutas = data => { rutas.setRutas(data); this.render(data); rvp.render(); }
+	setRutas = data => { rutas.setRutas(data); this.render(data).setChanged(); rvp.render(); } // no data chenged
 	update = data => { data && this.setRutas(data); } // recalcula cambios en los gastos recibidos desde el servidor
 	build = data => { rutas.update(data); this.render(data); } // actualizo el itinerario con la nueva ruta
 

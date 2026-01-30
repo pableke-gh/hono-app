@@ -11,7 +11,6 @@ import gastos from "../../model/gasto/Gastos.js";
 import perfil from "../perfil/perfil.js";
 import pernoctas from "../../data/pernoctas/pernoctas.js";
 import form from "../../../xeco/modules/SolicitudForm.js";
-import paises from "../../data/paises/paises.js";
 
 class Pernoctas extends Table {
 	constructor() {
@@ -48,7 +47,7 @@ class Pernoctas extends Table {
 			f1.addDays(1); // incremento un día
 		}
 		data.imp2 = this.getImpNoche(tipo, idPais1, grupo);
-		data.desc = paises.getRegion(idPais1);
+		data.desc = i18n.getRegion(idPais1);
 		return valid.isOk();
 	}
 

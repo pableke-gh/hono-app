@@ -4,16 +4,14 @@ import i18n from "../../i18n/langs.js";
 
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
-
 import dietas from "../../data/dietas/dietas.js";  
-import paises from "../../data/paises/paises.js";
 
 function Dieta() {
 	const self = this; //self instance
 	const TIPO_DIETA = 7; // tipo de gasto = dieta
 
 	this.getTipo = () => TIPO_DIETA; // dieta / muntencion = 7
-	this.getRegionName = cod => paises.getRegion(cod); // nombre del pais de la dieta
+	this.getRegionName = cod => i18n.getRegion(cod); // nombre del pais de la dieta
 	this.getRegion = dieta => self.getRegionName(dieta.cod); // nombre del pais de la dieta
 	this.getImpDia = dieta => dieta.imp2;
 	this.getDieta = dieta => dieta.imp1;

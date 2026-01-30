@@ -2,14 +2,12 @@
 import dt from "../../../components/types/DateBox.js";
 import nb from "../../../components/types/NumberBox.js";
 
-import Base from "../lang.js";
+import Validators from "../../validators.js";
 import en from "./en.js";
 
-export default class Lang extends Base {
+export default class Lang extends Validators {
 	get(key) { return (en[key] || key); }
 	set(name, msg) { en[name] = msg; return this; }
-
-	isDefault = () => false;
 	getIsoLang = () => "en";
 
 	// Date formats

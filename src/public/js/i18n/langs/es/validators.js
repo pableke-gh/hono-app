@@ -1,5 +1,5 @@
 
-import Validators from "../../Validators.js";
+import Validators from "../../validators.js";
 
 function fnLetraDni(value) { // private function
 	const letras = "TRWAGMYFPDXBNJZSQVHLCKE";

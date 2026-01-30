@@ -27,7 +27,7 @@ class Organicas extends Table {
 	}
 
 	getOrganicas = this.getData;
-	setOrganicas = this.render;
+	setOrganicas = data => this.render(data).setChanged(); // no data chenged
 	getFinanciacion = organica.getFinanciacion;
 	getGrupoDieta = () => form.getval("#grupo-dieta"); 
 	getTipoDieta = organica.getTipoDieta;

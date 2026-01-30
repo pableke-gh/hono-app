@@ -3,7 +3,6 @@ import sb from "../../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
 import firma from "../../xeco/model/Firma.js";
 import Solicitud from "../../xeco/model/Solicitud.js";
-import perfiles from "../data/perfiles/perfiles.js"; 
 
 class Iris extends Solicitud {
 	build = () => new Iris(); // Override create a new instance
@@ -45,7 +44,7 @@ class Iris extends Solicitud {
 	is1su = () => (this.getFinanciacion() == "ISU");
 	isIsu = () => (this.is1su() || this.isXsu());
 
-	getTitulo = () => perfiles.getTitulo(this.getRol(), this.getColectivo(), this.getActividad(), this.getTramite(), this.getFinanciacion());
+	getTitulo = () => i18n.getPerfil(this.getRol(), this.getColectivo(), this.getActividad(), this.getTramite(), this.getFinanciacion());
 	getPerfil = () => this.get("perfil");
 	setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
 		this.set("rol", rol).set("colectivo", colectivo).set("actividad", actividad).set("tramite", tramit).setFinanciacion(financiacion);

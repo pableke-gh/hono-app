@@ -63,7 +63,6 @@ function PartidaInc() {
 		});
 	});
 	tabs.setAction("save030", () => {
-		partida.setData(partidas.getCurrentItem()); // load partida actual
 		if (!form.validate(p030.validate, ".ui-030")) // validate partida 080 / 030
 			return false; // not valid data
 		if (presto.isEditable()) // if editable => back to presto view, send table on tab-action-send

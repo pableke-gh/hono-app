@@ -6,7 +6,6 @@ import i18n from "../i18n/langs.js";
 
 import iris from "../model/Iris.js";
 import gastos from "../model/gasto/Gastos.js"; 
-import paises from "../data/paises/paises.js";
 
 import mgo from "./gastos/organicas.js";
 import form from "../../xeco/modules/SolicitudForm.js";
@@ -25,7 +24,7 @@ function Send() {
 		}
 
 		form.set("is-new-iban", () => !_cuentas.value).set("is-es", isSpain).set("is-zz", () => !isSpain());
-		form.setDataOptions("#paises", paises.getPaises()) // update options
+		form.setDataOptions("#paises", i18n.getPaises()) // update options
 			.onChangeInput(_paises, () => form.refresh(iris)); // refresh fields
 		form.onChangeInput("#urgente", ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2"))
 			.onChangeInput(_entidades, ev => form.setval("#banco", form.getOptionText(ev.target)))
