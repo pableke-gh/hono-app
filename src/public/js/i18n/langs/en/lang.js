@@ -1,14 +1,12 @@
 
 import dt from "../../../components/types/DateBox.js";
 import nb from "../../../components/types/NumberBox.js";
-
-import Validators from "../../validators.js";
+import Base from "../lang.js";
 import en from "./en.js";
 
-export default class Lang extends Validators {
+export default class Lang extends Base {
 	get(key) { return (en[key] || key); }
 	set(name, msg) { en[name] = msg; return this; }
-	getIsoLang = () => "en";
 
 	// Date formats
 	isoDate = str => str && str.substring(0, 10); //Iso string = yyyy-mm-dd

@@ -1,9 +1,9 @@
 
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
+import valid from "../i18n/validators.js";
 
 import factura from "../model/Factura.js";
-import linea from "../model/Linea.js";
 import lineas from "./lineas.js";
 import form from "../../xeco/modules/SolicitudForm.js";
 
@@ -30,7 +30,7 @@ function Lineas() {
 					lineas.push({ cod: recibo.value, desc: recibo.label, imp: recibo.imp });
 				return acTTPP.reload();
 			}
-			const data = form.validate(linea.validate);
+			const data = valid.linea();
 			if (!data) return; // error en las validaciones
 			lineas.push(data); // añado la nueva linea
 			form.restart("#desc").setval("#imp", 0);

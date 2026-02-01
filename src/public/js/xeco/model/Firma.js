@@ -32,12 +32,6 @@ class Firma {
 		const firma = this.isAceptada(data) ? aceptada : (this.isRechazada(data) ? rechazada : pendiente);
 		return `<div class="ui-block-box"><p>${data.cargo}</p><p>${this.getNombre(data)}</p><p>${firma}</p></div>`;
 	}
-
-	validate = data => {
-		const valid = i18n.getValidators();
-		const msg = "Debe indicar un motivo para el rechazo de la solicitud.";
-		return valid.size("rechazo", data.rechazo, msg).isOk(); // Required string
-	}
 }
 
 export default new Firma();

@@ -28,13 +28,6 @@ class Organica {
         </tr>`;
     }
 	getTableRecientes = () => ({ rowEmptyTable: this.lastRow(), onRender: this.row, onLastRow: this.lastRow });
-
-	validate = data => {
-        const valid = i18n.getValidators();
-        valid.isKey("organica", data.idOrg, "No ha seleccionado correctamente la orgánica"); // autocomplete required number
-        valid.isKey("tramit", data.tramit, "Unidad tramitadora no encontrada"); // select required number
-        return valid.close("Orgánica / Unidad Tramitadora no seleccionada correctamente.");
-    }
 }
 
 export default new Organica();

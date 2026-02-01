@@ -3,6 +3,7 @@ import coll from "../components/Collection.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
 import i18n from "./i18n/langs.js";
+import valid from "./i18n/validators.js";
 import dom from "./lib/dom-box.js";
 
 import irse from "./model/Irse.js";
@@ -68,52 +69,52 @@ coll.ready(() => {
 	window.ip = perfil;
 	window.ir = rutas;
 	irse.getNumRutasVp = () => (!perfil.isMun() && rutas.getNumRutasVp()); // show / hide rutas con vehiculo propio
-	
+
 	// Hack old DomBox Module
 	dom.confirm = i18n.confirm; // for remove action
 	dom.getData = selector => form.getData(selector); // parse form data
-	dom.isOk = () => (i18n.getValidation().isOk() || !form.setErrors()); // update fields
-	dom.isError = () => (i18n.getValidation().isError() && form.setErrors()); // update fields
-	dom.closeAlerts = () => { i18n.getValidators(); form.closeAlerts(); return dom; } // reset msgs and alerts
+	dom.isOk = () => (valid.isOk() || !form.setErrors(valid.getMsgs())); // update fields
+	dom.isError = () => (valid.isError() && form.setErrors(valid.getMsgs())); // update fields
+	dom.closeAlerts = () => { valid.reset(); form.closeAlerts(); return dom; } // reset msgs and alerts
 	dom.showError = msg => { form.showError(msg); return dom; } // show message error
 	dom.addError = dom.setError = (el, msg, msgtip) => {
 		el = form.getInput(el); // check if input exists
-		el && i18n.getValidation().addError(el.name, msgtip, msg); // set error message
+		el && valid.addError(el.name, msgtip, msg); // set error message
 		return dom;
 	}
 	dom.required = (el, msg) => {
 		el = form.getInput(el);
-		el && i18n.getValidation().size250(el.name, el.value, msg);
+		el && valid.size250(el.name, el.value, msg);
 		return dom;
 	}
 	dom.intval = (el, msg) => {
 		el = form.getInput(el);
-		el && i18n.getValidation().le10(el.name, +el.value, msg);
+		el && valid.le10(el.name, +el.value, msg);
 		return dom;
 	}
 	dom.gt0 = (el, msg) => {
 		el = form.getInput(el);
-		el && i18n.getValidation().gt0(el.name, i18n.toFloat(el.value), msg);
+		el && valid.gt0(el.name, i18n.toFloat(el.value), msg);
 		return dom;
 	}
 	dom.fk = (el, msg) => {
 		el = form.getInput(el);
-		el && i18n.getValidation().isKey(el.name, el.value, msg);
+		el && valid.isKey(el.name, el.value, msg);
 		return dom;
 	}
 	dom.past = (el, msg) => {
 		el = form.getInput(el);
-		el && i18n.getValidation().past(el.name, el.value, msg);
+		el && valid.past(el.name, el.value, msg);
 		return dom;
 	}
 	dom.leToday = (el, msg) => {
 		el = form.getInput(el);
-		el && i18n.getValidation().leToday(el.name, el.value, msg);
+		el && valid.leToday(el.name, el.value, msg);
 		return dom;
 	}
 	dom.geToday = (el, msg) => {
 		el = form.getInput(el);
-		el && i18n.getValidation().geToday(el.name, el.value, msg);
+		el && valid.geToday(el.name, el.value, msg);
 		return dom;
 	}
 });

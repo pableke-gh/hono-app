@@ -1,6 +1,7 @@
 
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
+import valid from "../i18n/validators.js";
 
 import p030 from "./partida030.js";
 import presto from "../model/Presto.js";
@@ -51,19 +52,17 @@ function PartidaInc() {
 	}
 
 	tabs.setAction("partida-inc-add", () => {
-		if (!form.validate(partida.validate))
-			return false; // Errores al validar las partidas
+		if (!valid.partidaInc()) return; // errores al validar los campos de entrada
 		const url = `/uae/presto/partida/add?org=${_acOrgInc.getValue()}&eco=${_ecoInc.getValue()}`;
 		api.init().json(url).then(partidaInc => { // fetch partida a incrementar
-			if (!partidas.validatePartida(partidaInc))
-				return form.setErrors(); // error en la partida a incrementar
+			if (!valid.partidaSrv(partidaInc)) return; // error en la partida a incrementar
 			partidaInc.imp030 = partidaInc.imp = form.valueOf("#impInc"); // Importe de la partida a añadir
 			partidas.add(partidaInc); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
 			_acOrgInc.reload(); // reseteo los valores del formulario
 		});
 	});
 	tabs.setAction("save030", () => {
-		if (!form.validate(p030.validate, ".ui-030")) // validate partida 080 / 030
+		if (!valid.validate030()) // validate partida 080 / 030
 			return false; // not valid data
 		if (presto.isEditable()) // if editable => back to presto view, send table on tab-action-send
 			return tabs.backTab().showOk("Datos del documento 030 asociados correctamente.");

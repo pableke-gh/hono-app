@@ -20,13 +20,6 @@ class Linea {
 		msgEmptyTable: "No existen conceptos asociados a la solicitud", 
 		beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row
 	});
-
-	validate = function(data) {
-		const valid = i18n.getValidators();
-		valid.gt0("imp", data.imp); // float required
-		valid.size("desc", data.desc); // string required
-		return valid.close("El concepto indicado no es válido!"); // Main form message
-	}
 }
 
 export default new Linea();

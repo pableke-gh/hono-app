@@ -65,25 +65,6 @@ class Presto extends Solicitud {
 			<td class="currency no-print">${acciones}</td>
 		</tr>`;
 	}
-
-	validate = data => {
-		const valid = i18n.getValidation(); // continue validation
-		if (this.isPartidaDec()) { // valido la partida a disminuir
-			valid.isKey("acOrgDec", data.idOrgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
-			valid.isKey("idEcoDec", data.idEcoDec, "Debe seleccionar la económica que disminuye"); // select required number
-		}
-		const imp = data.imp ?? 0; // los importes pueden ser nulos segun el tipo de presto
-		const notValidateCd = this.isAnt() || this.isSubsanable(); // anticipos / subsanaciones no validan el CD
-		const cd = notValidateCd ? imp : (data.cd ?? 0); // validación del crédito disponible
-		if (imp > cd)
-			valid.addError("imp", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
-		valid.size("memo", data.memo, "Debe asociar una memoria justificativa a la presto."); // Required string
-		if (data.urgente == "2") { // Solicitud urgente
-			valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta presto."); // Required string
-			valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta presto."); // Required date
-		}
-		return valid.isOk();
-	}
 }
 
 export default new Presto();

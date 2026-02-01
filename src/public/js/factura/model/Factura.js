@@ -62,26 +62,6 @@ class Factura extends Solicitud {
 			<td class="currency no-print">${acciones}</td>
 		</tr>`;
 	}
-
-	validate = data => { 
-		const valid = i18n.getValidation(); // continue validation
-		valid.isKey("acTercero", data.idTer, "Debe seleccionar un tercero válido"); // autocomplete required key
-		valid.isKey("delegacion", data.idDel, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
-		valid.isKey("acOrganica", data.idOrg, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
-		if (this.isRecibo()) //subtipo = ttpp o extension
-			valid.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
-		/*if (this.isDeportes()) {
-			valid.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
-			valid.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
-		}*/
-		if (this.isTtppEmpresa()) // Required string
-			valid.size("memo", data.memo, "Debe indicar las observaciones asociadas a la factura.");
-		if (this.isFace())
-			valid.word20("og", data.og).word9("oc", data.oc).word9("ut", data.ut).word10("op", data.op);
-		if (this.isPlataforma())
-			valid.size("og", data.og);
-		return valid.isOk();
-	}
 }
 
 export default new Factura();

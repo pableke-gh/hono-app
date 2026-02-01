@@ -69,6 +69,11 @@ function Actividad() {
 
 	this.init = () => {
 		form.onChangeInput("#actividad", self.update);
+		form.set("update-colectivo", el => {
+			el.firstElementChild.textContent = self.getColectivo();
+			el.lastElementChild.setAttribute("href", "mailto:" + iris.getEmailInteresado());
+			el.setVisible(self.getColectivo());
+		});
 	}
 }
 

@@ -4,12 +4,11 @@ import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import i18n from "../../i18n/langs.js";
-
-//import Solicitud from "../model/Solicitud.js";
+import valid from "../i18n/validators.js";
 import firma from "../model/Firma.js";
 
 class SolicitudForm extends Form {
-	#solicitud;// = new Solicitud(); // create instance
+	#solicitud; // create instance
 	constructor(opts) { super("#xeco-model", opts); }
 
 	getSolicitud = () => this.#solicitud; // get solicitud
@@ -20,7 +19,7 @@ class SolicitudForm extends Form {
 	report = data => api.init().text(this.#solicitud.getUrl() + "/report?id=" + data.id).then(api.open); // call report service
 	showForm = () => { this.refresh(); tabs.showForm(); }
 
-	#validConfirm = msg => this.validate(firma.validate) && i18n.confirm(msg); // validate form + user confirm
+	#validConfirm = msg => (valid.firma() && i18n.confirm(msg)); // validate form + user confirm
 	#rejectParams = () => ({ id: this.#solicitud.getId(), rechazo: this.getValueByName("rechazo") }); // get url params 
 	#refreshForm = data => { // refresh form if cached + current row in list
 		if (this.isCached(this.#solicitud.getId()))

@@ -4,6 +4,7 @@ import sb from "../../components/types/StringBox.js";
 import api from "../../components/Api.js";
 import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
+import valid from "../i18n/validators.js";
 
 import irse from "../model/Irse.js";
 import organica from "../model/Organica.js";
@@ -55,8 +56,8 @@ function IrsePerfil() {
 		return self;
 	}
 
-	//auto-start => update perfil
 	this.update = fnUpdatePerfil;
+	this.valid = () => valid.perfil();
 	this.getColectivo = () => eCol.innerText;
 	this.setColectivo = val => { eCol.innerText = val; return self; }
 
@@ -71,12 +72,6 @@ function IrsePerfil() {
 		if (current && !organicas.find(org => org.id==current.id))
 			organicas.push(current);
 		dom.table("#organicas", organicas, resume, STYLES);
-	}
-
-	this.valid = () => {
-		dom.closeAlerts().required("#perfil-financiacion", "errPerfil");
-		self.isEmpty(organicas) && dom.required("#organica", "errOrganicas");
-		return dom.required("#tramitador", "errPerfil").required("#interesado", "errPerfil").isOk();
 	}
 
 	this.init = form => {

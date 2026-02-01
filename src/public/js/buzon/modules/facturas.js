@@ -2,6 +2,7 @@
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
 import i18n from "../i18n/langs.js";
+import valid from "../i18n/validators.js";
 
 import buzon from "../model/Buzon.js";
 import form from "../../xeco/modules/SolicitudForm.js";
@@ -51,14 +52,8 @@ function Facturas() {
     }
 
 	// Tab resumen
-	const fnValidateTab5 = data => {
-		if (!_isActiveTab5)
-			return true; // always ok
-		const valid = i18n.getValidators();
-		const msgs = "Debe detallar las observaciones para el gestor.";
-		return valid.size("desc", data.desc, msgs).isOk();
-	}
-	const fnShowTab6 = () => (fnValidateJustPago() && form.validate(fnValidateTab5));
+	const fnValidateTab5 = () => (!_isActiveTab5 || valid.tab5());
+	const fnShowTab6 = () => (fnValidateJustPago() && fnValidateTab5());
 	const fnViewTab6 = () => {
 		const desc = form.getval("#desc");
 		const names = fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);

@@ -9,7 +9,7 @@ import sbx from "./SelectBox.js";
 import Datalist from "./Datalist.js";
 import Autocomplete from "./Autocomplete.js";
 import MultiSelectCheckbox from "./MultiSelectCheckbox.js";
-import lang from "../../i18n/langs.js";
+//import lang from "../../i18n/langs.js";
 
 FormData.prototype.setJSON = function(name, data) {
 	this.set(name, JSON.stringify(data)); // FormData only supports flat values
@@ -253,16 +253,16 @@ export default class Form {
 	setErrors = messages => {
 		if (globalThis.isstr(messages)) // simple message text
 			return this.showError(messages); // show error message
-		const valid = lang.getValidation(); // get form validators
+		//const valid = lang.getValidation(); // get form validators
 		// Style error inputs and set focus on first error
-		messages = messages || valid.getMsgs(); // default messages
+		//messages = messages || valid.getMsgs(); // default messages
 		this.#form.elements.eachPrev(el => input.setError(el, messages[el.name]));
-		this.showError(messages.msgError || this.#opts.defaultMsgError);
-		valid.reset(); // reset for next validation
-		return this;
+		return this.showError(messages.msgError || this.#opts.defaultMsgError);
+		//valid.reset(); // reset for next validation
+		//return this;
 	}
-	validate = (fnValidator, selector) => {
+	/*validate = (fnValidator, selector) => {
 		const data = this.closeAlerts().getData(selector); // current form data
 		return fnValidator(data) ? data : !this.setErrors(); // model preserve this
-	}
+	}*/
 }

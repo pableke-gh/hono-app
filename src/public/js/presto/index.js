@@ -3,6 +3,7 @@ import coll from "../components/CollectionHTML.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js"
 import i18n from "./i18n/langs.js";
+import valid from "./i18n/validators.js";
 
 import presto from "./model/Presto.js";
 import pDec from "./modules/partidaDec.js";
@@ -43,7 +44,7 @@ coll.ready(() => { // init. presto modules
 	});
 
 	function fnValidate(msgConfirm, url) {
-		const data = form.validate(partidas.validate);
+		const data = valid.all(); // validate form
 		if (!data || !i18n.confirm(msgConfirm))
 			return Promise.reject(); // Error al validar o sin confirmacion
 		const include = [ "id", "tipo", "subtipo", "mask" ]; // fields to include

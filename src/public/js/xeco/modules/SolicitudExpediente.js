@@ -8,7 +8,7 @@ import api from "../../components/Api.js"
 import uxxiec from "../model/Uxxiec.js";
 
 class SolicitudExpediente extends Form {
-	#solicitud;// = new Solicitud(); // create instance
+	#solicitud; // create instance
 	#acUxxi = this.setAutocomplete("#uxxi", uxxiec.getAutocomplete());
 	#documentos = new Table(this.getNextElement(), uxxiec.getTable());
 

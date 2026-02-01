@@ -4,6 +4,7 @@ import api from "../../components/Api.js";
 import tabs from "../../components/Tabs.js";
 import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
+import valid from "../i18n/validators.js";
 
 import rutas from "./rutas.js";
 import organicas from "./organicas.js";
@@ -103,7 +104,6 @@ function IrseTabs() {
 			.onChangeInput("#iban", el => { el.value = sb.toWord(el.value); })
 			.onChangeInput("#swift", el => { el.value = sb.toWord(el.value); });
 	
-		const valid = i18n.getValidation();
 		cuentas.options.forEach(opt => {
 			let entidad = valid.getBanks().getEntidad(opt.innerText);
 			if (entidad)

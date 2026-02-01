@@ -4,6 +4,7 @@ import coll from "../components/CollectionHTML.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js"
 import i18n from "./i18n/langs.js";
+import valid from "./i18n/validators.js";
 
 import factura from "./model/Factura.js";
 import lineas from "./modules/lineas.js";
@@ -35,7 +36,7 @@ coll.ready(() => { // init. fact modules
 	//tabs.setAction("ttpp", () => list.create(fnBuild(6, 25))); // TTPP a empresa
 
 	function fnValidate(msgConfirm, url) {
-		const data = form.validate(lineas.validate);
+		const data = valid.all(); // validate form
 		if (!data || !i18n.confirm(msgConfirm))
 			return Promise.reject(); // Error al validar o sin confirmacion
 		const temp = Object.assign(factura.getData(), data);

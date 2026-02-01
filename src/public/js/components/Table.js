@@ -30,23 +30,16 @@ export default class Table {
 		this.#opts.afterRender = this.#opts.afterRender || globalThis.void;
 		this.#opts.onRemove = this.#opts.onRemove || (() => Promise.resolve()); // force promise
 
-		// Define default actions
+		// Set default actions
 		this.#opts["#"] = globalThis.void;
 		this.#opts["#remove"] = this.remove;
-		this.setTable(table); // initialize table elements
+		this.setTable(table); // table element
 	}
 
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
-	setTable(table) {
-		this.#table = globalThis.isstr(table) ? $1(table) : table;
-		this.#table = this.#table || document.createElement("table");
-		this.#tHead = this.#table.tHead || this.#table.createTHead(); //header element
-		this.#tBody = this.#table.tBodies[0] || this.#table.createTBody(); //body element
-		this.#tFoot = this.#table.tFoot || this.#table.createTFoot(); //footer element
-
-		// Orderable columns system
+	#setSort() { // Orderable columns system
 		const links = this.#tHead.getElementsByClassName(this.#opts.sortClass);
 		links.addClick((ev, link) => {
 			const { sortAscClass, sortDescClass, sortNoneClass } = this.#opts; // shortcut
@@ -70,11 +63,19 @@ export default class Table {
 		});
 		return this;
 	}
+	setTable(table) {
+		this.#table = globalThis.isstr(table) ? $1(table) : table;
+		this.#table = this.#table || document.createElement("table");
+		this.#tHead = this.#table.tHead || this.#table.createTHead(); //header element
+		this.#tBody = this.#table.tBodies[0] || this.#table.createTBody(); //body element
+		this.#tFoot = this.#table.tFoot || this.#table.createTFoot(); //footer element
+		return this.#setSort();
+	}
 
 	setRowEmpty = html => this.set("rowEmptyTable", html);
 	setMsgEmpty = msg => this.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.get(msg)}</td></tr>`);
 	setBeforeRender = fn => { this.#opts.beforeRender = fn; return this; }
-	setHeader = html => { this.#tHead.innerHTML = html; return this; }
+	setHeader = html => { this.#tHead.innerHTML = html; return this.#setSort(); }
 	setRowCalc = fn => { this.#opts.rowCalc = fn; return this; } 
 	setRender = fn => { this.#opts.onRender = fn; return this; }
 	setLastRow = fn => { this.#opts.onLastRow = fn; return this; }

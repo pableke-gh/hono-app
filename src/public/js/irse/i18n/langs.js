@@ -4,11 +4,6 @@ import en from "./langs/en/lang.js";
 import es from "./langs/es/lang.js";
 
 class Langs extends Lang {
-	constructor() {
-		super(); // First must call the parent constructor
-		this.setLangs({ en, es });
-	}
-
 	getPerfil = (rol, colectivo, actividad, tramite, financiacion) => {
 		return Lang.getLang().getPerfil(rol, colectivo, actividad, tramite, financiacion);
 	}

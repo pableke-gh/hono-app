@@ -9,6 +9,10 @@ export default class Base {
 	static #langs; // all accepted languages
 	static getLang = () => Base.#lang; // current language instance
 
+	constructor(langs) {
+		this.setLangs(langs);
+	}
+
 	getLanguage = () => document.documentElement.getAttribute("lang") || navigator.language || "es";
 	setLang(lang) { // Load especific language by key
 		lang = lang || this.getLanguage(); // get key lang (es, en, etc.)
@@ -16,16 +20,17 @@ export default class Base {
 		return this;
 	}
 	setLangs(langs, lang) {
-		Base.#langs = langs; // init. languages
+		if (!langs) return this; // no langs to set
+		Base.#langs = langs; // set languages collection
 		return this.setLang(lang); // set current language
 	}
 
 	get(key) { return Base.#lang.get(key); }
+	getValue(key) { return Base.#lang.get(key); }
 	set(name, msg) { return Base.#lang.set(name, msg); }
 	getItem = (key, index) => this.get(key)[index];
 	confirm = msg => (msg ? confirm(this.get(msg)) : true); // if no param => true confirm
 	boolval = str => (globalThis.isset(str) ? this.getItem("msgBool", +["1", "true", "yes", "on"].includes("" + str)) : null);
-	getIsoLang = () => Base.#lang.getIsoLang();
 
 	// Date formats
 	enDate = str => str && str.substring(0, 10); //yyyy-mm-dd
@@ -56,15 +61,6 @@ export default class Base {
 	intval = nb.intval; // String to navite integer
 	isoInt = num => Base.#lang.isoInt(num); // Int to String formated
 	fmtInt = str => Base.#lang.fmtInt(str); // String to String formated (reformated)
-
-	// Simulate msgs / validators interface
-	isOk() { throw new Error("Method 'isOk()' must be implemented!"); }
-	isError() { throw new Error("Method 'isError()' must be implemented!"); }
-	reset() { throw new Error("Method 'reset()' must be implemented!"); }
-	isKey() { throw new Error("Method 'isKey()' must be implemented!"); }
-	size() { throw new Error("Method 'size()' must be implemented!"); }
-	getValidation = () => Base.#lang; // Current validators
-	getValidators = () => Base.#lang.reset(); // Init. messages
 
 	// Render styled string
 	render = (str, data, opts) => {

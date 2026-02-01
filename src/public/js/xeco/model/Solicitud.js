@@ -86,7 +86,6 @@ export default class Solicitud extends Base {
 	getMemoria = () => this.get("memo");
 	getDescEstado = () => i18n.getItem("descEstados", this.getEstado());
 	getStyleByEstado = () => (CSS_ESTADOS[this.getEstado()] || TEXT_WARN);
-	validate = () => { throw new Error("You have to implement the method validate!"); }
 
 	row(data) { // to simulate super keyword from arrow function, 'row' must be defined as a function
 		let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';
