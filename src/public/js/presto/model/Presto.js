@@ -6,6 +6,7 @@ import Solicitud from "../../xeco/model/Solicitud.js";
 class Presto extends Solicitud {
 	build = () => new Presto(); // Override create a new instance
 	getUrl = () => "/uae/presto"; // Override base url path
+	isValid(data) { return super.isValid(data) && data.ejercicios; }
 
 	getTitulo = () => i18n.getItem("descTipos", this.getTipo());
 	isTcr = () => (this.getTipo() == 1);
@@ -16,7 +17,7 @@ class Presto extends Solicitud {
 	isAfc = () => (this.getTipo() == 8);
 	is030 = () => (this.isUae() && (this.isGcr() || this.isAnt()));
 
-	isIntegrable = () => (!this.isAfc() && Solicitud.prototype.isIntegrable.call(this));
+	isIntegrable = () => (!this.isAfc() && this.isIntegrableSolicitud());
 	isReactivable = () => (this.isUae() && !this.isAfc() && !this.isFce() && this.isErronea());
 	isImpCd = () => (this.isEditable() && !this.isAnt());
 	getAdjunto = () => this.get("file");

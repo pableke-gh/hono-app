@@ -2,11 +2,11 @@
 import Validators from "../../i18n/validators.js";
 import factura from "../model/Factura.js";
 import lineas from "../modules/lineas.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 class FacturaValidators extends Validators {
-	start(selector) { this.reset(); return form.closeAlerts().getData(selector); } // Reset previous messages and get current form data
-	close = (data, msg) => this.isOk() ? data : !form.setErrors(this.error(msg)); // Set form errors if not valid
+	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
+	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
 
 	factura(data) { 
 		this.isKey("acTercero", data.idTer, "Debe seleccionar un tercero válido"); // autocomplete required key
@@ -28,7 +28,7 @@ class FacturaValidators extends Validators {
 	}
 
 	all() {
-		const data = this.start(); // init. validation
+		const data = form.getData(); // start validation
 		if (lineas.isEmpty()) { // minimo una linea
 			const msg = "Debe detallar los conceptos asociados a la solicitud.";
 			this.addError("desc", "errRequired", msg).addError("acTTPP", "errRequired", msg);
@@ -37,7 +37,7 @@ class FacturaValidators extends Validators {
 	}
 
 	linea() {
-		const data = this.start(); // init. validation
+		const data = form.getData(); // start validation
 		this.gt0("imp", data.imp); // float required
 		this.size("desc", data.desc); // string required
 		return this.close(data, "El concepto indicado no es válido!"); // Main form message

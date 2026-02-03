@@ -2,7 +2,7 @@
 import Table from "../../../components/Table.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
-import i18n from "../../i18n/langs.js";
+import valid from "../../i18n/validators.js";
 
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
@@ -14,7 +14,7 @@ import gp5 from "./gasto.js";
 import actividad from "../perfil/actividad.js";
 import rmaps from "../rutas/rutasMaps.js";
 import resumen from "../resumen.js";
-import form from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/solicitud.js";
 
 class Gastos extends Table {
 	constructor() {
@@ -51,12 +51,10 @@ class Gastos extends Table {
 			.set("is-ac", globalThis.none).set("is-irpf", globalThis.none); // no aplica para esta version
 
 		const fnPaso5 = tab => {
-			const valid = i18n.getValidators();
+			valid.reset();
 			if (!this.getProp("adjuntos") && (rmaps.getTotKm() > 250))
 				valid.addRequired("adjuntos", "errDocFacturas"); // validacion de 250 km
-			if (valid.isError()) // valido el formulario
-				return !form.setErrors(); // error => no hago nada
-			form.nextTab(tab);
+			return valid.isError() ? valid.error() : form.nextTab(tab); // valido el formulario
 		}
 		tabs.setAction("paso5", () => fnPaso5());
 		tabs.setAction("save5", () => fnPaso5(5));

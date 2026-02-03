@@ -5,6 +5,7 @@ import Table from "../../../components/Table.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
+import valid from "../../i18n/validators.js";
 import xlsx from "../../../services/xlsx.js";
 
 import otri from "../../model/Otri.js";
@@ -22,7 +23,7 @@ import rvp from "../rutas/rutasVehiculoPropio.js";
 import pernoctas from "../gastos/pernoctas.js";
 import dietas from "../gastos/dietas.js";
 import resumen from "../resumen.js";
-import formIrse from "../../../xeco/modules/SolicitudForm.js";
+import formIrse from "../../../xeco/modules/solicitud.js";
 
 function ListIsu() {
 	const form = new Form("#xeco-filtro-isu");
@@ -40,7 +41,7 @@ function ListIsu() {
 	}
 
 	const fnExcel = data => {
-		if (!tabs.showAlerts(data))
+		if (!tabs.setMsgs(data))
 			return false; // Server error
 
 		// XLSX service
@@ -119,16 +120,19 @@ function ListIsu() {
 		xlsx.download("Informe ISU.xlsx"); // download XLSX file
 	}
 
-	const fnValidate = data => {
-		const valid = i18n.getValidators();
+	const fnValidate = () => {
+		const data = form.getData();  // start validation
 		const msg = "Debe seleccionar una orgánica y al menos un ejercicio para la consulta.";
-		ejercicios.isEmpty() && ejercicios.setError(msg);
+		if (ejercicios.isEmpty()) {
+			valid.addRequired("ejercicios", msg);
+			ejercicios.setError();
+		}
 		valid.size20("org-isu", data.organica, msg);
-		return valid.isOk();
+		return valid.close(data);
 	}
 	//tabs.setInitEvent("formIsu", formIsu.init);
-	tabs.setAction("listIsu", () => form.validate(fnValidate) && api.init().json("/uae/iris/isu/list", { ej: ejercicios.getValues(), org: acOrganicas.getValue() }).then(tblIsu.render));
-	tabs.setAction("excel", () => form.validate(fnValidate) && api.init().json("/uae/iris/isu/excel", { id: tblIsu.getIdList() }).then(fnExcel));
+	tabs.setAction("listIsu", () => fnValidate() && api.init().json("/uae/iris/isu/list", { ej: ejercicios.getValues(), org: acOrganicas.getValue() }).then(tblIsu.render));
+	tabs.setAction("excel", () => fnValidate() && api.init().json("/uae/iris/isu/excel", { id: tblIsu.getIdList() }).then(fnExcel));
 }
 
 export default new ListIsu();

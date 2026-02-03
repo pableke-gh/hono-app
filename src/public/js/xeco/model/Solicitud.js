@@ -20,8 +20,9 @@ export default class Solicitud extends Base {
 	load(obj) { return super.setData(obj.getData()).setNif(obj.getNif()).setGrupo(obj.getGrupo()).setAdmin(obj.isAdmin()); } // load from other Solicitud
 	clone = () => this.build().load(this); // Clone Solicitud instance
 
-	onView = globalThis.void; // optional hook method
-	onUpdate = globalThis.void; // optional hook method
+	isValid(data) { return (data && data.solicitud); } // override in subclasses
+	onView = globalThis.void; // override in subclasses
+	onUpdate = globalThis.void; // optional override method
 
 	getNif = () => this.#nif;
 	setNif = val => { this.#nif = val; return this; } 
@@ -52,7 +53,7 @@ export default class Solicitud extends Base {
 	setProcesando = () => this.setEstado(PROCESANDO); // solicitud ejecutando tarea
 	isSubsanable = () => (this.getEstado() == SUBSANABLE); // Solicitud subsanable en el cliente
 	setSubsanable = () => this.setEstado(SUBSANABLE); // marca la solicitud como subsanable
-	isModificable = () => (this.isEditable() || this.isSubsanable()); // la solicitud se puede modificar
+	//isModificable = () => (this.isEditable() || this.isSubsanable()); // la solicitud se puede modificar
 	isFinalizada = () => [1, 3, 4, 9, 10].includes(this.getEstado()); // Aceptada, Ejecutada, Notificada ó Erronea
 	isFirmada = () => (this.isAceptada() || this.isEjecutada());
 	isValidada = () => (this.isFirmada() || this.isIntegrada());
@@ -78,8 +79,9 @@ export default class Solicitud extends Base {
 	isEditableUae = () => (this.isEditable() || this.isSubsanable() || (this.isUae() && this.isFirmable()));
 	isEjecutable = () => (this.isUae() && [1, 3, 4, 5, 9, 10].includes(this.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
 	isNotificable = () => (this.isUae() && [1, 3, 4, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada, integrada ó Erronea
-	isIntegrable() { return (this.isUae() && [1, 3, 9, 10].includes(this.getEstado())); } // uae + Aceptada, Ejecutada ó Erronea
 	isDocumentable = () => (this.isPendiente() || this.isValidada() || this.isErronea()); // muestra el boton de informe pdf
+	isIntegrable = () => (this.isUae() && [1, 3, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada ó Erronea
+	isIntegrableSolicitud = this.isIntegrable; // synonym to symulate super
 	isUrgente = () => (this.get("fMax") && this.get("extra")); //solicitud urgente?
 
 	getCodigo = () => this.get("codigo");

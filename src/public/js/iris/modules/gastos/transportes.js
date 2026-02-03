@@ -1,11 +1,11 @@
 
 import Table from "../../../components/Table.js";
-import i18n from "../../i18n/langs.js";
+import valid from "../../i18n/validators.js";
 
 import iris from "../../model/Iris.js";
 import transporte from "../../model/gasto/Transporte.js";
 import gastos from "../../model/gasto/Gastos.js";
-import form from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/solicitud.js";
 
 class Transportes extends Table {
 	constructor() {
@@ -14,12 +14,7 @@ class Transportes extends Table {
 
 	getImporte = () => this.getProp("imp1");
 	setTransportes = () => this.render(gastos.getTransporte());
-
-	validate = data => {
-		const valid = i18n.getValidation();
-		valid.gt0("impGasto", data.impGasto);
-		return valid.isOk();
-	}
+	validate = data => valid.gt0("impGasto", data.impGasto).close(data);
 
 	init = () => {
 		iris.getImpTrasportes = this.getImporte;

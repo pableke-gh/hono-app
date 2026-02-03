@@ -1,11 +1,12 @@
 
 import Table from "../../../components/Table.js";
 import i18n from "../../i18n/langs.js";
+import valid from "../../i18n/validators.js";
 
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaVehiculoPropio.js";
 import rutas from "../../model/ruta/Rutas.js";
-import form from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/solicitud.js";
 
 class RutasVehiculoPropio extends Table {
 	constructor() {
@@ -17,12 +18,12 @@ class RutasVehiculoPropio extends Table {
 	// super keyword simulation for arrow function
 	render = () => Table.prototype.render.call(this, rutas.getRutasVehiculoPropio());
 
-	validate = data => {
-		const valid = i18n.getValidators();
+	validate() {
+		const data = form.getData();
 		const resume = this.getResume();
 		if (resume.justifi) // justifi si distancia modificada al alza
 			valid.size("justifiKm", data.justifiKm, "errJustifiKm");
-		return valid.isOk();
+		return valid.close(data);
 	}
 
 	init = () => {

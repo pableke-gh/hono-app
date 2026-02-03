@@ -2,6 +2,7 @@
 import Table from "../../../components/Table.js";
 import dt from "../../../components/types/DateBox.js";
 import i18n from "../../i18n/langs.js";
+import valid from "../../i18n/validators.js";
 
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
@@ -10,7 +11,7 @@ import gastos from "../../model/gasto/Gastos.js";
 
 import perfil from "../perfil/perfil.js";
 import pernoctas from "../../data/pernoctas/pernoctas.js";
-import form from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/solicitud.js";
 
 class Pernoctas extends Table {
 	constructor() {
@@ -26,13 +27,12 @@ class Pernoctas extends Table {
 	setPernoctas = () => this.render(gastos.getPernoctas());
 
 	validate = data => {
-		const valid = i18n.getValidators();
 		valid.gt0("impGasto", data.impGasto)
 			.isDate("fMinGasto", data.fMinGasto).isDate("fMaxGasto", data.fMaxGasto);
 		if (data.fMinGasto > data.fMaxGasto)
 			valid.addError("fMinGasto", "errFechasAloja");
 		if (valid.isError()) // error en los campos
-			return false; // stop validations
+			return valid.error(); // stop validations
 
 		const f2 = new Date(form.valueOf("#fMaxGasto")); // T00:00:00.000Z
 		const f1 = new Date(form.valueOf("#fMinGasto")); // T00:00:00.000Z
@@ -43,12 +43,12 @@ class Pernoctas extends Table {
 		const idPais1 = rutas.getPaisPernocta(f1);
 		while (dt.lt(f1, f2)) { // range date iterator
 			if (rutas.getPaisPernocta(f1) != idPais1)
-				return !valid.addError("fMinGasto", "errPais");
+				return valid.addError("fMinGasto", "errPais").error();
 			f1.addDays(1); // incremento un día
 		}
 		data.imp2 = this.getImpNoche(tipo, idPais1, grupo);
 		data.desc = i18n.getRegion(idPais1);
-		return valid.isOk();
+		return valid.close(data);
 	}
 
 	init = () => {

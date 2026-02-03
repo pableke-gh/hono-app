@@ -8,7 +8,7 @@ import valid from "./i18n/validators.js";
 import presto from "./model/Presto.js";
 import pDec from "./modules/partidaDec.js";
 import partidas from "./modules/partidas.js";
-import list from "../xeco/modules/SolicitudesList.js";
+import list from "../xeco/modules/list.js";
 
 coll.ready(() => { // init. presto modules
 	const form = list.init(presto).getForm();

@@ -14,9 +14,6 @@ export default class Msgs {
 		return this;
     }
 
-	start() { throw new Error("Method 'start' must be implemented."); }
-	close() { throw new Error("Method 'close' must be implemented."); }
-
 	isOk = () => (this.#errors == 0);
 	isError = () => (this.#errors > 0);
 	getError = name => this.#MSGS[name || KEY_ERR];
@@ -25,7 +22,6 @@ export default class Msgs {
 	setInfo = msg => this.setMsg("msgInfo", msg);
 	setWarn = msg => this.setMsg("msgWarn", msg);
 	setError = msg => { this.#errors++; return this.setMsg(KEY_ERR, msg); }
-	error = msg => this.setMsg(KEY_ERR, this.getMsg(KEY_ERR) || msg || "errForm").getMsgs(); // force finish with error
 
 	addError = (field, tip, msg) => {
 		if (msg && !this.getMsg(KEY_ERR))
@@ -43,4 +39,8 @@ export default class Msgs {
 		const msg = err.message || err; // Main message
 		return this.addError(err.field, err.tiperr, msg);
 	}*/
+
+	success() { throw new Error("Method 'success' must be implemented."); }
+	fail(msg) { return this.setMsg(KEY_ERR, this.getMsg(KEY_ERR) || msg || "errForm").getMsgs(); } // force finish with error
+	close = (data, msg) => (this.isOk() ? this.success(data) : this.fail(msg)); // Set form errors if not valid
 }

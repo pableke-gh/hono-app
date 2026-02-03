@@ -8,7 +8,7 @@ import valid from "../i18n/validators.js";
 
 import rutas from "./rutas.js";
 import organicas from "./organicas.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function IrseTabs() {
 	const fnUpload = () => { // merge data to send

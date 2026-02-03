@@ -30,7 +30,6 @@ function Recibos() {
 		});
 
 		fnBuscar();
-		//tabs.setViewEvent("ttpp", () => console.log("view"));
 	}
 
 	tabs.setAction("list", () => {

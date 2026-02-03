@@ -10,6 +10,12 @@ export default class Table {
 	#index = -1; // current item position in data
 
 	constructor(table, opts) {
+		this.#table = globalThis.isstr(table) ? $1(table) : table; // search table
+		this.#table = this.#table || document.createElement("table"); // force table element
+		this.#tHead = this.#table.tHead || this.#table.createTHead(); //header element
+		this.#tBody = this.#table.tBodies[0] || this.#table.createTBody(); //body element
+		this.#tFoot = this.#table.tFoot || this.#table.createTFoot(); //footer element
+
 		this.#opts = opts || {}; // default table options
 		this.#opts.sortClass = this.#opts.sortClass || "sort";
 		this.#opts.sortAscClass = this.#opts.sortAscClass || "sort-asc";
@@ -30,10 +36,9 @@ export default class Table {
 		this.#opts.afterRender = this.#opts.afterRender || globalThis.void;
 		this.#opts.onRemove = this.#opts.onRemove || (() => Promise.resolve()); // force promise
 
-		// Set default actions
+		this.#setSort(table); // Set default actions
 		this.#opts["#"] = globalThis.void;
 		this.#opts["#remove"] = this.remove;
-		this.setTable(table); // table element
 	}
 
 	get = name => this.#opts[name];
@@ -62,14 +67,6 @@ export default class Table {
 			ev.preventDefault();
 		});
 		return this;
-	}
-	setTable(table) {
-		this.#table = globalThis.isstr(table) ? $1(table) : table;
-		this.#table = this.#table || document.createElement("table");
-		this.#tHead = this.#table.tHead || this.#table.createTHead(); //header element
-		this.#tBody = this.#table.tBodies[0] || this.#table.createTBody(); //body element
-		this.#tFoot = this.#table.tFoot || this.#table.createTFoot(); //footer element
-		return this.#setSort();
 	}
 
 	setRowEmpty = html => this.set("rowEmptyTable", html);
@@ -102,7 +99,7 @@ export default class Table {
 
 	getFirst = () => this.#rows[0];
 	getItem = i => this.#rows[i ?? this.#index];
-	getId = i => this.getItem(i)?.id; // get item id
+	getId = () => this.#rows[this.#index]?.id; // get current id
 	getIdList = () => (this.#rows && this.#rows.map(row => row.id)); // get id's
 	isItem = () => (this.#index > -1) && (this.#index < this.#rows.length);
 	getCurrent = () => this.#rows[this.#index]; // current data
@@ -176,8 +173,8 @@ export default class Table {
 
 	#fnRefresh = (el, data) => { el.$$(this.#opts.refreshSelector).refresh(data, this.#opts); return this; } // render table elements
 	refreshHeader = data => this.#fnRefresh(this.#tHead, data || this.#RESUME); // refresh table header
-	refreshRow = data => this.#fnRefresh(this.getCurrentRow(), data || this.getCurrent()); // refresh a row
-	refreshBody = () => { this.#tBody.rows.forEach((tr, i) => this.#fnRefresh(tr, this.#rows[i])); return this.setChanged(true); } // refresh each row
+	refreshRow(data) { return this.#fnRefresh(this.getCurrentRow(), data || this.getCurrent()); } // refresh a row
+	refreshBody() { this.#tBody.rows.forEach((tr, i) => this.#fnRefresh(tr, this.#rows[i])); return this.setChanged(true); } // refresh each row
 	refreshFooter = () => this.#fnRefresh(this.#tFoot, this.#RESUME); // refresh footer only
 	refresh = () => this.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer
 	recalc = () => {

@@ -1,15 +1,15 @@
 
 import Validators from "../../i18n/validators.js";
-import form from "../modules/SolicitudForm.js";
+import form from "../modules/solicitud.js";
 
 class XecoValidators extends Validators {
-	start(selector) { this.reset(); return form.closeAlerts().getData(selector); } // Reset previous messages and get current form data
-	close = (data, msg) => this.isOk() ? data : !form.setErrors(this.error(msg)); // Set form errors if not valid
+	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
+	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
 
 	firma() {
-		const data = this.start(); // init. validation
+		const data = form.getData(); // start validation
 		const msg = "Debe indicar un motivo para el rechazo de la solicitud.";
-		return this.size("rechazo", data.rechazo, msg).close(data); // Required string
+		return this.size500("rechazo", data.rechazo, msg).close(data); // Required string
 	}
 }
 

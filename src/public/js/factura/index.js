@@ -9,7 +9,7 @@ import valid from "./i18n/validators.js";
 import factura from "./model/Factura.js";
 import lineas from "./modules/lineas.js";
 import fiscal from "./modules/fiscal.js";
-import list from "../xeco/modules/SolicitudesList.js";
+import list from "../xeco/modules/list.js";
 
 coll.ready(() => { // init. fact modules
 	const form = list.init(factura).getForm();

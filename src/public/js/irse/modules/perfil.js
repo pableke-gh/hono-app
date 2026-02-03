@@ -89,7 +89,7 @@ function IrsePerfil() {
 			i18n.set("imp", "");
 			eCol.parentNode.hide();
 			dom.table("#organicas", organicas, resume, STYLES);
-			form.querySelector(".msg-cd")?.hide();
+			form.setval("#nif-interesado").querySelector(".msg-cd")?.hide();
 			fnUpdatePerfil();
 		});
 
@@ -132,11 +132,16 @@ function IrsePerfil() {
 				form.querySelector(".msg-cd")?.render().show();
 				return item.id;
 			},
-			onReset: () => { i18n.set("imp", null); form.hide(".msg-cd"); }
+			onReset: () => {
+				if (!IRSE.uxxiec)
+					coll.reset(organicas);
+				i18n.set("imp", "");
+				form.hide(".msg-cd");
+			}
 		});
 
 		organicas = coll.parse(form.getText("#org-data")) || [];
-		i18n.set("imp", organicas[0]?.imp); //importe precargado
+		i18n.set("imp", organicas[0]?.imp || 0); //importe precargado
 		i18n.set("pasos", 2 + self.isIsu() + self.isMaps()); // set num pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + self.isMaps()).get("lblPasos"), irse);
 

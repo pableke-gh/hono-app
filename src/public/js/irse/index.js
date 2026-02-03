@@ -14,18 +14,20 @@ import maps from "./modules/maps.js";
 import otri from "./modules/otri.js";
 import organicas from "./modules/organicas.js";
 import iTabs from "./modules/tabs.js";
-import list from "../xeco/modules/SolicitudesList.js";
+import list from "../xeco/modules/list.js";
 
 window.IRSE = {}; // global IRSE info
 coll.ready(() => {
 	/*********** Redefine handlers and add extra actions ***********/
+	const solicitudes = list.getList(); // solicitudes
 	const form = list.init(irse).getForm(); // init. list
+	const fnCached = id => (form.isCached(id) && !perfil.isEmpty()); // check if data is cached
 	const fnIdParam = data => { loading(); return [{ name: "id", value: data.id }]; } // set param structure
-	list.set("#view", data => (irse.eq(data.id) && !perfil.isEmpty()) ? tabs.showTab(irse.setData(data).getInitTab()) : window.rcView(fnIdParam(data)));
-	list.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id))); // set table action
-	list.set("#clone", data => (i18n.confirm("msgReactivar") && window.rcClone(fnIdParam(data)))); // set table action
-	list.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // html report
-	tabs.setAction("rptFinalizar", () => list.invoke("#rptFinalizar")); // set tab action
+	solicitudes.set("#view", data => (fnCached(data.id) ? tabs.showTab(irse.setData(data).getInitTab()) : window.rcView(fnIdParam(data))));
+	solicitudes.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id))); // set table action
+	solicitudes.set("#clone", data => (i18n.confirm("msgReactivar") && window.rcClone(fnIdParam(data)))); // set table action
+	solicitudes.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // html report
+	//tabs.setAction("rptFinalizar", () => solicitudes.invoke("#rptFinalizar")); // set tab action
 
 	/*********** Google Maps API ***********/
 	tabs.setActiveEvent(2, perfil.isMaps).setInitEvent(2, maps);
@@ -58,7 +60,8 @@ coll.ready(() => {
 		perfil.init(form); // perfil de la solicitud
 		rutas.init(form); // rutas asociadas a la solicitud
 		organicas.init(form); // tabla de organicas
-		form.setval("#idses", window.IRSE.id).setFirmas(coll.parse(args.firmas)).refresh(irse); // configure view
+		form.setval("#idses", window.IRSE.id).setCache(window.IRSE.id)
+			.setFirmas(coll.parse(args.firmas)).refresh(irse); // configure view
 		tab = tab ?? window.IRSE.tab; // get next tab to show
 		tabs.reset([ 0, 1, 3, 5, 6, 9 ]).load(form.getForm()); // reload tabs from server
 		tabs.isActive(tab) ? tabs.setActive(tab) : tabs.nextTab(tab); // IMPORTANTE! tab5 autoreload tab
@@ -68,7 +71,7 @@ coll.ready(() => {
 	// Global initializations
 	window.ip = perfil;
 	window.ir = rutas;
-	irse.getNumRutasVp = () => (!perfil.isMun() && rutas.getNumRutasVp()); // show / hide rutas con vehiculo propio
+	irse.getNumRutasVp = () => (!perfil.isEmpty() && !perfil.isMun() && rutas.getNumRutasVp()); // show / hide rutas con vehiculo propio
 
 	// Hack old DomBox Module
 	dom.confirm = i18n.confirm; // for remove action

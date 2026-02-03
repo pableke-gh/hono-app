@@ -2,6 +2,7 @@
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
 import tabs from "../../components/Tabs.js";
+import valid from "../i18n/validators.js";
 import dom from "../lib/dom-box.js";
 
 import place from "./place.js";
@@ -89,7 +90,7 @@ window.initMap = () => {
         ruta.mask = ((ruta.mask & 4) && place.isCartagena(p2)) ? 4 : 0;
 
 		p1 = p2 = null; // re-init. places
-		if (!rutas.valid(ruta)) // extra validations
+		if (!valid.ruta(ruta)) // extra validations
 			return false;
 
 		if (ruta.desp != "1") // no calculate distance

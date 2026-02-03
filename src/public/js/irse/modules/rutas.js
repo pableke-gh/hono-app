@@ -4,6 +4,7 @@ import nb from "../../components/types/NumberBox.js";
 import sb from "../../components/types/StringBox.js";
 import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
+import valid from "../i18n/validators.js";
 
 import perfil from "./perfil.js";
 import organicas from "./organicas.js";
@@ -52,29 +53,10 @@ function IrseRutas() {
 	this.getNumRutasVp = () => resume.sizeVp;
 	this.getNumRutasOut = () => resume.sizeOut;
 
-	this.valid = ruta.valid;
-	this.validAll = function() {
-		if (self.isEmpty())
-			return dom.closeAlerts().addError("#origen", "errItinerario").isOk();
-		let r1 = rutas[0];
-		if (!ruta.valid(r1))
-			return false;
-		const origen = ruta.getOrigen(r1);
-		for (let i = 1; i < rutas.length; i++) {
-			const r2 = rutas[i];
-			if (!ruta.validRutas(r1, r2))
-				return false; //stop
-			if (origen == r2.origen)
-				return dom.addError("#destino", "errMulticomision").isOk();
-			r1 = r2; //go next route
-		}
-		return dom.isOk();
-	}
-
 	const isValidObjeto = () => dom.closeAlerts().required("#objeto", "errObjeto").isOk();
 	this.paso1 = () => isValidObjeto() && loading();
 	this.paso1Col = () => isValidObjeto() && dom.past("#fAct", "errDateLe").gt0("#impAc", "errGt0").isOk();
-	this.validItinerario = () => (isValidObjeto() && self.validAll());
+	this.validItinerario = () => (isValidObjeto() && valid.itinerario(rutas) /*self.validAll()*/);
 
 	this.add = function(ruta, dist) {
 		ruta.temp = true;
@@ -94,7 +76,7 @@ function IrseRutas() {
 			}
 		}
 
-		if (self.validAll()) {
+		if (valid.rutas(rutas)/*self.validAll()*/) {
 			delete ruta.temp;
 			fnSetMain(principal);
 			ruta.km1 = ruta.km2 = dist;
@@ -106,15 +88,8 @@ function IrseRutas() {
 		return self;
 	}
 
-	this.paso2 = () => self.validItinerario()
-					&& ((self.size() > 1) || dom.addError("#destino", "errMinRutas").isOk())
-					&& loading();
-	this.paso6 = () => {
-		dom.closeAlerts();
-		if (resume.justifi)
-			dom.required("#justifiKm", "errJustifiKm");
-		return dom.isOk() && loading();
-	}
+	this.paso2 = () => (valid.itinerario(rutas) && loading());
+	this.paso6 = () => (valid.paso6(resume) && loading());
 
 	function fnRecalc() {
 		resume.totKm = resume.totKmCalc = 0;
@@ -129,7 +104,6 @@ function IrseRutas() {
 		elImpKm.innerHTML = i18n.isoFloat(self.getImpKm()) + " €";
 		bruto.innerHTML = organicas.getTotalFmt();
 		justifiKm.setVisible(resume.justifi);
-		return self;
 	}
 
 	this.init = form => {
@@ -144,11 +118,11 @@ function IrseRutas() {
 			resume.sizeOut = resume.out.length; // size table footer
 			resume.vp = rutas.filter(ruta => (ruta.desp == 1)); //rutas en vp
 			resume.sizeVp = resume.vp.length; // size table footer
-
-			// Actualizo las tablas relacionadas
-			dom.table("#rutas-out", resume.out, resume, STYLES).table("#vp", resume.vp, resume, STYLES);
 			resume.size = rutas.length; // save global size
-			return fnRecalc();
+
+			fnRecalc(); // Actualizo las tablas relacionadas
+			dom.table("#rutas-out", resume.out, resume, STYLES).table("#vp", resume.vp, resume, STYLES);
+			return self;
 		}
 		function fnSave() {
 			const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size

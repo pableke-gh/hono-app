@@ -7,8 +7,6 @@ function Ruta() {
 	const self = this; //self instance
 	const GASOLINA = .26; // € / kilometro
 	const TPL_FLAG = '<i class="fal fa-flag-checkered"></i>';
-	const MIN_DATE = dt.addYears(new Date(), -1); //tb.now().add({ years: -1 }); //1 año antes
-	const MAX_DATE = dt.addDays(new Date(), 180); //tb.now().add({ days: 180 }); //6 meses despues 
 
 	this.getHoraSalida = ruta => ruta.dt1;
 	this.getHoraLlegada = ruta => ruta.dt2;
@@ -66,27 +64,6 @@ function Ruta() {
 	this.getTrayecto = ruta => (ruta.origen + " - " + ruta.destino);
 	this.getTrayectoPais = ruta => `${ruta.origen} (${ruta.pais1}) - ${ruta.destino} (${ruta.pais2})`;
 	this.getPaisPernocta = ruta => (self.isLlegadaTardia(ruta) ? self.getPaisllegada(ruta) : self.getPaisSalida(ruta));
-
-	this.valid = ruta => {
-		const valid = i18n.getValidation();
-		if (!ruta.origen || !ruta.pais1)
-			valid.addRequired("origen", "errOrigen");
-		if (!dt.between(self.salida(ruta), MIN_DATE, MAX_DATE)) 
-			return valid.addError("f1", "errFechasRuta").isOk();
-		if (ruta.dt1 > ruta.dt2)
-			return valid.addError("f1", "errFechasOrden").isOk();
-		return valid.isOk();
-	}
-	this.validRutas = (r1, r2) => {
-		if (!self.valid(r2))
-			return false; //stop
-		const valid = i18n.getValidation();
-		if (!r1.pais2.startsWith(r2.pais1.substring(0, 2)))
-			return valid.addError("destino", "errItinerarioPaises").isOk();
-		if (r1.dt2 > r2.dt1) //rutas ordenadas
-			valid.addError("destino", "errItinerarioFechas");
-		return valid.isOk();
-	}
 
 	// table renders
 	this.beforeRender = resume => {

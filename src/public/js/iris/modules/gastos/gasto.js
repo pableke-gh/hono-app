@@ -3,6 +3,7 @@ import sb from "../../../components/types/StringBox.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
+import valid from "../../i18n/validators.js";
 
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaGasto.js";
@@ -11,7 +12,7 @@ import rutas from "../../model/ruta/Rutas.js";
 import gastos from "./gastos.js";
 import transportes from "./transportes.js";
 import pernoctas from "./pernoctas.js";
-import form from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/solicitud.js";
 
 export default function(tab) {
 	const _eTipoGasto = form.getInput("#tipoGasto");
@@ -59,17 +60,16 @@ export default function(tab) {
 	}
 
 	// validación del tipo de gasto
-	const fnValidate = data => {
-		const valid = i18n.getValidators();
+	const fnValidate = () => {
+		const data = form.getData(".ui-gasto");  // start validation
 		if (isDoc()) // doc only
-			return valid.size500("txtGasto", data.txtGasto, "errDoc").isOk();
+			return valid.size500("txtGasto", data.txtGasto, "errDoc").close(data);
 		if (isExtra() || isTaxi()) // extra info (paso 8) o ISU+taxi
-			return valid.size500("txtGasto", data.txtGasto, "errDoc").gt0("impGasto", data.impGasto).isOk();
+			return valid.size500("txtGasto", data.txtGasto, "errDoc").gt0("impGasto", data.impGasto).close(data);
 		if (isInterurbano())
 			return transportes.validate(data);
 		if (isPernocta())
 			return pernoctas.validate(data);
-		return valid.isOk();
 	}
 
 	// update tabs events
@@ -101,9 +101,8 @@ export default function(tab) {
 	}
 	tabs.setViewEvent(5, fnReset); // reset form on view tab 5
 	tabs.setAction("uploadGasto", () => { // upload button
-		const data = form.validate(fnValidate, ".ui-gasto"); // valido los datos del gasto
-		if (!data) // valido los datos del gasto
-			return;
+		const data = fnValidate(); // valido los datos del gasto
+		if (!data) return; // valido los datos del gasto
 		if (isInterurbano()) // es trayecto interurbano
 			return tabs.showTab(12); // muestro la tabla de rutas pendientes
 		fnUpload(data).then(fnAfterUpload); // upload gasto

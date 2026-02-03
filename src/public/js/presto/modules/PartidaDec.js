@@ -3,7 +3,7 @@ import api from "../../components/Api.js"
 import presto from "../model/Presto.js";
 import pInc from "./partidaInc.js";
 import partidas from "./partidas.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function PartidaDec() {
 	const fnAutoloadErr = msg => { _orgDec.isItem() && form.showError(msg); }

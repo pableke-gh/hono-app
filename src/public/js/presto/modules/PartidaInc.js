@@ -7,7 +7,7 @@ import p030 from "./partida030.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 import partidas from "./partidas.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function PartidaInc() {
 	const self = this; //self instance

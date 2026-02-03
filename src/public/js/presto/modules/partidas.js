@@ -3,7 +3,7 @@ import Table from "../../components/Table.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 import p030 from "./partida030.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 class Partidas extends Table {
 	constructor() {

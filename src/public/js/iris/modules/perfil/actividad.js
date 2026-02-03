@@ -1,6 +1,6 @@
 
 import iris from "../../model/Iris.js";
-import form from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/solicitud.js";
 import actividades from "../../data/perfiles/actividades.js"
 
 function Actividad() {

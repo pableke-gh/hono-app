@@ -11,7 +11,7 @@ import resumen from "./modules/resumen.js";
 import sendTab from "./modules/send.js";
 import otri from "./modules/otri.js";
 import listIsu from "./modules/isu/list.js";
-import list from "../xeco/modules/SolicitudesList.js";
+import list from "../xeco/modules/list.js";
 
 coll.ready(() => { // init. iris modules actions
 	const form = list.init(iris).getForm();

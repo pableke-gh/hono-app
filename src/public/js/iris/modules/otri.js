@@ -2,14 +2,14 @@
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
 import dt from "../../components/types/DateBox.js";
-import i18n from "../i18n/langs.js";
+import valid from "../i18n/validators.js";
 
 import iris from "../model/Iris.js";
 import rutas from "../model/ruta/Rutas.js";
 import gastos from "../model/gasto/Gastos.js"; 
 
 import actividad from "./perfil/actividad.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function Otri() {
 	//const self = this; //self instance
@@ -39,8 +39,8 @@ function Otri() {
 		return dt.lt(rutas.salida(), fIniCong) || dt.lt(fFinCong, rutas.llegada());
 	}
 
-	const fnValidate = data => {
-		const valid = i18n.getValidators();
+	const fnValidate = () => {
+		const data = form.getData();  // start validation
 		valid.size("justifi", data.justifi, "errJustifiSubv");
 		if (form.fire("is-rutas-vp")) // debe justificar el uso del vp
 			valid.size("justifiVp", data.justifiVp, "errJustifiVp");
@@ -51,13 +51,12 @@ function Otri() {
 		}
 		if (isCongresoJustifi())
 			valid.size("justifiCong", data.justifiCong, "errCongreso");
-		return valid.isOk();
+		return valid.close(data);
 	}
 	const fnPasoIsu = tab => {
-		const data = form.validate(fnValidate);
-		if (!data) // valido el formulario
-			return false; // error => no hago nada
-		if (!form.isChanged()) // compruebo cambios
+		const data = fnValidate();
+		if (!data) return false; // error => no hago nada
+		if (!form.isChanged()) // compruebo si hay cambios
 			return form.nextTab(tab); // no cambios => salto al siguiente paso
 		const temp = Object.assign(iris.getData(), data); // merge data to send
 		temp.gastos = gastos.setSubvencion(data).setCongreso(data).getGastos();

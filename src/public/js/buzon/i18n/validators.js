@@ -1,15 +1,15 @@
 
 import Validators from "../../i18n/validators.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 class BuzonValidators extends Validators {
-	start(selector) { this.reset(); return form.closeAlerts().getData(selector); } // Reset previous messages and get current form data
-	close = (data, msg) => this.isOk() ? data : !form.setErrors(this.error(msg)); // Set form errors if not valid
+	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
+	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
 
 	tab5() {
-		const data = this.start(); // init. validation
+		const data = form.getData(); // start validation
 		const msgs = "Debe detallar las observaciones para el gestor.";
-		return this.size("desc", data.desc, msgs).close(data);
+		return this.size500("desc", data.desc, msgs).close(data);
 	}
 }
 

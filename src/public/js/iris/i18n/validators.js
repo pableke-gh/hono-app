@@ -1,11 +1,108 @@
 
+import coll from "../../components/CollectionHTML.js";
+import dt from "../../components/types/DateBox.js";
+import sb from "../../components/types/StringBox.js";
 import Validators from "../../i18n/validators.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+
+import iris from "../model/Iris.js";
+import ruta from "../model/ruta/Ruta.js";
+import rutas from "../model/ruta/Rutas.js";
+import gastos from "../model/gasto/Gastos.js";
+
+import organicas from "../modules/perfil/organicas.js";
+import actividad from "../modules/perfil/actividad.js";
+import form from "../../xeco/modules/solicitud.js";
+
+const MIN_DATE = dt.addYears(new Date(), -1); //tb.now().add({ years: -1 }); //1 año antes
+const MAX_DATE = dt.addDays(new Date(), 180); //tb.now().add({ days: 180 }); //6 meses despues 
 
 class IrisValidators extends Validators {
-	start(selector) { this.reset(); return form.closeAlerts().getData(selector); } // Reset previous messages and get current form data
-	close = (data, msg) => this.isOk() ? data : !form.setErrors(this.error(msg)); // Set form errors if not valid
+	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
+	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
 
+	perfil() {
+		const data = form.getData(); // start validation
+		if (actividad.isEmpty() || !data.actividad)
+        	this.addRequired("acInteresado", "errPerfil");
+		if (organicas.isEmpty())
+			this.addRequired("acOrganica", "errOrganicas");
+		return this.close(data);
+    }
+
+	/** validaciones del paso 2 **/
+	ruta(data) {
+		if (!data.origen || !data.pais1)
+			this.addRequired("origen", "errOrigen");
+		if (!dt.between(ruta.salida(data), MIN_DATE, MAX_DATE)) 
+			return !this.addError("f1", "errFechasRuta");
+		if (data.dt1 > data.dt2)
+			this.addError("f1", "errFechasOrden");
+		return this.isOk();
+	}
+	isRutasConsecutivas(r1, r2) {
+		if (!this.ruta(r2))
+			return false; //stop
+		if (!r1.pais2.startsWith(r2.pais1.substring(0, 2)))
+			return !this.addError("destino", "errItinerarioPaises");
+		if (r1.dt2 > r2.dt1) //rutas ordenadas
+			this.addError("destino", "errItinerarioFechas");
+		return this.isOk();
+	}
+	rutas(rutas) {
+		if (coll.isEmpty(rutas))
+			return !this.addError("origen", "errItinerario");
+		let r1 = rutas[0];
+		if (!this.ruta(r1))
+			return false; // salida erronea
+		const origen = ruta.getOrigen(r1);
+		for (let i = 1; i < rutas.length; i++) {
+			const r2 = rutas[i];
+			if (!this.isRutasConsecutivas(r1, r2))
+				return false; //stop
+			if (origen == r2.origen)
+				return !this.addError("destino", "errMulticomision");
+			r1 = r2; //go next route
+		}
+		return this.isOk();
+	}
+	itinerario() { // validaciones para los mapas
+		const data = form.getData(); // start validation
+		if (perfil.isMaps() && (rutas.size() < 2)) // min rutas = 2
+			return this.addRequired("destino", "errMinRutas").fail("errItinerario");
+		return this.rutas(rutas.getRutas()) ? data : this.fail("errItinerario");
+	}
+	/** validaciones del paso 2 **/
+
+	mun() {
+		const data = form.getData(); // start validation
+		if (!data.memo) // valida textarea
+        	this.addRequired("memo", "errObjeto");
+		if (!iris.isMun())
+			return this.close(data);
+		const rutaMun = this.start(".ui-mun");
+		this.size("origen", rutaMun.origen, "errOrigen").isDate("dt1", rutaMun.dt1); //ha seleccionado un origen
+		if (ruta.isVehiculoPropio(rutaMun)) { // vehiculo propio
+			const msg = "Debe indicar el kilometraje del desplazamiento";
+			this.size20("matricula", rutaMun.matricula, "errMatricula").gt0("km1", rutaMun.km1, msg);
+		}
+		if (this.isError()) // valido mun
+			return this.fail(); // error en mun
+		rutaMun.destino = rutaMun.origen;
+		rutaMun.pais1 = rutaMun.pais2 = "ES";
+		rutaMun.dt1 = sb.toIsoDate(rutaMun.dt1);
+		rutaMun.dt2 = sb.endDay(rutaMun.dt1);
+		rutaMun.km2 = rutaMun.km1; // km1 = km2
+		rutaMun.mask = 5; // es cartagena + principal
+		if (!this.ruta(rutaMun)) // valido el formulario mun
+			return this.fail(); // error => no hago nada
+		data.rutas = [ rutaMun ]; // actualizo las rutas
+		const resumen = { size: 1, totKm: rutaMun.km1 };
+		resumen.impKm = (rutaMun.km1 * ruta.getImpGasolina());
+		resumen.vp = +ruta.isVehiculoPropio(rutaMun);
+		data.gastos = gastos.setPaso1(rutaMun, resumen).getGastos(); // actualizo los gastos 
+		rutas.setRutas(data.rutas); // validation = true
+		return this.close(data);
+	}
 }
 
 export default new IrisValidators();

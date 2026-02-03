@@ -5,7 +5,7 @@ import valid from "../i18n/validators.js";
 
 import factura from "../model/Factura.js";
 import lineas from "./lineas.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function Lineas() {
 	const self = this; //self instance

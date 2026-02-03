@@ -3,12 +3,13 @@ import sb from "../../components/types/StringBox.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
 import i18n from "../i18n/langs.js";
+import valid from "../i18n/validators.js";
 
 import iris from "../model/Iris.js";
 import gastos from "../model/gasto/Gastos.js"; 
 
 import mgo from "./gastos/organicas.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function Send() {
 	//const self = this; //self instance
@@ -35,7 +36,7 @@ function Send() {
 		mgo.view(); // load table organicas
 		cuentas = cuentas || []; // cuentas bancarias
 		form.setLabels("#cuentas", cuentas); // update options
-		const bancos = i18n.getValidation().getBanks();
+		const bancos = valid.getBanks(); // entidades bancarias
 		_cuentas.options.forEach(opt => { // update options view
 			const entidad = bancos.getEntidad(opt.innerText);
 			opt.innerText += entidad ? (" - " + entidad) : "";
@@ -49,8 +50,8 @@ function Send() {
 			.set("paisEntidad", gastos.getPaisEntidad()).set("nombreEntidad", gastos.getNombreEntidad()).set("codigoEntidad", gastos.getCodigoEntidad()); // gastos Banco
 	}
 
-	const fnValidate = data => {
-		const valid = i18n.getValidators();
+	const validate = () => {
+		const data = form.getData();  // start validation
 		valid.size50("iban", data.iban, "errIban");
 		if (!_cuentas.value) {
 			if (isSpain())
@@ -62,7 +63,7 @@ function Send() {
 			valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
 			valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
 		}
-		return valid.isOk();
+		return valid.close(data);
 	}
 
 	const fnSend = (data, url) => {
@@ -72,14 +73,14 @@ function Send() {
 		return api.setJSON(temp).json(url); // return promise
 	}
 	tabs.setAction("paso9", () => {
-		const data = form.validate(fnValidate);
+		const data = validate();
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (i18n.confirm("msgSend")) // si hay confirmacion => envio
 			fnSend(data, "/uae/iris/send").then(form.reset);
 	});
 	tabs.setAction("save9", () => {
-		const data = form.validate(fnValidate);
+		const data = validate();
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (form.isChanged()) // si ahy cambios => envio

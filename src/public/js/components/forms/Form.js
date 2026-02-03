@@ -251,18 +251,9 @@ export default class Form {
 		return this;
 	}
 	setErrors = messages => {
-		if (globalThis.isstr(messages)) // simple message text
-			return this.showError(messages); // show error message
-		//const valid = lang.getValidation(); // get form validators
-		// Style error inputs and set focus on first error
-		//messages = messages || valid.getMsgs(); // default messages
+		messages.msgError = messages.msgError || this.#opts.defaultMsgError;
 		this.#form.elements.eachPrev(el => input.setError(el, messages[el.name]));
-		return this.showError(messages.msgError || this.#opts.defaultMsgError);
-		//valid.reset(); // reset for next validation
-		//return this;
+		alerts.setMsgs(messages);
+		return this;
 	}
-	/*validate = (fnValidator, selector) => {
-		const data = this.closeAlerts().getData(selector); // current form data
-		return fnValidator(data) ? data : !this.setErrors(); // model preserve this
-	}*/
 }

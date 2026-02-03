@@ -3,11 +3,11 @@ import sb from "../../components/types/StringBox.js";
 import Validators from "../../i18n/validators.js";
 import presto from "../model/Presto.js";
 import partidas from "../modules/partidas.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 class PrestoValidators extends Validators {
-	start(selector) { this.reset(); return form.closeAlerts().getData(selector); } // Reset previous messages and get current form data
-	close = (data, msg) => this.isOk() ? data : !form.setErrors(this.error(msg)); // Set form errors if not valid
+	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
+	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
 
 	presto = data => {
 		if (presto.isPartidaDec()) { // valido la partida a disminuir
@@ -28,7 +28,7 @@ class PrestoValidators extends Validators {
 	}
 
 	all() {
-		const data = this.start(); // init. validation
+		const data = form.getData(); // start validation
 		if (presto.isPartidaDec() && (partidas.getImporte() != data.imp)) // Valido los importes a decrementar e incrementar
 			this.addError("imp", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
 		if (partidas.isEmpty())
@@ -37,29 +37,22 @@ class PrestoValidators extends Validators {
     }
 
 	partidaInc() {
-		const data = this.start(); // init. validation
+		const data = form.getData(); // start validation
 		this.isKey("acOrgInc", data.idOrgInc, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
 		this.isKey("idEcoInc", data.idEcoInc, "Debe seleccionar una económica"); // select required number
 		this.gt0("impInc", data.impInc); // float number > 0
-		if ((data.idOrgDec == data.idOrgInc) && sb.starts(sb.getCode(form.getOptionText("#idEcoInc")), sb.getCode(form.getOptionText("#idEcoDec"))))
+		if (partidas.getData().find(row => ((row.idOrg == data.idOrgInc) && (row.idEco == data.idEcoInc))))
+			this.addError("acOrgInc", "notAllowed", "¡Partida ya asociada a la solicitud!"); // partida ya asociada
+		else if ((data.idOrgDec == data.idOrgInc) && sb.starts(sb.getCode(form.getOptionText("#idEcoInc")), sb.getCode(form.getOptionText("#idEcoDec"))))
 			this.addError("acOrgInc", "notValid", "La partida a incrementar esta dentro del nivel vinculante de la partida a decrementar. Por lo que no es necesario realizar esta operación.");
 		return this.close(data, "No ha seleccionada correctamente la partida a incrementar.");
 	}
-	partidaSrv(partida) { // compruebo si la partida existía previamente
-		this.reset(); // Reset validation messages
-		if (!partida) {
-			this.addRequired("acOrgInc", "Partida a incrementar no encontrada en el sistema.");
-			return !form.setErrors(this.getMsgs()); // set form errors
-		}
-		if (partidas.getData().find(row => ((row.o == partida.o) && (row.e == partida.e)))) {
-			this.setWarn("¡Partida ya asociada a la solicitud!").setMsg("acOrgInc", "notAllowed");
-			return !form.setErrors(this.getMsgs()); // set form errors
-		}
-		return form.closeAlerts(); // no errors
+	partidaSrv(partida) {
+		return partida ? this.success() : this.addRequired("acOrgInc", "Partida a incrementar no encontrada en el sistema.").fail();
 	}
 
 	validate030() {
-		const data030 = this.start(".ui-030"); // init. validation
+		const data030 = form.getData(".ui-030"); // start validation
 		const p080 = partidas.getCurrentItem(); // current partida 080
 		if (!p080) // Debo cargar previamente la partida seleccionada
 			return !this.setError("No se ha encontrado la partida asociada al documento 080.");

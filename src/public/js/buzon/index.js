@@ -9,7 +9,7 @@ import organica from "./model/Organica.js";
 
 import bu from "./modules/usuarios.js";
 import bf from "./modules/facturas.js";
-import list from "../xeco/modules/SolicitudesList.js";
+import list from "../xeco/modules/list.js";
 
 coll.ready(() => { // on load view
 	const form = list.init(buzon).getForm();

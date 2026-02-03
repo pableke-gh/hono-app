@@ -5,7 +5,7 @@ import i18n from "../i18n/langs.js";
 import valid from "../i18n/validators.js";
 
 import buzon from "../model/Buzon.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function Facturas() {
 	const self = this; //self instance

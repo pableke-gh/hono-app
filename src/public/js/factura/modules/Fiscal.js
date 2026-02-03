@@ -2,7 +2,7 @@
 import api from "../../components/Api.js"
 import factura from "../model/Factura.js";
 import lineas from "./lineaAdd.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 import fiscalidad from "../data/fiscal.js"
 
 function Fiscal() {

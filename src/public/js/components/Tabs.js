@@ -118,6 +118,7 @@ function Tabs() {
 	this.showList = () => self.viewTab("list"); // show list view
 	this.showOk = msg => { alerts.showOk(msg); return this; } // Encapsule showOk message
 	this.showError = msg => { alerts.showError(msg); return this; } // Encapsule showError message
+	this.setMsgs = alerts.setMsgs; // Encapsule setMsgs container
 
 	this.load = el => { // set default actions
 		el.querySelectorAll("[href^='#tab-']").setClick((ev, link) => {

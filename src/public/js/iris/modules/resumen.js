@@ -10,7 +10,7 @@ import rvp from "./rutas/rutasVehiculoPropio.js";
 import transportes from "./gastos/transportes.js"; 
 import pernoctas from "./gastos/pernoctas.js"; 
 import dietas from "./gastos/dietas.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function Resumen() {
 	const self = this; //self instance
@@ -43,7 +43,7 @@ function Resumen() {
 	}
 
 	const fnPasoResumen = tab => {
-		const data = form.validate(rvp.validate);
+		const data = rvp.validate();
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (!form.isChanged() && !dietas.isChanged()) // compruebo cambios

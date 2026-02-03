@@ -10,7 +10,7 @@ import xlsx from "../../services/xlsx.js";
 import otri from "../model/Otri.js";
 import rutas from "./rutas.js";
 //import listIsu from "../../iris/modules/isu/list.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function Otri() {
 	this.init = () => {

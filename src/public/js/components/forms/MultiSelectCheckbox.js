@@ -98,11 +98,9 @@ export default function(container, opts) {
 		options.nextElementSibling.innerHTML = ""; // remove error message
 		return self;
 	}
-	this.setError = (msg, msgtip) => {
-		msgtip = msgtip || "errRequired"; // default error message
+	this.setError = tip => {
 		button.classList.add(opts.inputErrorClass); // add error class
-		options.nextElementSibling.innerHTML = i18n.get(msgtip); // set error message
-		i18n.getValidators().addError(opts.name, msgtip, msg); // add error to validators
+		options.nextElementSibling.innerHTML = i18n.get(tip || "errRequired"); // set error message
 		return self;
 	}
 

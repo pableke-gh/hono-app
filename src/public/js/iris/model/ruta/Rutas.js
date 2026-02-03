@@ -2,7 +2,6 @@
 import coll from "../../../components/CollectionHTML.js";
 import dt from "../../../components/types/DateBox.js";
 import sb from "../../../components/types/StringBox.js";
-import i18n from "../../i18n/langs.js";
 import ruta from "./Ruta.js";
 
 function Rutas() {
@@ -47,7 +46,7 @@ function Rutas() {
 			return null; // itinerario vacio
 		let current = _rutas[0]; // Ruta de salida
 		if (!fecha) return current; // ruta por defecto
-		const fMax = dt.clone(fecha).addHours(29); // 5h del dia siguiente
+		const fMax = dt.clone(fecha).addHours(24); // 00h del dia siguiente
 		self.getRutas().forEach(aux => { // rutas ordenadas por fecha
 			// Ultima fecha de llegada mas proxima a fMax
 			current = dt.lt(ruta.llegada(aux), fMax) ? aux : current;
@@ -57,7 +56,7 @@ function Rutas() {
 	this.getPaisPernocta = fecha => {
 		const aux = self.getRuta(fecha);
 		if (aux) { // itinerario no vacio
-			const f2 = ruta.llegada(aux); // fecha de llegada
+			const f2 = dt.trunc(ruta.llegada(aux)); // fecha de llegada a las 00h
 			return dt.lt(fecha, f2) ? ruta.getPaisPernocta(aux) : ruta.getPaisllegada(aux);
 		}
 		return "ES";
@@ -87,26 +86,6 @@ function Rutas() {
 	}
 	this.update = rutas => { // recarga el itinerario calculando la ruta principal
 		self.setRutas(rutas).setRutaPrincipal(self.findRutaPrincipal());
-	}
-
-	this.validate = rutas => {
-		rutas = rutas || _rutas;
-		const valid = i18n.getValidation();
-		if (coll.isEmpty(rutas))
-			return !valid.addError("origen", "errItinerario");
-		let r1 = rutas[0];
-		if (!ruta.valid(r1))
-			return false; // salida erronea
-		const origen = ruta.getOrigen(r1);
-		for (let i = 1; i < rutas.length; i++) {
-			const r2 = rutas[i];
-			if (!ruta.validRutas(r1, r2))
-				return false; //stop
-			if (origen == r2.origen)
-				return !valid.addError("destino", "errMulticomision");
-			r1 = r2; //go next route
-		}
-		return valid.isOk();
 	}
 }
 

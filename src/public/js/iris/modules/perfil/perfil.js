@@ -1,13 +1,13 @@
 
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
-import i18n from "../../i18n/langs.js";
+import valid from "../../i18n/validators.js";
 
 import iris from "../../model/Iris.js";
 import organicas from "./organicas.js";
 import actividad from "./actividad.js";
 import dietas from "../gastos/dietas.js";
-import form from "../../../xeco/modules/SolicitudForm.js";
+import form from "../../../xeco/modules/solicitud.js";
 
 function Perfil() {
 	const fnInteresado = interesado => (interesado.nif + " - " + interesado.nombre);
@@ -33,19 +33,10 @@ function Perfil() {
 	this.isRutaUnica = actividad.isRutaUnica;
 	this.isMaps = actividad.isMaps;
 
-    const fnValidate = data => {
-		const valid = i18n.getValidators();
-		if (actividad.isEmpty() || !data.actividad)
-        	valid.addRequired("acInteresado", "errPerfil");
-		if (organicas.isEmpty())
-			valid.addRequired("acOrganica", "errOrganicas");
-		return valid.isOk();
-    }
-
 	form.afterReset(() => { _acInteresado.setValue(); actividad.setColectivo(); organicas.reset(); });
 	tabs.setAction("create", () => api.init().json("/uae/iris/create").then(form.view));
 	tabs.setAction("paso0", () => {
-		const data = form.validate(fnValidate);
+		const data = valid.perfil(); // validate perfil
 		if (!data) return; // error => no hago nada
 		if (!form.isChanged() && !organicas.isChanged())
 			return tabs.nextTab(); // no cambios => salto a paso 1

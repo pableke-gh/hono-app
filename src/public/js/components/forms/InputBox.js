@@ -122,11 +122,10 @@ function InputBox(opts) {
 	}
 
 	this.setError = (el, tip) => {
-		if (!tip) // tip message optional
-			return self; // no error message
-		el.focus(); // set focus on error
-		el.classList.add(opts.inputErrorClass);
+		if (!tip) return self; // tip message is optional
 		el.next("." + opts.tipErrorClass)?.setMsg(tip);
+		el.classList.add(opts.inputErrorClass);
+		el.focus(); // set focus on error
 		return self;
 	}
 

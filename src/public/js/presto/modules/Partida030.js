@@ -3,7 +3,7 @@ import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 
 import presto from "../model/Presto.js";
-import form from "../../xeco/modules/SolicitudForm.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function Partida030() {
 	const self = this; //self instance
