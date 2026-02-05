@@ -3,10 +3,10 @@ import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
 import tabs from "../../components/Tabs.js";
 import valid from "../i18n/validators.js";
-import dom from "../lib/dom-box.js";
 
 import place from "./place.js";
 import rutas from "./rutas.js";
+import form from "../../xeco/modules/solicitud.js";
 
 /**
  * TRAVEL_MODE: Used for driving directions, this mode provides driving directions.
@@ -28,8 +28,8 @@ window.initMap = () => {
 	var p1, p2; // from ... to
 	const distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
 	const placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService
-	place.setAutocomplete(dom.getInput("#origen"), origen => { p1 = origen.getPlace(); }) // Origen autocomplete input 
-		.setAutocomplete(dom.getInput("#destino"), destino => { p2 = destino.getPlace(); }); // Destino autocomplete input
+	place.setAutocomplete(form.getInput("#origen"), origen => { p1 = origen.getPlace(); }) // Origen autocomplete input 
+		.setAutocomplete(form.getInput("#destino"), destino => { p2 = destino.getPlace(); }); // Destino autocomplete input
 
 	function getPlaceDetails(query) { // find a place by query
 		const PLACES_OPTIONS = { query, fields: [ "place_id" ] };
@@ -49,15 +49,10 @@ window.initMap = () => {
 
 	//*************** rutas / trayectos - maps ***************//
 	tabs.setAction("addRuta", async () => {
-		dom.closeAlerts().intval("#desp", "errTransporte", "errRequired")
-			.required("#f2", "errDate").required("#h2", "errDate")
-			.required("#f1", "errDate").required("#h1", "errDate")
-			.required("#destino", "errDestino").required("#origen", "errOrigen");
-		if (dom.isError()) // validate inputs
-			return false; // invalid inputs
+		const ruta = valid.addRuta(); // form data
+		if (!ruta) return false; // invalid inputs
 
-		const ruta = dom.getData(".ui-ruta"); // form data
-		function loadOrigen(place, pais, mask) {
+		const loadOrigen = (place, pais, mask) => {
 			p1 = place;
 			ruta.pais1 = pais;
 			ruta.mask = mask;
@@ -76,12 +71,11 @@ window.initMap = () => {
 			loadOrigen(last.p2, last.pais2, last.mask);
 		}
 
-		p2 || dom.addError("#destino", "errDestino", "errRequired"); //ha seleccionado un destino
-		p1 || dom.addError("#origen", "errOrigen", "errRequired"); //ha seleccionado un origen
-		if (p1 && p2 && place.isSameLocality(p1, p2))
-			dom.addError("#origen", "errItinerarioCiudad", "errRequired");
-		if (dom.isError())
-			return false;
+		p2 || valid.addRequired("destino", "errDestino"); //ha seleccionado un destino
+		p1 || valid.addRequired("origen", "errOrigen"); //ha seleccionado un origen
+		if (p1 && p2 && place.isSameLocality(p1, p2)) // is same place?
+			valid.addRequired("origen", "errItinerarioCiudad");
+		if (valid.isError()) return valid.fail(); // places validator
 
 		ruta.p2 = p2; // current destination place
 		ruta.dt1 = sb.toIsoDate(ruta.f1, ruta.h1);
@@ -103,7 +97,7 @@ window.initMap = () => {
 		};
 		const [err, response] = await globalThis.catchError(distanceService.getDistanceMatrix(DISTANCE_OPTIONS));
 		if (err) // error al calcular la distancia
-			return dom.addError("#origen", "The calculated distance fails due to " + err).isOk();
+			return valid.fail("The calculated distance fails due to " + err);
 		ruta.km2 = response.rows[0].elements[0].distance.value / 1000; //to km
 		rutas.add(ruta, ruta.km2); // add to table
 	});

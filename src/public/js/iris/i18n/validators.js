@@ -4,11 +4,11 @@ import dt from "../../components/types/DateBox.js";
 import sb from "../../components/types/StringBox.js";
 import Validators from "../../i18n/validators.js";
 
-import iris from "../model/Iris.js";
 import ruta from "../model/ruta/Ruta.js";
 import rutas from "../model/ruta/Rutas.js";
 import gastos from "../model/gasto/Gastos.js";
 
+import perfil from "../modules/perfil/perfil.js";
 import organicas from "../modules/perfil/organicas.js";
 import actividad from "../modules/perfil/actividad.js";
 import form from "../../xeco/modules/solicitud.js";
@@ -29,57 +29,13 @@ class IrisValidators extends Validators {
 		return this.close(data);
     }
 
-	/** validaciones del paso 2 **/
-	ruta(data) {
-		if (!data.origen || !data.pais1)
-			this.addRequired("origen", "errOrigen");
-		if (!dt.between(ruta.salida(data), MIN_DATE, MAX_DATE)) 
-			return !this.addError("f1", "errFechasRuta");
-		if (data.dt1 > data.dt2)
-			this.addError("f1", "errFechasOrden");
-		return this.isOk();
-	}
-	isRutasConsecutivas(r1, r2) {
-		if (!this.ruta(r2))
-			return false; //stop
-		if (!r1.pais2.startsWith(r2.pais1.substring(0, 2)))
-			return !this.addError("destino", "errItinerarioPaises");
-		if (r1.dt2 > r2.dt1) //rutas ordenadas
-			this.addError("destino", "errItinerarioFechas");
-		return this.isOk();
-	}
-	rutas(rutas) {
-		if (coll.isEmpty(rutas))
-			return !this.addError("origen", "errItinerario");
-		let r1 = rutas[0];
-		if (!this.ruta(r1))
-			return false; // salida erronea
-		const origen = ruta.getOrigen(r1);
-		for (let i = 1; i < rutas.length; i++) {
-			const r2 = rutas[i];
-			if (!this.isRutasConsecutivas(r1, r2))
-				return false; //stop
-			if (origen == r2.origen)
-				return !this.addError("destino", "errMulticomision");
-			r1 = r2; //go next route
-		}
-		return this.isOk();
-	}
-	itinerario() { // validaciones para los mapas
-		const data = form.getData(); // start validation
-		if (perfil.isMaps() && (rutas.size() < 2)) // min rutas = 2
-			return this.addRequired("destino", "errMinRutas").fail("errItinerario");
-		return this.rutas(rutas.getRutas()) ? data : this.fail("errItinerario");
-	}
-	/** validaciones del paso 2 **/
-
 	mun() {
 		const data = form.getData(); // start validation
 		if (!data.memo) // valida textarea
         	this.addRequired("memo", "errObjeto");
-		if (!iris.isMun())
+		if (!actividad.isMun())
 			return this.close(data);
-		const rutaMun = this.start(".ui-mun");
+		const rutaMun = form.getData(".ui-mun");
 		this.size("origen", rutaMun.origen, "errOrigen").isDate("dt1", rutaMun.dt1); //ha seleccionado un origen
 		if (ruta.isVehiculoPropio(rutaMun)) { // vehiculo propio
 			const msg = "Debe indicar el kilometraje del desplazamiento";
@@ -103,6 +59,62 @@ class IrisValidators extends Validators {
 		rutas.setRutas(data.rutas); // validation = true
 		return this.close(data);
 	}
+
+	/** validaciones del paso 2 **/
+	addRuta = () => {
+		const data = form.getData(".ui-ruta"); // start validation
+		this.isDate("f2", data.f2).isTimeShort("h2", data.h2)
+			.isDate("f1", data.f1).isTimeShort("h1", data.h1).le10("desp", data.desp)
+			.size("destino", data.destino).size("origen", data.origen);
+		if (ruta.isVehiculoPropio(data) && !data.matricula) // vehiculo propio sin matricula
+			this.addRequired("matricula", "errMatricula");
+		return this.close(data);
+	}
+	ruta(data) {
+		if (!data.origen || !data.pais1)
+			this.addRequired("origen", "errOrigen");
+		//if (ruta.isVehiculoPropio(data) && !form.getValueByName("matricula"))
+			//this.addRequired("matricula", "errMatricula");
+		if (!dt.between(ruta.salida(data), MIN_DATE, MAX_DATE)) 
+			this.addRequired("f1", "errFechasRuta");
+		if (data.dt1 > data.dt2)
+			this.addRequired("f1", "errFechasOrden");
+		return this.close(data);
+	}
+	isRutasConsecutivas(r1, r2) {
+		if (!this.ruta(r2))
+			return false; //stop
+		if (!r1.pais2.startsWith(r2.pais1.substring(0, 2)))
+			return this.addRequired("destino", "errItinerarioPaises").fail();
+		if (r1.dt2 > r2.dt1) //rutas ordenadas
+			this.addError("destino", "notValid", "errItinerarioFechas");
+		return this.close(r1);
+	}
+
+	rutas(rutas) {
+		if (coll.isEmpty(rutas))
+			return this.addError("origen", "notValid", "errItinerario").fail();
+		let r1 = rutas[0];
+		if (!this.ruta(r1))
+			return false; // salida erronea
+		const origen = ruta.getOrigen(r1);
+		for (let i = 1; i < rutas.length; i++) {
+			const r2 = rutas[i];
+			if (!this.isRutasConsecutivas(r1, r2))
+				return false; //stop
+			if (origen == r2.origen)
+				return this.addError("destino", "notValid", "errMulticomision").fail();
+			r1 = r2; //go next route
+		}
+		return this.success(rutas);
+	}
+	itinerario() { // validaciones para los mapas
+		const data = form.getData(); // start validation
+		if (perfil.isMaps() && (rutas.size() < 2)) // min rutas = 2
+			return this.addRequired("destino", "errMinRutas").fail("errItinerario");
+		return this.rutas(rutas.getRutas()) && data;
+	}
+	/** validaciones del paso 2 **/
 }
 
 export default new IrisValidators();

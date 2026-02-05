@@ -54,7 +54,7 @@ class Gastos extends Table {
 			valid.reset();
 			if (!this.getProp("adjuntos") && (rmaps.getTotKm() > 250))
 				valid.addRequired("adjuntos", "errDocFacturas"); // validacion de 250 km
-			return valid.isError() ? valid.error() : form.nextTab(tab); // valido el formulario
+			return valid.isError() ? valid.fail() : form.nextTab(tab); // valido el formulario
 		}
 		tabs.setAction("paso5", () => fnPaso5());
 		tabs.setAction("save5", () => fnPaso5(5));

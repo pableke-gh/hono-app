@@ -9,7 +9,6 @@ import sbx from "./SelectBox.js";
 import Datalist from "./Datalist.js";
 import Autocomplete from "./Autocomplete.js";
 import MultiSelectCheckbox from "./MultiSelectCheckbox.js";
-//import lang from "../../i18n/langs.js";
 
 FormData.prototype.setJSON = function(name, data) {
 	this.set(name, JSON.stringify(data)); // FormData only supports flat values
@@ -34,8 +33,6 @@ export default class Form {
 		this.#opts = opts || {}; // default options
 		this.#opts.defaultMsgOk = this.#opts.defaultMsgOk || "saveOk"; // default key for message ok
 		this.#opts.defaultMsgError = this.#opts.defaultMsgError || "errForm"; // default key error
-		this.#opts.inputErrorClass = this.#opts.inputErrorClass || "ui-error"; // Input error styles
-		this.#opts.tipErrorClass = this.#opts.tipErrorClass || "ui-errtip"; // Tip error style
 		this.#opts.refreshSelector = this.#opts.refreshSelector || ".form-refresh"; // selector for refresh
 
 		// Form initialization
@@ -246,14 +243,13 @@ export default class Form {
 	// Form Validator
 	closeAlerts = () => {
 		alerts.closeAlerts(); // globbal message
-		this.#form.elements.forEach(el => el.classList.remove(this.#opts.inputErrorClass));
-		this.#form.getElementsByClassName(this.#opts.tipErrorClass).text("");
+		this.#form.elements.forEach(input.setOk); // clear input messages
 		return this;
 	}
 	setErrors = messages => {
 		messages.msgError = messages.msgError || this.#opts.defaultMsgError;
-		this.#form.elements.eachPrev(el => input.setError(el, messages[el.name]));
-		alerts.setMsgs(messages);
+		this.#form.elements.eachPrev(el => input.update(el, messages[el.name]));
+		alerts.setMsgs(messages); // show all messages
 		return this;
 	}
 }

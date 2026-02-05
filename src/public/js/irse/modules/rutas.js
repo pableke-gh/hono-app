@@ -6,10 +6,10 @@ import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 import valid from "../i18n/validators.js";
 
+import ruta from "../model/Ruta.js"
 import perfil from "./perfil.js";
 import organicas from "./organicas.js";
-import ruta from "../model/Ruta.js"
-import { MUN, LOC, CT } from "../data/rutas.js"
+import form from "../../xeco/modules/solicitud.js";
 
 function IrseRutas() {
 	const self = this; //self instance
@@ -32,7 +32,7 @@ function IrseRutas() {
 
 	var rutas, divData, bruto, elImpKm, justifiKm;
 
-	const getLoc = () => perfil.isMun() ? MUN : LOC;
+	//const getLoc = () => perfil.isMun() ? MUN : LOC;
 	const fmtImpKm = ruta => i18n.isoFloat(ruta.km1 * IRSE.gasolina);
 	const fnSetMain = data => { rutas.forEach(ruta.setOrdinaria); ruta.setPrincipal(data); }
 
@@ -53,11 +53,6 @@ function IrseRutas() {
 	this.getNumRutasVp = () => resume.sizeVp;
 	this.getNumRutasOut = () => resume.sizeOut;
 
-	const isValidObjeto = () => dom.closeAlerts().required("#objeto", "errObjeto").isOk();
-	this.paso1 = () => isValidObjeto() && loading();
-	this.paso1Col = () => isValidObjeto() && dom.past("#fAct", "errDateLe").gt0("#impAc", "errGt0").isOk();
-	this.validItinerario = () => (isValidObjeto() && valid.itinerario(rutas) /*self.validAll()*/);
-
 	this.add = function(ruta, dist) {
 		ruta.temp = true;
 		rutas.push(ruta);
@@ -76,7 +71,7 @@ function IrseRutas() {
 			}
 		}
 
-		if (valid.rutas(rutas)/*self.validAll()*/) {
+		if (valid.rutas(rutas)) {
 			delete ruta.temp;
 			fnSetMain(principal);
 			ruta.km1 = ruta.km2 = dist;
@@ -87,9 +82,6 @@ function IrseRutas() {
 			rutas.remove(r => r.temp);
 		return self;
 	}
-
-	this.paso2 = () => (valid.itinerario(rutas) && loading());
-	this.paso6 = () => (valid.paso6(resume) && loading());
 
 	function fnRecalc() {
 		resume.totKm = resume.totKmCalc = 0;
@@ -104,73 +96,83 @@ function IrseRutas() {
 		elImpKm.innerHTML = i18n.isoFloat(self.getImpKm()) + " €";
 		bruto.innerHTML = organicas.getTotalFmt();
 		justifiKm.setVisible(resume.justifi);
+		return self;
+	}
+	function fnResume() {
+		resume.out = rutas.filter(ruta => (ruta.desp != 1) && (ruta.desp != 3) && !ruta.g); //rutas no asociadas a factura
+		resume.sizeOut = resume.out.length; // size table footer
+		resume.vp = rutas.filter(ruta => (ruta.desp == 1)); //rutas en vp
+		resume.sizeVp = resume.vp.length; // size table footer
+		resume.size = rutas.length; // save global size
+		return fnRecalc(); // recalcula cabeceras
+	}
+	function fnSave() {
+		const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
+		divData.innerText = JSON.stringify(rutas, fnReplace); // not to save place
+		form.setval("#etapas", divData.innerText); // load input value
+		return self;
+	}
+	function fnSaveMun() {
+		if (perfil.isMun()) {
+			fnResume(); fnSave();
+		}
+		return loading();
+	}
+	function fnSaveMaps() {
+		fnResume(); // recalcula todo
+		dom.table("#rutas-out", resume.out, resume, STYLES);
+		return fnSave() && loading();
 	}
 
-	this.init = form => {
+	this.paso1 = () => (valid.mun(rutas) && fnSaveMun());
+	//this.paso1Col = () => isValidObjeto() && dom.past("#fAct", "errDateLe").gt0("#impAc", "errGt0").isOk();
+	this.paso2 = () => (valid.itinerario(rutas) && fnSaveMaps());
+	this.paso6 = () => (valid.paso6(resume) && loading());
+
+	this.mun = () => {
+		if (!perfil.isMun()) return;
+		const ruta = rutas[0] || { desp: 1 }; // mun = 1 ruta
+		ruta.f1 = sb.isoDate(ruta.dt1); // input format date
+		form.setValues(ruta, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1);
+	}
+	this.init = () => {
 		bruto = form.querySelector("#imp-bruto");
 		divData = form.querySelector("#rutas-data");
 		elImpKm = form.querySelector("#imp-km") || coll.getDivNull();
 		justifiKm = form.querySelector(".justifi-km") || coll.getDivNull();
 		rutas = coll.parse(divData.innerText) || []; // container
 
-		function fnResume() {
-			resume.out = rutas.filter(ruta => (ruta.desp != 1) && (ruta.desp != 3) && !ruta.g); //rutas no asociadas a factura
-			resume.sizeOut = resume.out.length; // size table footer
-			resume.vp = rutas.filter(ruta => (ruta.desp == 1)); //rutas en vp
-			resume.sizeVp = resume.vp.length; // size table footer
-			resume.size = rutas.length; // save global size
+		const CT = { desp: 0, mask: 4 }; //default CT
+		CT.origen = CT.destino = "Cartagena, España";
+		CT.pais = CT.pais1 = CT.pais2 = "ES";
 
-			fnRecalc(); // Actualizo las tablas relacionadas
-			dom.table("#rutas-out", resume.out, resume, STYLES).table("#vp", resume.vp, resume, STYLES);
-			return self;
-		}
-		function fnSave() {
-			const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
-			divData.innerText = JSON.stringify(rutas, fnReplace); // not to save place
-			form.setval("#etapas", divData.innerText); // load input value
-		}
+		// Render rutas paso 2 = maps
+		dom.onFindRow("#rutas", (table, ev) => {
+			fnSetMain(ev.detail.data);
+			dom.table("#rutas", rutas, resume, STYLES);
+		}).onRenderTable("#rutas", table => {
+			const last = fnResume().last(rutas) || CT;
+			const matricula = form.getval("#matricula");
+			form.setData({ origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula }, ".ui-ruta")
+				.delAttr("#f1", "max").restart("#destino").hide(".grupo-matricula");
+			if (!last.dt1) // primera ruta?
+				form.setFocus("#f1");
+		}).table("#rutas", rutas, resume, STYLES);
 
-		if (perfil.isAutA7j() || perfil.is1Dia()) {
-			const ruta = Object.assign({}, getLoc(), rutas[0]);
-			rutas[0] = ruta; // Save new data (routes.length = 1)
-			form.afterChange(ev => { fnResume(); fnSave(); }) // Any input change => save all rutas
-				.setVisible(".grupo-matricula", ruta.desp == 1) // grupo asociado al vehiculo propio
-				.setField("#origen", ruta.origen, ev => { ruta.origen = ruta.destino = ev.target.value; })
-				.setField("#desp", ruta.desp, ev => { ruta.desp = +ev.target.value; }) // tipo de transporte
-				.setField("#dist", ruta.km1, ev => { ruta.km1 = ruta.km2 = i18n.toFloat(ev.target.value); }) // sync km2 with km1
-				.setField("#f1", ruta.dt1, ev => { ruta.dt1 = ev.target.value; ruta.dt2 = sb.endDay(ruta.dt1); }); // sync f2 with f1 at the end of the day
-			fnResume(); // Actualizo importes
-		}
-		else {
-			// Table Events handlers paso 2 y 6
-			dom.onFindRow("#rutas", (table, ev) => {
-				fnSetMain(ev.detail.data);
-				dom.table("#rutas", rutas, resume, STYLES);
-			}).onRenderTable("#rutas", table => {
-				const last = fnResume().last(rutas) || CT;
-				const matricula = form.getval("#matricula");
-				form.setData({ origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula }, ".ui-ruta")
-					.delAttr("#f1", "max").restart("#destino").hide(".grupo-matricula");
-				if (!last.dt1) // primera ruta?
-					form.setFocus("#f1");
-			});
+		// tabla resumen de vehiculo propio paso 6
+		dom.table("#vp", resume.vp, resume, STYLES);
+		dom.onChangeTable("#vp", table => { // set event after render
+			const ruta = resume.data;
+			resume.element.value = i18n.fmtFloat(resume.element.value);
+			ruta.km1 = i18n.floatval(resume.element.value);
 
-			// tabla resumen de vehiculo propio del paso 6
-			dom.onChangeTable("#vp", table => {
-				const ruta = resume.data;
-				resume.element.value = i18n.fmtFloat(resume.element.value);
-				ruta.km1 = i18n.floatval(resume.element.value);
+			fnRecalc(); fnSave();
+			dom.tfoot(table, resume, STYLES);
+			form.setText(resume.row.cells[9], fmtImpKm(ruta) + " €");
+			resume.justifi && dom.setFocus("#justifiKm");
+		});
 
-				fnRecalc(); fnSave();
-				dom.tfoot(table, resume, STYLES);
-				form.setText(resume.row.cells[9], fmtImpKm(ruta) + " €");
-				resume.justifi && dom.setFocus("#justifiKm");
-			});
-		}
-
-		//load rutas vp/out and autoload fechas del itinerario (paso 5 y 6)
-		dom.table("#rutas", rutas, resume, STYLES) // render rutas
-			.onRenderTable("#rutas", fnSave); // save after first render
+		// eventos del formulario para la ruta
 		form.setDateRange("#f1", "#f2").delAttr("#f1", "max") // Rango de fechas
 			.setChangeInput("#f1", ev => form.setval("#f2", ev.target.value))
 			.setChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))

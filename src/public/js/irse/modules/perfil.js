@@ -9,6 +9,7 @@ import valid from "../i18n/validators.js";
 import irse from "../model/Irse.js";
 import organica from "../model/Organica.js";
 import getActividad from "../data/perfiles/actividades.js";
+import form from "../../xeco/modules/solicitud.js";
 
 function IrsePerfil() {
 	const self = this; //self instance
@@ -74,7 +75,7 @@ function IrsePerfil() {
 		dom.table("#organicas", organicas, resume, STYLES);
 	}
 
-	this.init = form => {
+	this.init = () => {
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", ev => { coll.dom.copyToClipboard(url); ev.preventDefault(); });
 

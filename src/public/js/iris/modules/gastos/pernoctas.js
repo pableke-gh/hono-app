@@ -32,7 +32,7 @@ class Pernoctas extends Table {
 		if (data.fMinGasto > data.fMaxGasto)
 			valid.addError("fMinGasto", "errFechasAloja");
 		if (valid.isError()) // error en los campos
-			return valid.error(); // stop validations
+			return valid.fail(); // stop validations
 
 		const f2 = new Date(form.valueOf("#fMaxGasto")); // T00:00:00.000Z
 		const f1 = new Date(form.valueOf("#fMinGasto")); // T00:00:00.000Z

@@ -32,11 +32,7 @@ function InputBox(opts) {
 	this.getAttr = (el, name) => (el && el.getAttribute(name));
 	this.setAttr = (el, name, value) => { el && el.setAttribute(name, value); return self; }
 	this.delAttr = (el, name) => { el && el.removeAttribute(name); return self; }
-    this.render = (el, data, i, size) => { el && el.render(data, i, size); return self; }
 	this.empty = el => (!el || !el.innerHTML || (el.innerHTML.trim() === ""));
-
-	this.addClass = (el, name) => { el && el.classList.add(name); return self; }
-	this.removeClass = (el, name) => { el && el.classList.remove(name); return self; }
 
 	this.val = el => el?.value;
 	this.getValue = el => {
@@ -121,12 +117,19 @@ function InputBox(opts) {
 		});
 	}
 
+	this.setOk = el => {
+		el.next("." + opts.tipErrorClass)?.setText("");
+		el.classList.remove(opts.inputErrorClass);
+		return self;
+	}
 	this.setError = (el, tip) => {
-		if (!tip) return self; // tip message is optional
 		el.next("." + opts.tipErrorClass)?.setMsg(tip);
 		el.classList.add(opts.inputErrorClass);
 		el.focus(); // set focus on error
 		return self;
+	}
+	this.update = (el, tip) => { // tip message is optional
+		return tip ? self.setError(el, tip) : self.setOk(el);
 	}
 
 	this.init = el => { // input initialization

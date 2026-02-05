@@ -92,7 +92,7 @@ function IrseOrganicas() {
 		return self.validAll();
 	}
 
-	this.init = form => {
+	this.init = () => {
 		dietas.init(); // init dietas
 		dom.onRenderTable("#multiorganicas", table => {
 			resume.imp1 = 0;

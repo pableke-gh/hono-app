@@ -15,11 +15,14 @@ import rmun from "./rutasMun.js";
 import rvp from "./rutasVehiculoPropio.js";
 import dietas from "../gastos/dietas.js";
 
-import { CT } from "../../data/rutas.js";
-
 class RutasMaps extends Table {
 	constructor() {
 		super(form.querySelector("#tbl-rutas"), ruta.getTable());
+
+		const CT = { desp: 0, mask: 4 }; //default CT
+		CT.origen = CT.destino = "Cartagena, España";
+		CT.pais = CT.pais1 = CT.pais2 = "ES";
+
 		this.set("#main", this.setRutaPrincipal).setAfterRender(resume => {
 			const last = rutas.getLlegada() || CT;
 			const matricula = form.getval("#matricula-maps");
@@ -56,7 +59,7 @@ class RutasMaps extends Table {
 			const temp = Object.assign(iris.getData(), data); // merge data to send
 			const keys = [ "id", "g", "origen", "pais1", "destino", "pais2", "km1", "km2", "desp", "mask", "dt1", "dt2" ];
 			temp.rutas = rutas.getRutas().map(ruta => Object.clone(ruta, keys)); // actualizo las rutas
-	
+
 			if (this.isChanged()) // si hay cambios en las rutas
 				dietas.build(); // recalculo las dietas
 			temp.gastos = gastos.setPaso1(data, this.setChanged().getResume()).getGastos(); // set km / iban
@@ -64,12 +67,9 @@ class RutasMaps extends Table {
 			rvp.render(); // actualizo la tabla de vehiculos propios (paso 6)
 		}
 
-		tabs.setAction("add-ruta", () => place.addRuta().then(this.build).catch(form.setErrors));
+		tabs.setAction("add-ruta", () => place.addRuta().then(this.build));
 		tabs.setAction("paso2", () => fnPaso2());
 		tabs.setAction("save2", () => fnPaso2("maps"));
-
-		/*********** PERFIL MUN tab-1 ***********/ 
-		tabs.setInitEvent(1, rmun.view); // formulario mun (paso 1)
 	}
 }
 

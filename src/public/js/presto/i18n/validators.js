@@ -48,23 +48,23 @@ class PrestoValidators extends Validators {
 		return this.close(data, "No ha seleccionada correctamente la partida a incrementar.");
 	}
 	partidaSrv(partida) {
-		return partida ? this.success() : this.addRequired("acOrgInc", "Partida a incrementar no encontrada en el sistema.").fail();
+		return partida ? this.success(partida) : this.addRequired("acOrgInc", "Partida a incrementar no encontrada en el sistema.").fail();
 	}
 
 	validate030() {
 		const data030 = form.getData(".ui-030"); // start validation
 		const p080 = partidas.getCurrentItem(); // current partida 080
 		if (!p080) // Debo cargar previamente la partida seleccionada
-			return !this.setError("No se ha encontrado la partida asociada al documento 080.");
+			return this.fail("No se ha encontrado la partida asociada al documento 080.");
 		const ERR_ORGANICA = "No ha seleccionado correctamente la orgánica";
 		this.isKey("acOrg030", data030.idOrg030, ERR_ORGANICA); // autocomplete required key
 		this.isKey("idEco030", data030.idEco030, "Debe seleccionar una económica"); // select required number
 		this.gt0("imp030", data030.imp030); // float number > 0
 		const label = data030.acOrg030?.split(" - ");
 		if (!label) // Code separator
-			return !this.addError("acOrg030", ERR_ORGANICA, "No ha seleccionada correctamente la aplicación para el DC 030.");
+			return this.addError("acOrg030", ERR_ORGANICA, "No ha seleccionada correctamente la aplicación para el DC 030.").fail();
 		if (p080.imp < data030.imp030)
-			return !this.addError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.");
+			return this.addError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.").fail();
 
 		// If ok => update partida a incrementar
 		p080.idOrg030 = +data030.idOrg030;

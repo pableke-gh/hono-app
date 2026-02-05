@@ -3,14 +3,12 @@ import dt from "../../components/types/DateBox.js";
 import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
-
-import dom from "../lib/dom-box.js";
-import xlsx from "../../services/xlsx.js";
+import valid from "../i18n/validators.js";
 
 import otri from "../model/Otri.js";
 import rutas from "./rutas.js";
-//import listIsu from "../../iris/modules/isu/list.js";
 import form from "../../xeco/modules/solicitud.js";
+import xlsx from "../../services/xlsx.js";
 
 function Otri() {
 	this.init = () => {
@@ -27,11 +25,18 @@ function Otri() {
 		function fechasCong() {
 			eIniCong.setAttribute("max", eFinCong.value);
 			eFinCong.setAttribute("min", eIniCong.value);
-			dom.toggleHide(eJustifiCong, !validCong());
+			eJustifiCong.setVisible(validCong());
 		}
 		function updateCong() {
-			dom.toggleHide(".grp-congreso", eCong.value == "0");
-			(+eCong.value > 0) ? fechasCong() : dom.hide(eJustifiCong);
+			const grpCongreso = form.querySelectorAll(".grp-congreso");
+			if (+eCong.value > 0) {
+				fechasCong();
+				grpCongreso.show();
+			}
+			else {
+				eJustifiCong.hide();
+				grpCongreso.hide();
+			}
 		}
 
 		eIniCong.onblur = fechasCong;
@@ -40,16 +45,17 @@ function Otri() {
 		updateCong();
 
         window.fnPaso3 = function() {
-			dom.closeAlerts().required("#justifi", "errJustifiSubv");
+			const data = form.getData(); // start validation
+			valid.size500("justifi", data.justifi, "errJustifiSubv");
 			if (rutas.getNumRutasVp())
-				dom.required("#justifiVp", "errJustifiVp");
+				valid.size500("justifiVp", data.justifiVp, "errJustifiVp");
 			if (eCong.value == "0") // no es congreso
-				return dom.isOk() && loading();
+				return valid.close(data) && loading();
 			if (validCong()) // valido los datos del congreso
-				dom.required("#justifiCong", "errCongreso");
+				valid.size500("justifiCong", data.justifiCong, "errCongreso");
 			if (eCong.value == "4")
-				dom.required("#impInsc", "errNumber");
-			return dom.isOk() && loading();
+				valid.gt0("impInsc", data.impInsc);
+			return valid.close(data) && loading();
         }
     }
 }

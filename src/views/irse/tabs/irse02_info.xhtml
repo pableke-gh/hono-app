@@ -7,9 +7,9 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="notice notice-info form-refresh" data-refresh="isEditable">
+	<p:outputPanel styleClass="notice notice-info update-irse">
 		<h:outputText value="#{msg['lbl.domicilio']}" escape="false" />: #{iris.irse.perfil.usuFullDir}, #{iris.irse.perfil.usuCp}, #{iris.irse.perfil.usuMunloc}, #{iris.irse.perfil.usuProvincia} (#{iris.irse.perfil.usuCodResidencia})
-	</div>
+	</p:outputPanel>
 	<div class="notice notice-info form-refresh" data-refresh="isEditable">
 		<h:outputText value="#{msg['uae.irse.tab2.msg.ruta']}" escape="false" />
 		<a id="msgs" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>

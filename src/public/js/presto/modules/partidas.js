@@ -12,7 +12,8 @@ class Partidas extends Table {
 		presto.showPartidasInc = () => (presto.isTipoMultipartida() && presto.isEditable() && (this.size() < 20));
 	}
 
-	getImporte = () => this.getProp("imp");
+	// Importante! el total requiere redondeo para las validaciones con el impoerte a decrementar
+	getImporte = () => this.getProp("imp").round(2); // redondear si hay muchas partidas con decimales
 	setPrincipal = () => {
 		const data = this.getData();
 		data.sort((a, b) => (b.imp - a.imp)); //orden por importe desc.

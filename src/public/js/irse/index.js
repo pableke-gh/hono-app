@@ -29,6 +29,9 @@ coll.ready(() => {
 	solicitudes.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // html report
 	//tabs.setAction("rptFinalizar", () => solicitudes.invoke("#rptFinalizar")); // set tab action
 
+	/*********** campo objeto y mun ***********/
+	tabs.setInitEvent(1, rutas.mun); // init. mun
+
 	/*********** Google Maps API ***********/
 	tabs.setActiveEvent(2, perfil.isMaps).setInitEvent(2, maps);
 
@@ -57,11 +60,10 @@ coll.ready(() => {
 	window.viewIrse = (xhr, status, args, tab) => {
 		irse.setData(Object.assign(window.IRSE, coll.parse(args.data)));
 		dom.setTables(form.init().getForm()).setInputs(form.getElements());
-		perfil.init(form); // perfil de la solicitud
-		rutas.init(form); // rutas asociadas a la solicitud
-		organicas.init(form); // tabla de organicas
+		perfil.init(); rutas.init(); organicas.init(); // init modules
+
 		form.setval("#idses", window.IRSE.id).setCache(window.IRSE.id)
-			.setFirmas(coll.parse(args.firmas)).refresh(irse); // configure view
+			.setFirmas(coll.parse(args.firmas)).refresh(); // configure view
 		tab = tab ?? window.IRSE.tab; // get next tab to show
 		tabs.reset([ 0, 1, 3, 5, 6, 9 ]).load(form.getForm()); // reload tabs from server
 		tabs.isActive(tab) ? tabs.setActive(tab) : tabs.nextTab(tab); // IMPORTANTE! tab5 autoreload tab
@@ -71,7 +73,7 @@ coll.ready(() => {
 	// Global initializations
 	window.ip = perfil;
 	window.ir = rutas;
-	irse.getNumRutasVp = () => (!perfil.isEmpty() && !perfil.isMun() && rutas.getNumRutasVp()); // show / hide rutas con vehiculo propio
+	irse.getNumRutasVp = () => (!perfil.isEmpty() && rutas.getNumRutasVp()); // show / hide rutas con vehiculo propio
 
 	// Hack old DomBox Module
 	dom.confirm = i18n.confirm; // for remove action
