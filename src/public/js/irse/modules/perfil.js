@@ -56,6 +56,11 @@ function IrsePerfil() {
 			.hide(".fin-info").show(".fin-" + eFin.value);
 		return self;
 	}
+	function fnSave() {
+		current = null; //remove selected
+		fnUpdatePerfil(); //set new perfil
+		form.setval("#presupuesto", JSON.stringify(organicas));
+	}
 
 	this.update = fnUpdatePerfil;
 	this.valid = () => valid.perfil();
@@ -64,7 +69,7 @@ function IrsePerfil() {
 
 	this.getOrganicas = () => organicas;
 	this.isEmpty = () => coll.isEmpty(organicas);
-	this.getNumOrganicas = () => coll.size(organicas);
+	//this.getNumOrganicas = () => coll.size(organicas);
 	this.isMultiorganica = () => coll.size(organicas) > 1;
 	this.getOrganica = id => organicas.find(org => org.id == id); //get organica by id
 	this.isInve3005 = org => (org && sb.starts(org.o, "3005") && ((org.mask & 64) == 64)); //es de investigacion de la 3005XX
@@ -76,15 +81,6 @@ function IrsePerfil() {
 	}
 
 	this.init = () => {
-		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
-		form.setClick("a#reg-externo", ev => { coll.dom.copyToClipboard(url); ev.preventDefault(); });
-
-		eRol = form.getInput("#rol");
-		eCol = form.querySelector("#colectivo");
-		eFin = form.getInput("#financiacion");
-		eAct = form.getInput("#actividad");
-		eTramit = form.getInput("#tramite");
-
 		form.afterReset(() => {
 			coll.reset(organicas);
 			i18n.set("imp", "");
@@ -93,7 +89,18 @@ function IrsePerfil() {
 			form.setval("#nif-interesado").querySelector(".msg-cd")?.hide();
 			fnUpdatePerfil();
 		});
+		return self;
+	}
 
+	this.view = () => {
+		eRol = form.getInput("#rol");
+		eCol = form.querySelector("#colectivo");
+		eFin = form.getInput("#financiacion");
+		eAct = form.getInput("#actividad");
+		eTramit = form.getInput("#tramite");
+
+		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
+		form.setClick("a#reg-externo", ev => { form.copyToClipboard(url); ev.preventDefault(); });
 		const _acInteresado = form.setAutocomplete("#interesado", {
 			delay: 600, //milliseconds between keystroke occurs and when a search is performed
 			minLength: 5, //reduce matches
@@ -114,11 +121,6 @@ function IrsePerfil() {
 		const fnPromotor = term => api.init().json("/uae/iris/personal", { id: irse.getId(), term }).then(acPromotor.render);
 		acPromotor.setItemMode(4).setSource(fnPromotor);
 
-		function fnSave() {
-			current = null; //remove selected
-			fnUpdatePerfil(); //set new perfil
-			form.setval("#presupuesto", JSON.stringify(organicas));
-		}
 		const acOrganiaca = form.setAutocomplete("#organica", {
 			minLength: 4,
 			source: term => api.init().json("/uae/iris/organicas", { term }).then(acOrganiaca.render),
@@ -155,7 +157,7 @@ function IrsePerfil() {
 
 		fnUpdatePerfil(); // show first perfil for update
 		eCol.parentNode.setVisible(_acInteresado.isLoaded()); //muestro el colectivo
-		eRol.addEventListener("change", fnUpdatePerfil);
+		//eRol.addEventListener("change", fnUpdatePerfil);
 		eAct.addEventListener("change", fnUpdatePerfil);
 		form.querySelector(".msg-cd")?.render();
 		return self;

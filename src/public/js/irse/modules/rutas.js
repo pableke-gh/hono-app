@@ -51,6 +51,7 @@ function IrseRutas() {
 	this.start = () => (self.size() && sb.toDate(self.first().dt1));
 	this.end = () => (self.size() && sb.toDate(self.last().dt2));
 	this.getNumRutasVp = () => resume.sizeVp;
+	this.getRutasOut = () => resume.out;
 	this.getNumRutasOut = () => resume.sizeOut;
 
 	this.add = function(ruta, dist) {
@@ -119,9 +120,8 @@ function IrseRutas() {
 		return loading();
 	}
 	function fnSaveMaps() {
-		fnResume(); // recalcula todo
-		dom.table("#rutas-out", resume.out, resume, STYLES);
-		return fnSave() && loading();
+		fnResume(); fnSave(); // recalcula todo
+		return loading();
 	}
 
 	this.paso1 = () => (valid.mun(rutas) && fnSaveMun());
@@ -136,6 +136,11 @@ function IrseRutas() {
 		form.setValues(ruta, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1);
 	}
 	this.init = () => {
+		form.set("is-rutas-gt-1", () => (self.size() > 1))
+			.set("getNumRutasVp", () => (!perfil.isEmpty() && self.getNumRutasVp()));
+		return self;
+	}
+	this.view = () => {
 		bruto = form.querySelector("#imp-bruto");
 		divData = form.querySelector("#rutas-data");
 		elImpKm = form.querySelector("#imp-km") || coll.getDivNull();

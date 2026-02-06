@@ -6,6 +6,9 @@ import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 import valid from "../i18n/validators.js";
 
+import rg from "../model/RutaGasto.js";
+import gasto from "../model/Gasto.js";
+
 import rutas from "./rutas.js";
 import organicas from "./organicas.js";
 import form from "../../xeco/modules/solicitud.js";
@@ -22,41 +25,33 @@ function IrseTabs() {
 	}
 
 	this.viewTab5 = tab => { // View tab 5: gastos
-		const eTipoGasto = form.getInput("#tipo-gasto"); //select tipo
-		const isTaxi = () => (eTipoGasto.value == "4"); //ISU y taxi
-		const isPernocta = () => (eTipoGasto.value == "9"); //Tipo pernocta
-		const isDoc = () => ["201", "202", "204", "205", "206"].includes(eTipoGasto.value);
-		const isExtra = () => ["301", "302", "303", "304"].includes(eTipoGasto.value);
-		const grupos = tab.querySelectorAll(".grupo-gasto");
+		const eTipoGasto = form.getInput("#tipo-gasto"); // select input
+		const grupos = tab.querySelectorAll(".grupo-gasto"); // toggle groups
 		const fnChange = () => {
-			form.setval("#tipoGasto", eTipoGasto.value)
-					.text(".label-text-gasto", i18n.get("lblDescObserv"));
-			if (isPernocta())
+			const tipo = eTipoGasto.value;
+			form.setval("#tipoGasto", tipo).text(".label-text-gasto", i18n.get("lblDescObserv"));
+			if (gasto.isTipoPernocta(tipo))
 				grupos.mask(0b11011);
-			else if (isDoc())
+			else if (gasto.isTipoDoc(tipo))
 				grupos.mask(0b10101);
-			else if (isExtra())
+			else if (gasto.isTipoExtra(tipo))
 				grupos.mask(0b10111);
-			else if (isTaxi()) { //ISU y taxi
+			else if (gasto.isTipoTaxi(tipo)) { //ISU y taxi
 				form.text(".label-text-gasto", i18n.get("lblDescTaxi"));
 				grupos.mask(0b10111);
 			}
 			else if (0 < +eTipoGasto.value)
 				grupos.mask(0b10011);
 			else
-				grupos.mask(0b00001);			
+				grupos.mask(0b00001);
 		}
-	
-		// trayectos de ida y vuelta => al menos 2
-		tab.querySelectorAll(".rutas-gt-1").toggle("hide", rutas.size() < 2);
-		dom.table("#rutas-read", rutas.getAll(), rutas.getResume(), rutas.getStyles());
-	
-		const start = sb.isoDate(rutas.first().dt1);
-		const end = sb.isoDate(rutas.last().dt2);
-	
+
 		grupos.mask(0);
 		eTipoGasto.value = ""; // clear selection
 		eTipoGasto.onchange = fnChange; // Change event
+		const start = sb.isoDate(rutas.first().dt1);
+		const end = sb.isoDate(rutas.last().dt2);
+		dom.table("#rutas-read", rutas.getAll(), rutas.getResume(), rutas.getStyles());
 		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
 				.setval("#fAloMin", start).setAttr("#fAloMin", "min", start).setAttr("#fAloMin", "max", end)
 				.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end);
@@ -64,26 +59,8 @@ function IrseTabs() {
 			el.nextElementSibling.innerHTML = file.name;
 			fnChange();
 		});
-
-		tabs.setAction("uploadGasto", () => {
-			dom.closeAlerts();
-			if (isDoc())
-				return dom.required("#txtGasto", "errDoc").isOk() && fnUpload();
-			if (dom.gt0("#impGasto", "errGt0").required("#tipo-gasto", "errTipoGasto").isError())
-				return false; // required inputs error
-			if (isTaxi()) //ISU y taxi
-				return dom.required("#txtGasto", "errRequired").isOk() && fnUpload();
-			if (isExtra())
-				return dom.required("#txtExtra", "errJustifiExtra", "errRequired").isOk() && fnUpload();
-			if ((eTipoGasto.value == "8") && !form.valueOf("#trayectos")) //factura sin trayectos asociados => tab-12
-				return !tabs.showTab(12);
-			if (isPernocta()) {
-				if (!form.valueOf("#fAloMin") || !form.valueOf("#fAloMax"))
-					return dom.addError("fAloMin", "errFechasAloja").isOk();
-			}
-			fnUpload();
-		});
 	}
+	tabs.setAction("uploadGasto", () => (valid.upload() && fnUpload()));
 
 	this.initTab9 = tab => { // Init tab 9: IBAN
 		const cuentas = form.getInput("#cuentas");
@@ -91,57 +68,45 @@ function IrseTabs() {
 			const es = (pais == "ES");
 			form.setVisible("#entidades", es).setVisible(".swift-block,#banco", !es);
 		}
-	
+
 		form.setVisible("#grupo-iban", cuentas.options.length <= 1) // existen cuentas?
 			.onChangeInput("#urgente", ev => form.setVisible(".grp-urgente", ev.target.value == "2"))
-			.onChangeInput("#entidades", () => form.setval("#banco", form.getOptionText("#entidades")));
-		form.onChange(cuentas, () => {
+			.onChangeInput("#entidades", () => form.setval("#banco", form.getOptionText("#entidades")))
+			.onChangeInput("#paises", ev => { fnPais(ev.target.value); form.setval("#banco"); })
+			.onChangeInput("#iban", ev => { ev.target.value = sb.toWord(ev.target.value); })
+			.onChangeInput("#swift", ev => { ev.target.value = sb.toWord(ev.target.value); });
+
+		cuentas.onchange = () => {
 			form.setval("#iban", cuentas.value).setval("#entidades", sb.substr(cuentas.value, 4, 4))
 					.setval("#swift").setVisible("#grupo-iban", !cuentas.value);
-		});
-	
-		dom.onChangeInput("#paises", el => { fnPais(el.value); form.setval("#banco"); })
-			.onChangeInput("#iban", el => { el.value = sb.toWord(el.value); })
-			.onChangeInput("#swift", el => { el.value = sb.toWord(el.value); });
-	
+		}
 		cuentas.options.forEach(opt => {
-			let entidad = valid.getBanks().getEntidad(opt.innerText);
+			const entidad = valid.getBanks().getEntidad(opt.innerText);
 			if (entidad)
 				opt.innerText += " - " + entidad;
 		});
-	
 		if (!cuentas.value) {
 			fnPais(form.valueOf("#paises"));
 			tab.querySelector("#grupo-iban").show();
 		}
-	
-		function isValidPaso9() {
-			dom.closeAlerts().required("#iban", "errIban", "errRequired");
-			if (!cuentas.value) {
-				if (form.valueOf("#paises") != "ES")
-					dom.required("#swift", "errSwift", "errRequired").required("#banco", null, "errRequired");
-				else
-					dom.required("#entidades", null, "errRequired");
-			}
-			if (form.valueOf("#urgente") == "2")
-				dom.required("#extra", "errExtra", "errRequired").geToday("#fMax", "errFechaMax", "errRequired");
-			return dom.isOk() && organicas.build();
-		}
-		window.fnPaso9 = () => isValidPaso9() && loading();
-		window.fnSend = () => isValidPaso9() && i18n.confirm("msgFirmarEnviar") && loading();
+
+		window.fnPaso9 = () => valid.paso9() && organicas.build() && loading();
+		window.fnSend = () => valid.paso9() && i18n.confirm("msgFirmarEnviar") && organicas.build() && loading();
 		organicas.build();
 	}
 
-	this.initTab12 = tab => { // Init tab 12: asociar rutas
-		tab.querySelector("a#gasto-rutas").onclick = () => { // button in tab12
-			const etapas = tab.querySelectorAll(".link-ruta:checked").map(el => el.value).join(",");
-			if (!etapas)
-				return form.showError(i18n.get("errLinkRuta"));
-			form.setval("#trayectos", etapas);
-			fnUpload();
-		}
-	}
+	/*********** ASOCIAR RUTAS / GASTOS ***********/
+	tabs.setInitEvent(12, () => { // tabla de rutas pendientes
+		const _tblRutasGasto = form.setTable("#rutas-out", rg.getTable()); // itinerario
+		tabs.setViewEvent(12, () => _tblRutasGasto.render(rutas.getRutasOut()));
+		tabs.setAction("rtog", () => {
+			const rutas = _tblRutasGasto.getBody().$$(":checked");
+			if (!rutas || !rutas.length) // no hay rutas seleccionadas
+				return form.showError("errLinkRuta"); // mensaje de error
+			form.setval("#trayectos", rutas.map(el => el.value).join()); // PK de las rutas seleccionadas
+			fnUpload(); // upload data and click updateGasto button
+		});
+	});
 }
 
-// export singleton instance
 export default new IrseTabs();

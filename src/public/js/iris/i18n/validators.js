@@ -115,6 +115,22 @@ class IrisValidators extends Validators {
 		return this.rutas(rutas.getRutas()) && data;
 	}
 	/** validaciones del paso 2 **/
+
+	paso9() {
+		const data = form.getData();  // start validation
+		this.size50("iban", data.iban, "errIban");
+		if (!data.cuentas) {
+			if (data.paises == "ES")
+				this.size("codigoEntidad", data.codigoEntidad, "errEntidad", 4);
+			else
+				this.size("swift", data.swift, "errSwift").size("nombreEntidad", data.nombreEntidad);
+		}
+		if (data.urgente == "2") { // Solicitud urgente
+			this.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
+			this.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
+		}
+		return this.close(data);
+	}
 }
 
 export default new IrisValidators();

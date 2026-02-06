@@ -2,11 +2,12 @@
 import i18n from "../../i18n/langs.js";
 import ruta from "./Ruta.js";
 
-class RutaGasto {
+class RutaReadOnly {
 	beforeRender = ruta.beforeRender;
 	rowCalc = ruta.rowCalc;
 
-	row = (data, status) => {
+	row = (data, status, resume) => { 
+		this.rowCalc(data, resume);
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº" class="hide-sm">${status.count}</td>
 			<td data-cell="${i18n.get("lblOrigen")}">${data.origen}</td>
@@ -16,11 +17,15 @@ class RutaGasto {
 			<td data-cell="${i18n.get("lblFechaLlegada")}">${i18n.isoDate(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblHoraLlegada")}">${i18n.isoTimeShort(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblTransporte")}">${i18n.getItem("tiposDesp", data.desp)}</td>
-			<td data-cell="Asociar Etapa"><input type="checkbox" value="${data.id}"/></td>
+			<td data-cell="Km." class="hide-sm">${i18n.isoFloat(data.km2) || "-"}</td>
 		</tr>`;
 	}
 
-	getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row });
+	afterRender = resume => {
+		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
+	}
+
+	getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row, afterRender: this.afterRender });
 }
 
-export default new RutaGasto();
+export default new RutaReadOnly();

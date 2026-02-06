@@ -50,22 +50,6 @@ function Send() {
 			.set("paisEntidad", gastos.getPaisEntidad()).set("nombreEntidad", gastos.getNombreEntidad()).set("codigoEntidad", gastos.getCodigoEntidad()); // gastos Banco
 	}
 
-	const validate = () => {
-		const data = form.getData();  // start validation
-		valid.size50("iban", data.iban, "errIban");
-		if (!_cuentas.value) {
-			if (isSpain())
-				valid.size("codigoEntidad", data.codigoEntidad, "errEntidad", 4);
-			else
-				valid.size("swift", data.swift, "errSwift").size("nombreEntidad", data.nombreEntidad);
-		}
-		if (data.urgente == "2") { // Solicitud urgente
-			valid.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
-			valid.geToday("fMax", data.fMax, "Debe indicar una fecha maxima de resolución para esta solicitud."); // Required date
-		}
-		return valid.close(data);
-	}
-
 	const fnSend = (data, url) => {
 		mgo.build(); // auto-build mono-organica
 		const temp = Object.assign(iris.getData(), data); // merge data to send
@@ -73,14 +57,14 @@ function Send() {
 		return api.setJSON(temp).json(url); // return promise
 	}
 	tabs.setAction("paso9", () => {
-		const data = validate();
+		const data = valid.paso9();
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (i18n.confirm("msgSend")) // si hay confirmacion => envio
 			fnSend(data, "/uae/iris/send").then(form.reset);
 	});
 	tabs.setAction("save9", () => {
-		const data = validate();
+		const data = valid.paso9();
 		if (!data) // valido el formulario
 			return false; // error => no hago nada
 		if (form.isChanged()) // si ahy cambios => envio

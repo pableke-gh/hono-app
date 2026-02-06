@@ -2,9 +2,12 @@
 import coll from "../../components/CollectionHTML.js";
 import dt from "../../components/types/DateBox.js";
 import sb from "../../components/types/StringBox.js";
+import tabs from "../../components/Tabs.js";
 import Validators from "../../i18n/validators.js";
 
 import ruta from "../model/Ruta.js";
+import gasto from "../model/Gasto.js";
+
 import perfil from "../modules/perfil.js";
 import form from "../../xeco/modules/solicitud.js";
 
@@ -104,9 +107,40 @@ class IrseValidators extends Validators {
 	}
 	/** validaciones del paso 2 **/
 
+	upload() {
+		const data = form.getData();
+		if (gasto.isTipoDoc(data.tipoGasto))
+			return this.size250("txtGasto", data.txtGasto, "errDoc").close(data);
+		if (this.gt0("impGasto", data.impGasto, "errGt0").isError())
+			return this.fail(); // required inputs error
+		if (gasto.isTipoTaxi(data.tipoGasto)) //ISU y taxi
+			return this.size250("txtGasto", data.txtGasto).close(data);
+		if (gasto.isTipoExtra(data.tipoGasto))
+			return this.size250("#txtExtra", data.txtExtra, "errJustifiExtra").close(data);
+		if ((data.tipoGasto == "8") && !data.trayectos)
+			return !tabs.showTab(12); //factura sin trayectos asociados => tab-12
+		if (gasto.isTipoPernocta(data.tipoGasto) && (!data.fAloMin || !data.fAloMax))
+			return this.addRequired("fAloMin", "errFechasAloja").fail();
+		return this.success(data);
+	}
+
 	paso6(resume) {
 		const data = form.getData();
 		resume.justifi && this.size500("justifiKm", data.justifiKm, "errJustifiKm");
+		return this.close(data);
+	}
+
+	paso9() {
+		const data = form.getData();
+		this.size50("iban", data.iban, "errIban");
+		if (!data.cuentas) {
+			if (data.paises != "ES")
+				this.size20("swift", data.swift, "errSwift").size50("banco", data.banco, "errRequired");
+			else
+				this.size20("entidades", data.entidades);
+		}
+		if (data.urgente == "2")
+			this.size500("extra", data.extra, "errExtra").geToday("fMax", data.fMax, "errFechaMax");
 		return this.close(data);
 	}
 }

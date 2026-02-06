@@ -26,8 +26,9 @@ coll.ready(() => {
 	solicitudes.set("#view", data => (fnCached(data.id) ? tabs.showTab(irse.setData(data).getInitTab()) : window.rcView(fnIdParam(data))));
 	solicitudes.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id))); // set table action
 	solicitudes.set("#clone", data => (i18n.confirm("msgReactivar") && window.rcClone(fnIdParam(data)))); // set table action
-	solicitudes.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // html report
+	solicitudes.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // table action
 	//tabs.setAction("rptFinalizar", () => solicitudes.invoke("#rptFinalizar")); // set tab action
+	window.ip = perfil.init(); window.ir = rutas.init(); // global access
 
 	/*********** campo objeto y mun ***********/
 	tabs.setInitEvent(1, rutas.mun); // init. mun
@@ -51,16 +52,13 @@ coll.ready(() => {
 	tabs.setInitEvent(9, iTabs.initTab9); // init. all validations and inputs events only once
 	tabs.setViewEvent(9, organicas.build); // always auto build table organicas/gastos (transporte, pernoctas, dietas)
 
-	/*********** ASOCIAR RUTAS / GASTOS ***********/
-	tabs.setInitEvent(12, iTabs.initTab12); // init. all validations and inputs events only once
-
 	//PF needs confirmation in onclick attribute
 	window.fnUnlink = () => i18n.confirm("unlink") && loading();
 	window.saveTab = () => form.showOk(i18n.get("saveOk")).working();
 	window.viewIrse = (xhr, status, args, tab) => {
 		irse.setData(Object.assign(window.IRSE, coll.parse(args.data)));
 		dom.setTables(form.init().getForm()).setInputs(form.getElements());
-		perfil.init(); rutas.init(); organicas.init(); // init modules
+		perfil.view(); rutas.view(); organicas.init(); // init modules
 
 		form.setval("#idses", window.IRSE.id).setCache(window.IRSE.id)
 			.setFirmas(coll.parse(args.firmas)).refresh(); // configure view
@@ -69,11 +67,6 @@ coll.ready(() => {
 		tabs.isActive(tab) ? tabs.setActive(tab) : tabs.nextTab(tab); // IMPORTANTE! tab5 autoreload tab
 		window.showAlerts(xhr, status, args); // alerts
 	}
-
-	// Global initializations
-	window.ip = perfil;
-	window.ir = rutas;
-	irse.getNumRutasVp = () => (!perfil.isEmpty() && rutas.getNumRutasVp()); // show / hide rutas con vehiculo propio
 
 	// Hack old DomBox Module
 	dom.confirm = i18n.confirm; // for remove action

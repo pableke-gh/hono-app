@@ -8,6 +8,7 @@ import valid from "../../i18n/validators.js";
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaGasto.js";
 import rutas from "../../model/ruta/Rutas.js";
+import gasto from "../../model/gasto/Gasto.js";
 
 import gastos from "./gastos.js";
 import transportes from "./transportes.js";
@@ -19,12 +20,12 @@ export default function(tab) {
 	const _grpGasto = tab.querySelectorAll(".grupo-gasto");
 
 	const isInterurbano = () => (_eTipoGasto.value == "8"); //trayectos interurbanos
-	const isPernocta = () => (_eTipoGasto.value == "9"); // gasto tipo pernocta 
+	//const isPernocta = () => (_eTipoGasto.value == "9"); // gasto tipo pernocta 
 	const isTaxi = () => (_eTipoGasto.value == "4"); // ISU y taxi
 	const isDoc = () => ["201", "202", "204", "205", "206"].includes(_eTipoGasto.value);
 	const isExtra = () => ["301", "302", "303", "304"].includes(_eTipoGasto.value);
 	const fnChange = () => {
-		if (isPernocta())
+		if (gasto.isTipoPernocta(_eTipoGasto.value))
 			_grpGasto.mask(0b11011);
 		else if (isDoc())
 			_grpGasto.mask(0b10101);
@@ -68,7 +69,7 @@ export default function(tab) {
 			return valid.size500("txtGasto", data.txtGasto, "errDoc").gt0("impGasto", data.impGasto).close(data);
 		if (isInterurbano())
 			return transportes.validate(data);
-		if (isPernocta())
+		if (gasto.isTipoPernocta(data.tipoGasto))
 			return pernoctas.validate(data);
 	}
 
@@ -79,7 +80,7 @@ export default function(tab) {
 	}
 
 	const fnUrl = () => {
-		if (isPernocta())
+		if (gasto.isTipoPernocta(_eTipoGasto.value))
 			return "/uae/iris/upload/pernocta?id=" + iris.getId();
 		if (isInterurbano())
 			return "/uae/iris/upload/interurbano?id=" + iris.getId();
