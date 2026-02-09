@@ -89,6 +89,8 @@ function IrsePerfil() {
 			form.setval("#nif-interesado").querySelector(".msg-cd")?.hide();
 			fnUpdatePerfil();
 		});
+		form.set("not-isu", () => !self.isIsu());
+		irse.isIsu = self.isIsu; // current input value
 		return self;
 	}
 
@@ -158,8 +160,8 @@ function IrsePerfil() {
 		fnUpdatePerfil(); // show first perfil for update
 		eCol.parentNode.setVisible(_acInteresado.isLoaded()); //muestro el colectivo
 		//eRol.addEventListener("change", fnUpdatePerfil);
-		eAct.addEventListener("change", fnUpdatePerfil);
-		form.querySelector(".msg-cd")?.render();
+		eAct.addEventListener("change", fnUpdatePerfil); // actualizo el perfil al cambiar la actividad
+		form.reset("#imp-org").querySelector(".msg-cd")?.render(); // vacio array de organicas/importes (p9) y actualizo mensajes del p0
 		return self;
 	}
 }

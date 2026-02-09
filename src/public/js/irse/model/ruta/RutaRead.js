@@ -1,8 +1,8 @@
 
-import i18n from "../../i18n/langs.js";
+import i18n from "../../../i18n/langs.js";
 import ruta from "./Ruta.js";
 
-class RutaReadOnly {
+class RutaRead {
 	beforeRender = ruta.beforeRender;
 	rowCalc = ruta.rowCalc;
 
@@ -28,4 +28,4 @@ class RutaReadOnly {
 	getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row, afterRender: this.afterRender });
 }
 
-export default new RutaReadOnly();
+export default new RutaRead();

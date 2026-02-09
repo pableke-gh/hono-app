@@ -15,11 +15,10 @@ import list from "../xeco/modules/list.js";
 
 coll.ready(() => { // init. iris modules actions
 	const form = list.init(iris).getForm();
+	form.onChangeInput("#urgente", ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2"));
+
 	perfil.init(); rutas.init(); gastos.init();
 	otri.init(); resumen.init(); sendTab.init();
-
-	form.set("is-editable-p8", () => (iris.isEditable() && iris.isPaso8()));
-	form.onChangeInput("#urgente", ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2"));
 
 	iris.onView = data => { // Init IRSE form
 		perfil.view(data.interesado, data.organicas, data.firmas);

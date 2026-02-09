@@ -50,6 +50,7 @@ class Iris extends Solicitud {
 
 	isConflicto = () => (this.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
 	isPaso8 = () => (this.getMask() & 4); // paso 8 activado manualmente por la uae
+	isEditableP8 = () => (this.isEditable() && this.isPaso8()); // paso 8 y editable
 	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
 
 	// render steps functions for tabs
@@ -57,6 +58,12 @@ class Iris extends Solicitud {
 	getPasoIsu = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isIsu()).get("lblPasos"), this);
 	getPaso = () => i18n.render(i18n.set("paso", i18n.get("paso") + 1).get("lblPasos"), this);
 	getPasoMaps = globalThis.void; // redefined by perfil module
+
+	// handlers for select in step 5
+	getNochesPendientes = () => this.get("nochesPendientes");
+	getRutasPendientes = () => this.get("rutasPendientes");
+	isFacturasComisionado = () => ((this.getNochesPendientes() > 0) || (this.getRutasPendientes() > 0));
+	isCenaFinal = () => this.get("cenaFinal");
 
 	row = data => {
 		let acciones = Solicitud.prototype.row.call(this, data);

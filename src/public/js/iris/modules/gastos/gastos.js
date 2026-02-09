@@ -60,7 +60,7 @@ class Gastos extends Table {
 		tabs.setAction("save5", () => fnPaso5(5));
 		tabs.setInitEvent(5, gp5); // init fields for gasto
 		tabs.setInitEvent("itinerario", () => {
-			// actualiza la tabla de consulta (paso 5) al abrir la pestaña
+			// actualiza la tabla de consulta (paso 5) al abrir el enlace
 			const _tblReadOnly = form.setTable("#rutas-read", rro.getTable()); // itinerario
 			tabs.setViewEvent("itinerario", () => _tblReadOnly.view(rutas.getRutas()));
 		});

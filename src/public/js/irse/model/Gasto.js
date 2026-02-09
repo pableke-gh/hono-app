@@ -1,4 +1,7 @@
 
+import i18n from "../../i18n/langs.js";
+import irse from "./Irse.js";
+
 class Gasto {
 	isFactura = gasto => (gasto.tipo == 1);
 	isTicket = gasto => (gasto.tipo == 2);
@@ -34,6 +37,57 @@ class Gasto {
 	isOrganicaPernocta = gasto => (this.isOrganica(gasto) && (gasto.subtipo == 2)); // paso 9 = multiorganica pernocta = 2
 	isOrganicaTrans = gasto => (this.isOrganica(gasto) && (gasto.subtipo == 3)); // paso 9 = multiorganica transporte = 3
 	isOrganicaAc = gasto => (this.isOrganica(gasto) && (gasto.subtipo == 4)); // paso 9 = multiorganica asistencias = 4
+
+	// table renders
+	beforeRender = resume => {
+		resume.noches = resume.numTransportes = resume.numPernoctas = 0;
+		resume.adjuntos = resume.docComisionado = resume.otraDoc = 0;
+	}
+	rowCalc = (data, resume) => {
+		resume.noches += this.isPernocta(data) ? data.num : 0;
+		resume.numTransportes += this.isTransporte(data);
+		resume.numPernoctas += this.isPernocta(data);
+		resume.adjuntos += globalThis.isset(data.fref);
+		resume.docComisionado += this.isDocComisionado(data);
+		resume.otraDoc += this.isOtraDoc(data);
+	}
+
+	getDescSubtipo = data => {
+		if (this.isFactura(data))
+			return i18n.get("lblFactTransporte");
+		if (this.isTicket(data))
+			return i18n.getItem("tipoTickets", data.subtipo) || "-";
+		if (this.isPernocta(data))
+			return i18n.get("lblFactAlojamiento");
+		if (this.isExtra(data))
+			return i18n.getItem("tipoExtra", data.subtipo) || "-";
+		return this.isDoc(data) ? i18n.getItem("tipoDocs", data.subtipo) : data.desc;
+	}
+	getDescGasto = data => {
+		if (this.isFactura(data))
+			return i18n.render(i18n.get("lblFactRutas"), data);
+		if (this.isTaxiJustifi(data)) // descripcion del itinerario del taxi
+			return data.desc;
+		if (this.isTicket(data))
+			return i18n.getItem("tipoTickets", data.subtipo) || "-";
+		return this.isPernocta(data) ? i18n.render(i18n.get("lblRangoNoches"), data) : data.desc;
+	}
+
+	row = (data, status, resume) => {
+		this.rowCalc(data, resume);
+		const link = `<a href="#adjunto" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>`;
+		const remove = irse.isEditable() ? `<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>` : "";
+		return `<tr class="tb-data tb-data-tc">
+			<td data-cell="Nº">${status.count}</td>
+			<td data-cell="${i18n.get("lblTipoGasto")}">${this.getDescSubtipo(data)}</td>
+			<td data-cell="${i18n.get("lblDescObserv")}">${this.getDescGasto(data)}</td>
+			<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>
+			<td data-cell="${i18n.get("lblImporte")}">${i18n.isoFloat(data.imp1) ?? "-"} €</td>
+			<td data-cell="${i18n.get("lblAcciones")}" class="no-print"><span>${link}${remove}</span></td>
+		</tr>`;
+	}
+
+	getTable = () => ({ msgEmptyTable: "msgGastosEmpty", beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row });
 }
 
 export default new Gasto();

@@ -106,8 +106,8 @@ function IrseOrganicas() {
 				resume.totAc += (gasto.subtipo == "4") ? gasto.imp1 : 0;
 			});
 
-			dom.setValue("#imp-org", JSON.stringify(organicas))
-				.setValue("#imp1-org", "").setFocus("#tipo-org");
+			dom.setValue("#imp-org", JSON.stringify(organicas));
+			//dom.setValue("#imp1-org", "").setFocus("#tipo-org");
 		});
 		return self;
 	}

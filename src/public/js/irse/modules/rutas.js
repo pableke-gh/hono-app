@@ -6,7 +6,9 @@ import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 import valid from "../i18n/validators.js";
 
-import ruta from "../model/Ruta.js"
+import irse from "../model/Irse.js"
+import ruta from "../model/ruta/Ruta.js"
+
 import perfil from "./perfil.js";
 import organicas from "./organicas.js";
 import form from "../../xeco/modules/solicitud.js";
@@ -32,7 +34,6 @@ function IrseRutas() {
 
 	var rutas, divData, bruto, elImpKm, justifiKm;
 
-	//const getLoc = () => perfil.isMun() ? MUN : LOC;
 	const fmtImpKm = ruta => i18n.isoFloat(ruta.km1 * IRSE.gasolina);
 	const fnSetMain = data => { rutas.forEach(ruta.setOrdinaria); ruta.setPrincipal(data); }
 
@@ -42,17 +43,16 @@ function IrseRutas() {
 	this.totKmCalcFmt = () => resume.totKmCalc;
 
 	this.getAll = () => rutas;
-	this.getResume = () => resume;
-	this.getStyles = () => STYLES;
 	this.size = () => coll.size(rutas);
 	this.isEmpty = () => coll.isEmpty(rutas);
 	this.first = () => rutas[0];
 	this.last = () => coll.last(rutas);
-	this.start = () => (self.size() && sb.toDate(self.first().dt1));
-	this.end = () => (self.size() && sb.toDate(self.last().dt2));
+	this.getHoraSalida = () => ruta.getHoraSalida(self.first());
+	this.getHoraLlegada = () => ruta.getHoraLlegada(self.last());
+	this.start = () => sb.toDate(self.getHoraSalida());
+	this.end = () => sb.toDate(self.getHoraLlegada());
 	this.getNumRutasVp = () => resume.sizeVp;
 	this.getRutasOut = () => resume.out;
-	this.getNumRutasOut = () => resume.sizeOut;
 
 	this.add = function(ruta, dist) {
 		ruta.temp = true;
@@ -136,8 +136,12 @@ function IrseRutas() {
 		form.setValues(ruta, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1);
 	}
 	this.init = () => {
-		form.set("is-rutas-gt-1", () => (self.size() > 1))
-			.set("getNumRutasVp", () => (!perfil.isEmpty() && self.getNumRutasVp()));
+		form.set("not-mun", () => !perfil.isMun()).set("is-rutas-gt-1", () => (self.size() > 1))
+			.set("is-editable-rutas-gt-1", () => ((self.size() > 1) && irse.isEditable()))
+			.set("getNumRutasVp", () => (!perfil.isEmpty() && self.getNumRutasVp()))
+			.setChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"));
+		const fnBlur1 = (ev, f1, f2) => { f2.value = ev.target.value; f1.removeAttribute("max"); f2.removeAttribute("max"); }
+		form.setDateRange("#f1", "#f2", fnBlur1); // sincronizo fechas
 		return self;
 	}
 	this.view = () => {
@@ -159,7 +163,7 @@ function IrseRutas() {
 			const last = fnResume().last(rutas) || CT;
 			const matricula = form.getval("#matricula");
 			form.setData({ origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula }, ".ui-ruta")
-				.delAttr("#f1", "max").restart("#destino").hide(".grupo-matricula");
+				.restart("#destino").hide(".grupo-matricula");
 			if (!last.dt1) // primera ruta?
 				form.setFocus("#f1");
 		}).table("#rutas", rutas, resume, STYLES);
@@ -178,10 +182,7 @@ function IrseRutas() {
 		});
 
 		// eventos del formulario para la ruta
-		form.setDateRange("#f1", "#f2").delAttr("#f1", "max") // Rango de fechas
-			.setChangeInput("#f1", ev => form.setval("#f2", ev.target.value))
-			.setChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"))
-			.onChangeInput("#matricula", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
+		form.onChangeInput("#matricula", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
 	}
 }
 

@@ -88,15 +88,19 @@ function InputBox(opts) {
 			self.setval(el, value); // default
 		return self;
 	}
-	this.setDateRange = (el1, el2, fnBlur) => {
-		fnBlur = fnBlur || globalThis.void; // default = void
-		el1.setAttribute("max", el2.value); // update attribute
-		el2.setAttribute("min", el1.value); // update attribute
-		el1.onblur = ev => { el2.setAttribute("min", el1.value); fnBlur(ev, el1, el2); };
-		el2.onblur = ev => { el1.setAttribute("max", el2.value); fnBlur(ev, el2, el1); };
+	this.setLimitDateRange = (el1, el2, dt1, dt2) => {
+		el1.value = sb.isoDate(dt1);
+		el2.value = sb.isoDate(dt2);
+		el1.setAttribute("min", el1.value); el1.setAttribute("max", el2.value);
+		el2.setAttribute("min", el1.value); el2.setAttribute("max", el2.value);
+		return self;
+	}
+	this.setDateRange = (el1, el2, fnBlur1, fnBlur2) => {
+		el1.onblur = ev => { el2.setAttribute("min", el1.value); fnBlur1 && fnBlur1(ev, el1, el2); };
+		el2.onblur = ev => { el1.setAttribute("max", el2.value); fnBlur2 && fnBlur2(ev, el2, el1); };
 		el1.updateDateRange = () => { el2.setAttribute("min", el1.value); }; // fired on set value
 		el2.updateDateRange = () => { el1.setAttribute("max", el2.value); }; // fired on set value
-		return self;
+		return self.setLimitDateRange(el1, el2, el1.value, el2.value); // init values
 	}
 
 	this.file = (el, fn) => {

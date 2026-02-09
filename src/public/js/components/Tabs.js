@@ -83,6 +83,8 @@ function Tabs() {
 	this.prevTab = self.backTab; // Synonym to go back to previous tab
 	this.lastTab = () => fnShowTab(tabs.length - 1);
 	this.toggle = el => {
+		if (!fnCallEvent("active-tab", el))
+			return self; // inactive toggle
 		if (!el.dataset.off)  { // is hide
 			fnCallEvent("init-tab", el); // Fire once when open
 			el.dataset.off = "1"; // avoid to call action again

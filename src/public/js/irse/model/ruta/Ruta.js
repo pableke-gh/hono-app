@@ -1,5 +1,5 @@
 
-import dt from "../../components/types/DateBox.js";
+import dt from "../../../components/types/DateBox.js";
 
 class Ruta {
 	isPrincipal = ruta => ((ruta.mask & 1) == 1);
@@ -25,6 +25,9 @@ class Ruta {
 	isDespConFactura = ruta => !this.isDespSinFactura(ruta); // desplazamiento que requiere factura
 	isUnlinked = ruta => (this.isLinkable(ruta) && !ruta.g); // rutas asociables a gasto sin gasto asociado
 	isLinkable = this.isDespConFactura; // rutas a las que se le puede asignar un gasto 
+
+	getImpGasolina = () => .26; // € / kilometro
+	getImpKm = ruta => (ruta.km1 * this.getImpGasolina());
 
 	// table renders
 	beforeRender = resume => {

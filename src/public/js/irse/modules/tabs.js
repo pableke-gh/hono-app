@@ -2,11 +2,11 @@
 import sb from "../../components/types/StringBox.js";
 import api from "../../components/Api.js";
 import tabs from "../../components/Tabs.js";
-import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 import valid from "../i18n/validators.js";
 
-import rg from "../model/RutaGasto.js";
+import rg from "../model/ruta/RutaGasto.js";
+import rr from "../model/ruta/RutaRead.js"
 import gasto from "../model/Gasto.js";
 
 import rutas from "./rutas.js";
@@ -14,6 +14,8 @@ import organicas from "./organicas.js";
 import form from "../../xeco/modules/solicitud.js";
 
 function IrseTabs() {
+	const eTipoGasto = form.getInput("#tipo-gasto"); // select input
+	const grupos = form.querySelectorAll(".grupo-gasto"); // toggle groups
 	const fnUpload = () => { // merge data to send
 		const fd = form.getFormData();
 		fd.exclude([ // exclude fields
@@ -24,9 +26,12 @@ function IrseTabs() {
 		api.setFormData(fd).json("/uae/iris/upload/gasto").then(() => form.loading().click("#updateGasto"));
 	}
 
-	this.viewTab5 = tab => { // View tab 5: gastos
-		const eTipoGasto = form.getInput("#tipo-gasto"); // select input
-		const grupos = tab.querySelectorAll(".grupo-gasto"); // toggle groups
+	/*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
+	tabs.setInitEvent("itinerario", () => { // enlace a la tabla de consulta del paso 5
+		const _tblReadOnly = form.setTable("#rutas-read", rr.getTable()); // build tabla itinerario
+		tabs.setViewEvent("itinerario", () => _tblReadOnly.view(rutas.getAll())); // render rows
+	});
+	tabs.setInitEvent(5, () => {
 		const fnChange = () => {
 			const tipo = eTipoGasto.value;
 			form.setval("#tipoGasto", tipo).text(".label-text-gasto", i18n.get("lblDescObserv"));
@@ -40,25 +45,20 @@ function IrseTabs() {
 				form.text(".label-text-gasto", i18n.get("lblDescTaxi"));
 				grupos.mask(0b10111);
 			}
-			else if (0 < +eTipoGasto.value)
+			else if (0 < +tipo)
 				grupos.mask(0b10011);
 			else
 				grupos.mask(0b00001);
 		}
-
+		eTipoGasto.onchange = fnChange; // Change event
+		form.onChangeFile("[name='fileGasto']", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; fnChange(); });
+	});
+	this.viewTab5 = () => {
 		grupos.mask(0);
 		eTipoGasto.value = ""; // clear selection
-		eTipoGasto.onchange = fnChange; // Change event
-		const start = sb.isoDate(rutas.first().dt1);
-		const end = sb.isoDate(rutas.last().dt2);
-		dom.table("#rutas-read", rutas.getAll(), rutas.getResume(), rutas.getStyles());
+		if (rutas.isEmpty()) return; // aun no hay rutas => paso 0
 		form.setval("#impGasto", 0).setval("#txtGasto").setval("#trayectos")
-				.setval("#fAloMin", start).setAttr("#fAloMin", "min", start).setAttr("#fAloMin", "max", end)
-				.setval("#fAloMax", end).setAttr("#fAloMax", "min", start).setAttr("#fAloMax", "max", end);
-		form.onChangeFile("[name='fileGasto']", (ev, el, file) => {
-			el.nextElementSibling.innerHTML = file.name;
-			fnChange();
-		});
+			.setLimitDateRange("#fAloMin", "#fAloMax", rutas.getHoraSalida(), rutas.getHoraLlegada());
 	}
 	tabs.setAction("uploadGasto", () => (valid.upload() && fnUpload()));
 

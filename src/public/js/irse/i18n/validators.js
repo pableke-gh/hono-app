@@ -5,7 +5,7 @@ import sb from "../../components/types/StringBox.js";
 import tabs from "../../components/Tabs.js";
 import Validators from "../../i18n/validators.js";
 
-import ruta from "../model/Ruta.js";
+import ruta from "../model/ruta/Ruta.js";
 import gasto from "../model/Gasto.js";
 
 import perfil from "../modules/perfil.js";

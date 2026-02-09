@@ -7,10 +7,12 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="navbar form-refresh" data-refresh="getNumRutasVp">
+	<div class="navbar form-refresh" data-refresh="is-rutas-gt-1">
 	<h3>
 	<a id="p6-km" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
-		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green">#{iris.irse.gastos.kmCalcI18n} €</b>
+		<i class="fas fa-caret-right icon"></i>
+		<h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />:
+		<b id="imp-km" class="text-green">#{iris.irse.gastos.kmCalcI18n} €</b>
 	</a>
 	</h3>
 	<div class="info-p6-km hide">

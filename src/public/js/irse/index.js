@@ -39,9 +39,6 @@ coll.ready(() => {
 	/*********** subvención, congreso, asistencias/colaboraciones ***********/
 	tabs.setActiveEvent(3, perfil.isIsu).setInitEvent(3, otri.init);
 
-	/*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
-	tabs.setViewEvent(5, iTabs.viewTab5);
-
 	/*********** Tablas de resumen ***********/
 	tabs.setViewEvent(6, dietas.render);
 	// download iris-facturas.zip / iris-doc.zip
@@ -58,13 +55,12 @@ coll.ready(() => {
 	window.viewIrse = (xhr, status, args, tab) => {
 		irse.setData(Object.assign(window.IRSE, coll.parse(args.data)));
 		dom.setTables(form.init().getForm()).setInputs(form.getElements());
-		perfil.view(); rutas.view(); organicas.init(); // init modules
+		perfil.view(); rutas.view(); iTabs.viewTab5(); organicas.init(); // init modules
 
 		form.setval("#idses", window.IRSE.id).setCache(window.IRSE.id)
 			.setFirmas(coll.parse(args.firmas)).refresh(); // configure view
-		tab = tab ?? window.IRSE.tab; // get next tab to show
-		tabs.reset([ 0, 1, 3, 5, 6, 9 ]).load(form.getForm()); // reload tabs from server
-		tabs.isActive(tab) ? tabs.setActive(tab) : tabs.nextTab(tab); // IMPORTANTE! tab5 autoreload tab
+		tabs.reset([ 0, 1, 3, 6, 9 ]).load(form.getForm()); // reload tabs from server
+		tabs.nextTab(tab ?? window.IRSE.tab); // go to next tab
 		window.showAlerts(xhr, status, args); // alerts
 	}
 

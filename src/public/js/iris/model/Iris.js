@@ -53,6 +53,7 @@ class Iris extends Solicitud {
 
 	isConflicto = () => (this.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
 	isPaso8 = () => (this.getMask() & 4); // paso 8 activado manualmente por la uae
+	isEditableP8 = () => (this.isEditable() && this.isPaso8()); // paso 8 y editable
 	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
 
 	// render steps functions for tabs

@@ -175,11 +175,16 @@ export default class Form {
 		const value = el.name ? data[el.name] : null; // get value by name
 		globalThis.isset(value) && input.setValue(el, value); // update defined data
 	});
-	setDateRange = (f1Selector, f2Selector, fnBlur) => {
+	setDateRange = (f1Selector, f2Selector, fnBlur1, fnBlur2) => {
 		const el1 = this.#fnQueryInput(f1Selector);
 		const el2 = this.#fnQueryInput(f2Selector);
-		if (el1 && el2) // check if fields exist
-			input.setDateRange(el1, el2, fnBlur);
+		input.setDateRange(el1, el2, fnBlur1, fnBlur2);
+		return this;
+	}
+	setLimitDateRange = (f1Selector, f2Selector, dt1, dt2) => {
+		const el1 = this.#fnQueryInput(f1Selector);
+		const el2 = this.#fnQueryInput(f2Selector);
+		input.setLimitDateRange(el1, el2, dt1, dt2);
 		return this;
 	}
 
@@ -238,7 +243,7 @@ export default class Form {
 
 	onChangeFile = (selector, fn) => this.#fnAction(selector, el => input.file(el, fn));
 	onChangeFiles = (selector, fn) => this.#fnUpdate(selector, el => input.file(el, fn));
-	setField = (selector, value, fn) => this.#fnAction(selector, el => { this.#fnChange(el, fn); input.setValue(el, value); }); 
+	//setField = (selector, value, fn) => this.#fnAction(selector, el => { this.#fnChange(el, fn); input.setValue(el, value); }); 
 
 	// Form Validator
 	closeAlerts = () => {

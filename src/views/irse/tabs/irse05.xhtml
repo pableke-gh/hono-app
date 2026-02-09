@@ -8,83 +8,60 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
-	<p:outputPanel styleClass="card-xeco update-irse">
+	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
 			<span class="text-warn form-refresh" data-refresh="text-render">@getPaso;</span>
-			<span><h:outputText value="#{msg['uae.irse.tab5.msg.tit']}" escape="false" />​</span>
+			<span><h:outputText value="#{msg['uae.irse.tab5.msg.tit']}" escape="false" /></span>
 		</h2>
 
-		<c:if test="#{iris.irse.form.editable}">
-			<ui:include src="./irse05_info.xhtml"></ui:include>
-		</c:if>
+		<ui:include src="./irse05_info.xhtml"></ui:include>
 		<div class="ui-blocks form-refresh" data-refresh="isEditable">
 			<div class="ui-block-btn">
+				<h:inputHidden id="trayectos" value="#{iris.irse.input.etapas}" />
 				<h:inputHidden id="tipoGasto" value="#{iris.irse.input.tipoGasto}" />
 				<a href="#tab-action-clickNext" class="btn btn-green" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
 				<input type="file" name="fileGasto" class="ui-gasto hide" />
-				<div class="filename" style="position: absolute; margin: 0 4px;"></div>
+				<div class="filename form-refresh" style="position: absolute; margin: 0 4px;" data-refresh="clear"></div>
 			</div>
 			<label class="ui-block grupo-gasto hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
 				<select id="tipo-gasto" class="ui-input ui-select" tabindex="100">
 					<option value=""></option>
-					<c:if test="#{iris.irse.form.verTrayectosPendientes() and ((iris.irse.gastos.nochesPendientes gt 0) or (iris.irse.rutas.numTrayectosOut gt 0))}">
-						<optgroup label="Factura a nombre del comisionado">
-						<c:if test="#{iris.irse.gastos.nochesPendientes gt 0}">
-							<option value="9"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
-						</c:if>
-						<c:if test="#{iris.irse.rutas.numTrayectosOut gt 0}">
-							<option value="8"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
-						</c:if>
-						</optgroup>
-					</c:if>
-					<c:if test="#{iris.irse.form.facturaUpct}">
-						<optgroup label="Tickets por transporte">
-							<c:choose>
-								<c:when test="#{iris.irse.form.isu}">
-									<option value="1">#{iris.irse.gastos.getMsgTicket(1)}</option>
-									<option value="2">#{iris.irse.gastos.getMsgTicket(2)}</option>
-									<option value="3">#{iris.irse.gastos.getMsgTicket(3)}</option>
-									<option value="4">#{iris.irse.gastos.getMsgTicket(4)}</option>
-									<option value="5">#{iris.irse.gastos.getMsgTicket(5)}</option>
-									<option value="6">#{iris.irse.gastos.getMsgTicket(6)}</option>
-									<option value="7">#{iris.irse.gastos.getMsgTicket(7)}</option>
-								</c:when>
-								<c:otherwise>
-									<option value="10">#{iris.irse.gastos.getMsgTicket(10)}</option>
-								</c:otherwise>
-							</c:choose>
-						</optgroup>
-					</c:if>
+					<optgroup label="Factura a nombre del comisionado" class="form-refresh" data-refresh="isFacturasComisionado">
+						<option value="9" class="form-refresh" data-refresh="getNochesPendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
+						<option value="8" class="form-refresh" data-refresh="getRutasPendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
+					</optgroup>
+					<optgroup label="Tickets por transporte">
+						<option value="1" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(1)}</option>
+						<option value="2" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(2)}</option>
+						<option value="3" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(3)}</option>
+						<option value="4" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(4)}</option>
+						<option value="5" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(5)}</option>
+						<option value="6" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(6)}</option>
+						<option value="7" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(7)}</option>
+						<option value="10" class="form-refresh" data-refresh="not-isu">#{iris.irse.gastos.getMsgTicket(10)}</option>
+					</optgroup>
 					<optgroup label="Otra Documentación">
-						<c:if test="#{iris.irse.form.facturaUpct}">
-							<option value="201"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
-						</c:if>
-						<c:if test="#{iris.irse.form.docProgramaMov}">
+						<option value="201"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
+						<!--<c:if test="#{iris.irse.form.docProgramaMov}">
 							<option value="206"><h:outputText value="#{msg['lbl.doc.movilidad']}" escape="false" /></option>
-						</c:if>
+						</c:if>-->
 						<option value="202"><h:outputText value="#{msg['lbl.doc.otra']}" escape="false" /></option>
 					</optgroup>
-					<c:if test="#{iris.irse.form.extAlu and iris.irse.form.iaeExt}">
+					<!--<c:if test="#{iris.irse.form.extAlu and iris.irse.form.iaeExt}">
 						<optgroup label="Justificaciones">
 							<option value="203"><h:outputText value="#{msg['lbl.justifi.dietas']}" escape="false" /></option>
 						</optgroup>
-					</c:if>
-					<c:if test="#{iris.irse.perfil.tab8}">
-						<optgroup label="Gasto Extraordinario">
-							<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
-							<c:if test="#{not iris.irse.form.mun}">
-								<option value="302"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
-							</c:if>
-							<c:if test="#{iris.irse.rutas.llegadaCena and iris.irse.gastos.extraCena}">
-								<option value="303"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
-							</c:if>
-							<c:if test="#{iris.irse.form.alu or iris.irse.form.ext}">
-								<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
-							</c:if>
-						</optgroup>
-					</c:if>
+					</c:if>-->
+					<optgroup label="Gasto Extraordinario" class="form-refresh" data-refresh="isPaso8">
+						<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
+						<option value="302" class="form-refresh" data-refresh="not-mun"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
+						<option value="303" class="form-refresh" data-refresh="isCenaFinal"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
+						<!--<c:if test="#{iris.irse.form.alu or iris.irse.form.ext}">
+							<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
+						</c:if>-->
+					</optgroup>
 				</select>
 				<div class="ui-errtip"></div>
 			</label>
@@ -105,26 +82,27 @@
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn grupo-gasto hide">
-				<h:inputHidden id="trayectos" value="#{iris.irse.input.etapas}" />
 				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 				<p:commandButton id="updateGasto" action="#{iris.irse.form.updateGasto()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);" styleClass="hide" />
 			</div>
 		</div>
 		<br class="clear"/>
 
-		<div class="navbar">
+		<p:outputPanel styleClass="navbar update-irse">
 			<ui:include src="./irse05_table.xhtml"></ui:include>
-		</div>
-		<div class="navbar">
-		<c:if test="#{iris.irse.rutas.numRutas gt 1}">
-			<p>* <h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: #{iris.irse.rutas.numTrayectosOut}; <h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: #{iris.irse.gastos.nochesPendientes}; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />).​</p>
-		</c:if>
-		<c:if test="#{iris.irse.form.extAlu and iris.irse.perfil.tab7}">
+		</p:outputPanel>
+		<div class="navbar form-refresh" data-refresh="is-rutas-gt-1">
+			<p class="form-refresh" data-refresh="text-render">*
+				<h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @getRutasPendientes;;
+				<h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @getNochesPendientes;; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />)
+			</p>
+		<!--<c:if test="#{iris.irse.form.extAlu and iris.irse.perfil.tab7}">
 			<p>* <h:outputText value="#{msg['lbl.imp.dietas.prop']}" escape="false" />: #{iris.irse.gastos.impManutencionI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.justifi']}" escape="false" />: #{iris.irse.gastos.impJustifiI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.no.justifi']}" escape="false" />: #{iris.irse.gastos.impNoJustifiI18n} €​</p>
-		</c:if>
+		</c:if>-->
 		</div>
-	</p:outputPanel>
+	</div>
 
+	<!-- Botones -->
 	<p:outputPanel styleClass="update-irse">
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="110">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
