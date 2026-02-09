@@ -14,6 +14,7 @@ class List extends Form {
 	getForm = () => form;
 	getList = () => solicitudes;
 	create = form.view; // prepare a new solicitud
+	viewInit = () => { solicitudes.clear(); form.viewInit(); }
 	viewForm = () => form.view(solicitudes.getCurrentItem());
 	firmar = () => form.firmar(solicitudes.getCurrentItem());
 	reject = () => form.reject(solicitudes.getCurrentItem());
@@ -32,7 +33,7 @@ class List extends Form {
 		const fnCallList = () => { api.setJSON(this.getData()).json(url + "/list").then(fnLoadList); } // fetch list action
 		const fnList = (estado, fmask) => { this.setData({ estado, fmask }, ".ui-filter"); fnCallList(); } // prepare filter and fetch
 		//const fnPdf = data => api.init().blob(url + "/pdf?id=" + data.id).then(api.open); // report template service
-		window.closeForm = (xhr, status, args) => (window.showAlerts(xhr, status, args) && solicitudes.reset()); // PF hack for old version compatibility => remove
+		window.closeForm = (xhr, status, args) => (window.showAlerts(xhr, status, args) && this.viewInit()); // PF hack for old version compatibility => remove
 
 		// list handlers
 		solicitudes.set("#view", form.view)

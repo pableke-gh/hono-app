@@ -162,8 +162,8 @@ function IrseRutas() {
 		}).onRenderTable("#rutas", table => {
 			const last = fnResume().last(rutas) || CT;
 			const matricula = form.getval("#matricula");
-			form.setData({ origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula }, ".ui-ruta")
-				.restart("#destino").hide(".grupo-matricula");
+			const data = { origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula };
+			form.setData(data, ".ui-ruta").restart("#destino").hide(".grupo-matricula");
 			if (!last.dt1) // primera ruta?
 				form.setFocus("#f1");
 		}).table("#rutas", rutas, resume, STYLES);

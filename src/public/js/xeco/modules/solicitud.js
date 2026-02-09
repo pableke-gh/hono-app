@@ -13,6 +13,7 @@ class Solicitud extends Form {
 
 	getList = () => solicitudes;
 	refresh() { return super.refresh(solicitudes.getSolicitud()); }
+	viewInit = () => { this.resetCache(); tabs.showInit(); }
 	showForm = () => { this.closeAlerts().refresh(); tabs.showForm(); } // open form tab
 	report = data => api.init().text(solicitudes.getSolicitud().getUrl() + "/report?id=" + data.id).then(api.open); // call report service
 

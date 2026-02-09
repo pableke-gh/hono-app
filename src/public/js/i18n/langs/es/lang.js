@@ -5,7 +5,7 @@ import Base from "../lang.js";
 import es from "./es.js";
 
 export default class Lang extends Base {
-	get(key) { return (es[key] || key); }
+	get(key) { return (es[key] ?? key); }
 	set(name, msg) { es[name] = msg; return this; }
 
 	// Date formats
@@ -25,7 +25,7 @@ export default class Lang extends Base {
 
 	// String to ES String formated
 	#reformat = (str, n) => nb.fmtFloat(str, ",", n, "es");
-	fmtFloat = (str, n) => this.#reformat(str, 2);
+	fmtFloat = (str, n) => this.#reformat(str, n ?? 2);
 	fmtFloat1 = str => this.#reformat(str, 1);
 	fmtFloat2 = str => this.#reformat(str, 2);
 	fmtFloat3 = str => this.#reformat(str, 3);

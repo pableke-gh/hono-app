@@ -116,7 +116,7 @@ class IrseValidators extends Validators {
 		if (gasto.isTipoTaxi(data.tipoGasto)) //ISU y taxi
 			return this.size250("txtGasto", data.txtGasto).close(data);
 		if (gasto.isTipoExtra(data.tipoGasto))
-			return this.size250("#txtExtra", data.txtExtra, "errJustifiExtra").close(data);
+			return this.size250("txtGasto", data.txtGasto, "errJustifiExtra").close(data);
 		if ((data.tipoGasto == "8") && !data.trayectos)
 			return !tabs.showTab(12); //factura sin trayectos asociados => tab-12
 		if (gasto.isTipoPernocta(data.tipoGasto) && (!data.fAloMin || !data.fAloMax))

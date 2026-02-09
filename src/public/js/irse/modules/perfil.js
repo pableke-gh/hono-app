@@ -161,7 +161,7 @@ function IrsePerfil() {
 		eCol.parentNode.setVisible(_acInteresado.isLoaded()); //muestro el colectivo
 		//eRol.addEventListener("change", fnUpdatePerfil);
 		eAct.addEventListener("change", fnUpdatePerfil); // actualizo el perfil al cambiar la actividad
-		form.reset("#imp-org").querySelector(".msg-cd")?.render(); // vacio array de organicas/importes (p9) y actualizo mensajes del p0
+		form.querySelector(".msg-cd")?.render(); // vacio array de organicas/importes (p9) y actualizo mensajes del p0
 		return self;
 	}
 }
