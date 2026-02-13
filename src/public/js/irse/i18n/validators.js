@@ -3,13 +3,14 @@ import coll from "../../components/CollectionHTML.js";
 import dt from "../../components/types/DateBox.js";
 import sb from "../../components/types/StringBox.js";
 import tabs from "../../components/Tabs.js";
-import Validators from "../../i18n/validators.js";
+import Validators from "../../core/i18n/validators.js";
 
-import ruta from "../model/ruta/Ruta.js";
+import ruta from "../model/Ruta.js";
 import gasto from "../model/Gasto.js";
 
 import perfil from "../modules/perfil.js";
-import form from "../../xeco/modules/solicitud.js";
+import rutas from "../modules/rutas.js";
+import form from "../modules/irse.js";
 
 const MIN_DATE = dt.addYears(new Date(), -1); //tb.now().add({ years: -1 }); //1 año antes
 const MAX_DATE = dt.addDays(new Date(), 180); //tb.now().add({ days: 180 }); //6 meses despues 
@@ -17,6 +18,7 @@ const MAX_DATE = dt.addDays(new Date(), 180); //tb.now().add({ days: 180 }); //6
 class IrseValidators extends Validators {
 	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
 	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
+	rechazar() { return super.rechazar(form.getData()); } // specific implementation
 
 	perfil() {
 		const data = form.getData(); // start validation
@@ -24,7 +26,7 @@ class IrseValidators extends Validators {
 		return this.size20("interesado", data["nif-interesado"], "errPerfil").close(data);
 	}
 
-	mun(rutas) {
+	paso1() {
 		const data = form.getData(); // start validation
 		if (!data.objeto) // valida textarea
         	this.addRequired("objeto", "errObjeto");
@@ -47,7 +49,7 @@ class IrseValidators extends Validators {
 		if (!this.ruta(rutaMun))
 			return this.fail(); // valido la ruta mun
 		// ruta por defecto para MUN = VP, principal  y ES
-		rutas[0] = rutaMun; // actualizo las rutas
+		rutas.setRuta(rutaMun); // actualizo las rutas
 		return this.close(data);
 	}
 

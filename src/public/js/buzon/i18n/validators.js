@@ -1,6 +1,6 @@
 
 import Validators from "../../i18n/validators.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "../modules/buzon.js";
 
 class BuzonValidators extends Validators {
 	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations

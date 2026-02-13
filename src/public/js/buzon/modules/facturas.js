@@ -1,14 +1,13 @@
 
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
-import i18n from "../i18n/langs.js";
 import valid from "../i18n/validators.js";
 
 import buzon from "../model/Buzon.js";
-import form from "../../xeco/modules/solicitud.js";
+import Form from "./form.js";
 
-function Facturas() {
-	const self = this; //self instance
+class Facturas extends Form {
+	/*const self = this; //self instance
 	const elTipo = form.getInput("#tipo");
 	const fileNames = form.querySelectorAll(".filename");
 	let _isActiveTab5; // bool indicators
@@ -72,7 +71,7 @@ function Facturas() {
 		const fd = form.getFormData();
 		fd.append("org", buzon.isFacturaOtros() ? "" : buzon.getOrganica()); // organica seleccionada
 		api.setFormData(fd).json("/uae/buzon/upload").then(() => form.fireReset().nextTab(0)); // upload form + clear inputs
-	});
+	});*/
 }
 
 export default new Facturas();

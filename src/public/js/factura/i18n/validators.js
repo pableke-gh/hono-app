@@ -1,12 +1,13 @@
 
-import Validators from "../../i18n/validators.js";
+import Validators from "../../core/i18n/validators.js";
 import factura from "../model/Factura.js";
 import lineas from "../modules/lineas.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "../modules/factura.js";
 
 class FacturaValidators extends Validators {
 	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
 	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
+	rechazar() { return super.rechazar(form.getData()); } // specific implementation
 
 	factura(data) { 
 		this.isKey("acTercero", data.idTer, "Debe seleccionar un tercero válido"); // autocomplete required key
@@ -37,7 +38,7 @@ class FacturaValidators extends Validators {
 	}
 
 	linea() {
-		const data = form.getData(); // start validation
+		const data = form.getData(".ui-linea"); // start validation
 		this.gt0("imp", data.imp); // float required
 		this.size("desc", data.desc); // string required
 		return this.close(data, "El concepto indicado no es válido!"); // Main form message

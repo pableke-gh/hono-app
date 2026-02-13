@@ -1,6 +1,7 @@
 
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
+import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
 import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
@@ -9,7 +10,7 @@ import valid from "../i18n/validators.js";
 import irse from "../model/Irse.js";
 import organica from "../model/Organica.js";
 import getActividad from "../data/perfiles/actividades.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "./irse.js";
 
 function IrsePerfil() {
 	const self = this; //self instance
@@ -63,7 +64,7 @@ function IrsePerfil() {
 	}
 
 	this.update = fnUpdatePerfil;
-	this.valid = () => valid.perfil();
+	//this.valid = () => valid.perfil();
 	this.getColectivo = () => eCol.innerText;
 	this.setColectivo = val => { eCol.innerText = val; return self; }
 
@@ -81,6 +82,8 @@ function IrsePerfil() {
 	}
 
 	this.init = () => {
+		irse.isIsu = self.isIsu; // current input value
+		form.set("not-isu", () => !self.isIsu());
 		form.afterReset(() => {
 			coll.reset(organicas);
 			i18n.set("imp", "");
@@ -89,8 +92,13 @@ function IrsePerfil() {
 			form.setval("#nif-interesado").querySelector(".msg-cd")?.hide();
 			fnUpdatePerfil();
 		});
-		form.set("not-isu", () => !self.isIsu());
-		irse.isIsu = self.isIsu; // current input value
+		tabs.setAction("paso0", () => {
+			if (!valid.perfil()) return;
+			if (!irse.isEditableP0())
+				return tabs.nextTab();
+			loading();
+			window.rcPaso0();
+		});
 		return self;
 	}
 
@@ -146,7 +154,7 @@ function IrsePerfil() {
 		});
 
 		organicas = coll.parse(form.getText("#org-data")) || [];
-		i18n.set("imp", organicas[0]?.imp || 0); //importe precargado
+		i18n.set("imp", organicas[0]?.imp); //importe precargado
 		i18n.set("pasos", 2 + self.isIsu() + self.isMaps()); // set num pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + self.isMaps()).get("lblPasos"), irse);
 
@@ -159,7 +167,6 @@ function IrsePerfil() {
 
 		fnUpdatePerfil(); // show first perfil for update
 		eCol.parentNode.setVisible(_acInteresado.isLoaded()); //muestro el colectivo
-		//eRol.addEventListener("change", fnUpdatePerfil);
 		eAct.addEventListener("change", fnUpdatePerfil); // actualizo el perfil al cambiar la actividad
 		form.querySelector(".msg-cd")?.render(); // vacio array de organicas/importes (p9) y actualizo mensajes del p0
 		return self;

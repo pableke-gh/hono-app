@@ -23,20 +23,17 @@ function Pernocatas() {
 		resume.impMin += data.impMin; // #{irse.form.getMinPernoctaI18n(g)}
 	}
 
-	this.row = (data, status, resume) => {
-		self.rowCalc(data, resume);
-		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="Nº">${status.count}</td>
-			<td data-cell="${i18n.get("lblPais")}">${data.desc}</td>
-			<td data-cell="${i18n.get("lblFechaInicio")}">${i18n.isoDate(data.f1)}</td>
-			<td data-cell="${i18n.get("lblFechaFin")}">${i18n.isoDate(data.f2)}</td>
-			<td data-cell="${i18n.get("lblNoches")}">${data.num}</td>
-			<td data-cell="${i18n.get("lblImpNoche")}">${i18n.isoFloat(data.imp2)} €</td>
-			<td data-cell="${i18n.get("lblImpTotal")}">${i18n.isoFloat(data.impTotal)} €</td>
-			<td data-cell="${i18n.get("lblImpJustifi")}">${i18n.isoFloat(data.imp1)} €</td>
-			<td data-cell="${i18n.get("lblImpPercibir")}">${i18n.isoFloat(data.impMin)} €</td>
-		</tr>`
-	}
+	this.row = (data, resume) => `<tr class="tb-data tb-data-tc">
+		<td data-cell="Nº">${resume.count}</td>
+		<td data-cell="${i18n.get("lblPais")}">${data.desc}</td>
+		<td data-cell="${i18n.get("lblFechaInicio")}">${i18n.isoDate(data.f1)}</td>
+		<td data-cell="${i18n.get("lblFechaFin")}">${i18n.isoDate(data.f2)}</td>
+		<td data-cell="${i18n.get("lblNoches")}">${data.num}</td>
+		<td data-cell="${i18n.get("lblImpNoche")}">${i18n.isoFloat(data.imp2)} €</td>
+		<td data-cell="${i18n.get("lblImpTotal")}">${i18n.isoFloat(data.impTotal)} €</td>
+		<td data-cell="${i18n.get("lblImpJustifi")}">${i18n.isoFloat(data.imp1)} €</td>
+		<td data-cell="${i18n.get("lblImpPercibir")}">${i18n.isoFloat(data.impMin)} €</td>
+	</tr>`
 
 	this.afterRender = resume => {
 		resume.impTotal = resume.imp2 * resume.numNoches; // importe total por noche

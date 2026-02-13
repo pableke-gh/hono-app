@@ -9,7 +9,7 @@ import iris from "../model/Iris.js";
 import gastos from "../model/gasto/Gastos.js"; 
 
 import mgo from "./gastos/organicas.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "./iris.js";
 
 function Send() {
 	//const self = this; //self instance

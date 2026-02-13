@@ -7,7 +7,7 @@ import valid from "../../i18n/validators.js";
 import iris from "../../model/Iris.js";
 import rutas from "../../model/ruta/Rutas.js";
 import gastos from "../../model/gasto/Gastos.js"; 
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 function Mun() {
 	this.init = () => {

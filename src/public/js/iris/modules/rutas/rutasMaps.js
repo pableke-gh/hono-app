@@ -8,10 +8,10 @@ import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaMaps.js";
 import rutas from "../../model/ruta/Rutas.js";
 import gastos from "../../model/gasto/Gastos.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 import place from "./place.js";
-import rmun from "./rutasMun.js";
+import rmun from "./mun.js";
 import rvp from "./rutasVehiculoPropio.js";
 import dietas from "../gastos/dietas.js";
 

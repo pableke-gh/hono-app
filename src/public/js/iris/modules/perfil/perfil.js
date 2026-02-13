@@ -7,7 +7,7 @@ import iris from "../../model/Iris.js";
 import organicas from "./organicas.js";
 import actividad from "./actividad.js";
 import dietas from "../gastos/dietas.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 function Perfil() {
 	const fnInteresado = interesado => (interesado.nif + " - " + interesado.nombre);

@@ -6,7 +6,7 @@ import gastos from "../../model/gasto/Gastos.js";
 
 import actividad from "../perfil/actividad.js";
 import organicas from "../perfil/organicas.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 function Organicas() {
 	const self = this; //self instance

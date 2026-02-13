@@ -9,7 +9,7 @@ import rutas from "../model/ruta/Rutas.js";
 import gastos from "../model/gasto/Gastos.js"; 
 
 import actividad from "./perfil/actividad.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "./iris.js";
 
 function Otri() {
 	//const self = this; //self instance

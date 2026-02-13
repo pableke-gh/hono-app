@@ -7,40 +7,24 @@ import i18n from "./i18n/langs.js";
 import valid from "./i18n/validators.js";
 
 import factura from "./model/Factura.js";
-import lineas from "./modules/lineas.js";
-import fiscal from "./modules/fiscal.js";
-import list from "../xeco/modules/list.js";
+import form from "./modules/factura.js";
 
 coll.ready(() => { // init. fact modules
-	const form = list.init(factura).getForm();
-	fiscal.init();
-
-	const acOrganica = form.setAutocomplete("#acOrganica");
-	// los usuarios de ttpp/gaca solo pueden ver las organicas de su unidad 300906XXXX
-	const fnSourceOrg = term => api.init().json("/uae/fact/organicas", { term }).then(acOrganica.render);
-	acOrganica.setItemMode(4).setSource(fnSourceOrg);
-
 	const fnShowGestor = () => factura.isFace() || factura.isPlataforma();
 	const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
-	form.set("show-factura-uae", fnShowFactUae).set("show-gestor", fnShowGestor);
-
-	factura.onView = data => {
-		const fact = data.solicitud; // datos del servidor
-		acOrganica.setValue(fact.idOrg, fact.org + " - " + fact.descOrg);
-		fiscal.view(data); // tercero + delegaciones +  sujeto/exento + face
-	}
+	form.setValidators(valid).set("show-factura-uae", fnShowFactUae).set("show-gestor", fnShowGestor);
 
 	const fnBuild = (tipo, subtipo) => ({ solicitud: { tipo, subtipo, imp: 0, iva: 0 } });
-	tabs.setAction("factura", () => list.create(fnBuild(1, 14))); // create factura
-	tabs.setAction("cartap", () => list.create(fnBuild(3, 13))); // create carta de pago
-	//tabs.setAction("ttpp", () => list.create(fnBuild(6, 25))); // TTPP a empresa
+	tabs.setAction("factura", () => form.create(fnBuild(1, 14))); // create factura
+	tabs.setAction("cartap", () => form.create(fnBuild(3, 13))); // create carta de pago
+	//tabs.setAction("ttpp", () => form.create(fnBuild(6, 25))); // TTPP a empresa
 
 	function fnValidate(msgConfirm, url) {
 		const data = valid.all(); // validate form
 		if (!data || !i18n.confirm(msgConfirm))
 			return Promise.reject(); // Error al validar o sin confirmacion
 		const temp = Object.assign(factura.getData(), data);
-		temp.lineas = lineas.getData(); // lineas de la factura
+		temp.lineas = form.getLineas().getData(); // lineas de la factura
 		// si no hay descripcion => concateno los conceptos saneados y separados por punto
 		temp.memo = temp.memo || temp.lineas.map(linea => sb.rtrim(linea.desc, "\\.").trim()).join(". ");
 		return api.setJSON(temp).json(url); // send call

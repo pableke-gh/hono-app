@@ -2,7 +2,7 @@
 import coll from "../../components/CollectionHTML.js";
 import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
-import organicas from "./organicas.js";
+import organicas from "./tables/organicas.js";
 
 function IrseDietas() {
 	const self = this; //self instance
@@ -21,10 +21,6 @@ function IrseDietas() {
 	this.getImpMax = () => resume.impMax;
 	this.getImpReducido = () => resume.reducido;
 	this.getImpPercibir = () => resume.percibir;
-	this.init = () => {
-		resume.dias = resume.impMax = resume.reducido = resume.percibir = 0;
-		return self;
-	}
 
 	this.render = tab6 => { // Build table step 7
 		const bruto = tab6.querySelector("#imp-bruto");
@@ -34,6 +30,7 @@ function IrseDietas() {
 		gasolina.innerHTML = i18n.isoFloat(IRSE.gasolina);
 
 		const manutenciones = coll.parse(divData.innerText) || [];
+		resume.dias = resume.impMax = resume.reducido = resume.percibir = 0;
 		dom.onChangeTable("#manutenciones", table => {
 			const tr = resume.row;
 			const dieta = resume.data;

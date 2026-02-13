@@ -5,30 +5,22 @@ import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
 
 import buzon from "./model/Buzon.js";
-import organica from "./model/Organica.js";
 
+import ancladas from "./modules/ancladas.js";
+import recientes from "./modules/recientes.js";
 import bu from "./modules/usuarios.js";
 import bf from "./modules/facturas.js";
-import list from "../xeco/modules/list.js";
+import form from "./modules/buzon.js";
 
 coll.ready(() => { // on load view
-	const form = list.init(buzon).getForm();
-	const tAncladas = form.setTable("#ancladas").setRender(organica.row);
-	const tRecientes = form.setTable("#recientes", organica.getTableRecientes());
-
-	function fnPaginate(size) {
-		tRecientes.getRows().forEach((row, i) => row.setVisible(i < size));
-		tRecientes.getLastRow().show();
-	}
 	function fnLoadTables(data) {
-		tAncladas.render(data.filter(buzon.isAnclado));
-		form.setVisible("#card-ancladas", tAncladas.size() > 0);
-		tRecientes.render(data.filter(buzon.isReciente));
-		fnPaginate(form.getval("#pagina")); // current page size
+		ancladas.render(data.filter(buzon.isAnclado));
+		form.setVisible("#card-ancladas", ancladas.size() > 0);
+		recientes.render(data.filter(buzon.isReciente)).paginate(form.getval("#pagina")); // current page size
 	}
 	const fnFetchReport = (ut, org) => api.init().text(`/uae/buzon/report?ut=${ut}&org=${org}`).then(api.open);
 	const fnLoadBuzon = () => {
-		fnLoadTables(tAncladas.getData().concat(tRecientes.getData())); // reload all tables
+		fnLoadTables(ancladas.getData().concat(recientes.getData())); // reload all tables
 		form.showOk("saveOk"); // datos actualizados correctamente
 	}
 	function fnAddActions(table) {
@@ -49,15 +41,15 @@ coll.ready(() => { // on load view
 			api.init().json("/uae/buzon/ut?id=" + data.org).then(fnOrganica);
 		});
 		table.set("#buzon-otros", () => {
-			const first = tAncladas.getItem(0) || tRecientes.getItem(0); // default organica
+			const first = ancladas.getItem(0) || recientes.getItem(0); // default organica
 			const fnOtros = uts => bf.init(uts, first.ut, table.getText("#otras")).setFactuaOtros();
 			api.init().json("/uae/buzon/ut/all").then(fnOtros);
 		});
 	}
 
-	fnAddActions(tAncladas);
-	fnAddActions(tRecientes);
-	form.onChangeInput("#pagina", ev => fnPaginate(+ev.target.value));
+	fnAddActions(ancladas);
+	fnAddActions(recientes);
+	form.onChangeInput("#pagina", ev => recientes.paginate(+ev.target.value));
 	fnLoadTables(JSON.read(form.getHtml("#organicas-json")));
 
 	/*tabs.setViewEvent(0, () => { // TODO: reload si son permisos propios
@@ -69,7 +61,7 @@ coll.ready(() => { // on load view
 	});
 
 	// update colspan on small screens
-	const fnResize = () => dom.setAttr(tRecientes.getLastRow().cells[0], "colspan", dom.isMediaXs() ? 3 : 4);
+	const fnResize = () => dom.setAttr(recientes.getLastRow().cells[0], "colspan", dom.isMediaXs() ? 3 : 4);
 	window.addEventListener("resize", fnResize);
 	fnResize(); // init colspan on load
 });

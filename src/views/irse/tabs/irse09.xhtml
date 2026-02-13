@@ -85,8 +85,11 @@
 		</div>
 	</p:outputPanel>
 
-	<p:outputPanel styleClass="update-irse">
+	<!-- Tabla de imputación paso 9 -->
 	<ui:include src="./irse09_org.xhtml"></ui:include>
+
+	<!-- Botones -->
+	<p:outputPanel styleClass="update-irse">
 	<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="190"><i class="fas fa-arrow-to-left"></i></a>
 	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
 		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>

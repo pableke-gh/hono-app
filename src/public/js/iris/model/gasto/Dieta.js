@@ -68,8 +68,7 @@ function Dieta() {
 			output += '<option value="' + i + ((dieta == i) ? '" selected>' : '">') + i18n.isoFloat1(i) + '</option>'
 		return output + "</select>";
 	}
-	this.row = (dieta, status, resume) => {
-		self.rowCalc(dieta, resume, status.index);
+	this.row = dieta => {
 		const dietas = iris.isEditable() ? fnDietas(dieta.imp1, dieta.maxDietas) : i18n.isoInt(dieta.imp1);
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="${i18n.get("lblPeriodo")}">${dieta.desc}</td>

@@ -6,7 +6,7 @@ import valid from "../i18n/validators.js";
 
 import place from "./place.js";
 import rutas from "./rutas.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "./irse.js";
 
 /**
  * TRAVEL_MODE: Used for driving directions, this mode provides driving directions.

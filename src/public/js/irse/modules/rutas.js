@@ -2,16 +2,17 @@
 import coll from "../../components/CollectionHTML.js";
 import nb from "../../components/types/NumberBox.js";
 import sb from "../../components/types/StringBox.js";
+import tabs from "../../components/Tabs.js";
 import dom from "../lib/dom-box.js";
 import i18n from "../i18n/langs.js";
 import valid from "../i18n/validators.js";
 
 import irse from "../model/Irse.js"
-import ruta from "../model/ruta/Ruta.js"
+import ruta from "../model/Ruta.js"
 
 import perfil from "./perfil.js";
-import organicas from "./organicas.js";
-import form from "../../xeco/modules/solicitud.js";
+import organicas from "./tables/organicas.js";
+import form from "./irse.js";
 
 function IrseRutas() {
 	const self = this; //self instance
@@ -33,7 +34,6 @@ function IrseRutas() {
 	};
 
 	var rutas, divData, bruto, elImpKm, justifiKm;
-
 	const fmtImpKm = ruta => i18n.isoFloat(ruta.km1 * IRSE.gasolina);
 	const fnSetMain = data => { rutas.forEach(ruta.setOrdinaria); ruta.setPrincipal(data); }
 
@@ -43,6 +43,7 @@ function IrseRutas() {
 	this.totKmCalcFmt = () => resume.totKmCalc;
 
 	this.getAll = () => rutas;
+	this.setRuta = (ruta, index) => { rutas[index || 0] = ruta; return self; }
 	this.size = () => coll.size(rutas);
 	this.isEmpty = () => coll.isEmpty(rutas);
 	this.first = () => rutas[0];
@@ -113,35 +114,30 @@ function IrseRutas() {
 		form.setval("#etapas", divData.innerText); // load input value
 		return self;
 	}
-	function fnSaveMun() {
-		if (perfil.isMun()) {
-			fnResume(); fnSave();
-		}
-		return loading();
-	}
-	function fnSaveMaps() {
-		fnResume(); fnSave(); // recalcula todo
-		return loading();
-	}
 
-	this.paso1 = () => (valid.mun(rutas) && fnSaveMun());
-	//this.paso1Col = () => isValidObjeto() && dom.past("#fAct", "errDateLe").gt0("#impAc", "errGt0").isOk();
-	this.paso2 = () => (valid.itinerario(rutas) && fnSaveMaps());
 	this.paso6 = () => (valid.paso6(resume) && loading());
-
-	this.mun = () => {
-		if (!perfil.isMun()) return;
-		const ruta = rutas[0] || { desp: 1 }; // mun = 1 ruta
-		ruta.f1 = sb.isoDate(ruta.dt1); // input format date
-		form.setValues(ruta, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1);
-	}
+	this.save = () => { fnResume(); fnSave(); form.setChanged(false); loading(); };
 	this.init = () => {
+		irse.getNumRutasVp = self.getNumRutasVp;
+		irse.getNumRutasVpMun = () => (self.getNumRutasVp() && perfil.isMun());
+		irse.getNumRutasVpMaps = () => (self.getNumRutasVp() && !perfil.isMun());
 		form.set("not-mun", () => !perfil.isMun()).set("is-rutas-gt-1", () => (self.size() > 1))
 			.set("is-editable-rutas-gt-1", () => ((self.size() > 1) && irse.isEditable()))
-			.set("getNumRutasVp", () => (!perfil.isEmpty() && self.getNumRutasVp()))
 			.setChangeInput("#desp", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"));
 		const fnBlur1 = (ev, f1, f2) => { f2.value = ev.target.value; f1.removeAttribute("max"); f2.removeAttribute("max"); }
 		form.setDateRange("#f1", "#f2", fnBlur1); // sincronizo fechas
+
+		tabs.setAction("paso2", () => {
+			if (!valid.itinerario(rutas)) return; // if error => stop
+			if (!irse.isEditable()/* || !form.isChanged()*/)
+				return tabs.nextTab(); // go next tab directly
+			self.save(); window.rcPaso2(); // call server to save and calculate maps
+		});
+		tabs.setAction("save2", () => {
+			if (!valid.itinerario(rutas)) return; // if error => stop
+			if (!form.isChanged()) return form.setOk(); // nada que guardar
+			self.save(); window.rcSave2(); // call server to save and calculate maps
+		});
 		return self;
 	}
 	this.view = () => {
@@ -163,7 +159,7 @@ function IrseRutas() {
 			const last = fnResume().last(rutas) || CT;
 			const matricula = form.getval("#matricula");
 			const data = { origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula };
-			form.setData(data, ".ui-ruta").restart("#destino").hide(".grupo-matricula");
+			form.setData(data, ".ui-ruta").delAttr("#f1", "max").restart("#destino").hide(".grupo-matricula");
 			if (!last.dt1) // primera ruta?
 				form.setFocus("#f1");
 		}).table("#rutas", rutas, resume, STYLES);

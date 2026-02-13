@@ -39,11 +39,11 @@ class Gasto {
 	isOrganicaAc = gasto => (this.isOrganica(gasto) && (gasto.subtipo == 4)); // paso 9 = multiorganica asistencias = 4
 
 	// table renders
-	beforeRender = resume => {
+	beforeRender(resume) {
 		resume.noches = resume.numTransportes = resume.numPernoctas = 0;
 		resume.adjuntos = resume.docComisionado = resume.otraDoc = 0;
 	}
-	rowCalc = (data, resume) => {
+	rowCalc(data, resume) {
 		resume.noches += this.isPernocta(data) ? data.num : 0;
 		resume.numTransportes += this.isTransporte(data);
 		resume.numPernoctas += this.isPernocta(data);
@@ -73,12 +73,11 @@ class Gasto {
 		return this.isPernocta(data) ? i18n.render(i18n.get("lblRangoNoches"), data) : data.desc;
 	}
 
-	row = (data, status, resume) => {
-		this.rowCalc(data, resume);
+	row(data, resume) {
 		const link = `<a href="#adjunto" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>`;
 		const remove = irse.isEditable() ? `<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>` : "";
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="Nº">${status.count}</td>
+			<td data-cell="Nº">${resume.count}</td>
 			<td data-cell="${i18n.get("lblTipoGasto")}">${this.getDescSubtipo(data)}</td>
 			<td data-cell="${i18n.get("lblDescObserv")}">${this.getDescGasto(data)}</td>
 			<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>

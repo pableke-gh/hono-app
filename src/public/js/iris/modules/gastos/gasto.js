@@ -13,7 +13,7 @@ import gasto from "../../model/gasto/Gasto.js";
 import gastos from "./gastos.js";
 import transportes from "./transportes.js";
 import pernoctas from "./pernoctas.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 export default function(tab) {
 	const _eTipoGasto = form.getInput("#tipoGasto");

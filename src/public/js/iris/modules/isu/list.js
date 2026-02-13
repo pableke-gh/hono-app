@@ -23,7 +23,7 @@ import rvp from "../rutas/rutasVehiculoPropio.js";
 import pernoctas from "../gastos/pernoctas.js";
 import dietas from "../gastos/dietas.js";
 import resumen from "../resumen.js";
-import formIrse from "../../../xeco/modules/solicitud.js";
+import formIrse from "../iris.js";
 
 function ListIsu() {
 	const form = new Form("#xeco-filtro-isu");

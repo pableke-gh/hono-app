@@ -17,8 +17,7 @@ function RutaVehiculoPropio() {
 		resume.impKm += data.impKm;
 	}
 
-	this.row = (ruta, status, resume) => {
-		self.rowCalc(ruta, resume);
+	this.row = ruta => {
 		const km1 = i18n.isoFloat(ruta.km1);
 		const cell = iris.isEditable() ? `<input type="text" name="km1" value="${km1}" tabindex="100" class="ui-float tc"/>` : km1;
 		return `<tr class="tb-data tb-data-tc">
@@ -41,7 +40,10 @@ function RutaVehiculoPropio() {
 		iris.getImpKm = () => resume.impKm;
 	}
 
-	this.getTable = () => ({ msgEmptyTable: "msgRutasEmpty", beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row });
+	this.getTable = () => ({
+		msgEmptyTable: "msgRutasEmpty",
+		beforeRender: self.beforeRender, rowCalc: self.rowCalc, onRender: self.row
+	});
 }
 
 export default new RutaVehiculoPropio();

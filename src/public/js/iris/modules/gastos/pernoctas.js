@@ -11,7 +11,7 @@ import gastos from "../../model/gasto/Gastos.js";
 
 import perfil from "../perfil/perfil.js";
 import pernoctas from "../../data/pernoctas/pernoctas.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 class Pernoctas extends Table {
 	constructor() {

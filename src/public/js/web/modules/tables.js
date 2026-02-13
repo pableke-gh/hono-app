@@ -5,9 +5,9 @@ import menus from "../data/menus.js";
 
 function fnTable() {
     const table = new Table($1("table"));
-    table.set("onRender", (data, status, resume) => {
+    table.set("onRender", (data, resume) => {
         return `<tr class="tb-data">
-            <td class="text-center hide-xs" data-cell="Nº">${status.count}</td>
+            <td class="text-center hide-xs" data-cell="Nº">${resume.count}</td>
             <td data-cell="Nombre"><a href="#" class="link">${data.nombre}</a></td>
             <td data-cell="Título">${data.titulo}</td>
             <td data-cell="Icono" class="text-center">${data.icono || ""}</td>

@@ -6,7 +6,7 @@ import valid from "../../i18n/validators.js";
 import iris from "../../model/Iris.js";
 import ruta from "../../model/ruta/RutaVehiculoPropio.js";
 import rutas from "../../model/ruta/Rutas.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 class RutasVehiculoPropio extends Table {
 	constructor() {

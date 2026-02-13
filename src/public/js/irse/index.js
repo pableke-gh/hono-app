@@ -8,30 +8,23 @@ import dom from "./lib/dom-box.js";
 
 import irse from "./model/Irse.js";
 import perfil from "./modules/perfil.js";
+import paso1 from "./modules/paso1.js";
 import rutas from "./modules/rutas.js";
-import dietas from "./modules/dietas.js";
 import maps from "./modules/maps.js";
+import paso5 from "./modules/paso5.js";
+import dietas from "./modules/dietas.js";
+import paso9 from "./modules/paso9.js";
+import organicas from "./modules/tables/organicas.js";
 import otri from "./modules/otri.js";
-import organicas from "./modules/organicas.js";
-import iTabs from "./modules/tabs.js";
-import list from "../xeco/modules/list.js";
+import form from "./modules/irse.js";
 
 window.IRSE = {}; // global IRSE info
 coll.ready(() => {
-	/*********** Redefine handlers and add extra actions ***********/
-	const solicitudes = list.getList(); // solicitudes
-	const form = list.init(irse).getForm(); // init. list
-	const fnCached = id => (form.isCached(id) && !perfil.isEmpty()); // check if data is cached
-	const fnIdParam = data => { loading(); return [{ name: "id", value: data.id }]; } // set param structure
-	solicitudes.set("#view", data => (fnCached(data.id) ? tabs.showTab(irse.setData(data).getInitTab()) : window.rcView(fnIdParam(data))));
-	solicitudes.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id))); // set table action
-	solicitudes.set("#clone", data => (i18n.confirm("msgReactivar") && window.rcClone(fnIdParam(data)))); // set table action
-	solicitudes.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // table action
-	//tabs.setAction("rptFinalizar", () => solicitudes.invoke("#rptFinalizar")); // set tab action
-	window.ip = perfil.init(); window.ir = rutas.init(); // global access
+	/*********** Global modules ***********/
+	window.ip = perfil.init(); window.ir = rutas.init();
 
 	/*********** campo objeto y mun ***********/
-	tabs.setInitEvent(1, rutas.mun); // init. mun
+	tabs.setInitEvent(1, paso1.mun); // init. mun
 
 	/*********** Google Maps API ***********/
 	tabs.setActiveEvent(2, perfil.isMaps).setInitEvent(2, maps);
@@ -46,19 +39,20 @@ coll.ready(() => {
 	tabs.setAction("zip-doc", () => api.init().blob("/uae/iris/zip/doc", "iris-doc.zip"));
 
 	/*********** Fin + IBAN ***********/
-	tabs.setInitEvent(9, iTabs.initTab9); // init. all validations and inputs events only once
-	tabs.setViewEvent(9, organicas.build); // always auto build table organicas/gastos (transporte, pernoctas, dietas)
+	tabs.setInitEvent(9, paso9.initTab); // init. all validations and inputs events only once
+	tabs.setViewEvent(9, organicas.render); // always auto build table organicas/gastos (transporte, pernoctas, dietas)
 
 	//PF needs confirmation in onclick attribute
 	window.fnUnlink = () => i18n.confirm("unlink") && loading();
-	window.saveTab = () => form.showOk(i18n.get("saveOk")).working();
+	window.saveTab = () => form.showOk(i18n.msg("saveOk")).working();
 	window.viewIrse = (xhr, status, args, tab) => {
 		irse.setData(Object.assign(window.IRSE, coll.parse(args.data)));
 		dom.setTables(form.init().getForm()).setInputs(form.getElements());
-		perfil.view(); rutas.view(); iTabs.viewTab5(); organicas.init(); // init modules
+		perfil.view(); rutas.view(); paso5.view(); // init modules
 
-		form.setval("#idses", window.IRSE.id).setCache(window.IRSE.id)
-			.setFirmas(coll.parse(args.firmas)).refresh(); // configure view
+		form.setValidators(valid)
+			.setval("#idses", window.IRSE.id).setCache(window.IRSE.id)
+			.setFirmas(coll.parse(args.firmas)).refresh(irse); // configure view
 		tabs.reset([ 0, 1, 3, 6, 9 ]).load(form.getForm()); // reload tabs from server
 		tabs.nextTab(tab ?? window.IRSE.tab); // go to next tab
 		window.showAlerts(xhr, status, args); // alerts

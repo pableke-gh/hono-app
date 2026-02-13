@@ -7,7 +7,7 @@ import iris from "../../model/Iris.js";
 import organica from "../../model/Organica.js";
 
 import actividad from "./actividad.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 class Organicas extends Table {
 	constructor() {

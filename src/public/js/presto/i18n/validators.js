@@ -1,13 +1,14 @@
 
 import sb from "../../components/types/StringBox.js";
-import Validators from "../../i18n/validators.js";
+import Validators from "../../core/i18n/validators.js";
 import presto from "../model/Presto.js";
 import partidas from "../modules/partidas.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "../modules/presto.js";
 
 class PrestoValidators extends Validators {
 	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
 	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
+	rechazar() { return super.rechazar(form.getData()); } // specific implementation
 
 	presto = data => {
 		if (presto.isPartidaDec()) { // valido la partida a disminuir

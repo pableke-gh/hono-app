@@ -1,7 +1,5 @@
 
-import i18n from "../i18n/langs.js";
-import firma from "../../xeco/model/Firma.js";
-import Solicitud from "../../xeco/model/Solicitud.js";
+import Solicitud from "../../core/model/Solicitud.js";
 
 const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso", "factura de TTPP empresas" ];
 
@@ -45,23 +43,6 @@ class Factura extends Solicitud {
 	isFace = () => (this.get("face") == 1); //factura electronica FACe
 	isPlataforma = () => (this.get("face") == 2); //factura electronica Otras
 	setFace = val => this.set("face", val); // update plataforma / FACe
-
-	row = data => {
-		let acciones = Solicitud.prototype.row.call(this, data);
-		return `<tr class="tb-data">
-			<td class="text-center"><a href="#view">${data.codigo}</a></td>
-			<td class="hide-sm text-upper1">${this.getTitulo()}</td>
-			<td class="${this.getStyleByEstado()} hide-xs table-refresh" data-refresh="update-estado">${this.getDescEstado()}</td>
-			<td class="text-center hide-xs">${firma.myFlag(data)}</td>
-			<td class="hide-sm">${data.sig || ""}</td>
-			<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>
-			<td class="currency">${i18n.isoFloat(data.imp)} €</td>
-			<td>${data.nif}</td><td class="hide-xs">${data.tercero}</td>
-			<td>${data.org}</td><td class="hide-sm">${data.descOrg}</td>
-			<td class="hide-sm">${data.name}</td>
-			<td class="currency no-print">${acciones}</td>
-		</tr>`;
-	}
 }
 
 export default new Factura();

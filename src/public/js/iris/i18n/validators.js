@@ -2,7 +2,7 @@
 import coll from "../../components/CollectionHTML.js";
 import dt from "../../components/types/DateBox.js";
 import sb from "../../components/types/StringBox.js";
-import Validators from "../../i18n/validators.js";
+import Validators from "../../core/i18n/validators.js";
 
 import ruta from "../model/ruta/Ruta.js";
 import rutas from "../model/ruta/Rutas.js";
@@ -11,7 +11,7 @@ import gastos from "../model/gasto/Gastos.js";
 import perfil from "../modules/perfil/perfil.js";
 import organicas from "../modules/perfil/organicas.js";
 import actividad from "../modules/perfil/actividad.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "../modules/iris.js";
 
 const MIN_DATE = dt.addYears(new Date(), -1); //tb.now().add({ years: -1 }); //1 año antes
 const MAX_DATE = dt.addDays(new Date(), 180); //tb.now().add({ days: 180 }); //6 meses despues 
@@ -19,6 +19,7 @@ const MAX_DATE = dt.addDays(new Date(), 180); //tb.now().add({ days: 180 }); //6
 class IrisValidators extends Validators {
 	success(data) { form.closeAlerts(); this.reset(); return data; } // Succesful validations
 	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
+	rechazar() { return super.rechazar(form.getData()); } // specific implementation
 
 	perfil() {
 		const data = form.getData(); // start validation

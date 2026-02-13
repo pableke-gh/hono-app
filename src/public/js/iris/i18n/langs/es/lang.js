@@ -8,7 +8,8 @@ import perfiles from "../../../data/perfiles/perfiles.js";
 import titulos from "./perfiles.js";
 
 class IrisLang extends Lang {
-	get = key => (es[key] || Lang.prototype.get.call(this, key));
+	get(key) { return (es[key] || super.get(key)); }
+	msg(key) { return (es[key] || super.msg(key)); }
 
 	getPerfil = (rol, colectivo, actividad, tramite, financiacion) => {
 		return titulos[perfiles(rol, colectivo, actividad, tramite, financiacion)];

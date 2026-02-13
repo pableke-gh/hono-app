@@ -15,6 +15,7 @@ export default class Base {
 	}
 
 	getLanguage = () => document.documentElement.getAttribute("lang") || navigator.language || "es";
+	getLang = () => Base.#lang.getLang(); // current language BD instance
 	setLang(lang) { // Load especific language by key
 		lang = lang || this.getLanguage(); // get key lang (es, en, etc.)
 		Base.#lang = lang.startsWith("en") ? Base.#langs.en : Base.#langs.es; // default es
@@ -26,9 +27,9 @@ export default class Base {
 		return this.setLang(lang); // set current language
 	}
 
-	get(key) { return Base.#lang.get(key); }
-	getValue(key) { return Base.#lang.get(key); }
-	set(name, msg) { return Base.#lang.set(name, msg); }
+	get(key) { return Base.#lang.get(key); } // direct access to lang data
+	msg(key) { return Base.#lang.msg(key); } // message value from key lang
+	set(name, msg) { return Base.#lang.set(name, msg); } // add new message
 	getItem = (key, index) => this.get(key)[index];
 	confirm = msg => (msg ? confirm(this.get(msg)) : true); // if no param => true confirm
 	boolval = str => (globalThis.isset(str) ? this.getItem("msgBool", +["1", "true", "yes", "on"].includes("" + str)) : null);
@@ -52,7 +53,7 @@ export default class Base {
 	isoFloat3 = num => Base.#lang.isoFloat3(num);
 
 	// String to String formated (reformated)
-	fmtFloat = str => Base.#lang.fmtFloat(str);
+	fmtFloat = (str, n) => Base.#lang.fmtFloat(str, n);
 	fmtFloat1 = str => Base.#lang.fmtFloat1(str);
 	fmtFloat2 = str => Base.#lang.fmtFloat2(str);
 	fmtFloat3 = str => Base.#lang.fmtFloat3(str);
@@ -70,7 +71,7 @@ export default class Base {
 		opts.index = opts.index || 0;
 		opts.count = opts.index + 1;
 		opts.matches = opts.keys = 0;
-		data = data || Base.getLang(); // default data = lang
+		data = data || this.getLang(); // default data = lang
 		const fnValue = data.getValue || (k => (data[k]));
 		return str.replace(RE_VAR, (m, k, t) => { // replacer
 			opts.keys++; // always increment keys matches
@@ -89,7 +90,7 @@ export default class Base {
 
 // Extends HTMLElement prototype
 HTMLElement.prototype.setText = function(text) { this.innerHTML = text; return this; }
-HTMLElement.prototype.setMsg = function(msg) { return this.setText(Base.getLang().get(msg)); }
+HTMLElement.prototype.setMsg = function(msg) { return this.setText(Base.getLang().msg(msg)); }
 HTMLElement.prototype.render = function(data, opts) {
 	opts = opts || OPTS; // default options
 	this.dataset.template = this.dataset.template || this.innerHTML; // save current template

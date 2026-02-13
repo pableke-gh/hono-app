@@ -11,12 +11,10 @@ import resumen from "./modules/resumen.js";
 import sendTab from "./modules/send.js";
 import otri from "./modules/otri.js";
 import listIsu from "./modules/isu/list.js";
-import list from "../xeco/modules/list.js";
+import form from "./modules/iris.js";
 
 coll.ready(() => { // init. iris modules actions
-	const form = list.init(iris).getForm();
 	form.onChangeInput("#urgente", ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2"));
-
 	perfil.init(); rutas.init(); gastos.init();
 	otri.init(); resumen.init(); sendTab.init();
 

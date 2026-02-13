@@ -7,8 +7,8 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h:inputHidden id="imp-org" value="#{iris.irse.input.impOrg}" />
-	<div class="#{iris.irse.form.cssGastosOrganica}">
+	<h:inputHidden id="imp-org" value="#{iris.irse.input.impOrg}" /> <!-- upload input only -->
+	<div class="card-xeco form-refresh" data-refresh="isAdmin"> <!-- only for admin users -->
 		<h2><h:outputText value="#{msg['lbl.multiorganica']}" escape="false" /></h2>
 		<!--<c:if test="#{iris.irse.form.editable}">
 			<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.multiorganicas']}" escape="false" /></div>
@@ -50,7 +50,7 @@
 			</div>
 		</c:if>-->
 
-		<table id="multiorganicas" class="tb-xeco table-xs">
+		<table id="imputacion" class="tb-xeco table-xs">
 			<thead>
 				<tr>
 					<th>Nº</th>
@@ -62,24 +62,11 @@
 					<th></th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr id="@id;" class="tb-data tb-data-tc">
-					<td data-cell="Nº">@count;</td>
-					<td data-cell="#{msg['lbl.tipo.gasto']}">@subtipo;</td>
-					<td data-cell="#{msg['lbl.organica']}">@cod;</td>
-					<td data-cell="#{msg['lbl.economica']}">@nombre;</td>
-					<td data-cell="#{msg['lbl.importe']}">@imp1; €</td>
-					<td data-cell="#{msg['lbl.descripcion']}">@desc;</td>
-					<td data-cell="Acciones"><c:if test="#{iris.irse.form.editable}"><a href="#remove"><i class="fas fa-times action text-red resize"></i></a></c:if></td>
-				</tr>
-			</tbody>
-			<tbody class="hide">
-				<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['lbl.organicas.not.found']}" escape="false" /></td></tr>
-			</tbody>
+			<tbody></tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />: @size;</td>
-					<td class="tb-data-tc hide-xs">@imp1; €</td><td colspan="2"></td>
+					<td colspan="4" class="table-refresh" data-refresh="text-render"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />: @size;</td>
+					<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render">$imp1; €</td><td colspan="2"></td>
 				</tr>
 			</tfoot>
 		</table>

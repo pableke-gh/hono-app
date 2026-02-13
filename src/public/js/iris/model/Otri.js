@@ -5,20 +5,18 @@ function Otri() {
 	//const self = this; //self instance
 	const currency = "#,##0.00";
 
-	this.row = (data, status, resume) => {
-		return `<tr class="tb-data">
-			<td data-cell="Nº" class="text-center hide-sm">${status.count}</td>
-			<td data-cell="ID"><a href="#">${data.cod}</a></td>
-			<td data-cell="Nº JG">${data.jg}</td>
-			<td data-cell="Nº Factura">${data.fact}</td> 
-			<td data-cell="NIF">${data.nif}</td>
-			<td data-cell="Tercero">${data.ter}</td>
-			<td data-cell="${i18n.get("lblImporte")}" class="currency">${i18n.isoFloat(data.impJg)} €</td>
-			<td data-cell="F. Emisión" class="text-center">${i18n.isoDate(data.fJg)}</td>
-			<td data-cell="${i18n.get("lblDesc")}" class="hide-sm">${data.descJg}</td>
-			<td class="text-center hide-sm"><a href="#"><i class="fas fa-search action resize text-blue"></i></a></td>
-		</tr>`;
-	}
+	this.row = (data, resume) => `<tr class="tb-data">
+		<td data-cell="Nº" class="text-center hide-sm">${resume.count}</td>
+		<td data-cell="ID"><a href="#">${data.cod}</a></td>
+		<td data-cell="Nº JG">${data.jg}</td>
+		<td data-cell="Nº Factura">${data.fact}</td> 
+		<td data-cell="NIF">${data.nif}</td>
+		<td data-cell="Tercero">${data.ter}</td>
+		<td data-cell="${i18n.get("lblImporte")}" class="currency">${i18n.isoFloat(data.impJg)} €</td>
+		<td data-cell="F. Emisión" class="text-center">${i18n.isoDate(data.fJg)}</td>
+		<td data-cell="${i18n.get("lblDesc")}" class="hide-sm">${data.descJg}</td>
+		<td class="text-center hide-sm"><a href="#"><i class="fas fa-search action resize text-blue"></i></a></td>
+	</tr>`;
 
 	this.getAutocomplete = () => ({ minLength: 4, render: item => item.o + " - " + item.dOrg, select: item => item.o });
 

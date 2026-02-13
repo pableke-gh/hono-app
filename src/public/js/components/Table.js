@@ -29,13 +29,6 @@ export default class Table {
 		this.#opts.rowEmptyTable = this.#opts.rowEmptyTable || `<tr><td class="no-data" colspan="99">${i18n.get(this.#opts.msgEmptyTable)}</td></tr>`;
 		this.#opts.refreshSelector = this.#opts.refreshSelector || ".table-refresh"; // selector for refresh elements
 
-		this.#opts.beforeRender = this.#opts.beforeRender || globalThis.void;
-		this.#opts.rowCalc = this.#opts.rowCalc || globalThis.void;
-		this.#opts.onRender = this.#opts.onRender || globalThis.void;
-		this.#opts.onLastRow = this.#opts.onLastRow || globalThis.none;
-		this.#opts.afterRender = this.#opts.afterRender || globalThis.void;
-		this.#opts.onRemove = this.#opts.onRemove || (() => Promise.resolve()); // force promise
-
 		this.#setSort(table); // Set default actions
 		this.#opts["#"] = globalThis.void;
 		this.#opts["#remove"] = this.remove;
@@ -70,18 +63,19 @@ export default class Table {
 	}
 
 	setRowEmpty = html => this.set("rowEmptyTable", html);
-	setMsgEmpty = msg => this.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.get(msg)}</td></tr>`);
-	setBeforeRender = fn => { this.#opts.beforeRender = fn; return this; }
+	setMsgEmpty = msg => this.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.msg(msg)}</td></tr>`);
+	beforeRender() {}; // event before render table (optional)
 	setHeader = html => { this.#tHead.innerHTML = html; return this.#setSort(); }
-	setRowCalc = fn => { this.#opts.rowCalc = fn; return this; } 
-	setRender = fn => { this.#opts.onRender = fn; return this; }
-	setLastRow = fn => { this.#opts.onLastRow = fn; return this; }
+	rowCalc() {} // row calculation before render each row (optional)
+	row() { throw new Error("Method 'row' must be implemented."); }; // required row render function
+	setRender(fn) { this.row = fn; return this; } // update render row function
+	lastRow = () => ""; // specific last row after render all data (optional)
 	setFooter = html => { this.#tFoot.innerHTML = html; return this; }
-	setAfterRender = fn => { this.#opts.afterRender = fn; return this; }
-	afterRender = () => { this.#opts.afterRender(this.#RESUME); return this; }
+	afterRender() {}; // event fired after render table (optional)
 	setSortBy = (column, fn) => this.set("sort-" + column, fn);
 	setChange = (field, fn) => this.set(field + "Change", fn);
-	setRemove = fn => { this.#opts.onRemove = fn; return this; } // IMPORTANT! must return a promise
+	onRemove = () => Promise.resolve(); // IMPORTANT! must return a promise
+	setRemove = fn => { this.onRemove = fn; return this; } // IMPORTANT! must return a promise
 
 	getData = () => this.#rows; // current data
 	setData = data => { this.#rows = data; return this; }; // update data without render
@@ -143,15 +137,23 @@ export default class Table {
 		this.#index = -1; // clear previous selects
 		this.#rows = data || []; // data to render on table
 		this.#RESUME.size = this.#rows.length; // init. resume
+		this.#RESUME.columns = coll.size(this.#tHead.rows[0]?.cells); // Number of columns <th>
+
+		const renderRows = () => this.#rows.map((row, i) => {
+			this.#RESUME.index = i;
+			this.#RESUME.count = i + 1;
+			this.rowCalc(row, this.#RESUME);
+			return this.row(row, this.#RESUME);
+		}).join("");
 
 		this.#tBody.classList.remove(this.#opts.activeClass); // Remove animation
-		this.#opts.beforeRender(this.#RESUME); // Fired event before render
+		this.beforeRender(this.#RESUME); // Fired event before render
 		this.refreshHeader(); // refresh table header
-		this.#RESUME.columns = coll.size(this.#tHead.rows[0]?.cells); // Number of columns <th>
 		this.#tBody.innerHTML = this.#RESUME.size // has data
-						? (coll.render(this.#rows, this.#opts.onRender, this.#RESUME) + this.#opts.onLastRow(this.#RESUME))
+						? (renderRows() + this.lastRow(this.#RESUME)) // set tBody
 						: this.#opts.rowEmptyTable; // specific empty row
-		this.afterRender().refreshFooter(); // After body event and refresh footer
+		this.afterRender(this.#RESUME); // After body event
+		this.refreshFooter(); // Refresh footer
 		this.#tBody.classList.add(this.#opts.activeClass); // Add styles (animation)
 		tabs.setHeight(); // resize iframe height
 		return this;
@@ -161,6 +163,12 @@ export default class Table {
 		this.#tBody.rows.forEach(this.#setRowEvents); // row listeners
 		return this.setChanged(true); // rendered force indicator
 	}
+	recalc() {
+		this.beforeRender(this.#RESUME); // Fired event before render
+		this.#rows.forEach(row => this.rowCalc(row, this.#RESUME)); // recalc. all rows
+		this.afterRender(this.#RESUME); // Fire after render event
+		return this.setChanged(true); // force refresh indicator
+	}
 
 	reset = this.view; // reset table
 	reload = () => this.render(this.#rows);
@@ -168,24 +176,19 @@ export default class Table {
 	add = row => { delete row.id; return this.push(row); } // Force insert => remove PK
 	insert = (row, id) => { row.id = id; return this.push(row); } // New row with PK
 	update = data => { Object.assign(this.getCurrent(), data); return this.reload(); }
-	replace(data, i) { this.#rows[i ?? this.#index] = data; return this; } // replace current row position
 	save = (row, id) => (id ? this.insert(row, id) : this.update(row)); // Insert or update
 
-	#fnRefresh = (el, data) => { el.$$(this.#opts.refreshSelector).refresh(data, this.#opts); return this; } // render table elements
+	// IMPORTANTE! el puede no estar seleccionado (ej: al crear)
+	#fnRefresh = (el, data) => { el?.$$(this.#opts.refreshSelector).refresh(data, this.#opts); return this; }
 	refreshHeader = data => this.#fnRefresh(this.#tHead, data || this.#RESUME); // refresh table header
 	refreshRow(data) { return this.#fnRefresh(this.getCurrentRow(), data || this.getCurrent()); } // refresh a row
 	refreshBody() { this.#tBody.rows.forEach((tr, i) => this.#fnRefresh(tr, this.#rows[i])); return this.setChanged(true); } // refresh each row
 	refreshFooter = () => this.#fnRefresh(this.#tFoot, this.#RESUME); // refresh footer only
 	refresh = () => this.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer
-	recalc = () => {
-		this.#opts.beforeRender(this.#RESUME); // Fired init. event before render
-		this.#rows.forEach((row, i) => this.#opts.rowCalc(row, this.#RESUME, i)); // recalc. all rows
-		return this.afterRender().setChanged(true); // force refresh indicator
-	}
 
-	flush = index => {
+	flush(index) {
 		index = index ?? this.#index; // default current
-		return this.#opts.onRemove(this.#rows[index]).then(() => {
+		return this.onRemove(this.#rows[index]).then(() => {
 			this.#rows.splice(index, 1); // remove row data
 			this.#RESUME.size = this.#rows.length; // update size
 			this.#tBody.removeChild(this.#tBody.rows[index]); // remove tr element

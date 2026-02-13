@@ -1,6 +1,6 @@
 
 import coll from "../../../components/CollectionHTML.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 import ct from "../../data/place-ct.js"
 
 /**

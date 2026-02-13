@@ -8,7 +8,7 @@ import gastos from "../../model/gasto/Gastos.js";
 import dieta from "../../model/gasto/Dieta.js";
 
 import perfil from "../perfil/perfil.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 class Dietas extends Table {
 	constructor() {

@@ -10,7 +10,7 @@ import rvp from "./rutas/rutasVehiculoPropio.js";
 import transportes from "./gastos/transportes.js"; 
 import pernoctas from "./gastos/pernoctas.js"; 
 import dietas from "./gastos/dietas.js";
-import form from "../../xeco/modules/solicitud.js";
+import form from "./iris.js";
 
 function Resumen() {
 	const self = this; //self instance

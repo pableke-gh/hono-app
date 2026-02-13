@@ -80,11 +80,11 @@ HTMLElement.prototype.refresh = function(data, opts) {
 		if (!fnRefresh) // no handler linked to element
 			fnHide(this); // element not renderizable yet!
 		else if (value.startsWith("update"))
-			fnRefresh(this); // actualizo el elemento
+			fnRefresh(this, data); // actualizo el elemento
 		else if (this.dataset.toggle) // toggle specific style class
-			this.classList.toggle(this.dataset.toggle, fnRefresh(this));
+			this.classList.toggle(this.dataset.toggle, fnRefresh(this, data));
 		else // show / hide
-			this.setVisible(fnRefresh(this));
+			this.setVisible(fnRefresh(this, data));
 		return this; // current HTMLElement instance
 }
 

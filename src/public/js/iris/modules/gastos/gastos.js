@@ -14,7 +14,7 @@ import gp5 from "./gasto.js";
 import actividad from "../perfil/actividad.js";
 import rmaps from "../rutas/rutasMaps.js";
 import resumen from "../resumen.js";
-import form from "../../../xeco/modules/solicitud.js";
+import form from "../iris.js";
 
 class Gastos extends Table {
 	constructor() {

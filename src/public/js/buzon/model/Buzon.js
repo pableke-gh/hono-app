@@ -1,6 +1,6 @@
 
 import sb from "../../components/types/StringBox.js";
-import Base from "../../xeco/model/Base.js";
+import Base from "../../core/model/Base.js";
 
 const ROL = [ "Responsable", "UXXIEC", "Comprador", "Habilidato", "Habilidato en Mis Orgánicas" ];
 
