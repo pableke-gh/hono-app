@@ -19,13 +19,16 @@ export default class Solicitudes extends Table {
 		this.#solicitud = solicitud.setUser(tabUxxi.dataset);
 
 		const uxxiec = new Uxxiec(); // uxxi-ec form instance
-		uxxiec.setEvents(this); // set handlers to uxxi-ec form
-		filter.setEvents(this); // set handlers with reference to this list
+		uxxiec.init(this); // set handlers to uxxi-ec form
+		filter.init(this); // set handlers with reference to this list
 
 		// default list handlers
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada")
-			.set("#emails", data => api.init().json(url + "/emails?id=" + data.id)) // admin test email
-			.setRemove(data => api.init().json(url + "/remove?id=" + data.id).then(tabs.showList)); // remove true = confirm
+			.set("#emails", data => api.init().json(url + "/emails?id=" + data.id)); // admin test email
+		this.setRemove(data => {
+			const id = data.id || solicitud.getId(); // row selected or current data
+			return api.init().json(url + "/remove?id=" + id).then(tabs.showList);  // remove = Promise
+		});
 		this.set("#integrar", data => { // integra la solicitud seleccionada en uxxiec
 			i18n.confirm("msgIntegrar") && api.init().json(url + "/ws?id=" + data.id).then(this.setWorking);
 		});
@@ -42,9 +45,9 @@ export default class Solicitudes extends Table {
 
 	getSolicitud = () =>  this.#solicitud; // get solicitud
 	load = data => this.#solicitud.setData(data || this.getCurrent()); // update data model
-	refreshRow() { super.refreshRow(this.load()); tabs.showList(); return this; } // refresh current row + show list tab
 	setProcesando = () => this.load().setProcesando(); // set estado procesando ...
-	setWorking = () => this.refreshRow(this.setProcesando()); // update current row state
+	updateRow() { this.refreshRow(this.load()); tabs.showList(); } // refresh current row + show list tab
+	setWorking = () => { this.refreshRow(this.setProcesando()); tabs.showList(); } // update current row state
 
 	row(data) { // to simulate super keyword from arrow function, 'row' must be defined as a function
 		let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';

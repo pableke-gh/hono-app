@@ -44,7 +44,7 @@ export default class Solicitud extends Form {
 	#refreshForm = data => { // refresh form if cached + current row in list
 		if (this.isCached(this.#solicitudes.getId()))
 			this.setFirmas(data.firmas).refresh(this.#solicitudes.load());
-		this.#solicitudes.refreshRow();
+		this.#solicitudes.updateRow();
 	}
 	firmar = data => { // get method
 		if (!i18n.confirm("msgFirmar")) return; // confirm
@@ -98,10 +98,13 @@ export default class Solicitud extends Form {
 		const tab = this.setFirmas(data.firmas).onView(data); // 3º actualizo las firmas asociadas + specific on-view action + get tab to show
 		this.setValues(solicitud.getData()).reactivate(solicitud, tab); // 4º update form state
 	}
-	create = this.#showForm;
+	create(data) {
+		this.#solicitudes.clear(); // not row selected
+		this.#showForm(data); // prepare form view
+	}
 	view = data => { // view action
 		if (data.solicitud) // create action
-			return this.#showForm(data); // load data and show form tab
+			return this.create(data); // load data and show form tab
 		if (this.isCached(data.id)) // view action from solicitudes list
 			return this.set("update-firmas", el => el.show()).showForm(); // datos pre-cargados y firmas visibles
 		api.init().json(this.#solicitud.getUrl() + "/view?id=" + data.id).then(this.#showForm); // get method
@@ -113,11 +116,10 @@ export default class Solicitud extends Form {
 		api.init().json(this.#solicitud.getUrl() + "/reactivar?id=" + data.id).then(this.#showForm); // get method
 	}
 
-	onUpdate() {} // optional event on update action
 	update = (data, tab) => {
 		data.solicitud && this.#solicitudes.load(data.solicitud); // 1º carga los datos de la solicitud
 		data.firmas && this.setFirmas(data.firmas); // 2º actualizo la vista de firmas asociadas
-		this.onUpdate(data); // 3º specific update action
+		this.setChanged(); // reset changed state
 		tabs.goTab(tab); // 4º show specific form tab
 	}
 }

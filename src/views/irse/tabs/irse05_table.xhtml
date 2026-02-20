@@ -34,7 +34,7 @@
 					<a href="#{g.fref}" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>
 					<c:if test="#{iris.irse.form.editable}">
 						<p:commandLink action="#{iris.irse.form.unloadGasto(g)}" 
-								onclick="if (!fnUnlink()) return false;" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);"
+								onclick="if (!fnUnlink()) return false;" update="@(.update-resumen)" oncomplete="showTab(xhr, status, args, 5);"
 								title="Desasociar ticket de la solicitud">
 							<i class="fas fa-times action text-red resize"></i>
 						</p:commandLink>

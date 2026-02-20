@@ -8,7 +8,8 @@ export default class Filter extends Form {
 		super("#xeco-filter", opts);
 	}
 
-	setEvents(solicitudes) {
+	init(solicitudes) {
+		super.init(); // init. default form events
 		const url = solicitudes.getSolicitud().getUrl(); // url base path
 		const fnLoadList = data => { solicitudes.render(data); tabs.showList(); } // render table + flush cache
 		const fnCallList = () => { api.setJSON(this.getData()).json(url + "/list").then(fnLoadList); } // fetch list action

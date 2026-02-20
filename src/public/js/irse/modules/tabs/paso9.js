@@ -1,15 +1,29 @@
 
-import sb from "../../components/types/StringBox.js";
-import valid from "../i18n/validators.js";
-import i18n from "../i18n/langs.js";
-import Form from "./form.js";
+import sb from "../../../components/types/StringBox.js";
+import Form from "../../../components/forms/Form.js";
+import tabs from "../../../components/Tabs.js";
+import valid from "../../i18n/validators.js";
+import i18n from "../../i18n/langs.js";
 
-class Paso9 extends Form {
-	constructor() {
-		super(); // call super before to use this reference
+import Imputacion from "../tables/imputacion.js";
+import form from "../irse.js"
+
+/*********** Fin + IBAN ***********/
+export default class Paso9 extends Form {
+	#imputacion = new Imputacion(this);
+
+	constructor(form) {
+		super(form.getForm(), form.getOptions());
+	}
+
+	init() {
+		this.#imputacion.init(); // init. tabla
+		tabs.setInitEvent(9, this.initTab); // init. all validations and inputs events only once
+		tabs.setViewEvent(9, () => this.#imputacion.render(form.getOrganicas().getFirst())); // always auto build table imputacion
 	}
 
 	initTab = tab => { // Init tab 9: IBAN
+		this.#imputacion.init(); // init. table
 		const cuentas = this.getInput("#cuentas");
 		const fnPais = pais => {
 			const es = (pais == "ES");
@@ -41,5 +55,3 @@ class Paso9 extends Form {
 		window.fnSend = () => valid.paso9() && i18n.confirm("msgFirmarEnviar") && loading();
 	}
 }
-
-export default new Paso9();

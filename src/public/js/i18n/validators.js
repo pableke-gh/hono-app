@@ -49,6 +49,7 @@ export default class Validators extends Msgs {
 		return true;
 	}
 	size = (name, value, msg, max) => { this.#size(name, value, max ?? 1000, msg); return this; }
+	size10 = (name, value, msg) => { this.#size(name, value, 10, msg); return this; }
 	size20 = (name, value, msg) => { this.#size(name, value, 20, msg); return this; }
 	size50 = (name, value, msg) => { this.#size(name, value, 50, msg); return this; }
 	size100 = (name, value, msg) => { this.#size(name, value, 100, msg); return this; }

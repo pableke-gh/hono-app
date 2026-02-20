@@ -8,15 +8,24 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
-	<p:outputPanel styleClass="card-xeco update-irse">
-		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab6.tit']}" escape="false" /></h2>
-
-		<div class="#{iris.irse.gastos.cssAc}">
-			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.ac']}" escape="false" />: <b class="text-green">#{iris.irse.gastos.totAcI18n} €</b></h3>
-		</div>
-
+	<div class="card-xeco">
+		<h2>
+			<img src="/uae/resources/images/speaker.png" width="30px"/>
+			<span class="text-warn">Resumen</span>
+			<span>Tus datos sumarían <b class="text-warn form-refresh" data-refresh="text-render">$getImpTotal; €</b></span>
+			<span>Pulsa en cada línea si quieres revisar y editar algunos de ellos antes de enviarlos.</span>
+		</h2>
+		<p:outputPanel styleClass="#{iris.irse.gastos.cssAc} update-irse update-resumen">
+			<h3>
+				<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.ac']}" escape="false" />:
+				<b class="text-green">#{iris.irse.gastos.totAcI18n} €</b>
+			</h3>
+		</p:outputPanel>
 		<div class="navbar form-refresh" data-refresh="getNumRutasVpMun">
-			<h3><i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />: <b id="imp-km" class="text-green">#{iris.irse.gastos.kmCalcI18n} €</b></h3>
+			<h3>
+				<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />:
+				<b class="text-green form-refresh" data-refresh="text-render">$getImpKm; €</b>
+			</h3>
 		</div>
 		<ui:include src="irse06_km.xhtml"></ui:include>
 		<ui:include src="irse06_transporte.xhtml"></ui:include>
@@ -24,7 +33,7 @@
 		<ui:include src="irse07.xhtml"></ui:include>
 		<ui:include src="irse08.xhtml"></ui:include>
 		<ui:include src="irse06_irpf.xhtml"></ui:include>
-	</p:outputPanel>
+	</div>
 
 	<!-- Botones -->
 	<p:outputPanel styleClass="update-irse">
@@ -34,11 +43,11 @@
 	<c:choose>
 	<c:when test="#{iris.irse.form.editable}">
 		<p:commandLink
-				onclick="if (!ir.paso6()) return false;" action="#{iris.irse.form.paso6()}" oncomplete="showTab(xhr, status, args);" 
+				onclick="if (!paso6()) return false;" action="#{iris.irse.form.paso6()}" oncomplete="showTab(xhr, status, args);" 
 				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="131">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i>
 		</p:commandLink>
-		<p:commandButton onclick="if (!ir.paso6()) return false;" action="#{iris.irse.form.save6()}" oncomplete="saveTab();"
+		<p:commandButton onclick="if (!paso6()) return false;" action="#{iris.irse.form.save6()}" oncomplete="saveTab();"
 			styleClass="btn btn-green success-btn" icon="far fa-save" value="#{msg['lbl.btn.no.enviar']}" title="#{msg['tit.btn.no.enviar']}" tabindex="132" />
 	</c:when>
 	<c:otherwise>

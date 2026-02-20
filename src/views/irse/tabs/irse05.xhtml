@@ -83,12 +83,12 @@
 			</label>
 			<div class="ui-block-btn grupo-gasto hide">
 				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
-				<p:commandButton id="updateGasto" action="#{iris.irse.form.updateGasto()}" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args, 5);" styleClass="hide" />
+				<p:commandButton id="updateGasto" action="#{iris.irse.form.updateGasto()}" update="@(.update-resumen)" oncomplete="showTab(xhr, status, args, 5);" styleClass="hide" />
 			</div>
 		</div>
 		<br class="clear"/>
 
-		<p:outputPanel styleClass="navbar update-irse">
+		<p:outputPanel styleClass="navbar update-irse update-resumen">
 			<ui:include src="./irse05_table.xhtml"></ui:include>
 		</p:outputPanel>
 		<div class="navbar form-refresh" data-refresh="is-rutas-gt-1">
@@ -103,22 +103,15 @@
 	</div>
 
 	<!-- Botones -->
-	<p:outputPanel styleClass="update-irse">
-	<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="110">
-		<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-	<c:choose>
-	<c:when test="#{iris.irse.form.editable}">
-		<p:commandLink action="#{iris.irse.form.paso5()}" onclick="loading();" update="@(.update-irse)" oncomplete="viewIrse(xhr, status, args);"
-				styleClass="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="111">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></p:commandLink>
-		<p:commandButton action="#{iris.irse.form.save5()}" onclick="loading();" oncomplete="saveTab();" icon="far fa-save" 
-			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="112" title="#{msg['tit.btn.no.enviar']}" />
-	</c:when>
-	<c:otherwise>
-		<a href="#tab-next" class="btn btn-info" title="#{msg['tit.btn.siguiente']}" tabindex="111">
+	<div class="navbar">
+		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
+			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		<a href="#tab-action-paso5" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-	</c:otherwise>
-	</c:choose>
-	<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-	</p:outputPanel>
+		<p:remoteCommand name="rcPaso5" action="#{iris.irse.form.paso5()}" oncomplete="showTab(xhr, status, args, 6)" />
+		<a href="#tab-action-save5" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
+			<i class="far fa-save btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
+		<p:remoteCommand name="rcSave5" action="#{iris.irse.form.save5()}" oncomplete="saveTab()" />
+		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
+	</div>
 </html>

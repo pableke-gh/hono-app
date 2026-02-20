@@ -1,16 +1,19 @@
 
+import Form from "../../components/forms/Form.js";
 import api from "../../components/Api.js"
 import factura from "../model/Factura.js";
-import Form from "./form.js";
 import fiscalidad from "../data/fiscal.js"
+import form from "./factura.js";
 
-class Fiscal extends Form {
+export default class Fiscal extends Form {
 	#acTercero = this.setAutocomplete("#acTercero");
 	#delegaciones = this.setDatalist("#delegacion");
 
-	constructor(){
-		super(); // call super before to use this reference
+	constructor(form) {
+		super(form.getForm(), form.getOptions());
+	}
 
+	init() {
 		const fnUpdate = (subtipo, tercero) => {
 			factura.setSubtipo(subtipo).setNifTercero(this.#acTercero.getCode());
 			this.#updateFiscalidad(tercero || this.#acTercero.getCurrentItem());
@@ -53,7 +56,7 @@ class Fiscal extends Form {
 	#updateFiscalidad(tercero) {
 		if (!tercero) return; // nada que modificar
 		const data = this.#fiscalidad(tercero); // new data
-		this.setData(data, ".ui-fiscal").setIva(data.iva); // update fields + iva
+		form.setData(data, ".ui-fiscal").setIva(data.iva); // update fields + iva
 		factura.setSujeto(data.sujeto);
 	}
 	
@@ -65,5 +68,3 @@ class Fiscal extends Form {
 		factura.setSujeto(fact.sujeto).setFace(fact.face); // sujeto / exento + face
 	}
 }
-
-export default new Fiscal();

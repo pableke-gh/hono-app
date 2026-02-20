@@ -12,7 +12,7 @@ import form from "./modules/factura.js";
 coll.ready(() => { // init. fact modules
 	const fnShowGestor = () => factura.isFace() || factura.isPlataforma();
 	const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
-	form.setValidators(valid).set("show-factura-uae", fnShowFactUae).set("show-gestor", fnShowGestor);
+	form.init().set("show-factura-uae", fnShowFactUae).set("show-gestor", fnShowGestor);
 
 	const fnBuild = (tipo, subtipo) => ({ solicitud: { tipo, subtipo, imp: 0, iva: 0 } });
 	tabs.setAction("factura", () => form.create(fnBuild(1, 14))); // create factura

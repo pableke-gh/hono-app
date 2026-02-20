@@ -9,7 +9,7 @@ import presto from "./model/Presto.js";
 import form from "./modules/presto.js";
 
 coll.ready(() => { // init. presto modules
-	form.setValidators(valid)
+	form.init()
 		.set("show-subtipo", () => (presto.isUae() && presto.isGcr()))
 		.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto);
 	form.onChangeFile("[name='adjunto']", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });

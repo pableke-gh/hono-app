@@ -1,7 +1,6 @@
 
 import Validators from "../../core/i18n/validators.js";
 import factura from "../model/Factura.js";
-import lineas from "../modules/lineas.js";
 import form from "../modules/factura.js";
 
 class FacturaValidators extends Validators {
@@ -19,6 +18,8 @@ class FacturaValidators extends Validators {
 			this.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
 			this.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
 		}*/
+		if (factura.isUae()) // economica required
+			this.size10("economica", data.economica, "Debe asociar una económica de ingreso a la solicitud.");
 		if (factura.isTtppEmpresa()) // Required string
 			this.size("memo", data.memo, "Debe indicar las observaciones asociadas a la factura.");
 		if (factura.isFace())
@@ -30,7 +31,7 @@ class FacturaValidators extends Validators {
 
 	all() {
 		const data = form.getData(); // start validation
-		if (lineas.isEmpty()) { // minimo una linea
+		if (form.getLineas().isEmpty()) { // minimo una linea
 			const msg = "Debe detallar los conceptos asociados a la solicitud.";
 			this.addError("desc", "errRequired", msg).addError("acTTPP", "errRequired", msg);
 		}

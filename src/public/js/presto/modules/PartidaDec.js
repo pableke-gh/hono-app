@@ -1,16 +1,20 @@
 
+import Form from "../../components/forms/Form.js";
 import api from "../../components/Api.js"
 import presto from "../model/Presto.js";
-import pInc from "./partidaInc.js";
-import partidas from "./partidas.js";
-import Form from "./form.js";
+import form from "./presto.js";
 
-class PartidaDec extends Form {
+export default class PartidaDec extends Form {
 	#orgDec = this.setAutocomplete("#acOrgDec");
 	#ecoDec = this.setDatalist("#idEcoDec");
 
-	constructor() {
-		super(); // call super before to use this reference
+	constructor(form) {
+		super(form.getForm(), form.getOptions());
+	}
+
+	init() {
+		const pInc = form.getPartidaInc();
+		const partidas = pInc.getPartidas();
 
 		const fnSource = term => {
 			const opts = { 3: "/uae/presto/organicas/l83", 5: "/uae/presto/organicas/ant" };
@@ -21,7 +25,7 @@ class PartidaDec extends Form {
 			presto.isAutoLoadInc() && partidas.render(); //autoload => clear table
 			const url = presto.isAutoLoadInc() ? "/uae/presto/economicas/l83" : "/uae/presto/economicas/dec"; // url by type
 			api.init().json(url + "?org=" + item.value).then(this.#ecoDec.setItems); // this.#ecoDec.setItems => auto call fnEcoChange (economica change event)
-			this.setAvisoFa(item).setValue("#faDec", item.int & 1); // indicador de organica afectada
+			form.setAvisoFa(item).setValue("#faDec", item.int & 1); // indicador de organica afectada
 		}
 		const fnResetOrgDec = () => { // reset organica a decrementar
 			presto.isAutoLoadInc() && partidas.render(); //autoload => clear table
@@ -56,5 +60,3 @@ class PartidaDec extends Form {
 		this.#ecoDec.setItems(data.economicas); // cargo el desplegable de economicas
 	}
 }
-
-export default new PartidaDec();

@@ -1,13 +1,15 @@
 
 import Table from "../../../components/Table.js";
 import i18n from "../../../i18n/langs.js";
+
 import ruta from "../../model/Ruta.js";
+import rutas from "../../model/Rutas.js";
 
 export default class RutaGasto extends Table {
 	beforeRender = ruta.beforeRender;
 	rowCalc = ruta.rowCalc;
 
-	row = (data, status) => {
+	row(data, status) {
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº" class="hide-sm">${status.count}</td>
 			<td data-cell="${i18n.get("lblOrigen")}">${data.origen}</td>
@@ -19,5 +21,9 @@ export default class RutaGasto extends Table {
 			<td data-cell="${i18n.get("lblTransporte")}">${i18n.getItem("tiposDesp", data.desp)}</td>
 			<td data-cell="Asociar Etapa"><input type="checkbox" value="${data.id}"/></td>
 		</tr>`;
+	}
+
+	view() {
+		return super.view(rutas.getRutasUnlinked());
 	}
 }

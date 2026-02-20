@@ -2,7 +2,6 @@
 import sb from "../../components/types/StringBox.js";
 import Validators from "../../core/i18n/validators.js";
 import presto from "../model/Presto.js";
-import partidas from "../modules/partidas.js";
 import form from "../modules/presto.js";
 
 class PrestoValidators extends Validators {
@@ -30,6 +29,7 @@ class PrestoValidators extends Validators {
 
 	all() {
 		const data = form.getData(); // start validation
+		const partidas = form.getPartidas(); // paartidas de la solicitud
 		if (presto.isPartidaDec() && (partidas.getImporte() != data.imp)) // Valido los importes a decrementar e incrementar
 			this.addError("imp", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
 		if (partidas.isEmpty())
@@ -42,7 +42,7 @@ class PrestoValidators extends Validators {
 		this.isKey("acOrgInc", data.idOrgInc, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
 		this.isKey("idEcoInc", data.idEcoInc, "Debe seleccionar una económica"); // select required number
 		this.gt0("impInc", data.impInc); // float number > 0
-		if (partidas.getData().find(row => ((row.idOrg == data.idOrgInc) && (row.idEco == data.idEcoInc))))
+		if (form.getPartidas().getData().find(row => ((row.idOrg == data.idOrgInc) && (row.idEco == data.idEcoInc))))
 			this.addError("acOrgInc", "notAllowed", "¡Partida ya asociada a la solicitud!"); // partida ya asociada
 		else if ((data.idOrgDec == data.idOrgInc) && sb.starts(sb.getCode(form.getOptionText("#idEcoInc")), sb.getCode(form.getOptionText("#idEcoDec"))))
 			this.addError("acOrgInc", "notValid", "La partida a incrementar esta dentro del nivel vinculante de la partida a decrementar. Por lo que no es necesario realizar esta operación.");
@@ -54,7 +54,7 @@ class PrestoValidators extends Validators {
 
 	validate030() {
 		const data030 = form.getData(".ui-030"); // start validation
-		const p080 = partidas.getCurrentItem(); // current partida 080
+		const p080 = form.getPartidas().getCurrentItem(); // current partida 080
 		if (!p080) // Debo cargar previamente la partida seleccionada
 			return this.fail("No se ha encontrado la partida asociada al documento 080.");
 		const ERR_ORGANICA = "No ha seleccionado correctamente la orgánica";

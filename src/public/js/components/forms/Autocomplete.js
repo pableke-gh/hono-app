@@ -65,8 +65,10 @@ export default function(autocomplete, opts) {
 			inputValue.value = value;
 			autocomplete.value = label;
 		}
-		else
+		else {
+			_index = -1; // no data selected
 			inputValue.value = autocomplete.value = "";
+		}
 		return self;
 	}
 	this.setItem = item => self.setValue(item.value, item.label);

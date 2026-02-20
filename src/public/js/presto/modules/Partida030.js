@@ -1,17 +1,18 @@
 
+import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
-
 import presto from "../model/Presto.js";
-import Form from "./form.js";
 
-class Partida030 extends Form {
-	#ej030; // is tab preloaded
+export default class Partida030 extends Form {
 	#acOrg030 = this.setAutocomplete("#acOrg030");
+	#ej030; // is tab preloaded
 
-	constructor() {
-		super(); // call super before to use this reference
+	constructor(form) {
+		super(form.getForm(), form.getOptions());
+	}
 
+	init() {
 		const fnSource = term => api.init().json("/uae/presto/organicas/030", { ej: this.getval("#ej030"), term}).then(this.#acOrg030.render);
 		const fnSelect = item => this.setValue("#idEco030", item.imp);
 		this.#acOrg030.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect);
@@ -39,12 +40,11 @@ class Partida030 extends Form {
 		api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(fnEconomicas);
 	}
 
-	autoload = (partida, imp) => {
+	autoload(partida, imp) {
 		if (!partida) // compruebo si existe partida a incrementar
 			return !this.showError("Debe seleccionar una partida a incrementar");
-		partida.imp = imp; //importe obligatorio
+		partida.imp = imp || 0; //importe obligatorio
 		partida.imp030 = partida.imp; // update imp 030
+		return this.setValue("#impDec", partida.imp); //ok
 	}
 }
-
-export default new Partida030();

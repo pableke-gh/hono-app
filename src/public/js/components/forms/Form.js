@@ -38,14 +38,11 @@ export default class Form {
 		// Form initialization
 		input.setOptions(opts);
 		this.#form.setAttribute("novalidate", "1");
-		this.init().afterChange(() => { this.#opts.isChanged = true; })
-					.beforeReset(ev => this.closeAlerts().autofocus());
 	}
 
-	init() { // Form initialization
-		this.#form.elements.forEach(input.init);
-		return this.autofocus();
-	}
+	setEvents() { return this.afterChange(() => this.setChanged(true)).beforeReset(ev => this.closeAlerts().autofocus()); }
+	initInputs() { this.#form.elements.forEach(input.init); return this.autofocus(); } // init. inputs config
+	init() { return this.setEvents().initInputs(); }
 
 	querySelector = selector => this.#form.$1(selector); // Form child element
 	querySelectorAll = selector => this.#form.$$(selector); // Form children elements
@@ -79,11 +76,11 @@ export default class Form {
 
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
-	isCached = id => (id == this.#opts.cache);
-	setCache = id => { this.#opts.cache = id; return this; }
-	resetCache = () => { delete this.#opts.cache; return this; } 
 	isChanged = () => this.#opts.isChanged;
-	setChanged = val => { this.#opts.isChanged = val; return this; }
+	setChanged(val) { this.#opts.isChanged = val; return this; }
+	isCached = id => (id == this.#opts.cache);
+	setCache(id) { this.#opts.cache = id; return this.setChanged(); } // new cache => NO changes
+	resetCache() { delete this.#opts.cache; return this.setChanged(); } // reset cache => NO changes
 
 	// Alerts helpers
 	loading = () => { alerts.loading(); return this; } // Encapsule loading frame
@@ -169,7 +166,7 @@ export default class Form {
 			this.#form.elements.forEach(el => (el.name && fnSetValue(el)));
 		else
 			this.#resetValue(selector); // clear selected inputs values
-		return this.setChanged(); // force changed = false 
+		return this;
 	}
 	setValues = (data, selector) => this.#fnUpdate(selector, el => {
 		const value = el.name ? data[el.name] : null; // get value by name
@@ -202,7 +199,7 @@ export default class Form {
 
 	// Inputs helpers
 	setTable = (selector, opts) => new Table(this.#form.$1(selector), opts); // table
-	stringify = (selector, data, replacer) => this.setval(selector, JSON.stringify(data, replacer)).setChanged(true);
+	stringify = (selector, data, replacer) => this.setval(selector, JSON.stringify(data, replacer));
 	saveTable = (selector, table, replacer) => this.stringify(selector, table.getData(), replacer);
 	getOptionText = selector => sbx.getOptionText(this.#fnQueryInput(selector));
 	getOptionTextByValue = (selector, value) => sbx.getOptionTextByValue(this.#fnQueryInput(selector), value);

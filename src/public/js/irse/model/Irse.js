@@ -64,6 +64,15 @@ class Iris extends Solicitud {
 	getRutasPendientes = () => this.get("rutasPendientes");
 	isFacturasComisionado = () => ((this.getNochesPendientes() > 0) || (this.getRutasPendientes() > 0));
 	isCenaFinal = () => this.get("cenaFinal");
+
+	// params from server
+	getTotAc = () => this.get("totAc");
+	getImpTransporte = () => this.get("impTransporte");
+	getMinPernoctas = () => this.get("minPernoctas");
+	getIRPF = () => this.get("irpf");
+	getImpExtraTrans = () => this.get("impExtraTrans");
+	getImpExtraAloja = () => this.get("impExtraAloja");
+	getImpExtraDietas = () => this.get("impExtraDietas");
 }
 
 export default new Iris();

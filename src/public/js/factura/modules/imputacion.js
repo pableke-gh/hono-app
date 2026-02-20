@@ -1,20 +1,24 @@
 
+import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
 import valid from "../i18n/validators.js";
 
 import factura from "../model/Factura.js";
-import lineas from "./lineas.js";
-import Form from "./form.js";
+import Lineas from "./lineas.js";
+import form from "./factura.js";
 
-class Imputacion extends Form {
+export default class Imputacion extends Form {
 	#acOrganica = this.setAutocomplete("#acOrganica");
 	#acRecibo = this.setAutocomplete("#acRecibo");
 	#acTTPP = this.setAutocomplete("#acTTPP");
+	#lineas = new Lineas(this);
 
-	constructor(){
-		super(); // call super before to use this reference
+	constructor(form) {
+		super(form.getForm(), form.getOptions());
+	}
 
+	init() {
 		// los usuarios de ttpp/gaca solo pueden ver las organicas de su unidad 300906XXXX
 		this.#acOrganica.setItemMode(4).setSource(term => {
 			api.init().json("/uae/fact/organicas", { term }).then(this.#acOrganica.render);
@@ -29,14 +33,14 @@ class Imputacion extends Form {
 			api.init().json("/uae/ttpp/recibos", { id: this.getval("#idOrg") || 0, term }).then(this.#acTTPP.render);
 		});
 	
-		this.onChangeInput("#iva", ev => this.setIva(+ev.target.value));
+		this.onChangeInput("#iva", ev => form.setIva(+ev.target.value));
 		tabs.setAction("addLinea", () => {
 			this.closeAlerts(); // hide prev. errors
 			if (factura.isTtppEmpresa()) { // tipo recibo ttpp
-				lineas.addRecibo(this.#acTTPP.getCurrentItem());
+				this.#lineas.addRecibo(this.#acTTPP.getCurrentItem());
 				return this.#acTTPP.reload();
 			}
-			lineas.addLinea(valid.linea());
+			this.#lineas.addLinea(valid.linea());
 		});
 	}
 
@@ -44,7 +48,8 @@ class Imputacion extends Form {
 		const fact = data.solicitud; // datos del servidor
 		this.#acOrganica.setValue(fact.idOrg, fact.org + " - " + fact.descOrg);
 		this.#acRecibo.setValue(fact.idRecibo, fact.acRecibo);
+		this.#lineas.render(data.lineas); // render table
 	}
-}
 
-export default new Imputacion();
+	getLineas = () => this.#lineas;
+}

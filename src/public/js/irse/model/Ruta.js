@@ -29,7 +29,7 @@ class Ruta {
 	getImpGasolina = () => .26; // € / kilometro
 	getImpKm = ruta => (ruta.km1 * this.getImpGasolina());
 
-	// table renders
+	// table calculators
 	beforeRender = resume => {
 		resume.vp = resume.unlinked = 0;
 		resume.impKm = resume.totKm = resume.totKmCalc = 0;

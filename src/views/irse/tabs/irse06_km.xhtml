@@ -7,18 +7,18 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="navbar form-refresh" data-refresh="getNumRutasVpMaps">
+<div class="navbar form-refresh" data-refresh="getNumRutasVpMaps">
 	<h3>
 	<a id="p6-km" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
 		<i class="fas fa-caret-right icon"></i>
 		<h:outputText value="#{msg['uae.irse.tab6.msg.tit.km']}" escape="false" />:
-		<b id="imp-km" class="text-green">#{iris.irse.gastos.kmCalcI18n} €</b>
+		<b class="text-green form-refresh" data-refresh="text-render">$getImpKm; €</b>
 	</a>
 	</h3>
 	<div class="info-p6-km hide">
-		<c:if test="#{iris.irse.form.editableP6}"><div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab6.msg.km']}" escape="false" /></div></c:if>
+		<div class="notice notice-info form-refresh" data-refresh="isEditable"><h:outputText value="#{msg['uae.irse.tab6.msg.km']}" escape="false" /></div>
 
-		<table id="vp" class="tb-xeco table-xs">
+		<table id="km" class="tb-xeco table-xs">
 			<thead>
 				<tr>
 					<th><h:outputText value="#{msg['lbl.origen.etapa']}" escape="false" /></th>
@@ -30,48 +30,27 @@
 					<th><h:outputText value="#{msg['lbl.medio.trans']}" escape="false" /></th>
 					<th>Google km</th>
 					<th><h:outputText value="#{msg['lbl.tus.km']}" escape="false" /></th>
-					<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /> (<span id="imp-gasolina-km"></span> €/km)</th>
+					<th class="form-refresh" data-refresh="text-render"><h:outputText value="#{msg['lbl.importe']}" escape="false" /> ($getImpGasolina; €/km)</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr class="tb-data tb-data-tc">
-					<td data-cell="#{msg['lbl.origen.etapa']}">@origen;</td>
-					<td data-cell="#{msg['lbl.fecha.salida']}">@f1;</td>
-					<td data-cell="#{msg['lbl.hora.salida']}">@h1;</td>
-					<td data-cell="#{msg['lbl.destino.etapa']}">@destino;</td>
-					<td data-cell="#{msg['lbl.fecha.llegada']}">@f2;</td>
-					<td data-cell="#{msg['lbl.hora.llegada']}">@h2;</td>
-					<td data-cell="#{msg['lbl.medio.trans']}">@desp;</td>
-					<td data-cell="Google km">@km2;</td>
-					<td data-cell="#{msg['lbl.tus.km']}">
-					<c:choose>
-						<c:when test="#{iris.irse.form.editableP6}"><input type="text" value="@km1;" tabindex="100" class="ui-float tc"/></c:when>
-						<c:otherwise>@km1;</c:otherwise>
-					</c:choose>
-					</td>
-					<td data-cell="#{msg['lbl.importe']}">@impKm; €</td>
-				</tr>
-			</tbody>
-			<tbody class="hide">
-				<tr><td class="no-data" colspan="99"><h:outputText value="#{msg['msg.no.etapas']}" escape="false" /></td></tr>
-			</tbody>
+			<tbody></tbody>
 			<tfoot>
 				<tr>
-					<td colspan="7"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @sizeVp;</td>
-					<td class="tb-data-tc hide-xs">@totKmCalc;</td>
-					<td class="tb-data-tc hide-xs">@totKm;</td>
-					<td class="tb-data-tc hide-xs">@impKm; €</td>
+					<td class="table-refresh" data-refresh="text-render" colspan="7"><h:outputText value="#{msg['lbl.etapas']}" escape="false" />: @size;</td>
+					<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render">$totKmCalc;</td>
+					<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render">$totKm;</td>
+					<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render">$impKm; €</td>
 				</tr>
 			</tfoot>
 		</table>
 
-		<label class="ui-blocks justifi-km #{iris.irse.gastos.cssJustifiKm}">
+		<label class="ui-blocks form-refresh" data-refresh="is-justifi-km">
 			<div class="label required"><h:outputText value="#{msg['lbl.justifi.km']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="justifiKm" value="#{iris.irse.gastos.justifiKm}" styleClass="ui-input ui-ta rows-2 #{iris.irse.form.cssDisabled}" tabindex="108"/>
+				<h:inputTextarea id="justifiKm" value="#{iris.irse.gastos.justifiKm}" styleClass="ui-input ui-ta rows-2 update-irse #{iris.irse.form.cssDisabled}" tabindex="108"/>
 				<div class="ui-errtip"></div>
 			</div>
 		</label>
 	</div>
-	</div>
+</div>
 </html>

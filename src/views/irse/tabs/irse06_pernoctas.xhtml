@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="#{iris.irse.gastos.cssPernoctas}">
+	<p:outputPanel styleClass="#{iris.irse.gastos.cssPernoctas} update-irse update-resumen">
 		<h3>
 		<a id="p6-aloja" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
 			<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.3']}" escape="false" />: <b class="text-green">#{iris.irse.gastos.minPernoctasI18n} €</b>
@@ -56,5 +56,5 @@
 				</tr>
 			</tfoot>
 		</table>
-	</div>
+	</p:outputPanel>
 </html>

@@ -1,15 +1,12 @@
 
-import coll from "../../components/CollectionHTML.js";
 import dt from "../../components/types/DateBox.js";
 import sb from "../../components/types/StringBox.js";
 import tabs from "../../components/Tabs.js";
 import Validators from "../../core/i18n/validators.js";
 
 import ruta from "../model/Ruta.js";
+import rutas from "../model/Rutas.js";
 import gasto from "../model/Gasto.js";
-
-import perfil from "../modules/perfil.js";
-import rutas from "../modules/rutas.js";
 import form from "../modules/irse.js";
 
 const MIN_DATE = dt.addYears(new Date(), -1); //tb.now().add({ years: -1 }); //1 año antes
@@ -22,7 +19,7 @@ class IrseValidators extends Validators {
 
 	perfil() {
 		const data = form.getData(); // start validation
-		perfil.isEmpty() && this.addRequired("organica", "errOrganicas");
+		form.getPerfil().isEmpty() && this.addRequired("organica", "errOrganicas");
 		return this.size20("interesado", data["nif-interesado"], "errPerfil").close(data);
 	}
 
@@ -30,13 +27,13 @@ class IrseValidators extends Validators {
 		const data = form.getData(); // start validation
 		if (!data.objeto) // valida textarea
         	this.addRequired("objeto", "errObjeto");
-		if (!perfil.isMun())
+		if (!form.getPerfil().isMun())
 			return this.close(data);
 		const rutaMun = form.getData(".ui-mun");
 		this.size("origen", rutaMun.origen, "errOrigen").isDate("f1", rutaMun.f1); //ha seleccionado un origen
 		if (ruta.isVehiculoPropio(rutaMun)) { // vehiculo propio
 			const msg = "Debe indicar el kilometraje del desplazamiento";
-			this.size20("matricula", rutaMun.matricula, "errMatricula").gt0("km1", rutaMun.km1, msg);
+			this.size20("matriculaMun", rutaMun.matriculaMun, "errMatricula").gt0("km1", rutaMun.km1, msg);
 		}
 		if (this.isError()) // valido mun
 			return this.fail(); // error en mun
@@ -50,7 +47,7 @@ class IrseValidators extends Validators {
 			return this.fail(); // valido la ruta mun
 		// ruta por defecto para MUN = VP, principal  y ES
 		rutas.setRuta(rutaMun); // actualizo las rutas
-		return this.close(data);
+		return this.success(rutaMun);
 	}
 
 	/** validaciones del paso 2 **/
@@ -84,30 +81,51 @@ class IrseValidators extends Validators {
 		return this.close(r1);
 	}
 
-	rutas(rutas) {
-		if (coll.isEmpty(rutas))
+	rutas() {
+		if (rutas.isEmpty())
 			return this.addError("origen", "notValid", "errItinerario").fail();
-		let r1 = rutas[0];
+		let r1 = rutas.get(0);
 		if (!this.ruta(r1))
 			return false; // salida erronea
 		const origen = ruta.getOrigen(r1);
-		for (let i = 1; i < rutas.length; i++) {
-			const r2 = rutas[i];
+		for (let i = 1; i < rutas.size(); i++) {
+			const r2 = rutas.get(i);
 			if (!this.isRutasConsecutivas(r1, r2))
 				return false; //stop
 			if (origen == r2.origen)
 				return this.addError("destino", "notValid", "errMulticomision").fail();
 			r1 = r2; //go next route
 		}
-		return this.success(rutas);
+		return this.success(rutas.getRutas());
 	}
-	itinerario(rutas) { // validaciones para los mapas
+	itinerario() { // validaciones para los mapas
 		const data = form.getData(); // start validation
-		if (perfil.isMaps() && (coll.size(rutas) < 2)) // min rutas = 2
+		if (form.getPerfil().isMaps() && (rutas.size() < 2)) // min rutas = 2
 			return this.addRequired("destino", "errMinRutas").fail("errItinerario");
-		return this.rutas(rutas) && data;
+		return this.rutas() && data;
 	}
 	/** validaciones del paso 2 **/
+
+	/** validaciones ISU **/
+	congreso(f1, f2) {
+		const fIniCong = dt.trunc(dt.addDays(dt.toDate(f1), -1)); // fecha inicio del congreso
+		const fFinCong = dt.trunc(dt.addDays(dt.toDate(f2), 2)); // fecha fin del congreso
+		return ((fIniCong && dt.lt(rutas.salida(), fIniCong)) || (fFinCong && dt.lt(fFinCong, rutas.llegada())));
+	}
+	paso3() {
+		const data = form.getData(); // start validation
+		this.size500("justifi", data.justifi, "errJustifiSubv");
+		if (rutas.getNumRutasVp())
+			this.size500("justifiVp", data.justifiVp, "errJustifiVp");
+		if (data.congreso == "0") // no es congreso
+			return this.close(data);
+		if (this.congreso(data.fIniCong, data.fFinCong)) // valido los datos del congreso
+			this.size500("justifiCong", data.justifiCong, "errCongreso");
+		if (data.congreso == "4")
+			this.gt0("impInsc", data.impInsc);
+		return this.close(data);
+	}
+	/** validaciones ISU **/
 
 	upload() {
 		const data = form.getData();

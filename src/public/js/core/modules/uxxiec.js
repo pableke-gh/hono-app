@@ -2,7 +2,6 @@
 import Form from "../../components/forms/Form.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
-
 import Documentos from "./documentos.js";
 
 export default class Uxxiec extends Form {
@@ -33,7 +32,8 @@ export default class Uxxiec extends Form {
 		api.init().json(this.#solicitud.getUrl() + "/uxxiec?id=" + data.id).then(fnLoadDocs);
 	}
 
-	setEvents(solicitudes) { // set default handlers
+	init(solicitudes) { // set default handlers
+		super.init(); // init. default form events
 		this.#solicitudes = solicitudes.set("#uxxiec", this.view); // solicitudes module list
 		this.#solicitud = solicitudes.getSolicitud(); // solicitud model instance
 
@@ -54,7 +54,7 @@ export default class Uxxiec extends Form {
 				return this.showError("Debe asociar al menos una operación de UXXI-EC a la solicitud.");
 			api.setJSON(this.#documentos.getData()).json(url).then(() => {
 				this.#solicitud.setEstado(estado); // update estado
-				this.#solicitudes.refreshRow(); // refresh row in list
+				this.#solicitudes.updateRow(); // refresh row in list
 				this.#updateButtons(); // update buttons navbar
 			});
 		}

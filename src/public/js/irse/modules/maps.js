@@ -5,7 +5,6 @@ import tabs from "../../components/Tabs.js";
 import valid from "../i18n/validators.js";
 
 import place from "./place.js";
-import rutas from "./rutas.js";
 import form from "./irse.js";
 
 /**
@@ -49,6 +48,7 @@ window.initMap = () => {
 
 	//*************** rutas / trayectos - maps ***************//
 	tabs.setAction("addRuta", async () => {
+		const rutas = form.getRutas(); // module
 		const ruta = valid.addRuta(); // form data
 		if (!ruta) return false; // invalid inputs
 

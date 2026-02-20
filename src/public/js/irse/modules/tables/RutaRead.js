@@ -1,7 +1,9 @@
 
 import Table from "../../../components/Table.js";
 import i18n from "../../../i18n/langs.js";
+
 import ruta from "../../model/Ruta.js";
+import rutas from "../../model/Rutas.js";
 
 export default class RutaRead extends Table {
 	beforeRender = ruta.beforeRender;
@@ -23,5 +25,9 @@ export default class RutaRead extends Table {
 
 	afterRender = resume => {
 		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
+	}
+
+	view() {
+		return super.view(rutas.getRutas());
 	}
 }

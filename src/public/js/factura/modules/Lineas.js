@@ -1,12 +1,11 @@
 
 import Table from "../../components/Table.js";
 import i18n from "../i18n/langs.js";
-
 import factura from "../model/Factura.js";
-import form from "./imputacion.js";
+import form from "./factura.js";
 
-class Lineas extends Table {
-	constructor() {
+export default class Lineas extends Table {
+	constructor(form) {
 		super(form.querySelector("#lineas-fact"));
 		this.setMsgEmpty("No existen conceptos asociados a la solicitud");
 	}
@@ -36,6 +35,9 @@ class Lineas extends Table {
 		resume.impTotal = resume.imp + resume.impIva; // total conceptos + importe iva
 		return this;
 	}
-}
 
-export default new Lineas();
+	setIva(iva) { // actualizo el iva y el total
+		factura.setIva(iva); // set new iva value
+		this.afterRender().refreshFooter()
+	}
+}

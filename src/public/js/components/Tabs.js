@@ -143,8 +143,6 @@ function Tabs() {
         return self;
     }
 
-	// Init. view and PF navigation (only for CV-UAE)
-	window.showTab = (xhr, status, args, tab) => (window.showAlerts(xhr, status, args) && self.goTab(tab));
 	coll.ready(() => { // when dom is fully loaded
 		_tabIndex = fnCurrentIndex(); // current index tab
 		self.load(document); // set tab actions
