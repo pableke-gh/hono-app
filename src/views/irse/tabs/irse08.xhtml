@@ -7,15 +7,14 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-<p:outputPanel styleClass="update-irse update-resumen">
 <div class="navbar form-refresh" data-refresh="isPaso8">
 	<h3>
 	<a id="p6-extra" href="#tab-toggle" data-toggle="fa-caret-right fa-caret-down">
 		<i class="fas fa-caret-right icon"></i><h:outputText value="#{msg['uae.irse.tab6.msg.tit.5']}" escape="false" />:
-		<b class="text-green">#{iris.irse.gastos.totExtraI18n} €</b>
+		<b class="text-green form-refresh" data-refresh="text-render">$getImpExtra; €</b>
 	</a>
 	</h3>
-	<table id="gastos" class="info-p6-extra hide tb-xeco table-xs">
+	<table id="extra" class="info-p6-extra hide tb-xeco table-xs">
 		<thead>
 		<tr>
 			<th>Nº</th>
@@ -25,27 +24,13 @@
 			<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /></th>
 		</tr>
 		</thead>
-		<tbody>
-			<c:if test="#{empty iris.irse.gastos.gastosExtras}">
-				<tr><td class="no-data" colspan="9"><h:outputText value="#{msg['msg.no.gastos.extra']}" escape="false" /></td></tr>
-			</c:if>
-			<c:forEach items="#{iris.irse.gastos.gastosExtras}" var="g" varStatus="loop">
-				<tr id="#{g.idGasto}" class="tb-data tb-data-tc">
-					<td data-cell="Nº">#{loop.count}</td>
-					<td data-cell="#{msg['lbl.tipo.gasto']}">#{iris.irse.gastos.getSubtipoDesc(g)}</td>
-					<td data-cell="#{msg['lbl.desc.obsev']}">#{g.descripcion}</td>
-					<td data-cell="#{msg['lbl.adjunto']}">#{g.nombre}</td>
-					<td data-cell="#{msg['lbl.importe']}">#{iris.irse.gastos.getGastoImporte(g)} €</td>
-				</tr>
-			</c:forEach>
-		</tbody>
+		<tbody></tbody>
 		<tfoot>
 			<tr>
-				<td colspan="4"><h:outputText value="#{msg['lbl.gastos.extra']}" escape="false" />: #{iris.irse.gastos.numExtras}</td>
-				<td class="tb-data-tc hide-xs">#{iris.irse.gastos.totExtraI18n} €</td>
+				<td class="table-refresh" data-refresh="text-render" colspan="4"><h:outputText value="#{msg['lbl.gastos.extra']}" escape="false" />: @size;</td>
+				<td class="tb-data-tc hide-xs table-refresh" data-refresh="text-render">$imp1; €</td>
 			</tr>
 		</tfoot>
 	</table>
 </div>
-</p:outputPanel>
 </html>

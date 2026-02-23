@@ -30,7 +30,7 @@
 					<option value=""></option>
 					<optgroup label="Factura a nombre del comisionado" class="form-refresh" data-refresh="isFacturasComisionado">
 						<option value="9" class="form-refresh" data-refresh="getNochesPendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
-						<option value="8" class="form-refresh" data-refresh="getRutasPendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
+						<option value="8" class="form-refresh" data-refresh="getNumRutasPendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
 					</optgroup>
 					<optgroup label="Tickets por transporte">
 						<option value="1" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(1)}</option>
@@ -83,17 +83,30 @@
 			</label>
 			<div class="ui-block-btn grupo-gasto hide">
 				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
-				<p:commandButton id="updateGasto" action="#{iris.irse.form.updateGasto()}" update="@(.update-resumen)" oncomplete="showTab(xhr, status, args, 5);" styleClass="hide" />
 			</div>
 		</div>
 		<br class="clear"/>
 
-		<p:outputPanel styleClass="navbar update-irse update-resumen">
-			<ui:include src="./irse05_table.xhtml"></ui:include>
-		</p:outputPanel>
+		<table id="gastos" class="tb-xeco table-xs">
+			<thead>
+				<tr>
+					<th>Nº</th>
+					<th><h:outputText value="#{msg['lbl.tipo.gasto']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.adjunto']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.importe']}" escape="false" /></th>
+					<th class="no-print"></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Documentos: @size;</td></tr>
+			</tfoot>
+		</table>
+
 		<div class="navbar form-refresh" data-refresh="is-rutas-gt-1">
 			<p class="form-refresh" data-refresh="text-render">*
-				<h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @getRutasPendientes;;
+				<h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @getNumRutasPendientes;;
 				<h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @getNochesPendientes;; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />)
 			</p>
 		<!--<c:if test="#{iris.irse.form.extAlu and iris.irse.perfil.tab7}">
@@ -108,10 +121,10 @@
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		<a href="#tab-action-paso5" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcPaso5" action="#{iris.irse.form.paso5()}" oncomplete="showTab(xhr, status, args, 6)" />
+		<p:remoteCommand name="rcPaso5" action="#{iris.irse.form.paso5()}" update="@(.update-resumen)" oncomplete="showTab(xhr, status, args, 6)" />
 		<a href="#tab-action-save5" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
-		<p:remoteCommand name="rcSave5" action="#{iris.irse.form.save5()}" oncomplete="saveTab()" />
+		<p:remoteCommand name="rcSave5" action="#{iris.irse.form.save5()}" update="@(.update-resumen)" oncomplete="saveTab()" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

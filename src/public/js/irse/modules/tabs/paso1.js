@@ -44,7 +44,7 @@ export default class Paso1 extends Form {
 	setMun() {
 		const ruta = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
 		ruta.f1 = sb.isoDate(ruta.dt1); // input format date
-		this.setValues(ruta, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1)
+		this.setValues(ruta, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1)
 			.setChangeInput("#desp-mun", ev => this.setVisible(".grupo-matricula", ev.target.value == "1"));
 	}
 }

@@ -4,8 +4,9 @@ import presto from "../model/Presto.js";
 import firma from "../../core/model/Firma.js";
 import Solicitudes from "../../core/modules/solicitudes.js";
 
-class Prestos extends Solicitudes {
-	constructor() { super(presto); }
+export default class Prestos extends Solicitudes {
+	init() { super.init(presto); } // init super with model reference
+	getSolicitud = () => presto; // get current instance
 
 	row(data) {
 		let acciones = super.row(data);
@@ -40,5 +41,3 @@ class Prestos extends Solicitudes {
 		</tr>`;
 	}
 }
-
-export default new Prestos();

@@ -109,10 +109,10 @@
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		<a href="#tab-action-paso2" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcPaso2" action="#{iris.irse.form.paso2()}" update="dietas-data" oncomplete="showTab(xhr, status, args)" />
+		<p:remoteCommand name="rcPaso2" action="#{iris.irse.form.paso2()}" oncomplete="showTab(xhr, status, args)" />
 		<a href="#tab-action-save2" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
-		<p:remoteCommand name="rcSave2" action="#{iris.irse.form.save2()}" update="dietas-data" oncomplete="showTab(xhr, status, args, 2)" />
+		<p:remoteCommand name="rcSave2" action="#{iris.irse.form.save2()}" oncomplete="showTab(xhr, status, args, 2)" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

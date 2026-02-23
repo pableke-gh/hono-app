@@ -5,22 +5,24 @@ import partida from "../model/Partida.js";
 
 import PartidaDec from "./partidaDec.js";
 import PartidaInc from "./partidaInc.js";
-import prestos from "./prestos.js";
+import Partida030 from "./partida030.js";
+import Prestos from "./prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class Presto extends Solicitud {
+	#prestos = new Prestos();
 	#pDec = new PartidaDec(this);
 	#pInc = new PartidaInc(this);
-
-	constructor() {
-		super(prestos, prestos.getSolicitud());
-	}
+	#p030 = new Partida030(this);
 
 	init() { // init modules
-		this.setValidators(valid);
+		super.init(this.#prestos, valid);
+		this.#prestos.init();
+
 		this.#pDec.init();
 		this.#pInc.init();
-		return super.init(); // configure inputs
+		this.#p030.init();
+		return this;
 	}
 
 	onView(data) {
@@ -28,9 +30,11 @@ class Presto extends Solicitud {
 		this.#pInc.view(data.partidas); // cargo la tabla de partidas a incrementar
 	}
 
+	getSolicitudes = () => this.#prestos; // list
 	getPartidaDec = () => this.#pDec;
 	getPartidaInc = () => this.#pInc;
 	getPartidas = this.#pInc.getPartidas;
+	getPartida030 = () => this.#p030;
 
 	setAvisoFa = item => { //aviso para organicas afectadas en TCR o FCE
 		const info = "La orgánica seleccionada es afectada, por lo que su solicitud solo se aceptará para determinado tipo de operaciones.";

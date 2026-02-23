@@ -1,8 +1,5 @@
 
-import coll from "../../components/Collection.js";
-import tabs from "../../components/Tabs.js";
 import valid from "../i18n/validators.js";
-
 import irse from "../model/Irse.js";
 import Perfil from "./tabs/perfil.js";
 import Paso1 from "./tabs/paso1.js";
@@ -12,10 +9,12 @@ import Paso5 from "./tabs/paso5.js";
 import Resumen from "./tabs/resumen.js";
 import Paso9 from "./tabs/paso9.js";
 import InformeISU from "./tabs/otri.js";
-import solicitudes from "./solicitudes.js";
+
+import Solicitudes from "./solicitudes.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class IrseSolicitud extends Solicitud {
+	#solicitudes = new Solicitudes();
 	#perfil = new Perfil(this);
 	#paso1 = new Paso1(this);
 	#rutas = new Rutas(this);
@@ -25,32 +24,9 @@ class IrseSolicitud extends Solicitud {
 	#paso9 = new Paso9(this);
 	#isu = new InformeISU(this);
 
-	constructor() {
-		super(solicitudes, solicitudes.getSolicitud());
-
-		// PF hack for old version compatibility => remove when possible
-		const fnIdParam = data => { loading(); return [{ name: "id", value: data.id }]; } // set param structure
-		window.createIrse = (xhr, status, args) => { solicitudes.clear(); window.viewIrse(xhr, status, args, 0); } // perfil tab
-		solicitudes.set("#view", data => (this.isCached(data.id) ? tabs.showTab(irse.setData(data).getInitTab()) : window.rcView(fnIdParam(data))));
-
-		window.saveTab = () => this.setOk().setChanged().refresh(irse).working();
-		window.showTab = (xhr, status, args, tab) => {
-			if (!window.showAlerts(xhr, status, args)) return;
-			irse.setData(coll.parse(args.data)); // update irse data
-			this.setval("#idses", irse.getId()).setCache(irse.getId())
-				.setFirmas(coll.parse(args.firmas)).refresh(irse); // update state
-			tabs.load(this.getForm()).goTab(tab); // go selected/next tab
-		}
-		window.closeForm = (xhr, status, args) => {
-			if (!window.showAlerts(xhr, status, args)) return;
-			solicitudes.setWorking(); // update state
-			this.viewInit(); // go init tab
-		}
-	}
-
 	init() { // init modules
-		this.setValidators(valid)
-		solicitudes.init();
+		super.init(this.#solicitudes, valid);
+		this.#solicitudes.init();
 
 		this.#perfil.init();
 		this.#paso1.init();
@@ -60,19 +36,23 @@ class IrseSolicitud extends Solicitud {
 		this.#resumen.init();
 		this.#paso9.init();
 		this.#isu.init();
-		super.init(); // configure inputs
+		return this;
 	}
 
-	view = firmas => {
+	load(gastos, dietas, firmas) {
+		const id = irse.getId();
+		this.#paso5.view(gastos);
+		this.#resumen.view(dietas);
+		return this.setFirmas(firmas).setval("#idses", id).setCache(id).refresh(irse);
+	}
+	// IMPORTANT! override super view
+	view = (rutas, gastos, dietas, firmas) => {
 		this.#perfil.view();
-		this.#rutas.view();
-		this.#resumen.view();
-
-		const fnSync = ev => this.eachInput(".ui-matricula", el => { el.value = ev.target.value; }); 
-		this.initInputs().setval("#idses", irse.getId()).setCache(irse.getId()).setFirmas(firmas);
-		this.onChangeInputs(".ui-matricula", fnSync).refresh(irse); // update state
+		this.#rutas.view(rutas);
+		this.load(gastos, dietas, firmas).initInputs();
 	}
 
+	getSolicitudes = () => this.#solicitudes; // list
 	getPerfil = () => this.#perfil; // module perfil
 	getOrganicas = this.#perfil.getOrganicas; // table organicas
 	getPaso1 = () => this.#paso1; // module paso1

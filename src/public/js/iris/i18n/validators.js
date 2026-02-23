@@ -46,8 +46,8 @@ class IrisValidators extends Validators {
 			return this.fail(); // error en mun
 		rutaMun.destino = rutaMun.origen;
 		rutaMun.pais1 = rutaMun.pais2 = "ES";
-		rutaMun.dt1 = sb.toIsoDate(rutaMun.dt1);
-		rutaMun.dt2 = sb.endDay(rutaMun.dt1);
+		rutaMun.dt2 = rutaMun.dt1;// = sb.toIsoDate(rutaMun.dt1);
+		//rutaMun.dt2 = sb.endDay(rutaMun.dt1);
 		rutaMun.km2 = rutaMun.km1; // km1 = km2
 		rutaMun.mask = 5; // es cartagena + principal
 		if (!this.ruta(rutaMun)) // valido el formulario mun

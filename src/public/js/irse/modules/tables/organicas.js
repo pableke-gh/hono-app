@@ -1,11 +1,14 @@
 
-import sb from "../../../components/types/StringBox.js";
 import Table from "../../../components/Table.js";
 import i18n from "../../i18n/langs.js";
 import irse from "../../model/Irse.js";
+import organica from "../../model/Organica.js";
 import form from "../irse.js"
 
+// tabla de organicas asociadas al perfil (paso 0)
 export default class Organicas extends Table {
+	#tipo; #financiacion;
+
 	constructor(form) { // tabla del paso 0 (organicas del perfil)
 		super(form.querySelector("#organicas"), { msgConfirmRemove: "removeOrg" });
 		this.setMsgEmpty("No existen orgánicas asociadas a la comunicación.");
@@ -13,25 +16,27 @@ export default class Organicas extends Table {
 		irse.getResponsables = this.getResponsables; // listado de responsables de las organicas
 	}
 
+	getTipoDieta = () => this.#tipo;
+	isRD = () => (this.#tipo == 1);
+	isEUT = () => (this.#tipo == 2);
+	isUPCT = () => (this.#tipo == 9);
+
 	getCreditoDisp = () => ((this.isEmpty() || irse.isUxxiec()) ? null : this.getFirst().imp);
 	getResponsables = () => (" " + this.getData().map(org => org.r).join(", "));
-	getFinanciacion() {
-		let result = "OTR"; //default fin.
-		if (this.isEmpty())
-			return result; // default value
-		const ORG_300518 = "300518";
-		this.getData().forEach(org => {
-			result = (sb.starts(org.o, ORG_300518) && ((org.mask & 8) == 8)) ? "ISU" : result; //apli=642
-			result = (sb.starts(org.o, ORG_300518) && ((org.mask & 16) == 16) && (result != "ISU")) ? "A83" : result; //apli=643
-			result = ((sb.starts(org.o, "300906") || sb.starts(org.o, "300920")) && (result == "OTR")) ? "ACA" : result; //TTPP o Master
-		});
-		if (this.size() > 1) {
-			if (result == "ISU") return "xSU"; 
-			if (result == "A83") return "x83"; 
-			if (result == "ACA") return "xAC"; 
-			return "xOT";
-		}
-		return result;
+
+	isA83 = org => (organica.is643(org) && (this.#financiacion != "ISU")); // A83 = 643 y no ISU
+	isACA = org => (organica.isACA(org) && (this.#financiacion == "OTR")); // TTPP o Master
+	getFinanciacion = () => this.#financiacion;
+
+	beforeRender() {
+		this.#financiacion = "OTR"; //default fin.
+	}
+
+	rowCalc(data) {
+		this.#tipo = data.tipo; // tipo de organica = (RD, EUT, UPCT)
+		this.#financiacion = organica.is642(data) ? "ISU" : this.#financiacion; // apli = 642
+		this.#financiacion = this.isA83(data) ? "A83" : this.#financiacion; // A83 = 643 y no ISU
+		this.#financiacion = this.isACA(data) ? "ACA" : this.#financiacion; // TTPP o Master
 	}
 
 	row(data) {
@@ -47,6 +52,15 @@ export default class Organicas extends Table {
 	}
 
 	afterRender() {
+		const MULTI_APLICACION = {
+			"ISU": "xSU",
+			"A83": "x83",
+			"ACA": "xAC",
+			"OTR": "xOT"
+		};
+		if (this.size() > 1)
+			this.#financiacion = MULTI_APLICACION[this.#financiacion]; // || "xOT"; // default = "xOT"
+		irse.setFinanciacion(this.#financiacion);
 		form.getPerfil().closeAlerts().stringify("#presupuesto", this.getData()).update(); // update tab
 	}
 }

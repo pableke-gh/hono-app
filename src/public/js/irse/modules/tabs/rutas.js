@@ -1,6 +1,4 @@
 
-import coll from "../../../components/CollectionHTML.js";
-import sb from "../../../components/types/StringBox.js";
 import Form from "../../../components/forms/Form.js";
 import tabs from "../../../components/Tabs.js";
 import valid from "../../i18n/validators.js";
@@ -9,7 +7,7 @@ import irse from "../../model/Irse.js"
 import rutas from "../../model/Rutas.js"
 
 import TableRutas from "../tables/rutas.js";
-import maps from "../maps.js";
+import maps from "../util/maps.js";
 import form from "../irse.js"
 
 export default class Rutas extends Form {
@@ -41,10 +39,9 @@ export default class Rutas extends Form {
 		return this;
 	}
 
-	view = () => {
-		rutas.setRutas(coll.parse(this.getText("#rutas-data")) || []);
-		this.onChangeInput("#matricula", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
-		this.#tr.render(); // render rutas paso 2 = maps
+	view(data) {
+		rutas.setRutas(data);
+		this.#tr.render();
 	}
 
 	size = rutas.size;

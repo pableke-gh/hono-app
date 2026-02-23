@@ -39,8 +39,7 @@ class IrseValidators extends Validators {
 			return this.fail(); // error en mun
 		rutaMun.destino = rutaMun.origen;
 		rutaMun.pais1 = rutaMun.pais2 = "ES";
-		rutaMun.dt1 = sb.toIsoDate(rutaMun.f1);
-		rutaMun.dt2 = sb.endDay(rutaMun.dt1);
+		rutaMun.dt1 = rutaMun.dt2 = rutaMun.f1; // fecha llegada = fecha salida
 		rutaMun.km2 = rutaMun.km1; // km1 = km2
 		rutaMun.mask = 5; // es cartagena + principal
 		if (!this.ruta(rutaMun))
@@ -137,14 +136,14 @@ class IrseValidators extends Validators {
 			return this.size250("txtGasto", data.txtGasto).close(data);
 		if (gasto.isTipoExtra(data.tipoGasto))
 			return this.size250("txtGasto", data.txtGasto, "errJustifiExtra").close(data);
-		if ((data.tipoGasto == "8") && !data.trayectos)
+		if (gasto.isTipoInterurbano(data.tipoGasto) && !data.trayectos)
 			return !tabs.showTab(12); //factura sin trayectos asociados => tab-12
 		if (gasto.isTipoPernocta(data.tipoGasto) && (!data.fAloMin || !data.fAloMax))
 			return this.addRequired("fAloMin", "errFechasAloja").fail();
 		return this.success(data);
 	}
 
-	paso6(resume) {
+	resumen(resume) {
 		const data = form.getData();
 		resume.justifi && this.size500("justifiKm", data.justifiKm, "errJustifiKm");
 		return this.close(data);

@@ -2,10 +2,35 @@
 import Table from "../../../components/Table.js";
 import i18n from "../../../i18n/langs.js";
 
+import irse from "../../model/Irse.js";
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
+import gasto from "../../model/Gasto.js";
+import gastos from "../../model/Gastos.js";
 
+/*********** ASOCIAR RUTAS / GASTOS ***********/
 export default class RutaGasto extends Table {
+	constructor(form) {
+		super(form.querySelector("#rutas-out"));
+	}
+
+	init() {
+		irse.getNumRutasPendientes = this.size;
+	}
+
+	getChecked = () => this.getBody().$$(":checked").map(el => +el.value);
+	link(data) {
+		gastos.push(data); // add new gasto
+		if (!gasto.isFactura(data)) return; // no es factura
+		rutas.link(this.getChecked(), data.id); // link gasto id to rutas
+		this.view(); // update changes in pending routes
+	}
+	unlink(data) {
+		gastos.removeById(data.id); // elimino el gasto del array
+		rutas.unlink(data.id); // actualizo el registro de rutas
+		this.view(); // update changes in pending routes
+	}
+
 	beforeRender = ruta.beforeRender;
 	rowCalc = ruta.rowCalc;
 
@@ -24,6 +49,6 @@ export default class RutaGasto extends Table {
 	}
 
 	view() {
-		return super.view(rutas.getRutasUnlinked());
+		super.view(rutas.getRutasPendientes());
 	}
 }

@@ -1,6 +1,6 @@
 
-import sb from "../../components/types/StringBox.js";
-import form from "./irse.js";
+import organica from "../../model/Organica.js";
+import form from "../irse.js";
 
 function IrseImputacion() {
 	//const self = this; //self instance
@@ -12,16 +12,19 @@ function IrseImputacion() {
 	const FINALIDAD_BB = { "1": "33", "2": "35", "3": "34" };
 	const FINALIDAD_CC = { "1": "36", "2": "38", "3": "37" };
 	//COLECTIVOS = { "PDI-FU", "PAS", "PDI-LA", "PIN", "BPE", "ALU", "EXT" };
-	const COLECTIVOS = { "PDI-FU": "00", "PDI-LA": "01", "PAS": "02", "PIN": "03", "BPE": "04", "ALU": "05", "EXT": "06" };
-	const NONE = "-"; // Sin Imputacion
+	const COLECTIVOS = {
+		"PDI-FU": "00", "PDI-LA": "01", "PAS": "02", 
+		"PIN":    "03", "BPE":    "04", "ALU": "05", 
+		"EXT":    "06"
+	};
+	//const NONE = "-"; // Sin Imputacion
 
-	const isInve3005 = org => (org && sb.starts(org.o, "3005") && ((org.mask & 64) == 64)); //es de investigacion de la 3005XX
-	const is643 = org => (org && ((org.mask & 16) == 16)); //contiene alguna aplicacion 643?
+	//const is643 = org => (org && ((org.mask & 16) == 16)); //contiene alguna aplicacion 643?
 
 	//calculo de la imputacion por orden de prelacion
 	this.get = function(tipo, org) {
 		const perfil = form.getPerfil();
-		if (tipo == 4) { //Asistencias/colaboraciones = 4
+		/*if (tipo == 4) { //Asistencias/colaboraciones = 4
 			//organica de investigacion 642
 			if (perfil.isIsu()) {
 				if (perfil.isColaboracion())
@@ -31,7 +34,7 @@ function IrseImputacion() {
 				return NONE;
 			}
 			//organica de investigacion 64X
-			if (isInve3005(org)) {
+			if (organica.isInve3005(org)) {
 				if (perfil.isColaboracion())
 					return "64X.29";
 				if (perfil.isTribunal() || perfil.isFormacion())
@@ -44,7 +47,7 @@ function IrseImputacion() {
 			if (perfil.isTribunal())
 				return "233.00.06";
 			return perfil.isFormacion() ? "233.01" : "233.02";
-		}
+		}*/
 
 		let finalidad = perfil.getval("#finalidad") || "1"; //default = Ejecución
 		if (tipo == 1) // dietas
@@ -58,8 +61,8 @@ function IrseImputacion() {
 
 		if (perfil.isIsu()) //642
 			return "642." + finalidad + "." + colectivo;
-		if (isInve3005(org)) //64X
-			return (is643(org) ? "643." : "64X.") + SUBCONCEPTOS_CAP6[tipo] + "." + colectivo;
+		if (organica.isInve3005(org)) //64X
+			return (organica.is643(org) ? "643." : "64X.") + SUBCONCEPTOS_CAP6[tipo] + "." + colectivo;
 		//capitulo 2
 		let cap2 = CONCEPTOS_CAP2[tipo] + ".xx."  + colectivo;
 		if (tipo == 1) // dietas

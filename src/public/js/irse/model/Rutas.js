@@ -14,6 +14,7 @@ function Rutas() {
 	this.setRutas = data => { _rutas = data; return self; }
 
 	this.get = i => _rutas[i]; // get by index
+	this.getById = id => _rutas.find(ruta => (ruta.id == id)); // get by id
 	this.setRuta = (ruta, index) => { _rutas[index || 0] = ruta; return self; }
 	this.addRuta = ruta => {
 		_rutas.push(ruta); // añado + reordenar por fecha de salida
@@ -37,16 +38,18 @@ function Rutas() {
 	this.isMismoDia = () => sb.inDay(self.getHoraSalida(), self.getHoraLlegada());
 	this.isMedioDia = () => ruta.isMedioDia(self.getHoraSalida(), self.getHoraLlegada());
 
-	const fnDiffDias = () => dt.diffDays(self.llegada(), dt.trunc(self.salida())); //tb.getDays(self.llegada(), tb.trunc(self.salida()));
-	this.getNumNoches = () => (self.isEmpty() ? 0 : Math.floor(fnDiffDias()));
-	this.getNumDias = () => (self.isEmpty() ? 0 : Math.ceil(fnDiffDias()));
+	const fnDiffDias = () => dt.diffDays(self.llegada(), dt.trunc(self.salida()));
+	this.getNumNoches = () => (self.isEmpty() ? 0 : fnDiffDias());
+	this.getNumDias = () => (self.isEmpty() ? 0 : (fnDiffDias() + 1));
 
 	this.getRutasVehiculoPropio = () => _rutas.filter(ruta.isVehiculoPropio);
 	this.getNumRutasVp = () => self.getRutasVehiculoPropio().length;
 	this.getImpKm = () => (self.getRutasVehiculoPropio().reduce((sum, ruta) => (sum + ruta.km1), 0) * ruta.getImpGasolina());
 
-	this.getRutasUnlinked = () => _rutas.filter(ruta.isUnlinked);
-	this.getNumRutasUnlinked = () => self.getRutasUnlinked().length;
+	this.getRutasPendientes = () => _rutas.filter(ruta.isUnlinked);
+	this.getNumRutasPendientes = () => self.getRutasPendientes().length;
+	this.unlink = id => _rutas.forEach(data => { ruta.isLinked(data, id) && ruta.setUnlinked(data); });
+	this.link = (rutas, gasto) => rutas.forEach(id => ruta.setLinked(self.getById(id), gasto));
 
 	this.getLocomocion = () => coll.unique(_rutas.map(ruta.getMedioTransporte)).join(", ");
 	this.getItinerario = () => (self.getOrigen() + _rutas.map(ruta => ruta.destino).join(", "));

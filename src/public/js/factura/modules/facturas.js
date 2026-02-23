@@ -4,8 +4,9 @@ import factura from "../model/Factura.js";
 import firma from "../../core/model/Firma.js";
 import Solicitudes from "../../core/modules/solicitudes.js";
 
-class Facturas extends Solicitudes {
-	constructor() { super(factura); }
+export default class Facturas extends Solicitudes {
+	init() { super.init(factura); } // init super with model reference
+	getSolicitud = () => factura; // get current instance
 
 	row(data) {
 		let acciones = super.row(data);
@@ -24,5 +25,3 @@ class Facturas extends Solicitudes {
 		</tr>`;
 	}
 }
-
-export default new Facturas();

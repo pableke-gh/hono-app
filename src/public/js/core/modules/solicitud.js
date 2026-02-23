@@ -9,10 +9,14 @@ import firma from "../model/Firma.js";
 export default class Solicitud extends Form {
 	#solicitudes; #solicitud; #valid;
 
-	constructor(solicitudes, solicitud, opts) {
-		super("#xeco-model", opts); // instance super
+	constructor(opts) { // build instance
+		super("#xeco-model", opts);
+	}
+
+	init(solicitudes, valid) {
+		this.#valid = valid; // current validator instance
 		this.#solicitudes = solicitudes; // solicitudes module list
-		this.#solicitud = solicitud; // solicitud model instance
+		this.#solicitud = solicitudes.getSolicitud(); // solicitud model instance
 
 		// set default handlers
 		solicitudes.set("#view", this.view).set("#firmar", this.firmar).set("#reject", this.reject)
@@ -32,12 +36,13 @@ export default class Solicitud extends Form {
 			api.setJSON(data).json(this.#solicitud.getUrl() + "/firmar").then(this.#refreshForm); // post method
 			this.#solicitudes.setProcesando(); // update current row to avoid reclicks
 		});
+		return super.init();
 	}
 
+	getSolicitudes = () => this.#solicitudes; // list
 	viewInit = () => { this.resetCache(); tabs.showInit(); }
 	showForm = () => this.reactivate(this.#solicitudes.load()); // open form tab
 	report = () => api.init().text(this.#solicitud.getUrl() + "/report?id=" + this.#solicitudes.getId()).then(api.open); // call report service
-	setValidators(valid) { this.#valid = valid; return this; } 
 
 	#validReject = msg => (this.#valid.rechazar() && i18n.confirm(msg)); // validate form + user confirm
 	#rejectParams = id => ({ id, rechazo: this.getValueByName("rechazo") }); // get url params 

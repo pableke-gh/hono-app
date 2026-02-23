@@ -8,7 +8,6 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
-	<p:outputPanel id="rutas-data" styleClass="hide update-irse">#{iris.irse.rutas.rutasJson}</p:outputPanel>
 	<h:inputHidden id="etapas" value="#{iris.irse.input.rutas}" /> <!-- upload only -->
 	<div class="card-xeco">
 		<h2>
@@ -47,8 +46,8 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.resp']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText id="promotor" value="#{iris.irse.perfil.acPromotor}" tabindex="43" styleClass="ui-input ui-autocomplete #{iris.irse.form.cssDisabled}" />
-				<h:inputHidden id="nif-promotor" value="#{iris.irse.perfil.nifPromotor}" />
+				<h:inputText id="promotor" value="#{iris.irse.perfil.acPromotor}" tabindex="43" styleClass="ui-input ui-autocomplete update-irse #{iris.irse.form.cssDisabled}" />
+				<h:inputHidden id="nif-promotor" value="#{iris.irse.perfil.nifPromotor}" styleClass="update-irse" />
 				<ul role="list" class="results"></ul>
 			</div>
 		</label>
@@ -57,12 +56,12 @@
 		<div class="ui-blocks form-refresh" data-refresh="isMun">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
-				<input type="text" name="origen" class="ui-input ui-text ui-mun #{iris.irse.form.cssDisabled}" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
+				<input type="text" name="origen" class="ui-input ui-text ui-mun" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select id="desp-mun" name="desp" class="ui-input ui-select ui-mun #{iris.irse.form.cssDisabled}" tabindex="47">
+				<select id="desp-mun" name="desp" class="ui-input ui-select ui-mun" tabindex="47">
 					<option value="1">#{iris.irse.rutas.getMsgDesp(1)}</option>
 					<option value="10">#{iris.irse.rutas.getMsgDesp(10)}</option>
 				</select>
@@ -74,12 +73,12 @@
 			</label>
 			<label class="ui-block grupo-matricula">
 				<div class="label required">km:</div>
-				<input type="text" name="km1" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun #{iris.irse.form.cssDisabled}"/>
+				<input type="text" name="km1" maxlength="10" tabindex="49" class="ui-input ui-float ui-mun"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
-				<input type="date" name="f1" class="ui-input ui-date ui-mun #{iris.irse.form.cssDisabled}" tabindex="50" />
+				<input type="date" name="f1" class="ui-input ui-date ui-mun" tabindex="50" />
 				<div class="ui-errtip"></div>
 			</label>
 		</div>

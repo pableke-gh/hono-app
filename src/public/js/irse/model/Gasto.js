@@ -1,4 +1,6 @@
 
+import i18n from "../../i18n/langs.js";
+
 class Gasto {
 	isFactura = gasto => (gasto.tipo == 1);
 	isTicket = gasto => (gasto.tipo == 2);
@@ -12,6 +14,7 @@ class Gasto {
 
 	isPernocta = gasto => (gasto.tipo == 6);
 	isTipoPernocta = tipo => (tipo == "9"); //Tipo pernocta
+	isTipoInterurbano = tipo => (tipo == "8"); //Transporte interurbano
 
 	isExtra = gasto => (gasto.tipo == 8);
 	isTipoExtra = tipo => ["301", "302", "303", "304"].includes(tipo);
@@ -35,6 +38,30 @@ class Gasto {
 	isOrganicaPernocta = gasto => (this.isOrganica(gasto) && (gasto.subtipo == 2)); // paso 9 = multiorganica pernocta = 2
 	isOrganicaTrans = gasto => (this.isOrganica(gasto) && (gasto.subtipo == 3)); // paso 9 = multiorganica transporte = 3
 	isOrganicaAc = gasto => (this.isOrganica(gasto) && (gasto.subtipo == 4)); // paso 9 = multiorganica asistencias = 4
+
+	getDescSubtipo = data => {
+		if (this.isFactura(data))
+			return i18n.get("lblFactTransporte");
+		if (this.isTicket(data))
+			return i18n.getItem("tipoTickets", data.subtipo) || "-";
+		if (this.isPernocta(data))
+			return i18n.get("lblFactAlojamiento");
+		if (this.isExtra(data))
+			return i18n.getItem("tipoExtra", data.subtipo) || "-";
+		return this.isDoc(data) ? i18n.getItem("tipoDocs", data.subtipo) : data.desc;
+	}
+	getDescSubtipoImp = data => {
+		return this.getDescSubtipo(data) + ": " + i18n.isoFloat(data.imp1) + " €";
+	}
+	getDescGasto = data => {
+		if (this.isFactura(data))
+			return i18n.render(i18n.get("lblFactRutas"), data);
+		if (this.isTaxiJustifi(data)) // descripcion del itinerario del taxi
+			return data.desc;
+		if (this.isTicket(data))
+			return i18n.getItem("tipoTickets", data.subtipo) || "-";
+		return this.isPernocta(data) ? i18n.render(i18n.get("lblRangoNoches"), data) : data.desc;
+	}
 }
 
 export default new Gasto();

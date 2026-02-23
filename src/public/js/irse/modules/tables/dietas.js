@@ -1,5 +1,4 @@
 
-import coll from "../../../components/CollectionHTML.js";
 import Table from "../../../components/Table.js";
 //import dom from "../../lib/dom-box.js";
 import i18n from "../../i18n/langs.js";
@@ -18,8 +17,9 @@ const STYLES = {
 	}
 }*/
 
+// tabla del paso 6 resumen de dietas
 export default class Dietas extends Table {
-	constructor(form) { // tabla del paso 6 (dietas)
+	constructor(form) {
 		super(form.querySelector("#dietas"));
 	}
 
@@ -73,11 +73,6 @@ export default class Dietas extends Table {
 			<td data-cell="${i18n.get("lblReduccion")}" class="table-refresh" data-refresh="text-render" data-template="$reducido; €">${i18n.isoFloat(dieta.reducido)} €</td>
 			<td data-cell="${i18n.get("lblImpTotal")}" class="table-refresh" data-refresh="text-render" data-template="$percibir; €">${i18n.isoFloat(dieta.percibir)} €</td>
 		</tr>`;
-	}
-
-	render(tab6) {
-		const divData = tab6.querySelector("#dietas-data");
-		super.render(coll.parse(divData.innerText) || []);
 	}
 
 	afterRender() {

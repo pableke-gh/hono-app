@@ -4,19 +4,16 @@ import i18n from "../i18n/langs.js";
 
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
-import Partida030 from "./partida030.js";
+import form from "./presto.js";
 
 export default class Partidas extends Table {
-	#p030; // Partida030 module
-
 	constructor(form) { // parent PartidaInc form
 		super(form.querySelector("#partidas-inc"));
-		this.#p030 = new Partida030(form);
 	}
 
 	init() {
-		this.#p030.init();
-		this.set("#doc030", this.#p030.view).setMsgEmpty("No existen partidas a incrementar asociadas a la solicitud");
+		const p030 = form.getPartida030();
+		this.set("#doc030", p030.view).setMsgEmpty("No existen partidas a incrementar asociadas a la solicitud");
 		presto.showPartidasInc = () => (presto.isTipoMultipartida() && presto.isEditable() && (this.size() < 20));
 	}
 
@@ -58,11 +55,11 @@ export default class Partidas extends Table {
 	}
 
 	afterRender() {
-		this.#p030.setEditable(presto);
+		form.setEditable(presto);
 	}
 
 	autoload(partida, imp) {
 		partida = partida || this.getFirst(); // autoload + render
-		this.#p030.autoload(partida, imp) && this.render([ partida ]);
+		form.getPartida030().autoload(partida, imp) && this.render([ partida ]);
 	}
 }

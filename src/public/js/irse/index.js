@@ -1,21 +1,52 @@
 
 import coll from "../components/Collection.js";
+import sb from "../components/types/StringBox.js";
 import tabs from "../components/Tabs.js";
-import i18n from "./i18n/langs.js";
 
 import irse from "./model/Irse.js";
 import form from "./modules/irse.js";
 
 coll.ready(() => {
-	form.init(); // init modules
+	const list = form.init().getSolicitudes(); // init modules
 
-	//PF needs confirmation in onclick attribute
-	window.fnUnlink = () => (i18n.confirm("unlink") && loading());
+	// PF hack for old version compatibility => remove when possible
+	const fnIdParam = data => { loading(); return [{ name: "id", value: data.id }]; } // set param structure
+	list.set("#view", data => (form.isCached(data.id) ? tabs.showTab(irse.getInitTab()) : window.rcView(fnIdParam(data))));
+
+	//window.fnUnlink = () => (i18n.confirm("unlink") && loading());
+	window.saveTab = () => form.setOk().setChanged().refresh(irse).working();
+	window.createIrse = (xhr, status, args) => {
+		list.clear(); // no element selected
+		window.viewIrse(xhr, status, args, 0);
+	}
 	window.viewIrse = (xhr, status, args, tab) => {
-		irse.setData(coll.parse(args.data));
-		form.view(coll.parse(args.firmas)); // configure view
-		tabs.reset([ 0, 1, 3, 6, 9 ]).load(form.getForm()); // reload links
+		if (!window.showAlerts(xhr, status, args)) return;
+		irse.setData(coll.parse(args.data)); // set irse data
+		const rutas = coll.parse(args.rutas);
+		const gastos = coll.parse(args.gastos);
+		const dietas = coll.parse(args.dietas);
+		const firmas = coll.parse(args.firmas);
+
+		form.view(rutas, gastos, dietas, firmas); // configure view
+		tabs.reset([ 0, 1, 3, 9 ]).load(form.getForm()); // reload links
+
+		const fnSync = ev => form.eachInput(".ui-matricula", el => { el.value = sb.toUpperWord(ev.target.value); }); 
+		form.onChangeInputs(".ui-matricula", fnSync).refresh(irse); // update state
 		tabs.nextTab(tab ?? irse.get("tab")); // go to next tab
-		window.showAlerts(xhr, status, args); // alerts
+	}
+	window.showTab = (xhr, status, args, tab) => {
+		if (!window.showAlerts(xhr, status, args)) return;
+		irse.setData(coll.parse(args.data)); // set irse data
+		const gastos = coll.parse(args.gastos);
+		const dietas = coll.parse(args.dietas);
+		const firmas = coll.parse(args.firmas);
+
+		form.load(gastos, dietas, firmas); // parse firmas
+		tabs.load(form.getForm()).goTab(tab); // go selected/next tab
+	}
+	window.closeForm = (xhr, status, args) => {
+		if (!window.showAlerts(xhr, status, args)) return;
+		list.setWorking(); // update state
+		form.viewInit(); // go init tab
 	}
 });

@@ -83,7 +83,7 @@ function StringBox() {
 	this.getHours = str => +(str || sysdate).substring(11, 13); // hh number format [0-23]
 	this.getMonth = str => +(str || sysdate).substring(5, 7); // mm number format [1-12]
 	this.getMinutes = str => +(str || sysdate).substring(14, 16); // min number format [0-59]
-	this.endDay = str => str ? (str.substring(0, 10) + "T23:59:59.999Z") : str;
+	//this.endDay = str => str ? (str.substring(0, 10) + "T23:59:59.999Z") : str;
 	this.cmp = function(a, b) {
 		if (globalThis.isset(a) && globalThis.isset(b))
 			return ((a < b) ? -1 : ((a > b) ? 1 : 0));

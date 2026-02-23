@@ -20,6 +20,10 @@ export default class Rutas extends Table {
 			form.setChanged(true);
 			this.refresh();
 		});
+		this.set("update-principal", (el, data) => {
+			el.children.forEach(el => el.hide());
+			el.children[+ruta.isPrincipal(data)].show();
+		});
 	}
 
 	beforeRender(resume) {
@@ -35,10 +39,6 @@ export default class Rutas extends Table {
 		const TPL_PRINCIPAL = `<span class="${isPrincipal ? "" : "hide"}">${data.destino}${TPL_FLAG}</span>`;
 		const TPL_READONLY = isPrincipal ? (data.destino + TPL_FLAG) : data.destino;
 		const destino = irse.isEditable() ? (TPL_ORDINARIO + TPL_PRINCIPAL) : TPL_READONLY;
-		data["update-principal"] = (el, data) => {
-			el.children.forEach(el => el.hide());
-			el.children[+ruta.isPrincipal(data)].show();
-		}
 
 		const matricula = ruta.isVehiculoPropio(data) ? (" (" + resume.matricula + ")") : "";
 		const remove = irse.isEditable() ? '<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>' : "";

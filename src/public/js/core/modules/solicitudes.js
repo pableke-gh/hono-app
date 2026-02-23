@@ -10,19 +10,20 @@ import Uxxiec from "./uxxiec.js";
 export default class Solicitudes extends Table {
 	#solicitud; // model instance
 
-	constructor(solicitud, opts) {
-		const filter = new Filter(); // filter instance
-		const url = solicitud.getUrl(); // url base path
-		super(filter.getNextElement(), opts); // call super before this reference
+	constructor(opts) {
+		super("#solicitudes", opts); // call super before this reference
+	}
 
+	init(solicitud) { // default list handlers
+		const url = solicitud.getUrl(); // url base path
 		const tabUxxi = tabs.getTab("uxxiec"); // server info.
 		this.#solicitud = solicitud.setUser(tabUxxi.dataset);
 
+		const filter = new Filter(); // filter instance
 		const uxxiec = new Uxxiec(); // uxxi-ec form instance
-		uxxiec.init(this); // set handlers to uxxi-ec form
 		filter.init(this); // set handlers with reference to this list
+		uxxiec.init(this); // set handlers to uxxi-ec form
 
-		// default list handlers
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada")
 			.set("#emails", data => api.init().json(url + "/emails?id=" + data.id)); // admin test email
 		this.setRemove(data => {
@@ -33,17 +34,16 @@ export default class Solicitudes extends Table {
 			i18n.confirm("msgIntegrar") && api.init().json(url + "/ws?id=" + data.id).then(this.setWorking);
 		});
 		this.set("update-estado", td => { // actualizo la celda del estado
-			const dataCached = solicitud.getData(); // save data cached
 			this.load(this.getCurrent()); // datos de la fila
 			td.className = solicitud.getStyleByEstado() + " hide-xs table-refresh"; // set estilos
 			td.innerHTML = solicitud.getDescEstado(); // set texto de estado
-			solicitud.setData(dataCached); // restore data if not cached
 		});
 		this.view(); // initial render
 		tabs.setAction("remove", this.remove);
+		return this;
 	}
 
-	getSolicitud = () =>  this.#solicitud; // get solicitud
+	getSolicitud = () => this.#solicitud; // get solicitud
 	load = data => this.#solicitud.setData(data || this.getCurrent()); // update data model
 	setProcesando = () => this.load().setProcesando(); // set estado procesando ...
 	updateRow() { this.refreshRow(this.load()); tabs.showList(); } // refresh current row + show list tab

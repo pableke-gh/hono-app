@@ -60,9 +60,9 @@ class Iris extends Solicitud {
 	getPasoMaps = globalThis.void; // redefined by perfil module
 
 	// handlers for select in step 5
-	getNochesPendientes = () => this.get("nochesPendientes");
-	getRutasPendientes = () => this.get("rutasPendientes");
-	isFacturasComisionado = () => ((this.getNochesPendientes() > 0) || (this.getRutasPendientes() > 0));
+	getNochesPendientes = () => 0;
+	getNumRutasPendientes = () => 0;
+	isFacturasComisionado = () => ((this.getNochesPendientes() > 0) || (this.getNumRutasPendientes() > 0));
 	isCenaFinal = () => this.get("cenaFinal");
 
 	// params from server

@@ -4,9 +4,7 @@ import Form from "../../../components/forms/Form.js";
 import tabs from "../../../components/Tabs.js";
 import valid from "../../i18n/validators.js";
 import i18n from "../../i18n/langs.js";
-
 import Imputacion from "../tables/imputacion.js";
-import form from "../irse.js"
 
 /*********** Fin + IBAN ***********/
 export default class Paso9 extends Form {
@@ -19,7 +17,7 @@ export default class Paso9 extends Form {
 	init() {
 		this.#imputacion.init(); // init. tabla
 		tabs.setInitEvent(9, this.initTab); // init. all validations and inputs events only once
-		tabs.setViewEvent(9, () => this.#imputacion.render(form.getOrganicas().getFirst())); // always auto build table imputacion
+		tabs.setViewEvent(9, this.#imputacion.render); // always auto build table imputacion
 	}
 
 	initTab = tab => { // Init tab 9: IBAN
@@ -31,7 +29,7 @@ export default class Paso9 extends Form {
 		}
 
 		this.setVisible("#grupo-iban", cuentas.options.length <= 1) // existen cuentas?
-			.onChangeInput("#urgente", ev => this.setVisible(".grp-urgente", ev.target.value == "2"))
+			.onChangeInput("#urgente", ev => this.setVisible("[data-refresh='isUrgente']", ev.target.value == "2"))
 			.onChangeInput("#entidades", () => this.setval("#banco", this.getOptionText("#entidades")))
 			.onChangeInput("#paises", ev => { fnPais(ev.target.value); this.setval("#banco"); })
 			.onChangeInput("#iban", ev => { ev.target.value = sb.toWord(ev.target.value); })
@@ -51,7 +49,7 @@ export default class Paso9 extends Form {
 			tab.querySelector("#grupo-iban").show();
 		}
 
-		window.fnPaso9 = () => valid.paso9() && loading();
-		window.fnSend = () => valid.paso9() && i18n.confirm("msgFirmarEnviar") && loading();
+		tabs.setAction("save9", () => { valid.paso9() && loading() && window.rcSave9(); }); // call server to save and validate
+		tabs.setAction("send", () => { valid.paso9() && i18n.confirm("msgFirmarEnviar") && loading() && window.rcSend(); }); // call server to save, validate and send
 	}
 }

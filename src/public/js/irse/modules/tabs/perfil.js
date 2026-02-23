@@ -78,16 +78,16 @@ export default class Perfil extends Form {
 			current ? this.#organicas.push(current) : this.#acOrganica.reload(); // new organica
 			this.#acOrganica.setValue(); // remove selected
 		});
+		tabs.setAction("paso0", () => {
+			if (!valid.perfil()) return; // if error => stop
+			if (!irse.isEditableP0()) return tabs.nextTab();
+			loading(); window.rcPaso0(); // call server
+		});
 		this.afterReset(() => {
 			this.#organicas.reset();
 			this.#eCol.parentNode.hide();
 			this.#acInteresado.setValue();
 			this.update();
-		});
-		tabs.setAction("paso0", () => {
-			if (!valid.perfil()) return; // if error => stop
-			if (!irse.isEditableP0()) return tabs.nextTab();
-			loading(); window.rcPaso0(); // call server
 		});
 	}
 
@@ -132,6 +132,7 @@ export default class Perfil extends Form {
 			}
 		});
 
+		this.#acInteresado.setEditable(irse.isEditableP0());
 		this.#eCol.parentNode.setVisible(this.#acInteresado.isLoaded()); //muestro el colectivo
 		this.#eAct.addEventListener("change", this.update); // actualizo el perfil al cambiar la actividad
 	}

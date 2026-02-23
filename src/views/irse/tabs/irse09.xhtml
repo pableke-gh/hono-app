@@ -49,7 +49,7 @@
 			</label>
 			<label class="ui-block swift-block hide">
 				<div class="label">Swift:</div>
-				<h:inputText id="swift" value="#{iris.irse.gastos.swift}" maxlength="30" tabindex="161" styleClass="ui-input ui-code update-irse #{iris.irse.form.cssDisabled}" />
+				<h:inputText id="swift" value="#{iris.irse.gastos.swift}" maxlength="30" tabindex="161" styleClass="ui-input ui-code update-irse update-perfil #{iris.irse.form.cssDisabled}" />
 				<div class="ui-errtip"></div>
 			</label>
 			</div>
@@ -65,17 +65,17 @@
 
 			<label class="ui-block">
 				<div class="label">#{iris.getMsg('lblUrg')}:</div>
-				<h:selectOneMenu id="urgente" value="#{iris.irse.form.urgente}" styleClass="ui-input ui-select update-irse #{iris.irse.form.cssDisabled}" tabindex="181">
+				<h:selectOneMenu id="urgente" value="#{iris.irse.input.urgente}" styleClass="ui-input ui-select update-irse #{iris.irse.form.cssDisabled}" tabindex="181">
 					<f:selectItem itemValue="1" itemLabel="#{iris.getMsg('lblNormal')}" />
 					<f:selectItem itemValue="2" itemLabel="#{iris.getMsg('lblUrgente')}" />
 				</h:selectOneMenu>
 			</label>
 
-			<label class="ui-block grp-urgente #{iris.irse.form.cssUrgente}">
+			<label class="ui-block form-refresh" data-refresh="isUrgente">
 				<div class="label required">#{iris.getMsg('lblFechaUrg')}:</div>
 				<h:inputText id="fMax" value="#{iris.irse.form.FMaxIsoDate}" tabindex="183" styleClass="ui-input ui-date update-irse #{iris.irse.form.cssDisabled}"/>
 			</label>
-			<label class="ui-block-row grp-urgente #{iris.irse.form.cssUrgente}">
+			<label class="ui-block-row form-refresh" data-refresh="isUrgente">
 				<div class="label required">#{iris.getMsg('lblMotivoUrg')}:</div>
 				<div class="ui-block-main">
 					<h:inputTextarea id="extra" value="#{iris.irse.form.extra}" styleClass="ui-input ui-ta rows-2 update-irse #{iris.irse.form.cssDisabled}" tabindex="184"/>
@@ -89,17 +89,23 @@
 	<ui:include src="./irse09_org.xhtml"></ui:include>
 
 	<!-- Botones -->
-	<p:outputPanel styleClass="update-irse">
+	<div class="navbar">
 		<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="190"><i class="fas fa-arrow-to-left"></i></a>
 		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-		<c:if test="#{iris.irse.form.editable}">
-			<p:commandButton action="#{iris.irse.form.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="showAlerts(xhr, status, args)" icon="far fa-save" 
-				styleClass="btn btn warn warning-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="192" title="#{msg['lbl.btn.no.enviar']}" />
-			<p:commandButton action="#{iris.irse.form.send()}" onclick="if (!fnSend()) return false;" oncomplete="closeForm(xhr, status, args)" icon="far fa-file-signature" 
-				styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.enviar']}" tabindex="193" title="#{msg['tit.btn.firmar.enviar']}" />
-		</c:if>
+
+		<a href="#tab-action-save9" class="btn btn-warn form-refresh" data-refresh="isEditable" title="#{msg['lbl.btn.no.enviar']}">
+			<i class="far fa-save btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
+		<p:remoteCommand name="rcSave9" action="#{iris.irse.form.save9()}" oncomplete="showAlerts(xhr, status, args)" />
+		<!--<p:commandButton action="#{iris.irse.form.save9()}" onclick="if (!fnPaso9()) return false;" oncomplete="showAlerts(xhr, status, args)" icon="far fa-save" 
+			styleClass="btn btn warn warning-btn" value="#{msg['lbl.btn.no.enviar']}" tabindex="192" title="#{msg['lbl.btn.no.enviar']}" />-->
+		<a href="#tab-action-send" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.firmar.enviar']}">
+			<i class="far fa-file-signature btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.enviar']}" escape="false" /></a>
+		<p:remoteCommand name="rcSend" action="#{iris.irse.form.send()}" oncomplete="closeForm(xhr, status, args)" />
+		<!--<p:commandButton action="#{iris.irse.form.send()}" onclick="if (!fnSend()) return false;" oncomplete="closeForm(xhr, status, args)" icon="far fa-file-signature" 
+			styleClass="btn btn-green success-btn" value="#{msg['lbl.btn.enviar']}" tabindex="193" title="#{msg['tit.btn.firmar.enviar']}" />-->
+
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 		<ui:include src="../parts/btn_doc.xhtml"></ui:include>
-	</p:outputPanel>
+	</div>
 </html>

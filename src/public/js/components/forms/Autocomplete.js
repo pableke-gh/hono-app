@@ -47,6 +47,10 @@ export default function(autocomplete, opts) {
 	this.setReset = fn => { opts.onReset = fn; return self; }
 	this.setItemMode = minLength => self.setMinLength(minLength || opts.minLength).setSelect(item => item.value).setRender(item => item.label); 
 
+	this.setDisabled = force => { autocomplete.toggle("disabled", autocomplete.toggleAttribute("disabled", force)); return self; }
+	this.setReadonly = force => { autocomplete.toggle("readonly", autocomplete.toggleAttribute("readonly", force)); return self; }
+	this.setEditable = force => self.setReadonly(!force);
+
 	this.getData = () => _results;
 	this.getIndex = () => _index;
 	this.getItem = i => _results[i ?? _index];
@@ -54,7 +58,6 @@ export default function(autocomplete, opts) {
 	this.getCurrentOption = () => resultsHTML.children[_index];
 	this.getCode = sep => sb.getCode(autocomplete.value, sep);
 
-	this.isset = () => autocomplete;
 	this.isItem = () => (_index > -1);
 	this.isLoaded = () => inputValue.value;
 	this.getInputValue = () => inputValue;

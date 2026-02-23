@@ -7,15 +7,17 @@ import irse from "../model/Irse.js";
 import firma from "../../core/model/Firma.js";
 import Solicitudes from "../../core/modules/solicitudes.js";
 
-class IrseSolicitudes extends Solicitudes {
-	constructor() { super(irse); }
-
+export default class IrseSolicitudes extends Solicitudes {
 	init() {
+		super.init(irse); // 1º.- init super handlers with model reference
 		this.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id))); // set table action
 		this.set("#clone", data => (i18n.confirm("msgReactivar") && window.rcClone(fnIdParam(data)))); // set table action
 		this.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // table action
 		//tabs.setAction("rptFinalizar", () => this.invoke("#rptFinalizar")); // set tab action
+		return this;
 	}
+
+	getSolicitud = () => irse;
 
 	row(data) {
 		let acciones = super.row(data);
@@ -48,5 +50,3 @@ class IrseSolicitudes extends Solicitudes {
 		</tr>`;
 	}
 }
-
-export default new IrseSolicitudes();
