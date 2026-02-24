@@ -11,7 +11,9 @@ class Organica {
 	isInve3005 = org => (org && sb.starts(org.o, "3005") && ((org.mask & 64) == 64)); // investigacion de la 3005XX
 
 	// tipos de imputacion (paso 9)
+	isTipoDieta = tipo => (tipo == 1);
 	isDieta = org => (org.subtipo == "1");
+	isTipoPernocta = tipo => (tipo == 2);
 	isPernocta = org => (org.subtipo == "2");
 	isTransporte = org => (org.subtipo == "3");
 	isAc = org => (org.subtipo == "4");

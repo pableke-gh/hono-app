@@ -1,6 +1,5 @@
 
 import dt from "../../components/types/DateBox.js";
-import sb from "../../components/types/StringBox.js";
 import tabs from "../../components/Tabs.js";
 import Validators from "../../core/i18n/validators.js";
 
@@ -136,7 +135,7 @@ class IrseValidators extends Validators {
 			return this.size250("txtGasto", data.txtGasto).close(data);
 		if (gasto.isTipoExtra(data.tipoGasto))
 			return this.size250("txtGasto", data.txtGasto, "errJustifiExtra").close(data);
-		if (gasto.isTipoInterurbano(data.tipoGasto) && !data.trayectos)
+		if (gasto.isTipoInterurbano(data.tipoGasto))
 			return !tabs.showTab(12); //factura sin trayectos asociados => tab-12
 		if (gasto.isTipoPernocta(data.tipoGasto) && (!data.fAloMin || !data.fAloMax))
 			return this.addRequired("fAloMin", "errFechasAloja").fail();

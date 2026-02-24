@@ -8,7 +8,7 @@ class Iris extends Solicitud {
 	getUrl = () => "/uae/iris"; // endpoint base path
 	setData(data) { // Override
 		const parts = data && sb.split(super.setData(data).getPerfil()); // ROL/COLECTIVO/ACTIVIDAD/TRAMITE/FINANCIACION
-		return parts ? this.setPerfil(parts[0], parts[1], parts[2], parts[3], parts[4]) : this;
+		return parts.length ? this.setPerfil(parts[0], parts[1], parts[2], parts[3], parts[4]) : this;
 	}
 
 	isEditableP0 = () => (!this.getId() && this.isEditable());
@@ -69,10 +69,10 @@ class Iris extends Solicitud {
 	getTotAc = () => this.get("totAc");
 	getImpTransporte = () => this.get("impTransporte");
 	getMinPernoctas = () => this.get("minPernoctas");
-	getIRPF = () => this.get("irpf");
 	getImpExtraTrans = () => this.get("impExtraTrans");
 	getImpExtraAloja = () => this.get("impExtraAloja");
 	getImpExtraDietas = () => this.get("impExtraDietas");
+	getIrpf = () => this.get("irpf");
 }
 
 export default new Iris();

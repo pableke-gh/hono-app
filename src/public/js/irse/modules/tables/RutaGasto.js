@@ -1,12 +1,15 @@
 
 import Table from "../../../components/Table.js";
+import tabs from "../../../components/Tabs.js";
 import i18n from "../../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 import gasto from "../../model/Gasto.js";
-import gastos from "../../model/Gastos.js";
+
+import Observer from "../util/Observer.js";
+import form from "../irse.js"
 
 /*********** ASOCIAR RUTAS / GASTOS ***********/
 export default class RutaGasto extends Table {
@@ -16,17 +19,24 @@ export default class RutaGasto extends Table {
 
 	init() {
 		irse.getNumRutasPendientes = this.size;
+		Observer.subscribe("link", this.link).subscribe("unlink", this.unlink);
+		tabs.setAction("rtog", () => {
+			const rutas = this.getChecked();
+			if (!rutas || !rutas.length) // no hay rutas seleccionadas
+				return form.showError("errLinkRuta"); // mensaje de error
+			form.getPaso5().upload(rutas.join()); // upload PK de las rutas seleccionadas
+		});
 	}
 
 	getChecked = () => this.getBody().$$(":checked").map(el => +el.value);
-	link(data) {
-		gastos.push(data); // add new gasto
+	link = data => {
 		if (!gasto.isFactura(data)) return; // no es factura
 		rutas.link(this.getChecked(), data.id); // link gasto id to rutas
+		tabs.goTab(5); // allways go back to step 5
 		this.view(); // update changes in pending routes
 	}
-	unlink(data) {
-		gastos.removeById(data.id); // elimino el gasto del array
+	unlink = data => {
+		if (!gasto.isFactura(data)) return; // no es factura
 		rutas.unlink(data.id); // actualizo el registro de rutas
 		this.view(); // update changes in pending routes
 	}

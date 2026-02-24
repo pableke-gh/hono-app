@@ -28,13 +28,13 @@
 	<ui:define name="body">
 		<ui:include src="./parts/msgs.xhtml"></ui:include>
 
-		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
+		<form id="xeco-model" method="post" enctype="multipart/form-data">
 			<!-- Organicas ancladas y recientes -->
 			<ui:include src="./tabs/organicas.xhtml"></ui:include>
 
 			<!-- Subida de facturas del tab1 al tab6 -->
 			<ui:include src="./tabs/facturas.xhtml"></ui:include>
-		</h:form>
+		</form>
 
 		<!-- vinculación con uxxiec -->
 		<div id="tab-uxxiec" class="tab-content" data-nif="#{buzon.user.nif}" data-grupo="#{buzon.user.idGrupo}">

@@ -50,9 +50,9 @@ function IrseImputacion() {
 		}*/
 
 		let finalidad = perfil.getval("#finalidad") || "1"; //default = Ejecución
-		if (tipo == 1) // dietas
+		if (organica.isTipoDieta(tipo)) // dietas
 			finalidad = FINALIDAD_AA[finalidad];
-		else if (tipo == 2) // alojamiento
+		else if (organica.isTipoPernocta(tipo)) // alojamiento
 			finalidad = FINALIDAD_BB[finalidad];
 		else // transporte
 			finalidad = FINALIDAD_CC[finalidad];
@@ -65,9 +65,9 @@ function IrseImputacion() {
 			return (organica.is643(org) ? "643." : "64X.") + SUBCONCEPTOS_CAP6[tipo] + "." + colectivo;
 		//capitulo 2
 		let cap2 = CONCEPTOS_CAP2[tipo] + ".xx."  + colectivo;
-		if (tipo == 1) // dietas
+		if (organica.isTipoDieta(tipo)) // dietas
 			return cap2.replace("xx", perfil.isMes() ? "02" : "00");
-		return cap2.replace("xx", (tipo == 2) ? "01" : "00");
+		return cap2.replace("xx", organica.isTipoPernocta(tipo) ? "01" : "00");
 	}
 }
 

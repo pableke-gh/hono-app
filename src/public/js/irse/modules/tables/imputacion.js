@@ -28,7 +28,7 @@ export default class Imputacion extends Table {
 	getTotPernoctas = () => (irse.getMinPernoctas() + irse.getImpExtraAloja());
 	getTotDietas = () => (irse.getImpDietas() + irse.getImpExtraDietas());
 	getImpBruto = () => (this.getTotTransporte() + this.getTotPernoctas() + this.getTotDietas() + irse.getTotAc());
-	getImpTotal = () => (this.getImpBruto() - irse.getIRPF());
+	getImpTotal = () => (this.getImpBruto() - irse.getIrpf());
 
 	beforeRender(resume) {
 		resume.imp1 = 0;

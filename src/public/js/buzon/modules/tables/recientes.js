@@ -1,12 +1,33 @@
 
-import Table from "../../components/Table.js";
-import i18n from "../i18n/langs.js";
-import buzon from "../model/Buzon.js";
-import form from "../../xeco/modules/solicitud.js";
+import i18n from "../../i18n/langs.js";
+import buzon from "../../model/Buzon.js";
+import Organicas from "./organicas.js";
+import Observer from "../../util/Observer.js";
+import form from "../buzon.js";
 
-class Ancladas extends Table {
-	constructor() {
-		super(form.querySelector("#ancladas"));
+export default class Recientes extends Organicas {
+	constructor(form) {
+		super(form.querySelector("#recientes"));
+		this.setRowEmpty(this.lastRow());
+	}
+
+	init() {
+		super.init();
+		form.onChangeInput("#pagina", ev => this.paginate(+ev.target.value));
+
+		const fnRender = () => this.render();
+		Observer.subscribe("anclar", fnRender).subscribe("desanclar", fnRender);
+		// update colspan on small scereens
+		//const isMediaXs = () => (window.innerWidth < 576);
+		//const fnResize = () => this.getLastRow().cells[0].setAttribute("colspan", isMediaXs() ? 3 : 4);
+		//window.addEventListener("resize", fnResize);
+		//fnResize(); // init colspan on load
+	}
+
+	paginate(size) {
+		this.getRows().forEach((row, i) => row.setVisible(i < size));
+		this.getLastRow().show();
+		return this;
 	}
 
 	row(data) {
@@ -24,7 +45,13 @@ class Ancladas extends Table {
             <td class="text-center">${buzon.getRol()}</td>
             <td class="currency">${(data.mask & 2) ? desanclar : anclar}${user}${gastos}${ingresos}${reportProv}${factura}</td>
         </tr>`;
-    }
-}
+	}
+	lastRow = () => `<tr class="tb-data">
+		<td id="otras" colspan="4"><b>Tramitación específica</b> (imputación a varias orgánicas, abonos, aportación de documentación adicional y otras circunstancias)</td>
+		<td class="currency">
+			<a href="#buzon-otros" class="action resize text-green" title="Bandeja de facturas"><i class="far fa-file-upload"></i></a>
+		</td>
+	</tr>`;
 
-export default new Ancladas();
+	render() { return super.render(super.getRecientes()); }
+}

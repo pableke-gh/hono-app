@@ -6,6 +6,8 @@ import i18n from "../../i18n/langs.js";
 import irse from "../../model/Irse.js";
 import gasto from "../../model/Gasto.js";
 import gastos from "../../model/Gastos.js";
+
+import Observer from "../util/Observer.js";
 import form from "../irse.js"
 
 // tabla de gastos del paso 5 (facturas, tickets y demás documentación para liquidar)
@@ -15,28 +17,30 @@ export default class Gastos extends Table {
 	}
 
 	init() {
+		Observer.subscribe("link", this.link).subscribe("unlink", this.unlink);
 		form.set("is-zip-doc", () => (irse.isDisabled() && this.getProp("otraDoc")))
 			.set("is-zip-com", () => (irse.isDisabled() && this.getProp("docComisionado")));
 		this.set("#adjunto", gasto => api.init().blob("/uae/iris/download?id=" + gasto.cod, gasto.nombre)); // uuid file and name
 		this.setRemove(gasto => { // remove handler
 			const url = "/uae/iris/gasto/remove?id=" + gasto.id;
-			return api.init().json(url).then(() => form.getPaso5().unlink(gasto));
+			return api.init().json(url).then(() => Observer.emit("unlink", gasto));
 		});
 	}
 
 	getNumDocComisionado = () => this.getProp("docComisionado");
 	getNumOtraDoc = () => this.getProp("otraDoc");
 
+	link = data => { gastos.push(data); this.render(); } // añado un nuevo gasto
+	unlink = data => { gastos.removeById(data.id); } // elimina el gasto del array
+
 	beforeRender = resume => {
-		resume.noches = resume.numTransportes = resume.numPernoctas = 0;
-		resume.adjuntos = resume.docComisionado = resume.otraDoc = 0;
+		resume.noches = resume.numTransportes = resume.numPernoctas = resume.docComisionado = resume.otraDoc = 0;
 	}
 
 	rowCalc = (data, resume) => {
 		resume.noches += gasto.isPernocta(data) ? data.num : 0;
 		resume.numTransportes += gasto.isTransporte(data);
 		resume.numPernoctas += gasto.isPernocta(data);
-		resume.adjuntos += globalThis.isset(data.fref);
 		resume.docComisionado += gasto.isDocComisionado(data);
 		resume.otraDoc += gasto.isOtraDoc(data);
 	}

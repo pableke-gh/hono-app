@@ -1,5 +1,4 @@
 
-import coll from "../../../components/CollectionHTML.js";
 import Form from "../../../components/forms/Form.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
@@ -8,7 +7,6 @@ import valid from "../../i18n/validators.js";
 
 import irse from "../../model/Irse.js";
 import Organicas from "../tables/organicas.js";
-
 import getActividad from "../../data/perfiles/actividades.js";
 
 export default class Perfil extends Form {
@@ -54,7 +52,6 @@ export default class Perfil extends Form {
 	setColectivo = val => { this.#eCol.innerText = val; return this; }
 	getOrganicas = () => this.#organicas;
 	isEmpty = () => this.#organicas.isEmpty();
-	//isMultiorganica = () => (this.#organicas.size() > 1);
 
 	update = () => {
 		this.#eFin.value = this.#organicas.getFinanciacion(); //recalculo la financiacion
@@ -91,7 +88,7 @@ export default class Perfil extends Form {
 		});
 	}
 
-	view = () => {
+	view = organicas => {
 		this.#eRol = this.getInput("#rol");
 		this.#eCol = this.querySelector("#colectivo");
 		this.#eFin = this.getInput("#financiacion");
@@ -113,10 +110,6 @@ export default class Perfil extends Form {
 			onReset: () => this.#eCol.parentNode.hide()
 		});
 
-		this.#organicas.render(coll.parse(this.getText("#org-data")) || []);
-		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set num pasos
-		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
-
 		this.#acOrganica = this.setAutocomplete("#organica", {
 			minLength: 4,
 			source: term => api.init().json("/uae/iris/organicas", { term }).then(this.#acOrganica.render),
@@ -132,8 +125,11 @@ export default class Perfil extends Form {
 			}
 		});
 
+		this.#organicas.render(organicas);
 		this.#acInteresado.setEditable(irse.isEditableP0());
 		this.#eCol.parentNode.setVisible(this.#acInteresado.isLoaded()); //muestro el colectivo
 		this.#eAct.addEventListener("change", this.update); // actualizo el perfil al cambiar la actividad
+		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
+		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
 	}
 }

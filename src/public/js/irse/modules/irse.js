@@ -46,8 +46,8 @@ class IrseSolicitud extends Solicitud {
 		return this.setFirmas(firmas).setval("#idses", id).setCache(id).refresh(irse);
 	}
 	// IMPORTANT! override super view
-	view = (rutas, gastos, dietas, firmas) => {
-		this.#perfil.view();
+	view = (organicas, rutas, gastos, dietas, firmas) => {
+		this.#perfil.view(organicas);
 		this.#rutas.view(rutas);
 		this.load(gastos, dietas, firmas).initInputs();
 	}

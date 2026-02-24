@@ -118,7 +118,7 @@ function Tabs() {
 	this.showInit = () => self.viewTab("init"); // show init view
 	this.showForm = () => self.viewTab("form"); // show form view
 	this.showList = () => self.viewTab("list"); // show list view
-	this.showOk = msg => { alerts.showOk(msg); return this; } // Encapsule showOk message
+	this.showOk = msg => { alerts.showOk(msg || "saveOk"); return this; } // Encapsule showOk message
 	this.showError = msg => { alerts.showError(msg); return this; } // Encapsule showError message
 	this.setMsgs = alerts.setMsgs; // Encapsule setMsgs container
 

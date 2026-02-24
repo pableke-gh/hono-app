@@ -22,17 +22,16 @@ coll.ready(() => {
 	window.viewIrse = (xhr, status, args, tab) => {
 		if (!window.showAlerts(xhr, status, args)) return;
 		irse.setData(coll.parse(args.data)); // set irse data
+		const organicas = coll.parse(args.organicas);
 		const rutas = coll.parse(args.rutas);
 		const gastos = coll.parse(args.gastos);
 		const dietas = coll.parse(args.dietas);
 		const firmas = coll.parse(args.firmas);
 
-		form.view(rutas, gastos, dietas, firmas); // configure view
-		tabs.reset([ 0, 1, 3, 9 ]).load(form.getForm()); // reload links
-
+		form.view(organicas, rutas, gastos, dietas, firmas); // configure view
 		const fnSync = ev => form.eachInput(".ui-matricula", el => { el.value = sb.toUpperWord(ev.target.value); }); 
 		form.onChangeInputs(".ui-matricula", fnSync).refresh(irse); // update state
-		tabs.nextTab(tab ?? irse.get("tab")); // go to next tab
+		tabs.reset([ 0, 1, 3, 9 ]).nextTab(tab ?? irse.get("tab")); // go to next tab
 	}
 	window.showTab = (xhr, status, args, tab) => {
 		if (!window.showAlerts(xhr, status, args)) return;
@@ -42,7 +41,7 @@ coll.ready(() => {
 		const firmas = coll.parse(args.firmas);
 
 		form.load(gastos, dietas, firmas); // parse firmas
-		tabs.load(form.getForm()).goTab(tab); // go selected/next tab
+		tabs.goTab(tab); // go selected/next tab
 	}
 	window.closeForm = (xhr, status, args) => {
 		if (!window.showAlerts(xhr, status, args)) return;

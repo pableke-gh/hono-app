@@ -10,6 +10,8 @@ import Transportes from "../tables/transportes.js";
 import Pernoctas from "../tables/pernoctas.js";
 import Dietas from "../tables/dietas.js";
 import Extraordinarios from "../tables/extras.js";
+
+import Observer from "../util/Observer.js";
 import form from "../irse.js"
 
 /*********** Tablas de resumen ***********/
@@ -49,6 +51,9 @@ export default class Resumen extends Form {
 		// download iris-facturas.zip / iris-doc.zip
 		tabs.setAction("zip-com", () => api.init().blob("/uae/iris/zip/com", "iris-facturas.zip"));
 		tabs.setAction("zip-doc", () => api.init().blob("/uae/iris/zip/doc", "iris-doc.zip"));
+
+		const fnUpdate = () => this.update().refresh(irse); // actualiza las tablas del resumen y opciones dinamicas para pernoctas, interurbano, etc.
+		Observer.subscribe("link", fnUpdate).subscribe("unlink", fnUpdate); // siempre ultimo en observar / escuchar las acciones link / unlink
 	}
 
 	update() {
