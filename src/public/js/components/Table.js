@@ -178,8 +178,8 @@ export default class Table {
 
 	// IMPORTANTE! element puede no estar seleccionado (ej: al crear)
 	#fnRefresh = (el, data) => { el?.$$(this.#opts.refreshSelector).refresh(data, this.#opts); return this; }
-	refreshHeader = data => this.#fnRefresh(this.#tHead, data || this.#RESUME); // refresh table header
-	refreshRow(data) { return this.#fnRefresh(this.getCurrentRow(), data || this.getCurrent()); } // refresh a row
+	refreshHeader = () => this.#fnRefresh(this.#tHead, this.#RESUME); // refresh table header
+	refreshRow() { return this.#fnRefresh(this.getCurrentRow(), this.getCurrent()); } // refresh a row
 	refreshBody() { this.#tBody.rows.forEach((tr, i) => this.#fnRefresh(tr, this.#rows[i])); return this; } // refresh each row
 	refreshFooter = () => this.#fnRefresh(this.#tFoot, this.#RESUME); // refresh footer only
 	refresh = () => this.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer

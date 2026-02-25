@@ -33,10 +33,11 @@ export default class Solicitudes extends Table {
 		this.set("#integrar", data => { // integra la solicitud seleccionada en uxxiec
 			i18n.confirm("msgIntegrar") && api.init().json(url + "/ws?id=" + data.id).then(this.setWorking);
 		});
-		this.set("update-estado", td => { // actualizo la celda del estado
-			this.load(this.getCurrent()); // datos de la fila
+		this.set("isFirmable", (link, data) => solicitud.setData(data).isFirmable())
+		this.set("isIntegrable", (link, data) => solicitud.setData(data).isIntegrable())
+		this.set("update-estado", (td, data) => { // actualizo la celda del estado
+			td.innerHTML = solicitud.setData(data).getDescEstado(); // set texto de estado
 			td.className = solicitud.getStyleByEstado() + " hide-xs table-refresh"; // set estilos
-			td.innerHTML = solicitud.getDescEstado(); // set texto de estado
 		});
 		this.view(); // initial render
 		tabs.setAction("remove", this.remove);
@@ -44,10 +45,9 @@ export default class Solicitudes extends Table {
 	}
 
 	getSolicitud = () => this.#solicitud; // get solicitud
+	showList() { this.refreshRow(); tabs.showList(); } // refresh current row + show list tab
 	load = data => this.#solicitud.setData(data || this.getCurrent()); // update data model
-	setProcesando = () => this.load().setProcesando(); // set estado procesando ...
-	updateRow() { this.refreshRow(this.load()); tabs.showList(); } // refresh current row + show list tab
-	setWorking = () => { this.refreshRow(this.setProcesando()); tabs.showList(); } // update current row state
+	setWorking = () => { this.load().setProcesando(); this.showList(); } // update current row state
 
 	row(data) { // to simulate super keyword from arrow function, 'row' must be defined as a function
 		let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';

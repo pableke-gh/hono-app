@@ -13,14 +13,18 @@ export default class Kilometraje extends Table {
 	}
 
 	init() {
+		const perfil = form.getPerfil();
 		irse.getImpGasolina = ruta.getImpGasolina;
 		irse.getImpKm = rutas.getImpKm = this.getImpKm;
 		irse.getNumRutasVp = rutas.getNumRutasVp = this.size;
+		irse.getNumRutasVpMun = () => (this.size() && perfil.isMun());
+		irse.getNumRutasVpMaps = () => (this.size() && !perfil.isMun());
+
 		form.set("is-justifi-km", this.isJustifiKm);
 		this.setChange("km1", (data, el) => {
 			data.km1 = i18n.toFloat(el.value);
 			this.refresh(); // recalcula tabla completa
-			form.setChanged(true).refresh(irse); // update form
+			form.stringify("#etapas", rutas.getRutas()).refresh(irse); // save changes + update form
 		});
 	}
 

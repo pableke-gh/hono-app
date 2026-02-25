@@ -38,7 +38,7 @@ export default class IrseSolicitudes extends Solicitudes {
 		return `<tr class="tb-data">
 			${info}
 			<td class="text-center"><a href="#view" title="${data.codigo}: ${data.name}">${sb.substr(data.codigo, 0, 9)}</a></td>
-			<td class="${irse.getStyleByEstado()} table-refresh" data-refresh="text-render" data-template="@getDescEstado;">${irse.getDescEstado()}</td>
+			<td class="${irse.getStyleByEstado()} table-refresh" data-refresh="update-estado">${irse.getDescEstado()}</td>
 			<td class="text-center">${firma.myFlag(data)}</td>
 			<td class="hide-sm">${data.sig || ""}</td>
 			<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>

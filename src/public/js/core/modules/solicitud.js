@@ -49,7 +49,7 @@ export default class Solicitud extends Form {
 	#refreshForm = data => { // refresh form if cached + current row in list
 		if (this.isCached(this.#solicitudes.getId()))
 			this.setFirmas(data.firmas).refresh(this.#solicitudes.load());
-		this.#solicitudes.updateRow();
+		this.#solicitudes.showList();
 	}
 	firmar = data => { // get method
 		if (!i18n.confirm("msgFirmar")) return; // confirm

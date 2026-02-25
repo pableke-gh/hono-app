@@ -10,9 +10,7 @@ import Transportes from "../tables/transportes.js";
 import Pernoctas from "../tables/pernoctas.js";
 import Dietas from "../tables/dietas.js";
 import Extraordinarios from "../tables/extras.js";
-
 import Observer from "../util/Observer.js";
-import form from "../irse.js"
 
 /*********** Tablas de resumen ***********/
 export default class Resumen extends Form {
@@ -33,19 +31,15 @@ export default class Resumen extends Form {
 		this.#dietas.init();
 		this.#extra.init();
 
-		const perfil = form.getPerfil();
-		irse.getNumRutasVpMun = () => (this.#km.size() && perfil.isMun());
-		irse.getNumRutasVpMaps = () => (this.#km.size() && !perfil.isMun());
-
 		tabs.setAction("paso6", () => {
 			if (!valid.resumen(this.#km.getResume())) return; // if error => stop
 			if (!irse.isEditable() || !this.isChanged()) return tabs.nextTab(); // go next tab directly
-			form.getRutas().save(); window.rcPaso6(); // llamo al servidor para sus validaciones
+			window.rcPaso6(); // llamo al servidor para sus validaciones
 		});
 		tabs.setAction("save6", () => {
 			if (!valid.resumen(this.#km.getResume())) return; // if error => stop
 			if (!this.isChanged()) return this.setOk(); // nada que guardar => mensaje ok
-			form.getRutas().save(); window.rcSave6(); // call server to save and validate
+			window.rcSave6(); // call server to save and validate
 		});
 
 		// download iris-facturas.zip / iris-doc.zip
@@ -69,5 +63,8 @@ export default class Resumen extends Form {
 	}
 
 	getKilometraje = () => this.#km;
+	getTransportes = () => this.#trans;
+	getPernoctas = () => this.#pernoctas;
 	getDietas = () => this.#dietas;
+	getExtra = () => this.#extra;
 }

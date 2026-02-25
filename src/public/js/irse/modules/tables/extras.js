@@ -9,7 +9,7 @@ import gastos from "../../model/Gastos.js";
 // tabla del paso 6 resumen de gastos extraordinarios
 export default class Extraordinarios extends Table {
 	constructor(form) {
-		super(form.querySelector("#extra"));
+		super(form.querySelector("#g-extra")); // OJO! existe un campo textarea con id="extra"
 		this.setMsgEmpty("No existen gastos extraordinarios asociados a la comunicación."); // msg.no.gastos.extra
 	}
 

@@ -54,7 +54,7 @@ export default class Uxxiec extends Form {
 				return this.showError("Debe asociar al menos una operación de UXXI-EC a la solicitud.");
 			api.setJSON(this.#documentos.getData()).json(url).then(() => {
 				this.#solicitud.setEstado(estado); // update estado
-				this.#solicitudes.updateRow(); // refresh row in list
+				this.#solicitudes.showList(); // refresh row in list
 				this.#updateButtons(); // update buttons navbar
 			});
 		}
