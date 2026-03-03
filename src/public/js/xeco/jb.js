@@ -7,13 +7,13 @@ import api from "../components/Api.js";
 coll.ready(() => {
     const form = new Form("#xeco-jb");
     const acDocContable = form.setAutocomplete("#num-dc");
-    const fnSourceDc = term => api.init().json("/uae/jb/dcs", { ej: form.getval("#ejercicio"), term }).then(acDocContable.render);
+    const fnSourceDc = term => api.init().json("/uae/jb/dcs", { ej: form.getValue("ejercicio"), term }).then(acDocContable.render);
 	acDocContable.setItemMode().setSource(fnSourceDc)
 				.setAfterSelect(() => form.click("#search"))
 				.setReset(() => form.click("#reset"));
 
     const acJustGast = form.setAutocomplete("#num-jg");
-    const fnSourceJg = term => api.init().json("/uae/jb/jgs", { ej: form.getval("#ejercicio"), term }).then(acJustGast.render);
+    const fnSourceJg = term => api.init().json("/uae/jb/jgs", { ej: form.getValue("ejercicio"), term }).then(acJustGast.render);
 	acJustGast.setItemMode().setSource(fnSourceJg)
 
 	tabs.setAction("cm", () => {

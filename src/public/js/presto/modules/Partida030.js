@@ -13,8 +13,8 @@ export default class Partida030 extends Form {
 	}
 
 	init() {
-		const fnSource = term => api.init().json("/uae/presto/organicas/030", { ej: this.getval("#ej030"), term}).then(this.#acOrg030.render);
-		const fnSelect = item => this.setValue("#idEco030", item.imp);
+		const fnSource = term => api.init().json("/uae/presto/organicas/030", { ej: this.getValue("ej030"), term}).then(this.#acOrg030.render);
+		const fnSelect = item => this.setValue("idEco030", item.imp);
 		this.#acOrg030.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect);
 	}
 
@@ -45,6 +45,6 @@ export default class Partida030 extends Form {
 			return !this.showError("Debe seleccionar una partida a incrementar");
 		partida.imp = imp || 0; //importe obligatorio
 		partida.imp030 = partida.imp; // update imp 030
-		return this.setValue("#impDec", partida.imp); //ok
+		return this.setValue("impDec", partida.imp); //ok
 	}
 }

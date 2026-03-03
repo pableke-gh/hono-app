@@ -27,10 +27,12 @@ function Rutas() {
 	this.getDestino = () => ruta.getDestino(self.getLlegada()); // ultimo destino del itinerario
 	this.getPrincipal = () => _rutas.find(ruta.isPrincipal); // ruta principal del itinerario
 	this.getHoraSalida = () => ruta.getHoraSalida(self.getSalida()); 
+	this.getFechaSalida = () => ruta.getFechaSalida(self.getSalida()); 
 	this.getPaisSalida = () => ruta.getPaisSalida(self.getSalida());
 	this.salida = () => ruta.salida(self.getSalida());
 	this.llegada = () => ruta.llegada(self.getLlegada());
 	this.getHoraLlegada = () => ruta.getHoraLlegada(self.getLlegada()); 
+	this.getFechaLlegada = () => ruta.getFechaLlegada(self.getLlegada()); 
 
 	this.isSalidaTemprana = () => ruta.isSalidaTemprana(self.getSalida());
 	this.isSalidaTardia = () => ruta.isSalidaTardia(self.getSalida());

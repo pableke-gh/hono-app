@@ -12,27 +12,27 @@
 		<div class="ui-blocks form-refresh" data-refresh="showPartidasInc">
 		<label class="ui-block">
 			<div class="label">Ejercicio:</div>
-			<select id="ejInc" name="ejInc" class="ui-input ui-select ui-ej" data-editable="is-editable-ej-inc" tabindex="10"></select>
+			<select id="ejInc" name="ejInc" is="data-list" class="ui-ej" data-editable="is-editable-ej-inc" tabindex="10"></select>
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
-			<input type="search" id="acOrgInc" name="acOrgInc" class="ui-input ui-autocomplete" tabindex="11" />
-			<input type="text" name="idOrgInc" class="ui-input ui-number hide" />
+			<input type="search" id="acOrgInc" is="text-input" name="acOrgInc" class="ui-autocomplete" tabindex="11" />
+			<input type="text" name="idOrgInc" is="text-input" class="hide" />
 			<ul role="list" class="results"></ul>
 			<div class="ui-errtip"></div> 
 		</label>
 		<label class="ui-block">
 			<div class="label" title="Orgánica afectada">FA:</div>
-			<input type="text" id="faInc" name="faInc" class="ui-input ui-bool disabled" tabindex="-1" disabled title="Orgánica afectada" />
+			<input type="text" name="faInc" is="bool-input" class="disabled" tabindex="-1" disabled title="Orgánica afectada" />
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<select id="idEcoInc" name="idEcoInc" class="ui-input ui-select ui-number" tabindex="12"></select>
+			<select id="idEcoInc" name="idEcoInc" is="data-list" class="ui-input" tabindex="12"></select>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
 			<div class="label required">Importe:</div>
-			<input type="text" id="impInc" name="impInc" maxlength="12" tabindex="13" class="ui-input ui-float"/> €
+			<input type="text" id="impInc" name="impInc" is="float-input" tabindex="13" class="ui-input"/> €
 			<div class="ui-errtip"></div>
 		</label>
 		<div class="ui-block-btn">

@@ -17,7 +17,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label">Tipo:</div>
-				<select name="tipo" class="ui-input ui-select ui-filter" tabindex="2">
+				<select name="tipo" is="data-list" class="ui-filter" tabindex="2">
 					<option value="0"></option>
 					<option value="1">Factura</option>
 					<option value="3">Carta de pago</option>
@@ -27,7 +27,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.estado']}" escape="false" />:</div>
-				<select name="estado" class="ui-input ui-select ui-number ui-filter" tabindex="2" title="#{msg['tit.estado']}">
+				<select name="estado" is="data-list" class="ui-filter" tabindex="2" title="#{msg['tit.estado']}">
 					<option value="0"></option>
 					<option value="5">En Proceso</option>
 					<option value="1">Aceptada</option>
@@ -45,7 +45,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
-				<select name="fmask" class="ui-input ui-select ui-number ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
+				<select name="fmask" is="data-list" class="ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
 					<option value="0"></option>
 					<option value="5" selected>Pendiente</option>
 					<option value="1">Aceptada</option>
@@ -54,27 +54,27 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<input type="text" name="codigo" class="ui-input ui-code ui-filter" tabindex="4" />
+				<input type="text" name="codigo" is="text-input" class="ui-code ui-filter" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.organica']}" escape="false" />:</div>
-				<input type="text" name="org" class="ui-input ui-code ui-filter" tabindex="5" />
+				<input type="text" name="org" is="text-input" class="ui-code ui-filter" tabindex="5" />
 			</label>
 			<label class="ui-block">
 				<div class="fInicio"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<input type="text" name="f1" tabindex="6" class="ui-input ui-date ui-filter"/> ...
-				<input type="text" name="f2" tabindex="7" class="ui-input ui-date ui-filter"/>
+				<input type="date" name="f1" is="date-input" tabindex="6" class="ui-filter"/> ...
+				<input type="date" name="f2" is="date-input" tabindex="7" class="ui-filter"/>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label">Solicitante:</div>
-				<input type="text" name="solicitante" class="ui-input ui-filter" tabindex="8" />
+				<input type="text" name="solicitante" is="text-input" class="ui-filter" tabindex="8" />
 			</label>
 		</div>
 
 		<div class="navbar">
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="13">
 				<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
-			<a href="#tab-action-list" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
+			<button type="submit" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</button>
 			<a href="#tab-action-relist" class="btn btn-warn" tabindex="14"><i class="far fa-times-circle btn-icon-left"></i>Limpiar</a>
 		</div>
 	</form>

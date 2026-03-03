@@ -36,8 +36,9 @@ export default class Usuarios extends Table {
 	}
 
 	row(data) {
-		buzon.setData(data);
-		const remove = buzon.isRemovable() ? '<a href="#remove" class="action resize text-red" title="Desvincular orgánica"><i class="fas fa-times"></i></a>' : "";
+		const remove = buzon.setData(data).isRemovable()
+						? '<a href="#remove" class="action resize text-red" title="Desvincular orgánica"><i class="fas fa-times"></i></a>'
+						: "";
 		return `<tr class="tb-data">
 			<td class="text-center">${data.nif}</td><td>${data.nombre}</td><td>${buzon.getRol()}</td>
 			<td class="currency table-refresh" data-refresh="update-icons">

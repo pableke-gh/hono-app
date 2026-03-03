@@ -76,13 +76,13 @@ gulp.task("minify-views", done => {
 
 		const CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
 		//const CV_IRSE_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates/irse/emails";
-		deployCV("dist/views/irse/**/*", CV_IRSE, fnNone); // deploy irse XHTML in Campus Virtual
+		deployCV("dist/views/irse/**/*", CV_IRSE, done); // deploy irse XHTML in Campus Virtual
 		//deployCV("dist/views/irse/emails/**/*", CV_IRSE_EMAILS, fnNone); // deploy irse XHTML in Campus Virtual
 
-		const CV_IRIS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/iris";
-		const CV_IRIS_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates/emails";
-		deployCV("dist/views/iris/**/*", CV_IRIS, fnNone); // deploy irse XHTML in Campus Virtual
-		deployCV("dist/views/iris/emails/**/*", CV_IRIS_EMAILS, done); // deploy irse XHTML in Campus Virtual
+		//const CV_IRIS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/iris";
+		//const CV_IRIS_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates/emails";
+		//deployCV("dist/views/iris/**/*", CV_IRIS, fnNone); // deploy irse XHTML in Campus Virtual
+		//deployCV("dist/views/iris/emails/**/*", CV_IRIS_EMAILS, done); // deploy irse XHTML in Campus Virtual
 	});
 });
 

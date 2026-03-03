@@ -12,7 +12,7 @@ import Observer from "../util/Observer.js";
 import form from "../irse.js"
 
 /*********** ASOCIAR RUTAS / GASTOS ***********/
-export default class RutaGasto extends Table {
+export default class RutaPendientes extends Table {
 	constructor(form) {
 		super(form.querySelector("#rutas-out"));
 	}
@@ -45,12 +45,13 @@ export default class RutaGasto extends Table {
 	rowCalc = ruta.rowCalc;
 
 	row(data, status) {
+		const flag = ruta.isPrincipal(data) ? '<span class="text-warn icon"><i class="fal fa-flag-checkered"></i></span>' : "";
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Nº" class="hide-sm">${status.count}</td>
 			<td data-cell="${i18n.get("lblOrigen")}">${data.origen}</td>
 			<td data-cell="${i18n.get("lblFechaSalida")}">${i18n.isoDate(data.dt1)}</td>
 			<td data-cell="${i18n.get("lblHoraSalida")}">${i18n.isoTimeShort(data.dt1)}</td>
-			<td data-cell="${i18n.get("lblDestino")}">${data.destino}${data.spanFlag}</td>
+			<td data-cell="${i18n.get("lblDestino")}">${data.destino}${flag}</td>
 			<td data-cell="${i18n.get("lblFechaLlegada")}">${i18n.isoDate(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblHoraLlegada")}">${i18n.isoTimeShort(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblTransporte")}">${i18n.getItem("tiposDesp", data.desp)}</td>

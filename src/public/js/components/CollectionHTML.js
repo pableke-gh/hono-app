@@ -1,5 +1,4 @@
 
-import dom from "./forms/DomBox.js";
 import coll from "./Collection.js";
 
 const HIDE_CLASS = "hide";
@@ -135,8 +134,7 @@ window.$$ = selector => document.querySelectorAll(selector);
 HTMLElement.prototype.$1 = HTMLElement.prototype.querySelector;
 HTMLElement.prototype.$$ = HTMLElement.prototype.querySelectorAll;
 
-coll.dom = dom; // add reference
-coll.ready = dom.ready; // shortcut
+coll.ready = fn => document.addEventListener("DOMContentLoaded", fn); // shortcut
 coll.getDivNull = () => divNull; // readonly element
 
 export default coll;

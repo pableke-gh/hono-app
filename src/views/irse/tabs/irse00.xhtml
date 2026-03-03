@@ -5,7 +5,8 @@
 		xmlns:p="http://primefaces.org/ui" 
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:c="http://java.sun.com/jsp/jstl/core">
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 	<div class="card-xeco">
@@ -17,8 +18,8 @@
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText id="interesado" value="#{iris.irse.perfil.acInteresado}" tabindex="1" styleClass="ui-input ui-autocomplete update-irse update-perfil #{iris.irse.form.cssEditableP0}" />
-				<h:inputText id="nif-interesado" value="#{iris.irse.perfil.nifInteresado}" styleClass="hide update-irse update-perfil" />
+				<h:inputText id="interesado" value="#{iris.irse.perfil.acInteresado}" pt:is="text-input" tabindex="1" styleClass="ui-autocomplete update-irse update-perfil #{iris.irse.form.cssEditableP0}" />
+				<h:inputText id="nif-interesado" value="#{iris.irse.perfil.nifInteresado}" pt:is="text-input" styleClass="hide update-irse update-perfil" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</div>
@@ -32,8 +33,8 @@
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.ppto']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText id="organica" value="#{iris.irse.perfil.acOrganica}" tabindex="4" styleClass="ui-input ui-autocomplete update-irse update-perfil #{iris.irse.form.cssEditableP0}" title="#{msg['uae.irse.index.msg.cd']}" />
-				<h:inputText id="id-organica" value="#{iris.irse.perfil.idOrganica}" styleClass="hide update-irse update-perfil" />
+				<h:inputText id="organica" value="#{iris.irse.perfil.acOrganica}" pt:is="text-input" tabindex="4" styleClass="ui-autocomplete update-irse update-perfil #{iris.irse.form.cssEditableP0}" title="#{msg['uae.irse.index.msg.cd']}" />
+				<h:inputText id="id-organica" value="#{iris.irse.perfil.idOrganica}" pt:is="text-input" styleClass="hide update-irse update-perfil" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</div>
@@ -44,7 +45,7 @@
 			<div class="ui-block-info form-refresh" data-refresh="text-render"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" />: $getCreditoDisp; €</div>
 		</label>
 
-		<h:inputHidden id="presupuesto" value="#{iris.irse.perfil.presupuesto}" /> <!-- upload only -->
+		<h:inputHidden id="presupuesto" pt:is="text-input" value="#{iris.irse.perfil.presupuesto}" /> <!-- upload only -->
 		<div class="navbar form-refresh" data-refresh="isUxxiec">
 			<table id="organicas" class="tb-xeco table-xs">
 				<thead>
@@ -67,7 +68,7 @@
 	
 		<div class="hide">
 			<label for="financiacion" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.fin']}" escape="false" />:</label>
-			<h:inputText id="financiacion" value="#{iris.irse.perfil.financiacion}" styleClass="update-irse update-perfil" />
+			<h:inputText id="financiacion" value="#{iris.irse.perfil.financiacion}" pt:is="text-input" styleClass="update-irse update-perfil" />
 		</div>
 		<div class="notice notice-info form-refresh" data-refresh="isFin" data-fin="xSU"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
 		<div class="notice notice-info form-refresh" data-refresh="isFin" data-fin="ISU"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
@@ -80,7 +81,7 @@
 			<div class="ui-block">
 			<c:choose>
 				<c:when test="#{iris.user.uxxiec}"> <!-- UXXIEC -->
-					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" styleClass="ui-input ui-select update-irse update-perfil #{iris.irse.form.cssEditableP0}" tabindex="7">
+					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" pt:is="data-list" styleClass="update-irse update-perfil #{iris.irse.form.cssEditableP0}" tabindex="7">
 						<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
 						<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
 						<f:selectItem itemValue="MES" itemLabel="#{msg['uae.irse.tab0.act.mes']}" itemEscaped="false"/>
@@ -97,7 +98,7 @@
 					</h:selectOneMenu>
 				</c:when>
 				<c:otherwise> <!-- PDI -->
-					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" styleClass="ui-input ui-select ui-xs update-irse update-perfil #{iris.irse.form.cssEditableP0}" tabindex="7">
+					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" pt:is="data-list" styleClass="ui-xs update-irse update-perfil #{iris.irse.form.cssEditableP0}" tabindex="7">
 						<f:selectItem itemValue="COM" itemLabel="Sí" itemEscaped="false"/>
 						<f:selectItem itemValue="MUN" itemLabel="No" itemEscaped="false"/>
 					</h:selectOneMenu>
@@ -109,7 +110,7 @@
 		<label class="ui-blocks form-refresh" data-refresh="isUxxiec">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" />:</div>
 			<div class="ui-block">
-			<h:selectOneMenu id="tramite" value="#{iris.irse.perfil.tramite}" styleClass="ui-input ui-select update-irse update-perfil #{iris.irse.form.cssEditableP0}" tabindex="8">
+			<h:selectOneMenu id="tramite" value="#{iris.irse.perfil.tramite}" pt:is="data-list" styleClass="update-irse update-perfil #{iris.irse.form.cssEditableP0}" tabindex="8">
 				<f:selectItem itemValue="AyL" itemLabel="#{msg['uae.irse.tab0.tramit.ayl']}" itemEscaped="false"/>
 				<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
 				<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
@@ -123,7 +124,7 @@
 		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="12">
 			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
 
-		<button type="reset" class="btn btn-light form-refresh" data-refresh="isEditableP0" title="#{msg['tit.btn.limpiar']}" tabindex="13">
+		<button type="reset" is="btn-form" class="btn btn-light form-refresh" data-refresh="isEditableP0" title="#{msg['tit.btn.limpiar']}" tabindex="13">
 			<i class="far fa-broom btn-icon-left"></i>#{msg['lbl.btn.limpiar']}</button> <!-- getId equivale a editableP0 -->
 		<a href="#tab-action-paso0" class="btn btn-green" title="#{msg['tit.btn.empezar']}" tabindex="13">
 			<h:outputText value="#{msg['lbl.btn.empezar']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>

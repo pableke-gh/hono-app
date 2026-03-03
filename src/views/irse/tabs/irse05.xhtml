@@ -18,14 +18,13 @@
 		<ui:include src="./irse05_info.xhtml"></ui:include>
 		<div class="ui-blocks form-refresh" data-refresh="isEditable">
 			<div class="ui-block-btn">
-				<h:inputHidden id="tipoGasto" value="#{iris.irse.input.tipoGasto}" />
 				<a href="#tab-action-clickNext" class="btn btn-green" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
-				<input type="file" name="fileGasto" class="ui-gasto hide" />
+				<input type="file" name="fileGasto" is="file-input" class="ui-gasto hide" />
 				<div class="filename form-refresh" style="position: absolute; margin: 0 4px;" data-refresh="clear"></div>
 			</div>
 			<label class="ui-block grupo-gasto hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
-				<select id="tipo-gasto" class="ui-input ui-select" tabindex="100">
+				<select id="tipoGasto" name="tipoGasto" is="data-list" class="ui-gasto" tabindex="100">
 					<option value=""></option>
 					<optgroup label="Factura a nombre del comisionado" class="form-refresh" data-refresh="isFacturasComisionado">
 						<option value="9" class="form-refresh" data-refresh="getNochesPendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
@@ -65,19 +64,19 @@
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block grupo-gasto hide">
-				<div for="impGasto" class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
-				<h:inputText id="impGasto" value="#{iris.irse.input.impGasto}" maxlength="12" tabindex="101" styleClass="ui-input ui-float" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
+				<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
+				<input type="text" id="impGasto" name="impGasto" is="float-input" tabindex="101" class="ui-gasto" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block grupo-gasto hide">
 				<div class="label required label-text-gasto"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
-				<h:inputText id="txtGasto" value="#{iris.irse.input.txtGasto}" maxlength="300" tabindex="102" styleClass="ui-input ui-text"/>
+				<input type="text" id="txtGasto" name="txtGasto" is="text-input" maxlength="300" tabindex="102" class="ui-text ui-gasto"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block grupo-gasto hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.check.in.out']}" escape="false" />:</div>
-				<h:inputText id="fAloMin" value="#{iris.irse.input.FMinGasto}" tabindex="102" styleClass="ui-input ui-date ui-pernocta" title="Límite inferior del rango de fechas"/> ...
-				<h:inputText id="fAloMax" value="#{iris.irse.input.FMaxGasto}" tabindex="103" styleClass="ui-input ui-date ui-pernocta" title="Límite superior del rango de fechas"/>
+				<input type="date" id="fAloMin" name="fAloMin" is="date-input" tabindex="102" class="ui-gasto" title="Límite inferior del rango de fechas"/> ...
+				<input type="date" id="fAloMax" name="fAloMax" is="date-input" tabindex="103" class="ui-gasto" title="Límite superior del rango de fechas"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn grupo-gasto hide">

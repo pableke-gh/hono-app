@@ -5,8 +5,8 @@ function Gastos() {
 	const self = this; //self instance
 	let _gastos = []; // dietas, pernoctas, transporte, etc...
 
-	this.getGastos = () => _gastos;
-	this.setGastos = gastos => { _gastos = gastos; }
+	this.getGastos = () => _gastos; // contenedor actual
+	this.setGastos = gastos => { _gastos = gastos || []; } // puede no haber gastos asociados
 	this.getFacturas = () => _gastos.filter(gasto.isFactura);
 	this.getTickets = () => _gastos.filter(gasto.isTicket);
 	this.getTransporte = () => _gastos.filter(gasto.isTransporte);

@@ -29,15 +29,15 @@ export default class Paso9 extends Form {
 		}
 
 		this.setVisible("#grupo-iban", cuentas.options.length <= 1) // existen cuentas?
-			.onChangeInput("#urgente", ev => this.setVisible("[data-refresh='isUrgente']", ev.target.value == "2"))
-			.onChangeInput("#entidades", () => this.setval("#banco", this.getOptionText("#entidades")))
-			.onChangeInput("#paises", ev => { fnPais(ev.target.value); this.setval("#banco"); })
-			.onChangeInput("#iban", ev => { ev.target.value = sb.toWord(ev.target.value); })
-			.onChangeInput("#swift", ev => { ev.target.value = sb.toWord(ev.target.value); });
+			.addChange("urgente", ev => this.setVisible("[data-refresh='isUrgente']", ev.target.value == "2"))
+			.addChange("entidades", () => this.setValue("banco", this.getOptionText("entidades")))
+			.addChange("paises", ev => { fnPais(ev.target.value); this.setValue("banco"); })
+			.addChange("iban", ev => { ev.target.value = sb.toWord(ev.target.value); })
+			.addChange("swift", ev => { ev.target.value = sb.toWord(ev.target.value); });
 
 		cuentas.onchange = () => {
-			this.setval("#iban", cuentas.value).setval("#entidades", sb.substr(cuentas.value, 4, 4))
-					.setval("#swift").setVisible("#grupo-iban", !cuentas.value);
+			this.setValue("iban", cuentas.value).setValue("entidades", sb.substr(cuentas.value, 4, 4))
+					.setValue("swift").setVisible("#grupo-iban", !cuentas.value);
 		}
 		cuentas.options.forEach(opt => {
 			const entidad = valid.getBanks().getEntidad(opt.innerText);
@@ -45,7 +45,7 @@ export default class Paso9 extends Form {
 				opt.innerText += " - " + entidad;
 		});
 		if (!cuentas.value) {
-			fnPais(this.valueOf("#paises"));
+			fnPais(this.getValue("paises"));
 			tab.querySelector("#grupo-iban").show();
 		}
 

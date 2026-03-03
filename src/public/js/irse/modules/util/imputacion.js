@@ -49,7 +49,7 @@ function IrseImputacion() {
 			return perfil.isFormacion() ? "233.01" : "233.02";
 		}*/
 
-		let finalidad = perfil.getval("#finalidad") || "1"; //default = Ejecución
+		let finalidad = perfil.getValue("finalidad") || "1"; //default = Ejecución
 		if (organica.isTipoDieta(tipo)) // dietas
 			finalidad = FINALIDAD_AA[finalidad];
 		else if (organica.isTipoPernocta(tipo)) // alojamiento

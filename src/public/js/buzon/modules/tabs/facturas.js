@@ -30,27 +30,33 @@ export default class Facturas extends Form {
 		const fnValidateTab5 = () => (!this.#isActiveTab5 || valid.tab5());
 		const fnShowTab6 = () => (fnValidateJustPago() && fnValidateTab5());
 		const fnViewTab6 = () => {
-			const desc = this.getval("#desc");
+			const desc = this.getValue("desc");
 			const names = this.#fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);
-			this.text("#ut-desc", this.getOptionText("#utFact")).text("#file-name", names.join(", "))
+			this.text("#ut-desc", this.getOptionText("utFact")).text("#file-name", names.join(", "))
 				.text("#desc-gestor", desc).setVisible("#msg-gestor", desc)
-				.text("#iban", this.getval("#cuentas"));
+				.text("#iban", this.getValue("cuentas"));
 		}
 	
 		// Init. form factura
-		this.onChangeFiles("[type=file]", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
+		const fnFile = (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; };
+		this.getElement("factura").onFile(fnFile); this.getElement("justPago").onFile(fnFile);
+
 		tabs.setShowEvent(2, fnShowTab2); // tab fichero factura
 		tabs.setActiveEvent(4, buzon.isActiveTab4).setShowEvent(4, fnValidateJustPago);
 		tabs.setActiveEvent(5, () => this.#isActiveTab5).setShowEvent(5, fnValidateJustPago);
 		tabs.setShowEvent(6, fnShowTab6).setViewEvent(6, fnViewTab6); // tab resumen
 		tabs.setAction("upload", () => {
-			const fd = this.getFormData();
+			const fd = this.getFormData(); // todo: replace by FormDataBox
 			fd.append("org", buzon.isFacturaOtros() ? "" : buzon.getOrganica()); // organica seleccionada
 			api.setFormData(fd).json("/uae/buzon/upload").then(() => this.fireReset().nextTab(0)); // upload form + clear inputs
 		});
 	}
 
-	load = (uts, ut, desc) => this.setItems("#utFact", uts).setval("#utFact", ut).text("#org-desc", desc).refresh(buzon).nextTab(1);
+	load = (uts, ut, desc) => {
+		const list = this.getElement("utFact");
+		list.setItems(uts).setValue(ut);
+		return this.text("#org-desc", desc).refresh(buzon).nextTab(1);
+	}
 
 	setFactuaOrganica = data => {
 		const isIsu = buzon.setData(data).setFacturaOtros().setTipoPago(+this.#tipo.value).isIsu();
@@ -58,7 +64,7 @@ export default class Facturas extends Form {
 		this.setVisible(".show-isu", isIsu).setVisible(".show-no-isu", !isIsu)
 			.setVisible("#file-jp", buzon.isJustPagoRequired())
 			.setVisible(".show-cesionario", buzon.isPagoCesionario())
-			.text("#type-name", this.getOptionText("#tipo")).setval("#desc");
+			.text("#type-name", this.getOptionText("tipo")).setValue("desc");
 		this.#tipo.onchange = () => this.setFactuaOrganica(data); // update event
 		this.#isActiveTab5 = false; // always hide otros
 		return this;
@@ -69,7 +75,7 @@ export default class Facturas extends Form {
 		this.show(".show-isu").hide(".show-no-isu")
 			.setVisible("#file-jp", buzon.isJustPagoRequired())
 			.setVisible(".show-cesionario", buzon.isPagoCesionario())
-			.text("#type-name", this.getOptionText("#tipo"));
+			.text("#type-name", this.getOptionText("tipo"));
 		this.#tipo.onchange = this.setFactuaOtros; // update event
 		this.#isActiveTab5 = true; // show tab otros
 		return this;

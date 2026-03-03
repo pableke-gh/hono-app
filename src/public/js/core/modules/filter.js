@@ -16,9 +16,13 @@ export default class Filter extends Form {
 		const fnList = (estado, fmask) => { this.setData({ estado, fmask }, ".ui-filter"); fnCallList(); } // prepare filter and fetch
 
 		// form filter handlers
-		this.onKeydown(ev => ((ev.key == "Enter") && fnCallList()));
+		this.onSubmit(ev => {
+			ev.preventDefault();
+			this.isChanged() && fnCallList();
+			this.setChanged();
+		});
+
 		tabs.setInitEvent("list", () => { solicitudes.isEmpty() && fnList("", "5"); });
-		tabs.setAction("list", () => { this.isChanged() && fnCallList(); this.setChanged(); });
 		tabs.setAction("list-all", () => { this.reset(".ui-filter"); fnCallList(); });
 		tabs.setAction("relist", () => fnList("", "5"));
 		tabs.setAction("vinc", () => { ("1" == this.getValueByName("estado")) ? tabs.showList() : fnList("1"); });

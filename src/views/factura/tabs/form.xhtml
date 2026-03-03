@@ -16,8 +16,8 @@
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Cual es la orgánica para la factura:</div>
-				<input type="search" id="acOrganica" name="acOrganica" class="ui-input ui-autocomplete" tabindex="3" />
-				<input type="text" id="idOrg" name="idOrg" class="ui-input ui-number hide" />
+				<input type="search" id="acOrganica" name="acOrganica" is="text-input" class="ui-autocomplete" tabindex="3" />
+				<input type="text" id="idOrg" name="idOrg" is="text-input" class="ui-number hide" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div>
 			</label>
@@ -29,7 +29,7 @@
 		<div class="ui-blocks form-refresh" data-refresh="show-factura-uae">
 			<label class="ui-block">
 				<div class="label">Causas de no sujeción a IVA:</div>
-				<select id="sujeto" name="sujeto" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="5">
+				<select id="sujeto" name="sujeto" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="5">
 					<option value="0">Seleccione una causa de no sujeción</option>
 					<option value="2">TAI Reglas Localización.</option>
 					<option value="1">Art. 7, 14, otros.</option>
@@ -37,7 +37,7 @@
 			</label>
 			<label class="ui-block form-refresh" data-refresh="isExento">
 				<div class="label">Causas de exención en IVA:</div>
-				<select id="exento" name="exento" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="6">
+				<select id="exento" name="exento" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="6">
 					<option value="0">Seleccione una causa de exención</option>
 					<option value="1">E1 Exenta por el artículo 20.</option>
 					<option value="2">E2 Exenta por el artículo 21.</option>
@@ -49,7 +49,7 @@
 			</label>
 			<label class="ui-block-row form-refresh" data-refresh="show-factura-uae">
 				<div class="label">Modelo fiscal 349:</div>
-				<select id="m349" name="m349" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="7">
+				<select id="m349" name="m349" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="7">
 					<option value="0">No</option>
 					<option value="1">D - Devoluciones de bienes desde otro Estado miembro al que previamente fueron enviados desde el TAI en el marco de acuerdos de ventas de bienes en consigna</option>
 					<option value="2">E - Entregas intracomunitarias</option>
@@ -65,7 +65,7 @@
 		<div class="ui-blocks form-refresh" data-refresh="isUae">
 			<label class="ui-block-xl">
 				<div class="label required">Económica:</div>
-				<select name="economica" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="7">
+				<select name="economica" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="7">
 					<option value="">Seleccione una económica</option>
 					<c:forEach items="#{fact.form.economicas}" var="eco">
 						<option value="#{eco.value}">#{eco.label}</option>
@@ -75,7 +75,7 @@
 			</label>
 			<label class="ui-block-xl">
 				<div class="label">IBAN:</div>
-				<select name="iban" data-editable="isEditableUae" class="ui-input ui-select ui-fiscal" tabindex="7">
+				<select name="iban" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="7">
 					<option value="">Seleccione un IBAN</option>
 					<c:forEach items="#{fact.form.getCuentasUpct()}" var="item">
 						<option value="#{item.value}">#{item.label}</option>
@@ -87,7 +87,7 @@
 		<div class="ui-blocks form-refresh" data-refresh="isGrupoFace">
 			<label class="ui-block">
 				<div class="label">Factura electrónica:</div>
-				<select id="face" name="face" class="ui-input ui-select" tabindex="8">
+				<select id="face" name="face" is="data-list" class="ui-input" tabindex="8">
 					<option value="0"></option>
 					<option value="1">FACe</option>
 					<option value="2">Otras</option>
@@ -95,22 +95,22 @@
 			</label>
 			<label class="ui-block-md form-refresh" data-refresh="show-gestor">
 				<div class="label required form-refresh" data-refresh="update-face"></div>
-				<input type="text" id="og" name="og" maxlength="9" tabindex="9" class="ui-input" />
+				<input type="text" id="og" name="og" is="text-input" maxlength="9" tabindex="9" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block-md form-refresh" data-refresh="isFace">
 				<div class="label required">Oficina Contable:</div>
-				<input type="text" id="oc" name="oc" maxlength="9" tabindex="10" class="ui-input" />
+				<input type="text" id="oc" name="oc" is="text-input" maxlength="9" tabindex="10" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block-md form-refresh" data-refresh="isFace">
 				<div class="label required">Unidad Tramitadora:</div>
-				<input type="text" id="ut" name="ut" maxlength="9" tabindex="11" class="ui-input" />
+				<input type="text" id="ut" name="ut" is="text-input" maxlength="9" tabindex="11" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block-md form-refresh" data-refresh="isFace">
 				<div class="label required">Órgano Proponente:</div>
-				<input type="text" id="op" name="op" maxlength="10" tabindex="12" class="ui-input" />
+				<input type="text" id="op" name="op" is="text-input" maxlength="10" tabindex="12" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
 		</div>
@@ -118,7 +118,7 @@
 		<div class="ui-blocks form-refresh" data-refresh="isMemo">
 		<label class="ui-block-row">
 			<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
-			<textarea id="memo" name="memo" class="ui-input ui-ta" data-editable="isEditableGaca" tabindex="13" maxlength="600" title="Observaciones de la factura"></textarea>
+			<textarea id="memo" name="memo" is="text-area" data-editable="isEditableGaca" tabindex="13" maxlength="600" title="Observaciones de la factura"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 		</div>

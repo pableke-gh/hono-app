@@ -6,7 +6,8 @@
 		xmlns:o="http://omnifaces.org/ui"
 		xmlns:p="http://primefaces.org/ui"
 		xmlns:h="http://java.sun.com/jsf/html"
-		xmlns:f="http://java.sun.com/jsf/core">
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="metadata">
 		<f:metadata>
@@ -34,15 +35,15 @@
 				<div class="ui-blocks">
 					<label class="ui-block">
 						<div class="label required"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-						<h:selectOneMenu id="ejercicio" styleClass="ui-input ui-select ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
+						<h:selectOneMenu id="ejercicio" pt:is="data-list" styleClass="ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
 							<f:selectItems value="#{jb.ejercicios}" />
 						</h:selectOneMenu>
 					</label>
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Documento Contable:</div>
 						<i class="fas fa-search ui-input-icon left"></i>
-						<input type="search" id="num-dc" name="numDc" class="ui-input ui-autocomplete" tabindex="2" />
-						<h:inputHidden id="dc" value="#{jb.idDc}" class="ui-number" />
+						<input type="search" id="num-dc" name="numDc" is="text-input" class="ui-autocomplete" tabindex="2" />
+						<h:inputHidden id="dc" value="#{jb.idDc}" pt:is="text-input" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div> 
 					</label>
@@ -68,7 +69,7 @@
 						<label class="ui-block-xl autocomplete">
 							<div class="label required">Seleccione un Justificante de Gasto:</div>
 							<i class="fas fa-search ui-input-icon left"></i>
-							<input type="search" id="num-jg" name="numJg" class="ui-input ui-autocomplete" tabindex="1" />
+							<input type="search" id="num-jg" name="numJg" class="ui-autocomplete" tabindex="1" />
 							<input type="hidden" id="jg" />
 							<ul role="list" class="results"></ul>
 							<div class="ui-errtip"></div> 

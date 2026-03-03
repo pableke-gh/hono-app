@@ -6,7 +6,8 @@
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="metadata">
 		<f:metadata>
@@ -48,7 +49,7 @@
 
 		<!-- Form IRSE -->
 		<h:form id="xeco-model" prependId="false" method="post" enctype="multipart/form-data" onsubmit="loading();">
-		<h:inputHidden id="idses" value="#{iris.irse.input.id}" />
+		<h:inputHidden id="idses" value="#{iris.irse.input.id}" pt:is="text-input" />
 
 		<!-- Tab0 = perfil PAS / PDI -->
 		<div id="tab-0" class="tab-content">

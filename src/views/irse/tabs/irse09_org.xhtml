@@ -5,51 +5,12 @@
 		xmlns:p="http://primefaces.org/ui" 
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:c="http://java.sun.com/jsp/jstl/core">
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
-	<h:inputHidden id="imp-org" value="#{iris.irse.input.impOrg}" /> <!-- upload input only -->
+	<h:inputHidden id="imp-org" pt:is="text-input" value="#{iris.irse.input.impOrg}" /> <!-- upload input only -->
 	<div class="card-xeco form-refresh" data-refresh="isAdmin"> <!-- only for admin users -->
 		<h2><h:outputText value="#{msg['lbl.multiorganica']}" escape="false" /></h2>
-		<!--<c:if test="#{iris.irse.form.editable}">
-			<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.multiorganicas']}" escape="false" /></div>
-			<div class="ui-blocks">
-			<label class="ui-block">
-				<div class="label required"><h:outputText value="#{msg['lbl.tipo.gasto']}" escape="false" />:</div>
-				<select id="tipo-org" name="subtipo" class="ui-input ui-select" tabindex="185">
-					<c:if test="#{iris.irse.form.totManutenciones gt 0}">
-						<option value="1"><h:outputText value="#{msg['lbl.dietas']}" escape="false" /></option>
-					</c:if>
-					<c:if test="#{iris.irse.form.totPernoctas gt 0}">
-						<option value="2"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
-					</c:if>
-					<c:if test="#{iris.irse.form.totTransporte gt 0}">
-						<option value="3"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
-					</c:if>
-					<c:if test="#{iris.irse.gastos.totAc gt 0}">
-						<option value="4"><h:outputText value="#{msg['lbl.asistencias']}" escape="false" /></option>
-					</c:if>
-				</select>
-			</label>
-			<label class="ui-block">
-				<div class="label required"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />:</div>
-				<select id="organicas" name="num" class="ui-input ui-select" tabindex="186">
-					<c:forEach items="#{iris.irse.perfil.organicas}" var="org">
-						<option value="#{org.idOrganica}">#{org.organica}</option>
-					</c:forEach>
-				</select>
-			</label>
-			<label class="ui-block">
-				<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
-				<input type="text" id="imp1-org" name="imp1" maxlength="12" tabindex="187" class="ui-input ui-float #{iris.irse.form.cssDisabled}"/><span class="icon">€</span>
-				<div class="ui-errtip"></div>
-			</label>
-			<div class="ui-block-btn">
-				<a href="#" onclick="return io.add();" class="btn btn-green success-btn" tabindex="188">
-					<i class="fas fa-plus btn-icon-left"></i><h:outputText value="#{msg['lbl.add']}" escape="false" /></a>
-			</div>
-			</div>
-		</c:if>-->
-
 		<table id="imputacion" class="tb-xeco table-xs">
 			<thead>
 				<tr>

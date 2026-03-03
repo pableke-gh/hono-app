@@ -4,26 +4,20 @@ import tabs from "../Tabs.js";
 import alerts from "../Alerts.js";
 
 import Table from "../Table.js";
-import input from "./InputBox.js";
-import sbx from "./SelectBox.js";
-import Datalist from "./Datalist.js";
-import Autocomplete from "./Autocomplete.js";
-import MultiSelectCheckbox from "./MultiSelectCheckbox.js";
+import FormDataBox from "./FormData.js";
+import TextInput from "../inputs/TextInput.js";
+import DataList from "../inputs/DataList.js";
+import BoolInput from "../inputs/BoolInput.js";
+import FloatInput from "../inputs/FloatInput.js";
+import DateInput from "../inputs/DateInput.js";
+import TimeInput from "../inputs/TimeInput.js";
+import TextArea from "../inputs/TextArea.js";
+import FileInput from "../inputs/FileInput.js";
+import ButtonForm from "../inputs/ButtonForm.js";
+import Autocomplete from "../inputs/Autocomplete.js";
+import MultiSelectCheckbox from "../inputs/MultiSelectCheckbox.js";
 
-FormData.prototype.setJSON = function(name, data) {
-	this.set(name, JSON.stringify(data)); // FormData only supports flat values
-}
-FormData.prototype.exclude = function(keys) {
-	keys.forEach(key => this.delete(key)); // delete selected keys
-}
-FormData.prototype.load = function(data, keys) {
-	keys.forEach(key => { // set slected keys
-		const value = data[key];
-		value && this.set(key, value);
-	});
-}
-
-export default class Form {
+export default class Form /*extends HTMLFormElement*/ {
 	#form; #opts; // form element + options
 
 	constructor(form, opts) { // Find form element or create empty form
@@ -36,13 +30,12 @@ export default class Form {
 		this.#opts.refreshSelector = this.#opts.refreshSelector || ".form-refresh"; // selector for refresh
 
 		// Form initialization
-		input.setOptions(opts);
 		this.#form.setAttribute("novalidate", "1");
 	}
 
-	setEvents() { return this.afterChange(() => this.setChanged(true)).beforeReset(ev => this.closeAlerts().autofocus()); }
-	initInputs() { this.#form.elements.forEach(input.init); return this.autofocus(); } // init. inputs config
-	init() { return this.setEvents().initInputs(); }
+	init() {
+		return this.afterChange(() => this.setChanged(true)).beforeReset(ev => this.closeAlerts().autofocus());
+	}
 
 	querySelector = selector => this.#form.$1(selector); // Form child element
 	querySelectorAll = selector => this.#form.$$(selector); // Form children elements
@@ -54,7 +47,6 @@ export default class Form {
 	#fnQueryInput = el => globalThis.isstr(el) ? this.getInput(el) : el;
 	#fnAction = (el, fn) => { el = this.#fnQueryInput(el); el && fn(el); return this; }
 	#fnFor = (list, fn) => { list.forEach(fn); return this; }
-	#fnEach = (selector, fn) => this.#fnFor(this.#form.$$(selector), fn);
 	#fnUpdate = (selector, fn) => {
 		selector = selector || "input,select,textarea"; // default all input fields
 		return this.#fnFor(this.#form.elements, el => el.matches(selector) && fn(el));
@@ -64,15 +56,10 @@ export default class Form {
 	getNextElement = () => this.#form.nextElementSibling;
 	getNext = selector => this.#form.next(selector);
 	getElements = () => this.#form.elements;
-	getElement = name => this.#form.elements.find(el => (el.name == name));
-	getValueByName = name => input.val(this.getElement(name));
+	getElement = name => this.#form.elements[name];
+	getValueByName = name => this.getElement(name).value;
 	addClass = name => { this.#form.classList.add(name); return this; }
 	getOptions = () => this.#opts;
-	setOptions = opts => {
-		Object.assign(this.#opts, opts);
-		input.setOptions(opts);
-		return this;
-	}
 
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
@@ -92,7 +79,7 @@ export default class Form {
 	showError = msg => { alerts.showError(msg); return this; } // Encapsule showError message
 	showAlerts = alerts.showAlerts; // showAlerts synonym
 
-	focus = el => { input.focus(el); return this; }
+	focus = el => { el.focus(); return this; }
 	setFocus = selector => this.#fnAction(selector, el => el.focus());
 	autofocus = () => this.focus(this.#form.elements.find(el => el.isVisible("[tabindex]:not([type=hidden],[readonly],[disabled])")));
 	copyToClipboard = str => navigator.clipboard.writeText(str)
@@ -115,26 +102,25 @@ export default class Form {
 		return this;
 	}
 
+	eachInput = (selector, fn) => this.#fnUpdate(selector, fn);
 	hide = selector => { this.#form.$$(selector).hide(); tabs.setHeight(); return this; }
 	show = selector => { this.#form.$$(selector).show(); tabs.setHeight(); return this; }
 	setVisible = (selector, force) => force ? this.show(selector) : this.hide(selector);
 	disabled = (force, selector) => this.#fnUpdate(selector, el => el.setDisabled(force));
 	readonly = (force, selector) => this.#fnUpdate(selector, el => el.setReadonly(force));
-	eachInput = (selector, fn) => this.#fnUpdate(selector, fn);
 	setEditable = (model, selector) => this.#fnUpdate(selector, el => {
-		const value = el.dataset.disabled || el.dataset.readonly || el.dataset.editable;
-		if (value == "manual")
-			return; // skip evaluation (input manual)
+		const value = el.dataset.disabled /*|| el.dataset.readonly*/ || el.dataset.editable;
+		if (value == "manual") return; // skip evaluation (input manual)
 		if (el.dataset.disabled) {
 			const fnDisabled = model[value] || this.#opts[value] || model.isDisabled;
 			return el.setDisabled(fnDisabled()); // recalc. disabled attribute by handler
 		}
-		if (el.dataset.readonly) {
+		/*if (el.dataset.readonly) {
 			const fnReadonly = model[value] || this.#opts[value] || model.isReadonly;
 			return el.setReadonly(fnReadonly()); // recalc. readonly attribute by handler
-		}
+		}*/
 		const fnEditable = model[value] || this.#opts[value] || model.isEditable;
-		el.setReadonly(!fnEditable()); // recalc. attribute by handler
+		el.setEditable(fnEditable()); // recalc. attribute by handler
 	});
 	reactivate = (model, tab) => { // set inputs values and readonly
 		this.closeAlerts().setEditable(model).refresh(model);
@@ -143,71 +129,53 @@ export default class Form {
 	}
 
 	// Value property
-	getValue = input.getValue;
-	getval = selector => this.#fnQueryInput(selector)?.value;
-	valueOf = selector => this.getValue(this.#fnQueryInput(selector));
+	getValue = name => this.getElement(name).getValue();
 	getData = selector => {
 		const data = {}; // Results container
-		this.#fnUpdate(selector, el => input.load(el, data));
+		this.#fnUpdate(selector, el => el.load(data));
 		return data;
 	}
 
-	#resetValue(selector) { return this.#fnUpdate(selector, input.reset); }
-	setval = (selector, value) => this.#fnAction(selector, el => input.setval(el, value));
-	setValue = (selector, value) => this.#fnAction(selector, el => input.setValue(el, value));
-	copy = (el1, el2) => { input.setval(this.#fnQueryInput(el1), this.getval(el2)); return this; } // copy value from el2 to el1
-	restart = selector => this.#fnAction(selector, el => { input.reset(el); el.focus(); }); // remove value + focus
-	reset(selector) { return this.#resetValue(selector); } // clear selected inputs values
+	setValue(name, value) { this.getElement(name).setValue(value); return this; }
+	reset(selector) { return this.#fnUpdate(selector, el => el.reset()); } // clear selected inputs values
+	restart(name) { this.getElement(name).restart(); return this; }; // remove value + focus
 	setData(data, selector) {
-		const fnSetValue = el => input.setValue(el, data[el.name]);
+		const fnSetValue = el => el.setValue(data[el.name]);
 		if (data && selector) // update a subgroup of inputs
 			this.#fnUpdate(selector, fnSetValue);
 		else if (data) // update all inputs
 			this.#form.elements.forEach(el => (el.name && fnSetValue(el)));
 		else
-			this.#resetValue(selector); // clear selected inputs values
+			this.reset(selector); // clear selected inputs values
 		return this;
 	}
 	setValues = (data, selector) => this.#fnUpdate(selector, el => {
 		const value = el.name ? data[el.name] : null; // get value by name
-		globalThis.isset(value) && input.setValue(el, value); // update defined data
+		globalThis.isset(value) && el.setValue(value); // update defined data
 	});
-	setDateRange = (f1Selector, f2Selector, fnBlur1, fnBlur2) => {
-		const el1 = this.#fnQueryInput(f1Selector);
-		const el2 = this.#fnQueryInput(f2Selector);
-		input.setDateRange(el1, el2, fnBlur1, fnBlur2);
-		return this;
-	}
-	setLimitDateRange = (f1Selector, f2Selector, dt1, dt2) => {
-		const el1 = this.#fnQueryInput(f1Selector);
-		const el2 = this.#fnQueryInput(f2Selector);
-		input.setLimitDateRange(el1, el2, dt1, dt2);
-		return this;
-	}
 
-	getAttr = (selector, name) => input.getAttr(this.#fnQueryInput(selector), name);
-	delAttr = (selector, name) => { input.delAttr(this.#fnQueryInput(selector), name); return this; }
-	setAttr = (selector, name, value) => { input.setAttr(this.#fnQueryInput(selector), name, value); return this; }
+	getAttr = (selector, name) => this.#fnQueryInput(selector).getAttribute(name);
+	delAttr = (selector, name) => { this.#fnQueryInput(selector).removeAttribute(name); return this; }
+	setAttr = (selector, name, value) => { this.#fnQueryInput(selector).setAttribute(name, value); return this; }
 	setAttribute = this.setAttr;
 
 	getUrlParams = () => new URLSearchParams(new FormData(this.#form));
-	getFormData = (data, include) => {
-		const fd = new FormData(this.#form);
-		data && fd.load(data, include);
-		return fd; // merge data to send
+	getFormData(data, include) {
+		const fd = new FormDataBox(this.#form);
+		return fd.load(data, include); // merge data
+	}
+	getFormDataInputs(selector) {
+		const fd = new FormDataBox(); // partial form
+		return fd.setInputs(this.getInputs(selector));
 	}
 
 	// Inputs helpers
 	setTable = (selector, opts) => new Table(this.#form.$1(selector), opts); // table
-	stringify = (selector, data, replacer) => this.setval(selector, JSON.stringify(data, replacer));
-	saveTable = (selector, table, replacer) => this.stringify(selector, table.getData(), replacer);
-	getOptionText = selector => sbx.getOptionText(this.#fnQueryInput(selector));
-	getOptionTextByValue = (selector, value) => sbx.getOptionTextByValue(this.#fnQueryInput(selector), value);
-	select = (selector, mask) => { sbx.select(this.#fnQueryInput(selector), mask); return this; }
-	setDatalist = (selector, opts) => new Datalist(this.#fnQueryInput(selector), opts); // select / optgroup
-	setItems = (selector, items, emptyOption) => this.#fnUpdate(selector, el => sbx.setItems(el, items, emptyOption));
-	setDataOptions = (selector, data, emptyOption) => this.#fnUpdate(selector, el => sbx.setData(el, data, emptyOption));
-	setLabels = (selector, labels, emptyOption) => this.#fnUpdate(selector, el => sbx.setLabels(el, labels, emptyOption));
+	stringify = (name, data, replacer) => this.setValue(name, JSON.stringify(data, replacer));
+	getOptionText = name => this.getElement(name).getText(); // data-list required
+	select(name, mask) { this.getElement(name).select(mask); return this; }
+	setItems = (selector, items) => this.#fnUpdate(selector, el => el.setItems(items));
+	setLabels = (selector, labels) => this.#fnUpdate(selector, el => el.setLabels(labels));
 	setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox(this.#form.$1(selector), opts); // multi select checkbox
 	setAutocomplete = (selector, opts) => new Autocomplete(this.#fnQueryInput(selector), opts); // Input type text / search
 
@@ -219,39 +187,36 @@ export default class Form {
 	#fnChange = (el, fn) => this.#fnEvent(el, "change", fn);
 
 	afterChange = fn => this.#fnChange(this.#form, fn); // add change event handler
-	onKeydown = fn => this.#fnEvent(this.#form, "keydown", fn); // add event handler
 	onSubmit = fn => this.#fnEvent(this.#form, "submit", fn); // add event handler
-	fire = action => (this.get(action)()); // fire manual handler
-	fireSubmit = () => { this.#form.submit(); return this; } // force submit
 	fireReset = () => { this.#form.reset(); return this; }
 	beforeReset = fn => this.#fnEvent(this.#form, "reset", fn);
 	afterReset = fn => this.#fnEvent(this.#form, "reset", ev => setTimeout(() => fn(ev), 1));
 
-	addClickAll = (selector, fn) => this.#fnEach(selector, el => el.addClick(fn));
-	addClick = (selector, fn) => { this.#fnQuery(selector)?.addClick(fn); return this; }
-	setClickAll = (selector, fn) => this.#fnEach(selector, el => el.setClick(fn));
+	onChange = (selector, fn) => this.#fnUpdate(selector, el => el.addChange(fn));
+	addChange(name, fn) { this.getElement(name).addChange(fn); return this; }
 	setClick = (selector, fn) => { this.#fnQuery(selector)?.setClick(fn); return this; }
 	click = selector => { this.#form.$1(selector).click(); return this; } // Fire event only for PF
 
-	onChange = (selector, fn) => this.#fnAction(selector, el => this.#fnChange(el, fn));
-	onChangeInputs = (selector, fn) => this.#fnUpdate(selector, el => this.#fnChange(el, fn));
-	setChangeInput = (selector, fn) => this.#fnAction(selector, el => { el.onchange = fn; });
-	onChangeInput = this.onChange; // synonym
-
-	onChangeFile = (selector, fn) => this.#fnAction(selector, el => input.file(el, fn));
-	onChangeFiles = (selector, fn) => this.#fnUpdate(selector, el => input.file(el, fn));
-	//setField = (selector, value, fn) => this.#fnAction(selector, el => { this.#fnChange(el, fn); input.setValue(el, value); }); 
-
 	// Form Validator
-	closeAlerts = () => {
+	closeAlerts() {
 		alerts.closeAlerts(); // globbal message
-		this.#form.elements.forEach(input.setOk); // clear input messages
+		this.#form.elements.forEach(el => el.setOk()); // clear input messages
 		return this;
 	}
-	setErrors = messages => {
+	setErrors(messages) {
 		messages.msgError = messages.msgError || this.#opts.defaultMsgError;
-		this.#form.elements.eachPrev(el => input.update(el, messages[el.name]));
+		this.#form.elements.eachPrev(el => el.update(messages[el.name]));
 		alerts.setMsgs(messages); // show all messages
 		return this;
 	}
 }
+
+customElements.define("text-input", TextInput, { extends: "input" });
+customElements.define("data-list", DataList, { extends: "select" });
+customElements.define("float-input", FloatInput, { extends: "input" });
+customElements.define("bool-input", BoolInput, { extends: "input" });
+customElements.define("date-input", DateInput, { extends: "input" });
+customElements.define("time-input", TimeInput, { extends: "input" });
+customElements.define("text-area", TextArea, { extends: "textarea" });
+customElements.define("file-input", FileInput, { extends: "input" });
+customElements.define("btn-form", ButtonForm, { extends: "button" });

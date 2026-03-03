@@ -47,7 +47,7 @@ export default class Organicas extends Table {
 			<td data-cell="${i18n.get("lblDesc")}">${data.dOrg}</td>
 			<td data-cell="Responsable del gasto">${data.resp}</td>
 			<td data-cell="Nombre">${data.r}</td>
-			<td class="no-print" data-cell="Acciones">${remove}</td>
+			<td class="no-print" data-cell="${i18n.get("lblAcciones")}">${remove}</td>
 		</tr>`;
 	}
 
@@ -61,6 +61,6 @@ export default class Organicas extends Table {
 		if (this.size() > 1)
 			this.#financiacion = MULTI_APLICACION[this.#financiacion]; // || "xOT"; // default = "xOT"
 		irse.setFinanciacion(this.#financiacion);
-		form.getPerfil().closeAlerts().stringify("#presupuesto", this.getData()).update(); // update tab
+		form.getPerfil().closeAlerts().stringify("presupuesto", this.getData()).update(); // update tab
 	}
 }

@@ -16,7 +16,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.estado']}" escape="false" />:</div>
-				<select name="estado" class="ui-input ui-select ui-filter" tabindex="2" title="#{msg['tit.estado']}">
+				<select name="estado" is="data-list" class="ui-filter" tabindex="2" title="#{msg['tit.estado']}">
 					<option value=""></option>
 					<option value="6">#{msg['uae.irse.filter.estado.6']}</option>
 					<option value="5">#{msg['uae.irse.filter.estado.5']}</option>
@@ -32,7 +32,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
-				<select name="fmask" class="ui-input ui-select ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
+				<select name="fmask" is="data-list" class="ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
 					<option value=""></option>
 					<option value="5">#{iris.getMsg('lblPendiente')}</option>
 					<option value="1">#{iris.getMsg('lblAceptada')}</option>
@@ -41,16 +41,16 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.codigo']}" escape="false" />:</div>
-				<input type="text" name="codigo" class="ui-input ui-code ui-filter" tabindex="4" />
+				<input type="text" name="codigo" is="text-input" class="ui-code ui-filter" tabindex="4" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.presupuesto']}" escape="false" />:</div>
-				<input type="text" name="org" class="ui-input ui-code ui-filter" tabindex="5" />
+				<input type="text" name="org" is="text-input" class="ui-code ui-filter" tabindex="5" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
-				<input type="text" name="f1" tabindex="6" class="ui-input ui-date ui-filter"/> ...
-				<input type="text" name="f2" tabindex="7" class="ui-input ui-date ui-filter"/>
+				<input type="date" name="f1" is="date-input" tabindex="6" class="ui-filter"/> ...
+				<input type="date" name="f2" is="date-input" tabindex="7" class="ui-filter"/>
 			</label>
 		</div>
 
@@ -60,11 +60,11 @@
 			</div>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
-				<input type="text" name="interesado" class="ui-input ui-text ui-filter" tabindex="8" />
+				<input type="text" name="interesado" is="text-input" class="ui-filter" tabindex="8" />
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" /></div>
-				<select name="actividad" class="ui-input ui-select ui-filter" tabindex="10">
+				<select name="actividad" is="data-list" class="ui-filter" tabindex="10">
 					<option value=""></option>
 					<option value="COM">#{msg['uae.irse.tab0.act.com']}</option>
 					<option value="MUN">#{msg['uae.irse.tab0.act.mun']}</option>
@@ -83,7 +83,7 @@
 			</label>
 			<label class="ui-block info-filtro hide">
 				<div class="label"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" /></div>
-				<select name="tramite" class="ui-input ui-select ui-filter" tabindex="11">
+				<select name="tramite" is="data-list" class="ui-filter" tabindex="11">
 					<option value=""></option>
 					<option value="AUT">#{msg['uae.irse.tab0.tramit.aut']}</option>
 					<option value="LIQ">#{msg['uae.irse.tab0.tramit.liq']}</option>
@@ -95,7 +95,7 @@
 		<div class="navbar"> <!-- acciones del filtro (botones) -->
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			<a href="#tab-action-list" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</a>
+			<button type="submit" class="btn btn-info" tabindex="13"><i class="far fa-search btn-icon-left"></i>Buscar</button>
 			<c:if test="#{not iris.user.otri}">
 				<a href="#tab-action" class="btn btn-info" data-action="list-all" tabindex="13"><i class="far fa-search btn-icon-left"></i>Ver Todos</a> 
 			</c:if>

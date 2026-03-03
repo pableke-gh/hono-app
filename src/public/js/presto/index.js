@@ -12,13 +12,13 @@ coll.ready(() => { // init. presto modules
 	form.init()
 		.set("show-subtipo", () => (presto.isUae() && presto.isGcr()))
 		.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto);
-	form.onChangeFile("[name='adjunto']", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
+	form.getElement("adjunto").onFile((ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
 	tabs.setAction("adjunto", () => api.init().blob("/uae/presto/adjunto?id=" + presto.getAdjunto()));
 
 	// Init. form events
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
 	const fnUrgente = ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2");
-	form.onChangeInput("#urgente", fnUrgente).onChangeInputs(".ui-ej", fnSync);
+	form.addChange("urgente", fnUrgente).onChange(".ui-ej", fnSync);
 
 	const DATA = {}; // build container
 	api.init().fetch("/uae/presto/ejercicios").then(ejercicios => { DATA.ejercicios = ejercicios; }); // hide call

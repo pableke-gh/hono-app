@@ -27,7 +27,7 @@ export default class Solicitudes extends Table {
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada")
 			.set("#emails", data => api.init().json(url + "/emails?id=" + data.id)); // admin test email
 		this.setRemove(data => {
-			const id = data.id || solicitud.getId(); // row selected or current data
+			const id = data?.id || solicitud.getId(); // row selected or current data if remove when creating
 			return api.init().json(url + "/remove?id=" + id).then(tabs.showList);  // remove = Promise
 		});
 		this.set("#integrar", data => { // integra la solicitud seleccionada en uxxiec
@@ -47,7 +47,8 @@ export default class Solicitudes extends Table {
 	getSolicitud = () => this.#solicitud; // get solicitud
 	showList() { this.refreshRow(); tabs.showList(); } // refresh current row + show list tab
 	load = data => this.#solicitud.setData(data || this.getCurrent()); // update data model
-	setWorking = () => { this.load().setProcesando(); this.showList(); } // update current row state
+	setProcesando = () => this.load().setProcesando(); // set estado procesando ...
+	setWorking = () => { this.setProcesando(); this.showList(); } // update current row state
 
 	row(data) { // to simulate super keyword from arrow function, 'row' must be defined as a function
 		let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';

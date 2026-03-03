@@ -187,6 +187,7 @@ export default class Table {
 	flush(index) {
 		index = index ?? this.#index; // default current
 		return this.onRemove(this.#rows[index]).then(() => {
+			if (this.isEmpty()) return; // nothing to remove
 			this.#rows.splice(index, 1); // remove row data
 			this.#RESUME.size = this.#rows.length; // update size
 			this.#tBody.removeChild(this.#tBody.rows[index]); // remove tr element

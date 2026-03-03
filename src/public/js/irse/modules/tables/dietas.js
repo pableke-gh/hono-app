@@ -1,21 +1,8 @@
 
 import Table from "../../../components/Table.js";
-//import dom from "../../lib/dom-box.js";
 import i18n from "../../i18n/langs.js";
 import irse from "../../model/Irse.js";
 import form from "../irse.js"
-
-/*const resume = { dias: 0, impMax: 0, reducido: 0, percibir: 0 };
-const STYLES = {
-	f1: i18n.isoDate, f2: i18n.isoDate,
-	imp1: i18n.isoFloat1, imp2: i18n.isoFloat, impMax: i18n.isoFloat, maxDietas: i18n.isoFloat1, reducido: i18n.isoFloat, percibir: i18n.isoFloat,
-	dietas: (val, dieta, j) => { //calculado
-		let output = "";
-		for (let i = 0; i <= dieta.maxDietas; i += .5)
-			output += '<option value="' + i + ((dieta.imp1 == i) ? '" selected>' : '">') + i18n.isoFloat1(i) + '</option>'
-		return output;
-	}
-}*/
 
 // tabla del paso 6 resumen de dietas
 export default class Dietas extends Table {
@@ -27,9 +14,9 @@ export default class Dietas extends Table {
 		form.set("is-dietas", this.size);
 		irse.getImpDietas = () => this.getProp("percibir");
 		this.setChange("dietas", (dieta, element) => {
-			dieta.imp1 = +element.value;
+			dieta.imp1 = +element.value; // [0, 0.5, 1, 1.5, 2, ...]
 			this.refresh(); // update table
-			form.refresh(irse); // update view
+			form.stringify("gastos-dietas", this.getData()).refresh(irse); // save changes + update view
 		});
 	}
 
@@ -43,7 +30,12 @@ export default class Dietas extends Table {
 
 		data.maxDietas = (isFirst || isLast) ? (data.estado / 2) : data.num;
 		data.impMax = data.imp2 * data.maxDietas;
-		data.reducido = isLast ? (data.imp1 ? 0 : data.impMax) : ((data.num - data.imp1) * data.imp2);
+		if (isFirst && data.maxDietas == 1)
+			data.reducido = (1-data.imp1) * data.imp2;
+		else if (isFirst || isLast)
+			data.reducido = data.imp1 ? 0 : data.impMax;
+		else
+			data.reducido = (data.num - data.imp1) * data.imp2;
 		data.percibir = data.impMax - data.reducido; 
 
 		resume.dias += data.num;
@@ -54,7 +46,7 @@ export default class Dietas extends Table {
 
 	row(dieta) {
 		const fnDietas = (dieta, maxDietas) => {
-			let output = '<select name="dietas">';
+			let output = '<select name="dietas" is="data-list">';
 			for (let i = 0; i <= maxDietas; i += .5)
 				output += '<option value="' + i + ((dieta == i) ? '" selected>' : '">') + i18n.isoFloat1(i) + '</option>'
 			return output + "</select>";
@@ -78,79 +70,4 @@ export default class Dietas extends Table {
 	afterRender() {
 		form.refresh(irse);
 	}
-
-	/*render = tab6 => { // Build table step 7
-		const divData = tab6.querySelector("#dietas-data") || coll.getDivNull();
-		const manutenciones = coll.parse(divData.innerText) || [];
-		resume.dias = resume.impMax = resume.reducido = resume.percibir = 0;
-
-		dom.onChangeTable("#manutenciones", table => {
-			const tr = resume.row;
-			const dieta = resume.data;
-			dieta.imp1 = +resume.element.value;
-
-			divData.innerText = JSON.stringify(manutenciones);
-			dom.tfoot(table, resume, STYLES).setValue("#gastos-dietas", divData.innerText);
-
-			tr.cells[9].innerHTML = i18n.isoFloat(dieta.reducido) + " €";
-			tr.cells[10].innerHTML = i18n.isoFloat(dieta.percibir) + " €";
-			form.refresh(irse);
-		}).onRenderTable("#manutenciones", table => {
-			let size = coll.size(manutenciones);
-			if (size == 0) //hay dietas?
-				return; // tabla vacia
-
-			let first = manutenciones[0];
-			first.maxDietas = first.estado / 2;
-			first.impMax = first.imp2 * first.maxDietas;
-			if (first.maxDietas == 1)
-				first.reducido = (1-first.imp1) * first.imp2;
-			else
-				first.reducido = first.imp1 ? 0 : first.impMax;
-			first.percibir = first.impMax - first.reducido;
-			first.periodo = i18n.get("firstDay");
-
-			//adjust last dieta
-			resume.dias = 1;
-			resume.impMax = first.impMax;
-			resume.reducido = first.reducido;
-			resume.percibir = first.percibir;
-			if (size == 1)
-				return;
-
-			size--;
-			for (let i = 1; i < size; i++) {
-				let dieta = manutenciones[i];
-				dieta.periodo = i18n.get("medDay");
-				dieta.impMax = dieta.num * dieta.imp2;
-				dieta.reducido = (dieta.num-dieta.imp1) * dieta.imp2;
-				dieta.percibir = dieta.impMax - dieta.reducido;
-				dieta.maxDietas = dieta.num;
-				resume.dias += dieta.num;
-				resume.impMax += dieta.impMax;
-				resume.reducido += dieta.reducido;
-				resume.percibir += dieta.percibir;
-			}
-
-			if (size > 0) {
-				let last = manutenciones.last(); //extract last dieta
-				last.maxDietas = last.estado / 2;
-				last.impMax = last.imp2 * last.maxDietas;
-				last.reducido = last.imp1 ? 0 : last.impMax;
-				last.percibir = last.impMax - last.reducido;
-				last.periodo = i18n.get("lastDay");
-
-				//adjust last dieta
-				resume.dias++;
-				resume.impMax += last.impMax;
-				resume.reducido += last.reducido;
-				resume.percibir += last.percibir;
-			}
-
-			divData.innerText = JSON.stringify(manutenciones);
-			form.refresh(irse);
-		});
-
-		dom.table("#manutenciones", manutenciones, resume, STYLES);
-	}*/
 }

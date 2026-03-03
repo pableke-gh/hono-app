@@ -61,8 +61,6 @@ class IrseValidators extends Validators {
 	ruta(data) {
 		if (!data.origen || !data.pais1)
 			this.addRequired("origen", "errOrigen");
-		//if (ruta.isVehiculoPropio(data) && !form.getValueByName("matricula"))
-			//this.addRequired("matricula", "errMatricula");
 		if (!dt.between(ruta.salida(data), MIN_DATE, MAX_DATE)) 
 			this.addRequired("f1", "errFechasRuta");
 		if (data.dt1 > data.dt2)
@@ -140,6 +138,29 @@ class IrseValidators extends Validators {
 		if (gasto.isTipoPernocta(data.tipoGasto) && (!data.fAloMin || !data.fAloMax))
 			return this.addRequired("fAloMin", "errFechasAloja").fail();
 		return this.success(data);
+	}
+
+	pernoctas() {
+		const data = form.getData();
+		this.gt0("impGasto", data.impGasto).isDate("fAloMin", data.fAloMin).isDate("fAloMax", data.fAloMax);
+		if (data.fAloMin > data.fAloMax)
+			return this.addRequired("fAloMin", "errFechasAloja").fail(); // stop validations
+
+		const f1 = new Date(data.fAloMin); // T00:00:00.000Z
+		const f2 = new Date(data.fAloMax); // T00:00:00.000Z
+		data.num = dt.diffDays(f2, f1); // número de noches (fechas truncadas)
+
+		const tipo = form.getOrganicas().getTipoDieta();
+		const grupo = form.getPaso1().getGrupoDieta();
+		const idPais1 = rutas.getPaisPernocta(f1);
+		while (dt.lt(f1, f2)) { // range date iterator
+			if (rutas.getPaisPernocta(f1) != idPais1)
+				return this.addRequired("fMinGasto", "errPais").fail();
+			f1.addDays(1); // incremento un día
+		}
+		data.imp2 = this.getImpNoche(tipo, idPais1, grupo);
+		data.desc = i18n.getRegion(idPais1);
+		return this.close(data);
 	}
 
 	resumen(resume) {

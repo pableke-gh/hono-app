@@ -26,14 +26,14 @@ export default class Imputacion extends Form {
 
 		this.#acRecibo.setItemMode(4).setSource(term => {
 			const url = factura.isExtension() ? "/uae/fact/recibos/tpv" : "/uae/fact/recibos/ac";
-			api.init().json(url, { id: this.getval("#idOrg") || 0, term }).then(this.#acRecibo.render);
+			api.init().json(url, { id: this.getValue("idOrg") || 0, term }).then(this.#acRecibo.render);
 		});
 
 		this.#acTTPP.setItemMode(4).setSource(term => {
-			api.init().json("/uae/ttpp/recibos", { id: this.getval("#idOrg") || 0, term }).then(this.#acTTPP.render);
+			api.init().json("/uae/ttpp/recibos", { id: this.getValue("idOrg") || 0, term }).then(this.#acTTPP.render);
 		});
 	
-		this.onChangeInput("#iva", ev => form.setIva(+ev.target.value));
+		this.onChange("iva", ev => form.setIva(+ev.target.value));
 		tabs.setAction("addLinea", () => {
 			this.closeAlerts(); // hide prev. errors
 			if (factura.isTtppEmpresa()) { // tipo recibo ttpp

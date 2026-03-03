@@ -39,7 +39,8 @@ coll.ready(() => {
 		tabs.setHeight();
 	}
 
-	form.onChangeFile("#fichero", ev => { // after parse file
+	const ficheros = form.getElement("ficheros");
+	ficheros && ficheros.onFile(ev => { // after parse file
 		const decoder = new TextDecoder("utf-8"); // decode the ArrayBuffer into a UTF-8 string
 		rb.reset().parse(decoder.decode(ev.target.result)); // parse file contents
 
@@ -203,4 +204,8 @@ coll.ready(() => {
 
 	const iSearch = $("[group=search]").keydown(ev => { if (ev.keyCode == 13) { ev.preventDefault(); fnSearch(); } });
 	const tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);
+
+	// global tabs actions
+	tabs.setAction("clickNext", link => link.nextElementSibling.click()); // fire click event for next sibling element
+	tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
 });

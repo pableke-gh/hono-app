@@ -6,7 +6,8 @@
 		xmlns:o="http://omnifaces.org/ui"
 		xmlns:p="http://primefaces.org/ui"
 		xmlns:h="http://java.sun.com/jsf/html"
-		xmlns:f="http://java.sun.com/jsf/core">
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="importConstants">
 		<p:importConstants type="es.upct.portal.modules.authorities.XecomGroups" var="xecomGroups" />
@@ -80,14 +81,14 @@
 					<div class="ui-blocks hide info-cargo-interno">
 					<label class="ui-block">
 						<div class="label required">Ejercicios:</div>
-						<h:selectOneMenu id="ej-pago" styleClass="ui-input ui-select ui-jg" tabindex="1">
+						<h:selectOneMenu id="ej-pago" pt:is="data-list" styleClass="ui-select ui-jg" tabindex="1">
 							<f:selectItems value="#{uae.ejercicios}" />
 						</h:selectOneMenu>
 					</label>
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Nº de JG / Descripción:</div>
-						<input type="text" id="jg" name="jg" class="ui-input ui-autocomplete ui-jg" tabindex="2" />
-						<input type="hidden" name="idJg" class="ui-jg" />
+						<input type="text" id="jg" name="jg" is="text-input" class="ui-autocomplete ui-jg" tabindex="2" />
+						<input type="hidden" name="idJg" is="text-input" class="ui-jg" />
 						<ul role="list" class="results"></ul>
 					</label>
 					<div class="ui-block-btn">
@@ -101,8 +102,8 @@
 					<div class="ui-blocks hide info-incompatibilidad">
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Tercero (CIF / NIF / Nombre):</div>
-						<input type="text" id="tercero" name="tercero" class="ui-input ui-autocomplete ui-tercero" tabindex="4" />
-						<input type="hidden" name="nifTercero" class="ui-tercero" />
+						<input type="text" id="tercero" name="tercero" is="text-input" class="ui-autocomplete ui-tercero" tabindex="4" />
+						<input type="hidden" name="nifTercero" is="text-input" class="ui-tercero" />
 						<ul role="list" class="results"></ul>
 					</label>
 					<div class="ui-block-btn">

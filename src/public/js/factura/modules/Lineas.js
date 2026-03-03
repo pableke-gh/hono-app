@@ -13,7 +13,7 @@ export default class Lineas extends Table {
 	addLinea(data) {
 		if (!data) return; // error en las validaciones
 		this.push(data); // añado la nueva linea
-		form.restart("#desc").setValue("#imp", 0);
+		form.restart("desc").setValue("imp", 0);
 	}
 	addRecibo(recibo) { // solo para ttpp, añado el recibo como linea de la factura
 		recibo && this.push({ cod: recibo.value, desc: recibo.label, imp: recibo.imp });

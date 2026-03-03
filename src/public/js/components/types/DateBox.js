@@ -33,7 +33,7 @@ function DateBox() {
 
 	const lpad = val => ((val < 10) ? ("0" + val) : val); // always 2 digits
 	this.toPlainDate = date => (date.getFullYear() + "-" + lpad(date.getMonth() + 1) + "-" + lpad(date.getDate())); //yyyy-mm-dd
-	this.toPlainDateTime = date => (self.toPlainDate(date) + " " + date.toLocaleTimeString()); //yyyy-mm-dd hh:MM:ss
+	this.toPlainDateTime = date => (self.toPlainDate(date) + " " + date.toLocaleTimeString()); //yyyy-mm-dd h:MM:ss
 
 	// Randoms
 	this.randTime = (d1, d2) => Math.floor(Math.random() * self.diffDate(d2, d1) + d1.getTime());

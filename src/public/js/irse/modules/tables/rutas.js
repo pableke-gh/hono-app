@@ -28,7 +28,7 @@ export default class Rutas extends Table {
 
 	beforeRender(resume) {
 		ruta.beforeRender(resume);
-		resume.matricula = form.getval("#matricula");
+		resume.matricula = form.getValue("matricula");
 	}
 
 	rowCalc = ruta.rowCalc;
@@ -71,7 +71,7 @@ export default class Rutas extends Table {
 		const last = rutas.getLlegada() || CT;
 		rutas.getNumRutasUnlinked = () => resume.unlinked; // redefine calc
 		const data = { origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula: resume.matricula };
-		form.setData(data, ".ui-ruta").delAttr("#f1", "max").restart("#destino").hide(".grupo-matricula");
+		form.setData(data, ".ui-ruta").delAttr("#f1", "max").restart("destino").hide(".grupo-matricula");
 		if (!last.dt1) // primera ruta?
 			form.setFocus("#f1");
 	}

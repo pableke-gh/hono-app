@@ -11,14 +11,14 @@ import getActividad from "../../data/perfiles/actividades.js";
 
 export default class Perfil extends Form {
 	#organicas = new Organicas(this);
-	#eRol; #eCol; #eFin; #eAct; #eTramit;
 	#acInteresado; #acOrganica;
+	#eCol; #eFin; #eAct;
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
 	}
 
-	getRol = () => this.#eRol.value;
+	getRol = () => this.getValue("rol");
 	isColaboracion = () => (this.#eAct.value == "OCE") || (this.#eAct.value == "IAE+OCE");
 	isTribunal = () => (this.#eAct.value == "ATR") || (this.#eAct.value == "IAE+ATR");
 	isFormacion = () => (this.#eAct.value == "AFO") || (this.#eAct.value == "IAE+AFO");
@@ -35,7 +35,7 @@ export default class Perfil extends Form {
 	isMov = () => (this.#eAct.value == "MOV");
 	is1Dia = () => (this.isMun() || this.isMes() || this.isAcs() || this.isAfo() || this.isAtr() || this.isCtp() || this.isOce())
 
-	getTramite = () => this.#eTramit.value;
+	getTramite = () => this.getValue("tramite");
 	isAut = () => (this.getTramite() == "AUT");
 	isAutA7j = () => (this.isAut() || this.isA7j());
 	isRutaUnica = () => (this.isAutA7j() || this.is1Dia());
@@ -55,8 +55,8 @@ export default class Perfil extends Form {
 
 	update = () => {
 		this.#eFin.value = this.#organicas.getFinanciacion(); //recalculo la financiacion
-		this.select(this.#eAct, getActividad(this.#eRol.value, this.#eCol.innerText, this.#eFin.value))
-			.select(this.#eTramit, this.isCom() ? 7 : 1); //default = AyL
+		this.select("actividad", getActividad(this.getValue("rol"), this.#eCol.innerText, this.#eFin.value))
+			.select("tramite", this.isCom() ? 7 : 1); //default = AyL
 		return this.refresh(irse);
 	}
 
@@ -89,11 +89,9 @@ export default class Perfil extends Form {
 	}
 
 	view = organicas => {
-		this.#eRol = this.getInput("#rol");
 		this.#eCol = this.querySelector("#colectivo");
-		this.#eFin = this.getInput("#financiacion");
-		this.#eAct = this.getInput("#actividad");
-		this.#eTramit = this.getInput("#tramite");
+		this.#eFin = this.getElement("financiacion");
+		this.#eAct = this.getElement("actividad");
 		this.#acInteresado = this.setAutocomplete("#interesado", {
 			delay: 600, //milliseconds between keystroke occurs and when a search is performed
 			minLength: 5, //reduce matches
@@ -128,7 +126,7 @@ export default class Perfil extends Form {
 		this.#organicas.render(organicas);
 		this.#acInteresado.setEditable(irse.isEditableP0());
 		this.#eCol.parentNode.setVisible(this.#acInteresado.isLoaded()); //muestro el colectivo
-		this.#eAct.addEventListener("change", this.update); // actualizo el perfil al cambiar la actividad
+		this.#eAct.addChange(this.update); // actualizo el perfil al cambiar la actividad
 		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
 	}

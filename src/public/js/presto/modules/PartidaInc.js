@@ -10,7 +10,7 @@ import form from "./presto.js";
 
 export default class PartidaInc extends Form {
 	#acOrgInc = this.setAutocomplete("#acOrgInc");
-	#ecoInc = this.setDatalist("#idEcoInc");
+	#ecoInc = this.getElement("idEcoInc");
 	#partidas = new Partidas(this);
 
 	constructor(form) {
@@ -21,25 +21,25 @@ export default class PartidaInc extends Form {
 		this.#partidas.init();
 		const fnSelect = item => {
 			api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(this.#ecoInc.setItems); // load economicas inc.
-			form.setAvisoFa(item).setValue("#faInc", item.int & 1); // organica afectada
+			form.setAvisoFa(item).setValue("faInc", item.int & 1); // organica afectada
 		}
 		const fnSource = term => {
 			const url = presto.isGcr() ? "/uae/presto/organicas/inc/gcr" : "/uae/presto/organicas/inc"; // url by type
-			api.init().json(url, { ej: this.getval("#ejInc"), term }).then(this.#acOrgInc.render); // send fetch
+			api.init().json(url, { ej: this.getValue("ejInc"), term }).then(this.#acOrgInc.render); // send fetch
 		}
-		const fnReset = () => { this.setValue("#faInc").setValue("#impInc"); this.#ecoInc.reset(); }
+		const fnReset = () => { this.setValue("faInc").setValue("impInc"); this.#ecoInc.reset(); }
 		this.#acOrgInc.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect).setReset(fnReset);
 
 		this.#ecoInc.setEmptyOption("Seleccione una económica");
 		const fnEditableEjInc = () => (this.#partidas.isEmpty() && !presto.isDisableEjInc());
-		this.set("is-editable-ej-dec", this.#partidas.isEmpty).set("is-editable-ej-inc", fnEditableEjInc).onChangeInput("#ejInc", this.#acOrgInc.reload);
+		this.set("is-editable-ej-dec", this.#partidas.isEmpty).set("is-editable-ej-inc", fnEditableEjInc).onChange("ejInc", this.#acOrgInc.reload);
 
 		tabs.setAction("partida-inc-add", () => {
 			if (!valid.partidaInc()) return; // errores al validar los campos de entrada
 			const url = `/uae/presto/partida/add?org=${this.#acOrgInc.getValue()}&eco=${this.#ecoInc.getValue()}`;
 			api.init().json(url).then(partidaInc => { // fetch partida a incrementar
 				if (!valid.partidaSrv(partidaInc)) return; // error en la partida a incrementar
-				partidaInc.imp030 = partidaInc.imp = this.valueOf("#impInc"); // Importe de la partida a añadir
+				partidaInc.imp030 = partidaInc.imp = this.getValue("impInc"); // Importe de la partida a añadir
 				this.#partidas.add(partidaInc); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
 				this.#acOrgInc.reload(); // reseteo los valores del formulario
 			});

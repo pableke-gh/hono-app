@@ -38,7 +38,7 @@ export default class Organicas extends Table {
 		});
 
 		tabs.setAction("report", () => {
-			fnReport(form.getval("#utProv"), buzon.getIdOrganica());
+			fnReport(form.getValue("utProv"), buzon.getIdOrganica());
 			form.closeModal(); // always close modal
 		});
 	}

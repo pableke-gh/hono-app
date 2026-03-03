@@ -12,32 +12,32 @@
 		<div class="ui-blocks">
 		<label class="ui-block">
 			<div class="label">Ejercicio:</div>
-			<select id="ejDec" name="ej" class="ui-input ui-select ui-ej" data-editable="is-editable-ej-dec" tabindex="5"></select>
+			<select name="ej" is="data-list" class="ui-ej" data-editable="is-editable-ej-dec" tabindex="5"></select>
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
-			<input type="search" id="acOrgDec" name="acOrgDec" class="ui-input ui-autocomplete" tabindex="6" /> 
-			<input type="text" name="idOrgDec" class="ui-input ui-number hide" />
+			<input type="search" id="acOrgDec" name="acOrgDec" is="text-input" class="ui-autocomplete" tabindex="6" /> 
+			<input type="text" name="idOrgDec" is="text-input" class="hide" />
 			<ul role="list" class="results"></ul>
 			<div class="ui-errtip"></div> 
 		</label>
 		<label class="ui-block">
 			<div class="label" title="Orgánica afectada">FA:</div>
-			<input id="faDec" name="faDec" class="ui-input ui-bool disabled" tabindex="-1" disabled title="Orgánica afectada" />
+			<input id="faDec" name="faDec" is="bool-input" class="disabled" tabindex="-1" disabled title="Orgánica afectada" />
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<select id="idEcoDec" name="idEcoDec" class="ui-input ui-select ui-number ui-pf" data-editable="isEditable" tabindex="7"></select>
+			<select id="idEcoDec" name="idEcoDec" is="data-list" class="ui-pf" data-editable="isEditable" tabindex="7"></select>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
 			<div class="label required">Importe:</div>
-			<input type="text" id="impDec" name="imp" maxlength="12" tabindex="8" class="ui-input ui-float" data-editable="isEditable"/> €
+			<input type="text" id="impDec" name="imp" is="float-input" tabindex="8" class="ui-input" data-editable="isEditable"/> €
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block form-refresh" data-refresh="isImpCd">
 			<div class="label required">Importe Disponible:</div>
-			<input type="text" id="cd" name="cd" tabindex="-1" class="ui-input ui-float disabled" disabled /> €
+			<input type="text" id="cd" name="cd" is="float-input" tabindex="-1" class="disabled" disabled /> €
 			<div class="ui-errtip"></div>
 		</label>
 		</div>

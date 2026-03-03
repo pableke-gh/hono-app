@@ -13,7 +13,7 @@ export default class Recientes extends Organicas {
 
 	init() {
 		super.init();
-		form.onChangeInput("#pagina", ev => this.paginate(+ev.target.value));
+		form.onChange("pagina", ev => this.paginate(+ev.target.value));
 
 		const fnRender = () => this.render();
 		Observer.subscribe("anclar", fnRender).subscribe("desanclar", fnRender);

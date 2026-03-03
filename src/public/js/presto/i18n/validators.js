@@ -44,7 +44,7 @@ class PrestoValidators extends Validators {
 		this.gt0("impInc", data.impInc); // float number > 0
 		if (form.getPartidas().getData().find(row => ((row.idOrg == data.idOrgInc) && (row.idEco == data.idEcoInc))))
 			this.addError("acOrgInc", "notAllowed", "¡Partida ya asociada a la solicitud!"); // partida ya asociada
-		else if ((data.idOrgDec == data.idOrgInc) && sb.starts(sb.getCode(form.getOptionText("#idEcoInc")), sb.getCode(form.getOptionText("#idEcoDec"))))
+		else if ((data.idOrgDec == data.idOrgInc) && sb.starts(sb.getCode(form.getOptionText("idEcoInc")), sb.getCode(form.getOptionText("idEcoDec"))))
 			this.addError("acOrgInc", "notValid", "La partida a incrementar esta dentro del nivel vinculante de la partida a decrementar. Por lo que no es necesario realizar esta operación.");
 		return this.close(data, "No ha seleccionada correctamente la partida a incrementar.");
 	}

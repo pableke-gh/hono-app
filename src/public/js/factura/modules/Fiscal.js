@@ -7,7 +7,7 @@ import form from "./factura.js";
 
 export default class Fiscal extends Form {
 	#acTercero = this.setAutocomplete("#acTercero");
-	#delegaciones = this.setDatalist("#delegacion");
+	#delegaciones = this.getElement("delegacion");
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
@@ -29,16 +29,16 @@ export default class Fiscal extends Form {
 				.setSource(fnSource).setAfterSelect(fnSelect)
 				.setReset(this.#delegaciones.reset);
 	
-		const fnChange = item => this.setValue("#idDelegacion", item.value); 
-		this.#delegaciones.setEmptyOption("Seleccione una delegación").setChange(fnChange);
+		const fnChange = item => this.setValue("idDelegacion", item.value); 
+		this.#delegaciones.setEmptyOption("Seleccione una delegación").addChange(fnChange);
 
 		this.set("update-face", el => { // handler to update face inputs group
 			el.innerHTML = factura.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor";
 			el.nextElementSibling.setAttribute("maxlength", factura.isPlataforma() ? 20 : 9);
 		});
-		this.onChangeInput("#subtipo", ev => fnUpdate(+ev.target.value))
-			.onChangeInput("#sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
-			.onChangeInput("#face", ev => { factura.setFace(+ev.target.value); this.refresh(factura); });
+		this.onChange("subtipo", ev => fnUpdate(+ev.target.value))
+			.onChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
+			.onChange("face", ev => { factura.setFace(+ev.target.value); this.refresh(factura); });
 	}
 
 	#fiscalidad(tercero) {

@@ -13,7 +13,9 @@ class Ruta {
 	getPaisPernocta = ruta => this.isLlegadaTardia(ruta) ? this.getPaisllegada(ruta) : this.getPaisSalida(ruta);
 
 	getHoraSalida = ruta => ruta.dt1;
+	getFechaSalida = ruta => sb.isoDate(this.getHoraSalida(ruta));
 	getHoraLlegada = ruta => ruta.dt2;
+	getFechaLlegada = ruta => sb.isoDate(this.getHoraLlegada(ruta));
 	salida = ruta => dt.toDate(this.getHoraSalida(ruta)); //tb.parse(this.getHoraSalida(ruta));
 	llegada = ruta => dt.toDate(this.getHoraLlegada(ruta)); //tb.parse(this.getHoraLlegada(ruta));
 

@@ -5,7 +5,8 @@
 		xmlns:p="http://primefaces.org/ui" 
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:c="http://java.sun.com/jsp/jstl/core">
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 	<div class="card-xeco">
@@ -18,37 +19,37 @@
 		<div class="ui-blocks no-print form-refresh" data-refresh="isEditable">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.sali']}" escape="false" />:</div>
-				<input type="search" id="origen" name="origen" class="ui-input ui-autocomplete ui-ruta" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
+				<input type="search" id="origen" name="origen" is="text-input" class="ui-autocomplete ui-ruta" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
-				<input type="date" id="f1" name="f1" class="ui-input ui-date ui-ruta" tabindex="31" />
+				<input type="date" id="f1" name="f1" is="date-input" class="ui-ruta" tabindex="31" />
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.a.las']}" escape="false" />:</div>
-				<input type="time" id="h1" name="h1" class="ui-input ui-time ui-ruta" tabindex="32" placeholder="hh:mm" />
+				<input type="time" id="h1" name="h1" is="time-input" class="ui-ruta" tabindex="32" placeholder="hh:mm" />
 			</label>
 
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.llegue']}" escape="false" />:</div>
-				<input type="search" id="destino" name="destino" class="ui-input ui-autocomplete ui-ruta" tabindex="33" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}"/>
+				<input type="search" id="destino" name="destino" is="text-input" class="ui-autocomplete ui-ruta" tabindex="33" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
-				<input type="date" id="f2" name="f2" class="ui-input ui-date ui-ruta" tabindex="34" />
+				<input type="date" id="f2" name="f2" is="date-input" class="ui-ruta" tabindex="34" />
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.a.las']}" escape="false" />:</div>
-				<input type="time" id="h2" name="h2" class="ui-input ui-time ui-ruta" tabindex="35" placeholder="hh:mm"/>
+				<input type="time" id="h2" name="h2" is="time-input" class="ui-ruta" tabindex="35" placeholder="hh:mm"/>
 			</label>
 
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select id="desp" name="desp" class="ui-input ui-select ui-ruta" tabindex="37" title="#{msg['tit.medio.trans']}">
+				<select id="desp" name="desp" is="data-list" class="ui-ruta" tabindex="37" title="#{msg['tit.medio.trans']}">
 					<option value=""></option>
 					<option value="1">#{iris.irse.rutas.getMsgDesp(1)}</option>
 					<option value="8">#{iris.irse.rutas.getMsgDesp(8)}</option>
@@ -64,7 +65,7 @@
 			</label>
 			<label class="ui-block hide grupo-matricula">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
-				<h:inputText id="matricula" value="#{iris.irse.gastos.matricula}" maxlength="10" tabindex="38" styleClass="ui-input ui-short ui-ruta ui-matricula update-irse"/>
+				<h:inputText id="matricula" value="#{iris.irse.gastos.matricula}" pt:is="text-input" maxlength="10" tabindex="38" styleClass="ui-short ui-ruta ui-matricula update-irse"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn">

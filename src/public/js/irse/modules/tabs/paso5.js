@@ -10,17 +10,17 @@ import rutas from "../../model/Rutas.js"
 import gasto from "../../model/Gasto.js";
 import gastos from "../../model/Gastos.js";
 
-import RutaGasto from "../tables/RutaGasto.js";
-import RutaRead from "../tables/RutaRead.js"
+import RutaPendientes from "../tables/pendientes.js";
+import RutaConsulta from "../tables/itinerario.js"
 import TableGastos from "../tables/gastos.js"
 import Observer from "../util/Observer.js";
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
 export default class Paso5 extends Form {
-	#tipoGasto = this.getInput("#tipo-gasto"); // select input
+	#tipoGasto = this.getInput("#tipoGasto"); // select input
 	#grupos = this.querySelectorAll(".grupo-gasto"); // toggle groups
 	#tg = new TableGastos(this);
-	#trg = new RutaGasto(this);
+	#pendientes = new RutaPendientes(this);
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
@@ -28,20 +28,20 @@ export default class Paso5 extends Form {
 
 	init() {
 		this.#tg.init(); // 1º en observar
-		this.#trg.init(); // 2º en observar
+		this.#pendientes.init(); // 2º en observar
 		tabs.setInitEvent(5, this.initTab).setViewEvent(5, this.#reload);
 	}
 
 	#reload = () => {
 		this.#grupos.mask(0);
 		this.#tipoGasto.value = ""; // clear selection
-		this.setval("#impGasto", 0).setval("#txtGasto");
-		this.setLimitDateRange("#fAloMin", "#fAloMax", rutas.getHoraSalida(), rutas.getHoraLlegada());
+		this.setValue("impGasto", 0).setValue("txtGasto");
+		this.getElement("fAloMin").setLimit("fAloMax", rutas.getHoraSalida(), rutas.getHoraLlegada());
 	}
 	initTab = () => {
 		const fnChange = () => {
 			const tipo = this.#tipoGasto.value;
-			this.setval("#tipoGasto", tipo).text(".label-text-gasto", i18n.get("lblDescObserv"));
+			this.text(".label-text-gasto", i18n.get("lblDescObserv"));
 			if (gasto.isTipoPernocta(tipo))
 				this.#grupos.mask(0b11011);
 			else if (gasto.isTipoDoc(tipo))
@@ -59,9 +59,9 @@ export default class Paso5 extends Form {
 		}
 
 		this.#tipoGasto.onchange = fnChange; // Change event
-		this.onChangeFile("[name='fileGasto']", (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; fnChange(); });
+		this.getElement("fileGasto").onFile((ev, el, file) => { el.nextElementSibling.innerHTML = file.name; fnChange(); });
 		tabs.setInitEvent("itinerario", () => { // enlace a la tabla de consulta del paso 5
-			const _tblReadOnly = new RutaRead(this.querySelector("#rutas-read")); // build tabla itinerario
+			const _tblReadOnly = new RutaConsulta(this.querySelector("#rutas-read")); // build tabla itinerario
 			tabs.setViewEvent("itinerario", () => _tblReadOnly.view()); // render rows
 		});
 
@@ -74,21 +74,18 @@ export default class Paso5 extends Form {
 		tabs.setAction("uploadGasto", () => (valid.upload() && this.upload()));
 	}
 
+	updateRutas() {
+		this.#pendientes.view(); // force reload rutas pendientes
+	}
 	view(data) {
 		gastos.setGastos(data); // load array
 		this.#tg.render(); // table gastos
-		this.#trg.view(); // force reload of rutas pendientes
+		this.updateRutas(); // tebles rutas
 	}
 
 	upload(rutas) { // merge data to send
-		const fd = this.getFormData();
-		fd.exclude([ // exclude fields
-			"memo", "justifi", "justifiVp", "justifiCong", "tipoSubv", "finalidad", "justifiKm",
-			"iban", "cuenta", "swift", "observaciones", "urgente", "fMax", "extra", "rechazo",
-			"paisEntidad", "nombreEntidad", "codigoEntidad", "acInteresado", "origen", "destino"
-		]);
-		fd.append("trayectos", rutas); // add etapas to form data
-		api.setFormData(fd).json("/uae/iris/upload/gasto").then(data => Observer.emit("link", data.gasto));
+		const fd = this.getFormDataInputs(".ui-gasto").set("idses", irse.getId()).set("trayectos", rutas); // set id + etapas
+		api.setFormData(fd).json("/uae/iris/upload/gasto").then(data => Observer.emit("link", data.gasto)); // send data
 		this.#reload();
 	}
 }

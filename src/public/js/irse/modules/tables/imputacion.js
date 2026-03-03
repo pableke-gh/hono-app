@@ -72,7 +72,7 @@ export default class Imputacion extends Table {
 		fnAdd(3, this.getTotTransporte());
 		fnAdd(4, irse.getTotAc());
 
-		form.stringify("#imp-org", organicas); // save changes
+		form.stringify("imp-org", organicas); // save changes
 		return super.render(organicas); // super keyword
 	}
 }

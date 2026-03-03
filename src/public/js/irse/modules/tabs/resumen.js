@@ -46,20 +46,23 @@ export default class Resumen extends Form {
 		tabs.setAction("zip-com", () => api.init().blob("/uae/iris/zip/com", "iris-facturas.zip"));
 		tabs.setAction("zip-doc", () => api.init().blob("/uae/iris/zip/doc", "iris-doc.zip"));
 
-		const fnUpdate = () => this.update().refresh(irse); // actualiza las tablas del resumen y opciones dinamicas para pernoctas, interurbano, etc.
+		const fnUpdate = () => this.updateGastos().refresh(irse); // actualiza las tablas del resumen y opciones dinamicas para pernoctas, interurbano, etc.
 		Observer.subscribe("link", fnUpdate).subscribe("unlink", fnUpdate); // siempre ultimo en observar / escuchar las acciones link / unlink
 	}
 
-	update() {
+	updateGastos() {
 		this.#trans.render(); // tabla resumen gastos de transporte (tickets, taxis, etc.)
 		this.#pernoctas.render(); // tabla resumen pernoctas (noches de hotel, pensión etc.)
 		this.#extra.render(); // tabla para los gastos extraordinarios (ultima cena, etc.)
 		return this; // method chaining
 	}
-	view = dietas => {
-		this.#km.render(); // tabla resumen de vehiculo propio paso 6
-		this.update(); // tablas transportes, pernoctas, gastos extraordinarios...
+	updateRutas(dietas) {
+		this.#km.render(); // tabla resumen de kilometraje vehiculo propio
 		this.#dietas.render(dietas); // tabla resumen dietas/manutenciones
+	}
+	view = dietas => {
+		this.updateRutas(dietas); // tablas resumen, dietas/manutenciones
+		this.updateGastos(); // tablas transportes, pernoctas, gastos extraordinarios...
 	}
 
 	getKilometraje = () => this.#km;

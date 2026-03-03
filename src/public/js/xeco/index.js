@@ -8,7 +8,7 @@ coll.ready(() => {
     const form = new Form("#xeco");
 
 	const acJGs = form.setAutocomplete("#jg");
-	const fnSourceJg = term => api.init().json("/uae/cargos/internos", { ej: form.getval("#ej-pago"), term }).then(acJGs.render); //source
+	const fnSourceJg = term => api.init().json("/uae/cargos/internos", { ej: form.getValue("ej-pago"), term }).then(acJGs.render); //source
 	acJGs.setItemMode().setSource(fnSourceJg);
 
 	const acTercero = form.setAutocomplete("#tercero");

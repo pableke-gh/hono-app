@@ -24,7 +24,7 @@ export default class Kilometraje extends Table {
 		this.setChange("km1", (data, el) => {
 			data.km1 = i18n.toFloat(el.value);
 			this.refresh(); // recalcula tabla completa
-			form.stringify("#etapas", rutas.getRutas()).refresh(irse); // save changes + update form
+			form.stringify("etapas", rutas.getRutas()).refresh(irse); // save changes + update form
 		});
 	}
 
@@ -45,7 +45,7 @@ export default class Kilometraje extends Table {
 
 	row = ruta => {
 		const km1 = i18n.isoFloat(ruta.km1);
-		const cell = irse.isEditable() ? `<input type="text" name="km1" value="${km1}" class="ui-float"/>` : km1;
+		const cell = irse.isEditable() ? `<input type="text" name="km1" value="${km1}" is="float-input"/>` : km1;
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="${i18n.get("lblOrigen")}">${ruta.origen}</td>
 			<td data-cell="${i18n.get("lblFechaSalida")}">${i18n.isoDate(ruta.dt1)}</td>

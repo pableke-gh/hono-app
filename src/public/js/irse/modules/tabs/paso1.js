@@ -16,9 +16,9 @@ export default class Paso1 extends Form {
 	}
 
 	init() {
-		const rutas = form.getRutas();
+		const perfil = form.getPerfil();
 		tabs.setInitEvent(1, () => {
-			if (form.getPerfil().isMun())
+			if (perfil.isMun())
 				this.setMun();
 			this.setPromotor();
 		});
@@ -26,14 +26,22 @@ export default class Paso1 extends Form {
 			if (!valid.paso1()) return; // if error => stop
 			if (!irse.isEditable() || !this.isChanged())
 				return tabs.nextTab(); // go next tab directly
-			rutas.save(); window.rcPaso1();
+			loading();
+			if (perfil.isMun())
+				form.stringify("etapas", rutas.getRutas());
+			window.rcPaso1();
 		});
 		tabs.setAction("save1", () => {
 			if (!valid.paso1()) return; // if error => stop
 			if (!this.isChanged()) return this.setOk(); // nada que guardar
-			rutas.save(); window.rcSave1(); // call server paso1
+			loading();
+			if (perfil.isMun())
+				form.stringify("etapas", rutas.getRutas());
+			window.rcSave1(); // call server paso1
 		});
 	}
+
+	getGrupoDieta = () => form.getValue("grupo-dieta");
 
 	setPromotor() {
 		const acPromotor = this.setAutocomplete("#promotor");
@@ -45,6 +53,6 @@ export default class Paso1 extends Form {
 		const ruta = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
 		ruta.f1 = sb.isoDate(ruta.dt1); // input format date
 		this.setValues(ruta, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1)
-			.setChangeInput("#desp-mun", ev => this.setVisible(".grupo-matricula", ev.target.value == "1"));
+			.addChange("desp-mun", ev => this.setVisible(".grupo-matricula", ev.target.value == "1"));
 	}
 }

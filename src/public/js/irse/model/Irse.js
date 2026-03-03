@@ -1,14 +1,14 @@
 
+import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
 import Solicitud from "../../core/model/Solicitud.js";
 
 class Iris extends Solicitud {
-	build = () => new Iris(); // Override create a new instance
 	getUrl = () => "/uae/iris"; // endpoint base path
 	setData(data) { // Override
 		const parts = data && sb.split(super.setData(data).getPerfil()); // ROL/COLECTIVO/ACTIVIDAD/TRAMITE/FINANCIACION
-		return parts.length ? this.setPerfil(parts[0], parts[1], parts[2], parts[3], parts[4]) : this;
+		return coll.size(parts) ? this.setPerfil(parts[0], parts[1], parts[2], parts[3], parts[4]) : this;
 	}
 
 	isEditableP0 = () => (!this.getId() && this.isEditable());
@@ -20,17 +20,6 @@ class Iris extends Solicitud {
 	getRol = () => this.get("rol");
 	getCodigoRol = nif => ((nif == this.getNif()) ? "P" : "A");
 	getColectivo = () => this.get("colectivo");
-	getInteresado = () => this.get("interesado");
-	setInteresado = data => this.set("interesado", data).setPerfil(this.getCodigoRol(data?.nif), data?.ci, this.getActividad(), this.getTramite(), this.getFinanciacion()); 
-	getNombreInt = () => this.getInteresado()?.nombre;
-	getNifInteresado = () => this.getInteresado()?.nif;
-	getEmailInteresado = () => this.getInteresado()?.email;
-	isEquipoGob = () => ((this.getInteresado()?.cargos & 64) == 64);
-	getDirInteresado = () => {
-		const interesado = this.isEditable() && this.getInteresado();
-		const tpl = "@lblDomicilio;: @dir;, @cp;, @municipio;, @provincia; (@residencia;)";
-		return interesado ? i18n.render(tpl, interesado) : null; // parser info
-	}
 
 	getActividad = () => this.get("actividad");
 	isMun = () => (this.getActividad() == "MUN");
@@ -52,6 +41,9 @@ class Iris extends Solicitud {
 	isPaso8 = () => (this.getMask() & 4); // paso 8 activado manualmente por la uae
 	isEditableP8 = () => (this.isEditable() && this.isPaso8()); // paso 8 y editable
 	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
+
+	getCargos = () => this.get("cargos"); // cargos del interesado (bitmask)
+	isEquipoGob = () => ((this.getCargos() & 64) == 64); // el interesado forma parte del equipo de gobierno
 
 	// render steps functions for tabs
 	getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), this);

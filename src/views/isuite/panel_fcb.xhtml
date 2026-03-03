@@ -10,7 +10,8 @@
         xmlns:c="http://java.sun.com/jsp/jstl/core"
         xmlns:cc="http://java.sun.com/jsf/composite"
         xmlns:ifw="http://java.sun.com/jsf/composite/component"
-        xmlns:sec="http://www.springframework.org/security/tags">
+        xmlns:sec="http://www.springframework.org/security/tags"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="header">
 		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
@@ -35,19 +36,19 @@
 			<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label">Ejercicios:</div>
-				<h:selectOneMenu id="ejercicio" value="#{ctrl.ejercicio}" styleClass="ui-input ui-select">
+				<h:selectOneMenu id="ejercicio" value="#{ctrl.ejercicio}" pt:is="data-list">
 					<f:selectItems value="#{ctrl.ejercicios}" />
 				</h:selectOneMenu>
 			</label>
 
 			<label class="ui-block">
 				<div class="label">Orgánica:</div>
-				<input type="text" id="organica" name="organica" size="25" maxlength="20" group="search" class="ui-input ui-text" />
+				<input type="text" id="organica" name="organica" is="text-input" size="25" maxlength="20" group="search" />
 			</label>
 
 			<label class="ui-block"> 
 				<div class="label">Tipo:</div>
-				<select id="tipo" name="tipo" group="search" class="ui-input ui-select">
+				<select id="tipo" name="tipo" is="data-list" group="search">
 					<option value=""></option>
 					<!--<option value="FCB">Fondo de Cobertura</option>-->
 					<option value="FCB1">Fondo de Cobertura 1</option>
@@ -58,7 +59,7 @@
 
 			<label for="descripcion" class="ui-block">
 				<div class="label">Desc. Orgánica:</div>
-				<input type="text" id="descripcion" descripcion="descripcion" size="40" maxlength="200" group="search" class="ui-input ui-text" />
+				<input type="text" id="descripcion" name="descripcion" is="text-input" size="40" maxlength="200" group="search" />
 			</label>
 			</div>
 

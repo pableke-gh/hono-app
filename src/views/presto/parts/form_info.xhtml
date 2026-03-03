@@ -12,23 +12,23 @@
 		<div class="ui-blocks">
 		<label class="ui-block-row form-refresh" data-refresh="show-memoria">
 			<div class="label required">Memoria Justificativa:</div>
-			<textarea name="memo" class="ui-input ui-ta" tabindex="14"></textarea>
+			<textarea name="memo" is="text-area" tabindex="14"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
 			<div class="label">#{presto.getMsg('lblUrg')}:</div>
-			<select id="urgente" name="urgente" class="ui-input ui-select" tabindex="15">
+			<select name="urgente" is="data-list" class="ui-input" tabindex="15">
 				<option value="1">#{presto.getMsg('lblNormal')}</option>
 				<option value="2">#{presto.getMsg('lblUrgente')}</option>
 			</select>
 		</label>
 		<label class="ui-block form-refresh" data-refresh="isUrgente">
 			<div class="label required">#{presto.getMsg('lblFechaUrg')}:</div>
-			<input type="date" name="fMax" tabindex="16" class="ui-input ui-date"/>
+			<input type="date" name="fMax" is="date-input" tabindex="16" class="ui-input"/>
 		</label>
 		<label class="ui-block-row form-refresh" data-refresh="isUrgente">
 			<div class="label required">#{presto.getMsg('lblMotivoUrg')}:</div>
-			<textarea name="extra" class="ui-input ui-ta" tabindex="17"></textarea>
+			<textarea name="extra" is="text-area" tabindex="17"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 	</div>
@@ -36,7 +36,7 @@
 	<div class="ui-blocks">
 		<label class="ui-block form-refresh" data-refresh="show-subtipo">
 			<div class="label required">Clasificación de la operación:</div>
-			<select name="subtipo" data-editable="isEditableUae" class="ui-input ui-select" tabindex="18">
+			<select name="subtipo" is="data-list" data-editable="isEditableUae" class="ui-input" tabindex="18">
 				<option value="1">Por ingreso</option>
 				<option value="2">Por compromiso de ingreso</option>
 			</select>
@@ -46,7 +46,7 @@
 		</div>
 		<div class="ui-block-row form-refresh" data-refresh="isEditable">
 			<a href="#tab-action-clickNext" class="btn btn-info"><i class="fas fa-search btn-icon-left"></i>Adjuntar Documentación</a>
-			<input type="file" name="adjunto" class="hide" />
+			<input type="file" name="adjunto" is="file-input" class="hide" />
 			<span class="form-refresh" data-refresh="clear"></span>
 
 			<div class="notice notice-info">Formato preferente: PDF; Tamaño máximo 6 MB; Nombre de archivo breve; Evitar símbolos y caracteres especiales.</div>
