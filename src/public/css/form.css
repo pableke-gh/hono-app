@@ -81,8 +81,8 @@ input[type="checkbox"]:hover { cursor: pointer; }
 .ui-toggle:checked { background: green; }
 .ui-toggle:checked::before { transform: translateX(1rem); }
 
-.ui-bool, .ui-xs { width: 55px; }
-.ui-time-sec, .ui-sm { width: 84px; }
+.ui-bool, .ui-xs { width: 60px; }
+.ui-time-sec, .ui-sm { width: 90px; }
 .ui-date, .ui-md { width: 140px; }
 
 input[type="time"]::-webkit-calendar-picker-indicator { display: none; } /*remove icon from timer*/

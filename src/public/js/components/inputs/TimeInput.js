@@ -10,5 +10,5 @@ export default class TimeInput extends TextInput {
 		this.classList.add("ui-time");
 	}
 
-	setValue = value => super.setValue(sb.isoTime(value)); //hh:MM:ss
+	setValue = value => super.setValue(sb.isoTimeShort(value)); //hh:MM
 }

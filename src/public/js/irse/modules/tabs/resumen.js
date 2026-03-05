@@ -5,6 +5,8 @@ import api from "../../../components/Api.js";
 import valid from "../../i18n/validators.js";
 
 import irse from "../../model/Irse.js"
+import rutas from "../../model/Rutas.js"
+
 import Kilometraje from "../tables/kilometraje.js";
 import Transportes from "../tables/transportes.js";
 import Pernoctas from "../tables/pernoctas.js";
@@ -31,15 +33,21 @@ export default class Resumen extends Form {
 		this.#dietas.init();
 		this.#extra.init();
 
+		const fnData = () => ({
+			id: irse.getId(), justifiKm: this.getValue("justifiKm"),
+			rutas: rutas.getRutas(), dietas: this.#dietas.getData()
+		});
+		const fnNext = () => this.setChanged().refresh(irse);
+
 		tabs.setAction("paso6", () => {
 			if (!valid.resumen(this.#km.getResume())) return; // if error => stop
 			if (!irse.isEditable() || !this.isChanged()) return tabs.nextTab(); // go next tab directly
-			window.rcPaso6(); // llamo al servidor para sus validaciones
+			api.setJSON(fnData()).json("/uae/iris/resumen/save").then(() => { fnNext(); tabs.goTab(); });
 		});
 		tabs.setAction("save6", () => {
 			if (!valid.resumen(this.#km.getResume())) return; // if error => stop
 			if (!this.isChanged()) return this.setOk(); // nada que guardar => mensaje ok
-			window.rcSave6(); // call server to save and validate
+			api.setJSON(fnData()).json("/uae/iris/resumen/save").then(fnNext);
 		});
 
 		// download iris-facturas.zip / iris-doc.zip

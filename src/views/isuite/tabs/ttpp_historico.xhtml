@@ -11,12 +11,12 @@
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-				<select id="ejercicios" name="ej" class="ui-select"></select>
+				<select name="ej" is="data-list"></select>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label">Tipo:</div>
-				<select name="tipo" class="ui-select">
+				<select name="tipo" is="data-list">
 					<option value="43">N43</option>
 					<option value="57">N57</option>
 				</select>
@@ -24,7 +24,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label">Fecha:</div>
-				<input type="date" name="fecha" class="ui-date"/>
+				<input type="date" name="fecha" is="date-input"/>
 			</label>
 		</div>
 

@@ -5,7 +5,8 @@
 		xmlns:p="http://primefaces.org/ui" 
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:c="http://java.sun.com/jsp/jstl/core">
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<h2>Informe ISU</h2>
 	<h:form id="xeco-filtro-isu" prependId="false" class="card-filter" onsubmit="loading();">
@@ -13,8 +14,8 @@
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<h:inputText id="organica-isu" value="#{iris.irse.isu.organica}" styleClass="ui-autocomplete" tabindex="1" />
-				<input type="hidden" name="id"/>
+				<h:inputText id="organica-isu" value="#{iris.irse.isu.organica}" pt:is="text-input" styleClass="ui-autocomplete" tabindex="1" />
+				<input type="hidden" name="id" is="text-input" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</label>
@@ -31,7 +32,7 @@
 		<div class="navbar">
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="btn-icon-left fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			<p:commandButton id="filter-list-isu" action="#{iris.irse.isu.list()}" onclick="loading()" update="xeco-list-isu" oncomplete="showTab(xhr, status, args, 'listIsu');"
+			<p:commandButton id="filter-list-isu" action="#{iris.irse.isu.list()}" onclick="loading()" update="xeco-list-isu" oncomplete="working()"
 					icon="far fa-search" value="Buscar" tabindex="13" styleClass="btn btn-info"></p:commandButton>
 		</div>
 	</h:form>

@@ -68,7 +68,6 @@ export default class Table {
 	setHeader = html => { this.#tHead.innerHTML = html; return this.#setSort(); }
 	rowCalc() {} // row calculation before render each row (optional)
 	row() { throw new Error("Method 'row' must be implemented."); }; // required row render function
-	setRender(fn) { this.row = fn; return this; } // update render row function
 	lastRow = () => ""; // specific last row after render all data (optional)
 	setFooter = html => { this.#tFoot.innerHTML = html; return this; }
 	afterRender() {}; // event fired after render table (optional)
@@ -76,6 +75,13 @@ export default class Table {
 	setChange = (field, fn) => this.set(field + "Change", fn);
 	onRemove = () => Promise.resolve(); // IMPORTANT! must return a promise
 	setRemove = fn => { this.onRemove = fn; return this; } // IMPORTANT! must return a promise
+	setRender(fnRow, fnBefore, fnCalc, fnAfter) {  // update render proces
+		this.beforeRender = fnBefore || this.beforeRender;
+		this.rowCalc = fnCalc || this.rowCalc;
+		this.row = fnRow;
+		this.afterRender = fnAfter || this.afterRender;
+		return this;
+	}
 
 	getData = () => this.#rows; // current data
 	setData = data => { this.#rows = data; return this; }; // update data without render

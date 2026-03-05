@@ -24,7 +24,7 @@ export default class Kilometraje extends Table {
 		this.setChange("km1", (data, el) => {
 			data.km1 = i18n.toFloat(el.value);
 			this.refresh(); // recalcula tabla completa
-			form.stringify("etapas", rutas.getRutas()).refresh(irse); // save changes + update form
+			form.refresh(irse); // save changes + update form
 		});
 	}
 

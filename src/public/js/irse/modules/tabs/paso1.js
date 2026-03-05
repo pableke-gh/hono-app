@@ -17,27 +17,37 @@ export default class Paso1 extends Form {
 
 	init() {
 		const perfil = form.getPerfil();
-		tabs.setInitEvent(1, () => {
+		// actualiza el desplegable del paso 1 (municipio) y el del paso 2 (rutas)
+		this.onChange("[name='desp']", ev => this.setVisible(".grupo-matricula", ev.target.value == "1"));
+		this.getElement("matriculaMun").addChange(ev => {
+			ev.target.value = sb.toUpperWord(ev.target.value);
+			irse.setMatricula(ev.target.value);
+		});
+
+		tabs.setViewEvent(1, () => {
 			if (perfil.isMun())
 				this.setMun();
 			this.setPromotor();
 		});
+
+		const fnData = () => { const data = form.getData(".ui-paso1"); data.id = irse.getId(); return data; }
+		const fnDataMun = () => { const data = fnData(); data.rutas = rutas.getRutas(); return data; }
+		const fnUpdate = data => form.setChanged().setFirmas(data.firmas).refresh(irse);
+
 		tabs.setAction("paso1", () => {
 			if (!valid.paso1()) return; // if error => stop
 			if (!irse.isEditable() || !this.isChanged())
 				return tabs.nextTab(); // go next tab directly
-			loading();
 			if (perfil.isMun())
-				form.stringify("etapas", rutas.getRutas());
-			window.rcPaso1();
+				return api.setJSON(fnDataMun()).json("/uae/iris/mun/save").then(data => { fnUpdate(data); tabs.goTab(); });
+			api.setJSON(fnData()).json("/uae/iris/paso1/save").then(data => { fnUpdate(data); tabs.goTab(); });
 		});
 		tabs.setAction("save1", () => {
 			if (!valid.paso1()) return; // if error => stop
 			if (!this.isChanged()) return this.setOk(); // nada que guardar
-			loading();
 			if (perfil.isMun())
-				form.stringify("etapas", rutas.getRutas());
-			window.rcSave1(); // call server paso1
+				return api.setJSON(fnDataMun()).json("/uae/iris/mun/save").then(fnUpdate);
+			api.setJSON(fnData()).json("/uae/iris/paso1/save").then(fnUpdate);
 		});
 	}
 
@@ -52,7 +62,7 @@ export default class Paso1 extends Form {
 	setMun() {
 		const ruta = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
 		ruta.f1 = sb.isoDate(ruta.dt1); // input format date
-		this.setValues(ruta, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1)
-			.addChange("desp-mun", ev => this.setVisible(".grupo-matricula", ev.target.value == "1"));
+		ruta.matriculaMun = irse.getMatricula(); // matricula from server
+		this.setData(ruta, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1);
 	}
 }

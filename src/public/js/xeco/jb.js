@@ -5,7 +5,7 @@ import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
 
 coll.ready(() => {
-    const form = new Form("#xeco-jb");
+    const form = new Form("xeco-jb");
     const acDocContable = form.setAutocomplete("#num-dc");
     const fnSourceDc = term => api.init().json("/uae/jb/dcs", { ej: form.getValue("ejercicio"), term }).then(acDocContable.render);
 	acDocContable.setItemMode().setSource(fnSourceDc)
@@ -24,7 +24,7 @@ coll.ready(() => {
 		api.init().text("/uae/jb/report?jg=" + acJustGast.getValue()).then(api.open).then(form.closeModal);
 	});
 
-	const formDoc = new Form("#xeco-doc");
+	const formDoc = new Form("xeco-doc");
     const fnBuildXecoDoc = () => {
 		tabs.load(formDoc.getForm()); // reload tab actions
 		const ulAdjuntos = formDoc.querySelector("ul#adjuntos");

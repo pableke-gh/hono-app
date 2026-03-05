@@ -33,7 +33,7 @@ export default class Imputacion extends Form {
 			api.init().json("/uae/ttpp/recibos", { id: this.getValue("idOrg") || 0, term }).then(this.#acTTPP.render);
 		});
 	
-		this.onChange("iva", ev => form.setIva(+ev.target.value));
+		this.addChange("iva", ev => form.setIva(+ev.target.value));
 		tabs.setAction("addLinea", () => {
 			this.closeAlerts(); // hide prev. errors
 			if (factura.isTtppEmpresa()) { // tipo recibo ttpp

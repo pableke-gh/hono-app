@@ -28,7 +28,7 @@ export default class Rutas extends Table {
 
 	beforeRender(resume) {
 		ruta.beforeRender(resume);
-		resume.matricula = form.getValue("matricula");
+		resume.matricula = irse.getMatricula();
 	}
 
 	rowCalc = ruta.rowCalc;
@@ -58,6 +58,7 @@ export default class Rutas extends Table {
 
 	render() {
 		super.render(rutas.getRutas());
+		form.set("table-changed", true);
 	}
 
 	afterRender(resume) {

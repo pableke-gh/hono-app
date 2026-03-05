@@ -13,7 +13,7 @@ class Buzon extends Form {
 	#usuarios = new Usuarios(this);
 
 	constructor() {
-		super("#xeco-model");
+		super("xeco-model");
 	}
 
 	init() {

@@ -9,7 +9,6 @@
 		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
-	<h:inputHidden id="etapas" pt:is="text-input" value="#{iris.irse.input.rutas}" /> <!-- upload only -->
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
@@ -20,7 +19,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.objeto.act']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="objeto" value="#{iris.irse.solicitud.objetoView}" pt:is="text-area" styleClass="rows-2 update-irse #{iris.irse.form.cssDisabled}" 
+				<h:inputTextarea id="objeto" value="#{iris.irse.solicitud.objetoView}" pt:is="text-area" styleClass="rows-2 ui-paso1 update-irse #{iris.irse.form.cssDisabled}" 
 					tabindex="41" maxlength="600" title="Objeto de la actividad" />
 				<span class="ui-errtip"></span>
 			</div>
@@ -29,7 +28,7 @@
 		<label class="ui-blocks form-refresh" data-refresh="isEquipoGob">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.dieta']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:selectOneMenu id="grupo-dieta" value="#{iris.irse.gastos.dieta}" pt:is="data-list" styleClass="update-irse #{iris.irse.form.cssDisabled}" tabindex="42">
+				<h:selectOneMenu id="grupo-dieta" value="#{iris.irse.gastos.dieta}" pt:is="data-list" styleClass="ui-paso1 update-irse #{iris.irse.form.cssDisabled}" tabindex="42">
 					<f:selectItem itemValue="2" itemLabel="#{msg['uae.irse.tab2.grupo2']}" itemEscaped="false" />
 					<f:selectItem itemValue="1" itemLabel="#{msg['uae.irse.tab2.grupo1']}" itemEscaped="false" />
 				</h:selectOneMenu>
@@ -45,8 +44,8 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.resp']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText id="promotor" value="#{iris.irse.perfil.acPromotor}" pt:is="text-input" tabindex="43" styleClass="ui-autocomplete update-irse #{iris.irse.form.cssDisabled}" />
-				<h:inputHidden id="nif-promotor" value="#{iris.irse.perfil.nifPromotor}" pt:is="text-input" styleClass="update-irse" />
+				<h:inputText id="promotor" value="#{iris.irse.perfil.acPromotor}" pt:is="text-input" tabindex="43" styleClass="ui-autocomplete ui-paso1 update-irse #{iris.irse.form.cssDisabled}" />
+				<h:inputText id="nifPromotor" value="#{iris.irse.perfil.nifPromotor}" pt:is="text-input" styleClass="update-irse ui-paso1 hide" />
 				<ul role="list" class="results"></ul>
 			</div>
 		</label>
@@ -55,19 +54,19 @@
 		<div class="ui-blocks form-refresh" data-refresh="isMun">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
-				<input type="text" name="origen" is="text-input" class="ui-mun" tabindex="46" placeholder="#{irse.getMsg('ph.ubicacion')}" />
+				<input type="text" name="origen" is="text-input" class="ui-mun" tabindex="46" placeholder="#{iris.getMsg('ph.ubicacion')}" />
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select id="desp-mun" name="desp" is="data-list" class="ui-mun" tabindex="47">
+				<select name="desp" is="data-list" class="ui-mun" tabindex="47">
 					<option value="1">#{iris.irse.rutas.getMsgDesp(1)}</option>
 					<option value="10">#{iris.irse.rutas.getMsgDesp(10)}</option>
 				</select>
 			</label>
 			<label class="ui-block grupo-matricula">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
-				<h:inputText id="matriculaMun" value="#{iris.irse.gastos.matricula}" pt:is="text-input" maxlength="10" tabindex="48" styleClass="ui-code ui-mun ui-matricula update-irse #{iris.irse.form.cssDisabled}"/>
+				<input type="text" name="matriculaMun" is="text-input" maxlength="10" tabindex="48" class="ui-sm ui-mun ui-paso1"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block grupo-matricula">
@@ -89,10 +88,8 @@
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		<a href="#tab-action-paso1" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcPaso1" action="#{iris.irse.form.paso1()}" oncomplete="showTab(xhr, status, args)" />
 		<a href="#tab-action-save1" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
-		<p:remoteCommand name="rcSave1" action="#{iris.irse.form.save1()}" oncomplete="showTab(xhr, status, args, 1)" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

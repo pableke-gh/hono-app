@@ -37,6 +37,9 @@ class Iris extends Solicitud {
 		return this.set("perfil", rol + "," + colectivo + "," + actividad + "," + tramit + "," + financiacion);
 	}
 
+	getMatricula = () => this.get("matricula");
+	setMatricula = value => this.set("matricula", value);
+
 	isConflicto = () => (this.getMask() & 2); //existen solicitudes previas a nombre del interesado coincidentes en fechas?
 	isPaso8 = () => (this.getMask() & 4); // paso 8 activado manualmente por la uae
 	isEditableP8 = () => (this.isEditable() && this.isPaso8()); // paso 8 y editable

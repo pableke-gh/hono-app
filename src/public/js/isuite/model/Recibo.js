@@ -20,11 +20,9 @@ class Recibo {
 		<td>${recibo.desc || ""}</td><td class="currency">${i18n.isoFloat(recibo.importe)} €</td>
 	</tr>`
 	tfoot = () => `<tr>
-		<td colspan="8" class="table-refresh" data-refresh="text-render">Recibos: @size;</td>
-		<td class="currency table-refresh" data-refresh="text-render">$importe; €</td>
+		<td colspan="7" class="table-refresh" data-refresh="text-render">Recibos: @size;</td>
+		<td colspan="2" class="currency table-refresh" data-refresh="text-render">$importe; €</td>
 	</tr>`;
-
-	getTable = () => ({ beforeRender: this.beforeRender, rowCalc: this.rowCalc, onRender: this.row });
 }
 
 export default new Recibo();

@@ -21,8 +21,8 @@ export default class DataList extends HTMLSelectElement {
 	getCurrent = () => this.#data[this.selectedIndex];
 	getItem = index => this.#data[index];
 	getIndex = () => this.selectedIndex;
+	isEmpty = () => !this.#data;
 
-	//isOptional = () => !this.options[0]?.value;
 	getOption = () => this.options[this.getIndex()]; // current option element
 	getText = () => this.getOption()?.innerHTML; // current option text
 	getCode = sep => sb.getCode(this.getText(), sep);
@@ -36,7 +36,7 @@ export default class DataList extends HTMLSelectElement {
 
 	setEmptyOption(text) { this.dataset.emptyOption = text; return this; }
 	#empty = () => (this.dataset.emptyOption ? `<option>${this.dataset.emptyOption}</option>` : "");
-	#change() { this.dispatchEvent(new Event("reset")); return this; }
+	#change() { this.dispatchEvent(new Event("change")); return this; }
 
 	getValue = () => this.value;
 	setValue(value) {
@@ -48,43 +48,36 @@ export default class DataList extends HTMLSelectElement {
 	}
 	load(data) { data[this.name] = this.getValue(); }
 
-	addReset(fn) { this.addEventListener("reset", fn); return this; }
 	addChange(fn) { this.addEventListener("change", fn); return this; }
-	reset = () => { // Empty text = first option
-		this.value = "";
-		this.#data = null;
-		this.innerHTML = this.#empty();
-		return this.#change();
-	}
-	restart() { this.focus(); return this.reset(); }
+	reset = () => { this.selectedIndex = 0; return this.#change(); } // same options
+	clear = () => { this.#data = null; this.innerHTML = this.#empty(); return this.reset(); } // remove data and first option
+	restart() { this.focus(); return this.reset(); } // focus and first option
 
 	setItems = (items, isOptional) => {
-		if (!items)
-			return this.reset();
+		if (!items) return this.clear(); // vacio el desplegable
 		const fnItem = item => `<option value="${item.value}">${item.label}</option>`; // Item list
 		this.innerHTML = (isOptional ? this.#empty() : "") + items.map(fnItem).join(""); // Render items
 		return this.setData(items).#change(); // set data and fire change event
 	}
 	setObject = (data, isOptional) => {
-		if (!data)
-			return this.reset();
+		if (!data) return this.clear(); // vacio el desplegable
 		this.innerHTML = isOptional ? this.#empty() : "";
 		for (const k in data) // Iterate over all keys
 			this.innerHTML += `<option value="${k}">${data[k]}</option>`;
 		return this.setData(data).#change(); // set data and fire change event
 	}
-	setLabels(labels, isOptional) {
-		if (!labels)
-			return this.reset();
+	setLabels = (labels, isOptional) => {
+		if (!labels) return this.clear(); // vacio el desplegable
 		const fnLabel = label => `<option value="${label}">${label}</option>`; // label list
 		this.innerHTML = (isOptional ? this.#empty() : "") + labels.map(fnLabel).join(""); // Render labels
 		return this.setData(labels).#change(); // set data and fire change event
 	}
-	setValues(values, labels, isOptional) {
+	/*setValues(values, labels, isOptional) {
+		if (!values) return this.clear(); // vacio el desplegable
 		const fnBuild = (value, i) => `<option value="${value}">${labels[i]}</option>`; // label list
         this.innerHTML = (isOptional ? this.#empty() : "") + values.map(fnBuild).join(""); // Render labels
 		return this.setData(values).#change(); // set data and fire change event
-	}
+	}*/
 
 	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); return this; }
 	setReadonly = force => this.setDisabled(force); // The attribute readonly is not supported or relevant to <select>

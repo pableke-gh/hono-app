@@ -43,10 +43,8 @@
 
 		<a href="#tab-action-paso6" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcPaso6" action="#{iris.irse.form.paso6()}" oncomplete="showTab(xhr, status, args, 9)" />
 		<a href="#tab-action-save6" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
-		<p:remoteCommand name="rcSave6" action="#{iris.irse.form.save6()}" oncomplete="saveTab()" />
 
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 		<ui:include src="../parts/btn_doc.xhtml"></ui:include>

@@ -16,7 +16,7 @@ export default class Dietas extends Table {
 		this.setChange("dietas", (dieta, element) => {
 			dieta.imp1 = +element.value; // [0, 0.5, 1, 1.5, 2, ...]
 			this.refresh(); // update table
-			form.stringify("gastos-dietas", this.getData()).refresh(irse); // save changes + update view
+			form.refresh(irse); // save changes + update view
 		});
 	}
 
@@ -46,7 +46,7 @@ export default class Dietas extends Table {
 
 	row(dieta) {
 		const fnDietas = (dieta, maxDietas) => {
-			let output = '<select name="dietas" is="data-list">';
+			let output = '<select name="dietas" is="data-list" class="ui-sm">';
 			for (let i = 0; i <= maxDietas; i += .5)
 				output += '<option value="' + i + ((dieta == i) ? '" selected>' : '">') + i18n.isoFloat1(i) + '</option>'
 			return output + "</select>";

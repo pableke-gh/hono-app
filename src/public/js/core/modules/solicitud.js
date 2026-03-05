@@ -10,7 +10,7 @@ export default class Solicitud extends Form {
 	#solicitudes; #solicitud; #valid;
 
 	constructor(opts) { // build instance
-		super("#xeco-model", opts);
+		super("xeco-model", opts);
 	}
 
 	init(solicitudes, valid) {
@@ -45,7 +45,7 @@ export default class Solicitud extends Form {
 	report = () => api.init().text(this.#solicitud.getUrl() + "/report?id=" + this.#solicitudes.getId()).then(api.open); // call report service
 
 	#validReject = msg => (this.#valid.rechazar() && i18n.confirm(msg)); // validate form + user confirm
-	#rejectParams = id => ({ id, rechazo: this.getValueByName("rechazo") }); // get url params 
+	#rejectParams = id => ({ id, rechazo: this.getValue("rechazo") }); // get url params 
 	#refreshForm = data => { // refresh form if cached + current row in list
 		if (this.isCached(this.#solicitudes.getId()))
 			this.setFirmas(data.firmas).refresh(this.#solicitudes.load());
@@ -100,8 +100,7 @@ export default class Solicitud extends Form {
 			return this.showError("No se han podido cargar los datos del servidor.");
 		solicitud.setData(data.solicitud); // 1º carga los datos de la solicitud
 		super.setData(data.solicitud).setCache(solicitud.getId()); // 2º update inputs values + set form cache
-		const tab = this.setFirmas(data.firmas).onView(data); // 3º actualizo las firmas asociadas + specific on-view action + get tab to show
-		this.setValues(solicitud.getData()).reactivate(solicitud, tab); // 4º update form state
+		this.reactivate(solicitud, this.setFirmas(data.firmas).onView(data)); // 3º actualiza firmas asociadas + reactive
 	}
 	create(data) {
 		this.#solicitudes.clear(); // not row selected

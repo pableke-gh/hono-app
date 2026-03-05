@@ -30,7 +30,7 @@ export default class PartidaDec extends Form {
 		const fnResetOrgDec = () => { // reset organica a decrementar
 			presto.isAutoLoadInc() && partidas.render(); //autoload => clear table
 			this.setValue("faDec");
-			this.#ecoDec.reset();
+			this.#ecoDec.clear();
 		}
 		this.#orgDec.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelectOrgDec).setReset(fnResetOrgDec);
 
@@ -39,6 +39,8 @@ export default class PartidaDec extends Form {
 		const fnAutoloadAnt = data => { data ? pInc.autoload(data, Math.max(0, data.ih)) : fnAutoloadErr("No se ha encontrado el anticipo en el sistema."); }
 
 		const fnEcoChange = () => {
+			if (this.#ecoDec.isEmpty())
+				return this.setValue("impDec").setValue("cd");;
 			const item = this.#ecoDec.getCurrent();
 			this.setValue("cd", item.imp); // set importe
 			if (presto.isL83() && presto.isEditable()) //L83 => busco su AIP solo en edicion
@@ -46,8 +48,7 @@ export default class PartidaDec extends Form {
 			if (presto.isAnt() && presto.isEditable()) //ANT => cargo misma organica solo en edicion
 				return api.init().json(`/uae/presto/anticipo?org=${this.#orgDec.getValue()}&eco=${item.value}`).then(fnAutoloadAnt);
 		}
-		const fnEcoReset = () => this.setValue("impDec").setValue("cd");
-		this.#ecoDec.setEmptyOption("Seleccione una económica").addChange(fnEcoChange).addReset(fnEcoReset);
+		this.#ecoDec.setEmptyOption("Seleccione una económica").addChange(fnEcoChange);
 
 		this.addChange("ej", this.#orgDec.reload);
 		this.addChange("impDec", ev => { presto.isAutoLoadImp() && pInc.autoload(null, this.getValue(ev.target)); }); //importe obligatorio

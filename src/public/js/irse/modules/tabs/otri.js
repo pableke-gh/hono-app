@@ -10,7 +10,7 @@ import { KEYS, TITILES } from "../../data/isu.js";
 /*********** Informe ISU par la otri ***********/
 export default class InformeISU extends Form {
 	constructor() {
-		super("#xeco-filtro-isu"); // call super before to use this reference
+		super("xeco-filtro-isu"); // call super before to use this reference
 	}
 
 	init() {

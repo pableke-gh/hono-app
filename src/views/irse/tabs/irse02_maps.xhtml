@@ -5,8 +5,7 @@
 		xmlns:p="http://primefaces.org/ui" 
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:c="http://java.sun.com/jsp/jstl/core"
-		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 	<div class="card-xeco">
@@ -49,7 +48,7 @@
 
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select id="desp" name="desp" is="data-list" class="ui-ruta" tabindex="37" title="#{msg['tit.medio.trans']}">
+				<select name="desp" is="data-list" class="ui-ruta" tabindex="37" title="#{msg['tit.medio.trans']}">
 					<option value=""></option>
 					<option value="1">#{iris.irse.rutas.getMsgDesp(1)}</option>
 					<option value="8">#{iris.irse.rutas.getMsgDesp(8)}</option>
@@ -65,7 +64,7 @@
 			</label>
 			<label class="ui-block hide grupo-matricula">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
-				<h:inputText id="matricula" value="#{iris.irse.gastos.matricula}" pt:is="text-input" maxlength="10" tabindex="38" styleClass="ui-short ui-ruta ui-matricula update-irse"/>
+				<input type="text" name="matricula" is="text-input" maxlength="10" tabindex="38" class="ui-sm ui-ruta"/>
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn">
@@ -110,10 +109,8 @@
 			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		<a href="#tab-action-paso2" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcPaso2" action="#{iris.irse.form.paso2()}" oncomplete="showTab(xhr, status, args)" />
 		<a href="#tab-action-save2" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
-		<p:remoteCommand name="rcSave2" action="#{iris.irse.form.save2()}" oncomplete="showTab(xhr, status, args, 2)" />
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

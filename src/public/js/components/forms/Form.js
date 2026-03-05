@@ -21,7 +21,7 @@ export default class Form /*extends HTMLFormElement*/ {
 	#form; #opts; // form element + options
 
 	constructor(form, opts) { // Find form element or create empty form
-		this.#form = globalThis.isstr(form) ? document.forms.findBy(form) : form;
+		this.#form = globalThis.isstr(form) ? document.forms[form] : form;
 		this.#form = this.#form || document.createElement("form");
 
 		this.#opts = opts || {}; // default options
@@ -57,8 +57,6 @@ export default class Form /*extends HTMLFormElement*/ {
 	getNext = selector => this.#form.next(selector);
 	getElements = () => this.#form.elements;
 	getElement = name => this.#form.elements[name];
-	getValueByName = name => this.getElement(name).value;
-	addClass = name => { this.#form.classList.add(name); return this; }
 	getOptions = () => this.#opts;
 
 	get = name => this.#opts[name];
@@ -149,10 +147,10 @@ export default class Form /*extends HTMLFormElement*/ {
 			this.reset(selector); // clear selected inputs values
 		return this;
 	}
-	setValues = (data, selector) => this.#fnUpdate(selector, el => {
+	/*setValues = (data, selector) => this.#fnUpdate(selector, el => { // deprecated
 		const value = el.name ? data[el.name] : null; // get value by name
 		globalThis.isset(value) && el.setValue(value); // update defined data
-	});
+	});*/
 
 	getAttr = (selector, name) => this.#fnQueryInput(selector).getAttribute(name);
 	delAttr = (selector, name) => { this.#fnQueryInput(selector).removeAttribute(name); return this; }

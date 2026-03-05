@@ -9,7 +9,7 @@ import rb from "./lib/RecibosBancarios.js";
 
 //DOM is fully loaded
 coll.ready(() => {
-	const form = new Form("#isuite");
+	const form = new Form("isuite");
 	const btnSave = form.querySelector("a[href='#tab-action-save']");
 
 	const fnSearch = () => tables.tbFilter(tbConfig);

@@ -10,7 +10,7 @@ export default class Uxxiec extends Form {
 	#solicitudes; #solicitud;
 
 	constructor(opts) {
-		super("#xeco-uxxi", opts);
+		super("xeco-uxxi", opts);
 		const fnRender = item => (item.num + " - " + item.uxxi + "<br>" + item.desc);
 		this.#acUxxi.setMinLength(4).setSelect(item => item.id).setRender(fnRender);
 	}
@@ -40,7 +40,7 @@ export default class Uxxiec extends Form {
 		const url = this.#solicitud.getUrl();
 		const fnNotificable = () => (this.#documentos.size() && this.#solicitud.isNotificable());
 		this.set("is-ejecutable", this.#documentos.size).set("is-notificable", fnNotificable);
-		this.#acUxxi.setSource(term => api.init().json(url + "/uxxiec/docs/", { ej: this.getValueByName("ej"), term }).then(this.#acUxxi.render));
+		this.#acUxxi.setSource(term => api.init().json(url + "/uxxiec/docs/", { ej: this.getValue("ej"), term }).then(this.#acUxxi.render));
 
 		tabs.setAction("addUxxi", () => {
 			const doc = this.#acUxxi.getCurrentItem();

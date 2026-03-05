@@ -1,6 +1,5 @@
 
 import coll from "../components/Collection.js";
-import sb from "../components/types/StringBox.js";
 import tabs from "../components/Tabs.js";
 
 import irse from "./model/Irse.js";
@@ -28,9 +27,7 @@ coll.ready(() => {
 		const firmas = coll.parse(args.firmas);
 
 		form.view(organicas, rutas, gastos, dietas, firmas); // configure view
-		const fnSync = ev => form.eachInput(".ui-matricula", el => { el.value = sb.toUpperWord(ev.target.value); }); 
-		form.onChange(".ui-matricula", fnSync).refresh(irse); // update state
-		tabs.reset([ 0, 1, 3, 9 ]).nextTab(tab ?? irse.get("tab")); // go to next tab
+		tabs.reset([ 0, 3, 9 ]).nextTab(tab ?? irse.get("tab")); // go to next tab
 	}
 	window.showTab = (xhr, status, args, tab) => {
 		if (!window.showAlerts(xhr, status, args)) return;

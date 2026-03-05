@@ -28,6 +28,7 @@ tfoot td:first-child { padding: .5rem; }
 
 .tb-xeco { box-shadow: none; }
 .tb-xeco tbody.active { animation: fadeIn .8s forwards; }
+.tb-xeco tbody tr td:first-child::after { content: ""; display: inline-block; min-height: 34px; vertical-align: middle; }
 .tb-xeco .tb-data-tc { text-align: center; }
 .tb-xeco td { padding: 2px; }
 .tb-xeco td.currency { min-width: 74px; text-align: right; }

@@ -22,7 +22,7 @@ export default class Paso9 extends Form {
 
 	initTab = tab => { // Init tab 9: IBAN
 		this.#imputacion.init(); // init. table
-		const cuentas = this.getInput("#cuentas");
+		const cuentas = this.getElement("cuentas");
 		const fnPais = pais => {
 			const es = (pais == "ES");
 			this.setVisible("#entidades", es).setVisible(".swift-block,#banco", !es);
@@ -49,7 +49,7 @@ export default class Paso9 extends Form {
 			tab.querySelector("#grupo-iban").show();
 		}
 
-		tabs.setAction("save9", () => { valid.paso9() && loading() && window.rcSave9(); }); // call server to save and validate
+		tabs.setAction("save9", () => { valid.paso9() && loading() && window.rcSave9(); this.setChanged(); }); // call server to save and validate
 		tabs.setAction("send", () => { valid.paso9() && i18n.confirm("msgFirmarEnviar") && loading() && window.rcSend(); }); // call server to save, validate and send
 	}
 }

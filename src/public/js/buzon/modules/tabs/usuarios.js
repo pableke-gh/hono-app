@@ -11,7 +11,7 @@ export default class UsuariosForm extends Form {
 	#usuarios = new Usuarios(this);
 
 	constructor() {
-		super("#xeco-users");
+		super("xeco-users");
 	}
 
 	init() {

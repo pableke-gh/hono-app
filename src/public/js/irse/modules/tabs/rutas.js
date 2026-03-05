@@ -19,38 +19,45 @@ export default class Rutas extends Form {
 		super(form.getForm(), form.getOptions());
 	}
 
+	isChanged = () => this.get("table-changed"); // override
+	setChanged = value => this.set("table-changed", value);
+
 	init = () => {
 		this.#tr.init();
 
-		this.onChange("#desp", ev => this.setVisible(".grupo-matricula", ev.target.value == "1"));
-		const fnBlur1 = (ev, f1, f2) => { f2.value = ev.target.value; f1.removeAttribute("max"); f2.removeAttribute("max"); }
-		this.getInput("#f1.ui-ruta").setRange("f2", fnBlur1);
-
-		const fnData = () => ({ // recalculo las nuevas dietas y las envio al servidor, el response actualiza la vista
-			idses: irse.getId(), matricula: form.getValue("matricula"), rutas: rutas.getRutas(), 
-			dietas: dietas.build(form.getOrganicas().getTipoDieta(), form.getPaso1().getGrupoDieta())
+		const fnBlur = (ev, f1, f2) => { f2.value = ev.target.value; f1.removeAttribute("max"); f2.removeAttribute("max"); }
+		this.getInput("#f1.ui-ruta").setRange("f2", fnBlur);
+		this.getElement("matricula").addChange(ev => {
+			ev.target.value = sb.toUpperWord(ev.target.value);
+			irse.setMatricula(ev.target.value);
 		});
+
+		const fnData = () => {
+			const matricula = form.getValue("matricula");
+			const tipo = form.getOrganicas().getTipoDieta();
+			const grupo = form.getPaso1().getGrupoDieta();
+			// recalculo las nuevas dietas y las envio al servidor, el response actualiza la vista (pasos 2, 5 y 6 resumen)
+			return { id: irse.getId(), matricula, rutas: rutas.getRutas(), dietas: dietas.build(tipo, grupo) };
+		}
 		const fnUpdate = data => { // subtablas
-			this.view(data.rutas); // load pk from db
+			this.setChanged().view(data.rutas); // load pk from db
 			form.getPaso5().updateRutas(); // rutas de consulta y pendientes
 			form.getResumen().updateRutas(data.dietas); // km y dietas
 		}
+
 		tabs.setInitEvent(2, maps);
+		tabs.setViewEvent(2, () => { this.setValue("matricula", irse.getMatricula()); });
+
 		tabs.setAction("paso2", () => {
 			if (!valid.itinerario()) return; // if error => stop
-			if (!irse.isEditable() || !this.isChanged())
-				return tabs.nextTab(); // go next tab directly
-			this.save(); window.rcPaso2(); // call server to save and calculate maps
-			//api.setJSON(fnData()).json("/uae/iris/rutas/save").then(data => { fnUpdate(data); tabs.goTab(); }); // go next tab with messages
+			if (!irse.isEditable() || !this.isChanged()) return tabs.nextTab(); // go next tab directly
+			api.setJSON(fnData()).json("/uae/iris/rutas/save").then(data => { fnUpdate(data); tabs.goTab(); }); // go next tab with messages
 		});
 		tabs.setAction("save2", () => {
 			if (!valid.itinerario()) return; // if error => stop
 			if (!this.isChanged()) return this.setOk(); // nada que guardar
-			this.save(); window.rcSave2(); // call server to save and calculate maps
-			//api.setJSON(fnData()).json("/uae/iris/rutas/save").then(fnUpdate);
+			api.setJSON(fnData()).json("/uae/iris/rutas/save").then(fnUpdate);
 		});
-
-		window.rebuildDietas = () => api.setJSON(fnData()).json("/uae/iris/rutas/save").then(fnUpdate); // for debugging
 	}
 
 	view(data) {
@@ -63,30 +70,16 @@ export default class Rutas extends Form {
 	first = rutas.getSalida;
 	last = rutas.getLlegada;
 	getRutas = () => this.#tr;
-
 	add(ruta, dist) {
-		ruta.temp = true;
 		rutas.addRuta(ruta);
 		if (valid.rutas()) {
-			delete ruta.temp;
 			ruta.km1 = ruta.km2 = dist;
 			rutas.setRutaPrincipal(rutas.findRutaPrincipal());
 			this.#tr.render(); // render rutas paso 2 = maps
+			return this;
 		}
-		else
-			rutas.getRutas().remove(r => r.temp);
+		const data = rutas.getRutas();
+		data.spliece(data.indexOf(ruta), 1);
 		return this;
-	}
-
-	save = () => {
-		if (rutas.isEmpty() || !this.isChanged())
-			return loading(); // nada que guardar
-		const fnReplace = (key, value) => ((key == "p2") ? undefined : value); // reduce size
-		this.stringify("etapas", rutas.getRutas(), fnReplace); // load input value
-
-		// recalculo las nuevas dietas y las envio al servidor, en el response se actualiza la vista
-		const results = dietas.build(form.getOrganicas().getTipoDieta(), form.getPaso1().getGrupoDieta());
-		form.stringify("gastos-dietas", results); // load input value
-		return loading();
 	}
 }

@@ -27,12 +27,12 @@ export default class PartidaInc extends Form {
 			const url = presto.isGcr() ? "/uae/presto/organicas/inc/gcr" : "/uae/presto/organicas/inc"; // url by type
 			api.init().json(url, { ej: this.getValue("ejInc"), term }).then(this.#acOrgInc.render); // send fetch
 		}
-		const fnReset = () => { this.setValue("faInc").setValue("impInc"); this.#ecoInc.reset(); }
+		const fnReset = () => { this.setValue("faInc").setValue("impInc"); this.#ecoInc.clear(); }
 		this.#acOrgInc.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect).setReset(fnReset);
 
 		this.#ecoInc.setEmptyOption("Seleccione una económica");
 		const fnEditableEjInc = () => (this.#partidas.isEmpty() && !presto.isDisableEjInc());
-		this.set("is-editable-ej-dec", this.#partidas.isEmpty).set("is-editable-ej-inc", fnEditableEjInc).onChange("ejInc", this.#acOrgInc.reload);
+		this.set("is-editable-ej-dec", this.#partidas.isEmpty).set("is-editable-ej-inc", fnEditableEjInc).addChange("ejInc", this.#acOrgInc.reload);
 
 		tabs.setAction("partida-inc-add", () => {
 			if (!valid.partidaInc()) return; // errores al validar los campos de entrada
@@ -54,7 +54,7 @@ export default class PartidaInc extends Form {
 	}
 
 	view = data => {
-		this.#ecoInc.reset(); // clear select box
+		this.#ecoInc.clear(); // clear select box
 		this.#partidas.render(data); // load table
 	}
 

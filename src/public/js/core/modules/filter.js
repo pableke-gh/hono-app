@@ -5,7 +5,7 @@ import api from "../../components/Api.js"
 
 export default class Filter extends Form {
 	constructor(opts) {
-		super("#xeco-filter", opts);
+		super("xeco-filter", opts);
 	}
 
 	init(solicitudes) {
@@ -25,7 +25,7 @@ export default class Filter extends Form {
 		tabs.setInitEvent("list", () => { solicitudes.isEmpty() && fnList("", "5"); });
 		tabs.setAction("list-all", () => { this.reset(".ui-filter"); fnCallList(); });
 		tabs.setAction("relist", () => fnList("", "5"));
-		tabs.setAction("vinc", () => { ("1" == this.getValueByName("estado")) ? tabs.showList() : fnList("1"); });
+		tabs.setAction("vinc", () => { ("1" == this.getValue("estado")) ? tabs.showList() : fnList("1"); });
 
 		// global tabs actions
 		tabs.setAction("clickNext", link => link.nextElementSibling.click()); // fire click event for next sibling element

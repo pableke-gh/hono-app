@@ -27,7 +27,7 @@ export default class Fiscal extends Form {
 		}
 		this.#acTercero.setDelay(500).setItemMode(5)
 				.setSource(fnSource).setAfterSelect(fnSelect)
-				.setReset(this.#delegaciones.reset);
+				.setReset(this.#delegaciones.clear);
 	
 		const fnChange = item => this.setValue("idDelegacion", item.value); 
 		this.#delegaciones.setEmptyOption("Seleccione una delegación").addChange(fnChange);
@@ -36,9 +36,9 @@ export default class Fiscal extends Form {
 			el.innerHTML = factura.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor";
 			el.nextElementSibling.setAttribute("maxlength", factura.isPlataforma() ? 20 : 9);
 		});
-		this.onChange("subtipo", ev => fnUpdate(+ev.target.value))
-			.onChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
-			.onChange("face", ev => { factura.setFace(+ev.target.value); this.refresh(factura); });
+		this.addChange("subtipo", ev => fnUpdate(+ev.target.value))
+			.addChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
+			.addChange("face", ev => { factura.setFace(+ev.target.value); this.refresh(factura); });
 	}
 
 	#fiscalidad(tercero) {
