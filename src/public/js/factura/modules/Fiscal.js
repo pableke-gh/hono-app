@@ -6,7 +6,7 @@ import fiscalidad from "../data/fiscal.js"
 import form from "./factura.js";
 
 export default class Fiscal extends Form {
-	#acTercero = this.setAutocomplete("#acTercero");
+	#acTercero = this.setAutocomplete("acTercero");
 	#delegaciones = this.getElement("delegacion");
 
 	constructor(form) {
@@ -28,9 +28,7 @@ export default class Fiscal extends Form {
 		this.#acTercero.setDelay(500).setItemMode(5)
 				.setSource(fnSource).setAfterSelect(fnSelect)
 				.setReset(this.#delegaciones.clear);
-	
-		const fnChange = item => this.setValue("idDelegacion", item.value); 
-		this.#delegaciones.setEmptyOption("Seleccione una delegación").addChange(fnChange);
+		this.#delegaciones.setEmptyOption("Seleccione una delegación");
 
 		this.set("update-face", el => { // handler to update face inputs group
 			el.innerHTML = factura.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor";

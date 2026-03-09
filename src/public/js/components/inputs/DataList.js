@@ -1,5 +1,6 @@
 
 import sb from "../types/StringBox.js";
+import input from "./FormInput.js";
 
 // Register the custom element
 //customElements.define("data-list", DataList, { extends: "select" });
@@ -9,9 +10,6 @@ export default class DataList extends HTMLSelectElement {
 
 	constructor() {
 		super(); // Must call super before 'this'
-		this.dataset.errorClass = this.dataset.errorClass || "ui-error"; // Input error styles
-		this.dataset.tipErrorClass = this.dataset.tipErrorClass || "ui-errtip"; // Tip error style
-
 		// Initialize the element
 		this.classList.add("ui-input", "ui-select");
 	}
@@ -35,15 +33,14 @@ export default class DataList extends HTMLSelectElement {
 	}
 
 	setEmptyOption(text) { this.dataset.emptyOption = text; return this; }
-	#empty = () => (this.dataset.emptyOption ? `<option>${this.dataset.emptyOption}</option>` : "");
+	// IMPORTANT! force value = "", to avoid change event return text content
+	#empty = () => (this.dataset.emptyOption ? `<option value="">${this.dataset.emptyOption}</option>` : "");
 	#change() { this.dispatchEvent(new Event("change")); return this; }
 
 	getValue = () => this.value;
 	setValue(value) {
-		if (!value)
-			this.selectedIndex = 0; // first option
-		else
-			this.value = value;
+		this.value = value; // force select an option
+		this.selectedIndex = Math.max(0, this.selectedIndex);
 		return this;
 	}
 	load(data) { data[this.name] = this.getValue(); }
@@ -72,29 +69,18 @@ export default class DataList extends HTMLSelectElement {
 		this.innerHTML = (isOptional ? this.#empty() : "") + labels.map(fnLabel).join(""); // Render labels
 		return this.setData(labels).#change(); // set data and fire change event
 	}
-	/*setValues(values, labels, isOptional) {
+	setValues(values, labels, isOptional) {
 		if (!values) return this.clear(); // vacio el desplegable
 		const fnBuild = (value, i) => `<option value="${value}">${labels[i]}</option>`; // label list
         this.innerHTML = (isOptional ? this.#empty() : "") + values.map(fnBuild).join(""); // Render labels
 		return this.setData(values).#change(); // set data and fire change event
-	}*/
+	}
 
-	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); return this; }
-	setReadonly = force => this.setDisabled(force); // The attribute readonly is not supported or relevant to <select>
+	setDisabled(force) { input.setDisabled(this, force); return this; }
+	setReadonly(force) { input.setReadonly(this, force); return this; }
 	setEditable = force => this.setReadonly(!force);
 
-	setOk() {
-		this.next("." + this.dataset.tipErrorClass)?.setText("");
-		this.classList.remove(this.dataset.errorClass);
-		return this;
-	}
-	setError(tip) {
-		this.next("." + this.dataset.tipErrorClass)?.setMsg(tip);
-		this.classList.add(this.dataset.errorClass);
-		this.focus(); // set focus on error
-		return this;
-	}
-	update(tip) { // tip message is optional
-		return tip ? this.setError(tip) : this.setOk();
-	}
+	setOk = () => input.setOk(this);
+	setError = tip => input.setError(this, tip);
+	update = tip => input.update(this, tip);
 }

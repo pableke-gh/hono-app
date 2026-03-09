@@ -9,9 +9,9 @@ import Lineas from "./lineas.js";
 import form from "./factura.js";
 
 export default class Imputacion extends Form {
-	#acOrganica = this.setAutocomplete("#acOrganica");
-	#acRecibo = this.setAutocomplete("#acRecibo");
-	#acTTPP = this.setAutocomplete("#acTTPP");
+	#acOrganica = this.setAutocomplete("acOrganica");
+	#acRecibo = this.setAutocomplete("acRecibo");
+	#acTTPP = this.setAutocomplete("acTTPP");
 	#lineas = new Lineas(this);
 
 	constructor(form) {

@@ -37,6 +37,7 @@ function Rutas() {
 	this.isSalidaTemprana = () => ruta.isSalidaTemprana(self.getSalida());
 	this.isSalidaTardia = () => ruta.isSalidaTardia(self.getSalida());
 	this.isLlegadaTemprana = () => ruta.isLlegadaTemprana(self.getLlegada());
+	this.isLlegadaCena = () => ((self.size() > 0) && ruta.isLlegadaCena(self.getLlegada()));
 	this.isMismoDia = () => sb.inDay(self.getHoraSalida(), self.getHoraLlegada());
 	this.isMedioDia = () => ruta.isMedioDia(self.getHoraSalida(), self.getHoraLlegada());
 

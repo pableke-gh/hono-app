@@ -24,7 +24,9 @@ export default class FormDataBox extends FormData {
 		return this;
 	}
 	load(data, keys) {
+		console.log('data, keys: ', data, keys);
 		keys.forEach(key => { this.set(key, data[key]); }); // set slected keys
+		console.log(this);
 		return this;
 	}
 }

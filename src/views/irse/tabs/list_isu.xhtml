@@ -61,9 +61,7 @@
 			<c:forEach items="#{iris.irse.isu.registrosJgs}" var="jg">
 			<tr class="tb-data">
 				<td>#{jg.ejercicio}</td>
-				<td>
-					<p:commandLink action="#{iris.irse.isu.view(jg)}" oncomplete="showTab(xhr, status, args, 'listIsu')">#{jg.codigo}</p:commandLink>
-				</td>
+				<td>#{jg.codigo}</td>
 				<td>#{jg.numJg}</td>
 				<td>#{jg.numFactura}</td>
 				<td>#{jg.nifTercero}</td>
@@ -71,10 +69,7 @@
 				<td class="currency">#{iris.irse.isu.getImpTotal(jg)} €</td>
 				<td class="text-center">#{iris.irse.isu.getFEmision(jg)}</td>
 				<td class="hide-sm">#{jg.descJg}</td>
-				<td class="text-center">
-					<p:commandLink action="#{iris.irse.isu.view(jg)}" oncomplete="showTab(xhr, status, args, 'listIsu')">
-						<i class="fas fa-search action text-blue resize"></i></p:commandLink>
-				</td>
+				<td class="text-center"></td>
 			</tr>
 			</c:forEach>
 		</tbody>

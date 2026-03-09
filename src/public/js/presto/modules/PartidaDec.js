@@ -5,7 +5,7 @@ import presto from "../model/Presto.js";
 import form from "./presto.js";
 
 export default class PartidaDec extends Form {
-	#orgDec = this.setAutocomplete("#acOrgDec");
+	#orgDec = this.setAutocomplete("acOrgDec");
 	#ecoDec = this.getElement("idEcoDec"); //data-list
 
 	constructor(form) {

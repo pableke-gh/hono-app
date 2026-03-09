@@ -7,7 +7,7 @@ import buzon from "../../model/Buzon.js";
 import Usuarios from "../tables/usuarios.js";
 
 export default class UsuariosForm extends Form {
-	#acUser = this.setAutocomplete("#acUsuarios");
+	#acUser = this.setAutocomplete("acUsuarios");
 	#usuarios = new Usuarios(this);
 
 	constructor() {

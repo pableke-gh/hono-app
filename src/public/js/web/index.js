@@ -30,7 +30,7 @@ function fnIndex() {
 
     const formPokemon = new Form("#form-pokemon"); // instance
     formPokemon.onSubmit(ev => ev.preventDefault()); // ajax submit
-    formPokemon.setAutocomplete("#ac-pokemon", {
+    formPokemon.setAutocomplete("ac-pokemon", {
         source: (term, acPokemon) => {
             const fnFilter = pokemon => sb.ilike(pokemon.name, term);
             api.init()

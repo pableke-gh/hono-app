@@ -15,7 +15,6 @@ export default class Imputacion extends Table {
 	}
 
 	init() { // tabla del paso 9
-		irse.getTotTransporte = this.getTotTransporte;
 		irse.getImpTotal = this.getImpTotal;
 	}
 
@@ -25,7 +24,7 @@ export default class Imputacion extends Table {
 	getImpAc = () => this.getProp("totAc");
 
 	getTotTransporte = () => (rutas.getImpKm() + irse.getImpTransporte() + irse.getImpExtraTrans());
-	getTotPernoctas = () => (irse.getMinPernoctas() + irse.getImpExtraAloja());
+	getTotPernoctas = () => (irse.getImpPernoctas() + irse.getImpExtraPernoctas());
 	getTotDietas = () => (irse.getImpDietas() + irse.getImpExtraDietas());
 	getImpBruto = () => (this.getTotTransporte() + this.getTotPernoctas() + this.getTotDietas() + irse.getTotAc());
 	getImpTotal = () => (this.getImpBruto() - irse.getIrpf());
@@ -60,7 +59,7 @@ export default class Imputacion extends Table {
 		const org = form.getOrganicas().getFirst();
 		const fnAdd = (subtipo, imp) => {
 			if (imp < 1) return; // sin importe que asociar al gasto
-			const DATA = { num: org.id, cod: org.o, desc: org.dOrg };
+			const DATA = { tipo: 19, num: org.id, cod: org.o, desc: org.dOrg };
 			const gasto = Object.assign({ subtipo }, DATA);
 			gasto.nombre = imputacion.get(subtipo, org);
 			gasto.imp1 = imp;
@@ -71,8 +70,6 @@ export default class Imputacion extends Table {
 		fnAdd(2, this.getTotPernoctas());
 		fnAdd(3, this.getTotTransporte());
 		fnAdd(4, irse.getTotAc());
-
-		form.stringify("imp-org", organicas); // save changes
 		return super.render(organicas); // super keyword
 	}
 }

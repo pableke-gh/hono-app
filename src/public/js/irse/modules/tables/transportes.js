@@ -14,7 +14,7 @@ export default class Transportes extends Table {
 	}
 
 	init = () => {
-		irse.getImpTrasporte = this.getImporte;
+		irse.getImpTransporte = this.getImporte;
 	}
 
 	getImporte = () => this.getProp("imp1");

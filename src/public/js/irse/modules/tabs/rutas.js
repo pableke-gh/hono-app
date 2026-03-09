@@ -1,4 +1,5 @@
 
+import sb from "../../../components/types/StringBox.js";
 import Form from "../../../components/forms/Form.js";
 import api from "../../../components/Api.js";
 import tabs from "../../../components/Tabs.js";
@@ -76,7 +77,7 @@ export default class Rutas extends Form {
 			ruta.km1 = ruta.km2 = dist;
 			rutas.setRutaPrincipal(rutas.findRutaPrincipal());
 			this.#tr.render(); // render rutas paso 2 = maps
-			return this;
+			return this.setChanged(true);
 		}
 		const data = rutas.getRutas();
 		data.spliece(data.indexOf(ruta), 1);

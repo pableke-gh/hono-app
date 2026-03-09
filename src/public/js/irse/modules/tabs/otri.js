@@ -18,7 +18,7 @@ export default class InformeISU extends Form {
 	}
 
 	initTab = () => {
-		const acOrganicas = this.setAutocomplete("#organica-isu", otri.getAutocomplete());
+		const acOrganicas = this.setAutocomplete("organica-isu", otri.getAutocomplete());
 		acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
 	}
 }

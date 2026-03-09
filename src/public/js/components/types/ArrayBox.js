@@ -20,6 +20,7 @@ export default class ArrayBox {
 	last = arr => arr ? arr.last() : null;
 	reset = arr => arr ? fnReset(arr) : [];
 	at = (arr, index) => arr ? arr.at(index) : null;
+	includes = (arr, item) => (arr && arr.includes(item));
 	shuffle = arr => arr.sort(() => (0.5 - Math.random()));
 	findIndex = (arr, fn) => arr ? arr.findIndex(fn) : -1;
 	indexOf = (arr, value) => arr ? arr.indexOf(value) : -1;

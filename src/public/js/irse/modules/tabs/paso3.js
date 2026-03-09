@@ -16,7 +16,7 @@ export default class Paso3 extends Form {
 	}
 
 	initTab = () => {
-		const eCong = this.getInput("#congreso"); //congreso si/no
+		const eCong = this.getElement("congreso"); //congreso si/no
 		const eIniCong = this.getElement("fIniCong"); //fecha inicio del congreso
 		const eFinCong = this.getElement("fFinCong"); //fecha fin del congreso
 		const eJustifiCong = this.querySelector(".justifi-congreso"); //justificacion del congreso

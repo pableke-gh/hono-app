@@ -5,7 +5,7 @@ import api from "../../components/Api.js"
 import Documentos from "./documentos.js";
 
 export default class Uxxiec extends Form {
-	#acUxxi = this.setAutocomplete("#uxxi");
+	#acUxxi = this.setAutocomplete("uxxi");
 	#documentos = new Documentos(this.getNextElement());
 	#solicitudes; #solicitud;
 

@@ -32,6 +32,7 @@ export default class Resumen extends Form {
 		this.#pernoctas.init();
 		this.#dietas.init();
 		this.#extra.init();
+		irse.isCenaFinal = () => (rutas.isLlegadaCena() && this.#extra.isCena());
 
 		const fnData = () => ({
 			id: irse.getId(), justifiKm: this.getValue("justifiKm"),

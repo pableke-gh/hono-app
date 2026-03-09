@@ -12,37 +12,35 @@ coll.ready(() => {
 	const fnIdParam = data => { loading(); return [{ name: "id", value: data.id }]; } // set param structure
 	list.set("#view", data => (form.isCached(data.id) ? tabs.showTab(irse.getInitTab()) : window.rcView(fnIdParam(data))));
 
-	window.saveTab = () => form.setOk().setChanged().refresh(irse).working();
 	window.createIrse = (xhr, status, args) => {
 		list.clear(); // no element selected
 		window.viewIrse(xhr, status, args, 0);
 	}
 	window.viewIrse = (xhr, status, args, tab) => {
 		if (!window.showAlerts(xhr, status, args)) return;
-		irse.setData(coll.parse(args.data)); // set irse data
+		// merge server data with list and set in current irse instance
+		irse.setData(Object.assign(list.getCurrent(), coll.parse(args.data)));
+		// referencia al interesado en la lista y la solicitud
+		irse.setInteresado(coll.parse(args.interesado));
 		const organicas = coll.parse(args.organicas);
 		const rutas = coll.parse(args.rutas);
 		const gastos = coll.parse(args.gastos);
 		const dietas = coll.parse(args.dietas);
+		const cuentas = coll.parse(args.cuentas);
 		const firmas = coll.parse(args.firmas);
 
-		form.view(organicas, rutas, gastos, dietas, firmas); // configure view
-		tabs.reset([ 0, 3, 9 ]).nextTab(tab ?? irse.get("tab")); // go to next tab
+		form.view(organicas, rutas, gastos, dietas, cuentas, firmas); // configure view
+		tabs.reset([ 3 ]).nextTab(tab ?? irse.get("tab")); // go to next tab
 	}
-	window.showTab = (xhr, status, args, tab) => {
-		if (!window.showAlerts(xhr, status, args)) return;
-		irse.setData(coll.parse(args.data)); // set irse data
-		const rutas = coll.parse(args.rutas);
-		const gastos = coll.parse(args.gastos);
-		const dietas = coll.parse(args.dietas);
-		const firmas = coll.parse(args.firmas);
 
-		form.load(rutas, gastos, dietas, firmas); // parse firmas
-		tabs.goTab(tab); // go selected/next tab
-	}
-	window.closeForm = (xhr, status, args) => {
+	window.saveTab = () => form.setOk().setChanged().refresh(irse).working();
+	window.nextTab = (xhr, status, args, tab) => {
 		if (!window.showAlerts(xhr, status, args)) return;
-		list.setWorking(); // update state
-		form.viewInit(); // go init tab
+		const interesado = irse.getInteresado(); // datos actuales
+		irse.setData(coll.parse(args.data)); // update irse data
+		irse.setInteresado(interesado); // preserve data
+		const cuentas = coll.parse(args.cuentas);
+		const firmas = coll.parse(args.firmas);
+		form.next(cuentas, firmas, tab);
 	}
 });

@@ -1,6 +1,7 @@
 
 import i18n from "../../i18n/langs.js";
 import TextInput from "./TextInput.js";
+import input from "./FormInput.js";
 
 // Register the custom element
 //customElements.define("float-input", FloatInput, { extends: "input" });
@@ -9,16 +10,16 @@ import TextInput from "./TextInput.js";
 export default class FloatInput extends TextInput {
 	constructor() {
 		super(); // Must call super before 'this'
-		this.dataset.negativeClass = this.dataset.negativeClass || "text-red"; // Negative numbers styles
 
 		// Initialize the element
 		this.classList.add("ui-float");
 		this.classList.remove("ui-inputfield");
 		this.setAttribute("maxlength", this.getAttribute("maxlength") || 12);
 
+		const negativeClass = input.getOption("negativeClass");
 		const format = () => {
 			this.value = i18n.fmtFloat(this.value); // Show formatted value and style
-			this.value && this.classList.toggle(this.dataset.negativeClass, this.value.startsWith("-"));
+			this.value && this.classList.toggle(negativeClass, this.value.startsWith("-"));
 		}
 		this.addChange(format);
 		format();

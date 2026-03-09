@@ -9,7 +9,7 @@ import Partidas from "./partidas.js";
 import form from "./presto.js";
 
 export default class PartidaInc extends Form {
-	#acOrgInc = this.setAutocomplete("#acOrgInc");
+	#acOrgInc = this.setAutocomplete("acOrgInc");
 	#ecoInc = this.getElement("idEcoInc");
 	#partidas = new Partidas(this);
 

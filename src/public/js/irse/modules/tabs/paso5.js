@@ -17,8 +17,9 @@ import Observer from "../util/Observer.js";
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
 export default class Paso5 extends Form {
-	#tipoGasto = this.getInput("#tipoGasto"); // select input
+	#tipoGasto = this.getElement("tipoGasto"); // select input
 	#grupos = this.querySelectorAll(".grupo-gasto"); // toggle groups
+
 	#tg = new TableGastos(this);
 	#pendientes = new RutaPendientes(this);
 
@@ -66,11 +67,12 @@ export default class Paso5 extends Form {
 		});
 
 		// el paso 5 requiere validaciones en el servidor
+		const fnUrl = () => ("/uae/iris/paso5/save?id=" + irse.getId());
 		tabs.setAction("paso5", () => {
 			if (!irse.isEditable()) return tabs.nextTab(); // go next tab directly
-			loading(); window.rcPaso5(); // llamo al servidor para sus validaciones
+			api.init().json(fnUrl()).then(() => tabs.goTab(6)); // validaciones del servidor
 		});
-		tabs.setAction("save5", () => { loading(); window.rcSave5(); });
+		tabs.setAction("save5", () => api.init().json(fnUrl()).then(this.setOk));
 		tabs.setAction("uploadGasto", () => (valid.upload() && this.upload()));
 	}
 

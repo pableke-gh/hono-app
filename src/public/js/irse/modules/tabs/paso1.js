@@ -38,23 +38,24 @@ export default class Paso1 extends Form {
 			if (!valid.paso1()) return; // if error => stop
 			if (!irse.isEditable() || !this.isChanged())
 				return tabs.nextTab(); // go next tab directly
+			const fnNext = data => { fnUpdate(data); tabs.goTab(); };
 			if (perfil.isMun())
-				return api.setJSON(fnDataMun()).json("/uae/iris/mun/save").then(data => { fnUpdate(data); tabs.goTab(); });
-			api.setJSON(fnData()).json("/uae/iris/paso1/save").then(data => { fnUpdate(data); tabs.goTab(); });
+				return api.setJSON(fnDataMun()).json("/uae/iris/mun/save").then(fnNext);
+			api.setJSON(fnData()).json("/uae/iris/paso1/save").then(fnNext);
 		});
 		tabs.setAction("save1", () => {
 			if (!valid.paso1()) return; // if error => stop
 			if (!this.isChanged()) return this.setOk(); // nada que guardar
+			const fnNext = data => { fnUpdate(data); this.setOk(); };
 			if (perfil.isMun())
-				return api.setJSON(fnDataMun()).json("/uae/iris/mun/save").then(fnUpdate);
-			api.setJSON(fnData()).json("/uae/iris/paso1/save").then(fnUpdate);
+				return api.setJSON(fnDataMun()).json("/uae/iris/mun/save").then(fnNext);
+			api.setJSON(fnData()).json("/uae/iris/paso1/save").then(fnNext);
 		});
 	}
 
 	getGrupoDieta = () => form.getValue("grupo-dieta");
-
 	setPromotor() {
-		const acPromotor = this.setAutocomplete("#promotor");
+		const acPromotor = this.setAutocomplete("promotor");
 		const fnPromotor = term => api.init().json("/uae/iris/personal", { id: irse.getId(), term }).then(acPromotor.render);
 		acPromotor.setItemMode(4).setSource(fnPromotor);
 	}

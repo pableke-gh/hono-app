@@ -40,7 +40,6 @@ export default class Solicitud extends Form {
 	}
 
 	getSolicitudes = () => this.#solicitudes; // list
-	viewInit = () => { this.resetCache(); tabs.showInit(); }
 	showForm = () => this.reactivate(this.#solicitudes.load()); // open form tab
 	report = () => api.init().text(this.#solicitud.getUrl() + "/report?id=" + this.#solicitudes.getId()).then(api.open); // call report service
 
@@ -118,12 +117,5 @@ export default class Solicitud extends Form {
 		if (this.isCached(data.id)) // solicitud pre-loaded
 			return this.reactivate(this.#solicitud.setSubsanable()); // show current data
 		api.init().json(this.#solicitud.getUrl() + "/reactivar?id=" + data.id).then(this.#showForm); // get method
-	}
-
-	update = (data, tab) => {
-		data.solicitud && this.#solicitudes.load(data.solicitud); // 1º carga los datos de la solicitud
-		data.firmas && this.setFirmas(data.firmas); // 2º actualizo la vista de firmas asociadas
-		this.setChanged(); // reset changed state
-		tabs.goTab(tab); // 4º show specific form tab
 	}
 }

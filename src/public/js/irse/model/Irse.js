@@ -2,7 +2,9 @@
 import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
+
 import Solicitud from "../../core/model/Solicitud.js";
+import irpf from "../modules/util/irpf.js";
 
 class Iris extends Solicitud {
 	getUrl = () => "/uae/iris"; // endpoint base path
@@ -45,8 +47,14 @@ class Iris extends Solicitud {
 	isEditableP8 = () => (this.isEditable() && this.isPaso8()); // paso 8 y editable
 	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
 
-	getCargos = () => this.get("cargos"); // cargos del interesado (bitmask)
+	getInteresado = () => this.get("interesado");
+	setInteresado = data => this.set("interesado", data).set("colectivo", data?.ci); 
+	getNombreInt = () => this.getInteresado()?.nombre;
+	getNifInteresado = () => this.getInteresado()?.nif;
+	getEmailInteresado = () => this.getInteresado()?.email;
+	getCargos = () => this.getInteresado()?.cargos; // cargos del interesado (bitmask)
 	isEquipoGob = () => ((this.getCargos() & 64) == 64); // el interesado forma parte del equipo de gobierno
+	getDirInteresado = () => i18n.render("@lblDomicilio;: @dir;, @cp;, @municipio;, @provincia; (@residencia;)", this.getInteresado()); // parser info
 
 	// render steps functions for tabs
 	getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), this);
@@ -58,16 +66,18 @@ class Iris extends Solicitud {
 	getNochesPendientes = () => 0;
 	getNumRutasPendientes = () => 0;
 	isFacturasComisionado = () => ((this.getNochesPendientes() > 0) || (this.getNumRutasPendientes() > 0));
-	isCenaFinal = () => this.get("cenaFinal");
 
 	// params from server
-	getTotAc = () => this.get("totAc");
-	getImpTransporte = () => this.get("impTransporte");
-	getMinPernoctas = () => this.get("minPernoctas");
-	getImpExtraTrans = () => this.get("impExtraTrans");
-	getImpExtraAloja = () => this.get("impExtraAloja");
-	getImpExtraDietas = () => this.get("impExtraDietas");
-	getIrpf = () => this.get("irpf");
+	getImpTransporte = () => 0;
+	getImpPernoctas = () => 0;
+	getImpDietas = () => 0;
+	getImpExtraTrans = () => 0;
+	getImpExtraPernoctas = () => 0;
+	getImpExtraDietas = () => 0;
+	getImpCena = () => 0;
+	isCenaFinal = () => false;
+	getTotAc = () => 0;
+	getIrpf = () => irpf.getIrpf(this.getInteresado(), this.getActividad());
 }
 
 export default new Iris();

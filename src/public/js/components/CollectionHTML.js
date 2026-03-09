@@ -88,45 +88,12 @@ HTMLElement.prototype.refresh = function(data, opts) {
 }
 
 // Update attribute and style
-HTMLElement.prototype.setDisabled = function(force) { return this.toggle("disabled", this.toggleAttribute("disabled", force)); }
+/*HTMLElement.prototype.setDisabled = function(force) { return this.toggle("disabled", this.toggleAttribute("disabled", force)); }
 HTMLElement.prototype.setReadonly = function(force) { // Update attribute readonly / disabled and style
 	// The attribute readonly is not supported or relevant to <select> or input types file, checkbox, radio, range...
 	const disabled = [ "file", "checkbox", "radio", "range", "color", "button" ].includes(this.type); // force disabled attribute
 	return disabled ? this.setDisabled(force) : this.toggle("readonly", this.toggleAttribute("readonly", force));
-}
-
-HTMLElement.prototype.eachPrev = function(fn) {
-    var el = this.previousElementSibling;
-    for (let i = 0; el; el = el.previousElementSibling)
-        fn(el, i++);
-    return this;
-}
-HTMLElement.prototype.prev = function(selector) {
-    var el = this.previousElementSibling;
-    while (el) {
-        if (el.matches(selector))
-            return el;
-        el = el.previousElementSibling;
-    }
-    return null;
-}
-HTMLElement.prototype.eachNext = function(fn) {
-    var el = this.nextElementSibling;
-    for (let i = 0; el; el = el.nextElementSibling)
-        fn(el, i++);
-    return this;
-}
-HTMLElement.prototype.next = function(selector) {
-    var el = this.nextElementSibling;
-    while (el) {
-        if (el.matches(selector))
-            return el;
-        el = el.nextElementSibling;
-    }
-    return null;
-}
-HTMLElement.prototype.eachSibling = function(fn) { return this.eachPrev(fn).eachNext(fn); }
-HTMLElement.prototype.sibling = function(selector) { return this.prev(selector) || this.next(selector); }
+}*/
 
 // Commons initializations in the HTML client
 window.$1 = selector => document.querySelector(selector);

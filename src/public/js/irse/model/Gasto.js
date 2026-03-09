@@ -18,6 +18,10 @@ class Gasto {
 
 	isExtra = gasto => (gasto.tipo == 8);
 	isTipoExtra = tipo => ["301", "302", "303", "304"].includes(tipo);
+	isExtraTrans = gasto => (this.isExtra(gasto) && (gasto.subtipo == 1));
+	isExtraPernocta = gasto => (this.isExtra(gasto) && (gasto.subtipo == 2));
+	isCenaFin = gasto => (this.isExtra(gasto) && (gasto.subtipo == 3));
+	isExtraDieta = gasto => (this.isExtra(gasto) && (gasto.subtipo == 4));
 
 	isDoc = gasto => (gasto.tipo == 9);
 	isTipoDoc = tipo => ["201", "202", "204", "205", "206"].includes(tipo);

@@ -1,4 +1,5 @@
 
+import irse from "../../model/Irse.js";
 import organica from "../../model/Organica.js";
 import form from "../irse.js";
 
@@ -57,7 +58,7 @@ function IrseImputacion() {
 		else // transporte
 			finalidad = FINALIDAD_CC[finalidad];
 		finalidad = finalidad || "XX";
-		let colectivo = COLECTIVOS[perfil.getColectivo()] || "XX";
+		let colectivo = COLECTIVOS[irse.getColectivo()] || "XX";
 
 		if (perfil.isIsu()) //642
 			return "642." + finalidad + "." + colectivo;

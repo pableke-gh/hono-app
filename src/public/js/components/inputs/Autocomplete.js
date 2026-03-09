@@ -1,6 +1,7 @@
 
 import coll from "../CollectionHTML.js";
 import sb from "../types/StringBox.js";
+import input from "./FormInput.js";
 
 const EMPTY = [];
 const fnEmpty = () => EMPTY;
@@ -47,8 +48,8 @@ export default function(autocomplete, opts) {
 	this.setReset = fn => { opts.onReset = fn; return self; }
 	this.setItemMode = minLength => self.setMinLength(minLength || opts.minLength).setSelect(item => item.value).setRender(item => item.label); 
 
-	this.setDisabled = force => { autocomplete.toggle("disabled", autocomplete.toggleAttribute("disabled", force)); return self; }
-	this.setReadonly = force => { autocomplete.toggle("readonly", autocomplete.toggleAttribute("readonly", force)); return self; }
+	this.setDisabled = force => { input.setDisabled(autocomplete, force); return self; }
+	this.setReadonly = force => { input.setReadonly(autocomplete, force); return self; }
 	this.setEditable = force => self.setReadonly(!force);
 
 	this.getData = () => _results;

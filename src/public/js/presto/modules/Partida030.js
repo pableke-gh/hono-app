@@ -5,7 +5,7 @@ import api from "../../components/Api.js"
 import presto from "../model/Presto.js";
 
 export default class Partida030 extends Form {
-	#acOrg030 = this.setAutocomplete("#acOrg030");
+	#acOrg030 = this.setAutocomplete("acOrg030");
 	#ej030; // is tab preloaded
 
 	constructor(form) {

@@ -15,6 +15,7 @@ export default class Rutas extends Table {
 	init() {
 		const fnGt1 = () => ((this.size() > 1) && irse.isEditable());
 		form.set("is-rutas-gt-1", () => (this.size() > 1)).set("is-editable-rutas-gt-1", fnGt1);
+		this.setRemove(() => { form.set("table-changed", true); return Promise.resolve(); });
 		this.set("#main", data => {
 			rutas.setRutaPrincipal(data);
 			form.setChanged(true);
@@ -58,7 +59,6 @@ export default class Rutas extends Table {
 
 	render() {
 		super.render(rutas.getRutas());
-		form.set("table-changed", true);
 	}
 
 	afterRender(resume) {
