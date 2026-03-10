@@ -6,19 +6,17 @@ import partida from "../model/Partida.js";
 import PartidaDec from "./partidaDec.js";
 import PartidaInc from "./partidaInc.js";
 import Partida030 from "./partida030.js";
-import Prestos from "./prestos.js";
+
+import PrestoSolicitudes from "./prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class Presto extends Solicitud {
-	#prestos = new Prestos();
 	#pDec = new PartidaDec(this);
 	#pInc = new PartidaInc(this);
 	#p030 = new Partida030(this);
 
 	init() { // init modules
-		super.init(this.#prestos, valid);
-		this.#prestos.init();
-
+		super.init(valid);
 		this.#pDec.init();
 		this.#pInc.init();
 		this.#p030.init();
@@ -30,9 +28,9 @@ class Presto extends Solicitud {
 		this.#pInc.view(data.partidas); // cargo la tabla de partidas a incrementar
 	}
 
-	getSolicitudes = () => this.#prestos; // list
-	getPartidaDec = () => this.#pDec;
-	getPartidaInc = () => this.#pInc;
+	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
+	getPartidaDec = () => this.#pDec; // partida que se decrementa
+	getPartidaInc = () => this.#pInc; // partidas a incrementar
 	getPartidas = this.#pInc.getPartidas;
 	getPartida030 = () => this.#p030;
 
@@ -42,5 +40,7 @@ class Presto extends Solicitud {
 		return this;
 	}
 }
+
+customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });
 
 export default new Presto();

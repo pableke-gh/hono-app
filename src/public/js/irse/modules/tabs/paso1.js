@@ -1,6 +1,6 @@
 
 import sb from "../../../components/types/StringBox.js";
-import Form from "../../../components/forms/Form.js";
+import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import valid from "../../i18n/validators.js";
@@ -10,7 +10,7 @@ import rutas from "../../model/Rutas.js"
 import form from "../irse.js"
 
 /*********** campo objeto y mun ***********/
-export default class Paso1 extends Form {
+export default class Paso1 extends FormBase {
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
 	}

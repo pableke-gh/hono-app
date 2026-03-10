@@ -1,5 +1,5 @@
 
-import Form from "../../components/forms/Form.js";
+import FormBase from "../../components/forms/FormBase.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
 import valid from "../i18n/validators.js";
@@ -8,16 +8,17 @@ import factura from "../model/Factura.js";
 import Lineas from "./lineas.js";
 import form from "./factura.js";
 
-export default class Imputacion extends Form {
+export default class Imputacion extends FormBase {
 	#acOrganica = this.setAutocomplete("acOrganica");
 	#acRecibo = this.setAutocomplete("acRecibo");
 	#acTTPP = this.setAutocomplete("acTTPP");
-	#lineas = new Lineas(this);
+	#lineas = this.querySelector("table");
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
 	}
 
+	getLineas = () => this.#lineas;
 	init() {
 		// los usuarios de ttpp/gaca solo pueden ver las organicas de su unidad 300906XXXX
 		this.#acOrganica.setItemMode(4).setSource(term => {
@@ -61,6 +62,6 @@ export default class Imputacion extends Form {
 		this.#acRecibo.setValue(fact.idRecibo, fact.acRecibo);
 		this.#lineas.render(data.lineas); // render table
 	}
-
-	getLineas = () => this.#lineas;
 }
+
+customElements.define("linea-table", Lineas, { extends: "table" });

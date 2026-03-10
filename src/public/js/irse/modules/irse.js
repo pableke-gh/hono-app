@@ -10,11 +10,10 @@ import Resumen from "./tabs/resumen.js";
 import Paso9 from "./tabs/paso9.js";
 import InformeISU from "./tabs/otri.js";
 
-import Solicitudes from "./solicitudes.js";
+import IrseSolicitudes from "./solicitudes.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class IrseSolicitud extends Solicitud {
-	#solicitudes = new Solicitudes();
 	#perfil = new Perfil(this);
 	#paso1 = new Paso1(this);
 	#rutas = new Rutas(this);
@@ -25,9 +24,7 @@ class IrseSolicitud extends Solicitud {
 	#isu = new InformeISU(this);
 
 	init() { // init modules
-		super.init(this.#solicitudes, valid);
-		this.#solicitudes.init();
-
+		super.init(valid);
 		this.#perfil.init();
 		this.#paso1.init();
 		this.#rutas.init();
@@ -55,7 +52,7 @@ class IrseSolicitud extends Solicitud {
 		this.setFirmas(firmas).setValue("idses", id).setCache(id).setEditable(irse).refresh(irse).nextTab(tab);
 	}
 
-	getSolicitudes = () => this.#solicitudes; // list
+	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
 	getPerfil = () => this.#perfil; // module perfil
 	getOrganicas = this.#perfil.getOrganicas; // table organicas
 	getPaso1 = () => this.#paso1; // module paso1
@@ -66,5 +63,7 @@ class IrseSolicitud extends Solicitud {
 	getPaso9 = () => this.#paso9; // module paso5
 	getInformeISU = () => this.#isu; // module InformeISU
 }
+
+customElements.define("irse-table", IrseSolicitudes, { extends: "table" });
 
 export default new IrseSolicitud();

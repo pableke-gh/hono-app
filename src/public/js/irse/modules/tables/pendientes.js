@@ -8,7 +8,7 @@ import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 import gasto from "../../model/Gasto.js";
 
-import Observer from "../util/Observer.js";
+import Observer from "../../util/Observer.js";
 import form from "../irse.js"
 
 /*********** ASOCIAR RUTAS / GASTOS ***********/

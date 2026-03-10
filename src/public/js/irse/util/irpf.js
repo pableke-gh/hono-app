@@ -1,5 +1,5 @@
 
-import ue from "../../data/ue.js";
+import ue from "../data/ue.js";
 
 const DEFAULT_ES = 15;
 const DEFAULT_UE = 19;

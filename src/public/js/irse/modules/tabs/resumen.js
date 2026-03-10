@@ -1,5 +1,5 @@
 
-import Form from "../../../components/forms/Form.js";
+import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import valid from "../../i18n/validators.js";
@@ -12,10 +12,10 @@ import Transportes from "../tables/transportes.js";
 import Pernoctas from "../tables/pernoctas.js";
 import Dietas from "../tables/dietas.js";
 import Extraordinarios from "../tables/extras.js";
-import Observer from "../util/Observer.js";
+import Observer from "../../util/Observer.js";
 
 /*********** Tablas de resumen ***********/
-export default class Resumen extends Form {
+export default class Resumen extends FormBase {
 	#km = new Kilometraje(this);
 	#trans = new Transportes(this);
 	#pernoctas = new Pernoctas(this);

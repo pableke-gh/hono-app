@@ -1,5 +1,5 @@
 
-import Form from "../../components/forms/Form.js";
+import FormBase from "../../components/forms/FormBase.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import valid from "../i18n/validators.js";
@@ -8,10 +8,10 @@ import presto from "../model/Presto.js";
 import Partidas from "./partidas.js";
 import form from "./presto.js";
 
-export default class PartidaInc extends Form {
+export default class PartidaInc extends FormBase {
 	#acOrgInc = this.setAutocomplete("acOrgInc");
 	#ecoInc = this.getElement("idEcoInc");
-	#partidas = new Partidas(this);
+	#partidas = this.querySelector("table");
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
@@ -58,9 +58,10 @@ export default class PartidaInc extends Form {
 		this.#partidas.render(data); // load table
 	}
 
+	getPartidas = () => this.#partidas;
 	autoload(partida, imp) {
 		this.#partidas.autoload(partida, imp);
 	}
-
-	getPartidas = () => this.#partidas;
 }
+
+customElements.define("partida-table", Partidas, { extends: "table" });

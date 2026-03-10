@@ -1,10 +1,10 @@
 
-import Table from "../../components/Table.js";
+import TableHTML from "../../components/TableHTML.js";
 import i18n from "../../i18n/langs.js";
 
-export default class Documentos extends Table {
-	constructor(table, opts) {
-		super(table, opts); // defautl constructor
+export default class Documentos extends TableHTML {
+	constructor() {
+		super(); // Must call super before 'this'
 		this.setMsgEmpty("No se han encontrado documentos de UXXI-EC asociadas a la solicitud");
 	}
 

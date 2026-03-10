@@ -7,7 +7,7 @@ import irse from "../../model/Irse.js";
 import gasto from "../../model/Gasto.js";
 import gastos from "../../model/Gastos.js";
 
-import Observer from "../util/Observer.js";
+import Observer from "../../util/Observer.js";
 import form from "../irse.js"
 
 // tabla de gastos del paso 5 (facturas, tickets y demás documentación para liquidar)

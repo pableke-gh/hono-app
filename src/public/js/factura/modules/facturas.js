@@ -4,9 +4,13 @@ import factura from "../model/Factura.js";
 import firma from "../../core/model/Firma.js";
 import Solicitudes from "../../core/modules/solicitudes.js";
 
-export default class Facturas extends Solicitudes {
-	init() { super.init(factura); } // init super with model reference
+export default class FacturaSolicitudes extends Solicitudes {
+	constructor() {
+		super(factura); // Must call super before 'this'
+	}
+
 	getSolicitud = () => factura; // get current instance
+	connectedCallback() { super.connectedCallback(); } // init super with model reference
 
 	row(data) {
 		let acciones = super.row(data);

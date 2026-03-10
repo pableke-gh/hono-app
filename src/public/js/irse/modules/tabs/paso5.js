@@ -1,5 +1,5 @@
 
-import Form from "../../../components/forms/Form.js";
+import FormBase from "../../../components/forms/FormBase.js";
 import api from "../../../components/Api.js";
 import tabs from "../../../components/Tabs.js";
 import valid from "../../i18n/validators.js";
@@ -13,10 +13,10 @@ import gastos from "../../model/Gastos.js";
 import RutaPendientes from "../tables/pendientes.js";
 import RutaConsulta from "../tables/itinerario.js"
 import TableGastos from "../tables/gastos.js"
-import Observer from "../util/Observer.js";
+import Observer from "../../util/Observer.js";
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
-export default class Paso5 extends Form {
+export default class Paso5 extends FormBase {
 	#tipoGasto = this.getElement("tipoGasto"); // select input
 	#grupos = this.querySelectorAll(".grupo-gasto"); // toggle groups
 

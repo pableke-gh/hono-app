@@ -1,10 +1,10 @@
 
-import Form from "../../components/forms/Form.js";
+import FormBase from "../../components/forms/FormBase.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import presto from "../model/Presto.js";
 
-export default class Partida030 extends Form {
+export default class Partida030 extends FormBase {
 	#acOrg030 = this.setAutocomplete("acOrg030");
 	#ej030; // is tab preloaded
 

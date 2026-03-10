@@ -1,22 +1,23 @@
 
 import coll from "../../components/CollectionHTML.js";
-import Form from "../../components/forms/Form.js";
+import FormBase from "../../components/forms/FormBase.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import i18n from "../../i18n/langs.js";
 import firma from "../model/Firma.js";
 
-export default class Solicitud extends Form {
+export default class Solicitud extends FormBase {
 	#solicitudes; #solicitud; #valid;
 
 	constructor(opts) { // build instance
 		super("xeco-model", opts);
 	}
 
-	init(solicitudes, valid) {
-		this.#valid = valid; // current validator instance
+	init(valid) {
+		const solicitudes = window.solicitudes; // tabla de solicitudes
 		this.#solicitudes = solicitudes; // solicitudes module list
 		this.#solicitud = solicitudes.getSolicitud(); // solicitud model instance
+		this.#valid = valid; // current validator instance
 
 		// set default handlers
 		solicitudes.set("#view", this.view).set("#firmar", this.firmar).set("#reject", this.reject)

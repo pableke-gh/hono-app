@@ -5,46 +5,50 @@ import alerts from "../Alerts.js";
 
 import Table from "../Table.js";
 import FormDataBox from "./FormData.js";
-import TextInput from "../inputs/TextInput.js";
-import DataList from "../inputs/DataList.js";
-import BoolInput from "../inputs/BoolInput.js";
-import FloatInput from "../inputs/FloatInput.js";
-import DateInput from "../inputs/DateInput.js";
-import TimeInput from "../inputs/TimeInput.js";
-import TextArea from "../inputs/TextArea.js";
-import FileInput from "../inputs/FileInput.js";
-import ButtonForm from "../inputs/ButtonForm.js";
 import Autocomplete from "../inputs/Autocomplete.js";
 import MultiSelectCheckbox from "../inputs/MultiSelectCheckbox.js";
 
-export default class FormHTML extends HTMLFormElement {
-	#opts = {
-		defaultMsgOk: "saveOk", // default key for message ok
-		defaultMsgError: "errForm", // default key error
-		refreshSelector: ".form-refresh" // selector for refresh
-	};
+export default class FormBase {
+	#form; #opts; // form element + options
 
-	constructor() {
-		super(); // Must call super before 'this'
-		// Form default initialization
-		this.setAttribute("novalidate", "1");
-		this.afterChange(() => this.setChanged(true)).beforeReset(ev => this.closeAlerts().autofocus());
+	constructor(form, opts) { // Find form element or create empty form
+		this.#form = globalThis.isstr(form) ? document.forms[form] : form;
+		this.#form = this.#form || document.createElement("form");
+
+		this.#opts = opts || {}; // default options
+		this.#opts.defaultMsgOk = this.#opts.defaultMsgOk || "saveOk"; // default key for message ok
+		this.#opts.defaultMsgError = this.#opts.defaultMsgError || "errForm"; // default key error
+		this.#opts.refreshSelector = this.#opts.refreshSelector || ".form-refresh"; // selector for refresh
+
+		// Form initialization
+		this.#form.setAttribute("novalidate", "1");
 	}
 
+	init() {
+		return this.afterChange(() => this.setChanged(true)).beforeReset(ev => this.closeAlerts().autofocus());
+	}
+
+	querySelector = selector => this.#form.$1(selector); // Form child element
+	querySelectorAll = selector => this.#form.$$(selector); // Form children elements
+	getInput = selector => this.#form.elements.findBy(selector); // find an element
+	getInputs = selector => this.#form.elements.filterBy(selector); // filter elements
+
 	// Actions to update form view (inputs, texts, ...)
-	#fnQuery = el => globalThis.isstr(el) ? this.$1(el) : el;
+	#fnQuery = el => globalThis.isstr(el) ? this.#form.$1(el) : el;
 	#fnQueryInput = el => globalThis.isstr(el) ? this.getInput(el) : el;
 	#fnAction = (el, fn) => { el = this.#fnQueryInput(el); el && fn(el); return this; }
 	#fnFor = (list, fn) => { list.forEach(fn); return this; }
 	#fnUpdate = (selector, fn) => {
 		selector = selector || "input,select,textarea"; // default all input fields
-		return this.#fnFor(this.elements, el => el.matches(selector) && fn(el));
+		return this.#fnFor(this.#form.elements, el => el.matches(selector) && fn(el));
 	}
 
+	getForm = () => this.#form;
+	getNextElement = () => this.#form.nextElementSibling;
+	getNext = selector => this.#form.next(selector);
+	getElements = () => this.#form.elements;
+	getElement = name => this.#form.elements[name];
 	getOptions = () => this.#opts;
-	getElement = name => this.elements[name];
-	getInput = selector => this.elements.findBy(selector); // find an element
-	getInputs = selector => this.elements.filterBy(selector); // filter elements
 
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
@@ -55,28 +59,31 @@ export default class FormHTML extends HTMLFormElement {
 	resetCache() { delete this.#opts.cache; return this.setChanged(); } // reset cache => NO changes
 
 	// Alerts helpers
+	loading = () => { alerts.loading(); return this; } // Encapsule loading frame
+	working = () => { alerts.working(); return this; } // Encapsule working frame
 	showOk = msg => { alerts.showOk(msg); return this; } // Encapsule showOk message
 	setOk = () => this.showOk(this.#opts.defaultMsgOk); // Force ok message
 	showInfo = msg => { alerts.showInfo(msg); return this; } // Encapsule showInfo message
 	showWarn = msg => { alerts.showWarn(msg); return this; } // Encapsule showWarn message
 	showError = msg => { alerts.showError(msg); return this; } // Encapsule showError message
+	showAlerts = alerts.showAlerts; // showAlerts synonym
 
 	focus = el => { el.focus(); return this; }
 	setFocus = selector => this.#fnAction(selector, el => el.focus());
-	autofocus = () => this.focus(this.elements.find(el => el.isVisible("[tabindex]:not([type=hidden],[readonly],[disabled])")));
+	autofocus = () => this.focus(this.#form.elements.find(el => el.isVisible("[tabindex]:not([type=hidden],[readonly],[disabled])")));
 	copyToClipboard = str => navigator.clipboard.writeText(str)
 									.then(() => console.log("Text copied to clipboard!"))
 									.catch(err => console.error("Error copying text to clipboard:", err));
 
 	getHtml = selector => this.#fnQuery(selector).innerHTML;
 	setHtml = (selector, text) => { this.#fnQuery(selector).innerHTML = text; return this; }
-	html = (selector, text) => { this.$$(selector).html(text); return this; } // Update all texts info in form
+	html = (selector, text) => { this.#form.$$(selector).html(text); return this; } // Update all texts info in form
 	getText = selector => this.#fnQuery(selector).innerText;
 	setText = (selector, text) => { this.#fnQuery(selector).innerText = text; return this; }
-	text = (selector, text) => { this.$$(selector).text(text); return this; } // Update all texts info in form
-	render = (selector, data) => { this.$$(selector).render(data); return this; } // NodeList.prototype.render
-	refresh(model, selector) { this.$$(selector || this.#opts.refreshSelector).refresh(model, this.#opts); tabs.setHeight(); return this; } // NodeList.prototype.refresh
-	send = url => api.setForm(this).send(url || this.action).catch(info => { this.setErrors(info); throw info; });
+	text = (selector, text) => { this.#form.$$(selector).text(text); return this; } // Update all texts info in form
+	render = (selector, data) => { this.#form.$$(selector).render(data); return this; } // NodeList.prototype.render
+	refresh(model, selector) { this.#form.$$(selector || this.#opts.refreshSelector).refresh(model, this.#opts); tabs.setHeight(); return this; } // NodeList.prototype.refresh
+	send = url => api.setForm(this.#form).send(url || this.#form.action).catch(info => { this.setErrors(info); throw info; });
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return this.setOk(); // show ok msg
@@ -85,8 +92,8 @@ export default class FormHTML extends HTMLFormElement {
 	}
 
 	eachInput = (selector, fn) => this.#fnUpdate(selector, fn);
-	hide = selector => { this.$$(selector).hide(); tabs.setHeight(); return this; }
-	show = selector => { this.$$(selector).show(); tabs.setHeight(); return this; }
+	hide = selector => { this.#form.$$(selector).hide(); tabs.setHeight(); return this; }
+	show = selector => { this.#form.$$(selector).show(); tabs.setHeight(); return this; }
 	setVisible = (selector, force) => force ? this.show(selector) : this.hide(selector);
 	disabled = (force, selector) => this.#fnUpdate(selector, el => el.setDisabled(force));
 	readonly = (force, selector) => this.#fnUpdate(selector, el => el.setReadonly(force));
@@ -122,19 +129,19 @@ export default class FormHTML extends HTMLFormElement {
 		if (data && selector) // update a subgroup of inputs
 			this.#fnUpdate(selector, fnSetValue);
 		else if (data) // update all inputs
-			this.elements.forEach(el => (el.name && fnSetValue(el)));
+			this.#form.elements.forEach(el => (el.name && fnSetValue(el)));
 		else
 			this.reset(selector); // clear selected inputs values
 		return this;
 	}
 
-	getAttr = (selector, name) => this.getElement(selector).getAttribute(name);
-	delAttr(selector, name) { this.getElement(selector).removeAttribute(name); return this; }
-	setAttr(selector, name, value) { this.getElement(selector).setAttribute(name, value); return this; }
+	getAttr = (selector, name) => this.#fnQueryInput(selector).getAttribute(name);
+	delAttr = (selector, name) => { this.#fnQueryInput(selector).removeAttribute(name); return this; }
+	setAttr = (selector, name, value) => { this.#fnQueryInput(selector).setAttribute(name, value); return this; }
 
-	getUrlParams = () => new URLSearchParams(new FormData(this));
+	getUrlParams = () => new URLSearchParams(new FormData(this.#form));
 	getFormData(data, include) {
-		const fd = new FormDataBox(this);
+		const fd = new FormDataBox(this.#form);
 		return fd.load(data, include); // merge data
 	}
 	getFormDataInputs(selector) {
@@ -143,59 +150,50 @@ export default class FormHTML extends HTMLFormElement {
 	}
 
 	// Inputs helpers
-	setTable = (selector, opts) => new Table(this.$1(selector), opts); // table
+	setTable = (selector, opts) => new Table(this.#form.$1(selector), opts); // table
 	stringify = (name, data, replacer) => this.setValue(name, JSON.stringify(data, replacer));
 	getOptionText = name => this.getElement(name).getText(); // data-list required
 	select(name, mask) { this.getElement(name).select(mask); return this; }
 	setItems = (selector, items) => this.#fnUpdate(selector, el => el.setItems(items));
 	setLabels = (selector, labels) => this.#fnUpdate(selector, el => el.setLabels(labels));
-	setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox(this.$1(selector), opts); // multi select checkbox
+	setMultiSelectCheckbox = (selector, opts) => new MultiSelectCheckbox(this.#form.$1(selector), opts); // multi select checkbox
 	setAutocomplete = (name, opts) => new Autocomplete(this.getElement(name), opts); // Input type text / search
 
-	showModal = selector => this.$1(selector).showModal();
-	closeModal = () => this.$1("dialog[open]").close();
+	showModal = selector => this.#form.$1(selector).showModal();
+	closeModal = () => this.#form.$1("dialog[open]").close();
 
 	// Events handlers
 	#fnEvent = (el, name, fn) => { el.addEventListener(name, ev => fn(ev, el)); return this; }
-	afterChange = fn => this.#fnEvent(this, "change", fn); // add change event handler
-	onSubmit = fn => this.#fnEvent(this, "submit", fn); // add event handler
-	fireReset = () => { this.reset(); return this; }
-	beforeReset = fn => this.#fnEvent(this, "reset", fn);
-	afterReset = fn => this.#fnEvent(this, "reset", ev => setTimeout(() => fn(ev), 1));
+	#fnChange = (el, fn) => this.#fnEvent(el, "change", fn);
+
+	afterChange = fn => this.#fnChange(this.#form, fn); // add change event handler
+	onSubmit = fn => this.#fnEvent(this.#form, "submit", fn); // add event handler
+	fireReset = () => { this.#form.reset(); return this; }
+	beforeReset = fn => this.#fnEvent(this.#form, "reset", fn);
+	afterReset = fn => this.#fnEvent(this.#form, "reset", ev => setTimeout(() => fn(ev), 1));
 
 	onChange = (selector, fn) => this.#fnUpdate(selector, el => el.addChange(fn));
 	addChange(name, fn) { this.getElement(name).addChange(fn); return this; }
 	setClick = (selector, fn) => { this.#fnQuery(selector)?.setClick(fn); return this; }
-	click = selector => { this.$1(selector).click(); return this; } // Fire event only for PF
+	click = selector => { this.#form.$1(selector).click(); return this; } // Fire event only for PF
 
 	// Form Validator
 	closeAlerts() {
 		alerts.closeAlerts(); // globbal message
-		this.elements.forEach(el => el.setOk()); // clear input messages
+		this.#form.elements.forEach(el => el.setOk()); // clear input messages
 		return this;
 	}
 	setErrors(messages) {
 		messages.msgError = messages.msgError || this.#opts.defaultMsgError;
-		this.elements.eachPrev(el => el.update(messages[el.name]));
+		this.#form.elements.eachPrev(el => el.update(messages[el.name]));
 		alerts.setMsgs(messages); // show all messages
 		return this;
 	}
 	setError(el, tip, msg) {
-		(globalThis.isstr(el) ? this.getElement(el) : el).setError(tip);
-		return this.showError(msg); // input error + form error
+		el = globalThis.isstr(el) ? this.getElement(el) : el;
+		el.setError(tip);
+		return this.showError(msg);
 	}
 	setRequired = (el, msg) => this.setError(el, "errRequired", msg);
 	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
 }
-
-// For a valid custom element name, it must: Contain a hyphen (-)
-customElements.define("model-form", FormHTML, { extends: "form" });
-customElements.define("text-input", TextInput, { extends: "input" });
-customElements.define("data-list", DataList, { extends: "select" });
-customElements.define("float-input", FloatInput, { extends: "input" });
-customElements.define("bool-input", BoolInput, { extends: "input" });
-customElements.define("date-input", DateInput, { extends: "input" });
-customElements.define("time-input", TimeInput, { extends: "input" });
-customElements.define("text-area", TextArea, { extends: "textarea" });
-customElements.define("file-input", FileInput, { extends: "input" });
-customElements.define("btn-form", ButtonForm, { extends: "button" });

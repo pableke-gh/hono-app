@@ -1,11 +1,11 @@
 
-import Form from "../../components/forms/Form.js";
+import FormBase from "../../components/forms/FormBase.js";
 import api from "../../components/Api.js"
 import factura from "../model/Factura.js";
 import fiscalidad from "../data/fiscal.js"
 import form from "./factura.js";
 
-export default class Fiscal extends Form {
+export default class Fiscal extends FormBase {
 	#acTercero = this.setAutocomplete("acTercero");
 	#delegaciones = this.getElement("delegacion");
 

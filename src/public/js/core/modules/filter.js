@@ -1,16 +1,13 @@
 
-import Form from "../../components/forms/Form.js";
+import FormHTML from "../../components/forms/FormHTML.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 
-export default class Filter extends Form {
-	constructor(opts) {
-		super("xeco-filter", opts);
-	}
-
-	init(solicitudes) {
-		super.init(); // init. default form events
-		const url = solicitudes.getSolicitud().getUrl(); // url base path
+export default class FilterForm extends FormHTML {
+	getSolicitudes = () => this.nextElementSibling; // tabla de solicitudes
+	connectedCallback() {
+		const solicitudes = this.nextElementSibling; // tabla de solicitudes
+		const url = solicitudes.getSolicitud().getUrl(); // api url base path
 		const fnLoadList = data => { solicitudes.render(data); tabs.showList(); } // render table + flush cache
 		const fnCallList = () => { api.setJSON(this.getData()).json(url + "/list").then(fnLoadList); } // fetch list action
 		const fnList = (estado, fmask) => { this.setData({ estado, fmask }, ".ui-filter"); fnCallList(); } // prepare filter and fetch

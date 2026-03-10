@@ -1,12 +1,11 @@
 
-import Table from "../../components/Table.js";
+import TableHTML from "../../components/TableHTML.js";
 import i18n from "../i18n/langs.js";
 import factura from "../model/Factura.js";
 import form from "./factura.js";
 
-export default class Lineas extends Table {
-	constructor(form) {
-		super(form.querySelector("#lineas-fact"));
+export default class Lineas extends TableHTML {
+	connectedCallback() {
 		this.setMsgEmpty("No existen conceptos asociados a la solicitud");
 	}
 
@@ -23,7 +22,7 @@ export default class Lineas extends Table {
 	}
 
 	beforeRender(resume) { resume.imp = 0; }
-	rowCalc(data, resume) { resume.imp += data.imp; }
+	beforeRow(data, resume) { resume.imp += data.imp; }
 	row(data, resume) {
 		const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red" title="Desasociar partida"></a>' : "";
 		return `<tr class="tb-data">

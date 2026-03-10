@@ -1,10 +1,10 @@
 
-import Form from "../../components/forms/Form.js";
+import FormBase from "../../components/forms/FormBase.js";
 import api from "../../components/Api.js"
 import presto from "../model/Presto.js";
 import form from "./presto.js";
 
-export default class PartidaDec extends Form {
+export default class PartidaDec extends FormBase {
 	#orgDec = this.setAutocomplete("acOrgDec");
 	#ecoDec = this.getElement("idEcoDec"); //data-list
 

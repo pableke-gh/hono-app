@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<form id="xeco-filter" action="/uae/presto">
+	<form is="filter-form" action="/uae/presto">
 		<h2 class="underline">Solicitudes realizadas</h2>
 
 		<div class="ui-blocks">
@@ -84,7 +84,7 @@
 		</div>
 	</form>
 
-	<table id="solicitudes" class="tb-xeco">
+	<table is="presto-table" class="tb-xeco">
 		<thead>
 			<tr>
 				<th class="slim"></th><th>Código</th><th class="hide-sm">Tipo</th>

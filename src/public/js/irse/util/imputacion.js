@@ -1,7 +1,7 @@
 
-import irse from "../../model/Irse.js";
-import organica from "../../model/Organica.js";
-import form from "../irse.js";
+import irse from "../model/Irse.js";
+import organica from "../model/Organica.js";
+import form from "../modules/irse.js";
 
 function IrseImputacion() {
 	//const self = this; //self instance

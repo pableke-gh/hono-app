@@ -1,7 +1,7 @@
 
 import coll from "../../../components/CollectionHTML.js";
 import sb from "../../../components/types/StringBox.js";
-import Form from "../../../components/forms/Form.js";
+import FormBase from "../../../components/forms/FormBase.js";
 import api from "../../../components/Api.js";
 import tabs from "../../../components/Tabs.js";
 import valid from "../../i18n/validators.js";
@@ -12,7 +12,7 @@ import form from "../irse.js";
 import Imputacion from "../tables/imputacion.js";
 
 /*********** Fin + IBAN ***********/
-export default class Paso9 extends Form {
+export default class Paso9 extends FormBase {
 	#imputacion = new Imputacion(this);
 	#cuentas = this.getElement("cuentas");
 	#paises = this.getElement("paises");

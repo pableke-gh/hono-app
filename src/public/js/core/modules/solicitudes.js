@@ -1,5 +1,5 @@
 
-import Table from "../../components/Table.js";
+import TableHTML from "../../components/TableHTML.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import i18n from "../../i18n/langs.js";
@@ -7,22 +7,22 @@ import i18n from "../../i18n/langs.js";
 import Filter from "./filter.js";
 import Uxxiec from "./uxxiec.js";
 
-export default class Solicitudes extends Table {
+export default class Solicitudes extends TableHTML {
 	#solicitud; // model instance
 
-	constructor(opts) {
-		super("#solicitudes", opts); // call super before this reference
+	constructor(solicitud) {
+		super(); // Must call super before 'this'
+		this.#solicitud = solicitud; // set current instance
+		window.solicitudes = this; // global access before connectedCallback
+		customElements.define("filter-form", Filter, { extends: "form" });
+		customElements.define("uxxiec-form", Uxxiec, { extends: "form" });
 	}
 
-	init(solicitud) { // default list handlers
+	connectedCallback() { // default list handlers
+		const solicitud = this.#solicitud; // current instance
 		const url = solicitud.getUrl(); // url base path
 		const tabUxxi = tabs.getTab("uxxiec"); // server info.
 		this.#solicitud = solicitud.setUser(tabUxxi.dataset);
-
-		const filter = new Filter(); // filter instance
-		const uxxiec = new Uxxiec(); // uxxi-ec form instance
-		filter.init(this); // set handlers with reference to this list
-		uxxiec.init(this); // set handlers to uxxi-ec form
 
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada")
 			.set("#emails", data => api.init().json(url + "/emails?id=" + data.id)); // admin test email
@@ -40,7 +40,7 @@ export default class Solicitudes extends Table {
 			td.className = solicitud.getStyleByEstado() + " hide-xs table-refresh"; // set estilos
 		});
 		this.view(); // initial render
-		tabs.setAction("remove", this.remove);
+		tabs.setAction("remove", this.remove); // default remove
 		return this;
 	}
 

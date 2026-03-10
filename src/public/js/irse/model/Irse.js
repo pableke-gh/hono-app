@@ -4,7 +4,7 @@ import sb from "../../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
 
 import Solicitud from "../../core/model/Solicitud.js";
-import irpf from "../modules/util/irpf.js";
+import irpf from "../util/irpf.js";
 
 class Iris extends Solicitud {
 	getUrl = () => "/uae/iris"; // endpoint base path

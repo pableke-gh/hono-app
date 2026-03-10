@@ -8,15 +8,18 @@ import firma from "../../core/model/Firma.js";
 import Solicitudes from "../../core/modules/solicitudes.js";
 
 export default class IrseSolicitudes extends Solicitudes {
-	init() {
-		super.init(irse); // 1º.- init super handlers with model reference
+	constructor() {
+		super(irse); // Must call super before 'this'
+	}
+
+	getSolicitud = () => irse;
+	connectedCallback() {
+		super.connectedCallback(); // 1º.- init super handlers with model reference
 		this.set("#paso8", data => (i18n.confirm("msgReactivarP8") && api.init().json("/uae/iris/paso8?id=" + data.id))); // set table action
 		this.set("#rptFinalizar", data => api.init().text("/uae/iris/report/finalizar?id=" + data.id).then(api.html)); // table action
 		//tabs.setAction("rptFinalizar", () => this.invoke("#rptFinalizar")); // set tab action
 		return this;
 	}
-
-	getSolicitud = () => irse;
 
 	row(data) {
 		let acciones = super.row(data);

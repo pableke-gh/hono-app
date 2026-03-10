@@ -4,9 +4,13 @@ import presto from "../model/Presto.js";
 import firma from "../../core/model/Firma.js";
 import Solicitudes from "../../core/modules/solicitudes.js";
 
-export default class Prestos extends Solicitudes {
-	init() { super.init(presto); } // init super with model reference
+export default class PrestoSolicitudes extends Solicitudes {
+	constructor() {
+		super(presto); // Must call super before 'this'
+	}
+
 	getSolicitud = () => presto; // get current instance
+	connectedCallback() { super.connectedCallback(); }
 
 	row(data) {
 		let acciones = super.row(data);

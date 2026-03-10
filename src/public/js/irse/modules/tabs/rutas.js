@@ -1,6 +1,6 @@
 
 import sb from "../../../components/types/StringBox.js";
-import Form from "../../../components/forms/Form.js";
+import FormBase from "../../../components/forms/FormBase.js";
 import api from "../../../components/Api.js";
 import tabs from "../../../components/Tabs.js";
 import valid from "../../i18n/validators.js";
@@ -10,10 +10,10 @@ import rutas from "../../model/Rutas.js";
 import dietas from "../../model/Dietas.js";
 
 import TableRutas from "../tables/rutas.js";
-import maps from "../util/maps.js";
+import maps from "../../util/maps.js";
 import form from "../irse.js";
 
-export default class Rutas extends Form {
+export default class Rutas extends FormBase {
 	#tr = new TableRutas(this);
 
 	constructor(form) {

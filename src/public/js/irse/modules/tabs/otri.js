@@ -1,5 +1,5 @@
 
-import Form from "../../../components/forms/Form.js";
+import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 
@@ -8,7 +8,7 @@ import xlsx from "../../../services/xlsx.js";
 import { KEYS, TITILES } from "../../data/isu.js";
 
 /*********** Informe ISU par la otri ***********/
-export default class InformeISU extends Form {
+export default class InformeISU extends FormBase {
 	constructor() {
 		super("xeco-filtro-isu"); // call super before to use this reference
 	}

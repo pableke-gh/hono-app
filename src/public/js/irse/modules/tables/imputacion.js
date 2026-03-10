@@ -5,7 +5,7 @@ import i18n from "../../i18n/langs.js";
 import irse from "../../model/Irse.js";
 import organica from "../../model/Organica.js";
 import rutas from "../../model/Rutas.js";
-import imputacion from "../util/imputacion.js";
+import imputacion from "../../util/imputacion.js";
 import form from "../irse.js"
 
 export default class Imputacion extends Table {

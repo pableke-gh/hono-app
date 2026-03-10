@@ -1,16 +1,12 @@
 
-import Table from "../../components/Table.js";
+import TableHTML from "../../components/TableHTML.js";
 import i18n from "../i18n/langs.js";
 
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 import form from "./presto.js";
 
-export default class Partidas extends Table {
-	constructor(form) { // parent PartidaInc form
-		super(form.querySelector("#partidas-inc"));
-	}
-
+export default class Partidas extends TableHTML {
 	init() {
 		const p030 = form.getPartida030();
 		this.set("#doc030", p030.view).setMsgEmpty("No existen partidas a incrementar asociadas a la solicitud");
@@ -27,7 +23,7 @@ export default class Partidas extends Table {
 	}
 
 	beforeRender(resume) { resume.imp = 0; }
-	rowCalc(data, resume) { resume.imp += data.imp; }
+	beforeRow(data, resume) { resume.imp += data.imp; }
 	row(data) {
 		const NO_APLICA = "N/A"; // default table float
 		const css = presto.isPartidaExt() ? "currency" : "hide";
@@ -53,7 +49,6 @@ export default class Partidas extends Table {
 			<td class="text-center">${doc030}${remove}</td>
 		</tr>`;
 	}
-
 	afterRender() {
 		form.setEditable(presto);
 	}

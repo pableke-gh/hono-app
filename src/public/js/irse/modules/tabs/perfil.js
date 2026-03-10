@@ -1,5 +1,5 @@
 
-import Form from "../../../components/forms/Form.js";
+import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
@@ -9,12 +9,11 @@ import irse from "../../model/Irse.js";
 import Organicas from "../tables/organicas.js";
 import getActividad from "../../data/perfiles/actividades.js";
 
-export default class Perfil extends Form {
+export default class Perfil extends FormBase {
 	#organicas = new Organicas(this);
 	#eFin = this.getElement("financiacion");
 	#eAct = this.getElement("actividad");
 	#acInteresado; #acOrganica;
-
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
