@@ -1,20 +1,16 @@
 
-import Form from "../../../components/forms/Form.js";
+import FormHTML from "../../../components/forms/FormHTML.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import valid from "../../i18n/validators.js";
 import buzon from "../../model/Buzon.js";
 
-export default class Facturas extends Form {
-	#tipo = this.getInput("#tipo");
+export default class FacturasForm extends FormHTML {
+	#tipo = this.getElement("tipo");
 	#fileNames = this.querySelectorAll(".filename");
 	#isActiveTab5; // bool indicators
 
-	constructor(form) {
-		super(form.getForm(), form.getOptions());
-	}
-
-	init() {
+	connectedCallback() {
 		const fnShowTab2 = () => { // tab fichero factura
 			const fileName = this.querySelector(".filename").innerHTML;
 			return fileName || !this.showError("Debe seleccionar una factura.");

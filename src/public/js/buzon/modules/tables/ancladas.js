@@ -1,18 +1,17 @@
 
+import coll from "../../../components/CollectionHTML.js";
 import i18n from "../../i18n/langs.js";
 import buzon from "../../model/Buzon.js";
 import Organicas from "./organicas.js";
 import Observer from "../../util/Observer.js";
 
 export default class Ancladas extends Organicas {
-	constructor(form) {
-		super(form.querySelector("#ancladas"));
-	}
-
-	init() {
+	connectedCallback() {
 		super.init();
 		const fnRender = () => this.render();
-		Observer.subscribe("anclar", fnRender).subscribe("desanclar", fnRender);
+		this.setOrganicas(coll.parse(this.previousElementSibling.innerHTML)); // load all organicas
+		Observer.subscribe("anclar", fnRender).subscribe("desanclar", fnRender); // add listeners
+		this.render(); // muestro las organicas ancladas
 	}
 
 	row(data) {
@@ -33,5 +32,5 @@ export default class Ancladas extends Organicas {
 	}
 
 	render() { return super.render(super.getAncladas()); }
-	afterRender() { this.getTable().parentNode.setVisible(this.size() > 0); }
+	afterRender() { this.parentNode.setVisible(this.size() > 0); }
 }

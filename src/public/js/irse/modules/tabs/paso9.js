@@ -80,7 +80,7 @@ export default class Paso9 extends Form {
 
 	view(cuentas) {
 		const iban = irse.get("iban"); // can be new in system
-		const cuenta = iban ? (coll.includes(cuentas, iban) ? iban : "") : cuentas[0];
+		const cuenta = iban ? (coll.includes(cuentas, iban) ? iban : "") : (cuentas[0] || "");
 		const labels = cuentas.map(cuenta => {
 			const entidad = valid.getBanks().getEntidad(cuenta);
 			return entidad ? (cuenta + " - " + entidad) : cuenta;

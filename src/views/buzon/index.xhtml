@@ -28,17 +28,15 @@
 	<ui:define name="body">
 		<ui:include src="./parts/msgs.xhtml"></ui:include>
 
-		<form id="xeco-model" method="post" enctype="multipart/form-data">
-			<!-- Organicas ancladas y recientes -->
+		<!-- Organicas ancladas y recientes -->
+		<div id="tab-0" class="tab-content active">
 			<ui:include src="./tabs/organicas.xhtml"></ui:include>
+		</div>
 
+		<form id="facturas" is="facturas-form" method="post" enctype="multipart/form-data">
 			<!-- Subida de facturas del tab1 al tab6 -->
 			<ui:include src="./tabs/facturas.xhtml"></ui:include>
 		</form>
-
-		<!-- vinculación con uxxiec -->
-		<div id="tab-uxxiec" class="tab-content" data-nif="#{buzon.user.nif}" data-grupo="#{buzon.user.idGrupo}">
-		</div>
 
 		<!-- gastion de permisos tab10 -->
 		<div id="tab-10" class="tab-content">

@@ -15,8 +15,11 @@ export default class Lineas extends Table {
 		this.push(data); // añado la nueva linea
 		form.restart("desc").setValue("imp", 0);
 	}
-	addRecibo(recibo) { // solo para ttpp, añado el recibo como linea de la factura
-		recibo && this.push({ cod: recibo.value, desc: recibo.label, imp: recibo.imp });
+	// solo para ttpp, añado el recibo (item) como linea de la factura
+	toLinea = recibo => ({ cod: recibo.value, desc: recibo.label, imp: recibo.imp });
+	addRecibo(recibo) {
+		if (recibo && !this.getData().find(linea => (linea.cod == recibo.value)))
+			this.push(this.toLinea(recibo)); // item to liena
 	}
 
 	beforeRender(resume) { resume.imp = 0; }

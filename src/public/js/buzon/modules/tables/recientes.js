@@ -3,17 +3,14 @@ import i18n from "../../i18n/langs.js";
 import buzon from "../../model/Buzon.js";
 import Organicas from "./organicas.js";
 import Observer from "../../util/Observer.js";
-import form from "../buzon.js";
 
 export default class Recientes extends Organicas {
-	constructor(form) {
-		super(form.querySelector("#recientes"));
-		this.setRowEmpty(this.lastRow());
-	}
-
-	init() {
+	connectedCallback() {
 		super.init();
-		form.onChange("pagina", ev => this.paginate(+ev.target.value));
+
+		const paginas = this.parentNode.querySelector("select");
+		paginas.addChange(ev => this.paginate(+ev.target.value));
+		this.setRowEmpty(this.lastRow()).render().paginate(paginas.getValue("pagina")); // render recianetes + current page size
 
 		const fnRender = () => this.render();
 		Observer.subscribe("anclar", fnRender).subscribe("desanclar", fnRender);

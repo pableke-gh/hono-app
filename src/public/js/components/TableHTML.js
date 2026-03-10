@@ -13,7 +13,7 @@ export default class TableHTML extends HTMLTableElement {
 		activeClass: "active", msgConfirmRemove: "remove",
 
 		msgEmptyTable: "noResults", // default empty table message
-		rowEmptyTable: `<tr><td class="no-data" colspan="99">${i18n.get(this.#opts.msgEmptyTable)}</td></tr>`,
+		rowEmptyTable: `<tr><td class="no-data" colspan="99">${i18n.get("noResults")}</td></tr>`,
 		refreshSelector: ".table-refresh" // selector for refresh elements
 	};
 

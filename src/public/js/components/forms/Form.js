@@ -203,6 +203,13 @@ export default class Form /*extends HTMLFormElement*/ {
 		alerts.setMsgs(messages); // show all messages
 		return this;
 	}
+	setError(el, tip, msg) {
+		el = globalThis.isstr(el) ? this.getElement(el) : el;
+		el.setError(tip);
+		return this.showError(msg);
+	}
+	setRequired = (el, msg) => this.setError(el, "errRequired", msg);
+	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
 }
 
 //customElements.define("model-form", FormHTML, { extends: "form" });

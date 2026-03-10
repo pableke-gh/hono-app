@@ -30,7 +30,8 @@ export default class Imputacion extends Form {
 		});
 
 		this.#acTTPP.setItemMode(4).setSource(term => {
-			api.init().json("/uae/ttpp/recibos", { id: this.getValue("idOrg") || 0, term }).then(this.#acTTPP.render);
+			const id = this.getValue("idOrg"); // pk de la organica required
+			id && api.init().json("/uae/ttpp/recibos", { id, term }).then(this.#acTTPP.render);
 		});
 	
 		this.addChange("iva", ev => form.setIva(+ev.target.value));
@@ -41,6 +42,16 @@ export default class Imputacion extends Form {
 				return this.#acTTPP.reload();
 			}
 			this.#lineas.addLinea(valid.linea());
+		});
+		tabs.setAction("allTTPP", () => {
+			this.closeAlerts(); // hide prev. errors
+			const id = this.getValue("idOrg"); // pk
+			if (!id) // el campo organica es obligatorio!
+				return this.setRequired("acOrganica", "Debe asociar una orgánica a esta solicitud.");
+			if (!confirm("¿Confirma que desea añadir todos los recibos a la solicitud?")) return; // cancel by user
+			api.init().json("/uae/ttpp/recibos/all?id=" + id).then(recibos => {
+				this.#lineas.render(recibos.map(this.#lineas.toLinea));
+			});
 		});
 	}
 

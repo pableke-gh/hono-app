@@ -10,8 +10,11 @@ import Organicas from "../tables/organicas.js";
 import getActividad from "../../data/perfiles/actividades.js";
 
 export default class Perfil extends Form {
-	#acInteresado; #acOrganica; #eFin; #eAct;
 	#organicas = new Organicas(this);
+	#eFin = this.getElement("financiacion");
+	#eAct = this.getElement("actividad");
+	#acInteresado; #acOrganica;
+
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());

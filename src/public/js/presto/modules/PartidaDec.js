@@ -40,7 +40,7 @@ export default class PartidaDec extends Form {
 
 		const fnEcoChange = () => {
 			if (this.#ecoDec.isEmpty())
-				return this.setValue("impDec").setValue("cd");;
+				return this.setValue("impDec").setValue("cd");
 			const item = this.#ecoDec.getCurrent();
 			this.setValue("cd", item.imp); // set importe
 			if (presto.isL83() && presto.isEditable()) //L83 => busco su AIP solo en edicion
@@ -57,7 +57,7 @@ export default class PartidaDec extends Form {
 
 	view(data) {
 		const solicitud = data.solicitud; // datos del servidor
-		this.setLabels("select.ui-ej", data.ejercicios); // update field values
+		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.faDec).setValue("impDec", solicitud.impDec);
         this.#orgDec.setValue(solicitud.idOrgDec, solicitud.orgDec + " - " + solicitud.dOrgDec);
 		this.#ecoDec.setItems(data.economicas); // cargo el desplegable de economicas
 	}

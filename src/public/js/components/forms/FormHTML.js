@@ -41,7 +41,6 @@ export default class FormHTML extends HTMLFormElement {
 		return this.#fnFor(this.elements, el => el.matches(selector) && fn(el));
 	}
 
-	getForm = () => this;
 	getOptions = () => this.#opts;
 	getNextElement = () => this.nextElementSibling;
 	getNext = selector => this.next(selector);
@@ -101,10 +100,6 @@ export default class FormHTML extends HTMLFormElement {
 			const fnDisabled = model[value] || this.#opts[value] || model.isDisabled;
 			return el.setDisabled(fnDisabled()); // recalc. disabled attribute by handler
 		}
-		/*if (el.dataset.readonly) {
-			const fnReadonly = model[value] || this.#opts[value] || model.isReadonly;
-			return el.setReadonly(fnReadonly()); // recalc. readonly attribute by handler
-		}*/
 		const fnEditable = model[value] || this.#opts[value] || model.isEditable;
 		el.setEditable(fnEditable()); // recalc. attribute by handler
 	});
@@ -188,9 +183,15 @@ export default class FormHTML extends HTMLFormElement {
 		alerts.setMsgs(messages); // show all messages
 		return this;
 	}
+	setError(el, tip, msg) {
+		(globalThis.isstr(el) ? this.getElement(el) : el).setError(tip);
+		return this.showError(msg); // input error + form error
+	}
+	setRequired = (el, msg) => this.setError(el, "errRequired", msg);
+	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
 }
 
-/*customElements.define("model-form", FormHTML, { extends: "form" });
+customElements.define("model-form", FormHTML, { extends: "form" });
 customElements.define("text-input", TextInput, { extends: "input" });
 customElements.define("data-list", DataList, { extends: "select" });
 customElements.define("float-input", FloatInput, { extends: "input" });
@@ -199,4 +200,4 @@ customElements.define("date-input", DateInput, { extends: "input" });
 customElements.define("time-input", TimeInput, { extends: "input" });
 customElements.define("text-area", TextArea, { extends: "textarea" });
 customElements.define("file-input", FileInput, { extends: "input" });
-customElements.define("btn-form", ButtonForm, { extends: "button" });*/
+customElements.define("btn-form", ButtonForm, { extends: "button" });

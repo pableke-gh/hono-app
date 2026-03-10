@@ -32,7 +32,7 @@ export default class Base {
 	set(name, msg) { return Base.#lang.set(name, msg); } // add new message
 	getItem = (key, index) => this.get(key)[index];
 	confirm = msg => (msg ? confirm(this.get(msg)) : true); // if no param => true confirm
-	boolval = str => (globalThis.isset(str) ? this.getItem("msgBool", +["1", "true", "yes", "on"].includes("" + str)) : null);
+	boolval = str => (globalThis.isset(str) ? this.getItem("msgBool", str ? 1 : 0) : null);
 
 	// Date formats
 	enDate = str => str && str.substring(0, 10); //yyyy-mm-dd

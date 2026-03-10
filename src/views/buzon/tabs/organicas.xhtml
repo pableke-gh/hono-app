@@ -7,45 +7,44 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div id="tab-0" class="tab-content active">
+	<div class="card-xeco hide">
+		<h2>Orgánicas Ancladas</h2>
 		<div id="organicas-json" class="hide">#{buzon.organicas.stringify()}</div>
-		<div class="card-xeco hide">
-			<h2>Orgánicas Ancladas</h2>
-			<table id="ancladas" class="tb-xeco">
-				<thead>
-					<tr>
-						<th>Orgánica</th><th class="hide-xs">Descripción</th><th>Crédito Disponible</th>
-						<th>Rol</th><th>Acciones</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-				<tfoot>
-					<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Filas: @size;</td></tr>
-				</tfoot>
-			</table>
-		</div>
-		<div class="card-xeco">
-			<h2>Orgánicas Recientes / Mostrar:<select name="pagina" is="data-list" class="inline"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select></h2>
-			<table id="recientes" class="tb-xeco">
-				<thead>
-					<tr>
-						<th>Orgánica</th><th class="hide-xs">Descripción</th><th>Crédito Disponible</th>
-						<th>Rol</th><th>Acciones</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-				<tfoot>
-					<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Filas: @size;</td></tr>
-				</tfoot>
-			</table>
-		</div>
+		<table is="ancladas-table" class="tb-xeco">
+			<thead>
+				<tr>
+					<th>Orgánica</th><th class="hide-xs">Descripción</th><th>Crédito Disponible</th>
+					<th>Rol</th><th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Filas: @size;</td></tr>
+			</tfoot>
+		</table>
+	</div>
 
-		<!-- modals dialog -->
-		<ui:include src="../parts/modal_ut.xhtml"></ui:include>
+	<div class="card-xeco">
+		<h2>Orgánicas Recientes / Mostrar:<select name="pagina" is="data-list" class="inline"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select></h2>
+		<table is="recientes-table" class="tb-xeco">
+			<thead>
+				<tr>
+					<th>Orgánica</th><th class="hide-xs">Descripción</th><th>Crédito Disponible</th>
+					<th>Rol</th><th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Filas: @size;</td></tr>
+			</tfoot>
+		</table>
+	</div>
 
-		<div class="navbar">
-			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-		</div>
+	<!-- modals dialog -->
+	<ui:include src="../parts/modal_ut.xhtml"></ui:include>
+
+	<div class="navbar">
+		<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+			<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 	</div>
 </html>
