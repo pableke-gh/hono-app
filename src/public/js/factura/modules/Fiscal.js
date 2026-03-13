@@ -1,42 +1,26 @@
 
 import FormBase from "../../components/forms/FormBase.js";
-import api from "../../components/Api.js"
 import factura from "../model/Factura.js";
+import Tercero from "./inputs/tercero.js";
 import fiscalidad from "../data/fiscal.js"
 import form from "./factura.js";
 
 export default class Fiscal extends FormBase {
-	#acTercero = this.setAutocomplete("acTercero");
-	#delegaciones = this.getElement("delegacion");
+	#acTercero = this.getElement("acTercero");
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
 	}
 
 	init() {
-		const fnUpdate = (subtipo, tercero) => {
-			factura.setSubtipo(subtipo).setNifTercero(this.#acTercero.getCode());
-			this.#updateFiscalidad(tercero || this.#acTercero.getCurrentItem());
-			this.refresh(factura); // force refresh view
-		}
-
-		const fnSource = term => api.init().json("/uae/fact/terceros", { term }).then(this.#acTercero.render);
-		const fnSelect = tercero => {
-			api.init().json(`/uae/fact/delegaciones?ter=${tercero.value}`).then(this.#delegaciones.setItems);
-			fnUpdate(factura.getSubtipo(), tercero);
-		}
-		this.#acTercero.setDelay(500).setItemMode(5)
-				.setSource(fnSource).setAfterSelect(fnSelect)
-				.setReset(this.#delegaciones.clear);
-		this.#delegaciones.setEmptyOption("Seleccione una delegación");
-
+		this.#acTercero.init();
+		this.addChange("subtipo", ev => this.update(+ev.target.value))
+			.addChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
+			.addChange("face", ev => { factura.setFace(+ev.target.value); this.refresh(factura); });
 		this.set("update-face", el => { // handler to update face inputs group
 			el.innerHTML = factura.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor";
 			el.nextElementSibling.setAttribute("maxlength", factura.isPlataforma() ? 20 : 9);
 		});
-		this.addChange("subtipo", ev => fnUpdate(+ev.target.value))
-			.addChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
-			.addChange("face", ev => { factura.setFace(+ev.target.value); this.refresh(factura); });
 	}
 
 	#fiscalidad(tercero) {
@@ -57,12 +41,18 @@ export default class Fiscal extends FormBase {
 		form.setData(data, ".ui-fiscal").setIva(data.iva); // update fields + iva
 		factura.setSujeto(data.sujeto);
 	}
-	
+
 	view = data => {
 		const fact = data.solicitud; // datos del servidor
-		this.#acTercero.setValue(fact.idTer, fact.nif + " - " + fact.tercero)
-		this.#delegaciones.setItems(data.delegaciones); // cargo las delegaciones
+		this.#acTercero.view(fact, data.delegaciones); // tercero + delegaciones
 		this.#updateFiscalidad(data.tercero); // actualizo la fiscalidad por defecto
 		factura.setSujeto(fact.sujeto).setFace(fact.face); // sujeto / exento + face
 	}
+	update = (subtipo, tercero) => {
+		factura.setSubtipo(subtipo).setNifTercero(this.#acTercero.getCode());
+		this.#updateFiscalidad(tercero || this.#acTercero.getCurrent());
+		this.refresh(factura); // force refresh view
+	}
 }
+
+customElements.define("tercero-input", Tercero, { extends: "input" });

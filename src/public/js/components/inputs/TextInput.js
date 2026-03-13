@@ -8,20 +8,24 @@ export default class TextInput extends HTMLInputElement {
 		this.classList.add("ui-input");
 	}
 
-	getValue = () => (this.value && this.value.trim());
+	getValue() { return this.value && this.value.trim(); }
 	setValue(value) { this.value = value || ""; return this; }
 	load(data) { data[this.name] = this.getValue(); }
 	reset() { this.value = ""; return this; }
 	restart() { this.focus(); return this.reset(); }
 
-	addChange(fn) { this.addEventListener("change", fn); return this; }
+	addListener(name, fn) { this.addEventListener(name, fn); return this; }
+	addChange(fn) { return this.addListener("change", fn); }
+
 	setDisabled(force) { input.setDisabled(this, force); return this; }
 	setReadonly(force) { input.setReadonly(this, force); return this; }
 	setEditable = force => this.setReadonly(!force);
 
 	setOk = () => input.setOk(this);
-	setError = tip => input.setError(this, tip);
-	update = tip => input.update(this, tip);
+	setError = (tip, msg) => input.setError(this, tip, msg);
+	setRequired = msg => this.setError("errRequired", msg);
+	setFormatError = msg => this.setError("errFormat", msg);
+	update = (tip, msg) => input.update(this, tip, msg);
 }
 
 HTMLInputElement.prototype.getValue = function() { return this.value; }
@@ -33,5 +37,5 @@ HTMLInputElement.prototype.setDisabled = function(force) { input.setDisabled(thi
 HTMLInputElement.prototype.setReadonly = function(force) { input.setReadonly(this, force); return this; }
 HTMLInputElement.prototype.setEditable = function(force) { return this.setReadonly(!force); }
 HTMLInputElement.prototype.setOk = function() { return input.setOk(this); }
-HTMLInputElement.prototype.setError = function(tip) { return input.setError(this, tip); }
-HTMLInputElement.prototype.update = function(tip) { return input.update(this, tip); }
+HTMLInputElement.prototype.setError = function(tip, msg) { return input.setError(this, tip, msg); }
+HTMLInputElement.prototype.update = function(tip, msg) { return input.update(this, tip, msg); }

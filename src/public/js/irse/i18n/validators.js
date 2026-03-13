@@ -17,9 +17,8 @@ class IrseValidators extends Validators {
 	rechazar() { return super.rechazar(form.getData()); } // specific implementation
 
 	perfil() {
-		const data = form.getData(); // start validation
-		form.getPerfil().isEmpty() && this.addRequired("organica", "errOrganicas");
-		return this.size20("interesado", data["nif-interesado"], "errPerfil").close(data);
+		const ok = form.getElement("organica").validate();
+		return form.getElement("interesado").validate() && ok;
 	}
 
 	paso1() {

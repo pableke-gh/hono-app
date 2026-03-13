@@ -45,7 +45,9 @@ export default class DataList extends HTMLSelectElement {
 	}
 	load(data) { data[this.name] = this.getValue(); }
 
-	addChange(fn) { this.addEventListener("change", fn); return this; }
+	addListener(name, fn) { this.addEventListener(name, fn); return this; }
+	addChange(fn) { return this.addListener("change", fn); }
+
 	reset = () => { this.selectedIndex = 0; return this.#change(); } // same options
 	clear = () => { this.#data = null; this.innerHTML = this.#empty(); return this.reset(); } // remove data and first option
 	restart() { this.focus(); return this.reset(); } // focus and first option

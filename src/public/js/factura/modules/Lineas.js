@@ -1,7 +1,9 @@
 
 import TableHTML from "../../components/TableHTML.js";
 import i18n from "../i18n/langs.js";
+
 import factura from "../model/Factura.js";
+import ttpp from "../model/TtppEmpresa.js";
 import form from "./factura.js";
 
 export default class Lineas extends TableHTML {
@@ -14,11 +16,10 @@ export default class Lineas extends TableHTML {
 		this.push(data); // añado la nueva linea
 		form.restart("desc").setValue("imp", 0);
 	}
-	// solo para ttpp, añado el recibo (item) como linea de la factura
-	toLinea = recibo => ({ cod: recibo.value, desc: recibo.label, imp: recibo.imp });
+	addRecibos = recibos => this.render(recibos.map(ttpp.toLinea));
 	addRecibo(recibo) {
-		if (recibo && !this.getData().find(linea => (linea.cod == recibo.value)))
-			this.push(this.toLinea(recibo)); // item to liena
+		if (recibo && !this.getData().find(linea => ttpp.eq(linea, recibo)))
+			this.push(ttpp.toLinea(recibo)); // item to liena
 	}
 
 	beforeRender(resume) { resume.imp = 0; }

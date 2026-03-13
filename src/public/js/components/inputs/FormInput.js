@@ -1,4 +1,6 @@
 
+import alerts from "../Alerts.js";
+
 class FormInput {
 	#opts = {
 		errorClass: "ui-error", // Input error styles
@@ -19,14 +21,15 @@ class FormInput {
 		input.classList.remove(this.#opts.errorClass);
 		return input;
 	}
-	setError(input, tip) {
+	setError(input, tip, msg) {
 		input.next("." + this.#opts.tipErrorClass)?.setMsg(tip);
 		input.classList.add(this.#opts.errorClass);
+		alerts.showError(msg); // global message
 		input.focus(); // set focus on error
 		return input;
 	}
-	update(input, tip) { // tip message is optional
-		return tip ? this.setError(input, tip) : this.setOk(input);
+	update(input, tip, msg) { // tip message is optional
+		return tip ? this.setError(input, tip, msg) : this.setOk(input);
 	}
 }
 

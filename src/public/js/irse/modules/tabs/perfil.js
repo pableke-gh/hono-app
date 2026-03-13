@@ -1,19 +1,19 @@
 
 import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
-import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
 import valid from "../../i18n/validators.js";
 
 import irse from "../../model/Irse.js";
-import Organicas from "../tables/organicas.js";
+import Interesado from "../inputs/Interesado.js";
+import Organica from "../inputs/Organica.js";
 import getActividad from "../../data/perfiles/actividades.js";
 
 export default class Perfil extends FormBase {
-	#organicas = new Organicas(this);
+	#acInteresado = this.getElement("interesado");
+	#acOrganica = this.getElement("organica");
 	#eFin = this.getElement("financiacion");
 	#eAct = this.getElement("actividad");
-	#acInteresado; #acOrganica;
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
@@ -44,27 +44,24 @@ export default class Perfil extends FormBase {
 	isMaps = () => (!this.isLocalizaciones() && !this.is1Dia());
 
 	getFinanciacion = () => this.#eFin.value;
+	setFinanciacion(fin) { irse.setFinanciacion(fin); this.#eFin.value = fin; return this; }
 	isIsu = () => (this.#eFin.value == "ISU") || (this.#eFin.value == "xSU");
 	isA83 = () => (this.#eFin.value == "A83") || (this.#eFin.value == "x83");
 	isACA = () => (this.#eFin.value == "ACA") || (this.#eFin.value == "xAC");
 	isOTR = () => (this.#eFin.value == "OTR") || (this.#eFin.value == "xOT");
 
-	getOrganicas = () => this.#organicas;
-	isEmpty = () => this.#organicas.isEmpty();
-
-	update = () => {
-		this.#eFin.value = this.#organicas.getFinanciacion(); //recalculo la financiacion
-		this.select("actividad", getActividad(this.getValue("rol"), irse.getColectivo(), this.#eFin.value))
-			.select("tramite", this.isCom() ? 7 : 1); //default = AyL
-		return this.refresh(irse);
-	}
+	getOrganicas = () => this.#acOrganica.getOrganicas();
+	update = () => this.setFinanciacion(this.#acOrganica.getFinanciacion()) // recalculo la financiacion
+						.select("actividad", getActividad(this.getValue("rol"), irse.getColectivo(), this.getFinanciacion()))
+						.select("tramite", this.isCom() ? 7 : 1) // default = AyL
+						.refresh(irse);
 
 	init = () => {
 		irse.isIsu = this.isIsu; // current input value
 		this.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
 		this.set("isFin", el => (this.#eFin.value == el.dataset.fin));
 		const fnPDI = el => { el.show(); el.children[2].hide(); } // show autocomplete + hide add button
-		this.set("update-organica", el => (irse.isUxxiec() ? el.setVisible(this.#organicas.isEmpty()) : fnPDI(el)));
+		this.set("update-organica", el => (irse.isUxxiec() ? el.setVisible(!this.#acOrganica.isLoaded()) : fnPDI(el)));
 		this.set("update-colectivo", el => {
 			el.firstElementChild.textContent = irse.getColectivo();
 			el.lastElementChild.setAttribute("href", "mailto:" + irse.getEmailInteresado());
@@ -74,20 +71,14 @@ export default class Perfil extends FormBase {
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		this.setClick("a#reg-externo", ev => { this.copyToClipboard(url); ev.preventDefault(); });
 		tabs.setActiveEvent(2, this.isMaps).setActiveEvent(3, this.isIsu);
-		tabs.setAction("addOrganica", () => {
-			const current = this.#acOrganica.getItem();
-			current ? this.#organicas.push(current) : this.#acOrganica.reload(); // new organica
-			this.#acOrganica.setValue(); // remove selected
-		});
 		tabs.setAction("paso0", () => {
 			if (!valid.perfil()) return; // if error => stop
 			if (!irse.isEditableP0()) return tabs.nextTab();
 			loading(); window.rcPaso0(); // call server
 		});
 		this.afterReset(() => {
-			irse.setInteresado();
-			this.#organicas.reset();
-			this.#acInteresado.setValue();
+			this.#acOrganica.clear();
+			this.#acInteresado.clear();
 			this.update();
 		});
 	}
@@ -95,33 +86,14 @@ export default class Perfil extends FormBase {
 	view = organicas => {
 		this.#eFin = this.getElement("financiacion");
 		this.#eAct = this.getElement("actividad");
-		this.#acInteresado = this.setAutocomplete("interesado", {
-			delay: 600, //milliseconds between keystroke occurs and when a search is performed
-			minLength: 5, //reduce matches
-			source: term => api.init().json("/uae/iris/interesados", { term }).then(this.#acInteresado.render),
-			render: item => (item.nif + " - " + item.nombre),
-			select: item => { irse.setInteresado(item); this.update(); return item.nif; },
-			onReset: () => this.refresh(irse.setInteresado())
-		});
 
-		this.#acOrganica = this.setAutocomplete("organica", {
-			minLength: 4,
-			source: term => api.init().json("/uae/iris/organicas", { term }).then(this.#acOrganica.render),
-			render: item => item.o + " - " + item.dOrg,
-			select: item => {
-				if (!irse.isUxxiec())
-					this.#organicas.render([ item ]); // render table
-				return item.id;
-			},
-			onReset: () => {
-				if (!irse.isUxxiec())
-					this.#organicas.reset();
-			}
-		});
-
-		this.#organicas.render(organicas);
+		this.#acInteresado.setInteresado(); // load autocomplete
+		this.#acOrganica.setOrganicas(organicas); // load autocomplete + table
 		this.#eAct.addChange(this.update); // actualizo el perfil al cambiar la actividad
 		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
 	}
 }
+
+customElements.define("interesado-input", Interesado, { extends: "input" });
+customElements.define("organica-input", Organica, { extends: "input" });

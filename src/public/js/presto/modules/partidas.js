@@ -7,7 +7,7 @@ import partida from "../model/Partida.js";
 import form from "./presto.js";
 
 export default class Partidas extends TableHTML {
-	init() {
+	init() { // form must be initialized first
 		const p030 = form.getPartida030();
 		this.set("#doc030", p030.view).setMsgEmpty("No existen partidas a incrementar asociadas a la solicitud");
 		presto.showPartidasInc = () => (presto.isTipoMultipartida() && presto.isEditable() && (this.size() < 20));

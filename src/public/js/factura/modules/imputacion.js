@@ -5,11 +5,12 @@ import api from "../../components/Api.js";
 import valid from "../i18n/validators.js";
 
 import factura from "../model/Factura.js";
+import Organica from "./inputs/organica.js";
 import Lineas from "./lineas.js";
 import form from "./factura.js";
 
 export default class Imputacion extends FormBase {
-	#acOrganica = this.setAutocomplete("acOrganica");
+	#acOrganica = this.getElement("acOrganica");
 	#acRecibo = this.setAutocomplete("acRecibo");
 	#acTTPP = this.setAutocomplete("acTTPP");
 	#lineas = this.querySelector("table");
@@ -20,11 +21,6 @@ export default class Imputacion extends FormBase {
 
 	getLineas = () => this.#lineas;
 	init() {
-		// los usuarios de ttpp/gaca solo pueden ver las organicas de su unidad 300906XXXX
-		this.#acOrganica.setItemMode(4).setSource(term => {
-			api.init().json("/uae/fact/organicas", { term }).then(this.#acOrganica.render);
-		});
-
 		this.#acRecibo.setItemMode(4).setSource(term => {
 			const url = factura.isExtension() ? "/uae/fact/recibos/tpv" : "/uae/fact/recibos/ac";
 			api.init().json(url, { id: this.getValue("idOrg") || 0, term }).then(this.#acRecibo.render);
@@ -34,7 +30,7 @@ export default class Imputacion extends FormBase {
 			const id = this.getValue("idOrg"); // pk de la organica required
 			id && api.init().json("/uae/ttpp/recibos", { id, term }).then(this.#acTTPP.render);
 		});
-	
+
 		this.addChange("iva", ev => form.setIva(+ev.target.value));
 		tabs.setAction("addLinea", () => {
 			this.closeAlerts(); // hide prev. errors
@@ -49,10 +45,8 @@ export default class Imputacion extends FormBase {
 			const id = this.getValue("idOrg"); // pk
 			if (!id) // el campo organica es obligatorio!
 				return this.setRequired("acOrganica", "Debe asociar una orgánica a esta solicitud.");
-			if (!confirm("¿Confirma que desea añadir todos los recibos a la solicitud?")) return; // cancel by user
-			api.init().json("/uae/ttpp/recibos/all?id=" + id).then(recibos => {
-				this.#lineas.render(recibos.map(this.#lineas.toLinea));
-			});
+			if (confirm("¿Confirma que desea añadir todos los recibos a la solicitud?")) // cancel by user?
+				api.init().json("/uae/ttpp/recibos/all?id=" + id).then(this.#lineas.addRecibos);
 		});
 	}
 
@@ -64,4 +58,5 @@ export default class Imputacion extends FormBase {
 	}
 }
 
+customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("linea-table", Lineas, { extends: "table" });

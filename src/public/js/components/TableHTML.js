@@ -55,6 +55,7 @@ export default class TableHTML extends HTMLTableElement {
 
 	setRowEmpty = html => this.set("rowEmptyTable", html);
 	setMsgEmpty = msg => this.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.msg(msg)}</td></tr>`);
+	setMsgConfirm = msg => this.set("msgConfirmRemove", msg); // msg de confirmación de borrado
 	beforeRender() {}; // event before render table (optional)
 	setHeader = html => { this.tHead.innerHTML = html; return this.#setSort(); }
 	beforeRow() {} // row calculation before render each row (optional)

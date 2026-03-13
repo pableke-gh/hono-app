@@ -1,17 +1,18 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
 import i18n from "../../i18n/langs.js";
+
 import irse from "../../model/Irse.js";
 import organica from "../../model/Organica.js";
 import form from "../irse.js"
 
 // tabla de organicas asociadas al perfil (paso 0)
-export default class Organicas extends Table {
+export default class Organicas extends TableHTML {
 	#tipo; #financiacion;
 
-	constructor(form) { // tabla del paso 0 (organicas del perfil)
-		super(form.querySelector("#organicas"), { msgConfirmRemove: "removeOrg" });
-		this.setMsgEmpty("No existen orgánicas asociadas a la comunicación.");
+	constructor() { // tabla del paso 0 (organicas del perfil)
+		super(); // Must call super before 'this'
+		this.setMsgConfirm("removeOrg").setMsgEmpty("No existen orgánicas asociadas a la comunicación.");
 		irse.getCreditoDisp = this.getCreditoDisp; // recalcula el credito disp.
 		irse.getResponsables = this.getResponsables; // listado de responsables de las organicas
 	}
@@ -31,14 +32,12 @@ export default class Organicas extends Table {
 	beforeRender() {
 		this.#financiacion = "OTR"; //default fin.
 	}
-
-	rowCalc(data) {
+	beforeRow(data) {
 		this.#tipo = data.tipo; // tipo de organica = (RD, EUT, UPCT)
 		this.#financiacion = organica.is642(data) ? "ISU" : this.#financiacion; // apli = 642
 		this.#financiacion = this.isA83(data) ? "A83" : this.#financiacion; // A83 = 643 y no ISU
 		this.#financiacion = this.isACA(data) ? "ACA" : this.#financiacion; // TTPP o Master
 	}
-
 	row(data) {
 		const remove = irse.isEditableP0() ? '<a href="#remove" class="form-refresh" data-refresh="isEditableP0"><i class="fas fa-times action text-red resize"></i></a>' : "";
 		return `<tr class="tb-data tb-data-tc">
@@ -50,7 +49,6 @@ export default class Organicas extends Table {
 			<td class="no-print" data-cell="${i18n.get("lblAcciones")}">${remove}</td>
 		</tr>`;
 	}
-
 	afterRender() {
 		const MULTI_APLICACION = {
 			"ISU": "xSU",
@@ -60,7 +58,15 @@ export default class Organicas extends Table {
 		};
 		if (this.size() > 1)
 			this.#financiacion = MULTI_APLICACION[this.#financiacion]; // || "xOT"; // default = "xOT"
-		irse.setFinanciacion(this.#financiacion);
 		form.getPerfil().closeAlerts().stringify("presupuesto", this.getData()).update(); // update tab
+	}
+
+	autoload = item => {
+		if (!irse.isUxxiec())
+			this.render([ item ]); // render table 1 item
+	}
+	autoreset = () => {
+		if (!irse.isUxxiec())
+			this.reset(); // clear table contents
 	}
 }

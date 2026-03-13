@@ -18,8 +18,8 @@ export default class PartidaInc extends FormBase {
 	}
 
 	init() {
-		this.#partidas.init();
-		const fnSelect = item => {
+		this.#partidas.init(); // initialize form before table
+		const fnSelect = item => { // organica a incrementar seleccionada => carga de economicas
 			api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(this.#ecoInc.setItems); // load economicas inc.
 			form.setAvisoFa(item).setValue("faInc", item.int & 1); // organica afectada
 		}
