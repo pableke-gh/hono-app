@@ -108,11 +108,6 @@ function Tabs() {
 	this.setActive = id => fnGoTab(self.getTab(id)); // Force active class whithot events and alerts
 	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
 	this.setHeight = () => cv.setHeight(self.getCurrent()); // current tab height
-	this.reset = ids => {
-		const temp = ids ? ids.map(self.getTab) : tabs; // get tabs array
-		temp.forEach(tab => { delete tab.dataset.loaded; }); // reset loaded events
-		return self;
-	}
 
 	// if message is ok => go tab and preserve alerts after change
 	this.showInit = () => self.viewTab("init"); // show init view

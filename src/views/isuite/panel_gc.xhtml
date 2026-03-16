@@ -100,7 +100,7 @@
 					<th>Fecha Último Cobro</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="hide">
 				<ui:repeat value="#{ctrl.gcDocs}" var="row">
 					<tr id="#{row.idOrganica}" class="tb-data" modalidad="#{row.modalidad}" impCpAcum="#{row.impCpAcum}" 
 															impHabilitar="#{row.impHabilitar}" fCreacion="#{row.FCreacion}">

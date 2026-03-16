@@ -5,7 +5,6 @@ import buzon from "../../model/Buzon.js";
 
 export default class Usuarios extends TableHTML {
 	connectedCallback() {
-		const form = document.forms["usuarios"];
 		const fnToggle = data => {
 			const params = { org: data.org, nif: data.nif, acc: data.acc };
 			api.init().json("/uae/buzon/user/toggle", params).then(() => this.refreshRow());
@@ -16,10 +15,6 @@ export default class Usuarios extends TableHTML {
 		this.set("#toggleIngresos", data => { buzon.setData(data).toggleIngresos(); fnToggle(data); });
 		this.set("#toggleReportProv", data => { buzon.setData(data).toggleReportProv(); fnToggle(data); });
 		this.set("#toggleFactura", data => { buzon.setData(data).toggleFactura(); fnToggle(data); });
-		this.setRemove(data => {
-			const params = { org: data.oCod, nif: data.nif };
-			return api.init().text("/uae/buzon/user/remove", params).then(form.setOk);
-		});
 
 		this.set("update-icons", (el, data) => {
 			buzon.setData(data); // load current data row
@@ -50,5 +45,11 @@ export default class Usuarios extends TableHTML {
 
 	afterRender() {
 		this.refreshBody();
+	}
+
+	onRemove = data => { // override
+		const form = document.forms["usuarios"];
+		const params = { org: data.oCod, nif: data.nif };
+		return api.init().text("/uae/buzon/user/remove", params).then(form.setOk);
 	}
 }

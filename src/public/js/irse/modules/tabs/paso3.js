@@ -6,34 +6,31 @@ import irse from "../../model/Irse.js";
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
 export default class Paso3 extends FormBase {
+	#grupoCongreso = this.querySelector(".grp-congreso"); // datos del congreso
+	#grupoJustifiCong = this.#grupoCongreso.nextElementSibling; // justificacion del congreso
+
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
 	}
 
-	init() {
-		tabs.setInitEvent(3, this.initTab);
-	}
-
-	initTab = () => {
+	view() {
 		const eCong = this.getElement("congreso"); //congreso si/no
 		const eIniCong = this.getElement("fIniCong"); //fecha inicio del congreso
 		const eFinCong = this.getElement("fFinCong"); //fecha fin del congreso
-		const eJustifiCong = this.querySelector(".justifi-congreso"); //justificacion del congreso
 
 		const fechasCong = () => {
 			eIniCong.setAttribute("max", eFinCong.value);
 			eFinCong.setAttribute("min", eIniCong.value);
-			eJustifiCong.setVisible(valid.congreso(eIniCong.value, eFinCong.value));
+			this.#grupoJustifiCong.setVisible(valid.congreso(eIniCong.value, eFinCong.value));
 		}
 		const updateCong = () => {
-			const grpCongreso = this.querySelectorAll(".grp-congreso");
 			if (+eCong.value > 0) {
 				fechasCong();
-				grpCongreso.show();
+				this.#grupoCongreso.show();
 			}
 			else {
-				eJustifiCong.hide();
-				grpCongreso.hide();
+				this.#grupoJustifiCong.hide();
+				this.#grupoCongreso.hide();
 			}
 		}
 

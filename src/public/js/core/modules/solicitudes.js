@@ -26,10 +26,6 @@ export default class Solicitudes extends TableHTML {
 
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada")
 			.set("#emails", data => api.init().json(url + "/emails?id=" + data.id)); // admin test email
-		this.setRemove(data => {
-			const id = data?.id || solicitud.getId(); // row selected or current data if remove when creating
-			return api.init().json(url + "/remove?id=" + id).then(tabs.showList);  // remove = Promise
-		});
 		this.set("#integrar", data => { // integra la solicitud seleccionada en uxxiec
 			i18n.confirm("msgIntegrar") && api.init().json(url + "/ws?id=" + data.id).then(this.setWorking);
 		});
@@ -63,5 +59,11 @@ export default class Solicitudes extends TableHTML {
 		if (this.#solicitud.isAdmin())
 			acciones += '<a href="#emails"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 		return acciones;
+	}
+
+	onRemove = data => { // override super class
+		const id = data?.id || this.#solicitud.getId(); // row selected or current data if remove when creating
+		const url = this.#solicitud.getUrl() + "/remove?id=" + id; // url base path
+		return api.init().json(url).then(tabs.showList);  // remove = Promise
 	}
 }

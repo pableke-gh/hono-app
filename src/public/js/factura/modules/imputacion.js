@@ -22,12 +22,13 @@ export default class Imputacion extends FormBase {
 	getLineas = () => this.#lineas;
 	init() {
 		this.#acRecibo.setItemMode(4).setSource(term => {
+			const id = this.#acOrganica.getValue() || 0; // pk de la organica optional
 			const url = factura.isExtension() ? "/uae/fact/recibos/tpv" : "/uae/fact/recibos/ac";
-			api.init().json(url, { id: this.getValue("idOrg") || 0, term }).then(this.#acRecibo.render);
+			api.init().json(url, { id, term }).then(this.#acRecibo.render);
 		});
 
 		this.#acTTPP.setItemMode(4).setSource(term => {
-			const id = this.getValue("idOrg"); // pk de la organica required
+			const id = this.#acOrganica.getValue(); // pk de la organica required
 			id && api.init().json("/uae/ttpp/recibos", { id, term }).then(this.#acTTPP.render);
 		});
 
@@ -42,7 +43,7 @@ export default class Imputacion extends FormBase {
 		});
 		tabs.setAction("allTTPP", () => {
 			this.closeAlerts(); // hide prev. errors
-			const id = this.getValue("idOrg"); // pk
+			const id = this.#acOrganica.getValue(); // pk
 			if (!id) // el campo organica es obligatorio!
 				return this.setRequired("acOrganica", "Debe asociar una orgánica a esta solicitud.");
 			if (confirm("¿Confirma que desea añadir todos los recibos a la solicitud?")) // cancel by user?

@@ -41,6 +41,7 @@ class IrseSolicitud extends Solicitud {
 		const id = irse.getId();
 		this.#perfil.view(organicas);
 		this.#rutas.view(rutas);
+		this.#paso3.view();
 		this.#paso5.view(gastos);
 		this.#resumen.view(dietas);
 		this.#paso9.view(cuentas);

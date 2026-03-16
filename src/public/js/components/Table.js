@@ -75,13 +75,6 @@ export default class Table {
 	setChange = (field, fn) => this.set(field + "Change", fn);
 	onRemove = () => Promise.resolve(); // IMPORTANT! must return a promise
 	setRemove = fn => { this.onRemove = fn; return this; } // IMPORTANT! must return a promise
-	setRender(fnRow, fnBefore, fnCalc, fnAfter) {  // update render proces
-		this.beforeRender = fnBefore || this.beforeRender;
-		this.rowCalc = fnCalc || this.rowCalc;
-		this.row = fnRow;
-		this.afterRender = fnAfter || this.afterRender;
-		return this;
-	}
 
 	getData = () => this.#rows; // current data
 	setData = data => { this.#rows = data; return this; }; // update data without render

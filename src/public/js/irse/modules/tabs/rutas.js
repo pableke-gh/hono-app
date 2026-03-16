@@ -80,7 +80,7 @@ export default class Rutas extends FormBase {
 			return this.setChanged(true);
 		}
 		const data = rutas.getRutas();
-		data.spliece(data.indexOf(ruta), 1);
+		data.splice(data.indexOf(ruta), 1);
 		return this;
 	}
 }

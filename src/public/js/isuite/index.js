@@ -1,15 +1,15 @@
 
 import coll from "../components/CollectionHTML.js";
-import Form from "../components/forms/Form.js";
+import FormBase from "../components/forms/FormBase.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
 
-import recibos from "./modules/recibos.js";
+import Recibos from "./modules/recibos.js";
 import rb from "./lib/RecibosBancarios.js";
 
 //DOM is fully loaded
 coll.ready(() => {
-	const form = new Form("isuite");
+	const form = new FormBase("isuite");
 	const btnSave = form.querySelector("a[href='#tab-action-save']");
 
 	const fnSearch = () => tables.tbFilter(tbConfig);
@@ -116,7 +116,6 @@ coll.ready(() => {
 	tabs.setAction("save", () => api.init().json("/uae/ttpp/save").then(() => btnSave.hide())); // read params from sesion => loaded by /uae/ttpp/load
 	tabs.setAction("excel", link => api.download(B64MT.xls + tables.filter(".tb-push").xls(tbConfig).utf8ToB64(), link.download));
 	tabs.setAction("tr", link => api.download(B64MT.txt + rb.tr57to43().n43Fetch().utf8ToB64(), link.download));
-	tabs.setInitEvent("ttpp", recibos.init);
 
 	const tbConfig = { // Inicializo la configuracion y eventos de la tabla
 		LatinFloatParse: toNumber, LatinFloat: nfLatin, LatinDateParse: toDate, LatinDate: dfLatin, 
@@ -168,6 +167,7 @@ coll.ready(() => {
 				footColumns: '<td colspan="4">Filas: @numrows;</td><td class="currency">@drnAcumSumFmt;</td><td class="currency">@rnAcumSumFmt;</td><td></td><td class="currency">@orAcumSumFmt;</td><td class="currency">@ctHabilitadoSumFmt;</td><td colspan="3"></td>',
 				classColumns: { porGg: "text-right", drnAcum: "text-right", rnAcum: "text-right", orAcum: "text-right", maxHabilitar: "text-right", ctHabilitado: "text-right", txtHabilitar: "text-right" },
 
+				//beforeRead: loading,
 				onRead: function(data, row) {
 					data.porGg = data.porGg ?? "";
 					data.modalidad = attr(row, "modalidad");
@@ -183,9 +183,9 @@ coll.ready(() => {
 					data.maxHabilitar = data.maxHabilitar || "";
 					data.aipOrg = data.aipOrg || "";
 					data.fCreacion = toDate(attr(row, "fCreacion"));
-					//Date.valid(data.fCreacion) && $("span#f-creacion").text(dfLatin(data.fCreacion) + " 00:36h");
 					return true;
 				},
+				afterRead: table => { table.tBodies[0].classList.remove("hide"); /*working();*/ },
 				onOrder: function(a, b, name) { return (name == "txtHabilitar") ? cmp(a[name].lpad(15), b[name].lpad(15)) : cmp(a[name], b[name]); },
 				onFilter: function(row) {
 					var elem = $("select#impHabilitar");
@@ -209,3 +209,5 @@ coll.ready(() => {
 	tabs.setAction("clickNext", link => link.nextElementSibling.click()); // fire click event for next sibling element
 	tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
 });
+
+customElements.define("recibos-form", Recibos, { extends: "form" });

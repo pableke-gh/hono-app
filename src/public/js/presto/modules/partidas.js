@@ -53,6 +53,11 @@ export default class Partidas extends TableHTML {
 		form.setEditable(presto);
 	}
 
+	onRemove = () => {
+		presto.isAutoLoadInc() && form.getPartidaDec().reload();
+		return Promise.resolve();
+	}
+
 	autoload(partida, imp) {
 		partida = partida || this.getFirst(); // autoload + render
 		form.getPartida030().autoload(partida, imp) && this.render([ partida ]);

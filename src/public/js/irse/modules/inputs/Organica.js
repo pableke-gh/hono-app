@@ -2,7 +2,10 @@
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
+
+import irse from "../../model/Irse.js";
 import Organicas from "../tables/organicas.js";
+import form from "../irse.js";
 
 export default class Organica extends AutocompleteHTML {
 	#organicas = tabs.getTab(0).querySelector("table");
@@ -10,6 +13,17 @@ export default class Organica extends AutocompleteHTML {
 	constructor() {
 		super(); // Must call super before 'this'
 		this.setMinLength(4).addListener("reset", this.#organicas.autoreset);
+	}
+
+	init() {
+		const fnPDI = el => { el.show(); el.children[2].hide(); } // show autocomplete + hide add button
+		form.set("update-organica", el => (irse.isUxxiec() ? el.setVisible(!this.isLoaded()) : fnPDI(el)));
+
+		tabs.setAction("addOrganica", () => {
+			const current = this.getItem();
+			current ? this.#organicas.push(current) : this.reload(); // new organica
+			super.clear(); // remove selected
+		});
 	}
 
 	source = () => api.init().json("/uae/iris/organicas", { term: this.value }).then(this.render);
@@ -33,15 +47,6 @@ export default class Organica extends AutocompleteHTML {
 
 	getOrganicas = () => this.#organicas;
 	getFinanciacion = this.#organicas.getFinanciacion;
-
-	connectedCallback() {
-		super.connectedCallback();
-		tabs.setAction("addOrganica", () => {
-			const current = this.getItem();
-			current ? this.#organicas.push(current) : this.reload(); // new organica
-			super.clear(); // remove selected
-		});
-	}
 }
 
 customElements.define("organica-table", Organicas, { extends: "table" });

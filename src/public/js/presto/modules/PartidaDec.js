@@ -51,8 +51,7 @@ export default class PartidaDec extends FormBase {
 		this.#ecoDec.setEmptyOption("Seleccione una económica").addChange(fnEcoChange);
 
 		this.addChange("ej", this.#orgDec.reload);
-		this.addChange("impDec", ev => { presto.isAutoLoadImp() && pInc.autoload(null, this.getValue(ev.target)); }); //importe obligatorio
-		partidas.setRemove(() => { presto.isAutoLoadInc() && this.#orgDec.reload(); return Promise.resolve(); }); // force reload organica
+		this.addChange("impDec", ev => { presto.isAutoLoadImp() && pInc.autoload(null, ev.target.getValue()); }); //importe obligatorio
 	}
 
 	view(data) {
@@ -60,5 +59,8 @@ export default class PartidaDec extends FormBase {
 		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.faDec).setValue("impDec", solicitud.impDec);
         this.#orgDec.setValue(solicitud.idOrgDec, solicitud.orgDec + " - " + solicitud.dOrgDec);
 		this.#ecoDec.setItems(data.economicas); // cargo el desplegable de economicas
+	}
+	reload() {
+		this.#orgDec.reload();
 	}
 }

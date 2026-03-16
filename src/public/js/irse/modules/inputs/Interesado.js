@@ -12,6 +12,14 @@ export default class Interesado extends AutocompleteHTML {
 			.addListener("reset", () => { this.clear(); form.refresh(irse); });
 	}
 
+	init() {
+		form.set("update-colectivo", el => {
+			el.firstElementChild.textContent = irse.getColectivo();
+			el.lastElementChild.setAttribute("href", "mailto:" + irse.getEmailInteresado());
+			el.setVisible(irse.getColectivo());
+		});
+	}
+
 	source = () => api.init().json("/uae/iris/interesados", { term: this.value }).then(this.render);
 	row = item => (item.nif + " - " + item.nombre);
 	select = item => { irse.setInteresado(item); form.getPerfil().update(); return item.nif; }

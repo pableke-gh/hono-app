@@ -17,7 +17,7 @@ export default class UsuariosForm extends FormHTML {
 		tabs.setAction("add-user", () => {
 			if (!this.#acUser.isLoaded()) return this.#acUser.reload(); // nada que hacer
 			const params = { org: buzon.getOrganica(), ut: buzon.getUnidadTramit(), nif: this.#acUser.getValue() };
-			const fnUsuarios = data => usuarios.render(data.usuarios).showOk("saveOk");
+			const fnUsuarios = data => { usuarios.push(data.user); this.setOk(); }
 			api.init().json("/uae/buzon/user/add", params).then(fnUsuarios);
 			this.#acUser.reload(); // clear data and autofocus
 		});

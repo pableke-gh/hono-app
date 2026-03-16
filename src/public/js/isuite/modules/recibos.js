@@ -1,48 +1,26 @@
 
 import sb from "../../components/types/StringBox.js";
-import Form from "../../components/forms/Form.js";
-import Accordion from "../../components/Accordion.js";
-import Table from "../../components/Table.js";
+import FormHTML from "../../components/forms/FormHTML.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
-import recibo from "../model/Recibo.js";
+import Accordion from "../components/accordion.js";
 
-function Recibos() {
-	const form = new Form("ttpp"); // filtro del historico de recibos
-	const accordion = new Accordion(form.getNextElement()); // historico de recibos
+export default class Recibos extends FormHTML {
+	constructor() {
+		super(); // Must call super before 'this'
 
-	const fnBuscar = () => {
-		const url = "/uae/ttpp/historico?" + form.getUrlParams().toString();
-		api.init().json(url).then(accordion.setData).then(accordion.replace);
+		// Table default initialization
+		this.getElement("ej").setLabels(sb.getEjercicios()); // ultimos 6 ej
+		tabs.setInitEvent("ttpp", this.accordion); // pre-load data on view
+		tabs.setAction("list", () => { this.isChanged() && this.accordion(); });
+		tabs.setAction("relist", () => this.setData({ ej: sb.getYear(), tipo: 43, fecha: "" }).accordion());
 	}
 
-	this.init = () => {
-		form.init().getElement("ej").setLabels(sb.getEjercicios()); // ultimos 6 ej
-		accordion.setRender(recibo.accordion); // render template
-		accordion.setOpen((data, details) => {
-			if (details.openings)
-				return; // recibos ya cargados
-			api.init().json("/uae/ttpp/historico/recibos?id=" + data.id).then(recibos => {
-				const tblRecibos = new Table(); // instance new table dynamically
-				details.lastElementChild.appendChild(tblRecibos.getTable()); // append table to details
-				tblRecibos.addClass("tb-xeco").setHeader(recibo.thead())
-						.setRender(recibo.row, recibo.beforeRender, recibo.rowCalc)
-						.setFooter(recibo.tfoot()).view(recibos); // build table contents
-			});
-		});
-
-		fnBuscar();
+	accordion = () => {
+		const url = "/uae/ttpp/historico?" + this.getUrlParams().toString();
+		api.init().json(url).then(this.nextElementSibling.setData); // update accordion
+		this.setChanged(); // reset indicator
 	}
-
-	tabs.setAction("list", () => {
-		form.isChanged() && fnBuscar();
-		form.setChanged();
-	});
-
-	tabs.setAction("relist", () => {
-		form.setData({ ej: sb.getYear(), tipo: 43, fecha: "" });
-		fnBuscar();
-	});
 }
 
-export default new Recibos();
+customElements.define("recibos-accordion", Accordion, { extends: "div" });

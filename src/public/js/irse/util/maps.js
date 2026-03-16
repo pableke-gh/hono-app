@@ -45,6 +45,33 @@ window.initMap = () => {
 			});
 		});
 	}
+	/*async function findPlaces(textQuery) {
+		const PLACES_OPTIONS = { textQuery, fields: [ "displayName", "location", "addressComponents" ] };
+		const { Place } = await google.maps.importLibrary("places");
+		const { places } = await Place.searchByText(PLACES_OPTIONS);
+console.log('places: ', places);
+		places.forEach(place => {
+			console.log('Place Name:', place.displayName);
+			console.log('Location:', place.location);
+
+			// Extract address components
+			const addressComponents = place.addressComponents || [];
+			const streetNumber = addressComponents.find(comp => comp.types.includes('street_number'))?.long_name || '';
+			const route = addressComponents.find(comp => comp.types.includes('route'))?.long_name || '';
+			const locality = addressComponents.find(comp => comp.types.includes('locality'))?.long_name || '';
+			const administrativeArea = addressComponents.find(comp => comp.types.includes('administrative_area_level_1'))?.long_name || '';
+			const postalCode = addressComponents.find(comp => comp.types.includes('postal_code'))?.long_name || '';
+			const country = addressComponents.find(comp => comp.types.includes('country'))?.long_name || '';
+
+			console.log('Address Components:');
+			console.log(`  Street: ${streetNumber} ${route}`);
+			console.log(`  City: ${locality}`);
+			console.log(`  State: ${administrativeArea}`);
+			console.log(`  Postal Code: ${postalCode}`);
+			console.log(`  Country: ${country}`);
+		});
+		return (places && places.length) ? places[0] : null;
+	}*/
 
 	//*************** rutas / trayectos - maps ***************//
 	tabs.setAction("addRuta", async () => {
@@ -67,6 +94,7 @@ window.initMap = () => {
 			if (!last.p2) { // tiene el destino?
 				const [err, aux] = await globalThis.catchError(getPlaceDetails(last.destino));
 				last.p2 = err ? null : aux; // valida si hay place
+				//last.p2 = findPlaces(last.destino);
 			}
 			loadOrigen(last.p2, last.pais2, last.mask);
 		}

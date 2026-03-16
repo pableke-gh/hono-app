@@ -7,7 +7,7 @@ export default class TableHTML extends HTMLTableElement {
 	#rows = []; // default = empty array
 	#index = -1; // current item position in data
 	#RESUME = {}; // Table resume parameters
-	#tBody = this.tBodies[0]; // table elements and options
+	#tBody = this.tBodies[0] || this.createTBody(); // body element
 	#opts = {
 		sortClass: "sort", sortAscClass: "sort-asc", sortDescClass: "sort-desc", sortNoneClass: "sort-none",
 		activeClass: "active", msgConfirmRemove: "remove",
@@ -20,7 +20,6 @@ export default class TableHTML extends HTMLTableElement {
 	constructor() {
 		super(); // Must call super before 'this'
 		// Table default initialization
-		this.#setSort(); // Set default actions
 		this.#opts["#"] = globalThis.void;
 		this.#opts["#remove"] = this.remove;
 	}
@@ -28,52 +27,17 @@ export default class TableHTML extends HTMLTableElement {
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
-	#setSort() { // Orderable columns system
-		const links = this.tHead.getElementsByClassName(this.#opts.sortClass);
-		links.addClick((ev, link) => {
-			const { sortAscClass, sortDescClass, sortNoneClass } = this.#opts; // shortcut
-			const dir = link.classList.contains(sortAscClass) ? sortDescClass : sortAscClass; // Toggle sort direction
-			const column = link.getAttribute("href").substring(1); // Column name
-
-			// Update all sort icons
-			links.forEach(link => { // Reset all orderable columns
-				link.classList.remove(sortAscClass, sortDescClass);
-				link.classList.add(sortNoneClass);
-			});
-			link.classList.remove(sortNoneClass);
-			link.classList.add(dir);
-
-			// Sort data by function and rebuild table
-			const fnAsc = (a, b) => ((a[column] < b[column]) ? -1 : ((a[column] > b[column]) ? 1 : 0)); // Default sort
-			const fnAux = this.#opts["sort-" + column] || fnAsc; // Load specific sort function
-			const fnSort = (dir == sortDescClass) ? ((a, b) => fnAux(b, a)) : fnAux; // Set direction
-			this.render(this.#rows.sort(fnSort)); // render sorted table
-			ev.preventDefault();
-		});
-		return this;
-	}
 
 	setRowEmpty = html => this.set("rowEmptyTable", html);
 	setMsgEmpty = msg => this.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.msg(msg)}</td></tr>`);
 	setMsgConfirm = msg => this.set("msgConfirmRemove", msg); // msg de confirmación de borrado
 	beforeRender() {}; // event before render table (optional)
-	setHeader = html => { this.tHead.innerHTML = html; return this.#setSort(); }
 	beforeRow() {} // row calculation before render each row (optional)
 	row() { throw new Error("Method 'row' must be implemented."); }; // required row render function
 	lastRow = () => ""; // specific last row after render all data (optional)
-	setFooter = html => { this.tFoot.innerHTML = html; return this; }
 	afterRender() {}; // event fired after render table (optional)
 	setSortBy = (column, fn) => this.set("sort-" + column, fn);
 	setChange = (field, fn) => this.set(field + "Change", fn);
-	onRemove = () => Promise.resolve(); // IMPORTANT! must return a promise
-	setRemove = fn => { this.onRemove = fn; return this; } // IMPORTANT! must return a promise
-	setRender(fnRow, fnBefore, fnBeforeRow, fnAfter) {  // update render proces
-		this.beforeRender = fnBefore || this.beforeRender;
-		this.beforeRow = fnBeforeRow || this.beforeRow;
-		this.row = fnRow; // required method
-		this.afterRender = fnAfter || this.afterRender;
-		return this;
-	}
 
 	getData = () => this.#rows; // current data
 	setData = data => { this.#rows = data; return this; }; // update data without render
@@ -178,20 +142,17 @@ export default class TableHTML extends HTMLTableElement {
 	refreshFooter = () => this.#fnRefresh(this.tFoot, this.#RESUME); // refresh footer only
 	refresh = () => this.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer
 
-	flush(index) {
-		index = index ?? this.#index; // default current
-		return this.onRemove(this.#rows[index]).then(() => {
-			if (this.isEmpty()) return; // nothing to remove
-			this.#rows.splice(index, 1); // remove row data
-			this.#RESUME.size = this.#rows.length; // update size
-			this.#tBody.removeChild(this.#tBody.rows[index]); // remove tr element
-			if (this.#rows.length) // is empty table?
-				this.#tBody.rows.forEach(this.#setRowEvents); // update listeners
-			else
-				this.#tBody.innerHTML = this.#opts.rowEmptyTable; // empty body
-			this.recalc().refreshFooter(); // refresh footer
-		});
-	}
-	remove = () => i18n.confirm(this.#opts.msgConfirmRemove) ? this.flush(this.#index) : Promise.reject();
-	extract = index => i18n.confirm(this.#opts.msgConfirmRemove) ? this.flush(index) : Promise.reject();
+	onRemove = () => Promise.resolve(); // IMPORTANT! must return a promise
+	flush = () => this.onRemove(this.getCurrent()).then(() => {
+		if (this.isEmpty()) return; // nothing to remove
+		this.#rows.splice(this.#index, 1); // remove row data
+		this.#RESUME.size = this.#rows.length; // update size
+		this.#tBody.removeChild(this.getCurrentRow()); // remove tr element
+		if (this.#rows.length) // is empty table?
+			this.#tBody.rows.forEach(this.#setRowEvents); // update listeners
+		else
+			this.#tBody.innerHTML = this.#opts.rowEmptyTable; // empty body
+		this.recalc().refreshFooter(); // refresh footer
+	});
+	remove = () => i18n.confirm(this.#opts.msgConfirmRemove) ? this.flush() : Promise.reject();
 }

@@ -33,7 +33,7 @@ coll.ready(() => {
 		const firmas = coll.parse(args.firmas);
 
 		form.view(organicas, rutas, gastos, dietas, cuentas, firmas); // configure view
-		tabs.reset([ 3 ]).nextTab(tab ?? irse.get("tab")); // go to next tab
+		tabs.nextTab(tab ?? irse.get("tab")); // go to next tab
 	}
 
 	window.saveTab = () => form.setOk().setChanged().refresh(irse).working();

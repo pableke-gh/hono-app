@@ -57,16 +57,11 @@ export default class Perfil extends FormBase {
 						.refresh(irse);
 
 	init = () => {
+		this.#acInteresado.init();
+		this.#acOrganica.init();
 		irse.isIsu = this.isIsu; // current input value
 		this.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
 		this.set("isFin", el => (this.#eFin.value == el.dataset.fin));
-		const fnPDI = el => { el.show(); el.children[2].hide(); } // show autocomplete + hide add button
-		this.set("update-organica", el => (irse.isUxxiec() ? el.setVisible(!this.#acOrganica.isLoaded()) : fnPDI(el)));
-		this.set("update-colectivo", el => {
-			el.firstElementChild.textContent = irse.getColectivo();
-			el.lastElementChild.setAttribute("href", "mailto:" + irse.getEmailInteresado());
-			el.setVisible(irse.getColectivo());
-		});
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		this.setClick("a#reg-externo", ev => { this.copyToClipboard(url); ev.preventDefault(); });
@@ -77,8 +72,8 @@ export default class Perfil extends FormBase {
 			loading(); window.rcPaso0(); // call server
 		});
 		this.afterReset(() => {
-			this.#acOrganica.clear();
 			this.#acInteresado.clear();
+			this.#acOrganica.clear();
 			this.update();
 		});
 	}
