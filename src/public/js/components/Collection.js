@@ -6,8 +6,6 @@ import ArrayBox from "./types/ArrayBox.js";
 globalThis.void = () => {};
 globalThis.none = () => "";
 globalThis.isFunc = fn => (typeof fn === "function");
-globalThis.catchError = promise => promise.then(data => [undefined, data]).catch(err => [err]);
-globalThis.catchPromise = async fn => await globalThis.catchError(new Promise(fn));
 
 class Collection extends ArrayBox {
 	isset = ob.isset;

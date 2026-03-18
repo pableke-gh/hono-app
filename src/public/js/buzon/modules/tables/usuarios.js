@@ -47,9 +47,11 @@ export default class Usuarios extends TableHTML {
 		this.refreshBody();
 	}
 
-	onRemove = data => { // override
+	flush() { // override super class
+		const data = this.getCurrent();
 		const form = document.forms["usuarios"];
 		const params = { org: data.oCod, nif: data.nif };
-		return api.init().text("/uae/buzon/user/remove", params).then(form.setOk);
+		const fnThen = () => { super.flush(); form.setOk(); }
+		api.init().text("/uae/buzon/user/remove", params).then(fnThen);
 	}
 }

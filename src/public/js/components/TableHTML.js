@@ -142,8 +142,7 @@ export default class TableHTML extends HTMLTableElement {
 	refreshFooter = () => this.#fnRefresh(this.tFoot, this.#RESUME); // refresh footer only
 	refresh = () => this.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer
 
-	onRemove = () => Promise.resolve(); // IMPORTANT! must return a promise
-	flush = () => this.onRemove(this.getCurrent()).then(() => {
+	flush() {
 		if (this.isEmpty()) return; // nothing to remove
 		this.#rows.splice(this.#index, 1); // remove row data
 		this.#RESUME.size = this.#rows.length; // update size
@@ -153,6 +152,6 @@ export default class TableHTML extends HTMLTableElement {
 		else
 			this.#tBody.innerHTML = this.#opts.rowEmptyTable; // empty body
 		this.recalc().refreshFooter(); // refresh footer
-	});
-	remove = () => i18n.confirm(this.#opts.msgConfirmRemove) ? this.flush() : Promise.reject();
+	}
+	remove = () => { i18n.confirm(this.#opts.msgConfirmRemove) && this.flush(); }
 }

@@ -3,72 +3,67 @@ import coll from "./CollectionHTML.js";
 import i18n from "../i18n/langs.js";
 import cv from "./cv/Resize.js";
 
-export default function Accordion(accordion, opts) {
-	accordion = globalThis.isstr(accordion) ? $1(accordion) : accordion;
-	accordion = accordion || document.createElement("div"); // default parent
+export default class Accordion extends HTMLDivElement {
+	#data; // data container
+	#opts = { // default options
+		msgEmpty: "noResults", // default empty table message
+		tplEmpty: `<p class="notice notice-warn">${i18n.get("noResults")}</p>`
+	};
 
-	opts = opts || {}; // default options
-	opts.msgEmpty = opts.msgEmpty || "noResults"; // default empty table message
-	opts.tplEmpty = opts.tplEmpty || `<p class="notice notice-warn">${i18n.get(opts.msgEmpty)}</p>`;
-	opts.onRender = opts.onRender || globalThis.void;
-	opts.onOpen = opts.onOpen || globalThis.void;
+	setOptions = data => { Object.assign(this.#opts, data); return this; }
+	setTplEmpty = html => { this.#opts.tplEmpty = html; return this; }
+	setMsgEmpty = msg => this.setTplEmpty(`<p class="notice notice-warn">${i18n.get(msg)}</p>`);
 
-	const self = this; //self instance
-	const template = document.createElement("template");
-	let _data; // data container
+	size = () => this.#data.length;
+	isEmpty = () => !this.#data.length;
+	getFirst = () => this.#data[0];
+	getLastItem = () => this.#data.at(-1);
+	getTabs = () => this.children;
 
-	this.getAccordion = () => accordion;
-	this.addClass = name => { accordion.classList.add(name); return self; }
-	this.setOptions = data => { Object.assign(opts, data); return self; }
-	this.setTplEmpty = html => { opts.tplEmpty = html; return self; }
-	this.setMsgEmpty = msg => self.setTplEmpty(`<p class="notice notice-warn">${i18n.get(msg)}</p>`);
-	this.setRender = fn => { opts.onRender = fn; return self; }
-	this.setOpen = fn => { opts.onOpen = fn; return self; }
+	onOpen() {} // optional onOpen envent
+	beforeTab() {} // fired before render each tab (optional)
+	render() { throw new Error("Method 'render' must be implemented."); } // required render function
 
-	const fnEventToggle = () => {
-		accordion.childNodes.forEach((details, i) => { // add toggle listeners to each details element
-			details.openings = 0;
-			const fnToggle = ev => {
-				if (!ev.target.open)
+	#precalc = (row, i) => {
+		this.#opts.index = i;
+		this.#opts.count = i + 1;
+		this.beforeTab(row, this.#opts);
+		return this;
+	}
+	#eventToggle = () => { // add toggle listeners to each details element
+		this.childNodes.forEach((details, i) => {
+			details.openings = 0; // init. counter
+			details.addEventListener("toggle", ev => {
+				if (!ev.target.open) // fired after update open prop
 					return; // close action
-				opts.onOpen(_data[i], ev.target, i); // call open handler
+				this.onOpen(this.#data[i], ev.target, i); // call open handler
 				details.eachSibling(el => el.removeAttribute("open")); // only one open
 				ev.target.openings++; // number of openings
-				cv.setHeight(); // resize iframe
-			}
-			// set useCapture parameter to true
-			details.addEventListener("toggle", fnToggle, true);
+				cv.setHeight(); // resize iframe for CV
+			}, true); // set useCapture parameter to true
 		});
-		return self;
+		return this;
 	}
 
-	this.setData = data => {
-		_data = data; // set container
-		const size = coll.size(data); // data length
-		template.innerHTML = size ? coll.render(data, opts.onRender) : opts.tplEmpty; // stringify
-		return self;
+	setData = data => {
+		this.#data = data; // set container
+		this.#opts.size = coll.size(data); // data length
+		const fnRender = (row, i) => this.#precalc(row, i).render(row, this.#opts);
+		this.innerHTML = this.#opts.size ? data.map(fnRender).join("") : this.#opts.tplEmpty;
+		return this.#eventToggle(); // add event listener
 	}
-    this.setItems = items => {
-		_data = items; // set container
+	setItems = items => {
+		this.#data = items; // set container
 		const size = coll.size(items); // data length
 		const fnRender = item => `<details><summary>${item.label}</summary></details>`;
-		template.innerHTML = size ? items.map(fnRender).join("") : opts.tplEmpty; // stringify
-		return self;
+		this.innerHTML = size ? items.map(fnRender).join("") : this.#opts.tplEmpty;
+		return this.#eventToggle(); // add event listener
 	}
-	this.setLabels = labels => {
-		_data = labels; // set container
+	setLabels = labels => {
+		this.#data = labels; // set container
 		const size = coll.size(labels); // data length
 		const fnRender = label => `<details><summary>${label}</summary></details>`;
-		template.innerHTML = size ? labels.map(fnRender).join("") : opts.tplEmpty; // stringify
-		return self;
-	}
-
-	this.append = () => {
-		accordion.appendChild(document.importNode(template.content, true));
-		return fnEventToggle();
-	}
-	this.replace = () => {
-		accordion.replaceChildren(document.importNode(template.content, true));
-		return fnEventToggle();
+		this.innerHTML = size ? labels.map(fnRender).join("") : this.#opts.tplEmpty;
+		return this.#eventToggle(); // add event listener
 	}
 }

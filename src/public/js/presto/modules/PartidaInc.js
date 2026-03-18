@@ -5,12 +5,13 @@ import api from "../../components/Api.js"
 import valid from "../i18n/validators.js";
 
 import presto from "../model/Presto.js";
+import OrganicaInc from "./inputs/OrganicaInc.js";
 import Partidas from "./partidas.js";
 import form from "./presto.js";
 
 export default class PartidaInc extends FormBase {
-	#acOrgInc = this.setAutocomplete("acOrgInc");
-	#ecoInc = this.getElement("idEcoInc");
+	#organica = this.getElement("orgInc");
+	#economica = this.getElement("ecoInc");
 	#partidas = this.querySelector("table");
 
 	constructor(form) {
@@ -19,49 +20,40 @@ export default class PartidaInc extends FormBase {
 
 	init() {
 		this.#partidas.init(); // initialize form before table
-		const fnSelect = item => { // organica a incrementar seleccionada => carga de economicas
-			api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(this.#ecoInc.setItems); // load economicas inc.
+		this.#organica.addListener("afterSelect", () => { //select
+			const item = this.#organica.getCurrent(); // current item
+			api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(this.#economica.setItems); // load economicas inc.
 			form.setAvisoFa(item).setValue("faInc", item.int & 1); // organica afectada
-		}
-		const fnSource = term => {
-			const url = presto.isGcr() ? "/uae/presto/organicas/inc/gcr" : "/uae/presto/organicas/inc"; // url by type
-			api.init().json(url, { ej: this.getValue("ejInc"), term }).then(this.#acOrgInc.render); // send fetch
-		}
-		const fnReset = () => { this.setValue("faInc").setValue("impInc"); this.#ecoInc.clear(); }
-		this.#acOrgInc.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect).setReset(fnReset);
+		});
+		this.#organica.addListener("reset", () => {
+			this.setValue("faInc").setValue("impInc");
+			this.#economica.clear();
+		});
 
-		this.#ecoInc.setEmptyOption("Seleccione una económica");
+		this.#economica.setEmptyOption("Seleccione una económica");
 		const fnEditableEjInc = () => (this.#partidas.isEmpty() && !presto.isDisableEjInc());
-		this.set("is-editable-ej-dec", this.#partidas.isEmpty).set("is-editable-ej-inc", fnEditableEjInc).addChange("ejInc", this.#acOrgInc.reload);
+		this.set("is-editable-ej-dec", this.#partidas.isEmpty).set("is-editable-ej-inc", fnEditableEjInc).addChange("ejInc", this.#organica.reload);
 
 		tabs.setAction("partida-inc-add", () => {
 			if (!valid.partidaInc()) return; // errores al validar los campos de entrada
-			const url = `/uae/presto/partida/add?org=${this.#acOrgInc.getValue()}&eco=${this.#ecoInc.getValue()}`;
+			const url = `/uae/presto/partida/add?org=${this.#organica.getValue()}&eco=${this.#economica.getValue()}`;
 			api.init().json(url).then(partidaInc => { // fetch partida a incrementar
 				if (!valid.partidaSrv(partidaInc)) return; // error en la partida a incrementar
 				partidaInc.imp030 = partidaInc.imp = this.getValue("impInc"); // Importe de la partida a añadir
 				this.#partidas.add(partidaInc); // Add and remove PK autocalculated in extraeco.v_presto_partidas_inc
-				this.#acOrgInc.reload(); // reseteo los valores del formulario
+				this.#organica.reload(); // reseteo los valores del formulario
 			});
-		});
-		tabs.setAction("save030", () => {
-			if (!valid.validate030()) // validate partida 080 / 030
-				return false; // not valid data
-			if (presto.isEditable()) // if editable => back to presto view, send table on tab-action-send
-				return tabs.backTab().showOk("Datos del documento 030 asociados correctamente.");
-			api.setJSON(this.#partidas.getData()).json("/uae/presto/save/030").then(tabs.showForm);
 		});
 	}
 
 	view = data => {
-		this.#ecoInc.clear(); // clear select box
+		this.#economica.clear(); // clear select box
 		this.#partidas.render(data); // load table
 	}
 
 	getPartidas = () => this.#partidas;
-	autoload(partida, imp) {
-		this.#partidas.autoload(partida, imp);
-	}
+	autoload(partida, imp) { this.#partidas.autoload(partida, imp); }
 }
 
+customElements.define("organica-inc", OrganicaInc, { extends: "input" });
 customElements.define("partida-table", Partidas, { extends: "table" });

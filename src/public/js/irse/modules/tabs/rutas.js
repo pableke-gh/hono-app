@@ -20,12 +20,8 @@ export default class Rutas extends FormBase {
 		super(form.getForm(), form.getOptions());
 	}
 
-	isChanged = () => this.get("table-changed"); // override
-	setChanged = value => this.set("table-changed", value);
-
 	init = () => {
-		this.#tr.init();
-
+		this.#tr.init(); // tabla de rutas
 		const fnBlur = (ev, f1, f2) => { f2.value = ev.target.value; f1.removeAttribute("max"); f2.removeAttribute("max"); }
 		this.getInput("#f1.ui-ruta").setRange("f2", fnBlur);
 		this.getElement("matricula").addChange(ev => {
@@ -46,8 +42,9 @@ export default class Rutas extends FormBase {
 			form.getResumen().updateRutas(data.dietas); // km y dietas
 		}
 
-		tabs.setInitEvent(2, maps);
-		tabs.setViewEvent(2, () => { this.setValue("matricula", irse.getMatricula()); });
+		tabs.setInitEvent(2, maps); // load google api maps once
+		tabs.getTab(2).addEventListener("change", ev => ev.stopPropagation()); // inputs not change form state => only programmatically
+		tabs.setViewEvent(2, () => { this.setValue("matricula", irse.getMatricula()); }); // preload matricula from server
 
 		tabs.setAction("paso2", () => {
 			if (!valid.itinerario()) return; // if error => stop

@@ -2,10 +2,14 @@
 import FormBase from "../../components/forms/FormBase.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
+import valid from "../i18n/validators.js";
+
+import Organica030 from "./inputs/Organica030.js";
 import presto from "../model/Presto.js";
+import form from "./presto.js";
 
 export default class Partida030 extends FormBase {
-	#acOrg030 = this.setAutocomplete("acOrg030");
+	#organcia = this.getElement("org030");
 	#ej030; // is tab preloaded
 
 	constructor(form) {
@@ -13,9 +17,15 @@ export default class Partida030 extends FormBase {
 	}
 
 	init() {
-		const fnSource = term => api.init().json("/uae/presto/organicas/030", { ej: this.getValue("ej030"), term}).then(this.#acOrg030.render);
-		const fnSelect = item => this.setValue("idEco030", item.imp);
-		this.#acOrg030.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelect);
+		const partidas = form.getPartidas();
+		partidas.set("#doc030", this.view);
+		tabs.setAction("save030", () => {
+			if (!valid.validate030()) // validate partida 080 / 030
+				return false; // not valid data
+			if (presto.isEditable()) // if editable => back to presto view, send table on tab-action-send
+				return tabs.backTab().showOk("Datos del documento 030 asociados correctamente.");
+			api.setJSON(partidas.getData()).json("/uae/presto/save/030").then(tabs.showForm);
+		});
 	}
 
 	isLoaded = ej => (this.#ej030 == ej); // 030 cargado
@@ -27,16 +37,16 @@ export default class Partida030 extends FormBase {
 			presto.getEco080 = () => partida.e; // Económica del documento 080
 			presto.getDescEco080 = () => partida.dEco; // Descripción de la económica del documento 080
 			presto.getImp080 = () => partida.imp; // Descripción de la económica del documento 080 
-	
+
 			this.setData(partida, ".ui-030").refresh(presto); // Actualizo los campos de la vista
-			this.#acOrg030.setValue(partida.idOrg030, partida.o030 + " - " + partida.dOrg030);
+			this.#organcia.setValue(partida.idOrg030, partida.o030 + " - " + partida.dOrg030);
 			tabs.showTab("030"); // change tab
 		}
 
 		if (this.isLoaded(partida.ej))
 			return fnLoad(partida);
 		// actualizo las economicas de ingresos 030 para el nuevo ejercicio
-		const fnEconomicas = economicas => { this.setItems("#idEco030", economicas); fnLoad(partida); }
+		const fnEconomicas = economicas => { this.getElement("eco030").setItems(economicas); fnLoad(partida); }
 		api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(fnEconomicas);
 	}
 
@@ -48,3 +58,5 @@ export default class Partida030 extends FormBase {
 		return this.setValue("impDec", partida.imp); //ok
 	}
 }
+
+customElements.define("organica-030", Organica030, { extends: "input" });

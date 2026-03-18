@@ -10,8 +10,6 @@ export default class PrestoSolicitudes extends Solicitudes {
 	}
 
 	getSolicitud = () => presto; // get current instance
-	connectedCallback() { super.connectedCallback(); }
-
 	row(data) {
 		let acciones = super.row(data);
 		if (presto.isDocumentable()) {

@@ -8,8 +8,7 @@ import form from "./presto.js";
 
 export default class Partidas extends TableHTML {
 	init() { // form must be initialized first
-		const p030 = form.getPartida030();
-		this.set("#doc030", p030.view).setMsgEmpty("No existen partidas a incrementar asociadas a la solicitud");
+		this.setMsgEmpty("No existen partidas a incrementar asociadas a la solicitud");
 		presto.showPartidasInc = () => (presto.isTipoMultipartida() && presto.isEditable() && (this.size() < 20));
 	}
 
@@ -53,9 +52,9 @@ export default class Partidas extends TableHTML {
 		form.setEditable(presto);
 	}
 
-	onRemove = () => {
+	flush() { // override super class
 		presto.isAutoLoadInc() && form.getPartidaDec().reload();
-		return Promise.resolve();
+		super.flush();
 	}
 
 	autoload(partida, imp) {

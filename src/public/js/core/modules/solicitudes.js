@@ -61,9 +61,10 @@ export default class Solicitudes extends TableHTML {
 		return acciones;
 	}
 
-	onRemove = data => { // override super class
+	flush() { // override super class
+		const data = this.getCurrent(); // current data row
 		const id = data?.id || this.#solicitud.getId(); // row selected or current data if remove when creating
-		const url = this.#solicitud.getUrl() + "/remove?id=" + id; // url base path
-		return api.init().json(url).then(tabs.showList);  // remove = Promise
+		const fnThen = () => { super.flush(); tabs.showList(); } // fire after success remove
+		api.init().json(this.#solicitud.getUrl() + "/remove?id=" + id).then(fnThen);
 	}
 }

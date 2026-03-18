@@ -3,6 +3,7 @@ import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
 import tabs from "../../components/Tabs.js";
 import valid from "../i18n/validators.js";
+import result from "../../core/util/Result.js";
 
 import place from "./place.js";
 import form from "../modules/irse.js";
@@ -25,8 +26,10 @@ const DRIVING = "DRIVING";
 //initialize google maps
 window.initMap = () => {
 	var p1, p2; // from ... to
-	const distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const
-	const placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService
+	const distanceService = new google.maps.DistanceMatrixService(); // Create a instantiate of distance matrix const (legacy)
+	//const { RouteMatrix } = await google.maps.importLibrary("routes"); // Create a instantiate of distance matrix const (new)
+	const placesService = new google.maps.places.PlacesService(coll.getDivNull()); // Create a new instance of the PlacesService (legacy)
+	//const { Place, PlaceAutocompleteElement } = await google.maps.importLibrary("places"); // Create a new instance of the PlacesService (new)
 	place.setAutocomplete(form.getInput("#origen"), origen => { p1 = origen.getPlace(); }) // Origen autocomplete input 
 		.setAutocomplete(form.getInput("#destino"), destino => { p2 = destino.getPlace(); }); // Destino autocomplete input
 
@@ -47,7 +50,6 @@ window.initMap = () => {
 	}
 	/*async function findPlaces(textQuery) {
 		const PLACES_OPTIONS = { textQuery, fields: [ "displayName", "location", "addressComponents" ] };
-		const { Place } = await google.maps.importLibrary("places");
 		const { places } = await Place.searchByText(PLACES_OPTIONS);
 console.log('places: ', places);
 		places.forEach(place => {
@@ -91,11 +93,9 @@ console.log('places: ', places);
 			loadOrigen(p1, place.getCountry(p1), place.isCartagena(p1) ? 4 : 0);
 		else if (rutas.size() > 0) { //origen = destino anterior
 			const last = rutas.last(); // ultima ruta
-			if (!last.p2) { // tiene el destino?
-				const [err, aux] = await globalThis.catchError(getPlaceDetails(last.destino));
-				last.p2 = err ? null : aux; // valida si hay place
+			if (!last.p2) // tiene el destino?
+				last.p2 = (await result.catch(getPlaceDetails(last.destino))).getData();
 				//last.p2 = findPlaces(last.destino);
-			}
 			loadOrigen(last.p2, last.pais2, last.mask);
 		}
 
@@ -121,12 +121,13 @@ console.log('places: ', places);
 		const DISTANCE_OPTIONS = {
 			origins: [ruta.origen],
 			destinations: [ruta.destino],
+			//fields: ['durationMillis', 'distanceMeters'], // Must be an array (new)
 			travelMode: DRIVING
 		};
-		const [err, response] = await globalThis.catchError(distanceService.getDistanceMatrix(DISTANCE_OPTIONS));
-		if (err) // error al calcular la distancia
-			return valid.fail("The calculated distance fails due to " + err);
-		ruta.km2 = response.rows[0].elements[0].distance.value / 1000; //to km
+		await result.catch(distanceService.getDistanceMatrix(DISTANCE_OPTIONS));
+		if (result.isError()) // error al calcular la distancia
+			return result.error("The calculated distance fails due to " + result.getError());
+		ruta.km2 = result.getData().rows[0].elements[0].distance.value / 1000; //to km
 		rutas.add(ruta, ruta.km2); // add to table
 	});
 }

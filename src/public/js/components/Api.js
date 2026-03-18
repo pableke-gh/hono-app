@@ -10,10 +10,10 @@ function Api() {
 	const HEADERS = new Headers({ "x-requested-with": "XMLHttpRequest" }); // AJAX header
 
 	const fnMsgs = data => (alerts.showMsgs(data) ? data : Promise.reject(data));
-	function fnError(res, msg) {
-		const error = res.statusText || msg || "Conection is not available.";
-		alerts.showError(error);
-		return Promise.reject(error);
+	const fnError = msg => { // propaga el error por la cadena
+		const error = msg || "Conection is not available.";
+		alerts.showError(error); // show error on view
+		return Promise.reject(error); // go next catch
 	}
 
 	this.get = name => OPTS[name];
@@ -54,53 +54,57 @@ function Api() {
 	this.setFormData = fd => self.init().setPost().setBody(fd); // set form data
 	this.setForm = form => self.setFormData(new FormData(form)); // set data by form element
 
-	const fnFetch = (url, params) => {
+	const _response = (url, params) => {
 		if (!params)
 			return globalThis.fetch(url, OPTS); // send call
 		const query = new URLSearchParams(params); // query params
 		// then, catch and finally callbacks execute syncronously
 		return globalThis.fetch(url + "?" + query.toString(), OPTS);
 	}
-	this.fetch = async (url, params) => {
-		const res = await fnFetch(url, params); // send call
-		// avoid error when json response is null: (SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input)
-		return res.ok ? res.json().catch(globalThis.void) : fnError(res); // return promise
+	const _finally = promise => {
+		alerts.loading(); // show loading indicator
+		setTimeout(() => promise.finally(alerts.working).catch(globalThis.void), 1); // force last execution in promise chain
+		return promise; // current chain promise
 	}
-	this.msgs = (url, params) => self.fetch(url, params).then(fnMsgs)
+
+	this.fetch = (url, params) => {
+		const fnThen = res => (res.ok ? res.json() : Promise.reject(res.statusText));
+		return _response(url, params).then(fnThen); // continue promise chaning
+	}
+	this.msgs = (url, params) => {
+		const fnThen = res => (res.ok ? res.json().then(fnMsgs) : fnError(res.statusText));
+		return _response(url, params).then(fnThen); // continue promise chaning
+	}
 	this.json = (url, params) => {
-		alerts.loading(); // show loading indicator
-		return self.msgs(url, params).finally(alerts.working);
+		return _finally(self.msgs(url, params)); // get data from server
 	}
 
-	this.text = async (url, params) => {
-		alerts.loading(); // show loading indicator
-		//self.setContentType(mt.text); // set content type header
-		const res = await fnFetch(url, params); // send call
-		const promise = res.ok ? res.text() : fnError(res); // get promise
-		return promise.finally(alerts.working); // Add default finally callback to promise
-	}
-	this.blob = async (url, filename) => {
-		alerts.loading(); // show loading indicator
-		const res = await globalThis.fetch(url, OPTS); // send call
-		const objectURL = res.ok ? URL.createObjectURL(await res.blob()) : null;
-		if (!objectURL) // object URL is required
-			return fnError(res, "Invalid URL file.").finally(alerts.working);
-		// if filename is not defined, try to get it from Content-Disposition header
-		filename = filename || res.headers.get("Content-Disposition")?.split('"')[1];
-		filename && self.download(objectURL, filename); // filename => direct download file
-		const promise = Promise.resolve(objectURL); // create resolved promise
-		// revoke the object URL to free up memory at the end of the end of promise chain
-		setTimeout(() => { promise.finally(() => { URL.revokeObjectURL(objectURL); alerts.working(); }); }, 1);
-		return promise;
+	this.text = (url, params) => {
+		const fnThen = res => (res.ok ? res.text() : fnError(res.statusText));
+		return _finally(_response(url, params).then(fnThen));
 	}
 
-	this.send = async (url, params) => {
-		alerts.loading(); // show loading indicator
-		const res = await fnFetch(url, params); // send call
-		if (!res.ok) // connection error
-			return fnError(res).finally(alerts.working);
-		const type = res.headers.get(HEADER_TYPE) || ""; // get response mime type
-		return (type.includes(mt.json) ? res.json().then(fnMsgs) : res.text()).finally(alerts.working);
+	this.blob = (url, filename) => {
+		const fnThen = res => (res.ok ? res.blob() : fnError(res.statusText));
+		return _finally(_response(url, OPTS).then(fnThen).then(blob => {
+			const objectURL = blob && blob.size && URL.createObjectURL(blob);
+			if (!objectURL) // object URL is required
+				return fnError("Invalid URL file.");
+			// if filename is not defined, try to get it from Content-Disposition header
+			filename = filename || res.headers.get("Content-Disposition")?.split('"')[1];
+			filename && self.download(objectURL, filename); // filename => direct download file
+			// revoke the object URL to free up memory at the end of the end of promise chain
+			setTimeout(() => URL.revokeObjectURL(objectURL), 1); // force last execution in chain
+			return objectURL; // allow others actions over blob
+		}));
+	}
+
+	this.send = (url, params) => {
+		return _finally(_response(url, params).then(res => {
+			if (!res.ok) return fnError(res.statusText);
+			const type = res.headers.get(HEADER_TYPE) || ""; // get response mime type
+			return (type.includes(mt.json) ? res.json().then(fnMsgs) : res.text());
+		}));
 	}
 
 	this.open = alerts.open; // open external resource
@@ -116,18 +120,6 @@ function Api() {
 		link.download = name || "download.pdf"; // force file name
 		link.click(); // download file to cliente
 	}
-
-	/*URLSearchParams.prototype.clear = function(keys) {
-		keys = keys || [...this.keys()];
-		keys.forEach(key => this.delete(key));
-	}
-	URLSearchParams.prototype.load = function(data) {
-		for (const key in data) {
-			const value = data[key];
-			value && this.set(key, value);
-		}
-		return this;
-	}*/
 }
 
 export default new Api();

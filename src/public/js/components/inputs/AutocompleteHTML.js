@@ -44,6 +44,7 @@ export default class Autocomplete extends TextInput {
 	getCurrentItem = this.getCurrent; // synonymous
 	getCurrentOption = () => this.#results.children[this.#index];
 	getCode = sep => sb.getCode(this.value, sep);
+	split = sep => sb.split(this.value, sep);
 
 	#isChildren = i => ((0 <= i) && (i < coll.size(this.#results.children)));
 	#removeList = () => { this.#results.innerHTML = ""; this.#results.classList.remove(this.#opts.activeClass); }
@@ -83,7 +84,7 @@ export default class Autocomplete extends TextInput {
 	reload = () => {
 		this.value = ""; // Clear input
 		this.focus(); // Set focus
-		return this.#unselect();
+		return this.reset();
 	}
 	render = data => {
 		this.#unselect(); // clear previous results

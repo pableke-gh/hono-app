@@ -2,11 +2,12 @@
 import FormBase from "../../components/forms/FormBase.js";
 import api from "../../components/Api.js"
 import presto from "../model/Presto.js";
+import OrganicaDec from "./inputs/OrganicaDec.js";
 import form from "./presto.js";
 
 export default class PartidaDec extends FormBase {
-	#orgDec = this.setAutocomplete("acOrgDec");
-	#ecoDec = this.getElement("idEcoDec"); //data-list
+	#organica = this.getElement("orgDec"); // autocomplete
+	#economica = this.getElement("ecoDec"); // data-list
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
@@ -16,51 +17,46 @@ export default class PartidaDec extends FormBase {
 		const pInc = form.getPartidaInc();
 		const partidas = pInc.getPartidas();
 
-		const fnSource = term => {
-			const opts = { 3: "/uae/presto/organicas/l83", 5: "/uae/presto/organicas/ant" };
-			const url = opts[presto.getTipo()] || "/uae/presto/organicas/dec"; // default url
-			api.init().json(url, { ej: this.getValue("ej"), term }).then(this.#orgDec.render);
-		}
-		const fnSelectOrgDec = item => { //select
-			presto.isAutoLoadInc() && partidas.render(); //autoload => clear table
+		this.#organica.addListener("afterSelect", () => { //select
+			const item = this.#organica.getCurrent(); // current item
+			presto.isAutoLoadInc() && partidas.reset(); //autoload => clear table
 			const url = presto.isAutoLoadInc() ? "/uae/presto/economicas/l83" : "/uae/presto/economicas/dec"; // url by type
-			api.init().json(url + "?org=" + item.value).then(this.#ecoDec.setItems); // this.#ecoDec.setItems => auto call fnEcoChange (economica change event)
+			api.init().json(url + "?org=" + item.value).then(this.#economica.setItems); // auto load on economica change event
 			form.setAvisoFa(item).setValue("faDec", item.int & 1); // indicador de organica afectada
-		}
-		const fnResetOrgDec = () => { // reset organica a decrementar
-			presto.isAutoLoadInc() && partidas.render(); //autoload => clear table
+		});
+		this.#organica.addListener("reset", () => { // reset organica a decrementar
+			presto.isAutoLoadInc() && partidas.reset(); //autoload => clear table
+			this.#economica.clear();
 			this.setValue("faDec");
-			this.#ecoDec.clear();
-		}
-		this.#orgDec.setItemMode(4).setSource(fnSource).setAfterSelect(fnSelectOrgDec).setReset(fnResetOrgDec);
+		});
 
-		const fnAutoloadErr = msg => { this.#orgDec.isItem() && this.showError(msg); }
-		const fnAutoloadL83 = data => { data ? pInc.autoload(data, this.#ecoDec.getItem(0).imp) : fnAutoloadErr("Aplicación AIP no encontrada en el sistema."); }
+		const fnAutoloadErr = msg => { this.#organica.isItem() && this.showError(msg); }
+		const fnAutoloadL83 = data => { data ? pInc.autoload(data, this.#economica.getItem(0).imp) : fnAutoloadErr("Aplicación AIP no encontrada en el sistema."); }
 		const fnAutoloadAnt = data => { data ? pInc.autoload(data, Math.max(0, data.ih)) : fnAutoloadErr("No se ha encontrado el anticipo en el sistema."); }
-
-		const fnEcoChange = () => {
-			if (this.#ecoDec.isEmpty())
+		this.#economica.setEmptyOption("Seleccione una económica").addChange(() => {
+			if (this.#economica.isEmpty())
 				return this.setValue("impDec").setValue("cd");
-			const item = this.#ecoDec.getCurrent();
+			const item = this.#economica.getCurrent();
 			this.setValue("cd", item.imp); // set importe
 			if (presto.isL83() && presto.isEditable()) //L83 => busco su AIP solo en edicion
-				return api.init().json(`/uae/presto/l83?org=${this.#orgDec.getValue()}`).then(fnAutoloadL83);
+				return api.init().json(`/uae/presto/l83?org=${this.#organica.getValue()}`).then(fnAutoloadL83);
 			if (presto.isAnt() && presto.isEditable()) //ANT => cargo misma organica solo en edicion
-				return api.init().json(`/uae/presto/anticipo?org=${this.#orgDec.getValue()}&eco=${item.value}`).then(fnAutoloadAnt);
-		}
-		this.#ecoDec.setEmptyOption("Seleccione una económica").addChange(fnEcoChange);
+				return api.init().json(`/uae/presto/anticipo?org=${this.#organica.getValue()}&eco=${item.value}`).then(fnAutoloadAnt);
+		});
 
-		this.addChange("ej", this.#orgDec.reload);
+		this.addChange("ej", this.#organica.reload);
 		this.addChange("impDec", ev => { presto.isAutoLoadImp() && pInc.autoload(null, ev.target.getValue()); }); //importe obligatorio
 	}
 
 	view(data) {
 		const solicitud = data.solicitud; // datos del servidor
 		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.faDec).setValue("impDec", solicitud.impDec);
-        this.#orgDec.setValue(solicitud.idOrgDec, solicitud.orgDec + " - " + solicitud.dOrgDec);
-		this.#ecoDec.setItems(data.economicas); // cargo el desplegable de economicas
+        this.#organica.setValue(solicitud.idOrgDec, solicitud.orgDec + " - " + solicitud.dOrgDec);
+		this.#economica.setItems(data.economicas); // cargo el desplegable de economicas
 	}
 	reload() {
-		this.#orgDec.reload();
+		this.#organica.reload();
 	}
 }
+
+customElements.define("organica-dec", OrganicaDec, { extends: "input" });

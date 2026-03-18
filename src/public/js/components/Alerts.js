@@ -9,6 +9,7 @@ function Alerts() {
 
 	const alerts = $1(".alerts"); // container
 	const texts = alerts.getElementsByClassName(ALERT_TEXT);
+    alerts.getElementsByClassName(ALERT_CLOSE).setClick((ev, link) => fnCloseParent(link)); // Set close click event
 
 	// Handle loading div
 	const _loading = alerts.nextElementSibling; // loading animation = none
@@ -52,18 +53,15 @@ function Alerts() {
 	this.showMsgs = data => self.setMsgs(data?.msgs || data); // msgs container
 	this.showAlerts = data => self.working().showMsgs(data); // hide loading frame and show msgs container
 	this.closeAlerts = () => { texts.forEach(fnCloseParent); return self; } // fadeOut all alerts
-    alerts.getElementsByClassName(ALERT_CLOSE).setClick((ev, link) => fnCloseParent(link)); // Set close click event
+	this.open = (url, err) => {
+		if (url)  // open external resource
+			return window.open(url, "_blank");
+		self.showError(err || "errReport");
+	}
 
-    // Global handlers
+	// Global handlers
     window.loading = self.loading;
     window.working = self.working;
-
-	/*window.catchError = promise => {
-		self.loading(); // redefine global catchError with loading / working
-		return promise.then(data => [undefined, data]).catch(err => [err]).finally(self.working);
-	}
-	window.catchPromise = async fn => await window.catchError(new Promise(fn));*/
-
 	window.showAlerts = (xhr, status, args) => { // PF hack => show all messages
 		if (xhr && (status == "success")) // is PF server error xhr?
 			return self.showAlerts(coll.parse(args.msgs)); // status 200
@@ -72,8 +70,6 @@ function Alerts() {
 		msg = (xhr && xhr.statusText) ? xhr.statusText : msg;
 		return !self.showError(msg).working(); // show error
 	}
-	this.open = (url, err) => { url ? window.open(url, "_blank") : self.showError(err || "errReport"); } // open external resource
-	//window.openUrl = (xhr, status, args) => { window.showAlerts(xhr, status, args) && self.open(args?.url); } // PF open url hack
 }
 
 export default new Alerts();

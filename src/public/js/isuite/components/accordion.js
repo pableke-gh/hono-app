@@ -1,10 +1,10 @@
 
-import AccordionHTML from "../../components/AccordionHTML.js";
+import Accordion from "../../components/Accordion.js";
 import api from "../../components/Api.js";
 import i18n from "../i18n/langs.js";
 import Recibos from "./recibos.js";
 
-export default class Accordion extends AccordionHTML {
+export default class RecibosAccordion extends Accordion {
 	render = (data, status) => `<details>
 		<summary>${status.count}. Recibos del ${i18n.isoDate(data.f1)} al ${i18n.isoDate(data.f2)} (N${data.tipo})</summary>
 		<div></div>
