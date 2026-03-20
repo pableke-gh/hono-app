@@ -11,7 +11,7 @@ export default class OrganicaDec extends AutocompleteHTML {
 		this.setMinLength(4); // default initialization
 	}
 
-	source = () => {
+	source() {
 		const opts = { 3: "/uae/presto/organicas/l83", 5: "/uae/presto/organicas/ant" };
 		const url = opts[presto.getTipo()] || "/uae/presto/organicas/dec"; // default url
 		api.init().json(url, { ej: form.getValue("ej"), term: this.value }).then(this.render);

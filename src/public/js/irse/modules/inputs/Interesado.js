@@ -8,7 +8,6 @@ export default class Interesado extends AutocompleteHTML {
 	constructor() {
 		super(); // Must call super before 'this'
 		this.setDelay(600).setMinLength(5)
-			.addListener("afterSelect", () => form.setValue("nif-interesado", this.getValue()))
 			.addListener("reset", () => { this.clear(); form.refresh(irse); });
 	}
 
@@ -20,9 +19,15 @@ export default class Interesado extends AutocompleteHTML {
 		});
 	}
 
-	source = () => api.init().json("/uae/iris/interesados", { term: this.value }).then(this.render);
-	row = item => (item.nif + " - " + item.nombre);
-	select = item => { irse.setInteresado(item); form.getPerfil().update(); return item.nif; }
+	source() { api.init().json("/uae/iris/interesados", { term: this.value }).then(this.render); }
+	row(item) { return (item.nif + " - " + item.nombre); }
+	select(item) {
+		irse.setInteresado(item);
+		form.setValue("nif-interesado", item.nif);
+		form.getPerfil().update();
+		return item.nif;
+	}
+
 	validate = () => (this.isLoaded() ? this.setOk() : !this.setRequired("errPerfil"));
 	clear() { super.clear(); irse.setInteresado(); form.setValue("nif-interesado"); }
 

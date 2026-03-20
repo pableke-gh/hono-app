@@ -16,7 +16,9 @@ function Rutas() {
 	this.get = i => _rutas[i]; // get by index
 	this.getById = id => _rutas.find(ruta => (ruta.id == id)); // get by id
 	this.setRuta = (ruta, index) => { _rutas[index || 0] = ruta; return self; }
-	this.addRuta = ruta => {
+	this.remove = ruta => _rutas.splice(_rutas.indexOf(ruta), 1);
+	this.addRuta = (ruta, dist) => {
+		ruta.km1 = ruta.km2 = dist; // set km google
 		_rutas.push(ruta); // añado + reordenar por fecha de salida
 		_rutas.sort((a, b) => sb.cmp(a.dt1, b.dt1)); // reordenar
 	}

@@ -17,13 +17,13 @@ export default class PartidaDec extends FormBase {
 		const pInc = form.getPartidaInc();
 		const partidas = pInc.getPartidas();
 
-		this.#organica.addListener("afterSelect", () => { //select
-			const item = this.#organica.getCurrent(); // current item
+		this.#organica.select = item => { // override => final select
 			presto.isAutoLoadInc() && partidas.reset(); //autoload => clear table
 			const url = presto.isAutoLoadInc() ? "/uae/presto/economicas/l83" : "/uae/presto/economicas/dec"; // url by type
 			api.init().json(url + "?org=" + item.value).then(this.#economica.setItems); // auto load on economica change event
 			form.setAvisoFa(item).setValue("faDec", item.int & 1); // indicador de organica afectada
-		});
+			return item.value;
+		}
 		this.#organica.addListener("reset", () => { // reset organica a decrementar
 			presto.isAutoLoadInc() && partidas.reset(); //autoload => clear table
 			this.#economica.clear();
@@ -50,7 +50,7 @@ export default class PartidaDec extends FormBase {
 
 	view(data) {
 		const solicitud = data.solicitud; // datos del servidor
-		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.faDec).setValue("impDec", solicitud.impDec);
+		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.omask & 1).setValue("impDec", solicitud.impDec);
         this.#organica.setValue(solicitud.idOrgDec, solicitud.orgDec + " - " + solicitud.dOrgDec);
 		this.#economica.setItems(data.economicas); // cargo el desplegable de economicas
 	}

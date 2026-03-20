@@ -16,10 +16,12 @@
 		</h2>
 		<ui:include src="./irse02_info.xhtml"></ui:include>
 		<div class="ui-blocks no-print form-refresh" data-refresh="isEditable">
-			<label class="ui-block-xl">
+			<label class="ui-block-xl autocomplete">
 				<div class="label required"><h:outputText value="#{msg['lbl.sali']}" escape="false" />:</div>
-				<input type="search" id="origen" name="origen" is="text-input" class="ui-autocomplete ui-ruta" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
-				<div class="ui-errtip"></div>
+				<i class="fas fa-search ui-input-icon left"></i>
+				<input type="search" id="origen" name="origen" is="autocomplete-maps" class="ui-autocomplete ui-ruta" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
+				<ul role="list" class="results"></ul>
+				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
@@ -31,9 +33,11 @@
 				<input type="time" id="h1" name="h1" is="time-input" class="ui-ruta" tabindex="32" placeholder="hh:mm" />
 			</label>
 
-			<label class="ui-block-xl">
+			<label class="ui-block-xl autocomplete">
 				<div class="label required"><h:outputText value="#{msg['lbl.llegue']}" escape="false" />:</div>
-				<input type="search" id="destino" name="destino" is="text-input" class="ui-autocomplete ui-ruta" tabindex="33" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}"/>
+				<i class="fas fa-search ui-input-icon left"></i>
+				<input type="search" id="destino" name="destino" is="autocomplete-maps" class="ui-autocomplete ui-ruta" tabindex="33" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}"/>
+				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">

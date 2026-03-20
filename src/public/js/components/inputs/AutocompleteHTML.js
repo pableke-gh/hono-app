@@ -32,9 +32,9 @@ export default class Autocomplete extends TextInput {
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
 	setDelay = delay => this.set("delay", delay);
 	setMinLength = min => this.set("minLength", min);
-	source = () => { throw new Error("Method 'source' must be implemented."); }
-	row = item => item.label;
-	select = item => item.value;
+	source() { throw new Error("Method 'source' must be implemented."); }
+	row(item) { return item.label; }
+	select(item) { return item.value; }
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
 
 	getData = () => this.#data;
@@ -58,7 +58,6 @@ export default class Autocomplete extends TextInput {
 		if (li && this.#isChildren(i)) {
 			this.#index = i; // Update current index
 			this.#selected(this.select(this.#data[i]), li.innerText);
-			this.dispatchEvent(new Event("afterSelect")); // fired after update data
 		}
 		this.#removeList();
 	}
@@ -126,7 +125,7 @@ export default class Autocomplete extends TextInput {
 			if (size < this.#opts.minLength)
 				return this.reset(); // Min legnth required
 			if (size < this.#opts.maxLength) // Reduce server calls and fire source
-				this.#time = setTimeout(this.source, this.#opts.delay);
+				this.#time = setTimeout(() => this.source(), this.#opts.delay);
 		}
 		// Event fired before onblur only when text changes
 		this.onchange = ev => { this.value || this.reset(); }

@@ -126,11 +126,13 @@ input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); c
 	.results {
 		width: 100%; /* same width than ui-input */
 		position: absolute; margin: 0; padding: 0; z-index: 3;
-		font-weight: normal !important; color: black; background-color: #f7f7f7;
+		font-weight: normal !important; font-size: 13px;
+		color: black; background-color: #f7f7f7;
 	}
 	.results.active { border: solid 1px silver; }
-	li:hover, li.active { color: white; background-color: #2196f3; }
 	li { padding: 3px; list-style: none; cursor: pointer; transition: background-color 0.3s, color 0.3s; }
+	li:hover, li.active { color: white; background-color: #2196f3; }
+	/*li:hover > .icon, li.active > .icon { color: tomato; }*/
 }
 
 .multiselect {

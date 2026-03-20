@@ -66,6 +66,7 @@ export default class Rutas extends Table {
 		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
 
 		const CT = { desp: 0, mask: 4 }; //default CT
+		CT.place_id = "ChIJbbU6pCJCYw0R__n2_s6Q10c";
 		CT.origen = CT.destino = "Cartagena, España";
 		CT.pais = CT.pais1 = CT.pais2 = "ES";
 

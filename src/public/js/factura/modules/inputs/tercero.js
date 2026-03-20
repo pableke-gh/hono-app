@@ -9,9 +9,7 @@ export default class Tercero extends AutocompleteHTML {
 
 	constructor() {
 		super(); // Must call super before 'this'
-		this.setDelay(500).setMinLength(5)
-			.addListener("afterSelect", this.#afterSelect)
-			.addListener("reset", () => this.clear());
+		this.setDelay(500).setMinLength(5).addListener("reset", () => this.clear());
 	}
 
 	init() {
@@ -22,11 +20,11 @@ export default class Tercero extends AutocompleteHTML {
 		return fact ? this.setValue(fact.idTer, fact.nif + " - " + fact.tercero) : this.clear();
 	}
 
-	source = () => api.init().json("/uae/fact/terceros", { term: this.value }).then(this.render);
-	#afterSelect() {
-		const tercero = this.getCurrent(); // current item selected
-		api.init().json(`/uae/fact/delegaciones?ter=${tercero.value}`).then(this.#delegaciones.setItems);
-		form.getFiscal().update(factura.getSubtipo(), tercero);
+	source() { api.init().json("/uae/fact/terceros", { term: this.value }).then(this.render); }
+	select(item) {
+		api.init().json(`/uae/fact/delegaciones?ter=${item.value}`).then(this.#delegaciones.setItems);
+		form.getFiscal().update(factura.getSubtipo(), item);
+		return item.value;
 	}
 
 	clear() {

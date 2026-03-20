@@ -9,5 +9,5 @@ export default class Organica extends AutocompleteHTML {
 	}
 
 	// los usuarios de ttpp/gaca solo pueden ver las organicas de su unidad 300906XXXX
-	source = () => api.init().json("/uae/fact/organicas", { term: this.value }).then(this.render);
+	source() { api.init().json("/uae/fact/organicas", { term: this.value }).then(this.render); }
 }

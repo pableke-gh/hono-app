@@ -20,11 +20,11 @@ export default class PartidaInc extends FormBase {
 
 	init() {
 		this.#partidas.init(); // initialize form before table
-		this.#organica.addListener("afterSelect", () => { //select
-			const item = this.#organica.getCurrent(); // current item
+		this.#organica.select = item => { // override => final select
 			api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(this.#economica.setItems); // load economicas inc.
 			form.setAvisoFa(item).setValue("faInc", item.int & 1); // organica afectada
-		});
+			return item.value;
+		}
 		this.#organica.addListener("reset", () => {
 			this.setValue("faInc").setValue("impInc");
 			this.#economica.clear();

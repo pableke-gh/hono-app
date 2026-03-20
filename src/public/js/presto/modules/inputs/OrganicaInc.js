@@ -11,7 +11,7 @@ export default class OrganicaInc extends AutocompleteHTML {
 		this.setMinLength(4); // default initialization
 	}
 
-	source = () => {
+	source() {
 		const url = presto.isGcr() ? "/uae/presto/organicas/inc/gcr" : "/uae/presto/organicas/inc"; // url by type
 		api.init().json(url, { ej: form.getValue("ejInc"), term: this.value }).then(this.render); // send fetch
 	}

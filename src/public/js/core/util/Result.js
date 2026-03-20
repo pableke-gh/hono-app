@@ -36,6 +36,7 @@ class Result {
 		return this;
 	}
 	error(error) {
+		error = error || this.#error;
 		alerts.showError(error);
 		return this.fail(error);
 	}
