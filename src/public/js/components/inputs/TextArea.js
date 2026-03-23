@@ -13,7 +13,9 @@ export default class TextArea extends HTMLTextAreaElement {
 
 	getValue = () => (this.value && this.value.trim());
 	setValue(value) { this.value = value || ""; return this; }
-	load(data) { data[this.name] = this.getValue(); }
+	load(data) { return this.setValue(data[this.name]); }
+	toData(data) { data[this.name] = this.getValue(); return this; }
+	addFormData(fd) { fd.append(this.name, this.getValue()); return this; }
 	reset() { this.value = ""; return this; }
 	restart() { this.focus(); return this.reset(); }
 

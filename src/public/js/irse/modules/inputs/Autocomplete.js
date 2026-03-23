@@ -1,17 +1,33 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import maps from "../../services/maps.js";
+import ct from "../../data/place-ct.js";
 
 export default class AutocompleteMaps extends AutocompleteHTML {
-	isLoaded() { return super.isLoaded() && (super.getIndex() > -1); }
-	setValue(value) { return super.setValue(value, value); } // override
+	#getIdName = () => ((this.name == "origen") ? "oid" : "did");
+	load(data) {
+		const label = data[this.name]; // always force label input
+		return super.setValue(data[this.#getIdName()], label).setLabel(label);
+	}
+	toData(data) { // export value / label
+		data[this.#getIdName()] = this.getValue();
+		data[this.name] = this.getLabel();
+		return this;
+	}
+	/*addFormData(fd) {
+		fd.append(this.#getIdName(), this.getValue()); // value
+		fd.append(this.name, this.getLabel()); // label
+		return this;
+	}*/
 
 	source() { loading(); maps.getPredictions(this.value).then(this.render).finally(working); }
 	row(place) { return '<i class="fas fa-map-marker-alt icon"></i>' + place.description; }
-	select(place) { return place.description; } // place.place_id
+	select(place) { return place.place_id; }
 
 	async getPlace() {
-		const place = this.getCurrent();
-		return place ? await maps.getPlace(place.place_id) : null;
+		const placeId = this.getValue();
+		if (!placeId) return null; // no place
+		if (placeId == ct.place_id) return ct; // place = ct
+		return await maps.getPlace(placeId); // get place by id
 	}
 }

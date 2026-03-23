@@ -7,6 +7,8 @@ import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 import form from "../irse.js"
 
+import ct from "../../data/place-ct.js";
+
 export default class Rutas extends Table {
 	constructor(form) { // tabla del paso 2 (rutas maps)
 		super(form.querySelector("#rutas"), { msgEmptyTable: "msgRutasEmpty" });
@@ -65,15 +67,8 @@ export default class Rutas extends Table {
 		resume.impKm = resume.totKm * ruta.getImpGasolina();
 		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
 
-		const CT = { desp: 0, mask: 4 }; //default CT
-		CT.place_id = "ChIJbbU6pCJCYw0R__n2_s6Q10c";
-		CT.origen = CT.destino = "Cartagena, España";
-		CT.pais = CT.pais1 = CT.pais2 = "ES";
-
-		const last = rutas.getLlegada() || CT;
-		const data = { origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula: resume.matricula };
+		const last = rutas.getLlegada() || ct;
+		const data = { oid: last.did, origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula: resume.matricula };
 		form.setData(data, ".ui-ruta").delAttr("#f1", "max").restart("destino").hide(".grupo-matricula");
-		if (!last.dt1) // primera ruta?
-			form.setFocus("#f1");
 	}
 }

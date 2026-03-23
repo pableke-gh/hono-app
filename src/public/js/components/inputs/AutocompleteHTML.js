@@ -17,7 +17,8 @@ export default class Autocomplete extends TextInput {
 		maxLength: 20, //max length for searching
 		maxResults: 10, //max showed rows (default = 10)
 		optionClass: "option", // child name class
-		activeClass: "active" // active option class
+		activeClass: "active", // active option class
+		resultsClass: "results" // ul options class
 	}
 
 	constructor(opts) {
@@ -27,6 +28,7 @@ export default class Autocomplete extends TextInput {
 		this.setOptions(opts);
 		this.setAttribute("autocomplete", "off");
 		this.#results = this.nextElementSibling || document.createElement("ul");
+		this.#results.classList.add(this.#opts.resultsClass);
 	}
 
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
@@ -67,12 +69,9 @@ export default class Autocomplete extends TextInput {
 	getValue() { return this.#value; }
 	getLabel() { return this.value; }
 	setValue(value, label) { return (value ? this.#selected(value, label) : this.clear()); }
-	setItem = item => this.setValue(item.value, item.label);
-
-	clear() {
-		this.value = "";
-		return this.#unselect();
-	}
+	setLabel(label) { this.value = label || ""; return this; } // force label
+	setItem = item => this.setValue(item.value, item.label); // item = value/label
+	clear() { return this.#unselect().setLabel(); } // not fire event
 	reset() {
 		if (this.#value) // is selected data
 			this.#unselect().dispatchEvent(new Event("reset")); // fire event after update data

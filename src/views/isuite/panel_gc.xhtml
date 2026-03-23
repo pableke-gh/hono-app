@@ -37,19 +37,19 @@
 			<div class="ui-blocks">
 				<label class="ui-block">
 					<div class="label">Ejercicios:</div>
-					<h:selectOneMenu id="ejercicio" value="#{ctrl.ejercicio}" pt:is="data-list">
+					<h:selectOneMenu id="ejercicio" value="#{ctrl.ejercicio}" pt:is="data-list" styleClass="ui-input ui-select">
 						<f:selectItems value="#{ctrl.ejercicios}" />
 					</h:selectOneMenu>
 				</label>
 
 				<label class="ui-block">
 					<div class="label">Orgánica:</div>
-					<input type="text" id="organica" name="organica" is="text-input" size="25" maxlength="20" group="search" />
+					<input type="text" id="organica" name="organica" is="text-input" size="25" maxlength="20" class="ui-input" group="search" />
 				</label>
 
 				<label class="ui-block">
 					<div class="label">Imp. a Habilitar:</div>
-					<select id="impHabilitar" name="impHabilitar" is="data-list">
+					<select id="impHabilitar" name="impHabilitar" is="data-list" class="ui-input ui-select">
 						<option value=""></option>
 						<option value="I">Sin Ingreso</option>
 						<option value="N">No Vigente</option>
@@ -61,7 +61,7 @@
 
 				<label class="label">
 					<div class="label">Desc. Orgánica:</div>
-					<input type="text" id="descripcion" name="descripcion" is="text-input" size="40" maxlength="200" group="search" /> 
+					<input type="text" id="descripcion" name="descripcion" is="text-input" size="40" maxlength="200" class="ui-input" group="search" /> 
 				</label>
 			</div>
 

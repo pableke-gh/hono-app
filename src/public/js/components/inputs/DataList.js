@@ -43,7 +43,9 @@ export default class DataList extends HTMLSelectElement {
 		this.selectedIndex = Math.max(0, this.selectedIndex);
 		return this;
 	}
-	load(data) { data[this.name] = this.getValue(); }
+	load(data) { return this.setValue(data[this.name]); }
+	toData(data) { data[this.name] = this.getValue(); return this; }
+	addFormData(fd) { fd.append(this.name, this.getValue()); return this; }
 
 	addListener(name, fn) { this.addEventListener(name, fn); return this; }
 	addChange(fn) { return this.addListener("change", fn); }

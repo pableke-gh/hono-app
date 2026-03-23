@@ -110,7 +110,7 @@ export default class FormHTML extends HTMLFormElement {
 	getValue = name => this.getElement(name).getValue();
 	getData = selector => {
 		const data = {}; // Results container
-		this.#fnUpdate(selector, el => el.load(data));
+		this.#fnUpdate(selector, el => el.toData(data));
 		return data;
 	}
 
@@ -118,11 +118,11 @@ export default class FormHTML extends HTMLFormElement {
 	reset(selector) { return this.#fnUpdate(selector, el => el.reset()); } // clear selected inputs values
 	restart(name) { this.getElement(name).restart(); return this; }; // remove value + focus
 	setData(data, selector) {
-		const fnSetValue = el => el.setValue(data[el.name]);
+		const fnLoad = el => el.load(data);
 		if (data && selector) // update a subgroup of inputs
-			this.#fnUpdate(selector, fnSetValue);
+			this.#fnUpdate(selector, fnLoad);
 		else if (data) // update all inputs
-			this.elements.forEach(el => (el.name && fnSetValue(el)));
+			this.elements.forEach(el => (el.name && fnLoad(el)));
 		else
 			this.reset(selector); // clear selected inputs values
 		return this;

@@ -14,8 +14,18 @@ export default class FileInput extends TextInput {
 	}
 
 	setValue() {} // This input element accepts a filename no value
+	load() {} // This input element accepts a filename no value
+	toData(data) { data[this.name] = this.files; }
+	addFormData(fd) {
+		const size = this.files.length;
+		for (let i = 0; i < size; i++) {
+			const file = this.files[i]; // file at i
+			fd.append(this.name, file, file.name);
+		}
+		return this;
+	}
+
 	setReadonly(force) { return super.setDisabled(force); } // The attribute readonly is not supported or relevant to file input
-	load(data) { data[this.name] = this.files; }
 
 	onFile(fn) {
 		const reader = new FileReader();

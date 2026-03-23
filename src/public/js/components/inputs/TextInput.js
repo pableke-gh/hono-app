@@ -10,7 +10,9 @@ export default class TextInput extends HTMLInputElement {
 
 	getValue() { return this.value && this.value.trim(); }
 	setValue(value) { this.value = value || ""; return this; }
-	load(data) { data[this.name] = this.getValue(); }
+	load(data) { return this.setValue(data[this.name]); }
+	toData(data) { data[this.name] = this.getValue(); return this; }
+	addFormData(fd) { fd.append(this.name, this.getValue()); return this; }
 	reset() { this.value = ""; return this; }
 	restart() { this.focus(); return this.reset(); }
 
@@ -30,7 +32,9 @@ export default class TextInput extends HTMLInputElement {
 
 HTMLInputElement.prototype.getValue = function() { return this.value; }
 HTMLInputElement.prototype.setValue = function(value) { this.value = value || ""; return this; }
-HTMLInputElement.prototype.load = function(data) { data[this.name] = this.getValue(); }
+HTMLInputElement.prototype.load = function(data) { return this.setValue(data[this.name]); }
+HTMLInputElement.prototype.toData = function(data) { data[this.name] = this.getValue(); return this; }
+HTMLInputElement.prototype.addFormData = function(fd) { fd.append(this.name, this.getValue()); return this; }
 HTMLInputElement.prototype.reset = function() { this.value = ""; return this; }
 HTMLInputElement.prototype.restart = function() { this.focus(); return this.reset(); }
 HTMLInputElement.prototype.setDisabled = function(force) { input.setDisabled(this, force); return this; }
