@@ -43,7 +43,7 @@ coll.ready(() => { // init. presto modules
 		const data = valid.all(); // validate form
 		if (!data || !i18n.confirm(msgConfirm))
 			return Promise.reject(); // Error al validar o sin confirmacion
-		const include = [ "id", "tipo", "subtipo", "mask", "orgDec" ]; // fields to include
+		const include = [ "id", "tipo", "subtipo", "mask" ]; // fields to include
 		const fd = form.getFormData(Object.assign(presto.getData(), data), include);
 		fd.exclude([ "faDec", "ejInc", "orgInc", "faInc", "ecoInc", "impInc", "cd" ]);
 		// primera partida = principal y serializo el json (FormData only supports flat values)

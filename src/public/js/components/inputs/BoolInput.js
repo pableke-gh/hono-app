@@ -14,11 +14,6 @@ export default class BoolInput extends TextInput {
 		this.classList.add("ui-bool");
 	}
 
-	//getValue = () => i18n.toFloat(this.value); // Boolean type
+	getValue() { return this.value; }
 	setValue(value) { this.value = i18n.boolval(value); return this; }
-	load(data) { data[this.name] = this.getValue(); }
-
-	/*connectedCallback() {
-		console.log(this.name, "BoolInput connected to DOM");
-	}*/
 }

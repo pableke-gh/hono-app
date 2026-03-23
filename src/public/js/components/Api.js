@@ -71,8 +71,8 @@ function Api() {
 		const fnThen = res => (res.ok ? res.json() : Promise.reject(res.statusText));
 		return _response(url, params).then(fnThen); // continue promise chaning
 	}
-	this.msgs = (url, params) => {
-		const fnThen = res => (res.ok ? res.json().then(fnMsgs) : fnError(res.statusText));
+	this.msgs = (url, params) => { // catch null json response => not error
+		const fnThen = res => (res.ok ? res.json().catch(globalThis.void).then(fnMsgs) : fnError(res.statusText));
 		return _response(url, params).then(fnThen); // continue promise chaning
 	}
 	this.json = (url, params) => {
@@ -84,9 +84,10 @@ function Api() {
 		return _finally(_response(url, params).then(fnThen));
 	}
 
-	this.blob = (url, filename) => {
-		const fnThen = res => (res.ok ? res.blob() : fnError(res.statusText));
-		return _finally(_response(url, OPTS).then(fnThen).then(blob => {
+	this.blob = (url, filename) => { // binary file
+		return _finally(globalThis.fetch(url, OPTS).then(async res => {
+			if (!res.ok) return fnError(res.statusText);
+			const blob = await res.blob(); // get binary
 			const objectURL = blob && blob.size && URL.createObjectURL(blob);
 			if (!objectURL) // object URL is required
 				return fnError("Invalid URL file.");

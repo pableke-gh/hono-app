@@ -25,12 +25,5 @@ export default class IntegerInput extends TextInput {
 	}
 
 	getValue = () => i18n.toInt(this.value); // Int type
-	setValue(value) {
-		this.value = i18n.isoInt(value);
-		return this;
-	}
-
-	/*connectedCallback() {
-		console.log(this.name, "IntegerInput connected to DOM");
-	}*/
+	setValue(value) { this.value = i18n.isoInt(value); return this; }
 }

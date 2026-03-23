@@ -33,6 +33,8 @@ export default class Interesado extends AutocompleteHTML {
 
 	setInteresado() {
 		const interesado = irse.getInteresado(); // read interesado from response
-		return interesado ? this.setValue(interesado.nif, this.row(interesado)) : this.clear();
+		if (!interesado) return this.clear(); // creating new instance
+		this.setValue(interesado.nif, this.row(interesado));
+		form.setValue("nif-interesado", this.getValue());
 	}
 }

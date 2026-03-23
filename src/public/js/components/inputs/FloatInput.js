@@ -27,9 +27,4 @@ export default class FloatInput extends TextInput {
 
 	getValue = () => i18n.toFloat(this.value); // Float type
 	setValue(value) { this.value = i18n.isoFloat(value); return this; }
-	load(data) { data[this.name] = this.getValue(); }
-
-	/*connectedCallback() {
-		console.log(this.name, "FloatInput connected to DOM");
-	}*/
 }

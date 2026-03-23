@@ -9,9 +9,9 @@ class FacturaValidators extends Validators {
 	rechazar() { return super.rechazar(form.getData()); } // specific implementation
 
 	factura(data) { 
-		this.isKey("acTercero", data.acTercero, "Debe seleccionar un tercero válido"); // autocomplete required key
+		this.isKey("tercero", data.tercero, "Debe seleccionar un tercero válido"); // autocomplete required key
 		this.isKey("delegacion", data.delegacion, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
-		this.isKey("acOrganica", data.acOrganica, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
+		this.isKey("organica", data.organica, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
 		if (factura.isRecibo()) //subtipo = ttpp o extension
 			this.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
 		/*if (factura.isDeportes()) {

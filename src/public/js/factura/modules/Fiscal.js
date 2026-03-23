@@ -6,14 +6,14 @@ import fiscalidad from "../data/fiscal.js"
 import form from "./factura.js";
 
 export default class Fiscal extends FormBase {
-	#acTercero = this.getElement("acTercero");
+	#tercero = this.getElement("tercero");
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
 	}
 
 	init() {
-		this.#acTercero.init();
+		this.#tercero.init();
 		this.addChange("subtipo", ev => this.update(+ev.target.value))
 			.addChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
 			.addChange("face", ev => { factura.setFace(+ev.target.value); this.refresh(factura); });
@@ -44,13 +44,13 @@ export default class Fiscal extends FormBase {
 
 	view = data => {
 		const fact = data.solicitud; // datos del servidor
-		this.#acTercero.view(fact, data.delegaciones); // tercero + delegaciones
+		this.#tercero.view(fact, data.delegaciones); // tercero + delegaciones
 		this.#updateFiscalidad(data.tercero); // actualizo la fiscalidad por defecto
 		factura.setSujeto(fact.sujeto).setFace(fact.face); // sujeto / exento + face
 	}
 	update = (subtipo, tercero) => {
-		factura.setSubtipo(subtipo).setNifTercero(this.#acTercero.getCode());
-		this.#updateFiscalidad(tercero || this.#acTercero.getCurrent());
+		factura.setSubtipo(subtipo).setNifTercero(this.#tercero.getCode());
+		this.#updateFiscalidad(tercero || this.#tercero.getCurrent());
 		this.refresh(factura); // force refresh view
 	}
 }
