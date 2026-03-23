@@ -50,7 +50,6 @@ export default class Autocomplete extends TextInput {
 
 	#isChildren = i => ((0 <= i) && (i < coll.size(this.#results.children)));
 	#removeList = () => { this.#results.innerHTML = ""; this.#results.classList.remove(this.#opts.activeClass); }
-	#selected(value, label) { this.#value = value; this.value = label; return this; }
 	#unselect() { this.#index = -1; this.#value = ""; this.#removeList(); return this; }
 	#activeItem(i) {
 		this.#index = this.#isChildren(i) ? i : this.#index; // current item
@@ -59,7 +58,7 @@ export default class Autocomplete extends TextInput {
 	#selectItem(li, i) {
 		if (li && this.#isChildren(i)) {
 			this.#index = i; // Update current index
-			this.#selected(this.select(this.#data[i]), li.innerText);
+			this.setLabel(li.innerText).setval(this.select(this.#data[i])); // first label
 		}
 		this.#removeList();
 	}
@@ -67,9 +66,10 @@ export default class Autocomplete extends TextInput {
 	isItem() { return (this.#index > -1); }
 	isLoaded() { return this.#value; }
 	getValue() { return this.#value; }
+	setval(value) { this.#value = value; return this; }
 	getLabel() { return this.value; }
-	setValue(value, label) { return (value ? this.#selected(value, label) : this.clear()); }
 	setLabel(label) { this.value = label || ""; return this; } // force label
+	setValue(value, label) { return (value ? this.setval(value).setLabel(label) : this.clear()); }
 	setItem = item => this.setValue(item.value, item.label); // item = value/label
 	clear() { return this.#unselect().setLabel(); } // not fire event
 	reset() {
@@ -116,6 +116,7 @@ export default class Autocomplete extends TextInput {
 				this.#selectItem(this.getCurrentOption(), this.#index);
 			}
 		}
+
 		// Event fired when value changes, ignore ctrl, alt, etc...
 		// also occurs when a user presses the "ENTER" key or clicks the "x" button in an <input> element with type="search"
 		this.oninput = ev => {
@@ -126,6 +127,7 @@ export default class Autocomplete extends TextInput {
 			if (size < this.#opts.maxLength) // Reduce server calls and fire source
 				this.#time = setTimeout(() => this.source(), this.#opts.delay);
 		}
+
 		// Event fired before onblur only when text changes
 		this.onchange = ev => { this.value || this.reset(); }
 		this.onblur = ev => { setTimeout(this.#removeList, 280); }

@@ -22,9 +22,8 @@ export default class Tercero extends AutocompleteHTML {
 
 	source() { api.init().json("/uae/fact/terceros", { term: this.value }).then(this.render); }
 	select(item) {
-		this.setLabel(item.label); // update label before get code-nif
 		api.init().json(`/uae/fact/delegaciones?ter=${item.value}`).then(this.#delegaciones.setItems);
-		form.getFiscal().update(factura.getSubtipo(), item);
+		form.getFiscal().update(factura.getSubtipo());
 		return item.value;
 	}
 

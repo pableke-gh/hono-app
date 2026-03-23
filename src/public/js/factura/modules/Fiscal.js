@@ -48,9 +48,9 @@ export default class Fiscal extends FormBase {
 		this.#updateFiscalidad(data.tercero); // actualizo la fiscalidad por defecto
 		factura.setSujeto(fact.sujeto).setFace(fact.face); // sujeto / exento + face
 	}
-	update = (subtipo, tercero) => {
+	update = subtipo => {
 		factura.setSubtipo(subtipo).setNifTercero(this.#tercero.getCode());
-		this.#updateFiscalidad(tercero || this.#tercero.getCurrent());
+		this.#updateFiscalidad(this.#tercero.getCurrent());
 		this.refresh(factura); // force refresh view
 	}
 }
