@@ -3,6 +3,7 @@ import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import maps from "../../services/maps.js";
 import ct from "../../data/place-ct.js";
 
+// Places list => value = place_id (string) / label = icon + place desc.
 export default class AutocompleteMaps extends AutocompleteHTML {
 	#getIdName = () => ((this.name == "origen") ? "oid" : "did");
 	load(data) {

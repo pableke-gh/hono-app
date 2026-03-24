@@ -9,6 +9,7 @@ export default class ButtonForm extends HTMLButtonElement {
 	getValue() {}
 	setValue() {}
 	load(data) {}
+	toData(data) {}
 	reset() {}
 	restart() {}
 

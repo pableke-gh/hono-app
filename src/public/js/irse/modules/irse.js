@@ -1,5 +1,5 @@
 
-import valid from "../i18n/validators.js";
+import valid from "../i18n/validators/irse.js";
 import irse from "../model/Irse.js";
 import Perfil from "./tabs/perfil.js";
 import Paso1 from "./tabs/paso1.js";

@@ -4,6 +4,7 @@ import api from "../../../components/Api.js";
 import factura from "../../model/Factura.js";
 import form from "../factura.js";
 
+// Item list: value = id tercero / label = nif - nombre
 export default class Tercero extends AutocompleteHTML {
 	#delegaciones = this.form.elements["delegacion"];
 

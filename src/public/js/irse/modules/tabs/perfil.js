@@ -2,7 +2,7 @@
 import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
 import i18n from "../../i18n/langs.js";
-import valid from "../../i18n/validators.js";
+import valid from "../../i18n/validators/irse.js";
 
 import irse from "../../model/Irse.js";
 import Interesado from "../inputs/Interesado.js";
