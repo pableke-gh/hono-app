@@ -55,7 +55,7 @@ export default class Partida030 extends FormBase {
 			return !this.showError("Debe seleccionar una partida a incrementar");
 		partida.imp = imp || 0; //importe obligatorio
 		partida.imp030 = partida.imp; // update imp 030
-		return this.setValue("impDec", partida.imp); //ok
+		return this.setValue("imp", partida.imp); //ok
 	}
 }
 

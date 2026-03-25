@@ -16,8 +16,8 @@ export default class AutocompleteMaps extends AutocompleteHTML {
 		return this;
 	}
 	/*addFormData(fd) {
-		fd.append(this.#getIdName(), this.getValue()); // value
-		fd.append(this.name, this.getLabel()); // label
+		fd.add(this.#getIdName(), this.getValue()); // value
+		fd.add(this.name, this.getLabel()); // label
 		return this;
 	}*/
 

@@ -35,10 +35,9 @@ export default class FormHTML extends HTMLFormElement {
 	#fnQuery = el => globalThis.isstr(el) ? this.$1(el) : el;
 	#fnQueryInput = el => globalThis.isstr(el) ? this.getInput(el) : el;
 	#fnAction = (el, fn) => { el = this.#fnQueryInput(el); el && fn(el); return this; }
-	#fnFor = (list, fn) => { list.forEach(fn); return this; }
-	#fnUpdate = (selector, fn) => {
-		selector = selector || "input,select,textarea"; // default all input fields
-		return this.#fnFor(this.elements, el => el.matches(selector) && fn(el));
+	#fnUpdate = (selector, fn) => { // iterate over elements
+		this.elements.forEach(selector ? (el => { el.matches(selector) && fn(el); }) : fn);
+		return this;
 	}
 
 	getOptions = () => this.#opts;
@@ -93,12 +92,12 @@ export default class FormHTML extends HTMLFormElement {
 	setEditable = (model, selector) => this.#fnUpdate(selector, el => {
 		const value = el.dataset.disabled /*|| el.dataset.readonly*/ || el.dataset.editable;
 		if (value == "manual") return; // skip evaluation (input manual)
-		if (el.dataset.disabled) {
+		if (el.dataset.disabled) { // disabled hendler
 			const fnDisabled = model[value] || this.#opts[value] || model.isDisabled;
 			return el.setDisabled(fnDisabled()); // recalc. disabled attribute by handler
 		}
 		const fnEditable = model[value] || this.#opts[value] || model.isEditable;
-		el.setEditable(fnEditable()); // recalc. attribute by handler
+		el.setEditable(fnEditable()); // recalc. readonly attribute by handler
 	});
 	reactivate = (model, tab) => { // set inputs values and readonly
 		this.closeAlerts().setEditable(model).refresh(model);
@@ -133,13 +132,9 @@ export default class FormHTML extends HTMLFormElement {
 	setAttr(selector, name, value) { this.getElement(selector).setAttribute(name, value); return this; }
 
 	getUrlParams = () => new URLSearchParams(new FormData(this));
-	getFormData(data, include) {
-		const fd = new FormDataBox(this);
-		return fd.load(data, include); // merge data
-	}
-	getFormDataInputs(selector) {
+	getFormData(selector) {
 		const fd = new FormDataBox(); // partial form
-		return fd.setInputs(this.getInputs(selector));
+		return fd.addInputs(selector ? this.getInputs(selector) : this.getElements());
 	}
 
 	// Inputs helpers

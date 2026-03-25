@@ -19,19 +19,18 @@ coll.ready(() => { // init. fact modules
 	tabs.setAction("cartap", () => form.create(fnBuild(3, 13))); // create carta de pago
 	//tabs.setAction("ttpp", () => form.create(fnBuild(6, 25))); // TTPP a empresa
 
-	function fnValidate(msgConfirm, url) {
+	form.onSubmit(ev => {
+		ev.preventDefault(); // no submitter
 		const data = valid.all(); // validate form
-		if (!data || !i18n.confirm(msgConfirm))
-			return Promise.reject(); // Error al validar o sin confirmacion
+		if (!data || !i18n.confirm(ev.submitter.dataset.confirm))
+			return; // Error al validar o sin confirmacion
+
 		const temp = Object.assign(factura.getData(), data);
 		temp.lineas = form.getLineas().getData(); // lineas de la factura
 		// si no hay descripcion => concateno los conceptos saneados y separados por punto
 		temp.memo = temp.memo || temp.lineas.map(linea => sb.rtrim(linea.desc, "\\.").trim()).join(". ");
-		return api.setJSON(temp).json(url); // send call
-	}
-	tabs.setAction("send", () => fnValidate("msgSend", "/uae/fact/save").then(tabs.showInit)); // send form
-	tabs.setAction("subsanar", () => {
-		const url = factura.isGaca() ? "/uae/fact/reset" : "/uae/fact/subsanar";
-		fnValidate("msgSave", url).then(tabs.showList); // send from changes
+		const fnThen = (ev.submitter.name == "save") ? tabs.showInit : tabs.showList;
+		const url = "/uae/fact/" + ev.submitter.name; // button type
+		api.setJSON(temp).json(url).then(fnThen); // send data
 	});
 });

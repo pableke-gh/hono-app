@@ -86,7 +86,7 @@ export default class Paso5 extends FormBase {
 	}
 
 	upload(rutas) { // merge data to send
-		const fd = this.getFormDataInputs(".ui-gasto").set("id", irse.getId()).set("trayectos", rutas); // set id + etapas
+		const fd = this.getFormData(".ui-gasto").set("id", irse.getId()).set("trayectos", rutas); // set id + etapas
 		api.setFormData(fd).json("/uae/iris/upload/gasto").then(data => Observer.emit("link", data.gasto)); // send data
 		this.#reload();
 	}

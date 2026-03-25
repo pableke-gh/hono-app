@@ -43,7 +43,7 @@ export default class FacturasForm extends FormHTML {
 		tabs.setShowEvent(6, fnShowTab6).setViewEvent(6, fnViewTab6); // tab resumen
 		tabs.setAction("upload", () => {
 			const fd = this.getFormData(); // todo: replace by FormDataBox
-			fd.append("org", buzon.isFacturaOtros() ? "" : buzon.getOrganica()); // organica seleccionada
+			fd.add("org", buzon.isFacturaOtros() ? "" : buzon.getOrganica()); // organica seleccionada
 			api.setFormData(fd).json("/uae/buzon/upload").then(() => this.fireReset().nextTab(0)); // upload form + clear inputs
 		});
 	}

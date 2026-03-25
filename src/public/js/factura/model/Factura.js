@@ -19,6 +19,8 @@ class Factura extends Solicitud {
 	isGaca = () => (this.get("grp") == 2); // grupo de firma = gaca
 	isReactivable = () => ((this.isUae() && this.isErronea()) || (this.isGaca() && this.isRechazada()));
 	isEditableGaca = () => (this.isEditableUae() || (this.isGaca() && this.isFirmable()));
+	isSubsanableUae = () => (this.isSubsanable() && this.isUae());
+	isSubsanableGaca = () => (this.isSubsanable() && this.isGaca());
 
 	isTtpp = () => (this.getSubtipo() == 3);
 	isTituloOficial = () => (this.getSubtipo() == 4);

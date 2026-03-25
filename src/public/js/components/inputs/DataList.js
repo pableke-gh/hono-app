@@ -58,26 +58,26 @@ export default class DataList extends HTMLSelectElement {
 		if (!items) return this.clear(); // vacio el desplegable
 		const fnItem = item => `<option value="${item.value}">${item.label}</option>`; // Item list
 		this.innerHTML = (isOptional ? this.#empty() : "") + items.map(fnItem).join(""); // Render items
-		return this.setData(items).#change(); // set data and fire change event
+		return this.setData(items); // set data and fire change event
 	}
 	setObject = (data, isOptional) => {
 		if (!data) return this.clear(); // vacio el desplegable
 		this.innerHTML = isOptional ? this.#empty() : "";
 		for (const k in data) // Iterate over all keys
 			this.innerHTML += `<option value="${k}">${data[k]}</option>`;
-		return this.setData(data).#change(); // set data and fire change event
+		return this.setData(data); // set data and fire change event
 	}
 	setLabels = (labels, isOptional) => {
 		if (!labels) return this.clear(); // vacio el desplegable
 		const fnLabel = label => `<option value="${label}">${label}</option>`; // label list
 		this.innerHTML = (isOptional ? this.#empty() : "") + labels.map(fnLabel).join(""); // Render labels
-		return this.setData(labels).#change(); // set data and fire change event
+		return this.setData(labels); // set data and fire change event
 	}
 	setValues(values, labels, isOptional) {
 		if (!values) return this.clear(); // vacio el desplegable
 		const fnBuild = (value, i) => `<option value="${value}">${labels[i]}</option>`; // label list
         this.innerHTML = (isOptional ? this.#empty() : "") + values.map(fnBuild).join(""); // Render labels
-		return this.setData(values).#change(); // set data and fire change event
+		return this.setData(values); // set data and fire change event
 	}
 
 	setDisabled(force) { input.setDisabled(this, force); return this; }

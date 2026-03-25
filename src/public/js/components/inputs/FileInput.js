@@ -13,9 +13,9 @@ export default class FileInput extends TextInput {
 		this.classList.add("hide");
 	}
 
-	setValue() {} // This input element accepts a filename no value
-	load() {} // This input element accepts a filename no value
-	toData(data) { data[this.name] = this.files; }
+	setValue() { this.value = ""; return this; } // This input element accepts a filename no value (clear previously selected files)
+	load() { this.value = ""; return this; } // This input element accepts a filename no value (clear previously selected files)
+	toData(data) { data[this.name] = this.files; } // set all file list
 	addFormData(fd) {
 		const size = this.files.length;
 		for (let i = 0; i < size; i++) {

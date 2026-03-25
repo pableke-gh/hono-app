@@ -14,6 +14,7 @@ coll.ready(() => { // init. presto modules
 		.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto);
 	form.getElement("adjunto").onFile((ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
 	tabs.setAction("adjunto", () => api.init().blob("/uae/presto/adjunto?id=" + presto.getAdjunto()));
+	tabs.showTab(presto.isUxxiec() ? "init" : "list"); // init view for PAS and list view for PDI
 
 	// Init. form events
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
@@ -39,18 +40,20 @@ coll.ready(() => { // init. presto modules
 		});
 	});
 
-	function fnValidate(msgConfirm, url) {
+	form.onSubmit(ev => {
+		ev.preventDefault(); // no submitter
 		const data = valid.all(); // validate form
-		if (!data || !i18n.confirm(msgConfirm))
-			return Promise.reject(); // Error al validar o sin confirmacion
-		const include = [ "id", "tipo", "subtipo", "mask", "orgDec" ]; // fields to include
-		const fd = form.getFormData(Object.assign(presto.getData(), data), include);
-		fd.exclude([ "faDec", "ejInc", "orgInc", "faInc", "ecoInc", "impInc", "cd" ]);
+		if (!data || !i18n.confirm(ev.submitter.dataset.confirm))
+			return; // Error al validar o sin confirmacion
+
+		const fd = form.getFormData(); // append all input values
+		fd.load(presto.getData(), [ "id", "estado", "tipo", "mask", "codigo" ]); // set calculated fields
+		fd.exclude([ "faDec", "cd", "ejInc", "orgInc", "faInc", "ecoInc", "impInc", "ej030", "org030", "eco030", "imp030" ]);
 		// primera partida = principal y serializo el json (FormData only supports flat values)
 		fd.setJSON("partidas", form.getPartidas().setPrincipal().getData());
-		return api.setFormData(fd).send(url); // send data
-	}
-	tabs.setAction("send", () => fnValidate("msgSend", "/uae/presto/save").then(tabs.showInit)); // send xeco-model form
-	tabs.setAction("subsanar", () => fnValidate("msgSave", "/uae/presto/subsanar").then(tabs.showList)); // send from changes
-	tabs.showTab(presto.isUxxiec() ? "init" : "list"); // Always init. list view for PAS/PDI
+
+		const fnThen = (ev.submitter.name == "save") ? tabs.showInit : tabs.showList;
+		const url = "/uae/presto/" + ev.submitter.name; // button type
+		api.setFormData(fd).send(url).then(fnThen); // send data
+	});
 });

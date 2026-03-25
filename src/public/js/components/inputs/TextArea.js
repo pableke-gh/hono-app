@@ -11,11 +11,11 @@ export default class TextArea extends HTMLTextAreaElement {
 		this.classList.add("ui-input", "ui-ta");
 	}
 
-	getValue = () => (this.value && this.value.trim());
+	getValue() { return (this.value && this.value.trim()); }
 	setValue(value) { this.value = value || ""; return this; }
 	load(data) { return this.setValue(data[this.name]); }
 	toData(data) { data[this.name] = this.getValue(); return this; }
-	addFormData(fd) { fd.append(this.name, this.getValue()); return this; }
+	addFormData(fd) { fd.add(this.name, this.getValue()); return this; }
 	reset() { this.value = ""; return this; }
 	restart() { this.focus(); return this.reset(); }
 

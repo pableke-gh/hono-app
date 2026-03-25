@@ -14,11 +14,11 @@ class PrestoValidators extends Validators {
 			this.isKey("orgDec", data.orgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
 			this.isKey("ecoDec", data.ecoDec, "Debe seleccionar la económica que disminuye"); // select required number
 		}
-		const imp = data.impDec ?? 0; // los importes pueden ser nulos segun el tipo de presto
+		const imp = data.imp ?? 0; // los importes pueden ser nulos segun el tipo de presto
 		const notValidateCd = presto.isAnt() || presto.isSubsanable(); // anticipos / subsanaciones no validan el CD
 		const cd = notValidateCd ? imp : (data.cd ?? 0); // validación del crédito disponible
 		if (imp > cd)
-			this.addError("impDec", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
+			this.addError("imp", "errExceeded", "El importe de la partida que disminuye supera el crédito disponible");
 		this.size("memo", data.memo, "Debe asociar una memoria justificativa a la solicitud."); // Required string
 		if (data.urgente == "2") { // Solicitud urgente
 			this.size("extra", data.extra, "Debe indicar un motivo para la urgencia de esta solicitud."); // Required string
@@ -30,8 +30,8 @@ class PrestoValidators extends Validators {
 	all() {
 		const data = form.getData(); // start validation
 		const partidas = form.getPartidas(); // paartidas de la solicitud
-		if (presto.isPartidaDec() && (partidas.getImporte() != data.impDec)) // Valido los importes a decrementar e incrementar
-			this.addError("impDec", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
+		if (presto.isPartidaDec() && (partidas.getImporte() != data.imp)) // Valido los importes a decrementar e incrementar
+			this.addError("imp", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
 		if (partidas.isEmpty())
 			this.addRequired("orgInc", "Debe seleccionar al menos una partida a incrementar");
         return this.presto(data);

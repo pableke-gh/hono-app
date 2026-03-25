@@ -35,7 +35,7 @@ export default class PartidaDec extends FormBase {
 		const fnAutoloadAnt = data => { data ? pInc.autoload(data, Math.max(0, data.ih)) : fnAutoloadErr("No se ha encontrado el anticipo en el sistema."); }
 		this.#economica.setEmptyOption("Seleccione una económica").addChange(() => {
 			if (this.#economica.isEmpty())
-				return this.setValue("impDec").setValue("cd");
+				return this.setValue("imp").setValue("cd");
 			const item = this.#economica.getCurrent();
 			this.setValue("cd", item.imp); // set importe
 			if (presto.isL83() && presto.isEditable()) //L83 => busco su AIP solo en edicion
@@ -45,12 +45,12 @@ export default class PartidaDec extends FormBase {
 		});
 
 		this.addChange("ej", this.#organica.reload);
-		this.addChange("impDec", ev => { presto.isAutoLoadImp() && pInc.autoload(null, ev.target.getValue()); }); //importe obligatorio
+		this.addChange("imp", ev => { presto.isAutoLoadImp() && pInc.autoload(null, ev.target.getValue()); }); //importe obligatorio
 	}
 
 	view(data) {
 		const solicitud = data.solicitud; // datos del servidor
-		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.omask & 1).setValue("impDec", solicitud.imp);
+		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.omask & 1);
         this.#organica.setValue(solicitud.idOrgDec, solicitud.orgDec + " - " + solicitud.dOrgDec);
 		this.#economica.setItems(data.economicas); // cargo el desplegable de economicas
 	}
