@@ -5,13 +5,11 @@ import api from "../../components/Api.js"
 import valid from "../i18n/validators.js";
 
 import Organica030 from "./inputs/Organica030.js";
+import Economica030 from "./inputs/Economica030.js";
 import presto from "../model/Presto.js";
 import form from "./presto.js";
 
 export default class Partida030 extends FormBase {
-	#organcia = this.getElement("org030");
-	#ej030; // is tab preloaded
-
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
 	}
@@ -28,26 +26,14 @@ export default class Partida030 extends FormBase {
 		});
 	}
 
-	isLoaded = ej => (this.#ej030 == ej); // 030 cargado
 	view = partida => { // load tab 030
-		const fnLoad = partida => { // load tab 030
-			this.#ej030 = partida.ej030 = partida.ej; // Ejercicio de la partida a añadir
-			presto.getOrg080 = () => partida.o; // Organica del documento 080
-			presto.getDescOrg080 = () => partida.dOrg; // Descripción de la organica del documento 080
-			presto.getEco080 = () => partida.e; // Económica del documento 080
-			presto.getDescEco080 = () => partida.dEco; // Descripción de la económica del documento 080
-			presto.getImp080 = () => partida.imp; // Descripción de la económica del documento 080 
-
-			this.setData(partida, ".ui-030").refresh(presto); // Actualizo los campos de la vista
-			this.#organcia.setValue(partida.idOrg030, partida.o030 + " - " + partida.dOrg030);
-			tabs.showTab("030"); // change tab
-		}
-
-		if (this.isLoaded(partida.ej))
-			return fnLoad(partida);
+		const eco030 = this.getElement("eco030");
+		if (eco030.isLoaded(partida.ej))
+			return tabs.showTab("030"); // change tab
 		// actualizo las economicas de ingresos 030 para el nuevo ejercicio
-		const fnEconomicas = economicas => { this.getElement("eco030").setItems(economicas); fnLoad(partida); }
-		api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(fnEconomicas);
+		api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(economicas => {
+			eco030.reload(partida, economicas);
+		});
 	}
 
 	autoload(partida, imp) {
@@ -60,3 +46,4 @@ export default class Partida030 extends FormBase {
 }
 
 customElements.define("organica-030", Organica030, { extends: "input" });
+customElements.define("economica-030", Economica030, { extends: "select" });
