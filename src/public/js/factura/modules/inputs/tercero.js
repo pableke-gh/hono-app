@@ -16,9 +16,12 @@ export default class Tercero extends AutocompleteHTML {
 	init() {
 		this.#delegaciones.setEmptyOption("Seleccione una delegación");
 	}
-	view(fact, delegaciones) {
-		this.#delegaciones.setItems(delegaciones); // cargo las delegaciones
-		return fact ? this.setValue(fact.idTer, fact.nif + " - " + fact.tercero) : this.clear();
+
+	load(data) {
+		this.setValue(data.idTer, data.nif + " - " + data.tercero);
+	}
+	setDelegaciones(delegaciones) { // cargo las delegaciones
+		this.#delegaciones.setItems(delegaciones); // data-list
 	}
 
 	source() { api.init().json("/uae/fact/terceros", { term: this.value }).then(this.render); }

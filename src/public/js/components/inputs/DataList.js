@@ -35,7 +35,7 @@ export default class DataList extends HTMLSelectElement {
 	setEmptyOption(text) { this.dataset.emptyOption = text; return this; }
 	// IMPORTANT! force value = "", to avoid change event return text content
 	#empty = () => (this.dataset.emptyOption ? `<option value="">${this.dataset.emptyOption}</option>` : "");
-	#change() { this.dispatchEvent(new Event("change")); return this; }
+	#change() { this.dispatchEvent(new Event("change")); return this; } // private only for reset
 
 	getValue = () => this.value;
 	setValue(value) {

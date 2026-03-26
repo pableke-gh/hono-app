@@ -21,11 +21,10 @@ export default class Autocomplete extends TextInput {
 		resultsClass: "results" // ul options class
 	}
 
-	constructor(opts) {
+	constructor() {
 		super(); // Must call super before 'this'
 		// Initialize the element
 		this.type = "search";
-		this.setOptions(opts);
 		this.setAttribute("autocomplete", "off");
 		this.#results = this.nextElementSibling || document.createElement("ul");
 		this.#results.classList.add(this.#opts.resultsClass);

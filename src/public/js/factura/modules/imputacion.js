@@ -53,7 +53,6 @@ export default class Imputacion extends FormBase {
 
 	view(data) {
 		const fact = data.solicitud; // datos del servidor
-		this.#organica.setValue(fact.idOrg, fact.org + " - " + fact.descOrg);
 		this.#acRecibo.setValue(fact.idRecibo, fact.acRecibo);
 		this.#lineas.render(data.lineas); // render table
 	}

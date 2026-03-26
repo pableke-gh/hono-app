@@ -3,6 +3,7 @@ import FormBase from "../../components/forms/FormBase.js";
 import api from "../../components/Api.js"
 import presto from "../model/Presto.js";
 import OrganicaDec from "./inputs/OrganicaDec.js";
+import EconomicaDec from "./inputs/EconomicaDec.js";
 import form from "./presto.js";
 
 export default class PartidaDec extends FormBase {
@@ -20,7 +21,7 @@ export default class PartidaDec extends FormBase {
 		this.#organica.select = item => { // override => final select
 			presto.isAutoLoadInc() && partidas.reset(); //autoload => clear table
 			const url = presto.isAutoLoadInc() ? "/uae/presto/economicas/l83" : "/uae/presto/economicas/dec"; // url by type
-			api.init().json(url + "?org=" + item.value).then(this.#economica.setItems); // auto load on economica change event
+			api.init().json(url + "?org=" + item.value).then(this.#economica.reload); // reload economicas
 			form.setAvisoFa(item).setValue("faDec", item.int & 1); // indicador de organica afectada
 			return item.value;
 		}
@@ -30,20 +31,6 @@ export default class PartidaDec extends FormBase {
 			this.setValue("faDec");
 		});
 
-		const fnAutoloadErr = msg => { this.#organica.isItem() && this.showError(msg); }
-		const fnAutoloadL83 = data => { data ? pInc.autoload(data, this.#economica.getItem(0).imp) : fnAutoloadErr("Aplicación AIP no encontrada en el sistema."); }
-		const fnAutoloadAnt = data => { data ? pInc.autoload(data, Math.max(0, data.ih)) : fnAutoloadErr("No se ha encontrado el anticipo en el sistema."); }
-		this.#economica.setEmptyOption("Seleccione una económica").addChange(() => {
-			if (this.#economica.isEmpty())
-				return this.setValue("imp").setValue("cd");
-			const item = this.#economica.getCurrent();
-			this.setValue("cd", item.imp); // set importe
-			if (presto.isL83() && presto.isEditable()) //L83 => busco su AIP solo en edicion
-				return api.init().json(`/uae/presto/l83?org=${this.#organica.getValue()}`).then(fnAutoloadL83);
-			if (presto.isAnt() && presto.isEditable()) //ANT => cargo misma organica solo en edicion
-				return api.init().json(`/uae/presto/anticipo?org=${this.#organica.getValue()}&eco=${item.value}`).then(fnAutoloadAnt);
-		});
-
 		this.addChange("ej", this.#organica.reload);
 		this.addChange("imp", ev => { presto.isAutoLoadImp() && pInc.autoload(null, ev.target.getValue()); }); //importe obligatorio
 	}
@@ -51,7 +38,6 @@ export default class PartidaDec extends FormBase {
 	view(data) {
 		const solicitud = data.solicitud; // datos del servidor
 		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.omask & 1);
-        this.#organica.setValue(solicitud.idOrgDec, solicitud.orgDec + " - " + solicitud.dOrgDec);
 		this.#economica.setItems(data.economicas); // cargo el desplegable de economicas
 	}
 	reload() {
@@ -60,3 +46,4 @@ export default class PartidaDec extends FormBase {
 }
 
 customElements.define("organica-dec", OrganicaDec, { extends: "input" });
+customElements.define("economica-dec", EconomicaDec, { extends: "select" });

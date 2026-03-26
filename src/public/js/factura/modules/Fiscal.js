@@ -44,7 +44,7 @@ export default class Fiscal extends FormBase {
 
 	view = data => {
 		const fact = data.solicitud; // datos del servidor
-		this.#tercero.view(fact, data.delegaciones); // tercero + delegaciones
+		this.#tercero.setDelegaciones(data.delegaciones); // tercero + delegaciones
 		this.#updateFiscalidad(data.tercero); // actualizo la fiscalidad por defecto
 		factura.setSujeto(fact.sujeto).setFace(fact.face); // sujeto / exento + face
 	}
