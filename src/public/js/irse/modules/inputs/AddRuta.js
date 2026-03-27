@@ -30,7 +30,7 @@ export default class AddRuta extends HTMLAnchorElement {
 			if (!valid.rutas())
 				return rutas.remove(ruta);
 			rutas.setRutaPrincipal(rutas.findRutaPrincipal());
-			form.getRutas().renderRutas(); // render rutas paso 2 = maps
+			form.getRutas().rebuild(); // render rutas paso 2 = maps
 			form.setChanged(true); // update indicator
 		}
 

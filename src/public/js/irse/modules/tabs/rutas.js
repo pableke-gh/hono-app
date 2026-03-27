@@ -61,7 +61,7 @@ export default class Rutas extends FormBase {
 	}
 
 	getRutas = () => this.#tr; // table rutas
-	renderRutas() { this.#tr.render(); } // reload table
+	rebuild() { this.#tr.render(); } // reload table
 	view(data) { rutas.setRutas(data); this.#tr.render(); }
 }
 

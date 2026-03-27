@@ -29,7 +29,7 @@ export default class Partida030 extends FormBase {
 	view = partida => { // load tab 030
 		const eco030 = this.getElement("eco030");
 		if (eco030.isLoaded(partida.ej))
-			return tabs.showTab("030"); // change tab
+			return eco030.showTab(partida); // change tab
 		// actualizo las economicas de ingresos 030 para el nuevo ejercicio
 		api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(economicas => {
 			eco030.reload(partida, economicas);

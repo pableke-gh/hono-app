@@ -4,10 +4,10 @@ export default class FormDataBox extends FormData {
 	add(name, value) { value && super.append(name, value); return this; }
 
 	setInput = el => this.set(el.name, el.getValue());
-	setInputs(elements) { elements.forEach(el => this.setInput(el)); return this; }
+	setInputs(elements) { elements.forEach(this.setInput); return this; }
 
-	addInput(el) { el.addFormData(this); return this; }
-	addInputs(elements) { elements.forEach(el => this.addInput(el)); return this; }
+	addInput = el => { el.addFormData(this); return this; }
+	addInputs(elements) { elements.forEach(this.addInput); return this; }
 
 	setJSON(name, data) { // FormData only supports flat values
 		super.set(name, JSON.stringify(data));
