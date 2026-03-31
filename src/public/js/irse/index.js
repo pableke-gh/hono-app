@@ -10,7 +10,7 @@ coll.ready(() => {
 	const list = form.init().getSolicitudes(); // init modules
 	// PF hack for old version compatibility => remove when possible (override api call)
 	const fnIdParam = data => { loading(); return [{ name: "id", value: data.id }]; } // set param structure
-	list.set("#view", data => (form.isCached(data.id) ? tabs.showTab(irse.getInitTab()) : window.rcView(fnIdParam(data))));
+	list.set("#view", data => (form.isCached(data.id) ? tabs.show(irse.getInitTab()) : window.rcView(fnIdParam(data))));
 	list.set("#clone", data => (i18n.confirm("msgReactivar") && window.rcClone(fnIdParam(data)))); // set table action
 	list.set("#reset", data => (i18n.confirm("msgReactivar") && window.rcReactivar(fnIdParam(data)))); // set table action
 
@@ -33,7 +33,7 @@ coll.ready(() => {
 		const firmas = coll.parse(args.firmas);
 
 		form.view(organicas, rutas, gastos, dietas, cuentas, firmas); // configure view
-		tabs.nextTab(tab ?? irse.get("tab")); // go to next tab
+		tabs.next(tab ?? irse.get("tab")); // go to next tab
 	}
 
 	window.saveTab = () => form.setOk().setChanged().refresh(irse).working();

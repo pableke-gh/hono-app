@@ -23,7 +23,7 @@ export default class UxxiecForm extends FormHTML {
 		const fnLoadUxxiec = data => { // refresh form and buttons
 			this.refresh(solicitudes.load(data)).setCache(data.id);
 			this.#updateButtons(); // update buttons navbar
-			tabs.showTab("uxxiec"); // show selected tab
+			tabs.show("uxxiec"); // show selected tab
 			this.#acUxxi.reload(); // Reload autocomplete
 		}
 

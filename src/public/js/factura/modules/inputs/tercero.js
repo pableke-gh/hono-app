@@ -13,15 +13,9 @@ export default class Tercero extends AutocompleteHTML {
 		this.setDelay(500).setMinLength(5).addListener("reset", () => this.clear());
 	}
 
-	init() {
-		this.#delegaciones.setEmptyOption("Seleccione una delegación");
-	}
-
 	load(data) {
-		this.setValue(data.idTer, data.nif + " - " + data.tercero);
-	}
-	setDelegaciones(delegaciones) { // cargo las delegaciones
-		this.#delegaciones.setItems(delegaciones); // data-list
+		this.setValue(data.idTer, data.nif + " - " + data.tercero); // autocomplete
+		this.#delegaciones.setOption(data.delegacion, data.delName); // data-list
 	}
 
 	source() { api.init().json("/uae/fact/terceros", { term: this.value }).then(this.render); }

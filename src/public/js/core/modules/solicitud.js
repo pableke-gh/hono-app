@@ -59,7 +59,7 @@ export default class Solicitud extends FormBase {
 	reject = data => { // refresh and open reject tab from list
 		const isCached = this.isCached(data.id); // check if data is cached
 		this.set("update-firmas", el => el.setVisible(isCached)).refresh(this.#solicitudes.load());
-		tabs.showTab("reject"); // show form
+		tabs.show("reject"); // show form
 	}
 	rechazar = data => { // accion de rechazo
 		if (!this.#validReject("msgRechazar")) return; // validation error or cancel by user

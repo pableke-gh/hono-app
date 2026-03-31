@@ -42,7 +42,7 @@ export default class Paso3 extends FormBase {
 		tabs.setAction("paso3", () => {
 			if (!valid.paso3()) return; // if error => stop
 			if (!irse.isEditable() || !this.isChanged())
-				return tabs.nextTab(); // go next tab directly
+				return tabs.next(); // go next tab directly
 			loading(); window.rcPaso3(); // call server to save and calculate maps
 		});
 		tabs.setAction("save3", () => {

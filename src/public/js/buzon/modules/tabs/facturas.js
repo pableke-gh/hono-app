@@ -37,10 +37,10 @@ export default class FacturasForm extends FormHTML {
 		const fnFile = (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; };
 		this.getElement("factura").onFile(fnFile); this.getElement("justPago").onFile(fnFile);
 
-		tabs.setShowEvent(2, fnShowTab2); // tab fichero factura
-		tabs.setActiveEvent(4, buzon.isActiveTab4).setShowEvent(4, fnValidateJustPago);
-		tabs.setActiveEvent(5, () => this.#isActiveTab5).setShowEvent(5, fnValidateJustPago);
-		tabs.setShowEvent(6, fnShowTab6).setViewEvent(6, fnViewTab6); // tab resumen
+		tabs.setNextEvent(1, fnShowTab2); // tab fichero factura
+		tabs.setNextEvent(2, fnValidateJustPago).setActiveEvent(4, buzon.isActiveTab4);
+		tabs.setActiveEvent(5, () => this.#isActiveTab5).setNextEvent(5, fnShowTab6);
+		tabs.setNextEvent(6, fnShowTab6).setViewEvent(6, fnViewTab6); // tab resumen
 		tabs.setAction("upload", () => {
 			const fd = this.getFormData(); // todo: replace by FormDataBox
 			fd.add("org", buzon.isFacturaOtros() ? "" : buzon.getOrganica()); // organica seleccionada

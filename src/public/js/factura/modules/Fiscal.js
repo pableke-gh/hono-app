@@ -13,7 +13,6 @@ export default class Fiscal extends FormBase {
 	}
 
 	init() {
-		this.#tercero.init();
 		this.addChange("subtipo", ev => this.update(+ev.target.value))
 			.addChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
 			.addChange("face", ev => { factura.setFace(+ev.target.value); this.refresh(factura); });
@@ -44,7 +43,6 @@ export default class Fiscal extends FormBase {
 
 	view = data => {
 		const fact = data.solicitud; // datos del servidor
-		this.#tercero.setDelegaciones(data.delegaciones); // tercero + delegaciones
 		this.#updateFiscalidad(data.tercero); // actualizo la fiscalidad por defecto
 		factura.setSujeto(fact.sujeto).setFace(fact.face); // sujeto / exento + face
 	}

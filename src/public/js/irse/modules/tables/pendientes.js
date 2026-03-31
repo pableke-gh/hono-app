@@ -32,7 +32,7 @@ export default class RutaPendientes extends Table {
 	link = data => {
 		if (!gasto.isFactura(data)) return; // no es factura
 		rutas.link(this.getChecked(), data.id); // link gasto id to rutas
-		tabs.goTab(5); // allways go back to step 5
+		tabs.goTo(5); // allways go back to step 5
 		this.view(); // update changes in pending routes
 	}
 	unlink = data => {

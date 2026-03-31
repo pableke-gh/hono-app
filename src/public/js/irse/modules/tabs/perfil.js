@@ -68,7 +68,7 @@ export default class Perfil extends FormBase {
 		tabs.setActiveEvent(2, this.isMaps).setActiveEvent(3, this.isIsu);
 		tabs.setAction("paso0", () => {
 			if (!valid.perfil()) return; // if error => stop
-			if (!irse.isEditableP0()) return tabs.nextTab();
+			if (!irse.isEditableP0()) return tabs.next();
 			loading(); window.rcPaso0(); // call server
 		});
 		this.afterReset(() => {

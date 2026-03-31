@@ -21,12 +21,12 @@ export default class UsuariosForm extends FormHTML {
 			api.init().json("/uae/buzon/user/add", params).then(fnUsuarios);
 			this.#acUser.reload(); // clear data and autofocus
 		});
-		tabs.setAction("save-users", () => tabs.showTab(0).showOk("saveOk"));
+		tabs.setAction("save-users", () => tabs.show(0).showOk("saveOk"));
 	}
 
 	load(data) {
 		if (this.isCached(data.oCod))
-			return tabs.nextTab(10);
+			return tabs.next(10);
 		api.init().json("/uae/buzon/usuarios?org=" + data.oCod).then(usuarios => {
 			buzon.setData(data); // load data model
 			this.nextElementSibling.render(usuarios); // load table

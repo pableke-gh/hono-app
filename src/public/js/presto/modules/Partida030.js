@@ -21,7 +21,7 @@ export default class Partida030 extends FormBase {
 			if (!valid.validate030()) // validate partida 080 / 030
 				return false; // not valid data
 			if (presto.isEditable()) // if editable => back to presto view, send table on tab-action-send
-				return tabs.backTab().showOk("Datos del documento 030 asociados correctamente.");
+				return tabs.back().showOk("Datos del documento 030 asociados correctamente.");
 			api.setJSON(partidas.getData()).json("/uae/presto/save/030").then(tabs.showForm);
 		});
 	}

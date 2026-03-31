@@ -18,7 +18,7 @@ export default class Economica030 extends DataList {
 		presto.getImp080 = () => partida.imp; // Descripción de la económica del documento 080 
 
 		form.setData(partida, ".ui-030").refresh(presto); // Actualizo los campos de la vista
-		tabs.showTab("030"); // change tab
+		tabs.show("030"); // change tab
 	}
 
 	reload(partida, economicas) { // load options and refresh tab

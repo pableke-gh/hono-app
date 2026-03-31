@@ -79,7 +79,7 @@ export default class FormHTML extends HTMLFormElement {
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return this.setOk(); // show ok msg
-		tabs.nextTab(tab); // go to next tab
+		tabs.next(tab); // go to next tab
 		return this;
 	}
 
@@ -101,7 +101,7 @@ export default class FormHTML extends HTMLFormElement {
 	});
 	reactivate = (model, tab) => { // set inputs values and readonly
 		this.closeAlerts().setEditable(model).refresh(model);
-		tabs.viewTab(tab ?? "form"); // show tab and preserve messages
+		tabs.view(tab ?? "form"); // show tab and preserve messages
 		return this;
 	}
 

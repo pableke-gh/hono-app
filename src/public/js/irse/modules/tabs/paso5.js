@@ -69,8 +69,8 @@ export default class Paso5 extends FormBase {
 		// el paso 5 requiere validaciones en el servidor
 		const fnUrl = () => ("/uae/iris/paso5/save?id=" + irse.getId());
 		tabs.setAction("paso5", () => {
-			if (!irse.isEditable()) return tabs.nextTab(); // go next tab directly
-			api.init().json(fnUrl()).then(() => tabs.goTab(6)); // validaciones del servidor
+			if (!irse.isEditable()) return tabs.next(); // go next tab directly
+			api.init().json(fnUrl()).then(() => tabs.goTo(6)); // validaciones del servidor
 		});
 		tabs.setAction("save5", () => api.init().json(fnUrl()).then(this.setOk));
 		tabs.setAction("uploadGasto", () => (valid.upload() && this.upload()));

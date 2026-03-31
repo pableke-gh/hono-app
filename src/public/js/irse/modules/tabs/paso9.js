@@ -86,9 +86,11 @@ export default class Paso9 extends FormBase {
 			return entidad ? (cuenta + " - " + entidad) : cuenta;
 		});
 
+		cuentas.push(""); // IMPORTANT! force value = "", to avoid change event return text content
+		labels.push("Dar de alta una nueva cuenta"); // input select label
 		this.#cuentas.setValues(cuentas, labels);
 		// IMPORTANT! force value = "", to avoid change event return text content
-		this.#cuentas.add(new Option("Dar de alta una nueva cuenta", ""));
+		//this.#cuentas.add(new Option("Dar de alta una nueva cuenta", ""));
 		this.#cuentas.setValue(cuenta);
 
 		this.#paises.setValue(irse.get("paisEntidad"));

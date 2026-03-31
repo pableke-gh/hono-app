@@ -24,6 +24,10 @@ export default class EconomicaDec extends DataList {
 			return api.init().json(`/uae/presto/anticipo?org=${org}&eco=${item.value}`).then(_autoloadAnt);
 	}
 
+	load(data) {
+		this.setOption(data.ecoDec, data.ecoDecDesc); // cargo el desplegable de economicas
+	}
+
 	reload = economicas => {
 		this.setItems(economicas).select();
 	}

@@ -42,8 +42,8 @@ export default class Resumen extends FormBase {
 
 		tabs.setAction("paso6", () => {
 			if (!valid.resumen(this.#km.getResume())) return; // if error => stop
-			if (!irse.isEditable() || !this.isChanged()) return tabs.nextTab(); // go next tab directly
-			api.setJSON(fnData()).json("/uae/iris/resumen/save").then(() => { fnNext(); tabs.goTab(); });
+			if (!irse.isEditable() || !this.isChanged()) return tabs.next(); // go next tab directly
+			api.setJSON(fnData()).json("/uae/iris/resumen/save").then(() => { fnNext(); tabs.goTo(); });
 		});
 		tabs.setAction("save6", () => {
 			if (!valid.resumen(this.#km.getResume())) return; // if error => stop

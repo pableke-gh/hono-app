@@ -37,8 +37,8 @@ export default class Paso1 extends FormBase {
 		tabs.setAction("paso1", () => {
 			if (!valid.paso1()) return; // if error => stop
 			if (!irse.isEditable() || !this.isChanged())
-				return tabs.nextTab(); // go next tab directly
-			const fnNext = data => { fnUpdate(data); tabs.goTab(); };
+				return tabs.next(); // go next tab directly
+			const fnNext = data => { fnUpdate(data); tabs.goTo(); };
 			if (perfil.isMun())
 				return api.setJSON(fnDataMun()).json("/uae/iris/mun/save").then(fnNext);
 			api.setJSON(fnData()).json("/uae/iris/paso1/save").then(fnNext);

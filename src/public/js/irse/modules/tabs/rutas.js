@@ -48,10 +48,14 @@ export default class Rutas extends FormBase {
 		tabs.getTab(2).addEventListener("change", ev => ev.stopPropagation()); // inputs not change form state => only programmatically
 		tabs.setViewEvent(2, () => this.setValue("matricula", irse.getMatricula())); // preload matricula from server
 
+		tabs.setBackEvent(2, () => {
+			if (valid.itinerario() && irse.isEditable() && this.isChanged()) // is valid change
+				api.setJSON(fnData()).json("/uae/iris/rutas/save").then(fnUpdate); // save and go back
+		});
 		tabs.setAction("paso2", () => {
 			if (!valid.itinerario()) return; // if error => stop
-			if (!irse.isEditable() || !this.isChanged()) return tabs.nextTab(); // go next tab directly
-			api.setJSON(fnData()).json("/uae/iris/rutas/save").then(data => { fnUpdate(data); tabs.goTab(); }); // go next tab with messages
+			if (!irse.isEditable() || !this.isChanged()) return tabs.next(); // go next tab directly
+			api.setJSON(fnData()).json("/uae/iris/rutas/save").then(data => { fnUpdate(data); tabs.goTo(); }); // go next tab with messages
 		});
 		tabs.setAction("save2", () => {
 			if (!valid.itinerario()) return; // if error => stop

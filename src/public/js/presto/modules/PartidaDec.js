@@ -36,9 +36,7 @@ export default class PartidaDec extends FormBase {
 	}
 
 	view(data) {
-		const solicitud = data.solicitud; // datos del servidor
-		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", solicitud.omask & 1);
-		this.#economica.setItems(data.economicas); // cargo el desplegable de economicas
+		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", data.solicitud.omask & 1);
 	}
 	reload() {
 		this.#organica.reload();

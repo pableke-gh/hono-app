@@ -14,7 +14,7 @@ coll.ready(() => { // init. presto modules
 		.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto);
 	form.getElement("adjunto").onFile((ev, el, file) => { el.nextElementSibling.innerHTML = file.name; });
 	tabs.setAction("adjunto", () => api.init().blob("/uae/presto/adjunto?id=" + presto.getAdjunto()));
-	tabs.showTab(presto.isUxxiec() ? "init" : "list"); // init view for PAS and list view for PDI
+	tabs.show(presto.isUxxiec() ? "init" : "list"); // init view for PAS and list view for PDI
 
 	// Init. form events
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 

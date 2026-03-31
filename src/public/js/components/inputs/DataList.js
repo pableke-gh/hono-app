@@ -1,5 +1,6 @@
 
 import sb from "../types/StringBox.js";
+import i18n from "../../i18n/langs.js";
 import input from "./FormInput.js";
 
 // Register the custom element
@@ -10,14 +11,15 @@ export default class DataList extends HTMLSelectElement {
 
 	constructor() {
 		super(); // Must call super before 'this'
-		// Initialize the element
+		// Initialize the element HTML
 		this.classList.add("ui-input", "ui-select");
+		this.setEmptyOption(this.dataset.empty || i18n.get("selectOption"));
 	}
 
 	getData = () => this.#data;
 	setData(data) { this.#data = data; return this; }
-	getCurrent = () => this.#data[this.selectedIndex];
-	getItem = index => this.#data[index];
+	getCurrent = () => (this.#data && this.#data[this.selectedIndex]);
+	getItem = index => (this.#data && this.#data[index]);
 	getIndex = () => this.selectedIndex;
 	isEmpty = () => !this.#data;
 
@@ -32,9 +34,9 @@ export default class DataList extends HTMLSelectElement {
 		return this;
 	}
 
-	setEmptyOption(text) { this.dataset.emptyOption = text; return this; }
+	setEmptyOption(text) { this.dataset.empty = text; return this; }
 	// IMPORTANT! force value = "", to avoid change event return text content
-	#empty = () => (this.dataset.emptyOption ? `<option value="">${this.dataset.emptyOption}</option>` : "");
+	#empty = () => `<option value="" selected>${this.dataset.empty}</option>`;
 	#change() { this.dispatchEvent(new Event("change")); return this; } // private only for reset
 
 	getValue = () => this.value;
@@ -50,10 +52,16 @@ export default class DataList extends HTMLSelectElement {
 	addListener(name, fn) { this.addEventListener(name, fn); return this; }
 	addChange(fn) { return this.addListener("change", fn); }
 
-	reset = () => { this.selectedIndex = 0; return this.#change(); } // same options
-	clear = () => { this.#data = null; this.innerHTML = this.#empty(); return this.reset(); } // remove data and first option
-	restart() { this.focus(); return this.reset(); } // focus and first option
+	reset = () => { this.selectedIndex = 0; return this.#change(); } // force first option
+	clear = () => { this.innerHTML = this.#empty(); return this.setData(null).reset(); } // remove data, set first option and fire change event
+	restart() { this.focus(); return this.reset(); } // set focus and force first option
 
+	setOption(value, label) { // Only an option
+		if (!value) return this.clear(); // vacio el desplegable
+		this.innerHTML = `<option value="${value}">${label}</option>`; // Only an option
+		this.value = value; // set selected value
+		return this.setData(null); // data empty
+	}
 	setItems = (items, isOptional) => {
 		if (!items) return this.clear(); // vacio el desplegable
 		const fnItem = item => `<option value="${item.value}">${item.label}</option>`; // Item list
