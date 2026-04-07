@@ -1,7 +1,7 @@
 
 import FormBase from "../../components/forms/FormBase.js";
 import factura from "../model/Factura.js";
-import Tercero from "./inputs/tercero.js";
+import Tercero from "../components/inputs/tercero.js";
 import fiscalidad from "../data/fiscal.js"
 import form from "./factura.js";
 

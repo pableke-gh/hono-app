@@ -94,29 +94,28 @@ export default class Solicitud extends FormBase {
 	}
 
 	onView() {} // optional event on view action
-	#showForm = data => { // load data and show form tab
-		const solicitud = this.#solicitud;
-		if (!solicitud.isValid(data)) // no data => error
-			return this.showError("No se han podido cargar los datos del servidor.");
-		solicitud.setData(data.solicitud); // 1º carga los datos de la solicitud
-		super.setData(data.solicitud).setCache(solicitud.getId()); // 2º update inputs values + set form cache
-		this.reactivate(solicitud, this.setFirmas(data.firmas).onView(data)); // 3º actualiza firmas asociadas + reactive
+	#show = data => { // load data and show form tab
+		if (!this.#solicitud.isValid(data)) // no data => error
+			return !this.showError("No se han podido cargar los datos del servidor.");
+		// cargo los datos y preparo los campos del formulario en la vista
+		this.load(this.#solicitud.setData(data.solicitud)).setFirmas(data.firmas);
+		return tabs.view(this.onView(data) || "form"); // show tab and preserve messages
 	}
 	create(data) {
 		this.#solicitudes.clear(); // not row selected
-		this.#showForm(data); // prepare form view
+		this.#show(data); // prepare form view
 	}
 	view = data => { // view action
 		if (data.solicitud) // create action
 			return this.create(data); // load data and show form tab
 		if (this.isCached(data.id)) // view action from solicitudes list
 			return this.set("update-firmas", el => el.show()).showForm(); // datos pre-cargados y firmas visibles
-		api.init().json(this.#solicitud.getUrl() + "/view?id=" + data.id).then(this.#showForm); // get method
+		api.init().json(this.#solicitud.getUrl() + "/view?id=" + data.id).then(this.#show); // get method
 	}
 	reactivar = data => { // set inputs to editable and update view
 		if (!i18n.confirm("msgReactivar")) return; // cancel by user
 		if (this.isCached(data.id)) // solicitud pre-loaded
 			return this.reactivate(this.#solicitud.setSubsanable()); // show current data
-		api.init().json(this.#solicitud.getUrl() + "/reactivar?id=" + data.id).then(this.#showForm); // get method
+		api.init().json(this.#solicitud.getUrl() + "/reactivar?id=" + data.id).then(this.#show); // get method
 	}
 }

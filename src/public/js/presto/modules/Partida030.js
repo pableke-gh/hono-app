@@ -4,8 +4,8 @@ import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import valid from "../i18n/validators.js";
 
-import Organica030 from "./inputs/Organica030.js";
-import Economica030 from "./inputs/Economica030.js";
+import Organica030 from "../components/inputs/Organica030.js";
+import Economica030 from "../components/inputs/Economica030.js";
 import presto from "../model/Presto.js";
 import form from "./presto.js";
 
@@ -20,8 +20,8 @@ export default class Partida030 extends FormBase {
 		tabs.setAction("save030", () => {
 			if (!valid.validate030()) // validate partida 080 / 030
 				return false; // not valid data
-			if (presto.isEditable()) // if editable => back to presto view, send table on tab-action-send
-				return tabs.back().showOk("Datos del documento 030 asociados correctamente.");
+			if (presto.isEditable()) // if editable => back
+				return tabs.back().showOk("msgSave030"); // show msg ok
 			api.setJSON(partidas.getData()).json("/uae/presto/save/030").then(tabs.showForm);
 		});
 	}
@@ -34,14 +34,6 @@ export default class Partida030 extends FormBase {
 		api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(economicas => {
 			eco030.reload(partida, economicas);
 		});
-	}
-
-	autoload(partida, imp) {
-		if (!partida) // compruebo si existe partida a incrementar
-			return !this.showError("Debe seleccionar una partida a incrementar");
-		partida.imp = imp || 0; //importe obligatorio
-		partida.imp030 = partida.imp; // update imp 030
-		return this.setValue("imp", partida.imp); //ok
 	}
 }
 

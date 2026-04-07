@@ -12,7 +12,7 @@ export default class Organicas extends TableHTML {
 
 	constructor() { // tabla del paso 0 (organicas del perfil)
 		super(); // Must call super before 'this'
-		this.setMsgConfirm("removeOrg").setMsgEmpty("No existen orgánicas asociadas a la comunicación.");
+		this.setMsgConfirm("removeOrg").setMsgEmpty("msgOrganicasEmpty");
 		irse.getCreditoDisp = this.getCreditoDisp; // recalcula el credito disp.
 		irse.getResponsables = this.getResponsables; // listado de responsables de las organicas
 	}
@@ -64,9 +64,5 @@ export default class Organicas extends TableHTML {
 	autoload = item => {
 		if (!irse.isUxxiec())
 			this.render([ item ]); // render table 1 item
-	}
-	autoreset = () => {
-		if (!irse.isUxxiec())
-			this.reset(); // clear table contents
 	}
 }

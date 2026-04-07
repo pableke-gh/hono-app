@@ -8,6 +8,7 @@ export default {
 	errTransporte: "Medio de Transporte incorrecto.",
 	errMatricula: "Debe indicar la matricula del vehiculo privado.",
 
+	msgOrganicasEmpty: "No existen orgánicas asociadas a la comunicación",
 	msgRutasEmpty: "Aún no has añadido ninguna ETAPA a esta Comunicación.",
 	msgGastosEmpty: "Aún no has añadido ningún DOCUMENTO a esta Comunicación.",
 	msgTransportesEmpty: "No hay facturas / tickets asociadas a esta Comunicación.",

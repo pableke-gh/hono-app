@@ -19,10 +19,13 @@ export default class TextArea extends HTMLTextAreaElement {
 	reset() { this.value = ""; return this; }
 	restart() { this.focus(); return this.reset(); }
 
-	addChange(fn) { this.addEventListener("change", fn); return this; }
-	setDisabled(force) { input.setDisabled(this, force); return this; }
-	setReadonly(force) { input.setReadonly(this, force); return this; }
-	setEditable = force => this.setReadonly(!force);
+	addListener(name, fn) { this.addEventListener(name, fn); return this; }
+	addChange(fn) { return this.addListener("change", fn); }
+
+	setDisabled = force => input.setDisabled(this, force);
+	setReadonly = force => input.setReadonly(this, force);
+	setEditable = model => input.setEditable(this, model);
+	prepare = model => input.prepare(this, model);
 
 	setOk = () => input.setOk(this);
 	setError = tip => input.setError(this, tip);

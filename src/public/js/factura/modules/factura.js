@@ -3,7 +3,7 @@ import valid from "../i18n/validators.js";
 import Fiscal from "./fiscal.js";
 import Imputacion from "./imputacion.js";
 
-import FacturaSolicitudes from "./facturas.js";
+import FacturaSolicitudes from "../components/facturas.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class Factura extends Solicitud {

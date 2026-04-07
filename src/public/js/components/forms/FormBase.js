@@ -5,6 +5,7 @@ import alerts from "../Alerts.js";
 
 import Table from "../Table.js";
 import FormDataBox from "./FormData.js";
+import input from "../inputs/FormInput.js";
 import Autocomplete from "../inputs/Autocomplete.js";
 import MultiSelectCheckbox from "../inputs/MultiSelectCheckbox.js";
 
@@ -18,9 +19,13 @@ export default class FormBase {
 		this.#opts = opts || {}; // default options
 		this.#opts.defaultMsgOk = this.#opts.defaultMsgOk || "saveOk"; // default key for message ok
 		this.#opts.defaultMsgError = this.#opts.defaultMsgError || "errForm"; // default key error
+		this.#opts.errorClass = this.#opts.errorClass || "ui-error"; // Input error styles
+		this.#opts.tipErrorClass = this.#opts.tipErrorClass || "ui-errtip"; // Tip error style
+		this.#opts.negativeClass = this.#opts.negativeClass || "text-red"; // Negative numbers styles
 		this.#opts.refreshSelector = this.#opts.refreshSelector || ".form-refresh"; // selector for refresh
 
 		// Form initialization
+		input.setOptions(this.#opts);
 		this.#form.setAttribute("novalidate", "1");
 	}
 
@@ -43,11 +48,11 @@ export default class FormBase {
 	}
 
 	getForm = () => this.#form;
+	getOptions = () => this.#opts;
 	getNextElement = () => this.#form.nextElementSibling;
 	getNext = selector => this.#form.next(selector);
 	getElements = () => this.#form.elements;
 	getElement = name => this.#form.elements[name];
-	getOptions = () => this.#opts;
 
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
@@ -96,21 +101,10 @@ export default class FormBase {
 	setVisible = (selector, force) => force ? this.show(selector) : this.hide(selector);
 	disabled = (force, selector) => this.#fnUpdate(selector, el => el.setDisabled(force));
 	readonly = (force, selector) => this.#fnUpdate(selector, el => el.setReadonly(force));
-	setEditable = (model, selector) => this.#fnUpdate(selector, el => {
-		const value = el.dataset.disabled /*|| el.dataset.readonly*/ || el.dataset.editable;
-		if (value == "manual") return; // skip evaluation (input manual)
-		if (el.dataset.disabled) { // disabled hendler
-			const fnDisabled = model[value] || this.#opts[value] || model.isDisabled;
-			return el.setDisabled(fnDisabled()); // recalc. disabled attribute by handler
-		}
-		const fnEditable = model[value] || this.#opts[value] || model.isEditable;
-		el.setEditable(fnEditable()); // recalc. readonly attribute by handler
-	});
-	reactivate = (model, tab) => { // set inputs values and readonly
-		this.closeAlerts().setEditable(model).refresh(model);
-		tabs.view(tab ?? "form"); // show tab and preserve messages
-		return this;
-	}
+	setEditable = (model, selector) => this.#fnUpdate(selector, el => el.setEditable(model));
+	prepare = (model, selector) => this.#fnUpdate(selector, el => el.prepare(model));
+	reactivate = model => this.closeAlerts().setEditable(model).setCache(model.getId()).refresh(model);
+	load = model => this.closeAlerts().prepare(model).setCache(model.getId()).refresh(model);
 
 	// Value property
 	getValue = name => this.getElement(name).getValue();

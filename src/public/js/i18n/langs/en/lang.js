@@ -4,8 +4,8 @@ import nb from "../../../components/types/NumberBox.js";
 import Base from "../lang.js";
 import en from "./en.js";
 
-export default class Lang extends Base {
-	getLang = () => en;
+export default class EnLang extends Base {
+	getData = () => en;
 	get(key) { return en[key]; }
 	msg(key) { return (en[key] ?? key); }
 	set(name, msg) { en[name] = msg; return this; }

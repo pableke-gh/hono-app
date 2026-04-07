@@ -1,5 +1,5 @@
 
-import Lang from "../../../../i18n/langs/es/lang.js";
+import EsLang from "../../../../i18n/langs/es/lang.js";
 import regiones from "./regiones.js";
 import paises from "./paises.js";
 import es from "./es.js";
@@ -7,7 +7,7 @@ import es from "./es.js";
 import perfiles from "../../../data/perfiles/perfiles.js";
 import titulos from "./perfiles.js";
 
-class IrisLang extends Lang {
+class IrisLang extends EsLang {
 	get(key) { return (es[key] || super.get(key)); }
 	msg(key) { return (es[key] || super.msg(key)); }
 

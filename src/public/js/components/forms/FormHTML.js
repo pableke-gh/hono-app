@@ -5,6 +5,7 @@ import alerts from "../Alerts.js";
 
 import Table from "../Table.js";
 import FormDataBox from "./FormData.js";
+import input from "../inputs/FormInput.js";
 import TextInput from "../inputs/TextInput.js";
 import DataList from "../inputs/DataList.js";
 import BoolInput from "../inputs/BoolInput.js";
@@ -19,14 +20,15 @@ import MultiSelectCheckbox from "../inputs/MultiSelectCheckbox.js";
 
 export default class FormHTML extends HTMLFormElement {
 	#opts = {
-		defaultMsgOk: "saveOk", // default key for message ok
-		defaultMsgError: "errForm", // default key error
-		refreshSelector: ".form-refresh" // selector for refresh
+		defaultMsgOk: "saveOk", defaultMsgError: "errForm", // default key messages
+		errorClass: "ui-error", tipErrorClass: "ui-errtip", negativeClass: "text-red", // default css class input
+		refreshSelector: ".form-refresh" // element selector for refresh
 	};
 
 	constructor() {
 		super(); // Must call super before 'this'
 		// Form default initialization
+		input.setOptions(this.#opts);
 		this.setAttribute("novalidate", "1");
 		this.afterChange(() => this.setChanged(true)).beforeReset(ev => this.closeAlerts().autofocus());
 	}
@@ -89,21 +91,10 @@ export default class FormHTML extends HTMLFormElement {
 	setVisible = (selector, force) => force ? this.show(selector) : this.hide(selector);
 	disabled = (force, selector) => this.#fnUpdate(selector, el => el.setDisabled(force));
 	readonly = (force, selector) => this.#fnUpdate(selector, el => el.setReadonly(force));
-	setEditable = (model, selector) => this.#fnUpdate(selector, el => {
-		const value = el.dataset.disabled /*|| el.dataset.readonly*/ || el.dataset.editable;
-		if (value == "manual") return; // skip evaluation (input manual)
-		if (el.dataset.disabled) { // disabled hendler
-			const fnDisabled = model[value] || this.#opts[value] || model.isDisabled;
-			return el.setDisabled(fnDisabled()); // recalc. disabled attribute by handler
-		}
-		const fnEditable = model[value] || this.#opts[value] || model.isEditable;
-		el.setEditable(fnEditable()); // recalc. readonly attribute by handler
-	});
-	reactivate = (model, tab) => { // set inputs values and readonly
-		this.closeAlerts().setEditable(model).refresh(model);
-		tabs.view(tab ?? "form"); // show tab and preserve messages
-		return this;
-	}
+	setEditable = (model, selector) => this.#fnUpdate(selector, el => el.setEditable(model));
+	prepare = (model, selector) => this.#fnUpdate(selector, el => el.prepare(model));
+	reactivate = model => this.closeAlerts().setEditable(model).setCache(model.getId()).refresh(model);
+	load = model => this.closeAlerts().prepare(model).setCache(model.getId()).refresh(model);
 
 	// Value property
 	getValue = name => this.getElement(name).getValue();

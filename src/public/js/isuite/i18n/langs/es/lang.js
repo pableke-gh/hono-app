@@ -1,7 +1,7 @@
 
-import Lang from "../../../../i18n/langs/es/lang.js";
+import EsLang from "../../../../i18n/langs/es/lang.js";
 
-class IsuiteLang extends Lang {
+class IsuiteLang extends EsLang {
 }
 
 export default new IsuiteLang();

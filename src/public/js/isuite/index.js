@@ -1,17 +1,14 @@
 
 import coll from "../components/CollectionHTML.js";
-import FormBase from "../components/forms/FormBase.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
 
 import Recibos from "./modules/recibos.js";
+import form from "./modules/isuite.js";
 import rb from "./lib/RecibosBancarios.js";
 
-//DOM is fully loaded
 coll.ready(() => {
-	const form = new FormBase("isuite");
 	const btnSave = form.querySelector("a[href='#tab-action-save']");
-
 	const fnSearch = () => tables.tbFilter(tbConfig);
 	const fnReset = () => {
 		btnSave.hide();
@@ -204,10 +201,6 @@ coll.ready(() => {
 
 	const iSearch = $("[group=search]").keydown(ev => { if (ev.keyCode == 13) { ev.preventDefault(); fnSearch(); } });
 	const tables = $("table[tb-columns]").tbInit(tbConfig).tbRead(tbConfig).tbOrder(tbConfig);
-
-	// global tabs actions
-	tabs.setAction("clickNext", link => link.nextElementSibling.click()); // fire click event for next sibling element
-	tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
 });
 
 customElements.define("recibos-form", Recibos, { extends: "form" });

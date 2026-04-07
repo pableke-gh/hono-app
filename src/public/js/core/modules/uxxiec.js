@@ -11,29 +11,8 @@ export default class UxxiecForm extends FormHTML {
 		super(); // Must call super before 'this'
 		const fnRender = item => (item.num + " - " + item.uxxi + "<br>" + item.desc);
 		this.#acUxxi.setMinLength(4).setSelect(item => item.id).setRender(fnRender);
-	}
 
-	#updateButtons = () => { // refresh buttons navbar
-		const solicitud = window.solicitudes.getSolicitud(); // current instance
-		this.next("div").$$(".form-refresh").refresh(solicitud, this.getOptions());
-	}
-	view = data => {
-		const solicitudes = window.solicitudes; // tabla de solicitudes
-		const solicitud = solicitudes.getSolicitud(); // solicitud model instance
-		const fnLoadUxxiec = data => { // refresh form and buttons
-			this.refresh(solicitudes.load(data)).setCache(data.id);
-			this.#updateButtons(); // update buttons navbar
-			tabs.show("uxxiec"); // show selected tab
-			this.#acUxxi.reload(); // Reload autocomplete
-		}
-
-		if (this.isCached(data.id)) // solicitud cacheada
-			return fnLoadUxxiec(data); // muestro la vista cacheada
-		const fnLoadDocs = docs => { this.nextElementSibling.render(docs); fnLoadUxxiec(data); }
-		api.init().json(solicitud.getUrl() + "/uxxiec?id=" + data.id).then(fnLoadDocs);
-	}
-
-	connectedCallback() { // set default handlers
+		// set default handlers
 		const solicitudes = window.solicitudes; // tabla de solicitudes
 		const solicitud = solicitudes.getSolicitud(); // solicitud model instance
 		const documentos = this.nextElementSibling; // tabla de documentos
@@ -62,6 +41,26 @@ export default class UxxiecForm extends FormHTML {
 		}
 		tabs.setAction("ejecutar", () => fnSend(url + "/ejecutar?id=" + solicitud.getId(), 3));
 		tabs.setAction("notificar", () => fnSend(url + "/notificar?id=" + solicitud.getId(), 4));
+	}
+
+	#updateButtons = () => { // refresh buttons navbar
+		const solicitud = window.solicitudes.getSolicitud(); // current instance
+		this.next("div").$$(".form-refresh").refresh(solicitud, this.getOptions());
+	}
+	view = data => {
+		const solicitudes = window.solicitudes; // tabla de solicitudes
+		const solicitud = solicitudes.getSolicitud(); // solicitud model instance
+		const fnLoadUxxiec = data => { // refresh form and buttons
+			this.refresh(solicitudes.load(data)).setCache(data.id);
+			this.#updateButtons(); // update buttons navbar
+			tabs.show("uxxiec"); // show selected tab
+			this.#acUxxi.reload(); // Reload autocomplete
+		}
+
+		if (this.isCached(data.id)) // solicitud cacheada
+			return fnLoadUxxiec(data); // muestro la vista cacheada
+		const fnLoadDocs = docs => { this.nextElementSibling.render(docs); fnLoadUxxiec(data); }
+		api.init().json(solicitud.getUrl() + "/uxxiec?id=" + data.id).then(fnLoadDocs);
 	}
 }
 

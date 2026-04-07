@@ -1,7 +1,7 @@
 
-import Lang from "../../../../i18n/langs/en/lang.js";
+import EnLang from "../../../../i18n/langs/en/lang.js";
 
-class BuzonLang extends Lang {
+class BuzonLang extends EnLang {
 }
 
 export default new BuzonLang();

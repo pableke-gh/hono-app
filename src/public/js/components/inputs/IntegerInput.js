@@ -8,22 +8,22 @@ import input from "./FormInput.js";
 //Use the custom element by adding the is attribute to a standard <input>:
 //<input is="integer-input" type="text" placeholder="Enter text" />   
 export default class IntegerInput extends TextInput {
-	constructor() {
-		super(); // Must call super before 'this'
-
+	connectedCallback() {
 		// Initialize the element
 		this.classList.add("ui-integer");
 		this.setAttribute("maxlength", this.getAttribute("maxlength") || 8);
-
-		const negativeClass = input.getOption("negativeClass");
-		const format = () => {
+		this.addChange(() => {
 			this.value = i18n.fmtInt(this.value); // Show formatted value and style
+			const negativeClass = input.getOption("negativeClass"); // get css class name
 			this.value && this.classList.toggle(negativeClass, this.value.startsWith("-"));
-		}
-		this.addChange(format);
-		format();
+		});
 	}
 
 	getValue = () => i18n.toInt(this.value); // Int type
-	setValue(value) { this.value = i18n.isoInt(value); return this; }
+	setValue(value) {
+		this.value = i18n.isoInt(value);
+		const negativeClass = input.getOption("negativeClass"); // css class name
+		this.value && this.classList.toggle(negativeClass, value < 0);
+		return this;
+	}
 }

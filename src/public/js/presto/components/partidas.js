@@ -4,11 +4,12 @@ import i18n from "../i18n/langs.js";
 
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
-import form from "./presto.js";
+import form from "../modules/presto.js";
 
 export default class Partidas extends TableHTML {
-	init() { // form must be initialized first
-		this.setMsgEmpty("No existen partidas a incrementar asociadas a la solicitud");
+	constructor() {
+		super(); // Must call super before 'this'
+		this.setMsgEmpty("msgPartidasEmpty");
 		presto.showPartidasInc = () => (presto.isTipoMultipartida() && presto.isEditable() && (this.size() < 20));
 	}
 
@@ -57,8 +58,14 @@ export default class Partidas extends TableHTML {
 		super.flush();
 	}
 
-	autoload(partida, imp) {
-		partida = partida || this.getFirst(); // autoload + render
-		form.getPartida030().autoload(partida, imp) && this.render([ partida ]);
+	#autoload(partida, imp) {
+		partida.imp = imp || 0; //importe obligatorio
+		partida.imp030 = partida.imp; // update imp 030
+		form.setValue("imp", partida.imp);
+		this.render([ partida ]);
 	}
+	autoload(partida, imp) { partida ? this.#autoload(partida, imp) : form.showError("errPartidaInc"); }
+	setL83(partida, imp) { partida ? this.#autoload(partida, imp) : form.showError("errPartidaL83"); }
+	setAnt(partida) { partida ? this.#autoload(partida, Math.max(0, partida.ih)) : form.showError("errPartidaAnt"); }
+	setImp(imp) { this.autoload(this.getFirst(), imp); }
 }

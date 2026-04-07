@@ -5,8 +5,8 @@ import api from "../../components/Api.js";
 import valid from "../i18n/validators.js";
 
 import factura from "../model/Factura.js";
-import Organica from "./inputs/organica.js";
-import Lineas from "./lineas.js";
+import Organica from "../components/inputs/organica.js";
+import Lineas from "../components/lineas.js";
 import form from "./factura.js";
 
 export default class Imputacion extends FormBase {

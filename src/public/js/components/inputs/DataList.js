@@ -13,7 +13,7 @@ export default class DataList extends HTMLSelectElement {
 		super(); // Must call super before 'this'
 		// Initialize the element HTML
 		this.classList.add("ui-input", "ui-select");
-		this.setEmptyOption(this.dataset.empty || i18n.get("selectOption"));
+		this.setEmptyOption(this.dataset.empty || "selectOption");
 	}
 
 	getData = () => this.#data;
@@ -34,10 +34,9 @@ export default class DataList extends HTMLSelectElement {
 		return this;
 	}
 
-	setEmptyOption(text) { this.dataset.empty = text; return this; }
+	setEmptyOption(msg) { this.dataset.empty = i18n.msg(msg); return this; }
 	// IMPORTANT! force value = "", to avoid change event return text content
-	#empty = () => `<option value="" selected>${this.dataset.empty}</option>`;
-	#change() { this.dispatchEvent(new Event("change")); return this; } // private only for reset
+	#empty = () => `<option value="">${this.dataset.empty}</option>`;
 
 	getValue = () => this.value;
 	setValue(value) {
@@ -52,8 +51,8 @@ export default class DataList extends HTMLSelectElement {
 	addListener(name, fn) { this.addEventListener(name, fn); return this; }
 	addChange(fn) { return this.addListener("change", fn); }
 
-	reset = () => { this.selectedIndex = 0; return this.#change(); } // force first option
-	clear = () => { this.innerHTML = this.#empty(); return this.setData(null).reset(); } // remove data, set first option and fire change event
+	reset() { this.selectedIndex = 0; return this; } // force first option
+	clear() { this.innerHTML = this.#empty(); return this.setData(null).reset(); } // remove data and set first option
 	restart() { this.focus(); return this.reset(); } // set focus and force first option
 
 	setOption(value, label) { // Only an option
@@ -88,9 +87,10 @@ export default class DataList extends HTMLSelectElement {
 		return this.setData(values); // set data and fire change event
 	}
 
-	setDisabled(force) { input.setDisabled(this, force); return this; }
-	setReadonly(force) { input.setReadonly(this, force); return this; }
-	setEditable = force => this.setReadonly(!force);
+	setDisabled = force => input.setDisabled(this, force);
+	setReadonly = force => input.setReadonly(this, force);
+	setEditable = model => input.setEditable(this, model);
+	prepare = model => input.prepare(this, model);
 
 	setOk = () => input.setOk(this);
 	setError = tip => input.setError(this, tip);

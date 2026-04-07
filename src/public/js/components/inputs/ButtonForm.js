@@ -23,9 +23,10 @@ export default class ButtonForm extends HTMLButtonElement {
 	reset() {}
 	restart() {}
 
-	setDisabled(force) { input.setDisabled(this, force); return this; } // button attribute
-	setReadonly(force) { input.setDisabled(this, force); return this; } // readonly = disbled
-	setEditable = force => this.setDisabled(!force); // attribute readonly not aplicable
+	setDisabled = force => input.setDisabled(this, force); // button attribute
+	setReadonly = force => input.setDisabled(this, force); // readonly = disbled
+	setEditable = model => input.setEditable(this, model); // recalc. if button is clicable
+	prepare = model => input.setEditable(this, model); // button not to load data
 
 	setOk() {}
 	setError() {}
@@ -39,9 +40,10 @@ HTMLButtonElement.prototype.toData = function() {}
 HTMLButtonElement.prototype.addFormData = function() {}
 HTMLButtonElement.prototype.reset = function() {}
 HTMLButtonElement.prototype.restart = function() {}
-HTMLButtonElement.prototype.setDisabled = function(force) { input.setDisabled(this, force); return this; } // button attribute
+HTMLButtonElement.prototype.setDisabled = function(force) { return input.setDisabled(this, force); } // button attribute
 HTMLButtonElement.prototype.setReadonly = function(force) { return this.setDisabled(force); } // attribute readonly = disbled
-HTMLButtonElement.prototype.setEditable = function(force) { return this.setDisabled(!force); } // readonly not aplicable
+HTMLButtonElement.prototype.setEditable = function(model) { return input.setEditable(this, model); } // recalc. if button is clicable
+HTMLButtonElement.prototype.prepare = function(model) { return input.prepare(this, model); } // button not to load data
 HTMLButtonElement.prototype.setOk = function() {}
 HTMLButtonElement.prototype.setError = function(tip, msg) {}
 HTMLButtonElement.prototype.update = function(tip, msg) {}

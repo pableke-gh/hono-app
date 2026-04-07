@@ -2,19 +2,26 @@
 import alerts from "../Alerts.js";
 
 class FormInput {
-	#opts = {
-		errorClass: "ui-error", // Input error styles
-		tipErrorClass: "ui-errtip", // Tip error style
-		negativeClass: "text-red" // Negative numbers styles
-	};
+	#opts; // options container
 
-	getOptions = () => this.#opts;
 	getOption = name => this.#opts[name];
-	setOptions = data => { Object.assign(this.#opts, data); return this; }
+	setOptions = data => { this.#opts = data; return this; }
 
-	setDisabled = (el, force) => el.toggle("disabled", el.toggleAttribute("disabled", force));
-	setReadonly = (el, force) => el.toggle("readonly", el.toggleAttribute("readonly", force));
-	setEditable = (el, force) => this.setReadonly(el, !force);
+	setDisabled(el, force) { el.toggle("disabled", el.toggleAttribute("disabled", force)); return el; }
+	setReadonly(el, force) { el.toggle("readonly", el.toggleAttribute("readonly", force)); return el; }
+	setEditable(el, model) {
+		const value = el.dataset.disabled || el.dataset.editable;
+		if (value == "manual") return el; // skip evaluation (input manual)
+		if (el.dataset.disabled) { // disabled hendler
+			const fnDisabled = model[value] || this.#opts[value] || model.isDisabled;
+			return el.setDisabled(fnDisabled()); // recalc. disabled attribute by handler
+		}
+		const fnEditable = model[value] || this.#opts[value] || model.isEditable;
+		return el.setReadonly(!fnEditable()); // recalc. readonly attribute by handler
+	}
+	prepare(el, model) { // recalc. if editable and load value
+		return this.setEditable(el, model).load(model.getData());
+	}
 
 	setOk(input) {
 		input.next("." + this.#opts.tipErrorClass)?.setText("");

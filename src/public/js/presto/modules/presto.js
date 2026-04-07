@@ -7,7 +7,7 @@ import PartidaDec from "./partidaDec.js";
 import PartidaInc from "./partidaInc.js";
 import Partida030 from "./partida030.js";
 
-import PrestoSolicitudes from "./prestos.js";
+import PrestoSolicitudes from "../components/prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class Presto extends Solicitud {

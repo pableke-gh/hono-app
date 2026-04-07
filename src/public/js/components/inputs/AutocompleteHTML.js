@@ -23,80 +23,13 @@ export default class Autocomplete extends TextInput {
 
 	constructor() {
 		super(); // Must call super before 'this'
+
 		// Initialize the element
 		this.type = "search";
 		this.setAttribute("autocomplete", "off");
 		this.#results = this.nextElementSibling || document.createElement("ul");
 		this.#results.classList.add(this.#opts.resultsClass);
-	}
 
-	set = (name, fn) => { this.#opts[name] = fn; return this; }
-	setDelay = delay => this.set("delay", delay);
-	setMinLength = min => this.set("minLength", min);
-	source() { throw new Error("Method 'source' must be implemented."); }
-	row(item) { return item.label; }
-	select(item) { return item.value; }
-	setOptions = data => { Object.assign(this.#opts, data); return this; }
-
-	getData = () => this.#data;
-	getIndex = () => this.#index;
-	getItem = i => this.#data[i ?? this.#index];
-	getCurrent = () => this.#data[this.#index];
-	getCurrentItem = this.getCurrent; // synonymous
-	getCurrentOption = () => this.#results.children[this.#index];
-	getCode = sep => sb.getCode(this.value, sep);
-	split = sep => sb.split(this.value, sep);
-
-	#isChildren = i => ((0 <= i) && (i < coll.size(this.#results.children)));
-	#removeList = () => { this.#results.innerHTML = ""; this.#results.classList.remove(this.#opts.activeClass); }
-	#unselect() { this.#index = -1; this.#value = ""; this.#removeList(); return this; }
-	#activeItem(i) {
-		this.#index = this.#isChildren(i) ? i : this.#index; // current item
-		this.#results.children.forEach((li, i) => li.classList.toggle(this.#opts.activeClass, i == this.#index));
-	}
-	#selectItem(li, i) {
-		if (li && this.#isChildren(i)) {
-			this.#index = i; // Update current index
-			this.setLabel(li.innerText).setval(this.select(this.#data[i])); // first label
-		}
-		this.#removeList();
-	}
-
-	isItem() { return (this.#index > -1); }
-	isLoaded() { return this.#value; }
-	getValue() { return this.#value; }
-	setval(value) { this.#value = value; return this; }
-	getLabel() { return this.value; }
-	setLabel(label) { this.value = label || ""; return this; } // force label
-	setValue(value, label) { return (value ? this.setval(value).setLabel(label) : this.clear()); }
-	setItem = item => this.setValue(item.value, item.label); // item = value/label
-	clear() { return this.#unselect().setLabel(); } // not fire event
-	reset() {
-		if (this.#value) // is selected data
-			this.#unselect().dispatchEvent(new Event("reset")); // fire event after update data
-		else
-			this.#unselect(); // Reset previous selection
-		return this;
-	}
-	reload = () => {
-		this.value = ""; // Clear input
-		this.focus(); // Set focus
-		return this.reset();
-	}
-	render = data => {
-		this.#unselect(); // clear previous results
-		this.#data = data || EMPTY; // Force not unset var
-		this.#data.slice(0, this.#opts.maxResults).forEach((data, i) => {
-			const label = sb.wrap(this.row(data, i, this.#data), this.value);
-			this.#results.innerHTML += `<li class="${this.#opts.optionClass}">${label}</li>`;
-		});
-		this.#results.children.forEach((li, i) => {
-			li.addEventListener("click", ev => this.#selectItem(li, i));
-		});
-		this.#results.classList.add(this.#opts.activeClass);
-	}
-
-	connectedCallback() {
 		// Event fired before char is writen in text
 		this.onkeydown = ev => {
 			const TAB = 9;
@@ -130,5 +63,64 @@ export default class Autocomplete extends TextInput {
 		// Event fired before onblur only when text changes
 		this.onchange = ev => { this.value || this.reset(); }
 		this.onblur = ev => { setTimeout(this.#removeList, 280); }
+	}
+
+	set = (name, fn) => { this.#opts[name] = fn; return this; }
+	setDelay = delay => this.set("delay", delay);
+	setMinLength = min => this.set("minLength", min);
+	source() { throw new Error("Method 'source' must be implemented."); }
+	row(item) { return item.label; }
+	select(item) { return item.value; }
+	setOptions = data => { Object.assign(this.#opts, data); return this; }
+
+	getData = () => this.#data;
+	getIndex = () => this.#index;
+	getItem = i => this.#data[i ?? this.#index];
+	getCurrent = () => this.#data[this.#index];
+	getCurrentItem = this.getCurrent; // synonymous
+	getCurrentOption = () => this.#results.children[this.#index];
+	getCode = sep => sb.getCode(this.value, sep);
+	split = sep => sb.split(this.value, sep);
+
+	#isChildren = i => ((0 <= i) && (i < coll.size(this.#results.children)));
+	#removeList = () => { this.#results.innerHTML = ""; this.#results.classList.remove(this.#opts.activeClass); }
+	#activeItem(i) {
+		this.#index = this.#isChildren(i) ? i : this.#index; // current item
+		this.#results.children.forEach((li, i) => li.classList.toggle(this.#opts.activeClass, i == this.#index));
+	}
+	#selectItem(li, i) {
+		if (li && this.#isChildren(i)) {
+			this.#index = i; // Update current index
+			this.setLabel(li.innerText).setval(this.select(this.#data[i])); // first label
+		}
+		this.#removeList();
+	}
+
+	isItem() { return (this.#index > -1); }
+	isLoaded() { return this.#value; }
+	getValue() { return this.#value; }
+	setval(value) { this.#value = value; return this; }
+	getLabel() { return this.value; }
+	setLabel(label) { this.value = label || ""; return this; } // force label
+	setValue(value, label) { return (value ? this.setval(value).setLabel(label) : this.clear()); }
+	setItem = item => this.setValue(item.value, item.label); // item = value/label
+	reset() { this.#index = -1; this.#value = ""; this.#removeList(); return this; }
+	clear() { return this.reset().setLabel(); } // not fire event
+	reload = () => {
+		this.value = ""; // Clear input
+		this.focus(); // Set focus
+		return this.reset();
+	}
+	render = data => {
+		this.reset(); // clear previous results
+		this.#data = data || EMPTY; // Force not unset var
+		this.#data.slice(0, this.#opts.maxResults).forEach((data, i) => {
+			const label = sb.wrap(this.row(data, i, this.#data), this.value);
+			this.#results.innerHTML += `<li class="${this.#opts.optionClass}">${label}</li>`;
+		});
+		this.#results.children.forEach((li, i) => {
+			li.addEventListener("click", ev => this.#selectItem(li, i));
+		});
+		this.#results.classList.add(this.#opts.activeClass);
 	}
 }

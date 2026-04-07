@@ -5,13 +5,8 @@ import irse from "../../model/Irse.js";
 import form from "../irse.js";
 
 export default class Interesado extends AutocompleteHTML {
-	constructor() {
-		super(); // Must call super before 'this'
-		this.setDelay(600).setMinLength(5)
-			.addListener("reset", () => { this.clear(); form.refresh(irse); });
-	}
-
-	init() {
+	init() { // Initialize element after form
+		this.setDelay(600).setMinLength(5);
 		form.set("update-colectivo", el => {
 			el.firstElementChild.textContent = irse.getColectivo();
 			el.lastElementChild.setAttribute("href", "mailto:" + irse.getEmailInteresado());
@@ -29,7 +24,11 @@ export default class Interesado extends AutocompleteHTML {
 	}
 
 	validate = () => (this.isLoaded() ? this.setOk() : !this.setRequired("errPerfil"));
-	clear() { super.clear(); irse.setInteresado(); form.setValue("nif-interesado"); }
+	reset() {
+		irse.setInteresado();
+		form.setValue("nif-interesado").refresh(irse);
+		return super.reset();
+	}
 
 	setInteresado() {
 		const interesado = irse.getInteresado(); // read interesado from response

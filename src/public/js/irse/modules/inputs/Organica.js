@@ -10,19 +10,15 @@ import form from "../irse.js";
 export default class Organica extends AutocompleteHTML {
 	#organicas = tabs.getTab(0).querySelector("table");
 
-	constructor() {
-		super(); // Must call super before 'this'
-		this.setMinLength(4).addListener("reset", this.#organicas.autoreset);
-	}
-
 	init() {
+		this.setMinLength(4); // Initialize element after form
 		const fnPDI = el => { el.show(); el.children[2].hide(); } // show autocomplete + hide add button
 		form.set("update-organica", el => (irse.isUxxiec() ? el.setVisible(!this.isLoaded()) : fnPDI(el)));
 
 		tabs.setAction("addOrganica", () => {
 			const current = this.getItem();
 			current ? this.#organicas.push(current) : this.reload(); // new organica
-			super.clear(); // remove selected
+			super.reset().setLabel(); // clear autocomplete => data in table
 		});
 	}
 
@@ -40,9 +36,9 @@ export default class Organica extends AutocompleteHTML {
 		this.setValue(this.#organicas.getFirst());
 	}
 
-	clear() {
-		super.clear();
+	reset() {
 		this.#organicas.reset();
+		return super.reset();
 	}
 
 	getOrganicas = () => this.#organicas;

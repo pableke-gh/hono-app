@@ -4,11 +4,11 @@ import i18n from "../i18n/langs.js";
 
 import factura from "../model/Factura.js";
 import ttpp from "../model/TtppEmpresa.js";
-import form from "./factura.js";
+import form from "../modules/factura.js";
 
 export default class Lineas extends TableHTML {
 	connectedCallback() {
-		this.setMsgEmpty("No existen conceptos asociados a la solicitud");
+		this.setMsgEmpty("msgLineasEmpty");
 	}
 
 	addLinea(data) {

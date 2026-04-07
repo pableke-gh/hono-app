@@ -2,7 +2,7 @@
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import api from "../../../components/Api.js";
 import factura from "../../model/Factura.js";
-import form from "../factura.js";
+import form from "../../modules/factura.js";
 
 // Item list: value = id tercero / label = nif - nombre
 export default class Tercero extends AutocompleteHTML {
@@ -10,7 +10,7 @@ export default class Tercero extends AutocompleteHTML {
 
 	constructor() {
 		super(); // Must call super before 'this'
-		this.setDelay(500).setMinLength(5).addListener("reset", () => this.clear());
+		this.setDelay(500).setMinLength(5);
 	}
 
 	load(data) {
@@ -25,8 +25,8 @@ export default class Tercero extends AutocompleteHTML {
 		return item.value;
 	}
 
-	clear() {
-		super.clear();
+	reset() {
 		this.#delegaciones.clear();
+		return super.reset();
 	}
 }

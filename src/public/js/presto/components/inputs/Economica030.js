@@ -3,7 +3,7 @@ import DataList from "../../../components/inputs/DataList.js";
 import tabs from "../../../components/Tabs.js";
 
 import presto from "../../model/Presto.js";
-import form from "../presto.js";
+import form from "../../modules/presto.js";
 
 export default class Economica030 extends DataList {
 	#ej030; // is tab preloaded

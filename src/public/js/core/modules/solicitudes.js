@@ -12,8 +12,8 @@ export default class Solicitudes extends TableHTML {
 
 	constructor(solicitud) {
 		super(); // Must call super before 'this'
-		this.#solicitud = solicitud; // set current instance
 		window.solicitudes = this; // global access before connectedCallback
+		this.#solicitud = solicitud; // set current instance
 		customElements.define("filter-form", Filter, { extends: "form" });
 		customElements.define("uxxiec-form", Uxxiec, { extends: "form" });
 	}

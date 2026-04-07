@@ -1,7 +1,10 @@
 
-import Lang from "../../../../i18n/langs/es/lang.js";
+import EsLang from "../../../../i18n/langs/es/lang.js";
+import es from "./es.js";
 
-class FacturaLang extends Lang {
+class FacturaLang extends EsLang {
+	get(key) { return (es[key] || super.get(key)); }
+	msg(key) { return (es[key] || super.msg(key)); }
 }
 
 export default new FacturaLang();

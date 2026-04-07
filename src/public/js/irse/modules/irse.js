@@ -38,19 +38,17 @@ class IrseSolicitud extends Solicitud {
 
 	// IMPORTANT! override super view
 	view = (organicas, rutas, gastos, dietas, cuentas, firmas) => {
-		const id = irse.getId();
 		this.#perfil.view(organicas);
 		this.#rutas.view(rutas);
 		this.#paso3.view();
 		this.#paso5.view(gastos);
 		this.#resumen.view(dietas);
 		this.#paso9.view(cuentas);
-		this.setFirmas(firmas).setValue("idses", id).setCache(id).setEditable(irse).refresh(irse);
+		this.setFirmas(firmas).setValue("idses", irse.getId()).reactivate(irse);
 	}
 	next = (cuentas, firmas, tab) => {
-		const id = irse.getId();
 		cuentas && this.#paso9.view(cuentas);
-		this.setFirmas(firmas).setValue("idses", id).setCache(id).setEditable(irse).refresh(irse).nextTab(tab);
+		this.setFirmas(firmas).setValue("idses", irse.getId()).reactivate(irse).nextTab(tab);
 	}
 
 	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
