@@ -2,6 +2,7 @@
 import api from "../Api.js";
 import tabs from "../Tabs.js";
 import alerts from "../Alerts.js";
+import observer from "../../core/util/Observer.js";
 
 import Table from "../Table.js";
 import FormDataBox from "./FormData.js";
@@ -30,6 +31,7 @@ export default class FormBase {
 	}
 
 	init() {
+		this.#form.$$(this.#opts.refreshSelector).forEach(el => observer.subscribeHtmlElement(el, this.#opts));
 		return this.afterChange(() => this.setChanged(true)).beforeReset(ev => this.closeAlerts().autofocus());
 	}
 
@@ -86,7 +88,7 @@ export default class FormBase {
 	setText = (selector, text) => { this.#fnQuery(selector).innerText = text; return this; }
 	text = (selector, text) => { this.#form.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.#form.$$(selector).render(data); return this; } // NodeList.prototype.render
-	refresh(model, selector) { this.#form.$$(selector || this.#opts.refreshSelector).refresh(model, this.#opts); tabs.setHeight(); return this; } // NodeList.prototype.refresh
+	refresh(model) { observer.emit("form-update", model); tabs.setHeight(); return this; } // NodeList.prototype.refresh
 	send = url => api.setForm(this.#form).send(url || this.#form.action).catch(info => { this.setErrors(info); throw info; });
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab

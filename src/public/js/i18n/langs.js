@@ -16,11 +16,11 @@ HTMLElement.prototype.render = function(data, opts) {
 	this.innerHTML = langs.render(this.dataset.template, data, opts); // display new data
 	return this.setVisible(opts.matches); // hide if empty
 }
-HTMLCollection.prototype.render = function(data) {
+/*HTMLCollection.prototype.render = function(data) {
 	OPTS.size = this.length; // array length
 	this.forEach((el, i) => { OPTS.index = i; el.render(data, OPTS); });
 	OPTS.size = OPTS.index = 0; // reset options
 }
-NodeList.prototype.render = HTMLCollection.prototype.render;
+NodeList.prototype.render = HTMLCollection.prototype.render;*/
 
 export default langs;

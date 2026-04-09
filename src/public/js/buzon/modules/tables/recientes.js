@@ -2,7 +2,7 @@
 import i18n from "../../i18n/langs.js";
 import buzon from "../../model/Buzon.js";
 import Organicas from "./organicas.js";
-import Observer from "../../util/Observer.js";
+import Observer from "../../../core/util/Observer.js";
 
 export default class Recientes extends Organicas {
 	connectedCallback() {

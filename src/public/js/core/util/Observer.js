@@ -9,6 +9,21 @@ class Observer {
 		this.#events[event].push(callback);
 		return this;
 	}
+	subscribeHtmlElement(el, opts) { // final arrow function
+		const event = el.dataset.event || "form-update"; // event name
+		return this.subscribe(event, data => { // add specific event
+			const action = el.dataset.refresh; // handler name
+			if (action == "text-render") // render contents
+				return el.render(data); // complex info
+
+			if (action == "clear") // clear contents
+				return el.setText(""); // emtpty string
+
+			// data must be model instance and opts = form.#opts
+			const callback = data[action] || opts[action]; // callback optional => default = hide
+			return callback ? el.setVisible(callback(el, data)) : el.hide(); // execute action
+		});
+	}
 
 	// Unsubscribe from a specific event
 	unsubscribe(event, callback) {
@@ -16,6 +31,10 @@ class Observer {
 		const index = events ? events.indexOf(callback) : -1;
 		if (index !== -1)
 			events.splice(index, 1);
+		return this;
+	}
+	remove(event) {
+		delete this.#events[event];
 		return this;
 	}
 

@@ -41,7 +41,7 @@ export default class Solicitud extends FormBase {
 	}
 
 	getSolicitudes = () => this.#solicitudes; // list
-	showForm = () => this.reactivate(this.#solicitudes.load()); // open form tab
+	showForm() { this.reactivate(this.#solicitudes.load()); tabs.showForm(); } // open form tab
 	report = () => api.init().text(this.#solicitud.getUrl() + "/report?id=" + this.#solicitudes.getId()).then(api.open); // call report service
 
 	#validReject = msg => (this.#valid.rechazar() && i18n.confirm(msg)); // validate form + user confirm
@@ -84,7 +84,7 @@ export default class Solicitud extends FormBase {
 				}
 				else
 					el.children[3].hide();
-				el.show();
+				return el.show();
 			});
 			super.reset("#rechazo");
 		}
@@ -98,7 +98,7 @@ export default class Solicitud extends FormBase {
 		if (!this.#solicitud.isValid(data)) // no data => error
 			return !this.showError("No se han podido cargar los datos del servidor.");
 		// cargo los datos y preparo los campos del formulario en la vista
-		this.load(this.#solicitud.setData(data.solicitud)).setFirmas(data.firmas);
+		this.setFirmas(data.firmas).load(this.#solicitud.setData(data.solicitud));
 		return tabs.view(this.onView(data) || "form"); // show tab and preserve messages
 	}
 	create(data) {

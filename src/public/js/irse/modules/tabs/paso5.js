@@ -13,7 +13,7 @@ import gastos from "../../model/Gastos.js";
 import RutaPendientes from "../tables/pendientes.js";
 import RutaConsulta from "../tables/itinerario.js"
 import TableGastos from "../tables/gastos.js"
-import Observer from "../../util/Observer.js";
+import Observer from "../../../core/util/Observer.js";
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
 export default class Paso5 extends FormBase {

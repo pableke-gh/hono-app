@@ -1,5 +1,6 @@
 
 import TableHTML from "../../../components/TableHTML.js";
+import observer from "../../../core/util/Observer.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -39,10 +40,11 @@ export default class Organicas extends TableHTML {
 		this.#financiacion = this.isACA(data) ? "ACA" : this.#financiacion; // TTPP o Master
 	}
 	row(data) {
-		const remove = irse.isEditableP0() ? '<a href="#remove" class="form-refresh" data-refresh="isEditableP0"><i class="fas fa-times action text-red resize"></i></a>' : "";
+		const cssP0 = irse.isEditableP0() ? "" : ' class="hide"';
+		const remove = irse.isEditableP0() ? `<a href="#remove"${cssP0}><i class="fas fa-times action text-red resize"></i></a>` : "";
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Orgánica">${data.o}</td>
-			<td data-cell="Crédito Disp." class="form-refresh" data-refresh="isEditableP0">${i18n.isoFloat(data.imp)}</td>
+			<td data-cell="Crédito Disp."${cssP0}>${i18n.isoFloat(data.imp)}</td>
 			<td data-cell="${i18n.get("lblDesc")}">${data.dOrg}</td>
 			<td data-cell="Responsable del gasto">${data.resp}</td>
 			<td data-cell="Nombre">${data.r}</td>
@@ -58,7 +60,8 @@ export default class Organicas extends TableHTML {
 		};
 		if (this.size() > 1)
 			this.#financiacion = MULTI_APLICACION[this.#financiacion]; // || "xOT"; // default = "xOT"
-		form.getPerfil().closeAlerts().stringify("presupuesto", this.getData()).update(); // update tab
+		form.getPerfil().closeAlerts().stringify("presupuesto", this.getData()); // update input
+		observer.emit("perfil", irse); // notify listeners
 	}
 
 	autoload = item => {

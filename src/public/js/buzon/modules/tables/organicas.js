@@ -5,7 +5,7 @@ import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 
 import buzon from "../../model/Buzon.js";
-import Observer from "../../util/Observer.js";
+import Observer from "../../../core/util/Observer.js";
 
 export default class Organicas extends TableHTML {
 	static #organcias;

@@ -2,19 +2,21 @@
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
+import observer from "../../../core/util/Observer.js";
 
 import irse from "../../model/Irse.js";
 import Organicas from "../tables/organicas.js";
-import form from "../irse.js";
 
 export default class Organica extends AutocompleteHTML {
 	#organicas = tabs.getTab(0).querySelector("table");
 
 	init() {
 		this.setMinLength(4); // Initialize element after form
-		const fnPDI = el => { el.show(); el.children[2].hide(); } // show autocomplete + hide add button
-		form.set("update-organica", el => (irse.isUxxiec() ? el.setVisible(!this.isLoaded()) : fnPDI(el)));
-
+		observer.subscribe("perfil", () => { // pdi show autocomplete + hide button
+			const label = this.parentNode.parentNode; // element container
+			label.children[3].render(irse); // importe de crédito vinculante
+			label.setVisible(irse.isUxxiec() ? !this.isLoaded() : label.children[2].hide());
+		});
 		tabs.setAction("addOrganica", () => {
 			const current = this.getItem();
 			current ? this.#organicas.push(current) : this.reload(); // new organica
@@ -29,15 +31,16 @@ export default class Organica extends AutocompleteHTML {
 	validate = () => (this.isLoaded() ? this.setOk() : !this.setRequired("errOrganicas"));
 
 	setValue(organica) {
-		return (organica ? super.setValue(organica.id, this.row(organica)) : super.clear());
+		return (organica ? super.setValue(organica.id, this.row(organica)) : this.clear());
 	}
 	setOrganicas(organicas) {
+		this.setValue(organicas && organicas[0]);
 		this.#organicas.render(organicas);
-		this.setValue(this.#organicas.getFirst());
 	}
 
 	reset() {
-		this.#organicas.reset();
+		if (this.#organicas.size())
+			this.#organicas.reset();
 		return super.reset();
 	}
 

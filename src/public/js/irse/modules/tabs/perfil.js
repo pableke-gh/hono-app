@@ -3,6 +3,7 @@ import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
 import i18n from "../../i18n/langs.js";
 import valid from "../../i18n/validators/irse.js";
+import observer from "../../../core/util/Observer.js";
 
 import irse from "../../model/Irse.js";
 import Interesado from "../inputs/Interesado.js";
@@ -49,12 +50,7 @@ export default class Perfil extends FormBase {
 	isA83 = () => (this.#eFin.value == "A83") || (this.#eFin.value == "x83");
 	isACA = () => (this.#eFin.value == "ACA") || (this.#eFin.value == "xAC");
 	isOTR = () => (this.#eFin.value == "OTR") || (this.#eFin.value == "xOT");
-
 	getOrganicas = () => this.#acOrganica.getOrganicas();
-	update = () => this.setFinanciacion(this.#acOrganica.getFinanciacion()) // recalculo la financiacion
-						.select("actividad", getActividad(this.getValue("rol"), irse.getColectivo(), this.getFinanciacion()))
-						.select("tramite", this.isCom() ? 7 : 1) // default = AyL
-						.refresh(irse);
 
 	init = () => {
 		this.#acInteresado.init();
@@ -65,6 +61,12 @@ export default class Perfil extends FormBase {
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		this.setClick("a#reg-externo", ev => { this.copyToClipboard(url); ev.preventDefault(); });
+		observer.subscribe("perfil", () => {
+			this.setFinanciacion(this.#acOrganica.getFinanciacion()) // recalculo la financiacion
+				.select("actividad", getActividad(this.getValue("rol"), irse.getColectivo(), this.getFinanciacion()))
+				.select("tramite", this.isCom() ? 7 : 1); // default = AyL
+		});
+
 		tabs.setActiveEvent(2, this.isMaps).setActiveEvent(3, this.isIsu);
 		tabs.setAction("paso0", () => {
 			if (!valid.perfil()) return; // if error => stop
@@ -74,7 +76,6 @@ export default class Perfil extends FormBase {
 		this.afterReset(() => {
 			this.#acInteresado.clear();
 			this.#acOrganica.clear();
-			this.update();
 		});
 	}
 
@@ -82,11 +83,12 @@ export default class Perfil extends FormBase {
 		this.#eFin = this.getElement("financiacion");
 		this.#eAct = this.getElement("actividad");
 
-		this.#acInteresado.setInteresado(); // load autocomplete
-		this.#acOrganica.setOrganicas(organicas); // load autocomplete + table
-		this.#eAct.addChange(this.update); // actualizo el perfil al cambiar la actividad
 		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
+
+		this.#acInteresado.setInteresado(); // load autocomplete
+		this.#acOrganica.setOrganicas(organicas); // load autocomplete + table
+		this.#eAct.addChange(() => observer.emit("perfil", irse)); // actualizo el perfil al cambiar la actividad
 	}
 }
 

@@ -12,7 +12,7 @@ import Transportes from "../tables/transportes.js";
 import Pernoctas from "../tables/pernoctas.js";
 import Dietas from "../tables/dietas.js";
 import Extraordinarios from "../tables/extras.js";
-import Observer from "../../util/Observer.js";
+import Observer from "../../../core/util/Observer.js";
 
 /*********** Tablas de resumen ***********/
 export default class Resumen extends FormBase {

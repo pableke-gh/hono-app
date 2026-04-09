@@ -31,7 +31,7 @@ export default class IrseSolicitudes extends Solicitudes {
 			acciones += '<a href="#report" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
 		}
 		if (irse.isReactivable())
-			acciones += '<a href="#reset" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
+			acciones += '<a href="#clone" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
 		if (irse.isActivablePaso8())
 			acciones += '<a href="#paso8" title="Activar Otras Indemnizaciones Extraordinarias (paso 8)"><i class="fas fa-plus action text-green resize"></i></a>';
 
