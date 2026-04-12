@@ -1,8 +1,10 @@
 
 import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
+import api from "../../../components/Api.js";
 import valid from "../../i18n/validators/irse.js";
 import irse from "../../model/Irse.js";
+import form from "../irse.js"
 
 /*********** subvención, congreso, asistencias/colaboraciones ***********/
 export default class Paso3 extends FormBase {
@@ -11,6 +13,26 @@ export default class Paso3 extends FormBase {
 
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
+	}
+
+	init() {
+		const fnSend = () => { // send data to server
+			this.setChanged(); // update indicator
+			const data = form.getData(".ui-isu");
+			data.id = irse.getId(); // add current id
+			return api.setJSON(data).json("/uae/iris/isu/save");
+		}
+		tabs.setAction("paso3", () => {
+			if (!valid.paso3()) return; // if error => stop
+			if (!irse.isEditable() || !this.isChanged())
+				return tabs.next(); // go next tab directly
+			fnSend().then(() => tabs.goTo(5)); // send data and go next tab
+		});
+		tabs.setAction("save3", () => {
+			if (!valid.paso3()) return; // if error => stop
+			if (!this.isChanged()) return this.setOk(); // nada que guardar
+			fnSend(); // send data to server
+		});
 	}
 
 	view() {
@@ -38,17 +60,5 @@ export default class Paso3 extends FormBase {
 		eFinCong.onblur = fechasCong;
 		eCong.onchange = updateCong;
 		updateCong();
-
-		tabs.setAction("paso3", () => {
-			if (!valid.paso3()) return; // if error => stop
-			if (!irse.isEditable() || !this.isChanged())
-				return tabs.next(); // go next tab directly
-			loading(); window.rcPaso3(); // call server to save and calculate maps
-		});
-		tabs.setAction("save3", () => {
-			if (!valid.paso3()) return; // if error => stop
-			if (!this.isChanged()) return this.setOk(); // nada que guardar
-			loading(); window.rcSave3(); // call server to save and calculate maps
-		});
 	}
 }

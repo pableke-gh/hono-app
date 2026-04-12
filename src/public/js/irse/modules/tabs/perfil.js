@@ -1,6 +1,7 @@
 
 import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
+import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
 import valid from "../../i18n/validators/irse.js";
 import observer from "../../../core/util/Observer.js";
@@ -8,6 +9,7 @@ import observer from "../../../core/util/Observer.js";
 import irse from "../../model/Irse.js";
 import Interesado from "../inputs/Interesado.js";
 import Organica from "../inputs/Organica.js";
+import form from "../irse.js"
 import getActividad from "../../data/perfiles/actividades.js";
 
 export default class Perfil extends FormBase {
@@ -20,7 +22,6 @@ export default class Perfil extends FormBase {
 		super(form.getForm(), form.getOptions());
 	}
 
-	getRol = () => this.getValue("rol");
 	isColaboracion = () => (this.#eAct.value == "OCE") || (this.#eAct.value == "IAE+OCE");
 	isTribunal = () => (this.#eAct.value == "ATR") || (this.#eAct.value == "IAE+ATR");
 	isFormacion = () => (this.#eAct.value == "AFO") || (this.#eAct.value == "IAE+AFO");
@@ -53,8 +54,6 @@ export default class Perfil extends FormBase {
 	getOrganicas = () => this.#acOrganica.getOrganicas();
 
 	init = () => {
-		this.#acInteresado.init();
-		this.#acOrganica.init();
 		irse.isIsu = this.isIsu; // current input value
 		this.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
 		this.set("isFin", el => (this.#eFin.value == el.dataset.fin));
@@ -63,7 +62,7 @@ export default class Perfil extends FormBase {
 		this.setClick("a#reg-externo", ev => { this.copyToClipboard(url); ev.preventDefault(); });
 		observer.subscribe("perfil", () => {
 			this.setFinanciacion(this.#acOrganica.getFinanciacion()) // recalculo la financiacion
-				.select("actividad", getActividad(this.getValue("rol"), irse.getColectivo(), this.getFinanciacion()))
+				.select("actividad", getActividad(irse.getRol(), irse.getColectivo(), this.getFinanciacion()))
 				.select("tramite", this.isCom() ? 7 : 1); // default = AyL
 		});
 
@@ -71,7 +70,15 @@ export default class Perfil extends FormBase {
 		tabs.setAction("paso0", () => {
 			if (!valid.perfil()) return; // if error => stop
 			if (!irse.isEditableP0()) return tabs.next();
-			loading(); window.rcPaso0(); // call server
+			const data = form.getData(".ui-perfil");
+			data.organicas = this.#acOrganica.getOrganicas().getData();
+			api.setJSON(data).json("/uae/iris/perfil/save").then(data => {
+				irse.setData(data.solicitud); // update irse data
+				irse.setInteresado(this.#acInteresado.getCurrent()); // preserve interesado
+				observer.emit("perfil", irse); // update changes from server (id, fk, text, etc.)
+				form.getPaso9().view(data.cuentas || []); // cuentas del interesado (desplegable paso9)
+				form.setFirmas(data.firmas).reactivate(irse).nextTab(1); // prepare changes and show tab
+			});
 		});
 		this.afterReset(() => {
 			this.#acInteresado.clear();

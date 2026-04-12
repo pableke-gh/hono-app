@@ -7,7 +7,7 @@ import irse from "../../model/Irse.js";
 import form from "../irse.js";
 
 export default class Interesado extends AutocompleteHTML {
-	init() { // Initialize element after form
+	connectedCallback() { // Initialize element after form
 		this.setDelay(600).setMinLength(5);
 		observer.subscribe("perfil", () => {
 			const div = this.parentNode.nextElementSibling;
@@ -21,7 +21,6 @@ export default class Interesado extends AutocompleteHTML {
 	source() { api.init().json("/uae/iris/interesados", { term: this.value }).then(this.render); }
 	row(item) { return (item.nif + " - " + item.nombre); }
 	select(item) {
-		form.setValue("nif-interesado", item.nif);
 		observer.emit("perfil", irse.setInteresado(item));
 		return item.nif;
 	}
@@ -29,7 +28,6 @@ export default class Interesado extends AutocompleteHTML {
 	validate = () => (this.isLoaded() ? this.setOk() : !this.setRequired("errPerfil"));
 	reset() {
 		irse.setInteresado();
-		form.setValue("nif-interesado");
 		observer.emit("perfil", irse);
 		return super.reset();
 	}
@@ -39,7 +37,6 @@ export default class Interesado extends AutocompleteHTML {
 		if (!interesado) // creating new instance
 			return this.clear(); // clear previous data
 		this.setValue(interesado.nif, this.row(interesado));
-		form.setValue("nif-interesado", this.getValue());
 		observer.emit("perfil", irse);
 	}
 }

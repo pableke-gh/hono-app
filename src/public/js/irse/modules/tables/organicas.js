@@ -5,7 +5,6 @@ import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
 import organica from "../../model/Organica.js";
-import form from "../irse.js"
 
 // tabla de organicas asociadas al perfil (paso 0)
 export default class Organicas extends TableHTML {
@@ -59,8 +58,7 @@ export default class Organicas extends TableHTML {
 			"OTR": "xOT"
 		};
 		if (this.size() > 1)
-			this.#financiacion = MULTI_APLICACION[this.#financiacion]; // || "xOT"; // default = "xOT"
-		form.getPerfil().closeAlerts().stringify("presupuesto", this.getData()); // update input
+			this.#financiacion = MULTI_APLICACION[this.#financiacion]; // default = "xOT"
 		observer.emit("perfil", irse); // notify listeners
 	}
 

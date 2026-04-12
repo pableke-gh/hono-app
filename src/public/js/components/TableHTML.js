@@ -152,6 +152,7 @@ export default class TableHTML extends HTMLTableElement {
 		else
 			this.#tBody.innerHTML = this.#opts.rowEmptyTable; // empty body
 		this.recalc().refreshFooter(); // refresh footer
+		tabs.setHeight(); // resize iframe height
 	}
 	remove = () => { i18n.confirm(this.#opts.msgConfirmRemove) && this.flush(); }
 }

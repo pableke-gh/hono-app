@@ -10,7 +10,7 @@ import Organicas from "../tables/organicas.js";
 export default class Organica extends AutocompleteHTML {
 	#organicas = tabs.getTab(0).querySelector("table");
 
-	init() {
+	connectedCallback() {
 		this.setMinLength(4); // Initialize element after form
 		observer.subscribe("perfil", () => { // pdi show autocomplete + hide button
 			const label = this.parentNode.parentNode; // element container

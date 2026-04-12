@@ -61,18 +61,20 @@ export default class Paso5 extends FormBase {
 
 		this.#tipoGasto.onchange = fnChange; // Change event
 		this.getElement("fileGasto").onFile((ev, el, file) => { el.nextElementSibling.innerHTML = file.name; fnChange(); });
+
+		tabs.getTab(5).addEventListener("change", ev => ev.stopPropagation()); // tab not change form state
 		tabs.setInitEvent("itinerario", () => { // enlace a la tabla de consulta del paso 5
 			const _tblReadOnly = new RutaConsulta(this.querySelector("#rutas-read")); // build tabla itinerario
 			tabs.setViewEvent("itinerario", () => _tblReadOnly.view()); // render rows
 		});
 
 		// el paso 5 requiere validaciones en el servidor
-		const fnUrl = () => ("/uae/iris/paso5/save?id=" + irse.getId());
+		const fnSend = () => api.init().json("/uae/iris/paso5/save?id=" + irse.getId());
 		tabs.setAction("paso5", () => {
 			if (!irse.isEditable()) return tabs.next(); // go next tab directly
-			api.init().json(fnUrl()).then(() => tabs.goTo(6)); // validaciones del servidor
+			fnSend().then(() => tabs.goTo(6)); // validaciones del servidor
 		});
-		tabs.setAction("save5", () => api.init().json(fnUrl()).then(this.setOk));
+		tabs.setAction("save5", () => fnSend().then(this.setOk));
 		tabs.setAction("uploadGasto", () => (valid.upload() && this.upload()));
 	}
 

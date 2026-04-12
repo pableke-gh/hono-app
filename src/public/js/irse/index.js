@@ -35,15 +35,4 @@ coll.ready(() => {
 		form.view(organicas, rutas, gastos, dietas, cuentas, firmas); // configure view
 		tabs.next(tab ?? irse.get("tab")); // go to next tab
 	}
-
-	window.saveTab = () => form.setOk().setChanged().refresh(irse).working();
-	window.nextTab = (xhr, status, args, tab) => {
-		if (!window.showAlerts(xhr, status, args)) return;
-		const interesado = irse.getInteresado(); // datos actuales
-		irse.setData(coll.parse(args.data)); // update irse data
-		irse.setInteresado(interesado); // preserve data
-		const cuentas = coll.parse(args.cuentas);
-		const firmas = coll.parse(args.firmas);
-		form.next(cuentas, firmas, tab);
-	}
 });

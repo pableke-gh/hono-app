@@ -31,12 +31,13 @@ export default class Rutas extends FormBase {
 			irse.setMatricula(ev.target.value);
 		});
 
-		const fnData = () => {
+		const fnSend = () => {
 			const matricula = form.getValue("matricula");
 			const tipo = form.getOrganicas().getTipoDieta();
 			const grupo = form.getPaso1().getGrupoDieta();
 			// recalculo las nuevas dietas y las envio al servidor, el response actualiza la vista (pasos 2, 5 y 6 resumen)
-			return { id: irse.getId(), matricula, rutas: rutas.getRutas(), dietas: dietas.build(tipo, grupo) };
+			const data = { id: irse.getId(), matricula, rutas: rutas.getRutas(), dietas: dietas.build(tipo, grupo) };
+			return api.setJSON(data).json("/uae/iris/rutas/save"); // send data to server and return promise
 		}
 		const fnUpdate = data => { // subtablas
 			this.setChanged().view(data.rutas); // load pk from db
@@ -50,17 +51,17 @@ export default class Rutas extends FormBase {
 
 		tabs.setBackEvent(2, () => {
 			if (valid.itinerario() && irse.isEditable() && this.isChanged()) // is valid change
-				api.setJSON(fnData()).json("/uae/iris/rutas/save").then(fnUpdate); // save and go back
+				fnSend().then(fnUpdate); // send data to server and go back
 		});
 		tabs.setAction("paso2", () => {
 			if (!valid.itinerario()) return; // if error => stop
 			if (!irse.isEditable() || !this.isChanged()) return tabs.next(); // go next tab directly
-			api.setJSON(fnData()).json("/uae/iris/rutas/save").then(data => { fnUpdate(data); tabs.goTo(); }); // go next tab with messages
+			fnSend().then(data => { fnUpdate(data); tabs.goTo(); }); // go next tab with messages
 		});
 		tabs.setAction("save2", () => {
 			if (!valid.itinerario()) return; // if error => stop
 			if (!this.isChanged()) return this.setOk(); // nada que guardar
-			api.setJSON(fnData()).json("/uae/iris/rutas/save").then(fnUpdate);
+			fnSend().then(fnUpdate); // send data to server
 		});
 	}
 

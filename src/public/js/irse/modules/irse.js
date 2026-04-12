@@ -44,11 +44,7 @@ class IrseSolicitud extends Solicitud {
 		this.#paso5.view(gastos);
 		this.#resumen.view(dietas);
 		this.#paso9.view(cuentas);
-		this.setFirmas(firmas).setValue("idses", irse.getId()).reactivate(irse);
-	}
-	next = (cuentas, firmas, tab) => {
-		cuentas && this.#paso9.view(cuentas);
-		this.setFirmas(firmas).setValue("idses", irse.getId()).reactivate(irse).nextTab(tab);
+		this.setFirmas(firmas).reactivate(irse);
 	}
 
 	getSolicitudes = () => window.solicitudes; // tabla de solicitudes

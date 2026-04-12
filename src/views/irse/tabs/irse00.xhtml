@@ -13,13 +13,11 @@
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab0.msg.tit.a']}" escape="false" /></h2>
 		<p class="notice notice-info form-refresh" data-refresh="isUxxiec"><h:outputText value="#{msg['uae.irse.tab0.msg.int']}" escape="false" /></p>
 
-		<h:inputText id="rol" value="#{iris.irse.perfil.rol}" pt:data-editable="isEditableP0" styleClass="hide update-irse" />
 		<label class="ui-blocks form-refresh" data-refresh="isUxxiec">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.int']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
-				<h:inputHidden id="nif-interesado" value="#{iris.irse.perfil.nifInteresado}" pt:is="text-input" />
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<input type="search" name="interesado" is="interesado-input" data-editable="isEditableP0" tabindex="1" class="ui-autocomplete" />
+				<input type="search" name="interesado" is="interesado-input" data-editable="isEditableP0" tabindex="1" class="ui-autocomplete ui-perfil" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</div>
@@ -44,30 +42,29 @@
 			<div class="ui-block-info"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" />: $getCreditoDisp; €</div>
 		</label>
 
-		<h:inputText id="presupuesto" pt:is="text-input" value="#{iris.irse.perfil.presupuesto}" styleClass="hide" /> <!-- upload only -->
 		<div class="navbar form-refresh" data-refresh="isUxxiec">
-			<table is="organica-table" class="tb-xeco table-xs">
-				<thead>
-					<tr>
-						<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
-						<th class="form-refresh" data-refresh="isEditableP0"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
-						<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
-						<th>#{msg['lbl.responsable.gasto']}</th><th>#{msg['lbl.nombre.apellidos']}</th>
-						<th class="no-print"></th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-				<tfoot>
-					<tr>
-						<td class="table-refresh" data-refresh="text-render" colspan="99"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />: @size;</td>
-					</tr>
-				</tfoot>
-			</table>
+		<table is="organica-table" class="tb-xeco table-xs">
+			<thead>
+				<tr>
+					<th><h:outputText value="#{msg['lbl.organica']}" escape="false" /></th>
+					<th class="form-refresh" data-refresh="isEditableP0"><h:outputText value="#{msg['lbl.imp.cd']}" escape="false" /></th>
+					<th><h:outputText value="#{msg['lbl.descripcion']}" escape="false" /></th>
+					<th>#{msg['lbl.responsable.gasto']}</th><th>#{msg['lbl.nombre.apellidos']}</th>
+					<th class="no-print"></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr>
+					<td class="table-refresh" data-refresh="text-render" colspan="99"><h:outputText value="#{msg['lbl.organicas']}" escape="false" />: @size;</td>
+				</tr>
+			</tfoot>
+		</table>
 		</div>
 	
 		<div class="hide">
 			<label for="financiacion" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.fin']}" escape="false" />:</label>
-			<h:inputText id="financiacion" value="#{iris.irse.perfil.financiacion}" pt:is="text-input" pt:data-editable="isEditableP0" styleClass="update-irse" />
+			<h:inputText id="financiacion" value="#{iris.irse.perfil.financiacion}" pt:is="text-input" pt:data-editable="isEditableP0" styleClass="update-irse ui-perfil" />
 		</div>
 		<div class="notice notice-info form-refresh" data-refresh="isFin" data-fin="xSU" data-event="perfil"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
 		<div class="notice notice-info form-refresh" data-refresh="isFin" data-fin="ISU" data-event="perfil"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
@@ -76,11 +73,11 @@
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab0.org.info']}" escape="false" /></div>
 	
 		<label class="ui-blocks">
-			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.act.a']}" escape="false" />:</div>
+			<div class="label required inline">#{iris.irse.form.labelActividad}:</div>
 			<div class="ui-block">
 			<c:choose>
 				<c:when test="#{iris.user.uxxiec}"> <!-- UXXIEC -->
-					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="update-irse" tabindex="7">
+					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="update-irse ui-perfil" tabindex="7">
 						<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
 						<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
 						<f:selectItem itemValue="MES" itemLabel="#{msg['uae.irse.tab0.act.mes']}" itemEscaped="false"/>
@@ -97,7 +94,7 @@
 					</h:selectOneMenu>
 				</c:when>
 				<c:otherwise> <!-- PDI -->
-					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="ui-xs update-irse" tabindex="7">
+					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="ui-xs update-irse ui-perfil" tabindex="7">
 						<f:selectItem itemValue="COM" itemLabel="Sí" itemEscaped="false"/>
 						<f:selectItem itemValue="MUN" itemLabel="No" itemEscaped="false"/>
 					</h:selectOneMenu>
@@ -109,7 +106,7 @@
 		<label class="ui-blocks form-refresh" data-refresh="isUxxiec">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" />:</div>
 			<div class="ui-block">
-			<h:selectOneMenu id="tramite" value="#{iris.irse.perfil.tramite}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="update-irse" tabindex="8">
+			<h:selectOneMenu id="tramite" value="#{iris.irse.perfil.tramite}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="update-irse ui-perfil" tabindex="8">
 				<f:selectItem itemValue="AyL" itemLabel="#{msg['uae.irse.tab0.tramit.ayl']}" itemEscaped="false"/>
 				<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
 				<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
@@ -127,7 +124,6 @@
 			<i class="far fa-broom btn-icon-left"></i>#{msg['lbl.btn.limpiar']}</button> <!-- getId equivale a editableP0 -->
 		<a href="#tab-action-paso0" class="btn btn-green" title="#{msg['tit.btn.empezar']}" tabindex="13">
 			<h:outputText value="#{msg['lbl.btn.empezar']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>
-		<p:remoteCommand name="rcPaso0" action="#{iris.irse.form.paso0()}" oncomplete="nextTab(xhr, status, args, 1)" />
 
 		<a href="#tab-6" class="btn btn-info form-refresh" data-refresh="isResumable" title="#{msg['tit.btn.resumen']}" tabindex="14">
 			<h:outputText value="#{msg['lbl.btn.resumen']}" escape="false" /><i class="fas fa-caret-right btn-icon-right"></i></a>

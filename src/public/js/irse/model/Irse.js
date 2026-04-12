@@ -21,7 +21,10 @@ class Iris extends Solicitud {
 
 	getRol = () => this.get("rol");
 	getCodigoRol = nif => ((nif == this.getNif()) ? "P" : "A");
+	setRol = rol => this.set("rol", rol);
+	setCodigoRol = nif => this.setRol(this.getCodigoRol(nif));
 	getColectivo = () => this.get("colectivo");
+	setColectivo = valor => this.set("colectivo", valor);
 
 	getActividad = () => this.get("actividad");
 	isMun = () => (this.getActividad() == "MUN");
@@ -35,7 +38,7 @@ class Iris extends Solicitud {
 	getTitulo = () => i18n.getPerfil(this.getRol(), this.getColectivo(), this.getActividad(), this.getTramite(), this.getFinanciacion());
 	getPerfil = () => this.get("perfil");
 	setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
-		this.set("rol", rol).set("colectivo", colectivo).set("actividad", actividad).set("tramite", tramit).setFinanciacion(financiacion);
+		this.setRol(rol).setColectivo(colectivo).set("actividad", actividad).set("tramite", tramit).setFinanciacion(financiacion);
 		return this.set("perfil", rol + "," + colectivo + "," + actividad + "," + tramit + "," + financiacion);
 	}
 
@@ -48,7 +51,7 @@ class Iris extends Solicitud {
 	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
 
 	getInteresado = () => this.get("interesado");
-	setInteresado = data => this.set("interesado", data).set("colectivo", data?.ci); 
+	setInteresado = data => this.set("interesado", data).setColectivo(data?.ci).setCodigoRol(data?.nif);
 	getNombreInt = () => this.getInteresado()?.nombre;
 	getNifInteresado = () => this.getInteresado()?.nif;
 	getEmailInteresado = () => this.getInteresado()?.email;
