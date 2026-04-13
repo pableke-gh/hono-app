@@ -8,7 +8,7 @@ import xlsx from "../../../services/xlsx.js";
 import { KEYS, TITILES } from "../../data/isu.js";
 
 /*********** Informe ISU par la otri ***********/
-export default class InformeISU extends FormBase {
+class InformeISU extends FormBase {
 	constructor() {
 		super("xeco-filtro-isu"); // call super before to use this reference
 	}
@@ -34,3 +34,5 @@ window.xlsx = (xhr, status, args) => {
 	xlsx.setData(sheet, aux, otri.xlsx).setTitles(sheet, TITILES);
 	xlsx.download("Informe ISU.xlsx"); // download XLSX file
 }
+
+export default new InformeISU();

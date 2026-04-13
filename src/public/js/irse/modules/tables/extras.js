@@ -1,5 +1,5 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js"
@@ -11,13 +11,9 @@ const MAX_CENA_FIN_G1 = 26.67;
 const MAX_CENA_FIN_G2 = 18.70;
 
 // tabla del paso 6 resumen de gastos extraordinarios
-export default class Extraordinarios extends Table {
-	constructor(form) {
-		super(form.querySelector("#g-extra")); // OJO! existe un campo textarea con id="extra"
-		this.setMsgEmpty("No existen gastos extraordinarios asociados a la comunicación."); // msg.no.gastos.extra
-	}
-
+export default class Extraordinarios extends TableHTML {
 	init() {
+		this.setMsgEmpty("No existen gastos extraordinarios asociados a la comunicación."); // msg.no.gastos.extra
 		irse.getImpExtra = this.getImporte;
 		irse.getImpExtraTrans = this.getImpTransporte;
 		irse.getImpExtraPernoctas = this.getImpPernoctas;
@@ -40,15 +36,13 @@ export default class Extraordinarios extends Table {
 	beforeRender(resume) {
 		resume.imp1 = resume.trans = resume.pernocta = resume.dieta = resume.cena = 0;
 	}
-
-	rowCalc(data, resume) {
+	beforeRow(data, resume) {
 		resume.imp1 += data.imp1;
 		resume.trans += gasto.isExtraTrans(data) ? data.imp1 : 0;
 		resume.pernocta += gasto.isExtraPernocta(data) ? data.imp1 : 0;
 		resume.cena += gasto.isCenaFin(data) ? data.imp1 : 0;
 		resume.dieta += gasto.isExtraDieta(data) ? data.imp1 : 0;
 	}
-
 	row = (data, resume) => `<tr class="tb-data tb-data-tc">
 		<td data-cell="Nº">${resume.count}</td>
 		<td data-cell="${i18n.get("lblTipoGasto")}">${gasto.getDescSubtipo(data)}</td>

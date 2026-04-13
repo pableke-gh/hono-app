@@ -1,26 +1,19 @@
 
-import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import i18n from "../../i18n/langs.js";
 import valid from "../../i18n/validators/irse.js";
-import observer from "../../../core/util/Observer.js";
 
 import irse from "../../model/Irse.js";
 import Interesado from "../inputs/Interesado.js";
 import Organica from "../inputs/Organica.js";
 import form from "../irse.js"
+
+import observer from "../../../core/util/Observer.js";
 import getActividad from "../../data/perfiles/actividades.js";
 
-export default class Perfil extends FormBase {
-	#acInteresado = this.getElement("interesado");
-	#acOrganica = this.getElement("organica");
-	#eFin = this.getElement("financiacion");
-	#eAct = this.getElement("actividad");
-
-	constructor(form) {
-		super(form.getForm(), form.getOptions());
-	}
+class Perfil {
+	#acInteresado; #acOrganica; #eFin; #eAct;
 
 	isColaboracion = () => (this.#eAct.value == "OCE") || (this.#eAct.value == "IAE+OCE");
 	isTribunal = () => (this.#eAct.value == "ATR") || (this.#eAct.value == "IAE+ATR");
@@ -38,7 +31,7 @@ export default class Perfil extends FormBase {
 	isMov = () => (this.#eAct.value == "MOV");
 	is1Dia = () => (this.isMun() || this.isMes() || this.isAcs() || this.isAfo() || this.isAtr() || this.isCtp() || this.isOce())
 
-	getTramite = () => this.getValue("tramite");
+	getTramite = () => form.getValue("tramite");
 	isAut = () => (this.getTramite() == "AUT");
 	isAutA7j = () => (this.isAut() || this.isA7j());
 	isRutaUnica = () => (this.isAutA7j() || this.is1Dia());
@@ -54,16 +47,19 @@ export default class Perfil extends FormBase {
 	getOrganicas = () => this.#acOrganica.getOrganicas();
 
 	init = () => {
+		this.#acInteresado = form.getElement("interesado");
+		this.#acOrganica = form.getElement("organica");
+
 		irse.isIsu = this.isIsu; // current input value
-		this.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
-		this.set("isFin", el => (this.#eFin.value == el.dataset.fin));
+		form.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
+		form.set("isFin", el => (this.#eFin.value == el.dataset.fin));
 
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
-		this.setClick("a#reg-externo", ev => { this.copyToClipboard(url); ev.preventDefault(); });
+		form.setClick("a#reg-externo", ev => { this.copyToClipboard(url); ev.preventDefault(); });
 		observer.subscribe("perfil", () => {
-			this.setFinanciacion(this.#acOrganica.getFinanciacion()) // recalculo la financiacion
-				.select("actividad", getActividad(irse.getRol(), irse.getColectivo(), this.getFinanciacion()))
-				.select("tramite", this.isCom() ? 7 : 1); // default = AyL
+			this.setFinanciacion(this.#acOrganica.getFinanciacion()); // recalculo la financiacion
+			this.#eAct.select(getActividad(irse.getRol(), irse.getColectivo(), this.getFinanciacion()));
+			form.select("tramite", this.isCom() ? 7 : 1); // default = AyL
 		});
 
 		tabs.setActiveEvent(2, this.isMaps).setActiveEvent(3, this.isIsu);
@@ -80,15 +76,15 @@ export default class Perfil extends FormBase {
 				form.setFirmas(data.firmas).reactivate(irse).nextTab(1); // prepare changes and show tab
 			});
 		});
-		this.afterReset(() => {
+		form.afterReset(() => {
 			this.#acInteresado.clear();
 			this.#acOrganica.clear();
 		});
 	}
 
 	view = organicas => {
-		this.#eFin = this.getElement("financiacion");
-		this.#eAct = this.getElement("actividad");
+		this.#eFin = form.getElement("financiacion");
+		this.#eAct = form.getElement("actividad");
 
 		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
@@ -101,3 +97,5 @@ export default class Perfil extends FormBase {
 
 customElements.define("interesado-input", Interesado, { extends: "input" });
 customElements.define("organica-input", Organica, { extends: "input" });
+
+export default new Perfil();

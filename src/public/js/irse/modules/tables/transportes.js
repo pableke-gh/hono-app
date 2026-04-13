@@ -1,5 +1,5 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js"
@@ -7,13 +7,9 @@ import gasto from "../../model/Gasto.js";
 import gastos from "../../model/Gastos.js";
 
 // tabla del paso 6 resumen de transportes
-export default class Transportes extends Table {
-	constructor(form) {
-		super(form.querySelector("#transportes"));
-		this.setMsgEmpty("No existen gastos de transporte asociados a la comunicación."); // msg.no.gastos.extra
-	}
-
+export default class Transportes extends TableHTML {
 	init = () => {
+		this.setMsgEmpty("No existen gastos de transporte asociados a la comunicación."); // msg.no.gastos.extra
 		irse.getImpTransporte = this.getImporte;
 	}
 
@@ -22,12 +18,10 @@ export default class Transportes extends Table {
 	beforeRender(resume) {
 		resume.num = resume.imp1 = 0;
 	}
-
-	rowCalc(data, resume) {
+	beforeRow(data, resume) {
 		resume.num += data.num;
 		resume.imp1 += data.imp1;
 	}
-
 	row = (data, resume) => `<tr class="tb-data tb-data-tc">
 		<td data-cell="Nº">${resume.count}</td>
 		<td data-cell="${i18n.get("lblTipoGasto")}">${gasto.getDescSubtipo(data)}</td>

@@ -1,5 +1,5 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
 import tabs from "../../../components/Tabs.js";
 import i18n from "../../../i18n/langs.js";
 
@@ -8,18 +8,14 @@ import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 import gasto from "../../model/Gasto.js";
 
-import Observer from "../../../core/util/Observer.js";
+import observer from "../../../core/util/Observer.js";
 import form from "../irse.js"
 
 /*********** ASOCIAR RUTAS / GASTOS ***********/
-export default class RutaPendientes extends Table {
-	constructor(form) {
-		super(form.querySelector("#rutas-out"));
-	}
-
+export default class RutaPendientes extends TableHTML {
 	init() {
 		irse.getNumRutasPendientes = this.size;
-		Observer.subscribe("link", this.link).subscribe("unlink", this.unlink);
+		observer.subscribe("link", this.link).subscribe("unlink", this.unlink);
 		tabs.setAction("rtog", () => {
 			const rutas = this.getChecked();
 			if (!rutas || !rutas.length) // no hay rutas seleccionadas
@@ -42,8 +38,6 @@ export default class RutaPendientes extends Table {
 	}
 
 	beforeRender = ruta.beforeRender;
-	rowCalc = ruta.rowCalc;
-
 	row(data, status) {
 		const flag = ruta.isPrincipal(data) ? '<span class="text-warn icon"><i class="fal fa-flag-checkered"></i></span>' : "";
 		return `<tr class="tb-data tb-data-tc">

@@ -10,11 +10,11 @@ import organica from "../../model/Organica.js";
 export default class Organicas extends TableHTML {
 	#tipo; #financiacion;
 
-	constructor() { // tabla del paso 0 (organicas del perfil)
-		super(); // Must call super before 'this'
+	connectedCallback() { // tabla del paso 0 (organicas del perfil)
 		this.setMsgConfirm("removeOrg").setMsgEmpty("msgOrganicasEmpty");
 		irse.getCreditoDisp = this.getCreditoDisp; // recalcula el credito disp.
 		irse.getResponsables = this.getResponsables; // listado de responsables de las organicas
+		observer.subscribe("perfil", this.setEditable); // update table state
 	}
 
 	getTipoDieta = () => this.#tipo;
@@ -29,6 +29,19 @@ export default class Organicas extends TableHTML {
 	isACA = org => (organica.isACA(org) && (this.#financiacion == "OTR")); // TTPP o Master
 	getFinanciacion = () => this.#financiacion;
 
+	setDisabled = () => this.setReadonly();
+	setReadonly() {
+		const selector = "td:nth-child(2),[href='#remove']"; // :nth-child() first child = 1
+		this.tBodies[0].querySelectorAll(selector).hide(); // hide column cv and actions
+		this.tHead.rows[0].cells[1].hide(); // hide crédito vinculante
+	}
+	setActive() {
+		const selector = "td:nth-child(2),[href='#remove']"; // :nth-child() first child = 1
+		this.tBodies[0].querySelectorAll(selector).show(); // show column cv and actions
+		this.tHead.rows[0].cells[1].show(); // show crédito vinculante
+	}
+	setEditable = () => (irse.isEditableP0() ? this.setActive() : this.setReadonly());
+
 	beforeRender() {
 		this.#financiacion = "OTR"; //default fin.
 	}
@@ -39,11 +52,10 @@ export default class Organicas extends TableHTML {
 		this.#financiacion = this.isACA(data) ? "ACA" : this.#financiacion; // TTPP o Master
 	}
 	row(data) {
-		const cssP0 = irse.isEditableP0() ? "" : ' class="hide"';
-		const remove = irse.isEditableP0() ? `<a href="#remove"${cssP0}><i class="fas fa-times action text-red resize"></i></a>` : "";
+		const remove = irse.isEditableP0() ? `<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>` : "";
 		return `<tr class="tb-data tb-data-tc">
 			<td data-cell="Orgánica">${data.o}</td>
-			<td data-cell="Crédito Disp."${cssP0}>${i18n.isoFloat(data.imp)}</td>
+			<td data-cell="Crédito Disp.">${i18n.isoFloat(data.imp)}</td>
 			<td data-cell="${i18n.get("lblDesc")}">${data.dOrg}</td>
 			<td data-cell="Responsable del gasto">${data.resp}</td>
 			<td data-cell="Nombre">${data.r}</td>

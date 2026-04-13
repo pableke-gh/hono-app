@@ -7,8 +7,9 @@ class FormInput {
 	getOption = name => this.#opts[name];
 	setOptions = data => { this.#opts = data; return this; }
 
-	setDisabled(el, force) { el.toggle("disabled", el.toggleAttribute("disabled", force)); return el; }
-	setReadonly(el, force) { el.toggle("readonly", el.toggleAttribute("readonly", force)); return el; }
+	setDisabled(el, force) { el.classList.toggle("disabled", el.toggleAttribute("disabled", force)); return el; }
+	setReadonly(el, force) { el.classList.toggle("readonly", el.toggleAttribute("readonly", force)); return el; }
+	setActive(el) { el.classList.remove("readonly"); el.removeAttribute("readonly"); return el; }
 	setEditable(el, model) {
 		const value = el.dataset.disabled || el.dataset.editable;
 		if (value == "manual") return el; // skip evaluation (input manual)

@@ -8,7 +8,7 @@ import irse from "../../model/Irse.js";
 import Organicas from "../tables/organicas.js";
 
 export default class Organica extends AutocompleteHTML {
-	#organicas = tabs.getTab(0).querySelector("table");
+	#organicas = tabs.$1(0, "table");
 
 	connectedCallback() {
 		this.setMinLength(4); // Initialize element after form

@@ -1,62 +1,52 @@
 
 import valid from "../i18n/validators/irse.js";
 import irse from "../model/Irse.js";
-import Perfil from "./tabs/perfil.js";
-import Paso1 from "./tabs/paso1.js";
-import Rutas from "./tabs/rutas.js";
-import Paso3 from "./tabs/paso3.js";
-import Paso5 from "./tabs/paso5.js";
-import Resumen from "./tabs/resumen.js";
-import Paso9 from "./tabs/paso9.js";
-import InformeISU from "./tabs/otri.js";
+import perfil from "./tabs/perfil.js";
+import paso1 from "./tabs/paso1.js";
+import rutas from "./tabs/rutas.js";
+import paso3 from "./tabs/paso3.js";
+import paso5 from "./tabs/paso5.js";
+import resumen from "./tabs/resumen.js";
+import paso9 from "./tabs/paso9.js";
+import informeISU from "./tabs/otri.js";
 
 import IrseSolicitudes from "./solicitudes.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class IrseSolicitud extends Solicitud {
-	#perfil = new Perfil(this);
-	#paso1 = new Paso1(this);
-	#rutas = new Rutas(this);
-	#paso3 = new Paso3(this);
-	#paso5 = new Paso5(this);
-	#resumen = new Resumen(this);
-	#paso9 = new Paso9(this);
-	#isu = new InformeISU(this);
-
 	init() { // init modules
 		super.init(valid);
-		this.#perfil.init();
-		this.#paso1.init();
-		this.#rutas.init();
-		this.#paso3.init();
-		this.#paso5.init();
-		this.#resumen.init();
-		this.#paso9.init();
-		this.#isu.init();
+		perfil.init();
+		paso1.init();
+		rutas.init();
+		paso3.init();
+		paso5.init();
+		resumen.init();
+		paso9.init();
+		informeISU.init();
 		return this;
 	}
 
 	// IMPORTANT! override super view
-	view = (organicas, rutas, gastos, dietas, cuentas, firmas) => {
-		this.#perfil.view(organicas);
-		this.#rutas.view(rutas);
-		this.#paso3.view();
-		this.#paso5.view(gastos);
-		this.#resumen.view(dietas);
-		this.#paso9.view(cuentas);
+	view = (organicas, itinerario, gastos, dietas, cuentas, firmas) => {
+		perfil.view(organicas);
+		rutas.view(itinerario);
+		paso3.view();
+		paso5.view(gastos);
+		resumen.view(dietas);
+		paso9.view(cuentas);
 		this.setFirmas(firmas).reactivate(irse);
 	}
 
 	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
-	getPerfil = () => this.#perfil; // module perfil
-	getOrganicas = this.#perfil.getOrganicas; // table organicas
-	getPaso1 = () => this.#paso1; // module paso1
-	getRutas = () => this.#rutas; // module rutas
-	getPaso3 = () => this.#paso3; // module paso3
-	getPaso5 = () => this.#paso5; // module paso5
-	getResumen = () => this.#resumen; // module resumen
-	getPaso9 = () => this.#paso9; // module paso5
-	getInformeISU = () => this.#isu; // module InformeISU
+	getPerfil = () => perfil; // module perfil
+	getOrganicas = perfil.getOrganicas; // table organicas
+	getPaso1 = () => paso1; // module paso1
+	getRutas = () => rutas; // module rutas
+	getPaso3 = () => paso3; // module paso3
+	getPaso5 = () => paso5; // module paso5
+	getResumen = () => resumen; // module resumen
+	getPaso9 = () => paso9; // module paso5
 }
 
 customElements.define("irse-table", IrseSolicitudes, { extends: "table" });

@@ -1,6 +1,5 @@
 
 import sb from "../../../components/types/StringBox.js";
-import FormBase from "../../../components/forms/FormBase.js";
 import api from "../../../components/Api.js";
 import tabs from "../../../components/Tabs.js";
 import valid from "../../i18n/validators/rutas.js";
@@ -9,24 +8,20 @@ import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";
 import dietas from "../../model/Dietas.js";
 
-import TableRutas from "../tables/rutas.js";
 import AutocompleteMaps from "../inputs/Autocomplete.js";
 import AddRuta from "../inputs/AddRuta.js";
+import TableRutas from "../tables/rutas.js";
 import place from "../../util/place.js";
 import form from "../irse.js";
 
-export default class Rutas extends FormBase {
-	#tr = new TableRutas(this);
-
-	constructor(form) {
-		super(form.getForm(), form.getOptions());
-	}
+class Rutas {
+	#tRutas = tabs.$1(2, "table");
 
 	init = () => {
-		this.#tr.init(); // tabla de rutas
+		this.#tRutas.init(); // init. itinerario
 		const fnBlur = (ev, f1, f2) => { f2.value = ev.target.value; f1.removeAttribute("max"); f2.removeAttribute("max"); }
-		this.getInput("#f1.ui-ruta").setRange("f2", fnBlur);
-		this.getElement("matricula").addChange(ev => {
+		form.getInput("#f1.ui-ruta").setRange("f2", fnBlur);
+		form.getElement("matricula").addChange(ev => {
 			ev.target.value = sb.toUpperWord(ev.target.value);
 			irse.setMatricula(ev.target.value);
 		});
@@ -40,35 +35,38 @@ export default class Rutas extends FormBase {
 			return api.setJSON(data).json("/uae/iris/rutas/save"); // send data to server and return promise
 		}
 		const fnUpdate = data => { // subtablas
-			this.setChanged().view(data.rutas); // load pk from db
-			form.getPaso5().updateRutas(); // rutas de consulta y pendientes
+			this.view(data.rutas); // load pk from db
+			form.setChanged().getPaso5().updateRutas(); // rutas de consulta y pendientes
 			form.getResumen().updateRutas(data.dietas); // km y dietas
 		}
 
 		tabs.setInitEvent(2, place.setScript); // load google api maps once
 		tabs.getTab(2).addEventListener("change", ev => ev.stopPropagation()); // inputs not change form state => only programmatically
-		tabs.setViewEvent(2, () => this.setValue("matricula", irse.getMatricula())); // preload matricula from server
+		tabs.setViewEvent(2, () => form.setValue("matricula", irse.getMatricula())); // preload matricula from server
 
 		tabs.setBackEvent(2, () => {
-			if (valid.itinerario() && irse.isEditable() && this.isChanged()) // is valid change
+			if (valid.itinerario() && irse.isEditable() && form.isChanged()) // is valid change
 				fnSend().then(fnUpdate); // send data to server and go back
 		});
 		tabs.setAction("paso2", () => {
 			if (!valid.itinerario()) return; // if error => stop
-			if (!irse.isEditable() || !this.isChanged()) return tabs.next(); // go next tab directly
+			if (!irse.isEditable() || !form.isChanged()) return tabs.next(); // go next tab directly
 			fnSend().then(data => { fnUpdate(data); tabs.goTo(); }); // go next tab with messages
 		});
 		tabs.setAction("save2", () => {
 			if (!valid.itinerario()) return; // if error => stop
-			if (!this.isChanged()) return this.setOk(); // nada que guardar
+			if (!form.isChanged()) return form.setOk(); // nada que guardar
 			fnSend().then(fnUpdate); // send data to server
 		});
 	}
 
-	getRutas = () => this.#tr; // table rutas
-	rebuild() { this.#tr.render(); } // reload table
-	view(data) { rutas.setRutas(data); this.#tr.render(); }
+	getRutas = () => this.#tRutas; // table rutas
+	rebuild() { this.#tRutas.render(); } // reload table
+	view(data) { rutas.setRutas(data); this.#tRutas.render(); }
 }
 
 customElements.define("autocomplete-maps", AutocompleteMaps, { extends: "input" });
 customElements.define("add-ruta", AddRuta, { extends: "a" });
+customElements.define("table-rutas", TableRutas, { extends: "table" });
+
+export default new Rutas();

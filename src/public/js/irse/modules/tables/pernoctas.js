@@ -1,5 +1,5 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js"
@@ -8,15 +8,11 @@ import gastos from "../../model/Gastos.js";
 import form from "../irse.js"
 
 // tabla del paso 6 resumen de transportes
-export default class Pernoctas extends Table {
-	constructor(form) {
-		super(form.querySelector("#pernoctas"));
-		this.setMsgEmpty("No existen gastos por alojamiento asociados a la comunicación."); // msg.no.gastos.extra
-	}
-
+export default class Pernoctas extends TableHTML {
 	init = () => {
-		irse.getImpPernoctas = this.getImporte;
+		this.setMsgEmpty("No existen gastos por alojamiento asociados a la comunicación."); // msg.no.gastos.extra
 		irse.getNochesPendientes = () => (rutas.getNumNoches() - this.getNumNoches());
+		irse.getImpPernoctas = this.getImporte;
 	}
 
 	getImporte = () => this.getProp("impMin");
@@ -27,8 +23,7 @@ export default class Pernoctas extends Table {
 		resume.imp1 = resume.imp2 = resume.numNoches = 0;
 		resume.impTotal = resume.impMin = 0;
 	}
-
-	rowCalc = (data, resume) => {
+	beforeRow = (data, resume) => {
 		resume.imp1 += data.imp1; // importe justificado por el usuario en el paso 5
 		resume.imp2 += data.imp2; // importe por noche auto-calculado por pais
 		resume.numNoches += data.num; // numero total de noches
@@ -37,7 +32,6 @@ export default class Pernoctas extends Table {
 		data.impMin = form.getOrganicas().isEUT() ? data.imp1 : Math.min(data.imp1, data.impTotal);
 		resume.impMin += data.impMin;
 	}
-
 	row = (data, resume) => `<tr class="tb-data tb-data-tc">
 		<td data-cell="Nº">${resume.count}</td>
 		<td data-cell="${i18n.get("lblPais")}">${data.desc}</td>
@@ -49,7 +43,6 @@ export default class Pernoctas extends Table {
 		<td data-cell="${i18n.get("lblImpJustifi")}">${i18n.isoFloat(data.imp1)} €</td>
 		<td data-cell="${i18n.get("lblImpPercibir")}">${i18n.isoFloat(data.impMin)} €</td>
 	</tr>`
-
 	afterRender = resume => {
 		resume.impTotal = resume.imp2 * resume.numNoches; // importe total por noche
 	}

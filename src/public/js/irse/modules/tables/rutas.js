@@ -1,5 +1,5 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -9,15 +9,11 @@ import form from "../irse.js"
 
 import ct from "../../data/place-ct.js";
 
-export default class Rutas extends Table {
-	constructor(form) { // tabla del paso 2 (rutas maps)
-		super(form.querySelector("#rutas"), { msgEmptyTable: "msgRutasEmpty" });
-	}
-
-	init() {
+export default class TableRutas extends TableHTML {
+	init() { // tabla del paso 2 (rutas maps)
 		const fnGt1 = () => ((this.size() > 1) && irse.isEditable());
 		form.set("is-rutas-gt-1", () => (this.size() > 1)).set("is-editable-rutas-gt-1", fnGt1);
-		this.setRemove(() => { form.setChanged(true); return Promise.resolve(); });
+		this.setMsgEmpty("msgRutasEmpty");
 		this.set("#main", data => {
 			rutas.setRutaPrincipal(data);
 			form.setChanged(true);
@@ -33,8 +29,7 @@ export default class Rutas extends Table {
 		ruta.beforeRender(resume);
 		resume.matricula = irse.getMatricula();
 	}
-
-	rowCalc = ruta.rowCalc;
+	beforeRow = ruta.rowCalc; // overrride
 	row(data, resume) {
 		const isPrincipal = ruta.isPrincipal(data);
 		const TPL_FLAG = '<span class="text-warn icon"><i class="fal fa-flag-checkered"></i></span>';
@@ -58,11 +53,6 @@ export default class Rutas extends Table {
 			<td data-cell="${i18n.get("lblAcciones")}" class="no-print">${remove}</td>
 		</tr>`;
 	}
-
-	render() {
-		super.render(rutas.getRutas());
-	}
-
 	afterRender(resume) {
 		resume.impKm = resume.totKm * ruta.getImpGasolina();
 		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
@@ -71,4 +61,7 @@ export default class Rutas extends Table {
 		const data = { oid: last.did, origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula: resume.matricula };
 		form.setData(data, ".ui-ruta").delAttr("#f1", "max").restart("destino").hide(".grupo-matricula");
 	}
+
+	render() { super.render(rutas.getRutas()); }
+	flush() { form.setChanged(true); super.flush(); }
 }

@@ -1,14 +1,18 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
+import tabs from "../../../components/Tabs.js";
 import i18n from "../../../i18n/langs.js";
 
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 
-export default class RutaConsulta extends Table {
-	beforeRender = ruta.beforeRender;
-	rowCalc = ruta.rowCalc;
+export default class RutaConsulta extends TableHTML {
+	connectedCallback() { // tabla del paso 0 (organicas del perfil)
+		tabs.setViewEvent("itinerario", () => this.view()); // render rows
+	}
 
+	beforeRender = ruta.beforeRender;
+	beforeRow = ruta.rowCalc;
 	row(data, resume) { 
 		const flag = ruta.isPrincipal(data) ? '<span class="text-warn icon"><i class="fal fa-flag-checkered"></i></span>' : "";
 		return `<tr class="tb-data tb-data-tc">
@@ -23,7 +27,6 @@ export default class RutaConsulta extends Table {
 			<td data-cell="Km." class="hide-sm">${i18n.isoFloat(data.km2) || "-"}</td>
 		</tr>`;
 	}
-
 	afterRender = resume => {
 		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
 	}

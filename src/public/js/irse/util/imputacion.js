@@ -1,6 +1,7 @@
 
 import irse from "../model/Irse.js";
 import organica from "../model/Organica.js";
+import perfil from "../modules/tabs/perfil.js";
 import form from "../modules/irse.js";
 
 function IrseImputacion() {
@@ -24,7 +25,6 @@ function IrseImputacion() {
 
 	//calculo de la imputacion por orden de prelacion
 	this.get = function(tipo, org) {
-		const perfil = form.getPerfil();
 		/*if (tipo == 4) { //Asistencias/colaboraciones = 4
 			//organica de investigacion 642
 			if (perfil.isIsu()) {
@@ -50,7 +50,7 @@ function IrseImputacion() {
 			return perfil.isFormacion() ? "233.01" : "233.02";
 		}*/
 
-		let finalidad = perfil.getValue("finalidad") || "1"; //default = Ejecución
+		let finalidad = form.getValue("finalidad") || "1"; //default = Ejecución
 		if (organica.isTipoDieta(tipo)) // dietas
 			finalidad = FINALIDAD_AA[finalidad];
 		else if (organica.isTipoPernocta(tipo)) // alojamiento

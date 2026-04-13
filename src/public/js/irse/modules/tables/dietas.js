@@ -1,15 +1,11 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
 import i18n from "../../i18n/langs.js";
 import irse from "../../model/Irse.js";
 import form from "../irse.js"
 
 // tabla del paso 6 resumen de dietas
-export default class Dietas extends Table {
-	constructor(form) {
-		super(form.querySelector("#dietas"));
-	}
-
+export default class Dietas extends TableHTML {
 	init() {
 		form.set("is-dietas", this.size);
 		irse.getImpDietas = () => this.getProp("percibir");
@@ -23,8 +19,7 @@ export default class Dietas extends Table {
 	beforeRender = resume => {
 		resume.dias = resume.impMax = resume.reducido = resume.percibir =  0;
 	}
-
-	rowCalc = (data, resume) => {
+	beforeRow = (data, resume) => {
 		const isFirst = (resume.index == 0);
 		const isLast = (resume.count == resume.size);
 
@@ -43,7 +38,6 @@ export default class Dietas extends Table {
 		resume.reducido += data.reducido;
 		resume.percibir += data.percibir;
 	}
-
 	row(dieta) {
 		const fnDietas = (dieta, maxDietas) => {
 			let output = '<select name="dietas" is="data-list" class="ui-sm">';
@@ -66,7 +60,6 @@ export default class Dietas extends Table {
 			<td data-cell="${i18n.get("lblImpTotal")}" class="table-refresh" data-refresh="text-render" data-template="$percibir; €">${i18n.isoFloat(dieta.percibir)} €</td>
 		</tr>`;
 	}
-
 	afterRender() {
 		form.refresh(irse);
 	}

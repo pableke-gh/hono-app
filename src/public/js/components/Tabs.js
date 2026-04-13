@@ -27,6 +27,10 @@ function Tabs() {
     }
 
 	this.getTabs = () => tabs; // tabs array
+	this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
+	this.getCurrent = () => tabs[_tabIndex]; // current tab
+	this.$1 = (tab, selector) => this.getTab(tab).$1(selector);
+	this.$$ = (tab, selector) => this.getTab(tab).$$(selector);
 	this.getAction = name => EVENTS[name]; // get event handler
 	this.setAction = (name, fn) => fnSet(name, fn); // set event handler
 	this.invoke = name => (self.getAction(name)()); // handler must exists
@@ -107,8 +111,6 @@ function Tabs() {
 		return self;
 	}
 
-	this.getCurrent = () => tabs[_tabIndex]; // current tab
-	this.getTab = id => tabs.findBy("#tab-" + id); // Find by id selector
 	this.setActive = id => _show(self.getTab(id)); // Force active class whithot events and alerts
 	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
 	this.setHeight = () => cv.setHeight(self.getCurrent()); // current tab height

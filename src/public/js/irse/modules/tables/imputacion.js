@@ -1,5 +1,5 @@
 
-import Table from "../../../components/Table.js";
+import TableHTML from "../../../components/TableHTML.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -8,13 +8,9 @@ import rutas from "../../model/Rutas.js";
 import imputacion from "../../util/imputacion.js";
 import form from "../irse.js"
 
-export default class Imputacion extends Table {
-	constructor(form) { // tabla del paso 9 (imputacion)
-		super(form.querySelector("#imputacion"));
+export default class Imputacion extends TableHTML {
+	connectedCallback() { // tabla del paso 9 (imputacion)
 		this.setMsgEmpty("No existen orgánicas asociadas a la comunicación.");
-	}
-
-	init() { // tabla del paso 9
 		irse.getImpTotal = this.getImpTotal;
 	}
 
@@ -34,7 +30,7 @@ export default class Imputacion extends Table {
 		resume.totManutenciones = resume.totPernoctas = 0;
 		resume.totTransporte = resume.totAc = 0;
 	}
-	rowCalc(data, resume) {
+	beforeRow(data, resume) {
 		resume.imp1 += data.imp1;
 		resume.totManutenciones += organica.isDieta(data) ? data.imp1 : 0;
 		resume.totPernoctas += organica.isPernocta(data) ? data.imp1 : 0;
