@@ -3,7 +3,7 @@ import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import valid from "../../i18n/validators/irse.js";
 import irse from "../../model/Irse.js";
-import form from "../irse.js"
+import form from "../irse.js";
 
 /** subvención, congreso, asistencias/colaboraciones **/
 class Paso3 {

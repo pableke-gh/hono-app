@@ -3,8 +3,8 @@ import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import valid from "../../i18n/validators/irse.js";
 
-import irse from "../../model/Irse.js"
-import rutas from "../../model/Rutas.js"
+import irse from "../../model/Irse.js";
+import rutas from "../../model/Rutas.js";
 
 import Kilometraje from "../tables/kilometraje.js";
 import Transportes from "../tables/transportes.js";
@@ -13,7 +13,7 @@ import Dietas from "../tables/dietas.js";
 import Extraordinarios from "../tables/extras.js";
 
 import observer from "../../../core/util/Observer.js";
-import form from "../irse.js"
+import form from "../irse.js";
 
 /*********** Tablas de resumen ***********/
 class Resumen {

@@ -7,8 +7,7 @@ import partida from "../model/Partida.js";
 import form from "../modules/presto.js";
 
 export default class Partidas extends TableHTML {
-	constructor() {
-		super(); // Must call super before 'this'
+	connectedCallback() {
 		this.setMsgEmpty("msgPartidasEmpty");
 		presto.showPartidasInc = () => (presto.isTipoMultipartida() && presto.isEditable() && (this.size() < 20));
 	}

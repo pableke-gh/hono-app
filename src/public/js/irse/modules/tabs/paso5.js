@@ -4,16 +4,16 @@ import tabs from "../../../components/Tabs.js";
 import valid from "../../i18n/validators/irse.js";
 import i18n from "../../i18n/langs.js";
 
-import irse from "../../model/Irse.js"
-import rutas from "../../model/Rutas.js"
+import irse from "../../model/Irse.js";
+import rutas from "../../model/Rutas.js";
 import gasto from "../../model/Gasto.js";
 import gastos from "../../model/Gastos.js";
 
 import RutaPendientes from "../tables/pendientes.js";
-import RutaConsulta from "../tables/itinerario.js"
-import TableGastos from "../tables/gastos.js"
+import RutaConsulta from "../tables/itinerario.js";
+import TableGastos from "../tables/gastos.js";
 import observer from "../../../core/util/Observer.js";
-import form from "../irse.js"
+import form from "../irse.js";
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
 class Paso5 {

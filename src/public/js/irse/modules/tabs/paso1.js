@@ -4,14 +4,14 @@ import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 import valid from "../../i18n/validators/rutas.js";
 
-import irse from "../../model/Irse.js"
-import rutas from "../../model/Rutas.js"
-import form from "../irse.js"
+import irse from "../../model/Irse.js";
+import rutas from "../../model/Rutas.js";
+import perfil from "./perfil.js";
+import form from "../irse.js";
 
 /** campo objeto y mun **/
 class Paso1 {
 	init() {
-		const perfil = form.getPerfil();
 		// actualiza el desplegable del paso 1 (municipio) y el del paso 2 (rutas)
 		form.onChange("[name='desp']", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"));
 		form.getElement("matriculaMun").addChange(ev => {

@@ -54,7 +54,7 @@ class Paso9 {
 		this.#swift.addChange(ev => { ev.target.value = sb.toWord(ev.target.value); });
 
 		const fnData = () => {
-			const data = this.getData(".ui-paso9");
+			const data = form.getData(".ui-paso9");
 			data.id = irse.getId(); // solicitud actual
 			data.inputacion = this.#imputacion.getData();
 			return data;
@@ -62,7 +62,7 @@ class Paso9 {
 		tabs.setAction("save9", () => {
 			if (valid.paso9()) // ok => send data and show alerts
 				api.setJSON(fnData()).json("/uae/iris/paso9/save");
-			this.setChanged(); // force user re-change
+			form.setChanged(); // force user re-change
 		});
 		tabs.setAction("send", () => {
 			if (!valid.paso9() || !i18n.confirm("msgFirmarEnviar")) return;

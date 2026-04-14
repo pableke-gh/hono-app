@@ -13,7 +13,10 @@ import observer from "../../../core/util/Observer.js";
 import getActividad from "../../data/perfiles/actividades.js";
 
 class Perfil {
-	#acInteresado; #acOrganica; #eFin; #eAct;
+	#form = document.forms["xeco-model"];
+	#acInteresado = this.#form.elements["interesado"];
+	#acOrganica = this.#form.elements["organica"];
+	#eFin; #eAct;
 
 	isColaboracion = () => (this.#eAct.value == "OCE") || (this.#eAct.value == "IAE+OCE");
 	isTribunal = () => (this.#eAct.value == "ATR") || (this.#eAct.value == "IAE+ATR");
@@ -47,9 +50,6 @@ class Perfil {
 	getOrganicas = () => this.#acOrganica.getOrganicas();
 
 	init = () => {
-		this.#acInteresado = form.getElement("interesado");
-		this.#acOrganica = form.getElement("organica");
-
 		irse.isIsu = this.isIsu; // current input value
 		form.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
 		form.set("isFin", el => (this.#eFin.value == el.dataset.fin));
