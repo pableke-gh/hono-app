@@ -73,7 +73,8 @@ class Paso9 {
 		});
 	}
 
-	view(cuentas) {
+	setCuentas(cuentas) {
+		cuentas = cuentas || []; // container
 		const iban = irse.get("iban"); // can be new in system
 		const cuenta = iban ? (coll.includes(cuentas, iban) ? iban : "") : (cuentas[0] || "");
 		const labels = cuentas.map(cuenta => {
@@ -94,7 +95,9 @@ class Paso9 {
 		this.#iban.setValue(iban || cuenta);
 		this.#swift.setValue(irse.get("swift"));
 		this.#toggle(cuenta);
-
+	}
+	view(cuentas) {
+		this.setCuentas(cuentas);
 		form.setValue("urgente", irse.isUrgente() ? "2" : "1") // 1 = normal / 2 = urgente
 			.setValue("fMax", irse.get("fMax")).setValue("extra", irse.get("extra"))
 			.setValue("observaciones", irse.get("observaciones"));

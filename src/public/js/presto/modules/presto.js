@@ -3,9 +3,9 @@ import valid from "../i18n/validators.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 
-import PartidaDec from "./PartidaDec.js";
-import PartidaInc from "./PartidaInc.js";
-import Partida030 from "./Partida030.js";
+import PartidaDec from "./partidaDec.js";
+import PartidaInc from "./partidaInc.js";
+import Partida030 from "./partida030.js";
 
 import PrestoSolicitudes from "../components/prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";

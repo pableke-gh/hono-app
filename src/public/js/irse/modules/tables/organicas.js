@@ -71,6 +71,7 @@ export default class Organicas extends TableHTML {
 		};
 		if (this.size() > 1)
 			this.#financiacion = MULTI_APLICACION[this.#financiacion]; // default = "xOT"
+		irse.setFinanciacion(this.#financiacion); // update value
 		observer.emit("perfil", irse); // notify listeners
 	}
 

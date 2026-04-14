@@ -5,8 +5,7 @@
 		xmlns:p="http://primefaces.org/ui" 
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:c="http://java.sun.com/jsp/jstl/core"
-		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
 	<div class="card-xeco">
@@ -61,60 +60,54 @@
 			</tfoot>
 		</table>
 		</div>
-	
-		<div class="hide">
-			<label for="financiacion" class="required"><h:outputText value="#{msg['uae.irse.tab0.lbl.fin']}" escape="false" />:</label>
-			<h:inputText id="financiacion" value="#{iris.irse.perfil.financiacion}" pt:is="text-input" pt:data-editable="isEditableP0" styleClass="update-irse ui-perfil" />
-		</div>
+
 		<div class="notice notice-info form-refresh" data-refresh="isFin" data-fin="xSU" data-event="perfil"><h:outputText value="#{msg['uae.irse.tab0.fin.xsu.info']}" escape="false" /></div>
 		<div class="notice notice-info form-refresh" data-refresh="isFin" data-fin="ISU" data-event="perfil"><h:outputText value="#{msg['uae.irse.tab0.fin.isu.info']}" escape="false" /></div>
 		<div class="notice notice-info form-refresh" data-refresh="isFin" data-fin="x83" data-event="perfil"><h:outputText value="#{msg['uae.irse.tab0.fin.x83.info']}" escape="false" /></div>
 		<div class="notice notice-info form-refresh" data-refresh="isFin" data-fin="A83" data-event="perfil"><h:outputText value="#{msg['uae.irse.tab0.fin.a83.info']}" escape="false" /></div>
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab0.org.info']}" escape="false" /></div>
-	
+
 		<label class="ui-blocks">
 			<div class="label required inline">#{iris.irse.form.labelActividad}:</div>
 			<div class="ui-block">
+			<select name="actividad" is="data-list" data-editable="isEditableP0" class="ui-perfil" tabindex="7">
 			<c:choose>
 				<c:when test="#{iris.user.uxxiec}"> <!-- UXXIEC -->
-					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="update-irse ui-perfil" tabindex="7">
-						<f:selectItem itemValue="COM" itemLabel="#{msg['uae.irse.tab0.act.com']}" itemEscaped="false"/>
-						<f:selectItem itemValue="MUN" itemLabel="#{msg['uae.irse.tab0.act.mun']}" itemEscaped="false"/>
-						<f:selectItem itemValue="MES" itemLabel="#{msg['uae.irse.tab0.act.mes']}" itemEscaped="false"/>
-						<f:selectItem itemValue="IAE" itemLabel="#{msg['uae.irse.tab0.act.iae']}" itemEscaped="false"/>
-						<f:selectItem itemValue="ATR" itemLabel="#{msg['uae.irse.tab0.act.atr']}" itemEscaped="false"/>
-						<f:selectItem itemValue="IAE+ATR" itemLabel="#{msg['uae.irse.tab0.act.iae.atr']}" itemEscaped="false"/>
-						<f:selectItem itemValue="AFO" itemLabel="#{msg['uae.irse.tab0.act.afo']}" itemEscaped="false"/>
-						<f:selectItem itemValue="IAE+AFO" itemLabel="#{msg['uae.irse.tab0.act.iae.afo']}" itemEscaped="false"/>
-						<f:selectItem itemValue="ACS" itemLabel="#{msg['uae.irse.tab0.act.acs']}" itemEscaped="false"/>
-						<f:selectItem itemValue="OCE" itemLabel="#{msg['uae.irse.tab0.act.col']}" itemEscaped="false"/>
-						<f:selectItem itemValue="IAE+OCE" itemLabel="#{msg['uae.irse.tab0.act.iae.col']}" itemEscaped="false"/>
-						<f:selectItem itemValue="A7J" itemLabel="#{msg['uae.irse.tab0.act.a7j']}" itemEscaped="false"/>
-						<f:selectItem itemValue="MOV" itemLabel="#{msg['uae.irse.tab0.act.mov']}" itemEscaped="false"/>
-					</h:selectOneMenu>
+					<option value="COM">#{msg['uae.irse.tab0.act.com']}</option>
+					<option value="MUN">#{msg['uae.irse.tab0.act.mun']}</option>
+					<option value="MES">#{msg['uae.irse.tab0.act.mes']}</option>
+					<option value="IAE">#{msg['uae.irse.tab0.act.iae']}</option>
+					<option value="ATR">#{msg['uae.irse.tab0.act.atr']}</option>
+					<option value="IAE+ATR">#{msg['uae.irse.tab0.act.iae.atr']}</option>
+					<option value="AFO">#{msg['uae.irse.tab0.act.afo']}</option>
+					<option value="IAE+AFO">#{msg['uae.irse.tab0.act.iae.afo']}</option>
+					<option value="ACS">#{msg['uae.irse.tab0.act.acs']}</option>
+					<option value="OCE">#{msg['uae.irse.tab0.act.col']}</option>
+					<option value="IAE+OCE">#{msg['uae.irse.tab0.act.iae.col']}</option>
+					<option value="A7J">#{msg['uae.irse.tab0.act.a7j']}</option>
+					<option value="MOV">#{msg['uae.irse.tab0.act.mov']}</option>
 				</c:when>
 				<c:otherwise> <!-- PDI -->
-					<h:selectOneMenu id="actividad" value="#{iris.irse.perfil.actividad}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="ui-xs update-irse ui-perfil" tabindex="7">
-						<f:selectItem itemValue="COM" itemLabel="Sí" itemEscaped="false"/>
-						<f:selectItem itemValue="MUN" itemLabel="No" itemEscaped="false"/>
-					</h:selectOneMenu>
+					<option value="COM">Sí</option>
+					<option value="MUN">No</option>
 				</c:otherwise>
 			</c:choose>
-			</div>
+			</select>
+		</div>
 		</label>
-	
+
 		<label class="ui-blocks form-refresh" data-refresh="isUxxiec">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" />:</div>
 			<div class="ui-block">
-			<h:selectOneMenu id="tramite" value="#{iris.irse.perfil.tramite}" pt:is="data-list" pt:data-editable="isEditableP0" styleClass="update-irse ui-perfil" tabindex="8">
-				<f:selectItem itemValue="AyL" itemLabel="#{msg['uae.irse.tab0.tramit.ayl']}" itemEscaped="false"/>
-				<f:selectItem itemValue="AUT" itemLabel="#{msg['uae.irse.tab0.tramit.aut']}" itemEscaped="false"/>
-				<f:selectItem itemValue="LIQ" itemLabel="#{msg['uae.irse.tab0.tramit.liq']}" itemEscaped="false"/>
-			</h:selectOneMenu>
+			<select name="tramite" is="data-list" data-editable="isEditableP0" class="ui-perfil" tabindex="8">
+				<option value="AyL">#{msg['uae.irse.tab0.tramit.ayl']}</option>
+				<option value="AUT">#{msg['uae.irse.tab0.tramit.aut']}</option>
+				<option value="LIQ">#{msg['uae.irse.tab0.tramit.liq']}</option>
+			</select>
 			</div>
 		</label>
 	</div>
-	
+
 	<!-- Botones -->
 	<div class="navbar">
 		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="12">
