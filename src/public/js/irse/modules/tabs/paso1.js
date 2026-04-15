@@ -56,10 +56,10 @@ class Paso1 {
 	}
 
 	setMun() {
-		const ruta = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
-		ruta.f1 = sb.isoDate(ruta.dt1); // input format date
-		ruta.matriculaMun = irse.getMatricula(); // matricula from server
-		form.setData(ruta, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", ruta.desp == 1);
+		const data = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
+		data.f1 = sb.isoDate(data.dt1); // input format date
+		data.matriculaMun = irse.getMatricula(); // matricula from server
+		form.setData(data, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", data.desp == 1);
 	}
 }
 

@@ -58,17 +58,17 @@ function IrseImputacion() {
 		else // transporte
 			finalidad = FINALIDAD_CC[finalidad];
 		finalidad = finalidad || "XX";
-		let colectivo = COLECTIVOS[irse.getColectivo()] || "XX";
 
+		const colectivo = COLECTIVOS[irse.getColectivo()] || "XX";
 		if (perfil.isIsu()) //642
 			return "642." + finalidad + "." + colectivo;
 		if (organica.isInve3005(org)) //64X
 			return (organica.is643(org) ? "643." : "64X.") + SUBCONCEPTOS_CAP6[tipo] + "." + colectivo;
+
 		//capitulo 2
-		let cap2 = CONCEPTOS_CAP2[tipo] + ".xx."  + colectivo;
 		if (organica.isTipoDieta(tipo)) // dietas
-			return cap2.replace("xx", perfil.isMes() ? "02" : "00");
-		return cap2.replace("xx", organica.isTipoPernocta(tipo) ? "01" : "00");
+			return CONCEPTOS_CAP2[tipo] + (perfil.isMes() ? ".02." : ".00.") + colectivo;
+		return CONCEPTOS_CAP2[tipo] + (organica.isTipoPernocta(tipo) ? ".01." : ".00.") + colectivo;
 	}
 }
 

@@ -7,37 +7,31 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-    <h:form id="xeco-init" prependId="false" onsubmit="loading();">
-        <c:choose>
-        <c:when test="#{fact.user.open}">
-            <h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
-            <ul>
-                <li>Nueva solicitud de emisión factura o carta de pago:<ul>
-                    <li><a href="#tab-action-factura">Solicitud Emisión de Factura</a></li>
-                    <li><a href="#tab-action-cartap">Solicitud Emisión de Carta de Pago</a></li>
-                </ul></li>
-            </ul>
-        </c:when>
-        <c:otherwise>
-            <div class="notice notice-warn"><h:outputText value="#{msg['uae.msg.trabajando']}" escape="false" /></div>
-            <h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
-            <ul>
-                <li>Nueva Solicitud:<ul>
-                    <li>Solicitud Emisión de Factura</li>
-                    <li>Solicitud Emisión de Carta de Pago</li>
-                </ul></li>
-            </ul>
-        </c:otherwise>
-        </c:choose>
-        <ul>
-            <li>
-				<a href="#tab-list" title="Consulta de Solicitudes pendientes de firma">Consulta de Solicitudes</a>
-            </li>
-            <c:if test="#{fact.user.uae}">
-            <li>
-				<a href="#tab-action-vinc" title="Asociación entre las solicitudes de factura y operaciones de UXXI-EC">Consulta de Formación de Expediente</a>
-            </li>
-            </c:if>
-        </ul>
-    </h:form>
+	<c:choose>
+	<c:when test="#{fact.user.open}">
+		<h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
+		<ul>
+			<li>Nueva solicitud de emisión factura o carta de pago:<ul>
+				<li><a href="#tab-action-factura">Solicitud Emisión de Factura</a></li>
+				<li><a href="#tab-action-cartap">Solicitud Emisión de Carta de Pago</a></li>
+			</ul></li>
+		</ul>
+	</c:when>
+	<c:otherwise>
+		<div class="notice notice-warn"><h:outputText value="#{msg['uae.msg.trabajando']}" escape="false" /></div>
+		<h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
+		<ul>
+			<li>Nueva Solicitud:<ul>
+				<li>Solicitud Emisión de Factura</li>
+				<li>Solicitud Emisión de Carta de Pago</li>
+			</ul></li>
+		</ul>
+	</c:otherwise>
+	</c:choose>
+	<ul>
+		<li><a href="#tab-list" title="Consulta de Solicitudes pendientes de firma">Consulta de Solicitudes</a></li>
+		<c:if test="#{fact.user.uae}">
+			<li><a href="#tab-action-vinc" title="Asociación entre las solicitudes de factura y operaciones de UXXI-EC">Consulta de Formación de Expediente</a></li>
+		</c:if>
+	</ul>
 </html>

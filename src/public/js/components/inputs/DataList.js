@@ -86,6 +86,12 @@ export default class DataList extends HTMLSelectElement {
         this.innerHTML = (isOptional ? this.#empty() : "") + values.map(fnBuild).join(""); // Render labels
 		return this.setData(values); // set data and fire change event
 	}
+	setIndexed(labels, isOptional) { // start value = 1
+		if (!labels) return this.clear(); // vacio el desplegable
+		const fnBuild = (label, i) => `<option value="${i+1}">${label}</option>`; // label 1 index
+        this.innerHTML = (isOptional ? this.#empty() : "") + labels.map(fnBuild).join(""); // Render labels
+		return this.setData(labels); // set data and fire change event
+	}
 
 	setDisabled = force => input.setDisabled(this, force);
 	setReadonly = force => input.setReadonly(this, force);

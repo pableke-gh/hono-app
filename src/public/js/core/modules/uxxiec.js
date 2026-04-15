@@ -1,4 +1,5 @@
 
+import sb from "../../components/types/StringBox.js";
 import FormHTML from "../../components/forms/FormHTML.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
@@ -7,8 +8,7 @@ import Documentos from "./documentos.js";
 export default class UxxiecForm extends FormHTML {
 	#acUxxi = this.setAutocomplete("uxxi");
 
-	constructor() {
-		super(); // Must call super before 'this'
+	connectedCallback() {
 		const fnRender = item => (item.num + " - " + item.uxxi + "<br>" + item.desc);
 		this.#acUxxi.setMinLength(4).setSelect(item => item.id).setRender(fnRender);
 
@@ -23,6 +23,7 @@ export default class UxxiecForm extends FormHTML {
 		this.set("is-ejecutable", documentos.size).set("is-notificable", fnNotificable);
 		this.#acUxxi.setSource(term => api.init().json(url + "/uxxiec/docs/", { ej: this.getValue("ej"), term }).then(this.#acUxxi.render));
 
+		this.getElement("ej").setLabels(sb.getEjercicios()); // ultimos 6 ej
 		tabs.setAction("addUxxi", () => {
 			const doc = this.#acUxxi.getCurrentItem();
 			if (doc && documentos.add(doc)) // add document to table

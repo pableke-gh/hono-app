@@ -51,7 +51,7 @@ class Iris extends Solicitud {
 	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
 
 	getInteresado = () => this.get("interesado");
-	setInteresado = data => this.set("interesado", data).setColectivo(data?.ci).setCodigoRol(data?.nif);
+	setInteresado = data => (data ? this.set("interesado", data).setColectivo(data.ci).setCodigoRol(data.nif) : this.set("interesado").setColectivo().setRol());
 	getNombreInt = () => this.getInteresado()?.nombre;
 	getNifInteresado = () => this.getInteresado()?.nif;
 	getEmailInteresado = () => this.getInteresado()?.email;

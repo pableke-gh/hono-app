@@ -11,11 +11,11 @@ import form from "../irse.js"
 // tabla del paso 6 (kilometraje del vehiculo propio)
 export default class Kilometraje extends TableHTML {
 	init() {
+		irse.getNumRutasVp = rutas.getNumRutasVp;
 		irse.getImpGasolina = ruta.getImpGasolina;
-		irse.getImpKm = rutas.getImpKm = this.getImpKm;
-		irse.getNumRutasVp = rutas.getNumRutasVp = this.size;
-		irse.getNumRutasVpMun = () => (this.size() && perfil.isMun());
-		irse.getNumRutasVpMaps = () => (this.size() && !perfil.isMun());
+		irse.getImpKm = () => (irse.isMun() ? rutas.getImpKm() : this.getImpKm());
+		irse.getNumRutasVpMun = () => (perfil.isMun() && rutas.getNumRutasVp());
+		irse.getNumRutasVpMaps = () => (!perfil.isMun() && rutas.getNumRutasVp());
 
 		form.set("is-justifi-km", this.isJustifiKm);
 		this.setChange("km1", (data, el) => {

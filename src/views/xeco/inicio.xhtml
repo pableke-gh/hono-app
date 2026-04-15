@@ -48,8 +48,11 @@
 					<a href='https://apps.powerapps.com/play/644e89b5-9b97-424e-acf1-4a2e5e8cd40d?tenantId=967e1b81-5cf6-4b03-bb60-d71bf48069f9:SOURCE=portal:SCREENCOLOR=rgba(39%2C%20113%2C%20194%2C%201)'><i class="fas fa-inbox-in"></i> eComing</a> / 
 					<a href='https://apps.powerapps.com/play/db0968e6-c629-40ab-87f9-420b91020d98?tenantId=967e1b81-5cf6-4b03-bb60-d71bf48069f9:SOURCE=portal:SCREENCOLOR=rgba%2839%2C+113%2C+194%2C+1%29:SKIPAPPETADA=true'>B03 Actividad formativa</a>
 				</li>
-				<c:if test="#{uae.tester}">
+				<c:if test="#{uae.admin}">
 					<li><a href="/uae/modules/buzon/index.xhtml"><i class="far fa-tablet-alt"></i> Tablero Económico</a></li>
+				</c:if>
+				<c:if test="#{uae.admin}">
+					<li><a href="/uae/modules/pedidos/index.xhtml"><i class="fal fa-shipping-fast"></i> Sistema de pedidos de Infraestructuras (SPI)</a></li>
 				</c:if>
 				<li><a href="/uae/modules/factura/index.xhtml"><i class="fas fa-file-invoice"></i> Solicitud de Facturas y Cartas de Pago</a></li>
 			</ul>

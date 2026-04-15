@@ -57,7 +57,8 @@ export default class TableHTML extends HTMLTableElement {
 	getItem = i => this.#rows[i ?? this.#index];
 	getId = () => this.#rows[this.#index]?.id; // get current id
 	getIdList = () => (this.#rows && this.#rows.map(row => row.id)); // get id's
-	isItem = () => (this.#index > -1) && (this.#index < this.#rows.length);
+	isSelected = () => (this.#index > -1);
+	isItem = () => (this.isSelected() && (this.#index < this.#rows.length));
 	getCurrent = () => this.#rows[this.#index]; // current data
 	getCurrentItem = this.getCurrent; // synonym
 	getLastItem = () => this.#rows.at(-1);
@@ -143,7 +144,7 @@ export default class TableHTML extends HTMLTableElement {
 	refresh = () => this.recalc().refreshBody().refreshFooter(); // recalc. all rows and refresh body and footer
 
 	flush() {
-		if (this.isEmpty()) return; // nothing to remove
+		if (!this.isSelected()) return; // nothing to remove
 		this.#rows.splice(this.#index, 1); // remove row data
 		this.#RESUME.size = this.#rows.length; // update size
 		this.#tBody.removeChild(this.getCurrentRow()); // remove tr element

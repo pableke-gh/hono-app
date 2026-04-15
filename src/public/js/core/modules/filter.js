@@ -1,4 +1,5 @@
 
+import sb from "../../components/types/StringBox.js";
 import FormHTML from "../../components/forms/FormHTML.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
@@ -25,6 +26,7 @@ export default class FilterForm extends FormHTML {
 			this.setChanged();
 		});
 
+		this.getElement("ej").setLabels(sb.getEjercicios()); // ultimos 6 ej
 		tabs.setInitEvent("list", () => { this.getSolicitudes().isEmpty() && fnList("", "5"); });
 		tabs.setAction("list-all", () => { this.reset(".ui-filter"); fnCallList(); });
 		tabs.setAction("relist", () => fnList("", "5"));

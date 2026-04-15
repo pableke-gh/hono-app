@@ -67,8 +67,8 @@ class Paso9 {
 		tabs.setAction("send", () => {
 			if (!valid.paso9() || !i18n.confirm("msgFirmarEnviar")) return;
 			api.setJSON(fnData()).json("/uae/iris/paso9/send").then(data => {
-				form.getSolicitudes().setWorking(); // update list state
-				form.setFirmas(data.firmas).setEditable(irse).refresh(irse); // update form
+				form.setFirmas(data.firmas).setEditable(irse.setProcesando()).refresh(irse); // update form
+				tabs.showInit(); // return to init tab
 			});
 		});
 	}

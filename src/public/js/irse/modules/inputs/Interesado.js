@@ -27,8 +27,7 @@ export default class Interesado extends AutocompleteHTML {
 
 	validate = () => (this.isLoaded() ? this.setOk() : !this.setRequired("errPerfil"));
 	reset() {
-		irse.setInteresado();
-		observer.emit("perfil", irse);
+		observer.emit("perfil", irse.setInteresado());
 		return super.reset();
 	}
 

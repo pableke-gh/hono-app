@@ -49,7 +49,7 @@ function Rutas() {
 
 	this.getRutasVehiculoPropio = () => _rutas.filter(ruta.isVehiculoPropio);
 	this.getNumRutasVp = () => self.getRutasVehiculoPropio().length;
-	this.getImpKm = () => (self.getRutasVehiculoPropio().reduce((sum, ruta) => (sum + ruta.km1), 0) * ruta.getImpGasolina());
+	this.getImpKm = () => (self.getRutasVehiculoPropio().reduce((sum, data) => (sum + ruta.getImpKm(data)), 0));
 
 	this.getRutasPendientes = () => _rutas.filter(ruta.isUnlinked);
 	this.getNumRutasPendientes = () => self.getRutasPendientes().length;
