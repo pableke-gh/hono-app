@@ -19,8 +19,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.objeto.act']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="objeto" value="#{iris.irse.solicitud.objetoView}" pt:is="text-area" styleClass="rows-2 ui-paso1 update-irse" 
-					tabindex="41" maxlength="600" title="Objeto de la actividad" />
+				<textarea name="objeto" is="text-area" class="rows-2 ui-paso1" tabindex="41" maxlength="600" title="Objeto de la actividad"></textarea>
 				<span class="ui-errtip"></span>
 			</div>
 		</label>
@@ -44,8 +43,7 @@
 			<div class="label inline"><h:outputText value="#{msg['uae.irse.tab2.lbl.resp']}" escape="false" />:</div>
 			<div class="ui-block-xl autocomplete">
 				<i class="fas fa-search ui-input-icon left inline"></i>
-				<h:inputText id="promotor" value="#{iris.irse.perfil.acPromotor}" pt:is="text-input" tabindex="43" styleClass="ui-autocomplete ui-paso1 update-irse" />
-				<h:inputText id="nifPromotor" value="#{iris.irse.perfil.nifPromotor}" pt:is="text-input" styleClass="update-irse ui-paso1 hide" />
+				<input type="search" name="promotor" is="promotor-input" tabindex="43" class="ui-autocomplete ui-paso1" />
 				<ul role="list" class="results"></ul>
 			</div>
 		</label>

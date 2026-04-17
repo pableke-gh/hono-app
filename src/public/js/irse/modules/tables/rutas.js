@@ -7,6 +7,7 @@ import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 import form from "../irse.js"
 
+import observer from "../../../core/util/Observer.js";
 import ct from "../../data/place-ct.js";
 
 export default class TableRutas extends TableHTML {
@@ -23,6 +24,7 @@ export default class TableRutas extends TableHTML {
 			el.children.forEach(el => el.hide());
 			el.children[+ruta.isPrincipal(data)].show();
 		});
+		observer.subscribe("close", () => this.view(rutas.getRutas()));
 	}
 
 	beforeRender(resume) {

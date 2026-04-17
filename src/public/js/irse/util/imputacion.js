@@ -13,7 +13,6 @@ function IrseImputacion() {
 	const FINALIDAD_AA = { "1": "30", "2": "32", "3": "31" };
 	const FINALIDAD_BB = { "1": "33", "2": "35", "3": "34" };
 	const FINALIDAD_CC = { "1": "36", "2": "38", "3": "37" };
-	//COLECTIVOS = { "PDI-FU", "PAS", "PDI-LA", "PIN", "BPE", "ALU", "EXT" };
 	const COLECTIVOS = {
 		"PDI-FU": "00", "PDI-LA": "01", "PAS": "02", 
 		"PIN":    "03", "BPE":    "04", "ALU": "05", 

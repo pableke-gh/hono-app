@@ -9,6 +9,8 @@ import PedidosTable from "./modules/pedidos.js";
 import PedidoForm from "./modules/pedido.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+	const form = document.forms["pedido-form"];
+	tabs.setAction("create", form.create);
 });
 
 customElements.define("filter-form", FilterForm, { extends: "form" });

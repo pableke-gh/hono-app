@@ -39,6 +39,14 @@ class Presto extends Solicitud {
 		partida.isAfectada(item.int) && (presto.isTcr() || presto.isFce()) && this.showInfo(info);
 		return this;
 	}
+
+	getFormData() {
+		const fd = super.getFormData(); // append all input values
+		fd.load(presto.getData(), [ "id", "estado", "tipo", "mask", "codigo" ]); // set calculated fields
+		fd.exclude([ "faDec", "cd", "ejInc", "orgInc", "faInc", "ecoInc", "impInc", "ej030", "org030", "eco030", "imp030" ]);
+		// primera partida = principal y serializo el json (FormData only supports flat values)
+		return fd.setJSON("partidas", this.getPartidas().setPrincipal().getData());
+	}
 }
 
 customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });

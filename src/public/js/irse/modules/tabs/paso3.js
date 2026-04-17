@@ -54,6 +54,9 @@ class Paso3 {
 		eFinCong.onblur = fechasCong;
 		eCong.onchange = updateCong;
 		updateCong();
+
+		// TODO: eliminar lineas legacy
+		form.setValue("impInsc", form.getValue("impInsc")); // TODO: dejar comportamiento por defecto => eliminar PF field
 	}
 }
 

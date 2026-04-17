@@ -1,21 +1,26 @@
 
+import input from "./FormInput.js";
 import TextInput from "./TextInput.js";
+import observer from "../../core/util/Observer.js";
 
 // Register the custom element
 //customElements.define("file-input", FileInput, { extends: "input" });
 //Use the custom element by adding the is attribute to a standard <input>:
 //<input is="file-input" type="file" placeholder="Enter text" />   
 export default class FileInput extends TextInput {
-	constructor() {
-		super(); // Must call super before 'this'
-
-		// Initialize the element
-		this.classList.add("hide");
+	connectedCallback() { // Initialize the element
+		this.classList.add("hide"); // default hidden
+		this.addChange(ev => observer.emit(this.name, ev.target));
+		// propage event when form changes, clear filenames, etc.
+		observer.subscribe("form-update", () => observer.emit(this.name, this));
 	}
 
-	setValue() { this.value = ""; return this; } // This input element accepts a filename no value (clear previously selected files)
-	load() { this.value = ""; return this; } // This input element accepts a filename no value (clear previously selected files)
+	// This input element accepts a filename no value (clear previously selected files)
+	setValue() { this.value = ""; return this; } // clear selected files
+	load() { return this.setValue(); }
 	toData(data) { data[this.name] = this.files; } // set all file list
+	isEmpty() { return (this.files.length == 0); } // is selected file
+	isLoaded() { return (this.files.length > 0); } // is selected file
 	addFormData(fd) {
 		const size = this.files.length;
 		for (let i = 0; i < size; i++) {
@@ -26,6 +31,14 @@ export default class FileInput extends TextInput {
 	}
 
 	setReadonly(force) { return super.setDisabled(force); } // The attribute readonly is not supported or relevant to file input
+	setRequired(msg) { return input.setError(this, "errRequiredFile", msg); } // override
+
+	getFilename = () => (this.isLoaded() ? this.files[0].name : ""); // force a filename
+	getFilenames(max) {
+		if (this.isEmpty()) return ""; // no files selected
+		const names = [...this.files].slice(0, max).map(file => file.name).join(", ");
+		return names + ((this.files.length > max) ? "..." : "");
+	}
 
 	onFile(fn) {
 		const reader = new FileReader();

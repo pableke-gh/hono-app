@@ -7,8 +7,9 @@ import valid from "../../i18n/validators/irse.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
-import form from "../irse.js";
 import Imputacion from "../tables/imputacion.js";
+import observer from "../../../core/util/Observer.js";
+import form from "../irse.js";
 
 /** Fin + IBAN **/
 class Paso9 {
@@ -68,6 +69,8 @@ class Paso9 {
 			if (!valid.paso9() || !i18n.confirm("msgFirmarEnviar")) return;
 			api.setJSON(fnData()).json("/uae/iris/paso9/send").then(data => {
 				form.setFirmas(data.firmas).setEditable(irse.setProcesando()).refresh(irse); // update form
+				form.getSolicitudes().refreshRow(); // try to update row list state (for editing)
+				observer.emit("close"); // no parameter needed
 				tabs.showInit(); // return to init tab
 			});
 		});

@@ -17,6 +17,7 @@ export default class TableGastos extends TableHTML {
 		form.set("is-zip-doc", () => (irse.isDisabled() && this.getProp("otraDoc")))
 			.set("is-zip-com", () => (irse.isDisabled() && this.getProp("docComisionado")));
 		this.set("#adjunto", gasto => api.init().blob("/uae/iris/download?id=" + gasto.cod, gasto.nombre)); // uuid file and name
+		observer.subscribe("close", () => this.view(gastos.getGastos()));
 	}
 
 	getNumDocComisionado = () => this.getProp("docComisionado");

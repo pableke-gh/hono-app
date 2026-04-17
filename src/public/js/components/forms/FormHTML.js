@@ -23,6 +23,7 @@ export default class FormHTML extends HTMLFormElement {
 	#opts = {
 		defaultMsgOk: "saveOk", defaultMsgError: "errForm", // default key messages
 		errorClass: "ui-error", tipErrorClass: "ui-errtip", negativeClass: "text-red", // default css class input
+		requiredClass: "required", gt0Class: "gt0", // validator type
 		refreshSelector: ".form-refresh" // element selector for refresh
 	};
 
@@ -47,7 +48,7 @@ export default class FormHTML extends HTMLFormElement {
 	getOptions = () => this.#opts;
 	getElement = name => this.elements[name];
 	getInput = selector => this.elements.findBy(selector); // find an element
-	getInputs = selector => this.elements.filterBy(selector); // filter elements
+	getInputs = selector => selector ? this.elements.filterBy(selector) : this.elements; // filter elements
 
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
@@ -127,7 +128,7 @@ export default class FormHTML extends HTMLFormElement {
 	getUrlParams = () => new URLSearchParams(new FormData(this));
 	getFormData(selector) {
 		const fd = new FormDataBox(); // partial form
-		return fd.addInputs(selector ? this.getInputs(selector) : this.getElements());
+		return fd.addInputs(this.getInputs(selector));
 	}
 
 	// Inputs helpers
@@ -158,7 +159,7 @@ export default class FormHTML extends HTMLFormElement {
 
 	// Form Validator
 	closeAlerts() {
-		alerts.closeAlerts(); // globbal message
+		alerts.closeAlerts(); // global message
 		this.elements.forEach(el => el.setOk()); // clear input messages
 		return this;
 	}
@@ -174,6 +175,11 @@ export default class FormHTML extends HTMLFormElement {
 	}
 	setRequired = (el, msg) => this.setError(el, "errRequired", msg);
 	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
+	validate(selector, msgError) {
+		let ok = !!alerts.closeAlerts(); // global message
+		this.getInputs(selector).forEach(el => { ok = el.validate() && ok; });
+		return ok || !alerts.showError(msgError || this.#opts.defaultMsgError);
+	}
 }
 
 // For a valid custom element name, it must: Contain a hyphen (-)

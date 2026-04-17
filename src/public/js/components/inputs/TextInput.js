@@ -24,11 +24,13 @@ export default class TextInput extends HTMLInputElement {
 	setEditable = model => input.setEditable(this, model);
 	prepare = model => input.prepare(this, model);
 
-	setOk = () => input.setOk(this);
-	setError = (tip, msg) => input.setError(this, tip, msg);
-	setRequired = msg => this.setError("errRequired", msg);
-	setFormatError = msg => this.setError("errFormat", msg);
-	update = (tip, msg) => input.update(this, tip, msg);
+	// Input text Validators
+	setOk() { return input.setOk(this); }
+	setError(tip, msg) { return input.setError(this, tip, msg); }
+	setRequired(msg) { return input.setRequired(this, msg); }
+	setFormatError(msg) { return input.setFormatError(this, msg); }
+	update(tip, msg) { return input.update(this, tip, msg); }
+	validate() { return input.validate(this); }
 }
 
 // Extends parent class

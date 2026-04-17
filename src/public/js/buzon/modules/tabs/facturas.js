@@ -7,17 +7,14 @@ import buzon from "../../model/Buzon.js";
 
 export default class FacturasForm extends FormHTML {
 	#tipo = this.getElement("tipo");
-	#fileNames = this.querySelectorAll(".filename");
+	#factura = this.getElement("factura");
+	#justPago = this.getElement("justPago");
 	#isActiveTab5; // bool indicators
 
 	connectedCallback() {
-		const fnShowTab2 = () => { // tab fichero factura
-			const fileName = this.querySelector(".filename").innerHTML;
-			return fileName || !this.showError("Debe seleccionar una factura.");
-		}
+		const fnShowTab2 = () => (this.#factura.isLoaded() || !this.showError("Debe seleccionar una factura."));
 		const fnValidateJustPago = () => {
-			const files = this.#fileNames.filter(el => el.innerHTML);
-			if (buzon.isJustPagoRequired() && (files.length < 2))
+			if (buzon.isJustPagoRequired() && (this.#justPago.isEmpty()))
 				return !this.showError("Debe seleccionar Justificante de pago.");
 			return true;
 		}
@@ -27,15 +24,15 @@ export default class FacturasForm extends FormHTML {
 		const fnShowTab6 = () => (fnValidateJustPago() && fnValidateTab5());
 		const fnViewTab6 = () => {
 			const desc = this.getValue("desc");
-			const names = this.#fileNames.filter(el => el.innerHTML).map(el => el.innerHTML);
-			this.text("#ut-desc", this.getOptionText("utFact")).text("#file-name", names.join(", "))
+			const names = this.querySelectorAll(".filename").map(el => el.innerText).join(", ");
+			this.text("#ut-desc", this.getOptionText("utFact")).text("#file-name", names)
 				.text("#desc-gestor", desc).setVisible("#msg-gestor", desc)
 				.text("#iban", this.getValue("cuentas"));
 		}
 	
 		// Init. form factura
-		const fnFile = (ev, el, file) => { el.nextElementSibling.innerHTML = file.name; };
-		this.getElement("factura").onFile(fnFile); this.getElement("justPago").onFile(fnFile);
+		const fnFile = (el, file) => el.setText(file.getFilename());
+		this.set("factura-name", fnFile).set("just-name", fnFile);
 
 		tabs.setNextEvent(1, fnShowTab2); // tab fichero factura
 		tabs.setNextEvent(2, fnValidateJustPago).setActiveEvent(4, buzon.isActiveTab4);

@@ -30,11 +30,11 @@ export default class Organica extends AutocompleteHTML {
 	isLoaded() { return super.isLoaded() || this.#organicas.size(); }
 	validate = () => (this.isLoaded() ? this.setOk() : !this.setRequired("errOrganicas"));
 
-	setValue(organica) {
+	setOrganica(organica) {
 		return (organica ? super.setValue(organica.id, this.row(organica)) : this.clear());
 	}
 	setOrganicas(organicas) {
-		this.setValue(organicas && organicas[0]);
+		this.setOrganica(organicas && organicas[0]);
 		this.#organicas.render(organicas);
 	}
 

@@ -15,10 +15,6 @@ class Observer {
 			const action = el.dataset.refresh; // handler name
 			if (action == "text-render") // render contents
 				return el.render(data); // complex info
-
-			if (action == "clear") // clear contents
-				return el.setText(""); // emtpty string
-
 			// data must be model instance and opts = form.#opts
 			const callback = data[action] || opts[action]; // callback optional => default = hide
 			return callback ? el.setVisible(callback(el, data)) : el.hide(); // execute action

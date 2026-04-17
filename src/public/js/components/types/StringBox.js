@@ -5,7 +5,7 @@ function StringBox() {
     const sysdate = (new Date()).toISOString(); //global sysdate
 	const ESCAPE_HTML = /"|'|&|<|>|\\/g;
 	const ESCAPE_MAP = { '"': "&#34;", "'": "&#39;", "&": "&#38;", "<": "&#60;", ">": "&#62;", "\\": "&#92;" };
-	
+
 	const fnSize = data => (data ? data.length : 0); // usfull for string o array
 	const fnNormalize = str => str.normalize("NFD").replace(/\p{Diacritic}/gu, EMPTY);
 	const fnLower = str => (str ? fnNormalize(str).toLowerCase() : EMPTY); // normalize and lower
@@ -13,7 +13,7 @@ function StringBox() {
 	const isstr = val => (typeof(val) === "string") || (val instanceof String);
 	const insertAt = (str1, str2, i) => str1.substring(0, i) + str2 + str1.substring(i);
 	const replaceAt = (str1, str2, i) => str1.substring(0, i) + str2 + str1.substring(i + str2.length);
-	
+
 	this.isstr = isstr;
 	globalThis.isstr = isstr;
 

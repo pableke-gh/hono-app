@@ -5,6 +5,7 @@ export default {
 	//inputs errors messages
 	errForm: "Form validation failed",
 	errRequired: "Required field!",
+	errRequiredFile: "Required file!",
 	errMinlength8: "The minimum required length is 8 characters",
 	errMaxlength: "Max length exceded",
 	errNif: "Wrong ID format",

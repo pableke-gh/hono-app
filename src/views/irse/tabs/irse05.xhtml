@@ -20,7 +20,6 @@
 			<div class="ui-block-btn">
 				<a href="#tab-action-clickNext" class="btn btn-green" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
 				<input type="file" name="fileGasto" is="file-input" class="ui-gasto hide" />
-				<div class="filename form-refresh" style="position: absolute; margin: 0 4px;" data-refresh="clear"></div>
 			</div>
 			<label class="ui-block grupo-gasto hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
@@ -83,7 +82,7 @@
 				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 			</div>
 		</div>
-		<br class="clear"/>
+		<div class="text-height form-refresh" data-refresh="filename" data-event="fileGasto"></div>
 
 		<table id="gastos" is="table-gastos" class="tb-xeco table-xs">
 			<thead>

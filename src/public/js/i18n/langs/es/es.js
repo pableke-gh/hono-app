@@ -5,6 +5,7 @@ export default {
 	//inputs errors messages
 	errForm: "Error al validar los campos del formulario",
 	errRequired: "¡Campo obligatorio!",
+	errRequiredFile: "¡Fichero obligatorio!",
 	errMinlength8: "La longitud mínima requerida es de 8 caracteres",
 	errMaxlength: "Longitud máxima excedida",
 	errNif: "Formato de NIF / CIF incorrecto",

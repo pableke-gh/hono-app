@@ -95,7 +95,6 @@ export default class Table {
 	getId = () => this.#rows[this.#index]?.id; // get current id
 	getIdList = () => (this.#rows && this.#rows.map(row => row.id)); // get id's
 	isSelected = () => (this.#index > -1);
-	isItem = () => (this.isSelected() && (this.#index < this.#rows.length));
 	getCurrent = () => this.#rows[this.#index]; // current data
 	getCurrentItem = this.getCurrent; // synonym
 	getLastItem = () => this.#rows.at(-1);

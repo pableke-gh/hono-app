@@ -22,28 +22,17 @@ export default class ButtonForm extends HTMLButtonElement {
 
 	reset() {}
 	restart() {}
+	execute() { throw new Error("Method 'execute' must be implemented."); }
+	setExecutable() { this.addEventListener("click", ev => { ev.preventDefault(); this.execute(); }); }
 
 	setDisabled = force => input.setDisabled(this, force); // button attribute
 	setReadonly = force => input.setDisabled(this, force); // readonly = disbled
 	setEditable = model => input.setEditable(this, model); // recalc. if button is clicable
 	prepare = model => input.setEditable(this, model); // button not to load data
 
+	// Validators
 	setOk() {}
 	setError() {}
 	update() {}
+	validate() { return true; }
 }
-
-HTMLButtonElement.prototype.getValue = function() { return this.value; }
-HTMLButtonElement.prototype.setValue = function(value) {}
-HTMLButtonElement.prototype.load = function() {}
-HTMLButtonElement.prototype.toData = function() {}
-HTMLButtonElement.prototype.addFormData = function() {}
-HTMLButtonElement.prototype.reset = function() {}
-HTMLButtonElement.prototype.restart = function() {}
-HTMLButtonElement.prototype.setDisabled = function(force) { return input.setDisabled(this, force); } // button attribute
-HTMLButtonElement.prototype.setReadonly = function(force) { return this.setDisabled(force); } // attribute readonly = disbled
-HTMLButtonElement.prototype.setEditable = function(model) { return input.setEditable(this, model); } // recalc. if button is clicable
-HTMLButtonElement.prototype.prepare = function(model) { return input.prepare(this, model); } // button not to load data
-HTMLButtonElement.prototype.setOk = function() {}
-HTMLButtonElement.prototype.setError = function(tip, msg) {}
-HTMLButtonElement.prototype.update = function(tip, msg) {}

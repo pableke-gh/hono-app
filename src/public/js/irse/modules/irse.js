@@ -29,13 +29,14 @@ class IrseSolicitud extends Solicitud {
 
 	// IMPORTANT! override super view
 	view = (organicas, itinerario, gastos, dietas, cuentas, firmas) => {
-		perfil.view(organicas);
-		rutas.view(itinerario);
-		paso3.view();
-		paso5.view(gastos);
+		perfil.view(organicas); // load perfil
+		rutas.view(itinerario); // preload rutas (tab 2)
+		paso1.view(firmas); // mun require rutas (tab 2)
+		paso3.view(); // load isu tab (optional tab)
+		paso5.view(gastos); // gastos
 		resumen.view(dietas);
 		paso9.view(cuentas);
-		this.setFirmas(firmas).reactivate(irse);
+		this.reactivate(irse);
 	}
 
 	getSolicitudes = () => window.solicitudes; // tabla de solicitudes

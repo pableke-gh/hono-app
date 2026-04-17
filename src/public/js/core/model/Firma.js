@@ -9,6 +9,7 @@ class Firma {
 	isAceptada = firma => this.#fnAceptada(firma.mask);
 	isRechazada = firma => this.#fnRechazada(firma.mask, firma.info);
 	isFirmable = mask => (mask & 64); //puesto a la firma?
+	isPromotor = firma => (firma.grupo == 5); // firma del promotor
 
 	getNif = firma => firma.nif;
 	getNombre = firma => (firma.nombre + " " + (firma.ap1 || "") + " " + (firma.ap2 || "")).trim();

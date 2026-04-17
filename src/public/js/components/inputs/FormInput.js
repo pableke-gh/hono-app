@@ -24,6 +24,7 @@ class FormInput {
 		return this.setEditable(el, model).load(model.getData());
 	}
 
+	// Input Validators
 	setOk(input) {
 		input.next("." + this.#opts.tipErrorClass)?.setText("");
 		input.classList.remove(this.#opts.errorClass);
@@ -36,9 +37,11 @@ class FormInput {
 		input.focus(); // set focus on error
 		return input;
 	}
-	update(input, tip, msg) { // tip message is optional
-		return tip ? this.setError(input, tip, msg) : this.setOk(input);
-	}
+	setRequired = (el, msg) => this.setError(el, "errRequired", msg);
+	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
+	update = (el, tip, msg) => tip ? el.setError(tip, msg) : el.setOk();
+	isRequired = el => el.classList.contains(this.#opts.requiredClass); // contains required class
+	validate = el => ((!this.isRequired(el) || el.value) ? el.setOk() : !el.setRequired()); // optional o required with value
 }
 
 // Extends HTMLElement prototype

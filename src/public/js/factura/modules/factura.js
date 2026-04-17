@@ -1,5 +1,8 @@
 
+import sb from "../../components/types/StringBox.js";
 import valid from "../i18n/validators.js";
+
+import factura from "../model/Factura.js";
 import Fiscal from "./fiscal.js";
 import Imputacion from "./imputacion.js";
 
@@ -30,6 +33,14 @@ class Factura extends Solicitud {
 	setIva = iva => {
 		this.getLineas().setIva(iva);
 		return this;
+	}
+
+	getFormData(data) {
+		const temp = Object.assign(factura.getData(), data);
+		temp.lineas = this.getLineas().getData(); // lineas de la factura
+		// si no hay descripcion => concateno los conceptos saneados y separados por punto
+		temp.memo = temp.memo || temp.lineas.map(linea => sb.rtrim(linea.desc, "\\.").trim()).join(". ");
+		return temp;
 	}
 }
 

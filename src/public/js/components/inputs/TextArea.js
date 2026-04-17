@@ -27,7 +27,11 @@ export default class TextArea extends HTMLTextAreaElement {
 	setEditable = model => input.setEditable(this, model);
 	prepare = model => input.prepare(this, model);
 
-	setOk = () => input.setOk(this);
-	setError = tip => input.setError(this, tip);
-	update = tip => input.update(this, tip);
+	// Input Validators
+	setOk() { return input.setOk(this); }
+	setError(tip, msg) { return input.setError(this, tip, msg); }
+	setRequired(msg) { return input.setRequired(this, msg); }
+	setFormatError(msg) { return input.setFormatError(this, msg); }
+	update(tip, msg) { return input.update(this, tip, msg); }
+	validate() { return input.validate(this); }
 }

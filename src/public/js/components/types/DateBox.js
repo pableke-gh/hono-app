@@ -18,7 +18,8 @@ function DateBox() {
 
 	this.sysdate = () => sysdate;
 	this.toDate = str => str ? new Date(str) : null;
-	this.getTime = date => date ? date.getTime() : Date.now();
+	this.direct = str => str ? new Date(str.slice(0, -1)) : null; // fecha sin ajuste de hora (sin Z => sin +1h)
+	this.getTime = date => date ? date.getTime() : Date.now(); // numeric representation
 	// Changes the Date object, and returns its new timestamp. If timeValue is NaN => Invalid Date
 	this.setTime = (date, time) => (date || sysdate).setTime(time || Date.now());
 

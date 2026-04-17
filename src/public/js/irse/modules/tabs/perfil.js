@@ -68,8 +68,9 @@ class Perfil {
 			data.financiacion = irse.getFinanciacion();
 			data.organicas = this.#acOrganica.getOrganicas().getData();
 			api.setJSON(data).json("/uae/iris/perfil/save").then(data => {
+				const temp = irse.getInteresado(); // save reference
 				irse.setData(data.solicitud); // update irse data
-				irse.setInteresado(this.#acInteresado.getCurrent()); // preserve interesado
+				irse.setInteresado(temp); // preserve interesado
 				observer.emit("perfil", irse); // update changes from server (id, fk, text, etc.)
 				form.getPaso9().setCuentas(data.cuentas); // cuentas del interesado (desplegable paso9)
 				form.setFirmas(data.firmas).reactivate(irse).nextTab(1); // prepare changes and show tab

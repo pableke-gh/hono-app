@@ -24,7 +24,7 @@ hr { margin: 15px 0; border-top: 1px solid skyblue; }
 img.inline { display: inline-block; width: 24px; height: auto; }
 
 .underline { padding-bottom: 3px; border-bottom: 2px solid skyblue; }
-.slim { margin: 1px; border-top: 1px solid skyblue; }
+.slim { margin: 0 4px; border-top: 1px solid skyblue; }
 
 /* Actions */
 .action { display: inline-block; margin-right: 6px; text-decoration: none; font-size: 24px; }
@@ -58,7 +58,8 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 
 /* Specific styles */
 .hide, .print-only { display: none !important; } /* force display none */
-.navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
+.navbar { margin: 4px; padding: 0; display: inline-block; width: 100%; clear: both; }
+.text-height { min-height: 1.2rem; } /* preserve minimun height when no text */
 
 .link { color: #2196F3; text-decoration-line: underline; }
 .link:hover { text-decoration-line: none; }

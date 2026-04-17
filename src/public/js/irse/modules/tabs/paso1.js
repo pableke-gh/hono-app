@@ -6,6 +6,7 @@ import valid from "../../i18n/validators/rutas.js";
 
 import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";
+import Promotor from "../inputs/Promotor.js";
 import perfil from "./perfil.js";
 import form from "../irse.js";
 
@@ -17,12 +18,6 @@ class Paso1 {
 		form.getElement("matriculaMun").addChange(ev => {
 			ev.target.value = sb.toUpperWord(ev.target.value);
 			irse.setMatricula(ev.target.value);
-		});
-
-		tabs.setViewEvent(1, () => {
-			if (perfil.isMun())
-				this.setMun();
-			this.setPromotor();
 		});
 
 		const fnData = () => { const data = form.getData(".ui-paso1"); data.id = irse.getId(); return data; }
@@ -48,13 +43,13 @@ class Paso1 {
 		});
 	}
 
-	getGrupoDieta = () => form.getValue("grupo-dieta");
-	setPromotor() {
-		const acPromotor = form.setAutocomplete("promotor");
-		const fnPromotor = term => api.init().json("/uae/iris/personal", { id: irse.getId(), term }).then(acPromotor.render);
-		acPromotor.setItemMode(4).setSource(fnPromotor);
+	view(firmas) {
+		perfil.isMun() && this.setMun(); // set municipio
+		form.setValue("objeto", irse.getMemoria()).setFirmas(firmas)
+			.getElement("promotor").setPromotor(firmas);
 	}
 
+	getGrupoDieta = () => form.getValue("grupo-dieta");
 	setMun() {
 		const data = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
 		data.f1 = sb.isoDate(data.dt1); // input format date
@@ -62,5 +57,7 @@ class Paso1 {
 		form.setData(data, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", data.desp == 1);
 	}
 }
+
+customElements.define("promotor-input", Promotor, { extends: "input" });
 
 export default new Paso1();

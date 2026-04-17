@@ -20,7 +20,7 @@
 		<div class="ui-block-row">
 			<a href="#tab-action-clickNext" class="btn btn-info"><i class="fas fa-search btn-icon-left"></i>Seleccionar 1 Factura (PDF)</a>
 			<input type="file" name="factura" is="file-input" class="hide" accept="application/pdf" />
-			<span class="filename form-refresh" data-refresh="clear"></span>
+			<span class="filename form-refresh" data-refresh="factura-name" data-event="factura"></span>
 		</div>
 		</div>
     </div>
@@ -48,7 +48,7 @@
 			<div id="file-jp" class="ui-block-row">
 				<a href="#tab-action-clickNext" class="btn btn-info"><i class="fas fa-search btn-icon-left"></i>Adjuntar justificante de pago</a>
 				<input type="file" name="justPago" is="file-input" class="hide" />
-				<span class="filename form-refresh" data-refresh="clear"></span>
+				<span class="filename form-refresh" data-refresh="just-name" data-event="justPago"></span>
 			</div>
             <label class="ui-block-xl show-cesionario">
                 <div class="label required"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
@@ -100,11 +100,6 @@
                 <textarea name="desc" is="text-area"></textarea>
                 <div class="ui-errtip"></div>
             </label>
-            <!--<div class="ui-block-row">
-                <p:fileUpload id="fileDatosExtra" value="#{buzon.facturas.datosExtra}" fileUploadListener="#{buzon.facturas.uploadDatosExtra}" mode="advanced" auto="true" styleClass="hide" />
-                <a href="#" class="btn btn-info form-refresh" data-refresh="pf-upload"><i class="fas fa-search icon"></i>Documentación complementaria</a>
-                <span class="filename"></span>
-            </div>-->
             </div>
         </div>
 

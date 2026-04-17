@@ -23,15 +23,15 @@ class Paso5 {
 
 	#reload = () => {
 		this.#grupos.mask(0);
-		form.setValue("tipoGasto").setValue("impGasto", 0).setValue("txtGasto");
+		if (rutas.isEmpty()) return; // not to preload date range
+		form.setValue("fileGasto").setValue("tipoGasto").setValue("impGasto", 0).setValue("txtGasto");
 		form.getElement("fAloMin").setLimit("fAloMax", rutas.getHoraSalida(), rutas.getHoraLlegada());
 	}
 	init() {
 		this.#tGastos.init(); // 1º en observar
 		this.#pendientes.init(); // 2º en observar
-		tabs.setInitEvent(5, this.initTab).setViewEvent(5, this.#reload);
-	}
-	initTab = () => {
+		tabs.setViewEvent(5, this.#reload);
+
 		const tipoGasto = form.getElement("tipoGasto"); // select input
 		const fnChange = () => {
 			const tipo = tipoGasto.value;
@@ -53,7 +53,10 @@ class Paso5 {
 		}
 
 		tipoGasto.onchange = fnChange; // Change event
-		form.getElement("fileGasto").onFile((ev, el, file) => { el.nextElementSibling.innerHTML = file.name; fnChange(); });
+		form.set("filename", (el, input) => {
+			input.isEmpty() ? this.#reload() : fnChange();
+			return el.setText(input.getFilename());
+		});
 
 		// el paso 5 requiere validaciones en el servidor
 		const fnSend = () => api.init().json("/uae/iris/paso5/save?id=" + irse.getId());
