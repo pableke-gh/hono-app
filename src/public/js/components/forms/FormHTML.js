@@ -23,7 +23,6 @@ export default class FormHTML extends HTMLFormElement {
 	#opts = {
 		defaultMsgOk: "saveOk", defaultMsgError: "errForm", // default key messages
 		errorClass: "ui-error", tipErrorClass: "ui-errtip", negativeClass: "text-red", // default css class input
-		requiredClass: "required", gt0Class: "gt0", // validator type
 		refreshSelector: ".form-refresh" // element selector for refresh
 	};
 

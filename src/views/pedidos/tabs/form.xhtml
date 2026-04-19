@@ -12,14 +12,14 @@
 		<h2 class="form-refresh" data-refresh="text-render">@getTitulo; @getCodigo;</h2>
 		<div class="ui-blocks">
 			<div class="ui-block-btn">
-				<a href="#tab-action-adjunto" class="btn btn-info form-refresh" title="Descargar / visualizar la documentación asociada" data-refresh="getAdjunto">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
-				<a href="#tab-action-clickNext" class="btn btn-info form-refresh" tiitle="Presupuesto del proveedor" data-refresh="isEditable"><i class="fas fa-search btn-icon-left"></i>Adjuntar Documentación</a>
-				<input type="file" name="adjunto" is="file-input" class="hide required" />
+				<a href="#tab-action-adjunto" class="btn btn-info form-refresh" data-refresh="getAdjunto" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
+				<a href="#tab-action-clickNext" class="btn btn-info form-refresh" data-refresh="isEditable" title="Presupuesto del proveedor"><i class="fas fa-search btn-icon-left"></i>Adjuntar Documentación</a>
+				<input type="file" name="adjunto" is="file-input" class="hide" required="1" />
 				<div class="ui-errtip"></div> 
 			</div>
 			<label class="ui-block">
 				<div class="label required">Nº de referencia:</div>
-				<input type="text" name="ref" is="text-input" class="ui-input required" tabindex="1" /> 
+				<input type="text" name="ref" is="text-input" class="ui-input" required="1" tabindex="1" /> 
 				<div class="ui-errtip"></div> 
 			</label>
 			<div class="ui-block-row text-height form-refresh" data-refresh="filename" data-event="adjunto"></div>
@@ -36,12 +36,12 @@
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required">Correo del Proveedor:</div>
-				<input type="text" name="email" is="text-input" class="ui-input required" tabindex="3" placeholder="nombre@correo.com" /> 
+				<input type="email" name="email" is="text-input" class="ui-input" required="1" tabindex="3" placeholder="nombre@correo.com" /> 
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block-row">
 				<div class="label required">Descripción del servicio o bien a contratar:</div>
-				<textarea name="desc" is="text-area" class="ui-input ui-ta required" tabindex="4" maxlength="1000"></textarea>
+				<textarea name="desc" is="text-area" class="ui-input ui-ta" required="1" tabindex="4" maxlength="1000"></textarea>
 				<div class="ui-errtip"></div>
 			</label>
 		</div>
@@ -74,7 +74,7 @@
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</label>
-			<div id="org-info" class="ui-block-row text-height" data-template="@ej; @org; @func; @eco; ($imp; €)"></div>
+			<div id="org-info" class="ui-block-row text-height"></div>
 		</div>
 
 		<!-- Importes -->
@@ -82,7 +82,7 @@
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required">Importe estimado:</div>
-				<input type="text" name="imp" is="float-input" class="ui-input required gt0" tabindex="7"/> €
+				<input type="text" name="imp" is="float-input" class="ui-input" required="gt0" tabindex="7"/> €
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">

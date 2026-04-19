@@ -19,10 +19,10 @@ export default class TextInput extends HTMLInputElement {
 	addListener(name, fn) { this.addEventListener(name, fn); return this; }
 	addChange(fn) { return this.addListener("change", fn); }
 
-	setDisabled = force => input.setDisabled(this, force);
-	setReadonly = force => input.setReadonly(this, force);
-	setEditable = model => input.setEditable(this, model);
-	prepare = model => input.prepare(this, model);
+	setDisabled(force) { return input.setDisabled(this, force); }
+	setReadonly(force) { return input.setReadonly(this, force); }
+	setEditable(model) { return input.setEditable(this, model); }
+	prepare(model) { return input.prepare(this, model); }
 
 	// Input text Validators
 	setOk() { return input.setOk(this); }
@@ -30,7 +30,15 @@ export default class TextInput extends HTMLInputElement {
 	setRequired(msg) { return input.setRequired(this, msg); }
 	setFormatError(msg) { return input.setFormatError(this, msg); }
 	update(tip, msg) { return input.update(this, tip, msg); }
-	validate() { return input.validate(this); }
+	isEmail() { return (this.type == "email"); }
+	isValidEmail() { return !this.value || /\w+[^\s@]+@[^\s@]+\.[^\s@]+/.test(this.value); }
+	validate() {
+		if (!input.validate(this))
+			return false;
+		if (this.isEmail())
+			return this.isValidEmail() ? this.setOk() : !this.setFormatError();
+		return true;
+	}
 }
 
 // Extends parent class

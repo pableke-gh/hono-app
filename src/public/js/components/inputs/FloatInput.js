@@ -30,8 +30,7 @@ export default class FloatInput extends TextInput {
 
 	validate() {
 		if (!super.validate()) return false; // empty required field
-		const gt0Class = input.getOption("gt0Class"); // css class name
-		const ok = !this.classList.contains(gt0Class) || (this.getValue() > 0);
+		const ok = (this.getAttribute("required") != "gt0") || (this.getValue() > 0);
 		return ok ? this.setOk() : this.setError("errGt0");
 	}
 }

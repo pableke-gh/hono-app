@@ -28,8 +28,8 @@ class IrseSolicitud extends Solicitud {
 	}
 
 	// IMPORTANT! override super view
-	view = (organicas, itinerario, gastos, dietas, cuentas, firmas) => {
-		perfil.view(organicas); // load perfil
+	view = (interesado, organicas, itinerario, gastos, dietas, cuentas, firmas) => {
+		perfil.view(interesado, organicas); // load perfil
 		rutas.view(itinerario); // preload rutas (tab 2)
 		paso1.view(firmas); // mun require rutas (tab 2)
 		paso3.view(); // load isu tab (optional tab)

@@ -35,6 +35,7 @@ class Iris extends Solicitud {
 	is1su = () => (this.getFinanciacion() == "ISU");
 	isIsu = () => (this.is1su() || this.isXsu());
 
+	setInteresado = data => (data ? this.setColectivo(data.ci).setCodigoRol(data.nif) : this.setColectivo().setRol());
 	getTitulo = () => i18n.getPerfil(this.getRol(), this.getColectivo(), this.getActividad(), this.getTramite(), this.getFinanciacion());
 	getPerfil = () => this.get("perfil");
 	setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
@@ -49,15 +50,6 @@ class Iris extends Solicitud {
 	isPaso8 = () => (this.getMask() & 4); // paso 8 activado manualmente por la uae
 	isEditableP8 = () => (this.isEditable() && this.isPaso8()); // paso 8 y editable
 	isMaxVigencia = () => (this.getMask() & 8); //maxima fecha de vigencia en rrhh
-
-	getInteresado = () => this.get("interesado");
-	setInteresado = data => (data ? this.set("interesado", data).setColectivo(data.ci).setCodigoRol(data.nif) : this.set("interesado").setColectivo().setRol());
-	getNombreInt = () => this.getInteresado()?.nombre;
-	getNifInteresado = () => this.getInteresado()?.nif;
-	getEmailInteresado = () => this.getInteresado()?.email;
-	getCargos = () => this.getInteresado()?.cargos; // cargos del interesado (bitmask)
-	isEquipoGob = () => ((this.getCargos() & 64) == 64); // el interesado forma parte del equipo de gobierno
-	getDirInteresado = () => i18n.render("@lblDomicilio;: @dir;, @cp;, @municipio;, @provincia; (@residencia;)", this.getInteresado()); // parser info
 
 	// render steps functions for tabs
 	getPaso1 = () => i18n.render(i18n.set("paso", 1).get("lblPasos"), this);
@@ -80,7 +72,7 @@ class Iris extends Solicitud {
 	getImpCena = () => 0;
 	isCenaFinal = () => false;
 	getTotAc = () => 0;
-	getIrpf = () => irpf.getIrpf(this.getInteresado(), this.getActividad());
+	getIrpf = () => irpf.getIrpf(/*this.getInteresado()*/null, this.getActividad());
 }
 
 export default new Iris();

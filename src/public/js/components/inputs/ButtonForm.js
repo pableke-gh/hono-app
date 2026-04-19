@@ -25,10 +25,10 @@ export default class ButtonForm extends HTMLButtonElement {
 	execute() { throw new Error("Method 'execute' must be implemented."); }
 	setExecutable() { this.addEventListener("click", ev => { ev.preventDefault(); this.execute(); }); }
 
-	setDisabled = force => input.setDisabled(this, force); // button attribute
-	setReadonly = force => input.setDisabled(this, force); // readonly = disbled
-	setEditable = model => input.setEditable(this, model); // recalc. if button is clicable
-	prepare = model => input.setEditable(this, model); // button not to load data
+	setDisabled(force) { return input.setDisabled(this, force); } // button attribute
+	setReadonly(force) { return input.setDisabled(this, force); } // readonly = disbled
+	setEditable(model) { return input.setEditable(this, model); } // recalc. if button is clicable
+	prepare(model) { return input.setEditable(this, model); } // button not to load data
 
 	// Validators
 	setOk() {}

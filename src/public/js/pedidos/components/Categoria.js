@@ -1,6 +1,7 @@
 
 import DataList from "../../components/inputs/DataList.js";
 import categorias from "../data/categorias.js";
+import pedido from "../model/Pedido.js";
 
 export default class Categoria extends DataList {
 	#subcategoria = this.form.elements["subcategoria"];
@@ -22,14 +23,8 @@ export default class Categoria extends DataList {
 		this.#updateSubcategoria(this.#subcategoria.getValue());
 	}
 
-	connectedCallback() { // init. component
-		this.addChange(ev => this.#setSubcategoria(ev.target.value));
-		this.#subcategoria.addChange(ev => this.#updateSubcategoria(ev.target.value));
-	}
-
-	load(data) {
-		this.#setSubcategoria(super.load(data).getValue());
-	}
+	load(data) { this.#setSubcategoria(super.load(data).getValue()); }
+	setEditable() { this.setDisabled(!pedido.isEditable()); }
 
 	getEconomica() {
 		return categorias.getEconomica(this.getValue(), this.#subcategoria.getValue(), this.#inventario.getValue());
@@ -39,5 +34,11 @@ export default class Categoria extends DataList {
 		const required = (this.getValue() == 2) && (this.#subcategoria.getValue() == 1);
 		const msg = "Si los trabajos consisten en grandes reparaciones que afecten a la estructura del edificio (fachada, cubierta, etc.) y su importe estimado total (sin IVA) pueda superar los 40 mil euros, debe tramitarse a través del Servicio de Contratación.";
 		return !required || confirm(msg);
+	}
+
+	connectedCallback() { // init. component
+		this.addChange(ev => this.#setSubcategoria(ev.target.value));
+		this.#subcategoria.addChange(ev => this.#updateSubcategoria(ev.target.value));
+		this.#subcategoria.setEditable = this.#inventario.setEditable = this.setEditable; // Override
 	}
 }

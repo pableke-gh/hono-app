@@ -27,6 +27,8 @@ export default class Organica extends AutocompleteHTML {
 	source() { api.init().json("/uae/iris/organicas", { term: this.value }).then(this.render); }
 	row(organica) { return (organica.o + " - " + organica.dOrg); }
 	select(organica) { this.#organicas.autoload(organica); return organica.id; }
+
+	setEditable() { this.setDisabled(!irse.isEditableP0()); }
 	isLoaded() { return super.isLoaded() || this.#organicas.size(); }
 	validate = () => (this.isLoaded() ? this.setOk() : !this.setRequired("errOrganicas"));
 

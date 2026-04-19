@@ -14,8 +14,8 @@ import getActividad from "../../data/perfiles/actividades.js";
 
 class Perfil {
 	#form = document.forms["xeco-model"];
-	#acInteresado = this.#form.elements["interesado"];
-	#acOrganica = this.#form.elements["organica"];
+	#interesado = this.#form.elements["interesado"];
+	#organica = this.#form.elements["organica"];
 	#eAct = this.#form.elements["actividad"];
 
 	isColaboracion = () => (this.#eAct.value == "OCE") || (this.#eAct.value == "IAE+OCE");
@@ -46,9 +46,10 @@ class Perfil {
 	isA83 = () => (irse.getFinanciacion() == "A83") || (irse.getFinanciacion() == "x83");
 	isACA = () => (irse.getFinanciacion() == "ACA") || (irse.getFinanciacion() == "xAC");
 	isOTR = () => (irse.getFinanciacion() == "OTR") || (irse.getFinanciacion() == "xOT");
-	getOrganicas = () => this.#acOrganica.getOrganicas();
+	getOrganicas = () => this.#organica.getOrganicas();
 
 	init = () => {
+		this.#interesado.init(); // prepare events
 		irse.isIsu = this.isIsu; // current input value
 		form.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
 		form.set("isFin", el => (irse.getFinanciacion() == el.dataset.fin));
@@ -66,28 +67,26 @@ class Perfil {
 			if (!irse.isEditableP0()) return tabs.next();
 			const data = form.getData(".ui-perfil");
 			data.financiacion = irse.getFinanciacion();
-			data.organicas = this.#acOrganica.getOrganicas().getData();
+			data.organicas = this.#organica.getOrganicas().getData();
 			api.setJSON(data).json("/uae/iris/perfil/save").then(data => {
-				const temp = irse.getInteresado(); // save reference
 				irse.setData(data.solicitud); // update irse data
-				irse.setInteresado(temp); // preserve interesado
 				observer.emit("perfil", irse); // update changes from server (id, fk, text, etc.)
 				form.getPaso9().setCuentas(data.cuentas); // cuentas del interesado (desplegable paso9)
 				form.setFirmas(data.firmas).reactivate(irse).nextTab(1); // prepare changes and show tab
 			});
 		});
 		form.afterReset(() => {
-			this.#acInteresado.clear();
-			this.#acOrganica.clear();
+			this.#interesado.clear();
+			this.#organica.clear();
 		});
 	}
 
-	view = organicas => {
+	view = (interesado, organicas) => {
 		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
 
-		this.#acInteresado.setInteresado(); // load autocomplete
-		this.#acOrganica.setOrganicas(organicas); // load autocomplete + table
+		this.#interesado.setInteresado(interesado); // load autocomplete
+		this.#organica.setOrganicas(organicas); // load autocomplete + table
 		this.#eAct.setValue(irse.getActividad()).addChange(() => observer.emit("perfil", irse)); // actualizo el perfil al cambiar la actividad
 		form.setValue("tramite", irse.getTramite()); // AyL, AUT or LIQ
 	}

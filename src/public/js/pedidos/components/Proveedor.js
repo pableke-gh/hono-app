@@ -1,6 +1,7 @@
 
 import AutocompleteHTML from "../../components/inputs/AutocompleteHTML.js";
 import api from "../../components/Api.js";
+import pedido from "../model/Pedido.js";
 
 export default class Proveedor extends AutocompleteHTML {
 	connectedCallback() { // default initialization
@@ -8,6 +9,8 @@ export default class Proveedor extends AutocompleteHTML {
 	}
 
 	//load(data) { this.setValue(data.idOrg030, data.o030 + " - " + data.dOrg030); }
+	setEditable() { this.setDisabled(!pedido.isEditable()); }
+
 	source() { api.init().json("/uae/pedidos/proveedores", { term: this.value }).then(this.render); }
 	row(item) { return item.prov; }
 	select(item) {

@@ -21,7 +21,9 @@ class FormInput {
 		return el.setReadonly(!fnEditable()); // recalc. readonly attribute by handler
 	}
 	prepare(el, model) { // recalc. if editable and load value
-		return this.setEditable(el, model).load(model.getData());
+		el.setEditable(model);
+		el.load(model.getData());
+		return el;
 	}
 
 	// Input Validators
@@ -39,9 +41,8 @@ class FormInput {
 	}
 	setRequired = (el, msg) => this.setError(el, "errRequired", msg);
 	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
-	update = (el, tip, msg) => tip ? el.setError(tip, msg) : el.setOk();
-	isRequired = el => el.classList.contains(this.#opts.requiredClass); // contains required class
-	validate = el => ((!this.isRequired(el) || el.value) ? el.setOk() : !el.setRequired()); // optional o required with value
+	update = (el, tip, msg) => tip ? el.setError(tip, msg) : el.setOk(); // update input state
+	validate = el => ((!el.required || el.value) ? el.setOk() : !el.setRequired()); // optional o required with value
 }
 
 // Extends HTMLElement prototype

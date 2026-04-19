@@ -22,9 +22,8 @@ coll.ready(() => {
 		if (!window.showAlerts(xhr, status, args)) return;
 		// merge server data with list and set in current irse instance
 		irse.setData(Object.assign(list.getCurrent() || {}, coll.parse(args.data)));
-		// referencia al interesado en la lista y la solicitud
-		irse.setInteresado(coll.parse(args.interesado));
 
+		const interesado = coll.parse(args.interesado);
 		const organicas = coll.parse(args.organicas);
 		const rutas = coll.parse(args.rutas);
 		const gastos = coll.parse(args.gastos);
@@ -32,7 +31,7 @@ coll.ready(() => {
 		const cuentas = coll.parse(args.cuentas);
 		const firmas = coll.parse(args.firmas);
 
-		form.view(organicas, rutas, gastos, dietas, cuentas, firmas); // configure view
+		form.view(interesado, organicas, rutas, gastos, dietas, cuentas, firmas); // configure view
 		tabs.next(tab ?? irse.get("tab")); // go to next tab
 	}
 });

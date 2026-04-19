@@ -19,8 +19,8 @@ export default class PedidoForm extends FormHTML {
 		this.set("filename", (el, input) => el.setText(input.getFilename()));
 		tabs.setAction("adjunto", () => api.init().blob("/uae/pedidos/adjunto?id=" + pedido.getAdjunto()));
 
-		this.getElement("imp").addChange(ev => { pedido.setImporte(ev.target.getValue("imp")); this.#setImportes(); });
-		this.getElement("iva").addChange(ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });
+		this.addChange("imp", ev => { pedido.setImporte(ev.target.getValue("imp")); this.#setImportes(); });
+		this.addChange("iva", ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });
 
 		this.onSubmit(ev => {
 			if (super.validate() && i18n.confirm("msgSend")) // validate and user confirmation
