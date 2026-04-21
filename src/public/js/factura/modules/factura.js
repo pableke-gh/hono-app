@@ -6,6 +6,7 @@ import factura from "../model/Factura.js";
 import Fiscal from "./fiscal.js";
 import Imputacion from "./imputacion.js";
 
+import Firmas from "../components/Firmas.js";
 import FacturaSolicitudes from "../components/facturas.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
@@ -44,6 +45,7 @@ class Factura extends Solicitud {
 	}
 }
 
+customElements.define("firmas-block", Firmas, { extends: "div" });
 customElements.define("fact-table", FacturaSolicitudes, { extends: "table" });
 
 export default new Factura();

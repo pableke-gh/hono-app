@@ -26,4 +26,10 @@ export default class IntegerInput extends TextInput {
 		this.value && this.classList.toggle(negativeClass, value < 0);
 		return this;
 	}
+
+	validate() {
+		if (!input.validate(this)) return false; // empty required field
+		const ok = (this.getAttribute("required") != "gt0") || (this.getValue() > 0);
+		return ok ? this.setOk() : this.setError("errGt0");
+	}
 }

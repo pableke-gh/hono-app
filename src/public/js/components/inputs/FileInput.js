@@ -32,6 +32,7 @@ export default class FileInput extends TextInput {
 
 	setReadonly(force) { return super.setDisabled(force); } // The attribute readonly is not supported or relevant to file input
 	setRequired(msg) { return input.setError(this, "errRequiredFile", msg); } // override
+	validate() { return input.validate(this); }
 
 	getFilename = () => (this.isLoaded() ? this.files[0].name : ""); // force a filename
 	getFilenames(max) {

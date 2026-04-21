@@ -10,6 +10,7 @@ import resumen from "./tabs/resumen.js";
 import paso9 from "./tabs/paso9.js";
 import informeISU from "./tabs/otri.js";
 
+import Firmas from "../components/Firmas.js";
 import IrseSolicitudes from "./solicitudes.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
@@ -51,5 +52,6 @@ class IrseSolicitud extends Solicitud {
 }
 
 customElements.define("irse-table", IrseSolicitudes, { extends: "table" });
+customElements.define("firmas-block", Firmas, { extends: "div" });
 
 export default new IrseSolicitud();

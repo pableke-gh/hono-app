@@ -1,10 +1,9 @@
 
-import coll from "../../components/CollectionHTML.js";
 import FormBase from "../../components/forms/FormBase.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import i18n from "../../i18n/langs.js";
-import firma from "../model/Firma.js";
+import observer from "../util/Observer.js";
 
 export default class Solicitud extends FormBase {
 	#solicitudes; #solicitud; #valid;
@@ -72,25 +71,8 @@ export default class Solicitud extends FormBase {
 		api.init().json(url, this.#rejectParams(data.id)).then(this.#refreshForm);
 	}
 	setFirmas(firmas) {
-		if (firmas) { // compruebo si hay firmantes
-			const tpl = coll.render(firmas.slice(1), firma.render);
-			this.set("update-firmas", el => {
-				el.children[2].innerHTML = tpl; // render block
-				if (this.#solicitud.isInvalidada()) { // rechazado o cancelado
-					const rechazo = firmas.find(firma.isRechazada);
-					if (!rechazo) return; // clausula de guarda
-					rechazo.rejectedBy = firma.getNombre(rechazo);
-					el.children[3].render(rechazo);
-				}
-				else
-					el.children[3].hide();
-				return el.show();
-			});
-			super.reset("#rechazo");
-		}
-		else
-			this.set("update-firmas", null);
-		return this;
+		observer.emit("firmas-updated", firmas);
+		return this.reset("#rechazo");
 	}
 
 	onView() {} // optional event on view action

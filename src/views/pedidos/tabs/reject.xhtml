@@ -9,11 +9,11 @@
 
 	<div class="card-xeco">
 		<h2 class="underline">Motivo / Causa del rechazo de la solicitud</h2>
-		<p class="notice notice-info form-refresh" data-refresh="text-render">@codigo;: @memo;</p>
+		<p class="notice notice-info form-refresh" data-refresh="text-render">@codigo;: @desc;</p>
 
 		<label class="ui-block">
 			<div class="label required">Información asociada al rechazo:</div>
-			<textarea name="rechazo" is="text-area" rows="8" data-editable="manual" title="Motivo / causa del rechazo" tabindex="1"></textarea>
+			<textarea name="rechazo" is="text-area" rows="8" data-editable="manual" title="Motivo / causa del rechazo" tabindex="1" required="1"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 	</div>
@@ -26,5 +26,4 @@
 		<a href="#tab-action-cancelar" class="btn btn-error form-refresh" data-refresh="isCancelable" title="#{msg['tit.btn.cancelar']}"> 
 			<i class="far fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.cancelar']}</a>
 	</div>
-	<ui:include src="../parts/firmas.xhtml"></ui:include>
 </html>

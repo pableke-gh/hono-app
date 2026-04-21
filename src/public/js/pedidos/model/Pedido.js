@@ -4,6 +4,7 @@ import Solicitud from "../../core/model/Solicitud.js";
 import categorias from "../data/categorias.js";
 
 class Pedido extends Solicitud {
+	getUrl = () => "/uae/pedido"; // endpoint base path
 	getTitulo = () => "Solicitud SPI";
 
 	getAdjunto = () => this.get("file");

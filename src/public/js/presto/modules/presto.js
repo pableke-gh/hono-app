@@ -7,6 +7,7 @@ import PartidaDec from "./partidaDec.js";
 import PartidaInc from "./partidaInc.js";
 import Partida030 from "./partida030.js";
 
+import Firmas from "../components/Firmas.js";
 import PrestoSolicitudes from "../components/prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
@@ -49,6 +50,7 @@ class Presto extends Solicitud {
 	}
 }
 
+customElements.define("firmas-block", Firmas, { extends: "div" });
 customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });
 
 export default new Presto();

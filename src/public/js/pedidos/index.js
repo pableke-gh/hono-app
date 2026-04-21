@@ -1,6 +1,6 @@
 
 import tabs from "../components/Tabs.js";
-import FilterForm from "./modules/filter.js";
+import PedidoFilterForm from "./modules/filter.js";
 import PedidosTable from "./modules/pedidos.js";
 import PedidoForm from "./modules/pedido.js";
 
@@ -9,6 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	tabs.setAction("create", form.create);
 });
 
-customElements.define("filter-form", FilterForm, { extends: "form" });
+customElements.define("pedido-filter", PedidoFilterForm, { extends: "form" });
 customElements.define("pedidos-table", PedidosTable, { extends: "table" });
 customElements.define("pedido-form", PedidoForm, { extends: "form" });

@@ -30,12 +30,12 @@ export default class TextInput extends HTMLInputElement {
 	setRequired(msg) { return input.setRequired(this, msg); }
 	setFormatError(msg) { return input.setFormatError(this, msg); }
 	update(tip, msg) { return input.update(this, tip, msg); }
-	isEmail() { return (this.type == "email"); }
-	isValidEmail() { return !this.value || /\w+[^\s@]+@[^\s@]+\.[^\s@]+/.test(this.value); }
+	isEmail() { return (this.type == "email"); } // input type email
+	isValidEmail() { return !this.value || /\w+[^\s@]+@[^\s@]+\.[^\s@]+/.test(this.value); } // can be optional
 	validate() {
 		if (!input.validate(this))
-			return false;
-		if (this.isEmail())
+			return false; // required field
+		if (this.isEmail()) // input has data or optional
 			return this.isValidEmail() ? this.setOk() : !this.setFormatError();
 		return true;
 	}

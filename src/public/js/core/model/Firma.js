@@ -33,6 +33,22 @@ class Firma {
 		const firma = this.isAceptada(data) ? aceptada : (this.isRechazada(data) ? rechazada : pendiente);
 		return `<div class="ui-block-box"><p>${data.cargo}</p><p>${this.getNombre(data)}</p><p>${firma}</p></div>`;
 	}
+
+	getRender(solicitud, firmas) {
+		const tpl = firmas.slice(1).map(this.render).join("");
+		return el => {
+			el.children[2].innerHTML = tpl; // render block
+			if (solicitud.isInvalidada()) { // rechazado o cancelado
+				const rechazo = firmas.find(this.isRechazada);
+				if (!rechazo) return; // clausula de guarda
+				rechazo.rejectedBy = this.getNombre(rechazo);
+				el.children[3].render(rechazo);
+			}
+			else
+				el.children[3].hide();
+			return el.show();
+		};
+	}
 }
 
 export default new Firma();

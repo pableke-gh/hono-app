@@ -1,5 +1,6 @@
 
 import sb from "../../components/types/StringBox.js";
+import input from "./FormInput.js";
 import TextInput from "./TextInput.js";
 
 // Register the custom element
@@ -20,6 +21,9 @@ export default class DateInput extends TextInput {
 		this.updateRange(); // is date range => update attributes
 		return this;
 	}
+	validate() {
+		return input.validate(this);
+	}
 
 	updateRange = () => {}
 	setLimit(el, dt1, dt2) {
@@ -38,8 +42,4 @@ export default class DateInput extends TextInput {
 		el.updateRange = () => { this.setAttribute("max", el.value); }; // fired on set value
 		return this.setLimit(el, this.value, el.value);
 	}
-
-	/*connectedCallback() {
-		console.log(this.name, "DateInput connected to DOM");
-	}*/
 }

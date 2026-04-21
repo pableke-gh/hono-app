@@ -1,14 +1,14 @@
 
-import sb from "../../../components/types/StringBox.js";
-import valid from "../../i18n/validators/rutas.js";
-import result from "../../../core/util/Result.js";
+import sb from "../../components/types/StringBox.js";
+import valid from "../i18n/validators/rutas.js";
+import result from "../../core/util/Result.js";
 
-import maps from "../../services/maps.js";
-import ruta from "../../model/Ruta.js";
-import rutas from "../../model/Rutas.js";
+import maps from "../services/maps.js";
+import ruta from "../model/Ruta.js";
+import rutas from "../model/Rutas.js";
 
-import place from "../../util/place.js";
-import form from "../irse.js";
+import place from "../util/place.js";
+import form from "../modules/irse.js";
 
 export default class AddRuta extends HTMLAnchorElement {
 	async execute() {

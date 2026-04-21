@@ -9,7 +9,7 @@ import rutas from "../../model/Rutas.js";
 import dietas from "../../model/Dietas.js";
 
 import AutocompleteMaps from "../inputs/Autocomplete.js";
-import AddRuta from "../inputs/AddRuta.js";
+import AddRuta from "../../components/AddRuta.js";
 import TableRutas from "../tables/rutas.js";
 import place from "../../util/place.js";
 import form from "../irse.js";

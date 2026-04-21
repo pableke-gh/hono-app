@@ -39,8 +39,18 @@
 			<ui:include src="./parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
-		<div id="tab-form" class="tab-content">
-			<ui:include src="./tabs/form.xhtml"></ui:include>
-		</div>
+		<form id="pedido-form" is="pedido-form" method="post" enctype="multipart/form-data">
+			<!-- formulario de alta de solicitudes -->
+			<div id="tab-form" class="tab-content">
+				<ui:include src="./tabs/form.xhtml"></ui:include>
+				<ui:include src="./parts/firmas.xhtml"></ui:include>
+			</div>
+
+			<!-- formulario de rechazo/cancelacion -->
+			<div id="tab-reject" class="tab-content">
+				<ui:include src="./tabs/reject.xhtml"></ui:include>
+				<ui:include src="./parts/firmas.xhtml"></ui:include>
+			</div>
+		</form>
 	</ui:define>
 </ui:composition>
