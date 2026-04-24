@@ -11,7 +11,7 @@ export default class Organica030 extends AutocompleteHTML {
 
 
 	load(data) {
-		this.setValue(data.idOrg030, data.o030 + " - " + data.dOrg030);
+		this.setValue(data.org030, data.o030 + " - " + data.dOrg030);
 	}
 
 	source() { api.init().json("/uae/presto/organicas/030", { ej: form.getValue("ej030"), term: this.value }).then(this.render); }

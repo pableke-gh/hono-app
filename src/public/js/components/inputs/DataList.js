@@ -104,5 +104,6 @@ export default class DataList extends HTMLSelectElement {
 	setRequired(msg) { return input.setRequired(this, msg); }
 	setFormatError(msg) { return input.setFormatError(this, msg); }
 	update(tip, msg) { return input.update(this, tip, msg); }
-	validate() { return input.validate(this); }
+	force(msg) { return input.required(this, msg); } // force required validation
+	validate() { return input.validate(this); } // optional o required with value
 }

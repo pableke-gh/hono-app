@@ -54,7 +54,7 @@ class PrestoValidators extends Validators {
 
 	validate030() {
 		const data030 = form.getData(".ui-030"); // start validation
-		const p080 = form.getPartidas().getCurrentItem(); // current partida 080
+		const p080 = form.getPartidas().getCurrent(); // current partida 080
 		if (!p080) // Debo cargar previamente la partida seleccionada
 			return this.fail("No se ha encontrado la partida asociada al documento 080.");
 		const ERR_ORGANICA = "No ha seleccionado correctamente la orgánica";

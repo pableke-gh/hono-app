@@ -42,7 +42,8 @@ class FormInput {
 	setRequired = (el, msg) => this.setError(el, "errRequired", msg);
 	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
 	update = (el, tip, msg) => tip ? el.setError(tip, msg) : el.setOk(); // update input state
-	validate = el => ((!el.required || el.value) ? el.setOk() : !el.setRequired()); // optional o required with value
+	required = (el, msg) => (el.value ? el.setOk() : !el.setRequired(msg)); // force required validation
+	validate = el => (el.required ? el.force() : el.setOk()); // optional o required with value
 }
 
 // Extends HTMLElement prototype

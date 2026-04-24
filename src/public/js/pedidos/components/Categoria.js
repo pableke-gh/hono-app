@@ -11,7 +11,7 @@ export default class Categoria extends DataList {
 	#setInventario = (categoria, subcategoria) => {
 		const labels = categorias.getInventario(categoria, subcategoria);
 		this.#inventario.setIndexed(labels).parentNode.setVisible(labels);
-		this.form.getElement("organica").clear();
+		this.form.getElement("aplicacion").clear();
 	}
 	#updateSubcategoria = value => {
 		const text = categorias.getInfo(this.getValue(), value);

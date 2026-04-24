@@ -21,6 +21,7 @@ export default class FileInput extends TextInput {
 	toData(data) { data[this.name] = this.files; } // set all file list
 	isEmpty() { return (this.files.length == 0); } // is selected file
 	isLoaded() { return (this.files.length > 0); } // is selected file
+	isFile() { return true; } // input type file
 	addFormData(fd) {
 		const size = this.files.length;
 		for (let i = 0; i < size; i++) {

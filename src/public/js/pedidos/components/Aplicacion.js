@@ -4,7 +4,7 @@ import api from "../../components/Api.js";
 import i18n from "../i18n/langs.js";
 import pedido from "../model/Pedido.js";
 
-export default class Organica extends AutocompleteHTML {
+export default class Aplicacion extends AutocompleteHTML {
 	#categoria = this.form.elements["categoria"];
 	#info = this.form.querySelector("#org-info");
 
@@ -12,8 +12,10 @@ export default class Organica extends AutocompleteHTML {
 		this.setMinLength(4);
 	}
 
-	//load(data) { this.setValue(data.idOrg030, data.o030 + " - " + data.dOrg030); }
-	setEditable() { this.setDisabled(!pedido.isEditable()); }
+	setEditable() {
+		this.setDisabled(!pedido.isEditable());
+		this.#info.setVisible(pedido.isEditable());
+	}
 
 	source() {
 		const eco = this.#categoria.getEconomica(); // calculated value
@@ -24,13 +26,14 @@ export default class Organica extends AutocompleteHTML {
 		return item.org + " - " + item.desc;
 	}
 	select(item) {
-		const tpl = "@ej; @org; @func; @eco; ($imp; €)";
-		this.#info.setText(i18n.render(tpl, item));
+		item.imp = item.imp || 0;
+		const tpl = "@ej; @org; @func; @eco; (@lblCreditoDisp;: $imp; €)";
+		this.#info.innerText = i18n.render(tpl, item);
 		return item.id;
 	}
 
 	reset() {
-		this.#info.setText("");
+		this.#info.innerText = "";
 		return super.reset();
 	}
 

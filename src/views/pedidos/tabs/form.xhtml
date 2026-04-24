@@ -11,14 +11,14 @@
 		<h2 class="form-refresh" data-refresh="text-render">@getTitulo; @getCodigo;</h2>
 		<div class="ui-blocks">
 			<div class="ui-block-btn">
-				<a href="#tab-action-adjunto" class="btn btn-info form-refresh" data-refresh="getAdjunto" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip btn-icon-right"></i></a>
-				<a href="#tab-action-clickNext" class="btn btn-info form-refresh" data-refresh="isEditable" title="Presupuesto del proveedor"><i class="fas fa-search btn-icon-left"></i>Adjuntar Documentación</a>
-				<input type="file" name="adjunto" is="file-input" class="hide" required="1" />
+				<a href="#tab-action-adjunto" class="btn btn-info form-refresh" data-refresh="getAdjunto" title="Descargar / visualizar la documentación asociada">Presupuesto Adjunto<i class="far fa-paperclip btn-icon-right"></i></a>
+				<a href="#tab-action-clickNext" class="btn btn-info form-refresh" data-refresh="isEditable" title="Presupuesto del proveedor"><i class="fas fa-search btn-icon-left"></i>Adjuntar Presupuesto</a>
+				<input type="file" name="adjunto" is="file-input" class="hide" />
 				<div class="ui-errtip"></div> 
 			</div>
 			<label class="ui-block">
 				<div class="label required">Nº de referencia:</div>
-				<input type="text" name="ref" is="text-input" class="ui-input" required="1" tabindex="1" /> 
+				<input type="text" name="ref" is="ref-input" class="ui-input" tabindex="1" /> 
 				<div class="ui-errtip"></div> 
 			</label>
 			<div class="ui-block-row text-height form-refresh" data-refresh="filename" data-event="adjunto"></div>
@@ -35,7 +35,7 @@
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required">Correo del Proveedor:</div>
-				<input type="email" name="email" is="text-input" class="ui-input" required="1" tabindex="3" placeholder="nombre@correo.com" /> 
+				<input type="email" name="email" is="email-input" class="ui-input" required="1" tabindex="3" placeholder="nombre@correo.com" /> 
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block-row">
@@ -69,11 +69,12 @@
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<input type="search" name="organica" is="organica-input" class="ui-autocomplete" tabindex="6" placeholder="Introduce una orgánica" /> 
+				<input type="search" name="aplicacion" is="aplicacion-input" class="ui-autocomplete" tabindex="6" placeholder="Introduce una orgánica" /> 
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</label>
 			<div id="org-info" class="ui-block-row text-height"></div>
+			<div id="prov-info" class="ui-block-row text-height"></div>
 		</div>
 
 		<!-- Importes -->

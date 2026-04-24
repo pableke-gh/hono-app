@@ -9,9 +9,10 @@ import FormDataBox from "./FormData.js";
 import input from "../inputs/FormInput.js";
 import TextInput from "../inputs/TextInput.js";
 import DataList from "../inputs/DataList.js";
+import DateInput from "../inputs/DateInput.js";
+import EmailInput from "../inputs/EmailInput.js";
 import BoolInput from "../inputs/BoolInput.js";
 import FloatInput from "../inputs/FloatInput.js";
-import DateInput from "../inputs/DateInput.js";
 import TimeInput from "../inputs/TimeInput.js";
 import TextArea from "../inputs/TextArea.js";
 import FileInput from "../inputs/FileInput.js";
@@ -176,7 +177,7 @@ export default class FormHTML extends HTMLFormElement {
 	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
 	validate(selector, msgError) {
 		let ok = !!alerts.closeAlerts(); // global message
-		this.getInputs(selector).forEach(el => { ok = el.validate() && ok; });
+		this.getInputs(selector).eachPrev(el => { ok = el.validate() && ok; });
 		return ok || !alerts.showError(msgError || this.#opts.defaultMsgError);
 	}
 }
@@ -185,9 +186,10 @@ export default class FormHTML extends HTMLFormElement {
 customElements.define("model-form", FormHTML, { extends: "form" });
 customElements.define("text-input", TextInput, { extends: "input" });
 customElements.define("data-list", DataList, { extends: "select" });
+customElements.define("date-input", DateInput, { extends: "input" });
+customElements.define("email-input", EmailInput, { extends: "input" });
 customElements.define("float-input", FloatInput, { extends: "input" });
 customElements.define("bool-input", BoolInput, { extends: "input" });
-customElements.define("date-input", DateInput, { extends: "input" });
 customElements.define("time-input", TimeInput, { extends: "input" });
 customElements.define("text-area", TextArea, { extends: "textarea" });
 customElements.define("file-input", FileInput, { extends: "input" });

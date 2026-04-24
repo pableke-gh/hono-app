@@ -31,8 +31,8 @@ export default class ButtonForm extends HTMLButtonElement {
 	prepare(model) { return input.setEditable(this, model); } // button not to load data
 
 	// Validators
-	setOk() {}
-	setError() {}
-	update() {}
+	setOk() { return this; } // restore default styles
+	setError() { return this; } // set css class error
+	update() { return this; } // deprecated
 	validate() { return true; }
 }

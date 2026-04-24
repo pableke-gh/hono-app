@@ -16,4 +16,5 @@ export default class BoolInput extends TextInput {
 
 	getValue() { return this.value; }
 	setValue(value) { this.value = i18n.boolval(value); return this; }
+	isBool() { return true; } // boolean input
 }

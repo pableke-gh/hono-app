@@ -10,7 +10,6 @@ import TextInput from "./TextInput.js";
 export default class DateInput extends TextInput {
 	constructor() {
 		super(); // Must call super before 'this'
-
 		// Initialize the element
 		this.type = "date";
 		this.classList.add("ui-date");
@@ -25,7 +24,8 @@ export default class DateInput extends TextInput {
 		return input.validate(this);
 	}
 
-	updateRange = () => {}
+	isDate() { return true; } // input type date
+	updateRange = () => {} // event handler
 	setLimit(el, dt1, dt2) {
 		el = globalThis.isstr(el) ? this.form.elements[el] : el;
 		this.value = sb.isoDate(dt1);

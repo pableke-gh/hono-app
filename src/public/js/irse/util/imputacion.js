@@ -5,7 +5,6 @@ import perfil from "../modules/tabs/perfil.js";
 import form from "../modules/irse.js";
 
 function IrseImputacion() {
-	//const self = this; //self instance
 	//TIPO = dietas=1, alojamiento=2, transporte=3
 	const CONCEPTOS_CAP2 = { "1": "230", "2": "230", "3": "231" };
 	const SUBCONCEPTOS_CAP6 = { "1": "30", "2": "31", "3": "32" };
@@ -18,9 +17,6 @@ function IrseImputacion() {
 		"PIN":    "03", "BPE":    "04", "ALU": "05", 
 		"EXT":    "06"
 	};
-	//const NONE = "-"; // Sin Imputacion
-
-	//const is643 = org => (org && ((org.mask & 16) == 16)); //contiene alguna aplicacion 643?
 
 	//calculo de la imputacion por orden de prelacion
 	this.get = function(tipo, org) {

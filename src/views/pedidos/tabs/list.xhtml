@@ -28,7 +28,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.mi.firma']}" escape="false" />:</div>
-				<select name="fmask" is="data-list" class="ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
+				<select name="firma" is="data-list" class="ui-filter" tabindex="3" title="#{msg['lbl.mi.firma']}">
 					<option value="0"></option>
 					<option value="5" selected>Pendiente</option>
 					<option value="1">Aceptada</option>
@@ -40,8 +40,8 @@
 				<input type="text" name="codigo" is="text-input" class="ui-code ui-filter" tabindex="4" />
 			</label>
 			<label class="ui-block">
-				<div class="label"><h:outputText value="#{msg['lbl.organica']}" escape="false" />:</div>
-				<input type="text" name="org" is="text-input" class="ui-code ui-filter" tabindex="5" />
+				<div class="label">Proveedor:</div>
+				<input type="text" name="prov" is="text-input" class="ui-code ui-filter" tabindex="5" />
 			</label>
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.fecha.creacion']}" escape="false" />:</div>
@@ -65,11 +65,11 @@
 	<table is="pedidos-table" class="tb-xeco">
 		<thead>
 			<tr>
-				<th class="slim"></th><th>Código</th><th class="hide-sm">Tipo</th>
+				<th>Código</th>
 				<th class="hide-xs">Estado</th><th class="hide-xs">Mi Firma</th><th class="hide-sm">Pendiente de</th>
-				<th>Orgánica que Aumenta</th><th class="hide-xs">Eco.</th><th>Total €</th>
+				<th>Expediente</th><th>Nif Proveedor</th><th class="hide-xs">Proveedor</th>
 				<th class="hide-xs">F. Solicitud</th><th class="hide-sm">Solicitante</th>
-				<th class="hide-md">Memoria</th><th class="no-print">Acciones</th>
+				<th class="hide-md">Descripción</th><th class="no-print">Acciones</th>
 			</tr>
 		</thead>
 		<tbody></tbody>

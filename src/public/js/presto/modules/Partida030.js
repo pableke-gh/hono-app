@@ -20,9 +20,10 @@ export default class Partida030 extends FormBase {
 		tabs.setAction("save030", () => {
 			if (!valid.validate030()) // validate partida 080 / 030
 				return false; // not valid data
-			if (presto.isEditable()) // if editable => back
+			if (presto.isEditable() || !form.isChanged()) // if editable => back
 				return tabs.back().showOk("msgSave030"); // show msg ok
 			api.setJSON(partidas.getData()).json("/uae/presto/save/030").then(tabs.showForm);
+			form.setChanged();
 		});
 	}
 

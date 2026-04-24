@@ -16,7 +16,7 @@ class Pedido extends Solicitud {
 	getImpIva = () => (this.getImporte() * (this.getIva() / 100));
 	getProrrata = () => categorias.getProrrata(sb.getYear(this.get("fecha")));
 	getImpTotal = () => (this.getImporte() + this.getImpIva());
-	getImpPpto = () => (this.getImpTotal() - ( (this.getProrrata() / 100) * this.getImpIva()));
+	getImpPpto = () => (this.getImpTotal() - ((this.getProrrata() / 100) * this.getImpIva()));
 }
 
 export default new Pedido();

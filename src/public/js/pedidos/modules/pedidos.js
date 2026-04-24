@@ -4,6 +4,7 @@ import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
 
 import i18n from "../i18n/langs.js";
+import firma from "../../core/model/Firma.js";
 import observer from "../../core/util/Observer.js";
 import pedido from "../model/Pedido.js";
 
@@ -21,9 +22,9 @@ export default class PedidosTable extends TableHTML {
 			i18n.confirm("msgIntegrar") && api.init().json(url).then(this.setWorking);
 		});
 
-		this.set("view", form.view);
-		this.set("firmar", data => { pedido.setData(data); form.firmar(); });
-		this.set("reject", data => { // open reject tab for rechazar / cancelar
+		this.set("#view", data => form.view(data));
+		this.set("#firmar", data => { pedido.setData(data); form.firmar(); });
+		this.set("#reject", data => { // open reject tab for rechazar / cancelar
 			form.refresh(pedido.setData(data)); // preload data
 			observer.emit("firmas-updated", form.isCached(data.id)); // check if data is cached
 			tabs.show("reject"); // show reject tab
@@ -39,7 +40,26 @@ export default class PedidosTable extends TableHTML {
 	}
 
 	row(data) {
-		return `<tr></tr>`;
+		let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';
+		if (pedido.setData(data).isFirmable()) { // initialize and verify state
+			acciones += '<a href="#firmar" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-check action resize text-green"></i></a>';
+			acciones += '<a href="#reject" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-times action resize text-red"></i></a>';
+		}
+		if (pedido.isIntegrable())
+			acciones += '<a href="#integrar" class="table-refresh" data-refresh="isIntegrable"><i class="far fa-save action resize text-blue"></i></a>';
+
+		return `<tr class="tb-data">
+			<td class="text-center"><a href="#view">${data.codigo}</a></td>
+			<td class="${pedido.getStyleByEstado()} hide-xs table-refresh" data-refresh="update-estado">${pedido.getDescEstado()}</td>
+			<td class="text-center hide-xs">${firma.myFlag(data)}</td>
+			<td class="hide-sm">${data.sig || ""}</td>
+			<td class="text-center">${data.exp || ""}</td><td>${data.nif}</td>
+			<td class="hide-xs">${data.prov}</td>
+			<td class="text-center hide-xs">${i18n.isoDate(data.fecha)}</td>
+			<td class="currency">${i18n.isoFloat(pedido.getImpPpto())} €</td>
+			<td class="hide-md">${data.desc}</td>
+			<td class="currency no-print">${acciones}</td>
+		</tr>`;
 	}
 
 	flush() { // override super class

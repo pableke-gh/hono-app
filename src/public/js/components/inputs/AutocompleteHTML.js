@@ -72,6 +72,7 @@ export default class Autocomplete extends TextInput {
 	row(item) { return item.label; }
 	select(item) { return item.value; }
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
+	isAutocomplete() { return true; } // input type autocomplete
 
 	getData = () => this.#data;
 	getIndex = () => this.#index;
