@@ -103,8 +103,17 @@ function StringBox() {
 	this.split = (str, sep) => str ? str.split(sep || ",") : [];
 	this.match = (str, re) => str ? str.trim().match(re) : null;
 	this.lastId = str => +self.match(str, /\d+$/).pop();
-	this.chunk = (str, size) => str ? str.trim().match(str, new RegExp(".{1," + size + "}", "g")) : null;
 	this.lpad = (str, size, pad) => str ? str.padStart(size, pad) : null;
+	this.chunk = (str, size) => str ? str.trim().match(new RegExp(".{1," + size + "}", "g")) : null;
+	this.chunkBy = (str, sizes) => {
+		var i, j; // indexes
+		const results = []; // container
+		for (i = j = 0; (i < str.length) && (j < sizes.length); i += sizes[j++])
+			results.push(str.substring(i, i + sizes[j])); // add new chunk
+		if (i < str.length) // add final chunk
+			results.push(str.substring(i,));
+		return results;
+	}
 
     // Modificators
 	this.lopd = str => str && ("***" + str.substr(3, 4) + "**"); //hide protect chars

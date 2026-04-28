@@ -39,7 +39,8 @@
 			<ui:include src="./parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
-		<form id="pedido-form" is="pedido-form" method="post" enctype="multipart/form-data">
+		<form id="pedido-form" is="pedido-form" method="post" enctype="multipart/form-data"
+				data-nif="#{pedidos.nif}" data-admin="#{pedidos.adminFlag}">
 			<!-- formulario de alta de solicitudes -->
 			<div id="tab-form" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>

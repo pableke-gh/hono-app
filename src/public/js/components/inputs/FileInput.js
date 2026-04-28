@@ -11,8 +11,6 @@ export default class FileInput extends TextInput {
 	connectedCallback() { // Initialize the element
 		this.classList.add("hide"); // default hidden
 		this.addChange(ev => observer.emit(this.name, ev.target));
-		// propage event when form changes, clear filenames, etc.
-		observer.subscribe("form-update", () => observer.emit(this.name, this));
 	}
 
 	// This input element accepts a filename no value (clear previously selected files)

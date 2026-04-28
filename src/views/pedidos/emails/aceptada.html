@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - SPI</title>
+	<style th:replace="pedidos/emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="pedidos/emails/general.html :: header"></header>
+	<div class="navbar">
+		<p>
+			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
+			<br/>Se precisa su FIRMA como <span th:text="${firma.cargo}"></span> para validar el siguiente pedido</span>:
+		</p>
+	</div>
+
+	<div th:replace="pedidos/emails/general.html :: solicitud"></div>
+	<div th:replace="pedidos/emails/general.html :: firmas"></div>
+	<footer th:replace="pedidos/emails/general.html :: footer"></footer>
+</body>
+</html>

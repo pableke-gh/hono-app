@@ -12,6 +12,7 @@ export default class Base {
 	set(name, value) { this.#data[name] = value; return this; }
 	reset = () => { this.#data = null; return this; }
 	isLoaded = () => this.#data; // has data object
+	isEmpty = () => !this.#data; // no data loaded
 	getData = () => this.#data; // get data object
 	setData(data) { this.#data = data; return this; }
 	validate = data => console.error("Validate method must be implemented!", data); // override in subclass

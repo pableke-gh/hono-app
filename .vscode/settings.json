@@ -11,5 +11,14 @@
 		"statusBar.debuggingForeground": "#FEFBFB",
 		"statusBar.noFolderBackground": "#511C1C",
 		"statusBar.noFolderForeground": "#FEFBFB"
-	}
+	},
+
+	"java.jdt.ls.java.home": "C:\\Program Files\\Java\\jdk-26.0.1",
+	"java.configuration.runtimes": [
+		{
+			"name": "JavaSE-26",
+			"path": "C:\\Program Files\\Java\\jdk-26.0.1",
+			"default": true
+		}
+	]
 }

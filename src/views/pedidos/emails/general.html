@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Campus Virtual - SPI</title>
+	<style th:fragment="styles" th:inline="css">
+		table { margin:auto; width: 100%; border-collapse: collapse; }
+		thead { border-bottom: 1px solid #000; }
+		tfoot { font-weight: bold; border-top: 1px dashed #000; }
+		hr { margin: 7px 0px; }
+
+		.w180 { width: 180px; }
+		.navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
+		.tr{min-width: 74px; text-align: right;}.tl{text-align:left;}.tc{ text-align:center; }.tj{ text-align:justify; }.terr{ color:tomato; }
+		.upper { text-transform: uppercase; }
+		.bl1 { padding:5px; border-left:1px solid #000; }
+		.box { border:1px solid #000;padding:5px; }
+	</style>
+</head>
+<body>
+    <header th:fragment="header">
+		<p>
+			UNIVERSIDAD POLITÉCNICA DE CARTAGENA.
+			<br/>Sistema de pedidos de infraestructura (SPI).
+			<br/>Unidad de Asuntos Económicos.
+		</p>
+	</header>
+
+	<div th:fragment="solicitud" class="navbar">
+		<p><b>Datos de la Solicitud:</b></p>
+		<ul>
+			<li><b>Ejercicio:</b> <span th:text="${pedido.ejercicio}"></span></li>
+			<li><b>Código de solicitud:</b> <span th:text="${pedido.codigo}"></span></li>
+			<li><b>Fecha de solicitud:</b> <span th:text="${dt.toEsDate(pedido.FCreacion)}"></span></li>
+			<li><b>Solicitante:</b> <span th:text="${pedido.solicitante}"></span></li>
+			<li><b>Descripción del servicio o bien a contratar:</b> <span th:text="${pedido.descripcion}"></span></li>
+			<li th:if="${error != null}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
+		</ul>
+	</div>
+
+	<div th:fragment="firmas" class="navbar">
+		<p><b>Registro de Firmas:</b></p>
+		<table>
+			<thead>
+				<tr><th>Firmante</th><th>Firma</th><th>Estado</th><th>Fecha y Hora</th></tr>
+			</thead>
+			<tbody>
+				<tr th:each="firma:${firmas.principales}">
+					<td th:text="${firma.fullName}"></td>
+					<td th:text="${firma.cargo}"></td>
+					<td th:text="${msgs.get(firma.msgEstado)}"></td>
+					<td th:text="${dt.toEsDateTime(firma.fecha)}" class="tc"></td>
+				</tr>	
+			</tbody>
+			<tfoot>
+				<tr><td colspan="4">Firmas: <span th:utext="${numFirmas}"></span></td></tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<footer th:fragment="footer" class="navbar">
+		<p>
+			Puede consultar sus solicitudes accediendo a: <a href="https://campusvirtual.upct.es/uportal/">Campus Virtual / Gestión / Económico / Extraeco</a>.
+			<br/>Este correo electrónico se ha generado automáticamente. Por favor, no responda a la dirección del remitente.
+		</p>
+    </footer>
+</body>
+</html>

@@ -14,7 +14,10 @@ export default class Proveedor extends AutocompleteHTML {
 	}
 
 	load(data) {
-		this.setValue(1, data.nif + " - " + data.prov);
+		if (data.id) // view
+			this.setValue(1, data.nif + " - " + data.prov);
+		else
+			this.clear(); // creating
 	}
 	setEditable() {
 		this.setDisabled(!pedido.isEditable());
@@ -24,7 +27,7 @@ export default class Proveedor extends AutocompleteHTML {
 	source() { api.init().json("/uae/pedidos/proveedores", { term: this.value }).then(this.render); }
 	row(item) { return item.prov; }
 	select(item) {
-		const tpl = "@lblImpAplicado;: $getImpAplicado; €, @lblImpPendiente;: $getImpPendiente; €, @lblImpAcumulado;: $getImpAcumulado; €, Margen: $getUmbral; €";
+		const tpl = "@lblImpAplicado;: $getImpAplicado; €, @lblImpPendiente;: $getImpPendiente; €, @lblImpAcumulado;: $getImpAcumulado; €, @lblMargen;: $getMargen; €";
 		this.#info.innerText = i18n.render(tpl, proveedor.setData(item));
 		this.form.setValue("email", item.email);
 		return item.id;

@@ -85,6 +85,28 @@ function Api() {
 	}
 
 	this.blob = (url, filename) => { // binary file
+		const extractFilename = contentDisposition => {
+			if (!contentDisposition) return null;
+			const parts = contentDisposition.split(";").map(part => part.trim());
+
+			// Case 1: Handle filename* (UTF-8 encoded)
+			const filenameStarPart = parts.find(part => part.startsWith("filename*="));
+			if (filenameStarPart) {
+				// Regex to extract charset and encoded filename (e.g., "UTF-8''my%20file.pdf")
+				const match = filenameStarPart.match(/filename\*=([^']*)''(.*)/);
+				if (match)
+					return decodeURIComponent(match[2]);
+			}
+
+			// Case 2: Handle filename (basic or URL-encoded)
+			const filenamePart = parts.find(part => part.startsWith("filename="));
+			if (filenamePart) { // Remove 'filename=' and strip surrounding quotes
+				const filename = filenamePart.replace(/^filename=/, "").replace(/["']/g, "");
+				return decodeURIComponent(filename.replace(/^\d+(#_)/, ""));
+			}
+			return null;
+		}
+
 		return _finally(globalThis.fetch(url, OPTS).then(async res => {
 			if (!res.ok) return fnError(res.statusText);
 			const blob = await res.blob(); // get binary
@@ -92,8 +114,7 @@ function Api() {
 			if (!objectURL) // object URL is required
 				return fnError("Invalid URL file.");
 			// if filename is not defined, try to get it from Content-Disposition header
-			filename = filename || res.headers.get("Content-Disposition")?.split('"')[1];
-			filename && self.download(objectURL, filename); // filename => direct download file
+			self.download(objectURL, filename || extractFilename(res.headers.get("Content-Disposition")));
 			// revoke the object URL to free up memory at the end of the end of promise chain
 			setTimeout(() => URL.revokeObjectURL(objectURL), 1); // force last execution in chain
 			return objectURL; // allow others actions over blob
@@ -115,10 +136,11 @@ function Api() {
 		wnd.document.write(data); // parse all html
 		wnd.document.close(); // end write
 	}
-	this.download = (objectURL, name) => {
+	this.download = (objectURL, filename) => {
+		if (!filename) return; // no name no download
 		const link = document.createElement("a");
 		link.href = objectURL; // set blob source
-		link.download = name || "download.pdf"; // force file name
+		link.download = filename; // force file name
 		link.click(); // download file to cliente
 	}
 }

@@ -16,7 +16,9 @@ export default class PedidosTable extends TableHTML {
 		const form = document.forms["pedido-form"];
 		observer.subscribe("pedido-close", this.showList);
 
+		// table actions
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada");
+		this.set("#emails", data => api.init().json("/uae/pedidos/emails?id=" + data.id)); // admin test email
 		this.set("#integrar", data => { // integra la solicitud seleccionada en uxxiec
 			const url = "/uae/pedidos/ws?id=" + pedido.setData(data).getId();
 			i18n.confirm("msgIntegrar") && api.init().json(url).then(this.setWorking);
@@ -29,14 +31,15 @@ export default class PedidosTable extends TableHTML {
 			observer.emit("firmas-updated", form.isCached(data.id)); // check if data is cached
 			tabs.show("reject"); // show reject tab
 		});
-
 		this.set("isFirmable", (link, data) => pedido.setData(data).isFirmable())
 		this.set("isIntegrable", (link, data) => pedido.setData(data).isIntegrable())
 		this.set("update-estado", (td, data) => { // actualizo la celda del estado
 			td.innerHTML = pedido.setData(data).getDescEstado(); // set texto de estado
 			td.className = pedido.getStyleByEstado() + " hide-xs table-refresh"; // set estilos
 		});
-		tabs.setAction("remove", this.remove); // default remove
+
+		// buttons action
+		tabs.setAction("view", () => form.view(this.getCurrent())).setAction("remove", this.remove);
 	}
 
 	row(data) {
@@ -47,6 +50,8 @@ export default class PedidosTable extends TableHTML {
 		}
 		if (pedido.isIntegrable())
 			acciones += '<a href="#integrar" class="table-refresh" data-refresh="isIntegrable"><i class="far fa-save action resize text-blue"></i></a>';
+		if (pedido.isAdmin())
+			acciones += '<a href="#emails"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 
 		return `<tr class="tb-data">
 			<td class="text-center"><a href="#view">${data.codigo}</a></td>
