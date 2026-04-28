@@ -105,7 +105,7 @@ function StringBox() {
 	this.lastId = str => +self.match(str, /\d+$/).pop();
 	this.lpad = (str, size, pad) => str ? str.padStart(size, pad) : null;
 	this.chunk = (str, size) => str ? str.trim().match(new RegExp(".{1," + size + "}", "g")) : null;
-	this.chunkBy = (str, sizes) => {
+	this.chunkBySizes = (str, sizes) => {
 		var i, j; // indexes
 		const results = []; // container
 		for (i = j = 0; (i < str.length) && (j < sizes.length); i += sizes[j++])
