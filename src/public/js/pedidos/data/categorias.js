@@ -51,6 +51,7 @@ const ECONOMICAS = {
 	c6s4i1: "62300", c6s4i2: "63300", c6s5i1: "62401", c6s5i2: "63401", c6s6i1: "62909", c6s6i2: "63909"
 }
 
+// actualizar para cada ejercicio: 2027, 2028, etc.
 const PRORRATAS = { "2025": 33, "2026": 32 }
 
 const DATA = {
@@ -78,5 +79,13 @@ export default {
 		const prefix = "c" + categoria + "s" + subcategoria; // required part
 		return inventario ? ECONOMICAS[prefix + "i" + inventario] : ECONOMICAS[prefix];
 	},
-	getProrrata: ej => PRORRATAS[ej]
+	getProrrata: ej => PRORRATAS[ej],
+	build: economica => {
+		const result = {}; // select values
+		const key = "" + Object.keys(ECONOMICAS).find(key => (ECONOMICAS[key] == economica)); // force string
+		result.categoria  = key.charAt(1); // [2..6]
+		result.subcategoria  = key.charAt(3); // [1..9]
+		result.inventario  = key.charAt(5); // "" si fuera de rango [1..2]
+		return result;
+	}
 }

@@ -60,9 +60,8 @@ class Rutas {
 		});
 	}
 
-	getRutas = () => this.#tRutas; // table rutas
-	rebuild() { this.#tRutas.render(); } // reload table
-	view(data) { rutas.setRutas(data); this.#tRutas.render(); }
+	getRutas = () => this.#tRutas; // get table rutas
+	view() { this.#tRutas.render(); } // set table rutas
 }
 
 customElements.define("autocomplete-maps", AutocompleteMaps, { extends: "input" });

@@ -29,11 +29,22 @@ export default class Categoria extends DataList {
 	getEconomica() {
 		return categorias.getEconomica(this.getValue(), this.#subcategoria.getValue(), this.#inventario.getValue());
 	}
+	loadByEconomica(economica) {
+		const data = categorias.build(economica);
+		this.setValue(data.categoria).#setSubcategoria(data.categoria);
+		this.#subcategoria.setValue(data.subcategoria)
+		this.#updateSubcategoria(data.subcategoria);
+		this.#inventario.setValue(data.inventario);
+	}
 
 	validate() {
 		const required = (this.getValue() == 2) && (this.#subcategoria.getValue() == 1);
 		const msg = "Si los trabajos consisten en grandes reparaciones que afecten a la estructura del edificio (fachada, cubierta, etc.) y su importe estimado total (sin IVA) pueda superar los 40 mil euros, debe tramitarse a través del Servicio de Contratación.";
 		return !required || confirm(msg);
+	}
+	addFormData(fd) {
+		super.addFormData(fd); // categoria == this.value
+		fd.set("eco", this.getEconomica()); // calculated
 	}
 
 	connectedCallback() { // init. component

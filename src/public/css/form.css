@@ -5,7 +5,7 @@
 .ui-block-main { flex-grow: 1; }
 .ui-block-md { min-width: 200px; max-width: 320px; flex-grow: 1; }
 .ui-block-lg { min-width: 200px; max-width: 400px; flex-grow: 1; }
-.ui-block-xl { min-width: 300px; max-width: 600px; flex-grow: 1; }
+.ui-block-xl { min-width: 350px; max-width: 700px; flex-grow: 1; }
 .ui-block-row { width: 100%; }
 .ui-block-btn { margin-top: 14px; }
 .ui-block-info { margin-top: 8px; }
@@ -48,7 +48,7 @@
 }
 .ui-input:focus { border-color: rgb(147 197 253)/* blue-300 */; }
 
-.ui-check { margin: 0 1px; }
+.ui-check { max-width: 20px; margin: 0 1px; }
 input[type="checkbox"]:hover { cursor: pointer; }
 
 .ui-toggle {

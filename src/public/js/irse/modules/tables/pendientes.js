@@ -49,7 +49,7 @@ export default class RutaPendientes extends TableHTML {
 			<td data-cell="${i18n.get("lblFechaLlegada")}">${i18n.isoDate(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblHoraLlegada")}">${i18n.isoTimeShort(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblTransporte")}">${i18n.getItem("tiposDesp", data.desp)}</td>
-			<td data-cell="Asociar Etapa"><input type="checkbox" value="${data.id}"/></td>
+			<td data-cell="Asociar Etapa"><input type="checkbox" is="text-input" value="${data.id}" class="ui-check" /></td>
 		</tr>`;
 	}
 

@@ -29,6 +29,7 @@ export default class Proveedor extends AutocompleteHTML {
 	select(item) {
 		const tpl = "@lblImpAplicado;: $getImpAplicado; €, @lblImpPendiente;: $getImpPendiente; €, @lblImpAcumulado;: $getImpAcumulado; €, @lblMargen;: $getMargen; €";
 		this.#info.innerText = i18n.render(tpl, proveedor.setData(item));
+		this.form.getElement("categoria").loadByEconomica(item.eco);
 		this.form.setValue("email", item.email);
 		return item.id;
 	}

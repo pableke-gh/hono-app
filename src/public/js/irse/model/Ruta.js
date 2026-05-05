@@ -20,7 +20,8 @@ class Ruta {
 	llegada = ruta => dt.direct(this.getHoraLlegada(ruta)); //tb.parse(this.getHoraLlegada(ruta));
 
 	// tipos de desplazamiento
-	isVehiculoPropio = ruta => (ruta.desp == 1);
+	isTipoVP = desp => (1 == desp);
+	isVehiculoPropio = ruta => this.isTipoVP(ruta.desp);
 	isVehiculoAlquiler = ruta => (ruta.desp == 2);
 	isVehiculoAjeno = ruta => (ruta.desp == 3);
 	isTaxiInterurbano = ruta => (ruta.desp == 4);

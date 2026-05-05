@@ -39,6 +39,11 @@
 			<ui:include src="./parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
+		<!-- controles de consistencia -->
+		<div id="tab-controles" class="tab-content">
+			<ui:include src="./tabs/controles.xhtml"></ui:include>
+		</div>
+
 		<form id="pedido-form" is="pedido-form" method="post" enctype="multipart/form-data"
 				data-nif="#{pedidos.nif}" data-admin="#{pedidos.adminFlag}">
 			<!-- formulario de alta de solicitudes -->

@@ -5,7 +5,10 @@ import api from "../../../components/Api.js";
 import valid from "../../i18n/validators/rutas.js";
 
 import irse from "../../model/Irse.js";
+import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
+import gastos from "../../model/Gastos.js";
+
 import Promotor from "../inputs/Promotor.js";
 import perfil from "./perfil.js";
 import form from "../irse.js";
@@ -14,7 +17,7 @@ import form from "../irse.js";
 class Paso1 {
 	init() {
 		// actualiza el desplegable del paso 1 (municipio) y el del paso 2 (rutas)
-		form.onChange("[name='desp']", ev => form.setVisible(".grupo-matricula", ev.target.value == "1"));
+		form.onChange("[name='desp']", ev => form.setVisible(".grupo-matricula", ruta.isTipoVP(ev.target.value)));
 		form.getElement("matriculaMun").addChange(ev => {
 			ev.target.value = sb.toUpperWord(ev.target.value);
 			irse.setMatricula(ev.target.value);
@@ -45,16 +48,18 @@ class Paso1 {
 
 	view(firmas) {
 		perfil.isMun() && this.setMun(); // set municipio
-		form.setValue("objeto", irse.getMemoria()).setFirmas(firmas)
+		form.setValue("objeto", irse.getMemoria())
+			.setValue("grupo-dieta", gastos.getGrupoDieta()).setFirmas(firmas)
 			.getElement("promotor").setPromotor(firmas);
 	}
 
 	getGrupoDieta = () => form.getValue("grupo-dieta");
+	isGrupoDieta1 = () => (1 == this.getGrupoDieta());
 	setMun() {
 		const data = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
 		data.f1 = sb.isoDate(data.dt1); // input format date
 		data.matriculaMun = irse.getMatricula(); // matricula from server
-		form.setData(data, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", data.desp == 1);
+		form.setData(data, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", ruta.isVehiculoPropio(data));
 	}
 }
 

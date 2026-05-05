@@ -17,8 +17,10 @@ export default class Aplicacion extends AutocompleteHTML {
 	load(data) {
 		if (aplicacion.isEmpty())
 			return this.clear();
-		const id = this.select(aplicacion.getData());
-		this.setValue(id, this.row(aplicacion.getData()));
+		const eco = this.#categoria.getEconomica(); // calculated value
+		const tpl = "@ej; @org; @func; @getEconomica;"; // plantilla sin importe
+		this.#info.innerText = i18n.render(tpl, aplicacion.setEconomica(eco));
+		this.setValue(aplicacion.getId(), this.row(aplicacion.getData()));
 	}
 	setEditable() {
 		this.setDisabled(!pedido.isEditable());
@@ -33,7 +35,7 @@ export default class Aplicacion extends AutocompleteHTML {
 		return item.org + " - " + item.desc;
 	}
 	select(item) {
-		item.imp = item.imp || 0;
+		item.imp = item.imp || 0; // siempre muestro un importe
 		const tpl = "@ej; @org; @func; @getEconomica; (@lblCreditoDisp;: $imp; €)";
 		this.#info.innerText = i18n.render(tpl, aplicacion.setData(item));
 		return item.id;
@@ -44,7 +46,14 @@ export default class Aplicacion extends AutocompleteHTML {
 		return super.reset();
 	}
 
-	validate() {
-		return this.isLoaded() ? this.setOk() : !this.setRequired();
+	validate() { // executed after impPpto.validate
+		const ok = this.isLoaded() ? this.setOk() : !this.setRequired();
+		if (ok && (pedido.getImpPpto() > aplicacion.getCreditoDisp())) // validación de crédito suficiente
+			return !this.form.setError("imp", "errExceeded", "No hay crédito suficiente en la aplicación presupuestaria seleccionada");
+		return ok;
+	}
+	addFormData(fd) {
+		super.addFormData(fd); // aplicacion = id
+		fd.set("ej", aplicacion.getEjercicio()).set("org", aplicacion.getOrganica()).set("func", aplicacion.getFuncional());
 	}
 }

@@ -7,6 +7,8 @@ import valid from "../../i18n/validators/irse.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
+import gastos from "../../model/Gastos.js";
+
 import Imputacion from "../tables/imputacion.js";
 import observer from "../../../core/util/Observer.js";
 import form from "../irse.js";
@@ -78,7 +80,7 @@ class Paso9 {
 
 	setCuentas(cuentas) {
 		cuentas = cuentas || []; // container
-		const iban = irse.get("iban"); // can be new in system
+		const iban = gastos.getCodigoIban(); // can be new in system
 		const cuenta = iban ? (coll.includes(cuentas, iban) ? iban : "") : (cuentas[0] || "");
 		const labels = cuentas.map(cuenta => {
 			const entidad = valid.getBanks().getEntidad(cuenta);
@@ -92,18 +94,18 @@ class Paso9 {
 		//this.#cuentas.add(new Option("Dar de alta una nueva cuenta", ""));
 		this.#cuentas.setValue(cuenta);
 
-		this.#paises.setValue(irse.get("paisEntidad"));
-		this.#entidades.setValue(irse.get("codigoEntidad"));
-		this.#banco.setValue(irse.get("nombreEntidad"));
+		this.#paises.setValue(gastos.getPaisEntidad());
+		this.#entidades.setValue(gastos.getCodigoEntidad());
+		this.#banco.setValue(gastos.getNombreEntidad());
 		this.#iban.setValue(iban || cuenta);
-		this.#swift.setValue(irse.get("swift"));
+		this.#swift.setValue(gastos.getSwift());
 		this.#toggle(cuenta);
 	}
 	view(cuentas) {
 		this.setCuentas(cuentas);
 		form.setValue("urgente", irse.isUrgente() ? "2" : "1") // 1 = normal / 2 = urgente
 			.setValue("fMax", irse.get("fMax")).setValue("extra", irse.get("extra"))
-			.setValue("observaciones", irse.get("observaciones"));
+			.setValue("observaciones", gastos.getObservaciones());
 	}
 }
 

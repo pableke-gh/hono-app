@@ -5,8 +5,7 @@
 		xmlns:p="http://primefaces.org/ui" 
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:c="http://java.sun.com/jsp/jstl/core"
-		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <div class="navbar form-refresh" data-refresh="getNumRutasVpMaps">
 	<h3>
@@ -48,7 +47,7 @@
 		<label class="ui-blocks form-refresh" data-refresh="is-justifi-km">
 			<div class="label required"><h:outputText value="#{msg['lbl.justifi.km']}" escape="false" />:</div>
 			<div class="ui-block-main">
-				<h:inputTextarea id="justifiKm" value="#{iris.irse.gastos.justifiKm}" pt:is="text-area" styleClass="rows-2 update-irse" tabindex="108"/>
+				<textarea name="justifiKm" is="text-area" class="rows-2" tabindex="108"></textarea>
 				<div class="ui-errtip"></div>
 			</div>
 		</label>

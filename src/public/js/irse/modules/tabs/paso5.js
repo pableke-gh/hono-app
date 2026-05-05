@@ -72,8 +72,7 @@ class Paso5 {
 	updateRutas() {
 		this.#pendientes.view(); // force reload rutas pendientes
 	}
-	view(data) {
-		gastos.setGastos(data); // load array
+	view() {
 		this.#tGastos.render(); // table gastos
 		this.updateRutas(); // tebles rutas
 	}

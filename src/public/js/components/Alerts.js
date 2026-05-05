@@ -1,15 +1,14 @@
 
-import coll from "./CollectionHTML.js";
-
 function Alerts() {
 	const self = this; //self instance
 	const ALERT_ACTIVE = "active";
 	const ALERT_TEXT = "alert-text";
 	const ALERT_CLOSE = "alert-close";
 
-	const alerts = $1(".alerts"); // container
+	const alerts = document.querySelector(".alerts"); // container
 	const texts = alerts.getElementsByClassName(ALERT_TEXT);
-    alerts.getElementsByClassName(ALERT_CLOSE).setClick((ev, link) => fnCloseParent(link)); // Set close click event
+    const icons = alerts.getElementsByClassName(ALERT_CLOSE);
+	Array.from(icons).forEach(link => { link.onclick = ev => fnCloseParent(link); });  // Set close click event
 
 	// Handle loading div
 	const _loading = alerts.nextElementSibling; // loading animation = none
@@ -62,14 +61,6 @@ function Alerts() {
 	// Global handlers
     window.loading = self.loading;
     window.working = self.working;
-	window.showAlerts = (xhr, status, args) => { // PF hack => show all messages
-		if (xhr && (status == "success")) // is PF server error xhr?
-			return self.showAlerts(coll.parse(args.msgs)); // status 200
-		var msg = "Error 500: Internal server error."; // default
-		msg = (globalThis.isstr(xhr) && (xhr.length < 100)) ? xhr : msg;
-		msg = (xhr && xhr.statusText) ? xhr.statusText : msg;
-		return !self.showError(msg).working(); // show error
-	}
 }
 
 export default new Alerts();

@@ -1,4 +1,5 @@
 
+import coll from "../../../components/CollectionHTML.js";
 import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
@@ -24,12 +25,8 @@ class InformeISU extends FormBase {
 }
 
 window.xlsx = (xhr, status, args) => {
-    if (!window.showAlerts(xhr, status, args))
-        return false; // Server error
-    const data = JSON.parse(args.data);
-
-	// XLSX service
 	const sheet = "listado-isu";
+	const data = coll.parse(args.data) || [];
 	const aux = data.map(obj => Object.clone(obj, KEYS));
 	xlsx.setData(sheet, aux, otri.xlsx).setTitles(sheet, TITILES);
 	xlsx.download("Informe ISU.xlsx"); // download XLSX file

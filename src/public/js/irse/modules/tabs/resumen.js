@@ -5,6 +5,7 @@ import valid from "../../i18n/validators/irse.js";
 
 import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";
+import gastos from "../../model/Gastos.js";
 
 import Kilometraje from "../tables/kilometraje.js";
 import Transportes from "../tables/transportes.js";
@@ -67,6 +68,7 @@ class Resumen {
 		this.#dietas.render(dietas); // tabla resumen dietas/manutenciones
 	}
 	view = dietas => {
+		form.setValue("justifiKm", gastos.getJustifiKm()); // exceso km
 		this.updateRutas(dietas); // tablas resumen, dietas/manutenciones
 		this.updateGastos(); // tablas transportes, pernoctas, gastos extraordinarios...
 	}

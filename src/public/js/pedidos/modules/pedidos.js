@@ -62,6 +62,7 @@ export default class PedidosTable extends TableHTML {
 			<td class="hide-xs">${data.prov}</td>
 			<td class="text-center hide-xs">${i18n.isoDate(data.fecha)}</td>
 			<td class="currency">${i18n.isoFloat(pedido.getImpPpto())} €</td>
+			<td class="hide-sm">${data.sol}</td>
 			<td class="hide-md">${data.desc}</td>
 			<td class="currency no-print">${acciones}</td>
 		</tr>`;

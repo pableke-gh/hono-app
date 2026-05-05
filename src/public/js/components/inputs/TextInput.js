@@ -39,19 +39,3 @@ export default class TextInput extends HTMLInputElement {
 	force(msg) { return input.required(this, msg); } // force required validation
 	validate() { return input.validate(this); } // optional o required with value
 }
-
-// Extends parent class
-HTMLInputElement.prototype.getValue = function() { return this.value; }
-HTMLInputElement.prototype.setValue = function(value) { this.value = value || ""; return this; }
-HTMLInputElement.prototype.load = function(data) { return this.setValue(data[this.name]); }
-HTMLInputElement.prototype.toData = function(data) { data[this.name] = this.getValue(); return this; }
-HTMLInputElement.prototype.addFormData = function(fd) { fd.add(this.name, this.getValue()); return this; }
-HTMLInputElement.prototype.reset = function() { this.value = ""; return this; }
-HTMLInputElement.prototype.restart = function() { this.focus(); return this.reset(); }
-HTMLInputElement.prototype.setDisabled = function(force) { return input.setDisabled(this, force); }
-HTMLInputElement.prototype.setReadonly = function(force) { return input.setReadonly(this, force); }
-HTMLInputElement.prototype.setEditable = function(model) { return input.setEditable(this, model); }
-HTMLInputElement.prototype.prepare = function(model) { return input.prepare(this, model); }
-HTMLInputElement.prototype.setOk = function() { return input.setOk(this); }
-HTMLInputElement.prototype.setError = function(tip, msg) { return input.setError(this, tip, msg); }
-HTMLInputElement.prototype.update = function(tip, msg) { return input.update(this, tip, msg); }

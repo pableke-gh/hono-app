@@ -28,7 +28,7 @@ export default class Extraordinarios extends TableHTML {
 	getImpCena = () => this.getProp("cena");
 	getMaxCena() {
 		if (form.getOrganicas().isRD()) // is RD
-			return ((form.getPaso1().getGrupoDieta() == 1) ? MAX_CENA_FIN_G1 : MAX_CENA_FIN_G2);
+			return ((form.getPaso1().isGrupoDieta1()) ? MAX_CENA_FIN_G1 : MAX_CENA_FIN_G2);
 		return MAX_CENA_FIN_G1;
 	}
 	isCena = () => (this.getImpCena() < this.getMaxCena())
