@@ -5,7 +5,6 @@ import Solicitud from "../../core/model/Solicitud.js";
 class Presto extends Solicitud {
 	build = () => new Presto(); // Override create a new instance
 	getUrl = () => "/uae/presto"; // Override base url path
-	isValid(data) { return super.isValid(data) && data.ejercicios; }
 
 	getTitulo = () => i18n.getItem("descTipos", this.getTipo());
 	isTcr = () => (this.getTipo() == 1);

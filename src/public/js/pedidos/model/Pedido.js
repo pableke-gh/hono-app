@@ -1,7 +1,5 @@
 
-import sb from "../../components/types/StringBox.js";
 import Solicitud from "../../core/model/Solicitud.js";
-import categorias from "../data/categorias.js";
 
 class Pedido extends Solicitud {
 	getUrl = () => "/uae/pedido"; // endpoint base path
@@ -14,7 +12,7 @@ class Pedido extends Solicitud {
 	setIva = iva => this.set("iva", iva);
 
 	getImpIva = () => (this.getImporte() * (this.getIva() / 100));
-	getProrrata = () => categorias.getProrrata(sb.getYear(this.get("fecha")));
+	getProrrata = () => this.get("prorrata");
 	getImpTotal = () => (this.getImporte() + this.getImpIva());
 	getImpPpto = () => (this.getImpTotal() - ((this.getProrrata() / 100) * this.getImpIva()));
 }

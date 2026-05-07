@@ -77,8 +77,6 @@ export default class Solicitud extends FormBase {
 
 	onView() {} // optional event on view action
 	#show = data => { // load data and show form tab
-		if (!this.#solicitud.isValid(data)) // no data => error
-			return !this.showError("No se han podido cargar los datos del servidor.");
 		// cargo los datos y preparo los campos del formulario en la vista
 		this.setFirmas(data.firmas).load(this.#solicitud.setData(data.solicitud));
 		return tabs.view(this.onView(data) || "form"); // show tab and preserve messages

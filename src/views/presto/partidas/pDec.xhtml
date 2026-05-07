@@ -12,7 +12,11 @@
 		<div class="ui-blocks">
 		<label class="ui-block">
 			<div class="label">Ejercicio:</div>
-			<select name="ej" is="data-list" class="ui-ej" data-editable="is-editable-ej-dec" tabindex="5"></select>
+			<select name="ej" is="data-list" class="ui-ej" data-editable="is-editable-ej-dec" tabindex="5">
+				<c:forEach items="#{presto.form.ejercicios}" var="ej">
+					<option value="#{ej}">#{ej}</option>
+				</c:forEach>
+			</select>
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>

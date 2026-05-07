@@ -24,7 +24,7 @@ export default class PedidosTable extends TableHTML {
 			i18n.confirm("msgIntegrar") && api.init().json(url).then(this.setWorking);
 		});
 
-		this.set("#view", data => form.view(data));
+		this.set("#view", data => form.view(data)).set("#report", this.report);
 		this.set("#firmar", data => { pedido.setData(data); form.firmar(); });
 		this.set("#reject", data => { // open reject tab for rechazar / cancelar
 			form.refresh(pedido.setData(data)); // preload data
@@ -39,7 +39,8 @@ export default class PedidosTable extends TableHTML {
 		});
 
 		// buttons action
-		tabs.setAction("view", () => form.view(this.getCurrent())).setAction("remove", this.remove);
+		tabs.setAction("view", () => form.view(this.getCurrent()))
+			.setAction("report", this.report).setAction("remove", this.remove);
 	}
 
 	row(data) {
@@ -48,6 +49,8 @@ export default class PedidosTable extends TableHTML {
 			acciones += '<a href="#firmar" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-check action resize text-green"></i></a>';
 			acciones += '<a href="#reject" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-times action resize text-red"></i></a>';
 		}
+		if (pedido.isDocumentable())
+			acciones += '<a href="#report" title="Informe SPI"><i class="fal fa-file-pdf action resize text-red"></i></a>';
 		if (pedido.isIntegrable())
 			acciones += '<a href="#integrar" class="table-refresh" data-refresh="isIntegrable"><i class="far fa-save action resize text-blue"></i></a>';
 		if (pedido.isAdmin())
@@ -66,6 +69,10 @@ export default class PedidosTable extends TableHTML {
 			<td class="hide-md">${data.desc}</td>
 			<td class="currency no-print">${acciones}</td>
 		</tr>`;
+	}
+
+	report() { // call report service
+		api.init().text("/uae/pedidos/report?id=" + this.getId()).then(api.open);
 	}
 
 	flush() { // override super class

@@ -7,7 +7,6 @@ import pedido from "../model/Pedido.js";
 import aplicacion from "../model/Aplicacion.js";
 
 export default class Aplicacion extends AutocompleteHTML {
-	#categoria = this.form.elements["categoria"];
 	#info = this.form.querySelector("#org-info");
 
 	connectedCallback() { // default initialization
@@ -15,19 +14,18 @@ export default class Aplicacion extends AutocompleteHTML {
 	}
 
 	load(data) {
-		if (aplicacion.isEmpty())
-			return this.clear();
-		const eco = this.#categoria.getEconomica(); // calculated value
+		if (!data.apli || !aplicacion.getId())
+			return this.clear(); // clear input
 		const tpl = "@ej; @org; @func; @getEconomica;"; // plantilla sin importe
-		this.#info.innerText = i18n.render(tpl, aplicacion.setEconomica(eco));
-		this.setValue(aplicacion.getId(), this.row(aplicacion.getData()));
+		this.#info.innerText = i18n.render(tpl, aplicacion); // render info
+		return this.setValue(aplicacion.getId(), this.row(aplicacion.getData()));
 	}
 	setEditable() {
 		this.setDisabled(!pedido.isEditable());
 	}
 
 	source() {
-		const eco = this.#categoria.getEconomica(); // calculated value
+		const eco = aplicacion.get("eco"); // calculated value
 		api.init().json("/uae/pedidos/organicas", { eco, term: this.value }).then(this.render);
 	}
 
@@ -35,13 +33,13 @@ export default class Aplicacion extends AutocompleteHTML {
 		return item.org + " - " + item.desc;
 	}
 	select(item) {
-		item.imp = item.imp || 0; // siempre muestro un importe
 		const tpl = "@ej; @org; @func; @getEconomica; (@lblCreditoDisp;: $imp; €)";
-		this.#info.innerText = i18n.render(tpl, aplicacion.setData(item));
-		return item.id;
+		this.#info.innerText = i18n.render(tpl, aplicacion.load(item));
+		return aplicacion.getId();
 	}
 
 	reset() {
+		aplicacion.unload();
 		this.#info.innerText = "";
 		return super.reset();
 	}

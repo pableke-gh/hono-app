@@ -1,17 +1,19 @@
 
 import DataList from "../../components/inputs/DataList.js";
-import categorias from "../data/categorias.js";
 import pedido from "../model/Pedido.js";
+import aplicacion from "../model/Aplicacion.js";
+import categorias from "../data/categorias.js";
 
 export default class Categoria extends DataList {
 	#subcategoria = this.form.elements["subcategoria"];
 	#inventario = this.form.elements["inventario"];
+	#aplicacion = this.form.elements["aplicacion"];
 	#info = this.form.querySelector("#info-categorias");
 
 	#setInventario = (categoria, subcategoria) => {
 		const labels = categorias.getInventario(categoria, subcategoria);
-		this.#inventario.setIndexed(labels).parentNode.setVisible(labels);
-		this.form.getElement("aplicacion").clear();
+		this.#inventario.setArray(labels).parentNode.setVisible(labels);
+		aplicacion.setEconomica(this.getEconomica());
 	}
 	#updateSubcategoria = value => {
 		const text = categorias.getInfo(this.getValue(), value);
@@ -19,22 +21,28 @@ export default class Categoria extends DataList {
 		this.#info.setVisible(text).setText(text);
 	}
 	#setSubcategoria = categoria => {
-		this.#subcategoria.setIndexed(categorias.getSubcategorias(categoria));
+		this.#subcategoria.setArray(categorias.getSubcategorias(categoria));
 		this.#updateSubcategoria(this.#subcategoria.getValue());
 	}
 
-	load(data) { this.#setSubcategoria(super.load(data).getValue()); }
-	setEditable() { this.setDisabled(!pedido.isEditable()); }
+	load(data) {
+		this.#setSubcategoria(super.load(data).getValue());
+	}
+	setEditable() {
+		this.setDisabled(!pedido.isEditable());
+	}
 
 	getEconomica() {
 		return categorias.getEconomica(this.getValue(), this.#subcategoria.getValue(), this.#inventario.getValue());
 	}
 	loadByEconomica(economica) {
+		if (!economica) return; // not changes
 		const data = categorias.build(economica);
 		this.setValue(data.categoria).#setSubcategoria(data.categoria);
 		this.#subcategoria.setValue(data.subcategoria)
 		this.#updateSubcategoria(data.subcategoria);
 		this.#inventario.setValue(data.inventario);
+		this.#aplicacion.clear();
 	}
 
 	validate() {
@@ -48,8 +56,9 @@ export default class Categoria extends DataList {
 	}
 
 	connectedCallback() { // init. component
-		this.addChange(ev => this.#setSubcategoria(ev.target.value));
-		this.#subcategoria.addChange(ev => this.#updateSubcategoria(ev.target.value));
+		this.addChange(ev => { this.#setSubcategoria(ev.target.value); this.#aplicacion.clear(); });
+		this.#subcategoria.addChange(ev => { this.#updateSubcategoria(ev.target.value); this.#aplicacion.clear(); });
+		this.#inventario.addChange(ev => { aplicacion.setEconomica(this.getEconomica()); this.#aplicacion.clear(); });
 		this.#subcategoria.setEditable = this.#inventario.setEditable = this.setEditable; // Override
 	}
 }

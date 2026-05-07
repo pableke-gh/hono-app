@@ -22,21 +22,22 @@ coll.ready(() => { // init. presto modules
 	form.addChange("urgente", fnUrgente).onChange(".ui-ej", fnSync);
 
 	const DATA = {}; // build container
-	api.init().fetch("/uae/presto/ejercicios").then(ejercicios => { DATA.ejercicios = ejercicios; }); // hide call
+	DATA.ejercicios = form.getElement("ej").getValues(); // read current open years
 	const fnBuild = (tipo, memo) => { DATA.solicitud = { tipo, memo }; return DATA; }; // build container befor view
-	const fnBuildAfc = () => { DATA.partidas = [ DATA.fcb ]; form.create(fnBuild(8)); }  // set partida unica + view
+	const fnCreate = (tipo, memo) => { delete DATA.partidas; return fnBuild(tipo, memo); }; // for: tcr, fce, l83, gcr and ant
+	const fnCreateAfc = () => { DATA.partidas = [ DATA.fcb ]; form.create(fnBuild(8)); }  // set partida unica + view
 
-	tabs.setAction("tcr", () => form.create(fnBuild(1))); // create TCR
-	tabs.setAction("fce", () => form.create(fnBuild(6))); // create FCE
-	tabs.setAction("l83", () => form.create(fnBuild(3, "Liquidación contrato artículo 83"))); // create L83
-	tabs.setAction("gcr", () => form.create(fnBuild(4, "Generación de crédito electrónica"))); // create GCR
-	tabs.setAction("ant", () => form.create(fnBuild(5))); // create ANT
+	tabs.setAction("tcr", () => form.create(fnCreate(1))); // create TCR
+	tabs.setAction("fce", () => form.create(fnCreate(6))); // create FCE
+	tabs.setAction("l83", () => form.create(fnCreate(3, "Liquidación contrato artículo 83"))); // create L83
+	tabs.setAction("gcr", () => form.create(fnCreate(4, "Generación de crédito electrónica"))); // create GCR
+	tabs.setAction("ant", () => form.create(fnCreate(5))); // create ANT
 	tabs.setAction("afc", () => { // create AFC
 		if (DATA.fcb) // aplicación fondo de cobertura
-			return fnBuildAfc(); // load view AFC
+			return fnCreateAfc(); // load view AFC
 		api.init().json("/uae/presto/fcb").then(fcb => {
 			DATA.fcb = fcb; // avoid extra calls
-			fnBuildAfc(); // load view AFC
+			fnCreateAfc(); // load view AFC
 		});
 	});
 });

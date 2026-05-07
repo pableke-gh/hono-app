@@ -10,7 +10,8 @@ export default class Base {
 
 	get = name => this.#data[name];
 	set(name, value) { this.#data[name] = value; return this; }
-	reset = () => { this.#data = null; return this; }
+	reset() { this.#data = null; return this; } // set data to null
+	clear() { this.#data = {}; return this; } // set empty object
 	isLoaded = () => this.#data; // has data object
 	isEmpty = () => !this.#data; // no data loaded
 	getData = () => this.#data; // get data object

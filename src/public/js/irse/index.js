@@ -28,17 +28,17 @@ coll.ready(() => {
 	});
 
 	const _load = (row, data) => {
-			// merge server data with list and set in current irse instance
-			irse.setData(Object.assign(row, data.solicitud));
+		// merge server data with list and set in current irse instance
+		irse.setData(Object.assign(row, data.solicitud));
 
-			rutas.setRutas(data.rutas); // registro de rutas
-			gastos.setGastos(data.gastos) // registro de gastos
-					.setSubv(data.subv).setCongreso(data.congreso) // paso 3
-					.setKm(data.km).setAc(data.ac) // pasos 3/4 y resumen
-					.setIban(data.iban).setBanco(data.banco); // paso 9
+		rutas.setRutas(data.rutas); // registro de rutas
+		gastos.setGastos(data.gastos) // registro de gastos
+				.setSubv(data.subv).setCongreso(data.congreso) // paso 3
+				.setKm(data.km).setAc(data.ac) // pasos 3/4 y resumen
+				.setIban(data.iban).setBanco(data.banco); // paso 9
 
-			form.view(data.interesado, data.organicas, data.dietas, data.cuentas, data.firmas); // configure view
-			tabs.next(irse.getInitTab()); // go to next tab
+		form.view(data.interesado, data.organicas, data.dietas, data.cuentas, data.firmas); // configure view
+		tabs.next(irse.getInitTab()); // go to next tab
 	}
 	list.set("#view", row => {
 		if (form.isCached(row.id))

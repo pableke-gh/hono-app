@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title th:utext="${title}">Campus Virtual - IRIS</title>
+	<style th:replace="emails/general.html :: styles"></style>
+</head>
+<body>
+	<header th:replace="emails/general.html :: header"></header>
+
+	<div class="navbar">
+		Estimada / estimado: <span th:text="${firma.fullName}"></span>.
+		<br/>Confirmamos la recepción de la <b th:text="${msgs.getPerfil(perfiles.getPerfil(xs))}"></b>.
+		<br/>Procedemos a la tramitación de la <b th:text="${xs.tramiteDesc}"></b> y a recabar las <b>FIRMAS</b> correspondientes.
+		<br/>Confirmaremos también el momento de la <b>CONTABILIZACIÓN PARA EL PAGO</b>. 
+	</div>
+
+	<div class="navbar">
+		<p><b>DATOS DE LA COMUNICACIÓN:</b></p>
+		<ul>
+			<li><b>Código de comunicación:</b> <span th:text="${xs.codigo}"></span></li>
+			<li><b>Interesado:</b> <span th:text="${xs.interesado}"></span> (<span th:text="${xs.colectivo}"></span>)</li>
+			<li th:if="${xs.isUrgente()}"><b>Urgencia:</b> <span th:text="${xs.extra}"></span></li>
+			<li th:if="${xs.isUrgente()}"><b>Fecha Límite:</b> <span th:text="${dt.toEsDate(xs.FMax)}"></span></li>
+		</ul>
+	</div>
+
+	<span>Un cordial saludo.</span>
+	<footer th:replace="emails/general.html :: footer"></footer>
+</body>
+</html>

@@ -9,12 +9,6 @@ import observer from "../../core/util/Observer.js";
 import pedido from "../model/Pedido.js";
 import aplicacion from "../model/Aplicacion.js";
 
-import Referencia from "../components/Referencia.js";
-import Proveedor from "../components/Proveedor.js";
-import Categoria from "../components/Categoria.js";
-import Aplicacion from "../components/Aplicacion.js";
-import Firmas from "../components/Firmas.js";
-
 export default class PedidoForm extends FormHTML {
 	#setImportes() {
 		this.setValue("impIva", pedido.getImpIva()).setValue("impTotal", pedido.getImpTotal())
@@ -23,6 +17,7 @@ export default class PedidoForm extends FormHTML {
 
 	connectedCallback() { // initialize form
 		pedido.setUser(this.dataset); // load user info
+		tabs.setAction("create", this.create); // set handlers
 		tabs.setAction("firmar", this.firmar).setAction("rechazar", this.rechazar).setAction("cancelar", this.cancelar);
 		tabs.setAction("adjunto", () => api.init().blob("/uae/pedidos/adjunto?id=" + pedido.getAdjunto()));
 
@@ -42,8 +37,8 @@ export default class PedidoForm extends FormHTML {
 		tabs.showForm(); // show form tab
 	}
 	create = () => {
-		aplicacion.reset();
-		this.#load({ imp: 0, iva: 21 });
+		aplicacion.clear(); // empty data
+		this.#load({ imp: 0, iva: 21, prorrata: +this.dataset.prorrata });
 	}
 	view = row => {
 		if (!row) // row required
@@ -82,9 +77,3 @@ export default class PedidoForm extends FormHTML {
 		api.init().json("/uae/pedidos/cancelar", params).then(fnThen);
 	}
 }
-
-customElements.define("ref-input", Referencia, { extends: "input" });
-customElements.define("proveedor-input", Proveedor, { extends: "input" });
-customElements.define("categoria-pedido", Categoria, { extends: "select" });
-customElements.define("aplicacion-input", Aplicacion, { extends: "input" });
-customElements.define("firmas-block", Firmas, { extends: "div" });

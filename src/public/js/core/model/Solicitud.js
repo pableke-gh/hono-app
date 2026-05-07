@@ -19,7 +19,6 @@ export default class Solicitud extends Base {
 	build = () => new Solicitud(); // create a new instance
 	load(obj) { return super.setData(obj.getData()).setNif(obj.getNif()).setGrupo(obj.getGrupo()).setAdmin(obj.isAdmin()); } // load from other Solicitud
 	clone = () => this.build().load(this); // Clone Solicitud instance
-	isValid(data) { return (data && data.solicitud); } // override in subclasses
 
 	getNif = () => this.#nif;
 	setNif = val => { this.#nif = val; return this; } 

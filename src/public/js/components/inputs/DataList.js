@@ -16,6 +16,10 @@ export default class DataList extends HTMLSelectElement {
 		this.setEmptyOption(this.dataset.empty || "selectOption");
 	}
 
+	setEmptyOption(msg) { this.dataset.empty = i18n.msg(msg); return this; }
+	// IMPORTANT! force value = "", to avoid change event return text content
+	#empty = () => `<option value="">${this.dataset.empty}</option>`;
+
 	getData = () => this.#data;
 	setData(data) { this.#data = data; return this; }
 	getCurrent = () => (this.#data && this.#data[this.selectedIndex]);
@@ -34,16 +38,14 @@ export default class DataList extends HTMLSelectElement {
 		return this;
 	}
 
-	setEmptyOption(msg) { this.dataset.empty = i18n.msg(msg); return this; }
-	// IMPORTANT! force value = "", to avoid change event return text content
-	#empty = () => `<option value="">${this.dataset.empty}</option>`;
-
 	getValue = () => this.value;
 	setValue(value) {
 		this.value = value; // force select an option
 		this.selectedIndex = Math.max(0, this.selectedIndex);
 		return this;
 	}
+	getValues = () => Array.from(this.options).map(option => option.value);
+	getLabels = () => Array.from(this.options).map(option => option.innerText);
 	load(data) { return this.setValue(data[this.name]); }
 	toData(data) { data[this.name] = this.getValue(); return this; }
 	addFormData(fd) { fd.append(this.name, this.getValue()); return this; }
@@ -86,7 +88,7 @@ export default class DataList extends HTMLSelectElement {
         this.innerHTML = (isOptional ? this.#empty() : "") + values.map(fnBuild).join(""); // Render labels
 		return this.setData(values); // set data and fire change event
 	}
-	setIndexed(labels, isOptional) { // start value = 1
+	setArray(labels, isOptional) { // start value = 1
 		if (!labels) return this.clear(); // vacio el desplegable
 		const fnBuild = (label, i) => `<option value="${i+1}">${label}</option>`; // label 1 index
         this.innerHTML = (isOptional ? this.#empty() : "") + labels.map(fnBuild).join(""); // Render labels

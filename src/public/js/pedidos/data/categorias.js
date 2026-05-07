@@ -51,9 +51,7 @@ const ECONOMICAS = {
 	c6s4i1: "62300", c6s4i2: "63300", c6s5i1: "62401", c6s5i2: "63401", c6s6i1: "62909", c6s6i2: "63909"
 }
 
-// actualizar para cada ejercicio: 2027, 2028, etc.
-const PRORRATAS = { "2025": 33, "2026": 32 }
-
+const DEFAULT_INVENTARIO = [ "Nueva adquisición", "Sustituye a un bien similar dado previamente de baja" ];
 const DATA = {
 	// subcategorias
 	c2: [ "Edificios", "Maquinaria", "Instalaciones técnicas", "Vehículos", "Mobiliario y electrodomésticos", "Utillaje", "Otros bienes" ],
@@ -63,12 +61,9 @@ const DATA = {
 	c6: [ "Maquinaria", "Utillaje", "Instalaciones técnicas", "Mobiliario y electrodomésticos", "Ordenadores y otros equipos informáticos", "Otros bienes inventariables" ],
 
 	// inventario
-	c6s1: [ "Nueva adquisición", "Sustituye a un bien similar dado previamente de baja" ],
-	c6s2: [ "Nueva adquisición", "Sustituye a un bien similar dado previamente de baja" ],
-	c6s3: [ "Nueva adquisición", "Sustituye a un bien similar dado previamente de baja" ],
-	c6s4: [ "Nueva adquisición", "Sustituye a un bien similar dado previamente de baja" ],
-	c6s5: [ "Nueva adquisición", "Sustituye a un bien similar dado previamente de baja" ],
-	c6s6: [ "Nueva adquisición", "Sustituye a un bien similar dado previamente de baja" ]
+	c6s1: DEFAULT_INVENTARIO, c6s2: DEFAULT_INVENTARIO,
+	c6s3: DEFAULT_INVENTARIO, c6s4: DEFAULT_INVENTARIO,
+	c6s5: DEFAULT_INVENTARIO, c6s6: DEFAULT_INVENTARIO
 }
 
 export default {
@@ -79,7 +74,6 @@ export default {
 		const prefix = "c" + categoria + "s" + subcategoria; // required part
 		return inventario ? ECONOMICAS[prefix + "i" + inventario] : ECONOMICAS[prefix];
 	},
-	getProrrata: ej => PRORRATAS[ej],
 	build: economica => {
 		const result = {}; // select values
 		const key = "" + Object.keys(ECONOMICAS).find(key => (ECONOMICAS[key] == economica)); // force string

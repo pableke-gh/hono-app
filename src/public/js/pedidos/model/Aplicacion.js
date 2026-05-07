@@ -12,6 +12,18 @@ class Aplicacion extends Base {
 
 	getCreditoDisp = () => this.get("imp");
 	getDescripcion = () => this.get("desc");
+
+	load(data) { // preserva la economica precalculada
+		this.set("id", data.id).set("ej", data.ej); // id de la nueva aplicacion
+		this.set("org", data.org).set("func", data.func).set("desc", data.desc);
+		return this.set("imp", data.imp || 0); // siempre muestro un importe
+	}
+	unload() { // preserva la economica precalculada
+		const data = this.getData();
+		delete data.id; delete data.ej;
+		delete data.org; delete data.func;
+		delete data.imp; delete data.desc;
+	}
 }
 
 export default new Aplicacion();
