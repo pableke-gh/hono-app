@@ -31,9 +31,6 @@ export default class FacturasForm extends FormHTML {
 		}
 	
 		// Init. form factura
-		const fnFile = (el, file) => el.setText(file.getFilename());
-		this.set("factura-name", fnFile).set("just-name", fnFile);
-
 		tabs.setNextEvent(1, fnShowTab2); // tab fichero factura
 		tabs.setNextEvent(2, fnValidateJustPago).setActiveEvent(4, buzon.isActiveTab4);
 		tabs.setActiveEvent(5, () => this.#isActiveTab5).setNextEvent(5, fnShowTab6);

@@ -1,14 +1,8 @@
 
 import TextInput from "../../components/inputs/TextInput.js";
-import observer from "../../core/util/Observer.js";
 import pedido from "../model/Pedido.js";
 
 export default class Referencia extends TextInput {
-	connectedCallback() { // default initialization
-		const filename = this.parentNode.nextElementSibling;
-		observer.subscribe("adjunto", input => filename.setText(input.getFilename()));
-	}
-
 	setEditable() {
 		const filename = this.parentNode.nextElementSibling;
 		filename.setText("").setVisible(pedido.isEditable());

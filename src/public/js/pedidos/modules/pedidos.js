@@ -61,7 +61,7 @@ export default class PedidosTable extends TableHTML {
 			<td class="${pedido.getStyleByEstado()} hide-xs table-refresh" data-refresh="update-estado">${pedido.getDescEstado()}</td>
 			<td class="text-center hide-xs">${firma.myFlag(data)}</td>
 			<td class="hide-sm">${data.sig || ""}</td>
-			<td class="text-center">${data.exp || ""}</td><td>${data.nif}</td>
+			<td class="text-center">${pedido.isValidada() ? data.exp : ""}</td><td>${data.nif}</td>
 			<td class="hide-xs">${data.prov}</td>
 			<td class="text-center hide-xs">${i18n.isoDate(data.fecha)}</td>
 			<td class="currency">${i18n.isoFloat(pedido.getImpPpto())} €</td>
@@ -71,7 +71,7 @@ export default class PedidosTable extends TableHTML {
 		</tr>`;
 	}
 
-	report() { // call report service
+	report = () => { // final arrow function to call report service
 		api.init().text("/uae/pedidos/report?id=" + this.getId()).then(api.open);
 	}
 

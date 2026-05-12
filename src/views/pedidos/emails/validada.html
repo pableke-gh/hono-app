@@ -2,20 +2,17 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title th:utext="${title}">Campus Virtual - PRESTO</title>
-	<style th:replace="presto/emails/general.html :: styles"></style>
+	<title th:utext="${title}">Campus Virtual - SPI</title>
+	<style th:replace="pedidos/emails/general.html :: styles"></style>
 </head>
 <body>
-	<header th:replace="presto/emails/general.html :: header"></header>
+	<header th:replace="pedidos/emails/general.html :: header"></header>
 	<div class="navbar">
-		<p>La siguiente solicitud de <span th:text="${msgs.get(xs.keyDesc)}"></span> ha sido ACEPTADA por todos los firmantes y está pendiente de su contabilización en UXXIEC:</p>
+		<p>El siguiente pedido <span th:text="${pedido.codigo}"></span> ha sido ACEPTADO por todos los firmantes y está pendiente de su contabilización en UXXIEC:</p>
 	</div>
 
-	<div th:replace="presto/emails/general.html :: solicitud"></div>
-	<div th:replace="presto/emails/general.html :: decrementar"></div>
-	<div th:replace="presto/emails/general.html :: incrementar"></div>
-
-	<div th:replace="presto/emails/general.html :: firmas"></div>
-	<footer th:replace="presto/emails/general.html :: footer"></footer>
+	<div th:replace="pedidos/emails/general.html :: solicitud"></div>
+	<div th:replace="pedidos/emails/general.html :: firmas"></div>
+	<footer th:replace="pedidos/emails/general.html :: footer"></footer>
 </body>
 </html>

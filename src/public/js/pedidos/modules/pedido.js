@@ -59,21 +59,21 @@ export default class PedidoForm extends FormHTML {
 	}
 	firmar = () => { // final arrow function
 		const url = "/uae/pedidos/firmar?id=" + pedido.getId();
-		const fnThen = firmas => this.#close(firmas, pedido.setProcesando());
+		const fnThen = data => this.#close(data.firmas, pedido.setProcesando());
 		i18n.confirm("msgFirmar") && api.init().json(url).then(fnThen);
 	}
 	rechazar = () => { // accion de rechazo post reject
 		const el = this.getElement("rechazo"); // textarea input
 		if (!el.force("errRechazar") || !i18n.confirm("msgRechazar")) return; // validation error or cancel by user
 		const params = { id: pedido.getId(), rechazo: el.getValue() }; // url params
-		const fnThen = firmas => this.#close(firmas, pedido.setRechazada());
+		const fnThen = data => this.#close(data.firmas, pedido.setRechazada());
 		api.init().json("/uae/pedidos/rechazar", params).then(fnThen);
 	}
 	cancelar = () => { // accion de cancelacion post reject
 		const el = this.getElement("rechazo"); // textarea input
 		if (!el.force("errRechazar") || !i18n.confirm("msgCancelar")) return; // validation error or cancel by user
 		const params = { id: pedido.getId(), rechazo: el.getValue() }; // url params
-		const fnThen = firmas => this.#close(firmas, pedido.setCancelada());
+		const fnThen = data => this.#close(data.firmas, pedido.setCancelada());
 		api.init().json("/uae/pedidos/cancelar", params).then(fnThen);
 	}
 }

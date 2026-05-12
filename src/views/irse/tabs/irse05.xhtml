@@ -16,14 +16,14 @@
 		</h2>
 
 		<ui:include src="./irse05_info.xhtml"></ui:include>
-		<div class="ui-blocks form-refresh" data-refresh="isEditable">
+		<div is="grupo-gasto" class="ui-blocks form-refresh" data-refresh="isEditable">
 			<div class="ui-block-btn">
 				<a href="#tab-action-clickNext" class="btn btn-green" tabindex="100"><i class="fas fa-share btn-icon-left"></i>¡Por Aquí!</a>
-				<input type="file" name="fileGasto" is="file-input" class="ui-gasto hide" />
+				<input type="file" name="fileGasto" is="file-input" class="ui-gasto hide" data-filename=".fg-name" />
 			</div>
-			<label class="ui-block grupo-gasto hide">
+			<label class="ui-block hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
-				<select id="tipoGasto" name="tipoGasto" is="data-list" class="ui-gasto" tabindex="100">
+				<select id="tipoGasto" name="tipoGasto" is="tipo-gasto" class="ui-gasto" tabindex="100">
 					<option value=""></option>
 					<optgroup label="Factura a nombre del comisionado" class="form-refresh" data-refresh="isFacturasComisionado">
 						<option value="9" class="form-refresh" data-refresh="getNochesPendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
@@ -62,27 +62,27 @@
 				</select>
 				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block grupo-gasto hide">
+			<label class="ui-block hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
 				<input type="text" id="impGasto" name="impGasto" is="float-input" tabindex="101" class="ui-gasto" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
 				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block grupo-gasto hide">
+			<label class="ui-block-lg hide">
 				<div class="label required label-text-gasto"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
 				<input type="text" id="txtGasto" name="txtGasto" is="text-input" maxlength="300" tabindex="102" class="ui-text ui-gasto"/>
 				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block grupo-gasto hide">
+			<label class="ui-block hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.check.in.out']}" escape="false" />:</div>
 				<input type="date" id="fAloMin" name="fAloMin" is="date-input" tabindex="102" class="ui-gasto" title="Límite inferior del rango de fechas"/> ...
 				<input type="date" id="fAloMax" name="fAloMax" is="date-input" tabindex="103" class="ui-gasto" title="Límite superior del rango de fechas"/>
 				<div class="ui-errtip"></div>
 			</label>
-			<div class="ui-block-btn grupo-gasto hide">
+			<div class="ui-block-btn hide">
 				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
 			</div>
 		</div>
-		<div class="text-height form-refresh" data-refresh="filename" data-event="fileGasto"></div>
+		<div class="text-height fg-name"></div>
 
 		<table id="gastos" is="table-gastos" class="tb-xeco table-xs">
 			<thead>

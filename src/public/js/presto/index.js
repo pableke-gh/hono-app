@@ -11,8 +11,7 @@ import ButtonSubsanar from "./components/ButtonSubsanar.js";
 coll.ready(() => { // init. presto modules
 	form.init()
 		.set("show-subtipo", () => (presto.isUae() && presto.isGcr()))
-		.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto)
-		.set("filename", (el, input) => el.setText(input.getFilename()));
+		.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto);
 	tabs.setAction("adjunto", () => api.init().blob("/uae/presto/adjunto?id=" + presto.getAdjunto()));
 	tabs.show(presto.isUxxiec() ? "init" : "list"); // init view for PAS and list view for PDI
 

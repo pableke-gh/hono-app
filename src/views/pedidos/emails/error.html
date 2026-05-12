@@ -2,20 +2,20 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title th:utext="${title}">Campus Virtual - SPI</title>
+	<title th:utext="${title}">Campus Virtual - PRESTO</title>
 	<style th:replace="pedidos/emails/general.html :: styles"></style>
 </head>
 <body>
 	<header th:replace="pedidos/emails/general.html :: header"></header>
 	<div class="navbar">
 		<p>
-			Estimada / estimado: <span th:text="${pedido.proveedor}"></span>.
+			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
+			<br/>Se ha producido un <b class="terr">ERROR</b> en el pedido <span th:text="${pedido.codigo}"></span>
 		</p>
 	</div>
 
 	<div th:replace="pedidos/emails/general.html :: solicitud"></div>
-
-	<span>Un cordial saludo.</span>
+	<div th:replace="pedidos/emails/general.html :: firmas"></div>
 	<footer th:replace="pedidos/emails/general.html :: footer"></footer>
 </body>
 </html>

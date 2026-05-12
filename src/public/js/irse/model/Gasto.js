@@ -4,6 +4,7 @@ import i18n from "../i18n/langs.js";
 class Gasto {
 	isFactura = gasto => (gasto.tipo == 1);
 	isTicket = gasto => (gasto.tipo == 2);
+	isTipoTicket = tipo => ["1", "2", "3", "4", "5", "6", "7", "10"].includes(tipo);
 
 	isTaxi = gasto => (this.isTicket(gasto) && (gasto.subtipo == 4));
 	isTaxiJustifi = gasto => (this.isTaxi(gasto) && gasto.desc);

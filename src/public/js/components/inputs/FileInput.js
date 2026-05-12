@@ -8,14 +8,12 @@ import observer from "../../core/util/Observer.js";
 //Use the custom element by adding the is attribute to a standard <input>:
 //<input is="file-input" type="file" placeholder="Enter text" />   
 export default class FileInput extends TextInput {
-	connectedCallback() { // Initialize the element
-		this.classList.add("hide"); // default hidden
-		this.addChange(ev => observer.emit(this.name, ev.target));
-	}
+	#filename = this.dataset.filename ? this.form.querySelector(this.dataset.filename) : this.nextElementSibling;
 
 	// This input element accepts a filename no value (clear previously selected files)
-	setValue() { this.value = ""; return this; } // clear selected files
-	load() { return this.setValue(); }
+	setValue() { this.value = this.#filename.innerText = ""; return this; } // clear selected files
+	load() { return this.setValue(); } // clear input and filename
+	reset() { return this.setValue(); } // load / setValue synonym
 	toData(data) { data[this.name] = this.files; } // set all file list
 	isEmpty() { return (this.files.length == 0); } // is selected file
 	isLoaded() { return (this.files.length > 0); } // is selected file
@@ -32,15 +30,15 @@ export default class FileInput extends TextInput {
 	setReadonly(force) { return super.setDisabled(force); } // The attribute readonly is not supported or relevant to file input
 	setRequired(msg) { return input.setError(this, "errRequiredFile", msg); } // override
 	validate() { return input.validate(this); }
-
-	getFilename = () => (this.isLoaded() ? this.files[0].name : ""); // force a filename
-	getFilenames(max) {
+	getFilename(max) { // max files to show
 		if (this.isEmpty()) return ""; // no files selected
+		max = max ?? this.dataset.max ?? this.files.length; // file names to show
+		if (max == 1) return this.files[0].name; // only 1 file
 		const names = [...this.files].slice(0, max).map(file => file.name).join(", ");
-		return names + ((this.files.length > max) ? "..." : "");
+		return names + ((this.files.length > max) ? ", ..." : "");
 	}
 
-	onFile(fn) {
+	onFile(fn) { // deprecated
 		const reader = new FileReader();
 		let file, index; // file, position
 
@@ -56,6 +54,14 @@ export default class FileInput extends TextInput {
 		this.addEventListener("change", () => {
 			index = 0; // restart index
 			fnLoad(index);
+		});
+	}
+
+	connectedCallback() { // Initialize the element
+		this.classList.add("hide"); // default hidden
+		this.addChange(ev => { // notify on change
+			this.#filename.innerText = this.getFilename();
+			observer.emit(this.name, ev.target);
 		});
 	}
 }
