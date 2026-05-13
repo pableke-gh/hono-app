@@ -50,7 +50,7 @@ export default class Solicitud extends Base {
 	isSubsanable = () => (this.getEstado() == SUBSANABLE); // Solicitud subsanable en el cliente
 	setSubsanable = () => this.setEstado(SUBSANABLE); // marca la solicitud como subsanable
 	//isModificable = () => (this.isEditable() || this.isSubsanable()); // la solicitud se puede modificar
-	isFinalizada = () => [1, 3, 4, 9, 10].includes(this.getEstado()); // Aceptada, Ejecutada, Notificada ó Erronea
+	isFinalizada = () => [1, 3, 4, 9].includes(this.getEstado()); // Aceptada, Ejecutada, Notificada ó Erronea
 	isFirmada = () => (this.isAceptada() || this.isEjecutada());
 	isValidada = () => (this.isFirmada() || this.isIntegrada());
 	isInvalidada = () => (this.isRechazada() || this.isCancelada());
@@ -73,10 +73,10 @@ export default class Solicitud extends Base {
 	isCancelable = () => (this.isUae() && (this.isValidada() || this.isErronea()));
 	isInvalidable = () => (this.isFirmable() || this.isCancelable()); // show reject form 
 	isEditableUae = () => (this.isEditable() || this.isSubsanable() || (this.isUae() && this.isFirmable()));
-	isEjecutable = () => (this.isUae() && [1, 3, 4, 5, 9, 10].includes(this.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
-	isNotificable = () => (this.isUae() && [1, 3, 4, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada, integrada ó Erronea
+	isEjecutable = () => (this.isUae() && [1, 3, 4, 5, 9].includes(this.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea
+	isNotificable = () => (this.isUae() && [1, 3, 4, 9].includes(this.getEstado())); // uae + Aceptada, Ejecutada, integrada ó Erronea
 	isDocumentable = () => (this.isPendiente() || this.isValidada() || this.isErronea()); // muestra el boton de informe pdf
-	isIntegrable = () => (this.isUae() && [1, 3, 9, 10].includes(this.getEstado())); // uae + Aceptada, Ejecutada ó Erronea
+	isIntegrable = () => (this.isUae() && [1, 3, 9].includes(this.getEstado())); // uae + Aceptada, Ejecutada ó Erronea
 	isIntegrableSolicitud = this.isIntegrable; // synonym to symulate super
 	isUrgente = () => (this.get("fMax") && this.get("extra")); //solicitud urgente?
 

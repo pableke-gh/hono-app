@@ -66,7 +66,7 @@ export default {
 	msgBool: ["No", "Si"],
 	descEstados: [
 		"-", "Aceptada", "Rechazada", "Ejecutada", "Integrada", "Pendiente", "Editable", "Cancelada", "Caducada", 
-		"Error Capa SOA", "Error de Crédito Vinculante", "-", "-", "-", "-", "Subsanable", "Procesando..."
+		"Error Capa SOA", "-", "-", "-", "-", "-", "Subsanable", "Procesando..."
 	],
 
 	//Datepicker language

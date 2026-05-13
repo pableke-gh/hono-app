@@ -24,6 +24,11 @@
 					<option value="2">Rechazado</option>
 					<option value="4">Aplicado</option>
 					<option value="7">Anulado</option>
+					<c:if test="#{pedidos.user.uae}">
+						<optgroup label="---------------------------">
+							<option value="9">Error Capa SOA</option>
+						</optgroup>
+					</c:if>
 				</select>
 			</label>
 			<label class="ui-block">
