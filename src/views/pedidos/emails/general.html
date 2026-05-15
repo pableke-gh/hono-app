@@ -11,29 +11,32 @@
 
 		.w180 { width: 180px; }
 		.navbar { margin: 4px 0; padding: 0; display: inline-block; width: 100%; clear: both; }
-		.tr{min-width: 74px; text-align: right;}.tl{text-align:left;}.tc{ text-align:center; }.tj{ text-align:justify; }.terr{ color:tomato; }
+		.tr {min-width: 74px; text-align: right;}.tl{text-align:left;}.tc{ text-align:center; }.tj{ text-align:justify; }.terr{ color:tomato; }
 		.upper { text-transform: uppercase; }
 		.bl1 { padding:5px; border-left:1px solid #000; }
-		.box { border:1px solid #000;padding:5px; }
+		.box { border:1px solid tomato; padding:5px; }
 	</style>
 </head>
 <body>
     <header th:fragment="header">
 		<p>
 			UNIVERSIDAD POLITÉCNICA DE CARTAGENA.
-			<br/>Sistema de pedidos de infraestructura (SPI).
-			<br/>Unidad de Asuntos Económicos.
+			<br/>Sistema de pedidos de infraestructuras
+			<br/>Vicerrector de Infraestructuras y Sostenibilidad
 		</p>
 	</header>
 
 	<div th:fragment="solicitud" class="navbar">
-		<p><b>Datos de la Solicitud:</b></p>
+		<p><b>DATOS DEL PEDIDO</b></p>
 		<ul>
-			<li><b>Ejercicio:</b> <span th:text="${pedido.ejercicio}"></span></li>
-			<li><b>Código de solicitud:</b> <span th:text="${pedido.codigo}"></span></li>
-			<li><b>Fecha de solicitud:</b> <span th:text="${dt.toEsDate(pedido.FCreacion)}"></span></li>
-			<li><b>Solicitante:</b> <span th:text="${pedido.solicitante}"></span></li>
+			<li><b>Nº de pedido:</b> <span th:text="${pedido.codigo}"></span></li>
+			<li><b>Proveedor:</b> <span th:text="${pedido.proveedor}"></span> - <a th:href="'mailto:' + ${pedido.email}"><span th:text="${pedido.email}"></span></a></li>
+			<li><b>Referencia del proveedor:</b> <span th:text="${#strings.defaultString(pedido.referencia, '-')}"></span></li>
 			<li><b>Descripción del servicio o bien a contratar:</b> <span th:text="${pedido.descripcion}"></span></li>
+			<li><b>Aplicación presupuestaria:</b> <span th:text="${apli.aplicacion}"></span></li>
+			<li><b>Importe estimado sin IVA:</b> <span th:text="${nb.esBigval(pedido.importe)}"></span> €</li>
+			<li><b>Importe crédito presupuestario necesario:</b> <span th:text="${nb.esBigval(pedido.impPpto)}"></span> €</li>
+			<li><b>Comprador:</b> <span th:text="${pedido.solicitante}"></span></li>
 			<li th:if="${error != null}"><b class="terr">Error:</b> <span th:text="${error}"></span></li>
 		</ul>
 	</div>
@@ -59,10 +62,7 @@
 	</div>
 
 	<footer th:fragment="footer" class="navbar">
-		<p>
-			Puede consultar sus solicitudes accediendo a: <a href="https://campusvirtual.upct.es/uportal/">Campus Virtual / Gestión / Económico / Extraeco</a>.
-			<br/>Este correo electrónico se ha generado automáticamente. Por favor, no responda a la dirección del remitente.
-		</p>
+		<p>Este correo electrónico se ha generado automáticamente. Por favor, no responda a la dirección del remitente. En caso de duda consulte al email del <a href="mailto:vicinf@upct.es">Vicerrectorado de Infraestructuras y Sostenibilidad</a></p>
     </footer>
 </body>
 </html>

@@ -10,12 +10,11 @@
 	<div class="navbar">
 		<p>
 			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-			<br/>Se precisa su FIRMA como <span th:text="${firma.cargo}"></span> para validar el siguiente pedido</span>:
+			<br/>Se precisa tu <b>firma</b> como <span th:text="${firma.cargo}"></span> solicitado con fecha <b th:text="${dt.toEsDate(pedido.FCreacion)}"></b> con los siguientes datos</span>:
 		</p>
 	</div>
 
 	<div th:replace="pedidos/emails/general.html :: solicitud"></div>
-	<div th:replace="pedidos/emails/general.html :: firmas"></div>
 	<footer th:replace="pedidos/emails/general.html :: footer"></footer>
 </body>
 </html>

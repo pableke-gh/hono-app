@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title th:utext="${title}">Campus Virtual - SPI</title>
@@ -9,13 +9,11 @@
 	<header th:replace="pedidos/emails/general.html :: header"></header>
 	<div class="navbar">
 		<p>
-			Estimada / estimado: <span th:text="${firma.fullName}"></span>.
-			<br/>Se ha RECHAZADO la solicitud: <span th:text="${pedido.codigo}"></span>
-			<br/><b>Motivo del rechazo:</b> (<span th:text="${firmas.rechazo.fullName}"></span>) <span th:text="${firmas.rechazo.info}"></span>
+			Con fecha <b th:text="${dt.toEsDate(firmas.rechazo.fecha)}"></b> se <b>rechaza</b> el pedido con los siguientes datos</span>:
+			<br/><b>MOTIVO DEL RECHAZO / ANULACIÓN:</b> <span th:text="${firmas.rechazo.info}"></span>
 		</p>
 	</div>
 
-	<div th:replace="pedidos/emails/general.html :: firmas"></div>
 	<div th:replace="pedidos/emails/general.html :: solicitud"></div>
 	<footer th:replace="pedidos/emails/general.html :: footer"></footer>
 </body>

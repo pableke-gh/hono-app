@@ -7,10 +7,10 @@ const ECO_132700 = "132700";
 const ECO_133001 = "133001";
 const ECO_131200 = "131200";
 
-const DEFAULT_FACT = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban:   0, iva: 0 }; // Default values
-const MECENAZGO    = { economica: "144200",   sujeto: 0, exento: 0, m349: 0, iban:  10, iva: 0 }; // Cartas de pago mecenazgo
-const CARTA_PAGO   = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban:  10, iva: 0 }; // Cartas de pago por defecto
-const TTPP_EMPRESA = { economica: ECO_131200, sujeto: 0, exento: 1, m349: 0, iban: 446, iva: 0 }; // TTPP a empresa
+const DEFAULT_FACT = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban:  0, iva: 0 }; // Default values
+const MECENAZGO    = { economica: "144200",   sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 0 }; // Cartas de pago mecenazgo
+const CARTA_PAGO   = { economica: "",         sujeto: 0, exento: 0, m349: 0, iban: 10, iva: 0 }; // Cartas de pago por defecto
+const TTPP_EMPRESA = { economica: ECO_131200, sujeto: 0, exento: 1, m349: 0, iban: 10, iva: 0 }; // TTPP a empresa
 
 const NP_010  = { economica: ECO_323003, sujeto: 0, exento: 1, m349: 0, iban:  0, iva:  0 };
 const NP_206  = { economica: ECO_323003, sujeto: 2, exento: 0, m349: 6, iban:  0, iva:  0 };

@@ -111,7 +111,7 @@ function StringBox() {
 		for (i = j = 0; (i < str.length) && (j < sizes.length); i += sizes[j++])
 			results.push(str.substring(i, i + sizes[j])); // add new chunk
 		if (i < str.length) // add final chunk
-			results.push(str.substring(i,));
+			results.push(str.substring(i));
 		return results;
 	}
 
