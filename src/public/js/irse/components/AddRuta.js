@@ -1,5 +1,6 @@
 
 import sb from "../../components/types/StringBox.js";
+import ButtonForm from "../../components/inputs/ButtonForm.js";
 import valid from "../i18n/validators/rutas.js";
 import result from "../../core/util/Result.js";
 
@@ -10,7 +11,7 @@ import rutas from "../model/Rutas.js";
 import place from "../util/place.js";
 import form from "../modules/irse.js";
 
-export default class AddRuta extends HTMLAnchorElement {
+export default class AddRuta extends ButtonForm {
 	async execute() {
 		const data = valid.addRuta(); // form data
 		if (!data) return false; // invalid inputs
@@ -64,9 +65,5 @@ export default class AddRuta extends HTMLAnchorElement {
 		await result.catch(maps.getDistance(origen.getLabel(), destino.getLabel()));
 		if (result.isError()) return result.error(); // error al calcular la distancia
 		_addRuta(data, result.getData()); // distance in km
-	}
-
-	connectedCallback() { // init. component
-		this.addEventListener("click", ev => { ev.preventDefault(); this.execute(); });
 	}
 }

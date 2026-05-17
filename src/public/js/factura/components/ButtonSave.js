@@ -13,8 +13,4 @@ export default class ButtonSave extends ButtonForm {
 		if (data && i18n.confirm("msgSend")) // validate and user confirmation
 			api.setJSON(form.getFormData(data)).json("/uae/fact/save").then(tabs.showInit);
 	}
-
-	connectedCallback() { // init. component
-		this.setExecutable(); // click event
-	}
 }

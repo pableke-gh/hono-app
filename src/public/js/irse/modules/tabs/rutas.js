@@ -65,7 +65,7 @@ class Rutas {
 }
 
 customElements.define("autocomplete-maps", AutocompleteMaps, { extends: "input" });
-customElements.define("add-ruta", AddRuta, { extends: "a" });
+customElements.define("add-ruta", AddRuta, { extends: "button" });
 customElements.define("table-rutas", TableRutas, { extends: "table" });
 
 export default new Rutas();

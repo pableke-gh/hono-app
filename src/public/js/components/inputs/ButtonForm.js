@@ -22,8 +22,6 @@ export default class ButtonForm extends HTMLButtonElement {
 
 	reset() {}
 	restart() {}
-	execute() { throw new Error("Method 'execute' must be implemented."); }
-	setExecutable() { this.addEventListener("click", ev => { ev.preventDefault(); this.execute(); }); }
 
 	setDisabled(force) { return input.setDisabled(this, force); } // button attribute
 	setReadonly(force) { return input.setDisabled(this, force); } // readonly = disbled
@@ -35,4 +33,10 @@ export default class ButtonForm extends HTMLButtonElement {
 	setError() { return this; } // set css class error
 	update() { return this; } // deprecated
 	validate() { return true; }
+
+	connectedCallback() { // init. component
+		if (this.execute) // execute action on click or default button behavior
+			this.addEventListener("click", ev => { ev.preventDefault(); this.execute(); });
+		this.classList.add("btn"); // default button class
+	}
 }

@@ -13,8 +13,4 @@ export default class ButtonSubsanar extends ButtonForm {
 		if (data && i18n.confirm("msgSave")) // validate and user confirmation
 			api.setJSON(form.getFormData(data)).json("/uae/fact/subsanar").then(tabs.showList);
 	}
-
-	connectedCallback() { // init. component
-		this.setExecutable(); // click event
-	}
 }

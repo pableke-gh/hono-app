@@ -12,8 +12,4 @@ export default class ButtonSubsanar extends ButtonForm {
 		if (valid.all() && i18n.confirm("msgSave")) // validate and user confirmation
 			api.setFormData(form.getFormData()).send("/uae/presto/subsanar").then(tabs.showList);
 	}
-
-	connectedCallback() { // init. component
-		this.setExecutable(); // click event
-	}
 }

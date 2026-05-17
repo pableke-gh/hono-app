@@ -12,8 +12,4 @@ export default class ButtonSave extends ButtonForm {
 		if (valid.all() && i18n.confirm("msgSend")) // validate and user confirmation
 			api.setFormData(form.getFormData()).send("/uae/presto/save").then(tabs.showInit);
 	}
-
-	connectedCallback() { // init. component
-		this.setExecutable(); // click event
-	}
 }
