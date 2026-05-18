@@ -127,26 +127,26 @@
 	<ui:include src="../parts/conceptos.xhtml"></ui:include>
 	<div class="navbar">
 		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+			<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
 		<button type="submit" is="btn-save" class="btn btn-green form-refresh" data-refresh="isEditable" data-editable="isEditable" title="Envía la solicitud a la firma">
-			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></button>
+			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right"></i></button>
 
 		<a href="#tab-action-reactivar" class="btn btn-warn form-refresh" data-refresh="isReactivable" title="Activa los campos modificables por la UAE">
-			<i class="fas fa-wrench btn-icon-left"></i>Reactivar</a>
+			<i class="fas fa-wrench"></i>Reactivar</a>
 		<button type="submit" is="btn-subsanar" class="btn btn-green form-refresh" data-refresh="isSubsanableUae" data-editable="isSubsanableUae" title="Guarda los cambios realizados">
-			<i class="far fa-save btn-icon-left"></i>Subsanar</button>
+			<i class="far fa-save"></i>Subsanar</button>
 		<button type="submit" is="btn-reset" class="btn btn-green form-refresh" data-refresh="isSubsanableGaca" data-editable="isSubsanableGaca" title="Guarda los cambios realizados">
-			<i class="far fa-save btn-icon-left"></i>Subsanar</button>
+			<i class="far fa-save"></i>Subsanar</button>
 
 		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.firmar']}">
-			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>
+			<i class="far fa-file-signature"></i>#{msg['lbl.btn.firmar']}</a>
 		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.rechazar']}">
-			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.rechazar']}</a>
 		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isCancelable" title="#{msg['tit.btn.cancelar']}">
-			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.cancelar']}</a>
+			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</a>
 
 		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="isRemovable" title="Borra la solicitud del sistema"> 
-			<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
+			<i class="fal fa-trash-alt"></i>Eliminar</a>
 	</div>
 	<ui:include src="../parts/firmas.xhtml"></ui:include>
 </html>

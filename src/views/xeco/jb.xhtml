@@ -51,11 +51,11 @@
 
 				<div class="navbar">
 					<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" tabindex="12" title="#{msg['tit.btn.volver.ini']}">
-						<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+						<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 					<p:commandButton id="search" action="#{jb.search()}" onclick="loading();" update="info-doc" oncomplete="jbLoaded();"
 							icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
 					<p:commandLink id="reset" action="#{jb.reset()}" onclick="jbReset();" update="info-doc" oncomplete="working();" styleClass="btn btn-warn warning-btn" tabindex="14">
-						<i class="far fa-times-circle btn-icon-left"></i>Limpiar</p:commandLink>
+						<i class="far fa-times-circle"></i>Limpiar</p:commandLink>
 				</div>
 
 				<!-- modals dialog -->
@@ -77,8 +77,8 @@
 					</div>
 					</div>
 					<div class="dialog-footer">
-						<a href="#tab-action-closeModal" class="btn btn-info"><i class="fas fa-times btn-icon-left"></i>Cerrar</a>
-						<a href="#tab-action-report" class="btn btn-warn"><i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
+						<a href="#tab-action-closeModal" class="btn btn-info"><i class="fas fa-times"></i>Cerrar</a>
+						<a href="#tab-action-report" class="btn btn-warn"><i class="fal fa-file-pdf"></i>Informe</a>
 					</div>
 				</dialog>
 			</h:form>
@@ -116,7 +116,7 @@
 								<c:when test="#{jb.adjunto}">
 									<li>
 										<b>(ZIP) Adjunto:</b>
-										<a href="#tab-action-download">Ver documentación del pago<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
+										<a href="#tab-action-download">Ver documentación del pago<i class="fas fa-arrow-alt-down"></i></a>
 									</li>
 								</c:when>
 								<c:otherwise>
@@ -124,7 +124,7 @@
 										<li>
 											<b>#{adjunto.tipo}:</b>
 											<a id="#{adjunto.idAdjunto}" href="#tab-action-download" download="#{adjunto.nombre}">
-												#{adjunto.nombre}<i class="fas fa-arrow-alt-down btn-icon-right"></i></a>
+												#{adjunto.nombre}<i class="fas fa-arrow-alt-down"></i></a>
 										</li>
 									</c:forEach>
 								</c:otherwise>
@@ -143,7 +143,7 @@
 
 			<br class="clear"/><hr/>
 			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-				<i class="fas fa-caret-left btn-icon-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+				<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		</div>
 	</ui:define>
 </ui:composition>

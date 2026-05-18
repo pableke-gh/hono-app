@@ -11,8 +11,8 @@
 		<h2 class="form-refresh" data-refresh="text-render">@getTitulo; @getCodigo;</h2>
 		<div class="ui-blocks">
 			<div class="ui-block-btn">
-				<a href="#tab-action-adjunto" class="btn btn-info form-refresh" data-refresh="getAdjunto" title="Descargar / visualizar la documentación asociada">Presupuesto Adjunto<i class="far fa-paperclip btn-icon-right"></i></a>
-				<a href="#tab-action-clickNext" class="btn btn-info form-refresh" data-refresh="isEditable" title="Presupuesto del proveedor"><i class="fas fa-search btn-icon-left"></i>Adjuntar Presupuesto</a>
+				<a href="#tab-action-adjunto" class="btn btn-info form-refresh" data-refresh="getAdjunto" title="Descargar / visualizar la documentación asociada">Presupuesto Adjunto<i class="far fa-paperclip"></i></a>
+				<a href="#tab-action-clickNext" class="btn btn-info form-refresh" data-refresh="isEditable" title="Presupuesto del proveedor"><i class="fas fa-search"></i>Adjuntar Presupuesto</a>
 				<input type="file" name="adjunto" is="file-input" class="hide" data-filename=".spi-file" />
 				<div class="ui-errtip"></div> 
 			</div>
@@ -116,21 +116,21 @@
 	<!-- Botones -->
 	<div class="navbar">
 		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-			<i class="fas fa-caret-left btn-icon-left"></i>#{msg['lbl.btn.volver']}</a>
+			<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
 		<button type="submit" is="btn-form" class="btn btn-green form-refresh" data-refresh="isEditable" title="Poner la solicitud a la firma">
-			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right btn-icon-right"></i></button>
+			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right"></i></button>
 
 		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.firmar']}">
-			<i class="far fa-file-signature btn-icon-left"></i>#{msg['lbl.btn.firmar']}</a>
+			<i class="far fa-file-signature"></i>#{msg['lbl.btn.firmar']}</a>
 		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.rechazar']}">
-			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.rechazar']}</a>
+			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.rechazar']}</a>
 		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isCancelable" title="#{msg['tit.btn.cancelar']}">
-			<i class="fas fa-times-circle btn-icon-left"></i>#{msg['lbl.btn.cancelar']}</a>
+			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</a>
 
 		<a href="#tab-action-report" class="btn btn-danger form-refresh" data-refresh="isDocumentable" title="Informe PRESTO">
-			<i class="fal fa-file-pdf btn-icon-left"></i>Informe</a>
+			<i class="fal fa-file-pdf"></i>Informe</a>
 
 		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="isRemovable" title="Borra la solicitud del sistema"> 
-			<i class="fal fa-trash-alt btn-icon-left"></i>Eliminar</a>
+			<i class="fal fa-trash-alt"></i>Eliminar</a>
 	</div>
 </html>

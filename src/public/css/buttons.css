@@ -1,7 +1,7 @@
 
 /* Buttons (!important override CV styles) */
 .btn {
-	display: inline-flex; align-items: center; gap: 4px; height: 24px;
+	display: inline-flex; align-items: center; gap: 8px; height: 24px;
     margin: 2px 4px !important; padding: .5rem 1rem;
 	color: white; font-weight: 500; font-size: 0.875rem/* 14px */; line-height: 1.25rem/* 20px */;
 	border-width: 1px; border-radius: 0.25rem/* 4px */; border-style: solid; box-sizing: content-box;
@@ -14,8 +14,8 @@
 .btn-secondary { background-color: #6c757d; border-color: #6c757d; }
 .btn-secondary:hover { background-color: #5a6268; border-color: #545b62; }
 
-.btn-light { color: black; background-color: #ececec; border-color: #e5e6e7; }
-.btn-light:hover { color: black; background-color: #e6e6e6; border-color: #dae0e5; }
+.btn-light { color: black; background-color: #e3e3e3; border-color: #dadada; }
+.btn-light:hover { color: black; background-color: #e9e9e9; border-color: #cfd5da; }
 
 .btn-info { background-color: #2196F3; border-color: #2196F3; }
 .btn-info:hover { background-color: #1976d2; }
@@ -37,7 +37,3 @@
 
 .btn-dark { background-color: rgb(31 41 55)/* gray-800 */; border-color: rgb(31 41 55)/* gray-800 */; }
 .btn-dark:hover { background-color: rgb(17 24 39)/* gray-900 */; }
-
-/* button icons */
-.btn-icon-left { margin-right: 6px; }
-.btn-icon-right { margin-left: 6px; }
