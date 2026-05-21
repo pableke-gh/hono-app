@@ -7,6 +7,7 @@ import Referencia from "./components/Referencia.js";
 import Proveedor from "./components/Proveedor.js";
 import Categoria from "./components/Categoria.js";
 import Aplicacion from "./components/Aplicacion.js";
+import ButtonSave from "./components/ButtonSave.js";
 import Firmas from "./components/Firmas.js";
 
 import ControlesFilterForm from "./modules/ControlesFilter.js";
@@ -22,6 +23,7 @@ customElements.define("ref-input", Referencia, { extends: "input" });
 customElements.define("proveedor-input", Proveedor, { extends: "input" });
 customElements.define("categoria-pedido", Categoria, { extends: "select" });
 customElements.define("aplicacion-input", Aplicacion, { extends: "input" });
+customElements.define("btn-save", ButtonSave, { extends: "button" });
 customElements.define("firmas-block", Firmas, { extends: "div" });
 
 customElements.define("pedido-controles", ControlesFilterForm, { extends: "form" });

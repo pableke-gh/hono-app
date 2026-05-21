@@ -6,6 +6,7 @@ import valid from "../i18n/validators.js";
 
 import factura from "../model/Factura.js";
 import Organica from "../components/inputs/organica.js";
+import AddAllRecibos from "../components/AddAllRecibos.js";
 import Lineas from "../components/lineas.js";
 import form from "./factura.js";
 
@@ -41,14 +42,6 @@ export default class Imputacion extends FormBase {
 			}
 			this.#lineas.addLinea(valid.linea());
 		});
-		tabs.setAction("allTTPP", () => {
-			this.closeAlerts(); // hide prev. errors
-			const id = this.#organica.getValue(); // pk
-			if (!id) // el campo organica es obligatorio!
-				return this.setRequired("organica", "Debe asociar una orgánica a esta solicitud.");
-			if (confirm("¿Confirma que desea añadir todos los recibos a la solicitud?")) // cancel by user?
-				api.init().json("/uae/ttpp/recibos/all?id=" + id).then(this.#lineas.addRecibos);
-		});
 	}
 
 	view(data) {
@@ -59,4 +52,5 @@ export default class Imputacion extends FormBase {
 }
 
 customElements.define("organica-input", Organica, { extends: "input" });
+customElements.define("add-all-recibos", AddAllRecibos, { extends: "button" });
 customElements.define("linea-table", Lineas, { extends: "table" });

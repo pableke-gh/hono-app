@@ -23,12 +23,6 @@ export default class PedidoForm extends FormHTML {
 
 		this.addChange("imp", ev => { pedido.setImporte(ev.target.getValue()); this.#setImportes(); });
 		this.addChange("iva", ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });
-
-		this.onSubmit(ev => {
-			if (super.validate() && i18n.confirm("msgSend")) // validate and user confirmation
-				api.setFormData(this.getFormData()).json("/uae/pedidos/save").then(tabs.showInit);
-			ev.preventDefault(); // ajax interceptor
-		});
 	}
 
 	#load(data, firmas) {
