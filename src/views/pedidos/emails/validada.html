@@ -2,8 +2,8 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title th:utext="${title}">Campus Virtual - SPI</title>
 	<style th:replace="pedidos/emails/general.html :: styles"></style>
+	<title>Campus Virtual - SPI</title>
 </head>
 <body>
 	<header th:replace="pedidos/emails/general.html :: header"></header>
@@ -15,7 +15,7 @@
 	<p><b>DATOS DEL PEDIDO</b></p>
 	<ul>
 		<li><b>Nº de pedido:</b> <span th:text="${pedido.codigo}"></span></li>
-		<li><b>Proveedor:</b> <span th:text="${pedido.proveedor}"></span> - <a th:href="'mailto:' + ${pedido.email}"><span th:text="${pedido.email}"></span></a></li>
+		<li><b>Proveedor:</b> <a th:href="'mailto:' + ${pedido.email}" th:text="${pedido.proveedor}"></a></li>
 		<li><b>Referencia del proveedor:</b> <span th:text="${#strings.defaultString(pedido.referencia, '-')}"></span></li>
 		<li><b>Descripción del servicio o bien a contratar:</b> <span th:text="${pedido.descripcion}"></span></li>
 		<li><b>Aplicación presupuestaria:</b> <span th:text="${apli.aplicacion}"></span></li>
@@ -25,37 +25,9 @@
 	</ul>
 	</div>
 
-	<div class="navbar">
-	<p><b>REQUISITOS Y DATOS A INCLUIR EN LA FACTURA</b></p>
-	<ul>
-		<li><b>Datos del destinatario:</b> Universidad Politécnica de Cartagena, CIF/ VAT ESQ8050013E, domicilio: Plaza del Cronista Isidoro Valverde s/n 30202 Cartagena</li>
-		<li><b>Identificación de la cuenta bancaria (IBAN)</b> donde deba realizarse el pago de la factura.</li>
-		<li><b>Obligación de emisión de la factura en formato electrónico</b> y presentación en <b>FACe</b>, indicando los siguientes datos:</li>
-	</ul>
-	</div>
-
-	<div class="navbar">
-	<table>
-		<thead>
-			<tr><th>Órgano Administrativo</th><th>Código</th><th>Denominación</th><th>Rol (factura-e)</th></tr>
-		</thead>
-		<tbody>
-			<tr><td>Oficina Contable</td><td class="tc"><b>U06400011</b></td><td>Vicerrectorado de Economía, Empresa y Emprendimiento</td><td>Fiscal</td></tr>
-			<tr><td>Órgano Gestor</td><td class="tc"><b>U06400001</b></td><td>Universidad Politécnica de Cartagena</td><td>Receptor</td></tr>
-			<tr><td>Unidad Tramitadora</td><td class="tc"><b>U06400066</b></td><td>Unidad Técnica</td><td>Pagador</td></tr>
-		</tbody>
-	</table>
-	</div>
-
-	<div class="navbar">
-		<p><b class="terr">INSTRUCCIONES ESPECIALES</b></p>
-		<div class="box">Código a incluir en el campo <b>FileReference</b> de la factura electrónica: <b th:text="${pedido.expediente}"></b></div>
-	</div>
-
-	<div class="navbar">
-		<p><b>*La no inclusión del código en el campo FileReference podrá conllevar el rechazo de la factura. El código debe incluirse exactamente como se indica, por lo que se recomienda copiar para insertar en la factura.</b></p>
-	</div>
-
+	<div th:replace="pedidos/emails/general.html :: requisitos"></div>
+	<div th:replace="pedidos/emails/general.html :: face"></div>
+	<div th:replace="pedidos/emails/general.html :: instrucciones"></div>
 	<footer th:replace="pedidos/emails/general.html :: footer"></footer>
 </body>
 </html>

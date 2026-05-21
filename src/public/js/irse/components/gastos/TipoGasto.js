@@ -1,6 +1,6 @@
 
-import DataList from "../../components/inputs/DataList.js";
-import gasto from "../model/Gasto.js";
+import DataList from "../../../components/inputs/DataList.js";
+import gasto from "../../model/Gasto.js";
 import GrupoGasto from "./GrupoGasto.js";
 
 export default class TipoGasto extends DataList {

@@ -2,20 +2,32 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title th:utext="${title}">Campus Virtual - SPI</title>
 	<style th:replace="pedidos/emails/general.html :: styles"></style>
+	<title>Campus Virtual - SPI</title>
 </head>
 <body>
 	<header th:replace="pedidos/emails/general.html :: header"></header>
 	<div class="navbar">
-		<p>
-			Estimada / estimado: <span th:text="${pedido.proveedor}"></span>.
-		</p>
+		<p>Con fecha <b th:text="${dt.toEsDate(fAprobacion)}"></b> se acepta el presupuesto y se aprueba el pedido con los siguientes datos:</p>
 	</div>
 
-	<div th:replace="pedidos/emails/general.html :: solicitud"></div>
+	<div class="navbar">
+	<p><b>DATOS DEL PEDIDO</b></p>
+	<ul>
+		<li><b>Nº de pedido:</b> <span th:text="${pedido.codigo}"></span></li>
+		<li><b>Proveedor:</b> <a th:href="'mailto:' + ${pedido.email}" th:text="${pedido.proveedor}"></a></li>
+		<li><b>Referencia del proveedor:</b> <span th:text="${#strings.defaultString(pedido.referencia, '-')}"></span></li>
+		<li><b>Descripción del servicio o bien a contratar:</b> <span th:text="${pedido.descripcion}"></span></li>
+		<li><b>Aplicación presupuestaria:</b> <span th:text="${apli.aplicacion}"></span></li>
+		<li><b>Importe estimado sin IVA:</b> <span th:text="${nb.esBigval(pedido.importe)}"></span> €</li>
+		<li><b>Importe crédito presupuestario aprobado:</b> <span th:text="${nb.esBigval(pedido.impPpto)}"></span> €</li>
+		<li><b>Comprador:</b> <span th:text="${pedido.solicitante}"></span></li>
+	</ul>
+	</div>
 
-	<span>Un cordial saludo.</span>
+	<div th:replace="pedidos/emails/general.html :: requisitos"></div>
+	<div th:replace="pedidos/emails/general.html :: face"></div>
+	<div th:replace="pedidos/emails/general.html :: instrucciones"></div>
 	<footer th:replace="pedidos/emails/general.html :: footer"></footer>
 </body>
 </html>

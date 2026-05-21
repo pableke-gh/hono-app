@@ -6,7 +6,7 @@ import valid from "../../i18n/validators/irse.js";
 import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";
 
-import TipoGasto from "../../components/TipoGasto.js";
+import TipoGasto from "../../components/gastos/TipoGasto.js";
 import RutaPendientes from "../tables/pendientes.js";
 import RutaConsulta from "../tables/itinerario.js";
 import TableGastos from "../tables/gastos.js";
