@@ -4,7 +4,7 @@ import api from "../../../components/Api.js";
 import observer from "../../../core/util/Observer.js";
 
 import irse from "../../model/Irse.js";
-import form from "../irse.js";
+import form from "../../modules/irse.js";
 
 export default class Interesado extends AutocompleteHTML {
 	init() { // Initialize element after form

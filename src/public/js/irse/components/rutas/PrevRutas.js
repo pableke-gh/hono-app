@@ -8,6 +8,10 @@ import ButtonForm from "../../../components/inputs/ButtonForm.js";
 
 export default class PrevRutas extends ButtonForm {
 
+	setEditable() {
+		this.setDisabled(false); // always enabled
+	}
+
 	execute() {
 		if (valid.itinerario() && irse.isEditable() && form.isChanged()) // is valid change
 			form.getRutas().save(); // send data to server and go back

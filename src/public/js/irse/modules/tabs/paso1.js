@@ -1,17 +1,18 @@
 
 import sb from "../../../components/types/StringBox.js";
-import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
-import valid from "../../i18n/validators/rutas.js";
 
 import irse from "../../model/Irse.js";
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 import gastos from "../../model/Gastos.js";
 
-import Promotor from "../inputs/Promotor.js";
 import perfil from "./perfil.js";
 import form from "../irse.js";
+
+import Promotor from "../../components/paso1/Promotor.js";
+import NextPaso1 from "../../components/paso1/NextPaso1.js";
+import SavePaso1 from "../../components/paso1/SavePaso1.js";
 
 /** campo objeto y mun **/
 class Paso1 {
@@ -21,20 +22,6 @@ class Paso1 {
 		form.getElement("matriculaMun").addChange(ev => {
 			ev.target.value = sb.toUpperWord(ev.target.value);
 			irse.setMatricula(ev.target.value);
-		});
-
-		tabs.setAction("paso1", () => {
-			if (!valid.paso1()) return; // if error => stop
-			if (!irse.isEditable() || !form.isChanged())
-				return tabs.next(); // go next tab directly
-			const promise = perfil.isMun() ? this.saveMun() : this.save();
-			promise.then(() => tabs.goTo());
-		});
-		tabs.setAction("save1", () => {
-			if (!valid.paso1()) return; // if error => stop
-			if (!form.isChanged()) return form.setOk(); // nada que guardar
-			const promise = perfil.isMun() ? this.saveMun() : this.save();
-			promise.then(form.setOk);
 		});
 	}
 
@@ -67,5 +54,7 @@ class Paso1 {
 }
 
 customElements.define("promotor-input", Promotor, { extends: "input" });
+customElements.define("next-paso1", NextPaso1, { extends: "button" });
+customElements.define("save-paso1", SavePaso1, { extends: "button" });
 
 export default new Paso1();

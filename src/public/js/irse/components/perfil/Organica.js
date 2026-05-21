@@ -5,7 +5,7 @@ import api from "../../../components/Api.js";
 import observer from "../../../core/util/Observer.js";
 
 import irse from "../../model/Irse.js";
-import Organicas from "../tables/organicas.js";
+import Organicas from "../../modules/tables/organicas.js";
 
 export default class Organica extends AutocompleteHTML {
 	#organicas = tabs.$1(0, "table");

@@ -5,8 +5,8 @@ import i18n from "../../i18n/langs.js";
 import valid from "../../i18n/validators/irse.js";
 
 import irse from "../../model/Irse.js";
-import Interesado from "../inputs/Interesado.js";
-import Organica from "../inputs/Organica.js";
+import Interesado from "../../components/perfil/Interesado.js";
+import Organica from "../../components/perfil/Organica.js";
 import form from "../irse.js"
 
 import observer from "../../../core/util/Observer.js";

@@ -8,6 +8,10 @@ import ButtonForm from "../../../components/inputs/ButtonForm.js";
 
 export default class NextRutas extends ButtonForm {
 
+	setEditable() {
+		this.setDisabled(false); // always enabled
+	}
+
 	execute() {
 		if (!valid.itinerario()) return; // if error => stop
 		if (!irse.isEditable() || !form.isChanged()) return tabs.next(); // go next tab directly

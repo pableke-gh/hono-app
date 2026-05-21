@@ -26,7 +26,7 @@ export default class ButtonForm extends HTMLButtonElement {
 	setDisabled(force) { return input.setDisabled(this, force); } // button attribute
 	setReadonly(force) { return input.setDisabled(this, force); } // readonly = disbled
 	setEditable(model) { return input.setEditable(this, model); } // recalc. if button is clicable
-	prepare(model) { return input.setEditable(this, model); } // button not to load data
+	prepare(model) { return this.setEditable(model); } // button not to load data
 
 	// Validators
 	setOk() { return this; } // restore default styles

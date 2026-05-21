@@ -109,11 +109,11 @@
 
 	<!-- Botones -->
 	<div class="navbar">
-		<button is="prev-rutas" class="btn btn-info" title="#{msg['tit.btn.volver']}">
+		<button type="button" is="prev-rutas" class="btn btn-info" title="#{msg['tit.btn.volver']}">
 			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></button>
-		<button is="next-rutas" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
+		<button type="button" is="next-rutas" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></button>
-		<button is="save-rutas" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
+		<button type="button" is="save-rutas" class="btn btn-green" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>

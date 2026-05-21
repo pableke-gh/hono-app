@@ -7,7 +7,7 @@ import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";
 import dietas from "../../model/Dietas.js";
 
-import AutocompleteMaps from "../inputs/Autocomplete.js";
+import AutocompleteMaps from "../../components/rutas/Autocomplete.js";
 import AddRuta from "../../components/rutas/AddRuta.js";
 import TableRutas from "../tables/rutas.js";
 import PrevRutas from "../../components/rutas/PrevRutas.js";
