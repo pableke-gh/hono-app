@@ -1,6 +1,6 @@
 
 import FormBase from "../../components/forms/FormBase.js";
-import OrganicaDec from "../components/inputs/OrganicaDec.js";
+import OrganicaDec from "../components/dec/Organica.js";
 import presto from "../model/Presto.js";
 import form from "./presto.js";
 

@@ -4,8 +4,8 @@ import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import valid from "../i18n/validators.js";
 
-import Organica030 from "../components/inputs/Organica030.js";
-import Economica030 from "../components/inputs/Economica030.js";
+import Organica030 from "../components/p030/Organica.js";
+import Economica030 from "../components/p030/Economica.js";
 import presto from "../model/Presto.js";
 import form from "./presto.js";
 

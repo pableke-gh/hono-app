@@ -5,8 +5,8 @@ import api from "../../components/Api.js"
 import valid from "../i18n/validators.js";
 
 import presto from "../model/Presto.js";
-import OrganicaInc from "../components/inputs/OrganicaInc.js";
-import Partidas from "../components/partidas.js";
+import OrganicaInc from "../components/inc/Organica.js";
+import Partidas from "../components/inc/partidas.js";
 
 export default class PartidaInc extends FormBase {
 	#organica = this.getElement("orgInc");

@@ -5,8 +5,8 @@ import api from "../components/Api.js"
 
 import presto from "./model/Presto.js";
 import form from "./modules/presto.js";
-import ButtonSave from "./components/ButtonSave.js";
-import ButtonSubsanar from "./components/ButtonSubsanar.js";
+import ButtonSave from "./components/buttons/ButtonSave.js";
+import ButtonSubsanar from "./components/buttons/ButtonSubsanar.js";
 
 coll.ready(() => { // init. presto modules
 	form.init()

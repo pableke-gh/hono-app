@@ -1,12 +1,12 @@
 
-import tabs from "../../components/Tabs.js";
-import api from "../../components/Api.js"
-import i18n from "../i18n/langs.js";
-import valid from "../i18n/validators.js";
+import tabs from "../../../components/Tabs.js";
+import api from "../../../components/Api.js"
+import i18n from "../../i18n/langs.js";
+import valid from "../../i18n/validators.js";
 
-import factura from "../model/Factura.js";
-import form from "../modules/factura.js";
-import ButtonForm from "../../components/inputs/ButtonForm.js"
+import factura from "../../model/Factura.js";
+import form from "../../modules/factura.js";
+import ButtonForm from "../../../components/inputs/ButtonForm.js"
 
 export default class ButtonSave extends ButtonForm {
 	setEditable() {

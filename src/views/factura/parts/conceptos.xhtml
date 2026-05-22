@@ -21,15 +21,14 @@
 			<input id="imp" name="imp" is="float-input" class="ui-linea" tabindex="31" maxlength="12"/>
 			<div class="ui-errtip"></div> 
 		</label>
-		<label class="autocomplete ui-block-xl form-refresh" data-refresh="isTtppEmpresa">
+		<label class="autocomplete ui-block-xl">
 			<div class="label required">Recibo asociado a la factura:</div>
-			<input type="search" id="acTTPP" name="acTTPP" is="text-input" class="ui-autocomplete" tabindex="30" />
-			<input type="text" id="idTTPP" name="idTTPP" is="text-input" class="hide" /> 
+			<input type="search" name="ttpp" is="ttpp-input" class="ui-autocomplete" tabindex="30" />
 			<ul role="list" class="results"></ul>
 			<div class="ui-errtip"></div> 
 		</label>
 		<div class="ui-block-btn">
-			<a href="#tab-action-addLinea" class="btn btn-green" tabindex="32"><i class="far fa-plus icon"></i>Añadir</a>
+			<button type="button" is="add-linea" class="btn btn-green" tabindex="32"><i class="far fa-plus icon"></i>Añadir</button>
 			<button type="button" is="add-all-recibos" class="btn btn-warn" tabindex="33"><i class="fas fa-plus-octagon"></i></i>Añadir Todos</button>
 		</div>
 		</div>

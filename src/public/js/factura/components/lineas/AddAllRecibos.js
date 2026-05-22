@@ -1,9 +1,9 @@
 
-import api from "../../components/Api.js";
-import factura from "../model/Factura.js";
-import form from "../modules/factura.js";
-import observer from "../../core/util/Observer.js";
-import ButtonForm from "../../components/inputs/ButtonForm.js";
+import api from "../../../components/Api.js";
+import factura from "../../model/Factura.js";
+import form from "../../modules/factura.js";
+import observer from "../../../core/util/Observer.js";
+import ButtonForm from "../../../components/inputs/ButtonForm.js";
 
 export default class AddAllRecibos extends ButtonForm {
 	setEditable() {

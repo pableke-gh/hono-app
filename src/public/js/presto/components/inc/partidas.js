@@ -1,10 +1,10 @@
 
-import TableHTML from "../../components/TableHTML.js";
-import i18n from "../i18n/langs.js";
+import TableHTML from "../../../components/TableHTML.js";
+import i18n from "../../i18n/langs.js";
 
-import presto from "../model/Presto.js";
-import partida from "../model/Partida.js";
-import form from "../modules/presto.js";
+import presto from "../../model/Presto.js";
+import partida from "../../model/Partida.js";
+import form from "../../modules/presto.js";
 
 export default class Partidas extends TableHTML {
 	connectedCallback() {

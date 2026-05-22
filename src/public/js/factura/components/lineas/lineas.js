@@ -1,10 +1,10 @@
 
-import TableHTML from "../../components/TableHTML.js";
-import i18n from "../i18n/langs.js";
+import TableHTML from "../../../components/TableHTML.js";
+import i18n from "../../i18n/langs.js";
 
-import factura from "../model/Factura.js";
-import ttpp from "../model/TtppEmpresa.js";
-import form from "../modules/factura.js";
+import factura from "../../model/Factura.js";
+import ttpp from "../../model/TtppEmpresa.js";
+import form from "../../modules/factura.js";
 
 export default class Lineas extends TableHTML {
 	connectedCallback() {
