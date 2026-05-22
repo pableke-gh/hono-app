@@ -9,10 +9,10 @@
 
 	<div class="card-xeco">
 		<h2>Partidas a incrementar</h2>
-		<div class="ui-blocks form-refresh" data-refresh="showPartidasInc">
+		<div class="ui-blocks">
 		<label class="ui-block">
 			<div class="label">Ejercicio:</div>
-			<select id="ejInc" name="ejInc" is="data-list" class="ui-ej" data-editable="is-editable-ej-inc" tabindex="10"></select>
+			<select id="ejInc" name="ejInc" is="data-list" class="ui-ej" tabindex="10"></select>
 		</label>
 		<label class="ui-block-xl autocomplete">
 			<div class="label required">Orgánica:</div>
@@ -27,7 +27,7 @@
 		</label>
 		<label class="ui-block">
 			<div class="label required">Económica:</div>
-			<select name="ecoInc" is="data-list" class="ui-input" tabindex="12"></select>
+			<select name="ecoInc" is="data-list" class="ui-input" data-empty="lblSelectEco" tabindex="12"></select>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
@@ -36,12 +36,12 @@
 			<div class="ui-errtip"></div>
 		</label>
 		<div class="ui-block-btn">
-			<a href="#tab-action" class="btn btn-green" tabindex="14" data-action="partida-inc-add">
-				<i class="fas fa-plus"></i> #{msg['lbl.add.tabla']}</a>
+			<button type="button" is="add-partida-inc" class="btn btn-green" tabindex="14" data-action="partida-inc-add">
+				<i class="fas fa-plus"></i> #{msg['lbl.add.tabla']}</button>
 		</div>
 		</div>
 
-		<table is="partida-table" class="tb-xeco">
+		<table is="partidas-table" class="tb-xeco">
 			<thead>
 				<tr>
 					<th class="slim"></th><th>Ej.</th><th>Orgánica</th><th class="hide-sm">Descripción Orgánica</th>

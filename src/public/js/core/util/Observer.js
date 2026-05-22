@@ -10,7 +10,7 @@ class Observer {
 		return this;
 	}
 	subscribeHtmlElement(el, opts) { // final arrow function
-		const event = el.dataset.event || "form-update"; // event name
+		const event = el.dataset.event || "form-updated"; // event name
 		return this.subscribe(event, data => { // add specific event
 			const action = el.dataset.refresh; // handler name
 			if (action == "text-render") // render contents

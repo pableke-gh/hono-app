@@ -52,8 +52,8 @@ class Factura extends Solicitud {
 
 customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("recibo-input", AutocompleteRecibo, { extends: "input" });
-customElements.define("add-linea", AddLinea, { extends: "button" });
 customElements.define("ttpp-input", AutocompleteTTPP, { extends: "input" });
+customElements.define("add-linea", AddLinea, { extends: "button" });
 customElements.define("add-all-recibos", AddAllRecibos, { extends: "button" });
 customElements.define("linea-table", Lineas, { extends: "table" });
 

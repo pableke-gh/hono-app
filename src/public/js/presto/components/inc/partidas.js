@@ -9,7 +9,6 @@ import form from "../../modules/presto.js";
 export default class Partidas extends TableHTML {
 	connectedCallback() {
 		this.setMsgEmpty("msgPartidasEmpty");
-		presto.showPartidasInc = () => (presto.isTipoMultipartida() && presto.isEditable() && (this.size() < 20));
 	}
 
 	// Importante! el total requiere redondeo para las validaciones con el impoerte a decrementar
@@ -49,7 +48,11 @@ export default class Partidas extends TableHTML {
 		</tr>`;
 	}
 	afterRender() {
-		form.setEditable(presto);
+		// actualizar estado de edición del formulario
+		form.getElement("ej").setReadonly(this.size() > 0);
+		form.getElement("ejInc").setReadonly(this.size() || presto.isDisableEjInc());
+		const ok = presto.isTipoMultipartida() && presto.isEditable() && (this.size() < 20);
+		this.previousElementSibling.setVisible(ok); // muestro / oculto la partida a incrementar
 	}
 
 	flush() { // override super class

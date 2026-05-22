@@ -8,10 +8,9 @@ import form from "../../modules/presto.js";
 export default class OrganicaInc extends AutocompleteHTML {
 	#economica = this.form.elements["ecoInc"];
 
-	constructor() {
-		super(); // Must call super before 'this'
+	connectedCallback() {
 		this.setMinLength(4); // default initialization
-		this.#economica.dataset.empty = "lblSelectEco";
+		this.form.elements["ejInc"].addEventListener("change", this.reload);
 	}
 
 	select(item) { // override => final select

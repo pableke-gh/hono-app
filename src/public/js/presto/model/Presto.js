@@ -22,7 +22,6 @@ class Presto extends Solicitud {
 
 	isPartidaDec = () => (this.isTcr() || this.isL83() || this.isAnt() || this.isAfc());
 	isTipoMultipartida = () => (this.isTcr() || this.isFce() || this.isGcr());
-	showPartidasInc = () => (this.isTipoMultipartida() && this.isEditable() /*&& (partidas.size() < 20)*/);
 	isPartidaExt = () => (this.isGcr() || this.isAnt());
 	isDisableEjInc = () => (this.isDisabled() || this.isTcr() /*|| this.isFce()*/);
 	isAutoLoadImp = () => (this.isL83() || this.isAnt() || this.isAfc());

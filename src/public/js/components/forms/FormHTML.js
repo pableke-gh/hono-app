@@ -79,7 +79,7 @@ export default class FormHTML extends HTMLFormElement {
 	setText = (selector, text) => { this.#fnQuery(selector).innerText = text; return this; }
 	text = (selector, text) => { this.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.$$(selector).render(data); return this; } // NodeList.prototype.render
-	refresh(model) { observer.emit("form-update", model, this.#opts); tabs.setHeight(); return this; } // NodeList.prototype.refresh
+	refresh(model) { observer.emit("form-updated", model, this.#opts); tabs.setHeight(); return this; } // NodeList.prototype.refresh
 	send = url => api.setForm(this).send(url || this.action).catch(info => { this.setErrors(info); throw info; });
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab

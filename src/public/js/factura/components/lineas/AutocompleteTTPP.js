@@ -18,6 +18,6 @@ export default class AutocompleteTTPP extends AutocompleteHTML {
 
 	connectedCallback() {
 		this.setMinLength(4); // init. component
-		observer.subscribe("form-update", () => this.setEditable()); // update button state on pedido changes
+		observer.subscribe("form-updated", () => this.setEditable()); // update button state on pedido changes
 	}
 }

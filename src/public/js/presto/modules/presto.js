@@ -4,8 +4,11 @@ import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 
 import PartidaDec from "./partidaDec.js";
-import PartidaInc from "./partidaInc.js";
 import Partida030 from "./partida030.js";
+
+import AddPartida from "../components/inc/AddPartida.js";
+import OrganicaInc from "../components/inc/Organica.js";
+import Partidas from "../components/inc/Partidas.js";
 
 import Firmas from "../components/Firmas.js";
 import PrestoSolicitudes from "../components/prestos.js";
@@ -13,27 +16,25 @@ import Solicitud from "../../core/modules/solicitud.js";
 
 class Presto extends Solicitud {
 	#pDec = new PartidaDec(this);
-	#pInc = new PartidaInc(this);
 	#p030 = new Partida030(this);
+	#partidas = this.querySelector("table");
 
 	init() { // init modules
 		super.init(valid);
 		this.#pDec.init();
-		this.#pInc.init();
 		this.#p030.init();
 		return this;
 	}
 
 	onView(data) {
 		this.#pDec.view(data); // cargo el formulario de la partida a decrementar
-		this.#pInc.view(data.partidas); // cargo la tabla de partidas a incrementar
+		this.#partidas.render(data.partidas); // cargo la tabla de partidas a incrementar
 	}
 
 	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
 	getPartidaDec = () => this.#pDec; // partida que se decrementa
-	getPartidaInc = () => this.#pInc; // partidas a incrementar
-	getPartidas = this.#pInc.getPartidas;
-	getPartida030 = () => this.#p030;
+	getPartida030 = () => this.#p030; // formulario del DC 030
+	getPartidas = () => this.#partidas; // tabla de partidas a incrementar
 
 	setAvisoFa = item => { //aviso para organicas afectadas en TCR o FCE
 		const info = "La orgánica seleccionada es afectada, por lo que su solicitud solo se aceptará para determinado tipo de operaciones.";
@@ -49,6 +50,10 @@ class Presto extends Solicitud {
 		return fd.setJSON("partidas", this.getPartidas().setPrincipal().getData());
 	}
 }
+
+customElements.define("organica-inc", OrganicaInc, { extends: "input" });
+customElements.define("add-partida-inc", AddPartida, { extends: "button" });
+customElements.define("partidas-table", Partidas, { extends: "table" });
 
 customElements.define("firmas-block", Firmas, { extends: "div" });
 customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });

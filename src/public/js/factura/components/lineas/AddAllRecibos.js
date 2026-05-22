@@ -22,6 +22,6 @@ export default class AddAllRecibos extends ButtonForm {
 
 	connectedCallback() { // init. component
 		super.connectedCallback(); // call parent method to set default behavior
-		observer.subscribe("form-update", () => this.setEditable()); // update button state on pedido changes
+		observer.subscribe("form-updated", () => this.setEditable()); // update button state on pedido changes
 	}
 }
