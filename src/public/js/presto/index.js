@@ -9,16 +9,10 @@ import ButtonSave from "./components/buttons/ButtonSave.js";
 import ButtonSubsanar from "./components/buttons/ButtonSubsanar.js";
 
 coll.ready(() => { // init. presto modules
-	form.init()
-		.set("show-subtipo", () => (presto.isUae() && presto.isGcr()))
-		.set("show-memoria", () => !presto.isL83()).set("is-adjunto", presto.getAdjunto);
-	tabs.setAction("adjunto", () => api.init().blob("/uae/presto/adjunto?id=" + presto.getAdjunto()));
-	tabs.show(presto.isUxxiec() ? "init" : "list"); // init view for PAS and list view for PDI
-
-	// Init. form events
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
 	const fnUrgente = ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2");
-	form.addChange("urgente", fnUrgente).onChange(".ui-ej", fnSync);
+	form.init().addChange("urgente", fnUrgente).onChange(".ui-ej", fnSync); // init events
+	tabs.show(presto.isUxxiec() ? "init" : "list"); // set view for PAS / PDI
 
 	const DATA = {}; // build container
 	DATA.ejercicios = form.getElement("ej").getValues(); // read current open years

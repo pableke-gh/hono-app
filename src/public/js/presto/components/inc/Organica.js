@@ -4,6 +4,7 @@ import api from "../../../components/Api.js";
 
 import presto from "../../model/Presto.js";
 import form from "../../modules/presto.js";
+import EconomicaInc from "./Economica.js";
 
 export default class OrganicaInc extends AutocompleteHTML {
 	#economica = this.form.elements["ecoInc"];
@@ -32,3 +33,5 @@ export default class OrganicaInc extends AutocompleteHTML {
 		return super.reset();
 	}
 }
+
+customElements.define("economica-inc", EconomicaInc, { extends: "select" });

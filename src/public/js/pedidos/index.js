@@ -3,6 +3,8 @@ import PedidoFilterForm from "./modules/filter.js";
 import PedidosTable from "./modules/pedidos.js";
 import PedidoForm from "./modules/pedido.js";
 
+import Adjunto from "./components/Adjunto.js";
+import Presupuesto from "./components/Presupuesto.js";
 import Referencia from "./components/Referencia.js";
 import Proveedor from "./components/Proveedor.js";
 import Categoria from "./components/Categoria.js";
@@ -19,6 +21,8 @@ customElements.define("pedido-filter", PedidoFilterForm, { extends: "form" });
 customElements.define("pedidos-table", PedidosTable, { extends: "table" });
 customElements.define("pedido-form", PedidoForm, { extends: "form" });
 
+customElements.define("btn-ppto", Adjunto, { extends: "button" });
+customElements.define("ppto-file", Presupuesto, { extends: "input" });
 customElements.define("ref-input", Referencia, { extends: "input" });
 customElements.define("proveedor-input", Proveedor, { extends: "input" });
 customElements.define("categoria-pedido", Categoria, { extends: "select" });

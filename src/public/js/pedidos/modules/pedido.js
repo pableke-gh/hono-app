@@ -19,7 +19,6 @@ export default class PedidoForm extends FormHTML {
 		pedido.setUser(this.dataset); // load user info
 		tabs.setAction("create", this.create); // set handlers
 		tabs.setAction("firmar", this.firmar).setAction("rechazar", this.rechazar).setAction("cancelar", this.cancelar);
-		tabs.setAction("adjunto", () => api.init().blob("/uae/pedidos/adjunto?id=" + pedido.getAdjunto()));
 
 		this.addChange("imp", ev => { pedido.setImporte(ev.target.getValue()); this.#setImportes(); });
 		this.addChange("iva", ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });

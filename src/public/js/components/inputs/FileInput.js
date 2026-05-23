@@ -28,6 +28,7 @@ export default class FileInput extends TextInput {
 	}
 
 	setReadonly(force) { return super.setDisabled(force); } // The attribute readonly is not supported or relevant to file input
+	setEditable() { return this; } // preserve state by default, override in child class
 	setRequired(msg) { return input.setError(this, "errRequiredFile", msg); } // override
 	validate() { return input.validate(this); }
 	getFilename(max) { // max files to show
@@ -55,6 +56,29 @@ export default class FileInput extends TextInput {
 			index = 0; // restart index
 			fnLoad(index);
 		});
+	}
+
+	readAsText() {
+		if (this.isEmpty())
+			return Promise.resolve(); // no files selected
+
+		// convierto FileList a Array y mapeo cada archivo a una promesa
+		const promises = Array.from(this.files).map(file => new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = () => reject(reader.error);
+			reader.readAsText(file, "UTF-8");
+		}));
+
+		// si solo hay un archivo devuelvo la promesa con el texto directamente
+		if (promises.length == 1)
+			return promises[0];
+
+		try { // espero a que todas las promesas terminen
+			return Promise.all(promises); // devuelve una promesa con un array de textos de los archivos
+		} catch (ex) { // error al leer las promesas
+			return Promise.reject(ex);
+		}
 	}
 
 	connectedCallback() { // Initialize the element

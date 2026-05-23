@@ -10,6 +10,10 @@ import AddPartida from "../components/inc/AddPartida.js";
 import OrganicaInc from "../components/inc/Organica.js";
 import Partidas from "../components/inc/Partidas.js";
 
+import Memoria from "../components/info/Memoria.js";
+import Subtipo from "../components/info/Subtipo.js";
+import Adjunto from "../components/info/Adjunto.js";
+
 import Firmas from "../components/Firmas.js";
 import PrestoSolicitudes from "../components/prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";
@@ -45,7 +49,7 @@ class Presto extends Solicitud {
 	getFormData() {
 		const fd = super.getFormData(); // append all input values
 		fd.load(presto.getData(), [ "id", "estado", "tipo", "mask", "codigo" ]); // set calculated fields
-		fd.exclude([ "faDec", "cd", "ejInc", "faInc", "ecoInc", "impInc", "ej030", "imp030" ]);
+		fd.exclude([ "faDec", "cd", "ejInc", "faInc", "impInc", "ej030", "imp030" ]); // remove extra fields
 		// primera partida = principal y serializo el json (FormData only supports flat values)
 		return fd.setJSON("partidas", this.getPartidas().setPrincipal().getData());
 	}
@@ -54,6 +58,10 @@ class Presto extends Solicitud {
 customElements.define("organica-inc", OrganicaInc, { extends: "input" });
 customElements.define("add-partida-inc", AddPartida, { extends: "button" });
 customElements.define("partidas-table", Partidas, { extends: "table" });
+
+customElements.define("memo-text", Memoria, { extends: "textarea" });
+customElements.define("gcr-list", Subtipo, { extends: "select" });
+customElements.define("btn-doc", Adjunto, { extends: "button" });
 
 customElements.define("firmas-block", Firmas, { extends: "div" });
 customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });

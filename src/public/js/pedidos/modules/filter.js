@@ -27,9 +27,5 @@ export default class PedidoFilterForm extends FormHTML {
 		tabs.setInitEvent("list", () => { pedidos.isEmpty() && fnList("", "5"); });
 		//tabs.setAction("list-all", () => { this.reset(".ui-filter"); fnCallList(); });
 		tabs.setAction("relist", () => fnList(sb.getYear(), "5"));
-
-		// global tabs actions
-		tabs.setAction("clickNext", link => link.nextElementSibling.click()); // fire click event for next sibling element
-		tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
 	}
 }

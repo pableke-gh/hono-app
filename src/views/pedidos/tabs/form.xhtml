@@ -11,9 +11,8 @@
 		<h2 class="form-refresh" data-refresh="text-render">@getTitulo; @getCodigo;</h2>
 		<div class="ui-blocks">
 			<div class="ui-block-btn">
-				<a href="#tab-action-adjunto" class="btn btn-info form-refresh" data-refresh="getAdjunto" title="Descargar / visualizar la documentación asociada">Presupuesto Adjunto<i class="far fa-paperclip"></i></a>
-				<a href="#tab-action-clickNext" class="btn btn-info form-refresh" data-refresh="isEditable" title="Presupuesto del proveedor"><i class="fas fa-search"></i>Adjuntar Presupuesto</a>
-				<input type="file" name="adjunto" is="file-input" class="hide" data-filename=".spi-file" />
+				<button type="button" is="btn-ppto" class="btn btn-info"></button>
+				<input type="file" name="adjunto" is="ppto-file" class="hide" data-filename=".spi-file" />
 				<div class="ui-errtip"></div> 
 			</div>
 			<label class="ui-block">

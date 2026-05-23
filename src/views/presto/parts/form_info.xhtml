@@ -10,9 +10,9 @@
 	<div class="card-xeco">
 		<h2 class="form-refresh" data-refresh="text-render">Otros Datos de la Solicitud @codigo; (@getTitulo;)</h2>
 		<div class="ui-blocks">
-		<label class="ui-block-row form-refresh" data-refresh="show-memoria">
+		<label class="ui-block-row">
 			<div class="label required">Memoria Justificativa:</div>
-			<textarea name="memo" is="text-area" tabindex="14"></textarea>
+			<textarea name="memo" is="memo-text" tabindex="14"></textarea>
 			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
@@ -34,18 +34,15 @@
 	</div>
 
 	<div class="ui-blocks">
-		<label class="ui-block form-refresh" data-refresh="show-subtipo">
+		<label class="ui-block">
 			<div class="label required">Clasificación de la operación:</div>
-			<select name="subtipo" is="data-list" data-editable="isEditableUae" class="ui-input" tabindex="18">
+			<select name="subtipo" is="gcr-list" class="ui-input" tabindex="18">
 				<option value="1">Por ingreso</option>
 				<option value="2">Por compromiso de ingreso</option>
 			</select>
 		</label>
-		<div class="ui-block-row form-refresh" data-refresh="is-adjunto"> 
-			<a href="#tab-action-adjunto" class="btn btn-info" title="Descargar / visualizar la documentación asociada">Documentación Adjunta<i class="far fa-paperclip"></i></a>
-		</div>
-		<div class="ui-block-row form-refresh" data-refresh="isEditable">
-			<a href="#tab-action-clickNext" class="btn btn-info"><i class="fas fa-search"></i>Adjuntar Documentación</a>
+		<div class="ui-block-row">
+			<button type="button" is="btn-doc" class="btn btn-info"></button>
 			<input type="file" name="adjunto" is="file-input" class="hide" />
 			<span></span>
 
