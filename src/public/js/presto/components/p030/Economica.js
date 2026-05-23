@@ -8,6 +8,9 @@ import form from "../../modules/presto.js";
 export default class Economica030 extends DataList {
 	#ej030; // is tab preloaded
 
+	setEditable() { return this.setReadonly(!presto.isEditableUae()); }
+	addFormData(fd) {} // not append values in form data
+
 	isLoaded = ej => (this.#ej030 == ej); // 030 cargado
 	showTab(partida) {
 		this.#ej030 = partida.ej030 = partida.ej; // Ejercicio de la partida a añadir

@@ -45,7 +45,7 @@ class Presto extends Solicitud {
 	getFormData() {
 		const fd = super.getFormData(); // append all input values
 		fd.load(presto.getData(), [ "id", "estado", "tipo", "mask", "codigo" ]); // set calculated fields
-		fd.exclude([ "faDec", "cd", "ejInc", "orgInc", "faInc", "ecoInc", "impInc", "ej030", "org030", "eco030", "imp030" ]);
+		fd.exclude([ "faDec", "cd", "ejInc", "faInc", "ecoInc", "impInc", "ej030", "imp030" ]);
 		// primera partida = principal y serializo el json (FormData only supports flat values)
 		return fd.setJSON("partidas", this.getPartidas().setPrincipal().getData());
 	}

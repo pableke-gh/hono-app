@@ -1,6 +1,8 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import api from "../../../components/Api.js";
+
+import presto from "../../model/Presto.js";
 import form from "../../modules/presto.js";
 
 export default class Organica030 extends AutocompleteHTML {
@@ -10,9 +12,9 @@ export default class Organica030 extends AutocompleteHTML {
 	}
 
 
-	load(data) {
-		this.setValue(data.org030, data.o030 + " - " + data.dOrg030);
-	}
+	load(data) { this.setValue(data.org030, data.o030 + " - " + data.dOrg030); }
+	setEditable() { return this.setReadonly(!presto.isEditableUae()); }
+	addFormData(fd) {} // not append values in form data
 
 	source() { api.init().json("/uae/presto/organicas/030", { ej: form.getValue("ej030"), term: this.value }).then(this.render); }
 	select(item) { form.setValue("eco030", item.imp); return item.value; }

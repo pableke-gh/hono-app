@@ -14,9 +14,8 @@ export default class OrganicaDec extends AutocompleteHTML {
 		this.setMinLength(4); // default initialization
 	}
 
-	load(data) {
-		this.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);
-	}
+	load(data) { this.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec); }
+	setEditable() { return this.setReadonly(!presto.isEditable()); }
 
 	source() {
 		const opts = { 3: "/uae/presto/organicas/l83", 5: "/uae/presto/organicas/ant" };

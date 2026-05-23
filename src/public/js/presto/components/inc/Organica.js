@@ -8,6 +8,9 @@ import form from "../../modules/presto.js";
 export default class OrganicaInc extends AutocompleteHTML {
 	#economica = this.form.elements["ecoInc"];
 
+	addFormData(fd) {} // not append values in form data
+	setEditable() { return this; } // preserve state always editable
+
 	connectedCallback() {
 		this.setMinLength(4); // default initialization
 		this.form.elements["ejInc"].addEventListener("change", this.reload);

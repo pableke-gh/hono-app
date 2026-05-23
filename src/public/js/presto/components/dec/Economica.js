@@ -19,9 +19,8 @@ export default class EconomicaDec extends DataList {
 		form.setValue("cd", item.imp); // set importe
 	}
 
-	load(data) {
-		this.setOption(data.ecoDec, data.ecoDecDesc); // cargo el desplegable de economicas
-	}
+	load(data) { this.setOption(data.ecoDec, data.ecoDecDesc); } // cargo el desplegable de economicas
+	setEditable() { return this.setReadonly(!presto.isEditable()); }
 
 	reset() {
 		form.setValue("imp").setValue("cd");

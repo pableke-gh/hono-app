@@ -15,10 +15,10 @@ import input from "./FormInput.js";
  */
 export default class ButtonForm extends HTMLButtonElement {
 	//getValue() {}
-	setValue() {}
-	load(data) {}
-	toData(data) {}
-	addFormData(fd) {}
+	setValue() {} // not to set value
+	load(data) {} // not to load value
+	toData(data) {} // not set value in data
+	addFormData(fd) {} // not append values in form data
 
 	reset() {}
 	restart() {}
