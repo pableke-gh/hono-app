@@ -1,5 +1,6 @@
 
-import ue from "../data/ue.js";
+import irse from "../model/Irse.js";
+import interesado from "../model/Interesado.js";
 
 const DEFAULT_ES = 15;
 const DEFAULT_UE = 19;
@@ -20,34 +21,31 @@ const EXENTO_ZZ =    [ "296 20 01", "296 20 01", "296 20 01", "296 20 01" ];
 const NO_EXENTO_ZZ = [ "296 20 03", "296 20 03", "296 20 03", "296 20 03" ];
 
 class Irpf {
-	#isResidente = interesado => (interesado.residencia == "ES")
-	#isResidenteUE = interesado => (ue.includes(interesado.residencia))
-
-	isIrpf = interesado => (interesado && ["EXT", "ALU"].includes(interesado.ci));
-	getIrpf(interesado, actividad) {
-		if (!this.isIrpf(interesado)) return 0;
-		const i = IRPF_IDS.indexOf(actividad); // tipo de actividad
-		if (this.#isResidente(interesado)) return (i < 0) ? DEFAULT_ES : IRPF_ES[i]; // residente en españa
-		if (this.#isResidenteUE(interesado)) return (i < 0) ? DEFAULT_UE : IRPF_UE[i]; // union europea
+	isIrpf = () => (interesado.isAlumno() || interesado.isExterno());
+	getIrpf() {
+		if (!this.isIrpf()) return 0;
+		const i = IRPF_IDS.indexOf(irse.getActividad()); // tipo de actividad
+		if (interesado.isResidente()) return (i < 0) ? DEFAULT_ES : IRPF_ES[i]; // residente en españa
+		if (interesado.isResidenteUE()) return (i < 0) ? DEFAULT_UE : IRPF_UE[i]; // union europea
 		return (i < 0) ? DEFAULT_ZZ : IRPF_ZZ[i]; // resto del mundo
 	}
-	getImpIrpf(interesado, actividad, imp) {
-		return (imp * this.getIrpf(interesado, actividad)) / POR_100;
+	getImpIrpf(imp) {
+		return (imp * this.getIrpf()) / POR_100;
 	}
 
-	#getIndexCF(actividad) {
-		const i = IRPF_IDS.indexOf(actividad);
+	#getIndexCF() {
+		const i = IRPF_IDS.indexOf(irse.getActividad());
 		return (i < 0) ? 3 : i; //por defecto ID=ZZ
 	}
-	getClaveFiscalExenta(interesado, actividad) {
-		const i = this.#getIndexCF(actividad);
-		if (this.#isResidente(interesado)) return EXENTO_ES[i];
-		return this.#isResidenteUE(interesado) ? EXENTO_UE[i] : EXENTO_ZZ[i];
+	getClaveFiscalExenta() {
+		const i = this.#getIndexCF();
+		if (interesado.isResidente()) return EXENTO_ES[i];
+		return interesado.isResidenteUE() ? EXENTO_UE[i] : EXENTO_ZZ[i];
 	}
-	getClaveFiscalNoExenta(interesado, actividad) {
-		const i = this.#getIndexCF(actividad);
-		if (this.#isResidente(interesado)) return NO_EXENTO_ES[i];
-		return this.#isResidenteUE(interesado) ? NO_EXENTO_UE[i] : NO_EXENTO_ZZ[i];
+	getClaveFiscalNoExenta() {
+		const i = this.#getIndexCF();
+		if (interesado.isResidente()) return NO_EXENTO_ES[i];
+		return interesado.isResidenteUE() ? NO_EXENTO_UE[i] : NO_EXENTO_ZZ[i];
 	}
 }
 

@@ -3,6 +3,7 @@ import coll from "../../components/CollectionHTML.js";
 import sb from "../../components/types/StringBox.js";
 import i18n from "../i18n/langs.js";
 
+import interesado from "./Interesado.js";
 import Solicitud from "../../core/model/Solicitud.js";
 import irpf from "../util/irpf.js";
 
@@ -35,7 +36,15 @@ class Iris extends Solicitud {
 	is1su = () => (this.getFinanciacion() == "ISU");
 	isIsu = () => (this.is1su() || this.isXsu());
 
-	setInteresado = data => (data ? this.setColectivo(data.ci).setCodigoRol(data.nif) : this.setColectivo().setRol());
+	setInteresado = data => {
+		if (data) {
+			interesado.setData(data); // new interesado
+			return this.setColectivo(interesado.getColectivo()).setCodigoRol(interesado.getNif());
+		}
+		interesado.clear(); // clear previous data
+		return this.setColectivo().setRol();
+	}
+
 	getTitulo = () => i18n.getPerfil(this.getRol(), this.getColectivo(), this.getActividad(), this.getTramite(), this.getFinanciacion());
 	getPerfil = () => this.get("perfil");
 	setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
@@ -72,7 +81,7 @@ class Iris extends Solicitud {
 	getImpCena = () => 0;
 	isCenaFinal = () => false;
 	getTotAc = () => 0;
-	getIrpf = () => irpf.getIrpf(/*this.getInteresado()*/null, this.getActividad());
+	getIrpf = () => irpf.getIrpf();
 }
 
 export default new Iris();

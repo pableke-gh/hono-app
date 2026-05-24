@@ -2,14 +2,11 @@
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import api from "../../../components/Api.js";
 import observer from "../../../core/util/Observer.js";
-
 import irse from "../../model/Irse.js";
-import form from "../../modules/irse.js";
 
 export default class Interesado extends AutocompleteHTML {
 	init() { // Initialize element after form
 		this.setDelay(600).setMinLength(5);
-		form.set("isEquipoGob", (el, interesado) => ((interesado.cargos & 64) == 64)); // el interesado forma parte del equipo de gobierno
 		observer.subscribe("interesado", interesado => {
 			observer.emit("perfil", irse.setInteresado(interesado)); // propague event
 			const div = this.parentNode.nextElementSibling; // info element
@@ -38,6 +35,7 @@ export default class Interesado extends AutocompleteHTML {
 	setInteresado(interesado) {
 		if (!interesado) // creating new instance
 			return this.clear(); // clear previous data
+		irse.setInteresado(interesado); // load new data
 		this.setValue(interesado.nif, this.row(interesado));
 		observer.emit("interesado", interesado);
 	}

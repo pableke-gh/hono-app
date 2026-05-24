@@ -70,7 +70,7 @@
 		<label class="ui-blocks">
 			<div class="label required inline">#{iris.irse.form.labelActividad}:</div>
 			<div class="ui-block">
-			<select name="actividad" is="data-list" data-editable="isEditableP0" class="ui-perfil" tabindex="7">
+			<select name="actividad" is="actividades-list" class="ui-perfil" tabindex="7">
 			<c:choose>
 				<c:when test="#{iris.user.uxxiec}"> <!-- UXXIEC -->
 					<option value="COM">#{msg['uae.irse.tab0.act.com']}</option>
@@ -115,8 +115,8 @@
 
 		<button type="reset" is="btn-form" class="btn btn-light form-refresh" data-refresh="isEditableP0" title="#{msg['tit.btn.limpiar']}" tabindex="13">
 			<i class="far fa-broom"></i>#{msg['lbl.btn.limpiar']}</button> <!-- getId equivale a editableP0 -->
-		<a href="#tab-action-paso0" class="btn btn-green" title="#{msg['tit.btn.empezar']}" tabindex="13">
-			<h:outputText value="#{msg['lbl.btn.empezar']}" escape="false" /><i class="fas fa-caret-right"></i></a>
+		<button type="button" is="next-perfil" class="btn btn-green" title="#{msg['tit.btn.empezar']}" tabindex="13">
+			<h:outputText value="#{msg['lbl.btn.empezar']}" escape="false" /><i class="fas fa-caret-right"></i></button>
 
 		<a href="#tab-6" class="btn btn-info form-refresh" data-refresh="isResumable" title="#{msg['tit.btn.resumen']}" tabindex="14">
 			<h:outputText value="#{msg['lbl.btn.resumen']}" escape="false" /><i class="fas fa-caret-right"></i></a>

@@ -10,6 +10,7 @@ import gastos from "../../model/Gastos.js";
 import perfil from "./perfil.js";
 import form from "../irse.js";
 
+import EquipoGobierno from "../../components/paso1/EquipoGobierno.js";
 import Promotor from "../../components/paso1/Promotor.js";
 import NextPaso1 from "../../components/paso1/NextPaso1.js";
 import SavePaso1 from "../../components/paso1/SavePaso1.js";
@@ -53,6 +54,7 @@ class Paso1 {
 	}
 }
 
+customElements.define("grupos-dieta-list", EquipoGobierno, { extends: "select" });
 customElements.define("promotor-input", Promotor, { extends: "input" });
 customElements.define("next-paso1", NextPaso1, { extends: "button" });
 customElements.define("save-paso1", SavePaso1, { extends: "button" });
