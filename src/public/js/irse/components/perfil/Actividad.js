@@ -8,7 +8,7 @@ import getActividad from "../../data/perfiles/actividades.js";
 export default class Actividad extends DataList {
 	setEditable() {
 		this.setValue(irse.getActividad());
-		return this.setReadonly(!irse.isEditableP0());
+		this.setReadonly(!irse.isEditableP0());
 	}
 
 	isColaboracion = () => (this.value == "OCE") || (this.value == "IAE+OCE");
@@ -28,8 +28,9 @@ export default class Actividad extends DataList {
 	is1Dia = () => (this.isMun() || this.isMes() || this.isAcs() || this.isAfo() || this.isAtr() || this.isCtp() || this.isOce());
 
 	connectedCallback() { // init component
-		this.addChange(() => observer.emit("perfil", irse)); // actualizo el perfil al cambiar la actividad
-		observer.subscribe("perfil", () => {
+		// actualizo el perfil al cambiar la actividad y notifico
+		this.addChange(() => observer.emit("perfil", irse.setActividad(this.value)));
+		observer.subscribe("perfil", () => { // notify changes in perfil
 			this.select(getActividad(irse.getRol(), irse.getColectivo(), irse.getFinanciacion()));
 			form.select("tramite", this.isCom() ? 7 : 1); // default = AyL
 		});

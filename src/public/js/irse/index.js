@@ -15,7 +15,7 @@ coll.ready(() => {
 	tabs.setAction("create", () => {
 		list.clear(); // no element selected
 		api.init().json("/uae/iris/create").then(data => { // server response
-			irse.setData(data.solicitud);
+			irse.setData(data.solicitud); // default data by perfil
 			rutas.setRutas(data.rutas); // registro de rutas
 			gastos.setGastos(data.gastos) // registro de gastos
 					.setSubv(data.subv).setCongreso(data.congreso) // paso 3

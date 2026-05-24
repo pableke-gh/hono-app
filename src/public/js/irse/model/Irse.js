@@ -28,15 +28,16 @@ class Iris extends Solicitud {
 	setColectivo = valor => this.set("colectivo", valor);
 
 	getActividad = () => this.get("actividad");
+	setActividad = val => this.set("actividad", val);
 	isMun = () => (this.getActividad() == "MUN");
 	getTramite = () => this.get("tramite");
 	getFinanciacion = () => this.get("financiacion");
-	setFinanciacion = val => { this.set("financiacion", val); return this; }
+	setFinanciacion = val => this.set("financiacion", val);
 	isXsu = () => (this.getFinanciacion() == "xSU");
 	is1su = () => (this.getFinanciacion() == "ISU");
 	isIsu = () => (this.is1su() || this.isXsu());
 
-	setInteresado = data => {
+	setInteresado(data) {
 		if (data) {
 			interesado.setData(data); // new interesado
 			return this.setColectivo(interesado.getColectivo()).setCodigoRol(interesado.getNif());
@@ -48,7 +49,7 @@ class Iris extends Solicitud {
 	getTitulo = () => i18n.getPerfil(this.getRol(), this.getColectivo(), this.getActividad(), this.getTramite(), this.getFinanciacion());
 	getPerfil = () => this.get("perfil");
 	setPerfil = (rol, colectivo, actividad, tramit, financiacion) => {
-		this.setRol(rol).setColectivo(colectivo).set("actividad", actividad).set("tramite", tramit).setFinanciacion(financiacion);
+		this.setRol(rol).setColectivo(colectivo).setActividad(actividad).set("tramite", tramit).setFinanciacion(financiacion);
 		return this.set("perfil", rol + "," + colectivo + "," + actividad + "," + tramit + "," + financiacion);
 	}
 

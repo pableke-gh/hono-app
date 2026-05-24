@@ -1,13 +1,11 @@
 
 import sb from "../../../components/types/StringBox.js";
 import api from "../../../components/Api.js";
+import observer from "../../../core/util/Observer.js";
 
 import irse from "../../model/Irse.js";
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
-import gastos from "../../model/Gastos.js";
-
-import perfil from "./perfil.js";
 import form from "../irse.js";
 
 import EquipoGobierno from "../../components/paso1/EquipoGobierno.js";
@@ -30,9 +28,8 @@ class Paso1 {
 	#update = data => form.setChanged().setFirmas(data.firmas).refresh(irse);
 
 	view(firmas) {
-		perfil.isMun() && this.setMun(); // set municipio
-		form.setValue("objeto", irse.getMemoria())
-			.setValue("grupo-dieta", gastos.getGrupoDieta()).setFirmas(firmas)
+		this.setMun(); // prepare municipio
+		form.setValue("objeto", irse.getMemoria()).setFirmas(firmas)
 			.getElement("promotor").setPromotor(firmas);
 	}
 	save() { // send data to server and return promise
@@ -40,8 +37,9 @@ class Paso1 {
 	}
 
 	getGrupoDieta = () => form.getValue("grupo-dieta");
-	isGrupoDieta1 = () => (1 == this.getGrupoDieta());
-	setMun() {
+	isGrupoDieta1 = () => form.getElement("grupo-dieta").isGrupoDieta1();
+	setMun() { // only for municipio
+		if (!irse.isMun()) return; // stop
 		const data = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
 		data.f1 = sb.isoDate(data.dt1); // input format date
 		data.matriculaMun = irse.getMatricula(); // matricula from server

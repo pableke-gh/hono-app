@@ -25,8 +25,9 @@ export default class NextPerfil extends ButtonForm {
 		api.setJSON(data).json("/uae/iris/perfil/save").then(data => {
 			irse.setData(data.solicitud); // update irse data
 			observer.emit("perfil", irse); // update changes from server (id, fk, text, etc.)
+			form.getPaso1().view(data.firmas); // update paso1 and firmas list
 			form.getPaso9().setCuentas(data.cuentas); // cuentas del interesado (desplegable paso9)
-			form.setFirmas(data.firmas).reactivate(irse).nextTab(1); // prepare changes and show tab
+			form.reactivate(irse).nextTab(1); // prepare changes and show tab
 		});
 	}
 

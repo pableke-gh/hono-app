@@ -5,7 +5,6 @@ import i18n from "../../i18n/langs.js";
 import irse from "../../model/Irse.js";
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
-import perfil from "../tabs/perfil.js";
 import form from "../irse.js"
 
 // tabla del paso 6 (kilometraje del vehiculo propio)
@@ -14,8 +13,8 @@ export default class Kilometraje extends TableHTML {
 		irse.getNumRutasVp = rutas.getNumRutasVp;
 		irse.getImpGasolina = ruta.getImpGasolina;
 		irse.getImpKm = () => (irse.isMun() ? rutas.getImpKm() : this.getImpKm());
-		irse.getNumRutasVpMun = () => (perfil.isMun() && rutas.getNumRutasVp());
-		irse.getNumRutasVpMaps = () => (!perfil.isMun() && rutas.getNumRutasVp());
+		irse.getNumRutasVpMun = () => (irse.isMun() && rutas.getNumRutasVp());
+		irse.getNumRutasVpMaps = () => (!irse.isMun() && rutas.getNumRutasVp());
 
 		form.set("is-justifi-km", this.isJustifiKm);
 		this.setChange("km1", (data, el) => {
