@@ -1,4 +1,5 @@
 
+import alerts from "../../components/Alerts.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
 import i18n from "../i18n/langs.js";
@@ -13,7 +14,9 @@ export default class ButtonSave extends ButtonForm {
 	}
 
 	execute() {
-		if (this.form.validate() && i18n.confirm("msgSend")) // validate and user confirmation
+		let ok = !!alerts.closeAlerts(); // global message
+		this.form.elements.eachPrev(el => { ok = el.validate() && ok; });
+		if (ok && i18n.confirm("msgSend")) // validate and user confirmation
 			api.setFormData(this.form.getFormData()).json("/uae/pedidos/save").then(tabs.showInit);
 	}
 }

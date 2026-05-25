@@ -10,7 +10,7 @@ import Proveedor from "./components/Proveedor.js";
 import Categoria from "./components/Categoria.js";
 import Aplicacion from "./components/Aplicacion.js";
 import ButtonSave from "./components/ButtonSave.js";
-import Firmas from "./components/Firmas.js";
+import Firmas from "../core/components/Firmas.js";
 
 import ControlesFilterForm from "./modules/ControlesFilter.js";
 import ControlesTable from "./modules/ControlesTable.js";

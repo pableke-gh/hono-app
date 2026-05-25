@@ -33,8 +33,8 @@ export default class Aplicacion extends AutocompleteHTML {
 		return item.org + " - " + item.desc;
 	}
 	select(item) {
-		const tpl = "@ej; @org; @func; @getEconomica; (@lblCreditoDisp;: $imp; €)";
-		this.#info.innerText = i18n.render(tpl, aplicacion.load(item));
+		const tpl = "<b>@lblDisponible;:</b> $imp; €";
+		this.#info.innerHTML = i18n.render(tpl, aplicacion.load(item));
 		return aplicacion.getId();
 	}
 

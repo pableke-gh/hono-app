@@ -37,6 +37,8 @@
 				<input type="email" name="email" is="email-input" class="ui-input" required="1" tabindex="3" placeholder="nombre@correo.com" /> 
 				<div class="ui-errtip"></div> 
 			</label>
+			<div id="prov-info" class="ui-block-row text-height"></div>
+			<hr class="slim ui-block-row"/>
 			<label class="ui-block-row">
 				<div class="label required">Descripción del servicio o bien a contratar:</div>
 				<textarea name="desc" is="text-area" class="ui-input ui-ta" required="1" tabindex="4" maxlength="1000"></textarea>
@@ -47,11 +49,11 @@
 			<label class="ui-block-xl">
 				<div class="label required">Categoría:</div>
 				<select name="categoria" is="categoria-pedido" class="ui-input ui-select" tabindex="5">
-					<option value="2">Reparación y mantenimiento (también costes de materiales y repuestos)</option>
+					<option value="2">Reparación y mantenimiento (también costes de materiales y repuestos necesarios para los trabajos)</option>
 					<option value="3">Otros servicios</option>
 					<option value="4">Material (exceptuando el destinado a reparaciones), suministros y otros gastos</option>
 					<option value="5">Arrendamientos</option>
-					<option value="6">Inventariable (capítulo 6)</option>
+					<option value="6">Inventariable - capítulo 6 (incluye costes de instalación y puesta en marcha inicial)</option>
 				</select>
 			</label>
 			<label class="ui-block">
@@ -66,21 +68,20 @@
 		<div id="info-categorias" class="notice notice-info"></div>
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
-				<div class="label required">Orgánica:</div>
+				<div class="label required">Partida presupuestaria:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
 				<input type="search" name="aplicacion" is="aplicacion-input" class="ui-autocomplete" tabindex="6" placeholder="Introduce una orgánica" /> 
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</label>
-			<div id="org-info" class="ui-block-row text-height"></div>
-			<div id="prov-info" class="ui-block-row text-height"></div>
+			<div id="org-info" class="ui-block-info text-height"></div>
 		</div>
 
 		<!-- Importes -->
 		<hr class="slim"/>
 		<div class="ui-blocks">
 			<label class="ui-block">
-				<div class="label required">Importe estimado:</div>
+				<div class="label required">Importe estimado sin IVA:</div>
 				<input type="text" name="imp" is="float-input" class="ui-input" required="gt0" tabindex="7"/> €
 				<div class="ui-errtip"></div> 
 			</label>

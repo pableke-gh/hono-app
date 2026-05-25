@@ -1,7 +1,7 @@
 
 import irse from "../../model/Irse.js";
 import form from "../../modules/irse.js"
-import DataList from '../../../components/inputs/DataList.js';
+import DataList from "../../../components/inputs/DataList.js";
 import observer from "../../../core/util/Observer.js";
 import getActividad from "../../data/perfiles/actividades.js";
 

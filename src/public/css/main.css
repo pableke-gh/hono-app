@@ -32,6 +32,7 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 .text-xl { font-size: x-large; font-weight: bold; text-transform: uppercase; }
 .text-upper1:first-letter { text-transform: capitalize; }
 .text-disabled { opacity: .5; color: gray !important; }
+.text-block { display: inline-block; margin-right: .2rem; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 

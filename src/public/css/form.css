@@ -8,7 +8,7 @@
 .ui-block-xl { min-width: 350px; max-width: 700px; flex-grow: 1; }
 .ui-block-row { width: 100%; }
 .ui-block-btn { margin-top: 14px; }
-.ui-block-info { margin-top: 8px; }
+.ui-block-info { align-self: end; padding-bottom: 8px; }
 .ui-block-break { flex-basis: 100%; }
 .ui-block-box {
 	min-width: 250px; padding: 6px;

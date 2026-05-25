@@ -1,18 +1,19 @@
 
-import firma from "../../core/model/Firma.js";
-import observer from "../../core/util/Observer.js";
-import factura from "../model/Factura.js";
+import firma from "../model/Firma.js";
+import firmas from "../model/Firmas.js";
+import observer from "../util/Observer.js";
 
 export default class FirmasBlock extends HTMLDivElement {
 	static #first; // main block
 
-	render = firmas => { // render div contents
-		if (!firmas) return this.hide(); // hide all firmas
-		if (!Array.isArray(firmas)) return this.show(); // show firmas
+	render = data => { // render div contents
+		if (!data) return this.hide(); // hide all firmas
+		if (!Array.isArray(data)) return this.show(); // show cache
 
 		// build new contents
-		this.children[2].innerHTML = firmas.slice(1).map(firma.render).join("");
-		const rechazo = factura.isInvalidada() && firmas.find(firma.isRechazada);
+		firmas.setFirmas(data); // set new firmas array
+		this.children[2].innerHTML = firmas.render();
+		const rechazo = firmas.getRechazada(); // get rechazo
 		if (rechazo) { // rechazado o cancelado
 			rechazo.rejectedBy = firma.getNombre(rechazo);
 			this.children[3].render(rechazo);

@@ -1,4 +1,5 @@
 
+import alerts from "../../components/Alerts.js";
 import AutocompleteHTML from "../../components/inputs/AutocompleteHTML.js";
 import api from "../../components/Api.js";
 import i18n from "../i18n/langs.js";
@@ -27,10 +28,15 @@ export default class Proveedor extends AutocompleteHTML {
 	source() { api.init().json("/uae/pedidos/proveedores", { term: this.value }).then(this.render); }
 	row(item) { return item.prov; }
 	select(item) {
-		const tpl = "@lblImpAplicado;: $getImpAplicado; €, @lblImpPendiente;: $getImpPendiente; €, @lblImpAcumulado;: $getImpAcumulado; €, @lblMargen;: $getMargen; €";
-		this.#info.innerText = i18n.render(tpl, proveedor.setData(item));
+		const tpl = '<div class="text-block"><b>@lblImpPagado;:</b> $getImpAplicado; €,</div><div class="text-block"><b>@lblImpComprometido;:</b> $getImpPendiente; €,</div><div class="text-block"><b>@lblImpTotal; @yyyy;:</b> $getImpAcumulado; €,</div><div class="text-block"><b>@lblMargen;:</b> $getMargen0; €</div>';
+		this.#info.innerHTML = i18n.render(tpl, proveedor.setData(item));
 		this.form.getElement("categoria").loadByEconomica(item.eco);
 		this.form.setValue("email", item.email);
+
+		if (proveedor.getMargen() > 0)
+			this.form.closeAlerts();
+		else // aviso para el margen negativo o 0
+			alerts.showWarn("El proveedor seleccionado puede incumplir el margen para la ley de contratos.");
 		return item.id;
 	}
 
@@ -41,6 +47,11 @@ export default class Proveedor extends AutocompleteHTML {
 	}
 
 	validate() {
-		return this.isLoaded() ? this.setOk() : !this.setRequired();
+		if (!this.isLoaded())
+			return !this.setRequired(); // required
+		// validación opcional del margen para la ley de contratos
+		const msg = "El proveedor seleccionado puede incumplir el margen para la ley de contratos. ¿Desea continuar?";
+		const ok = (proveedor.getMargen() > 0) || window.confirm(msg);
+		return ok && this.setOk();
 	}
 }

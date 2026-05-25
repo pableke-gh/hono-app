@@ -6,6 +6,7 @@ class Proveedor extends Base {
 	getImpPendiente = () => (this.get("imp2") || 0);
 	getImpAcumulado = () => (this.getImpAplicado() + this.getImpPendiente());
 	getMargen = () => (15000 - this.getImpAcumulado()); // umbral = 150000
+	getMargen0 = () => Math.max(this.getMargen(), 0); // nunca negativo
 }
 
 export default new Proveedor();

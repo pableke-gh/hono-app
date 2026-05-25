@@ -1,12 +1,12 @@
 
 const INFO = { // información contextual
-	c2s1: "Trabajos de albañilería, fontanería, electricidad, carpintería metálica y de madera, cristalería, mantenimiento de ascensores, desinfección y control de plagas, etc.",
-	c2s2: "Reparación y mantenimiento de máquinas que hacen un trabajo específico de forma automática o mecánica, instaladas permanentemente en una ubicación concreta, necesarias para el desarrollo de la actividad en laboratorios, talleres y aulas. Por ejemplo: Reparación de cortadoras, fresadoras, tornos, impresoras 3D, compresores, equipos industriales de cafeterías, etc.",
-	c2s3: "Reparación y mantenimiento de instalaciones técnicas consistentes en un conjunto de equipos y elementos conectados entre sí e instalados de forma permanente en el edificio, que sirven para un uso concreto y especializado. Por ejemplo: laboratorios, talleres especiales, sistemas de climatización, plantas fotovoltaicas, depósitos de gases, depuradoras, etc.",
-	c2s4: "Reparación, mantenimiento e ITV de vehículos de la Unidad Técnica",
-	c2s5: "Reparación y mantenimiento de muebles y electrodomésticos (exceptuando los de uso industrial en cafeterías)",
-	c2s6: "Reparación y mantenimiento de utensilios y herramientas de fácil transporte y accesorios que se utilizan habitualmente junto a una máquina o de forma manual. Por ejemplo: herramienta profesional especializada, medidor láser, equipos de diagnóstico, etc.",
-	c2s7: "Reparación y mantenimiento de otros elementos no incluidos en las categorías anteriores.",
+	c2s1: "Trabajos de albañilería, fontanería, electricidad, carpintería metálica y de madera, cristalería, mantenimiento de ascensores, desinfección y control de plagas, etc. así como los materiales necesarios para los mismos.",
+	c2s2: "Trabajos de reparación y mantenimiento de máquinaria, así como los materiales necesarios para los mismos. Por ejemplo: Reparación de cortadoras, fresadoras, tornos, compresores, equipos industriales de cafeterías, etc.",
+	c2s3: "Trabajos de reparación y mantenimiento de instalaciones técnicas, así como los materiales necesarios para los mismos. Por ejemplo: reparaciones y matenimiento en laboratorios, talleres especiales, sistemas de climatización, plantas fotovoltaicas, depósitos de gases, depuradoras, etc.",
+	c2s4: "Trabajos de reparación, mantenimiento e ITV de vehículos de la Unidad Técnica",
+	c2s5: "Trabajos de reparación y mantenimiento de muebles y electrodomésticos (exceptuando los de uso industrial en cafeterías), así como los materiales necesarios para los mismos.",
+	c2s6: "Trabajos de reparación y mantenimiento de utensilios y herramientas, así como los materiales necesarios para los mismos. Por ejemplo: herramienta profesional especializada, medidor láser, equipos de diagnóstico, etc.",
+	c2s7: "Trabajos de reparación y mantenimiento de otros elementos no incluidos en las categorías anteriores, así como los materiales necesarios para los mismos.",
 
 	c3s1: "Servicios de traslados de mobiliario, enseres, equipos, etc.",
 	c3s2: "Redacción de proyectos, estudios, dirección de obra, etc. realizados por estos profesionales, excepto los necesarios para el desarrollo de obras licitadas o instalación de equipos inventariables.",
@@ -26,19 +26,19 @@ const INFO = { // información contextual
 	c4s9: "Licencias de duración superior al año y de importe superior a 300 € (IVA incluido)",
 
 	c5s1: "Arrendamiento de máquinas que hacen un trabajo específico de forma automática o mecánica, necesarias para el desarrollo de la actividad en laboratorios, talleres y aulas. Por ejemplo: arrendamiento de cortadoras, fresadoras, tornos, impresoras 3D, equipos industriales de cafeterías, etc.",
-	c5s2: "Arrendamiento de un conjunto de equipos y elementos conectados entre sí e instalados de forma permanente en el edificio, que sirven para un uso concreto y especializado. Por ejemplo: arrendamiento de laboratorios, talleres especiales, sistemas de climatización, plantas fotovoltaicas, depósitos de gases, depuradoras, etc.",
+	c5s2: "Arrendamiento de un conjunto de equipos y elementos conectados entre sí que sirven para un uso concreto y especializado. Por ejemplo: arrendamiento de laboratorios, talleres especiales, sistemas de climatización, plantas fotovoltaicas, depósitos de gases, depuradoras, etc. También costes de trabajos especializados de montaje y desmontaje de instalaciones temporales, stands, etc.",
 	c5s3: "Arrendamiento de herramientas transportables o accesorios que se utilizan para trabajar, normalmente junto a una máquina o de forma manual. Por ejemplo: arrendamiento de herramienta profesional especializada, medidor láser, equipos de diagnóstico, etc.",
 	c5s4: "Arrendamiento de muebles y electrodomésticos (exceptuando los de uso industrial en las cafeterías)",
 	c5s5: "Arrendamiento de edificios, locales, naves, etc.",
 	c5s6: "Arrendamiento de vehículos",
 	c5s7: "Arrendamiento de bienes no incluidos en las anteriores categorías",
 
-	c6s1: "Máquinas que hacen un trabajo específico de forma automática o mecánica, instaladas permanentemente en una ubicación concreta, necesarias para el desarrollo de la actividad en laboratorios, talleres y aulas, que duren más de un año y su importe unitario sea superior a 300 € (IVA incluido). Por ejemplo: Cortadoras, fresadoras, tornos, impresoras 3D, equipos industriales de cafeterías, etc.",
-	c6s2: "Herramientas transportables o accesorios que se utilizan para trabajar, normalmente junto a una máquina o de forma manual, que duren más de un año y su importe unitario sea superior a 300 € (IVA incluido). Por ejemplo: herramienta profesional especializada, medidor láser, equipos de diagnóstico, etc.",
-	c6s3: "Conjunto de equipos y elementos conectados entre sí e instalados de forma permanente en el edificio, que sirven para un uso concreto y especializado y cuyo importe total sea superior a 300 € (IVA incluido). Por ejemplo: laboratorios, talleres especiales, sistemas de climatización, plantas fotovoltaicas, depósitos de gases, depuradoras, etc.",
-	c6s4: "Muebles y electrodomésticos (exceptuando los de uso industrial en las cafeterías), que duren más de un año y su importe unitario sea superior a 300 € (IVA incluido)",
-	c6s5: "Equipos electrónicos destinados al tratamiento, almacenamiento o transmisión de información que duren más de un año y su importe unitario sea superior a 300 € (IVA incluido). Por ejemplo: ordenadores de sobremesa, portátiles, tablets, etc.",
-	c6s6: "Otros elementos inventariables con duración superior a un año y de importe unitario superior a 300 € (IVA incluido) que no estén incluidos en las anteriores categorías."
+	c6s1: "Máquinas que hacen un trabajo específico de forma automática o mecánica, instaladas permanentemente en una ubicación concreta, necesarias para el desarrollo de la actividad en laboratorios, talleres y aulas, que duren más de un año y su importe unitario sea superior a 300 € (IVA incluido). También los costes necesarios para su puesta en marcha inicial, facturados conjunta o separadamente, como los gastos de transporte, instalación, etc. Por ejemplo: Cortadoras, fresadoras, tornos, impresoras 3D, equipos industriales de cafeterías, etc.",
+	c6s2: "Herramientas transportables o accesorios que se utilizan para trabajar, normalmente junto a una máquina o de forma manual, que duren más de un año y su importe unitario sea superior a 300 € (IVA incluido). También los costes necesarios para su puesta en marcha inicial, facturados conjunta o separadamente, como los gastos de transporte, configuración, etc. Por ejemplo: herramienta profesional especializada, medidor láser, equipos de diagnóstico, etc.",
+	c6s3: "Conjunto de equipos y elementos conectados entre sí e instalados de forma permanente en el edificio, que sirven para un uso concreto y especializado y cuyo importe total sea superior a 300 € (IVA incluido). También los costes necesarios para su puesta en marcha inicial, facturados conjunta o separadamente, como los gastos de transporte, instalación, etc. Por ejemplo: laboratorios, talleres especiales, sistemas de climatización, plantas fotovoltaicas, depósitos de gases, depuradoras, etc.",
+	c6s4: "Muebles y electrodomésticos (exceptuando los de uso industrial en las cafeterías), que duren más de un año y su importe unitario sea superior a 300 € (IVA incluido). También los costes necesarios para su puesta en marcha inicial, facturados conjunta o separadamente, como los gastos de transporte, etc.",
+	c6s5: "Equipos electrónicos destinados al tratamiento, almacenamiento o transmisión de información que duren más de un año y su importe unitario sea superior a 300 € (IVA incluido). También los costes necesarios para su puesta en marcha inicial, facturados conjunta o separadamente, como los gastos de transporte, instalación, etc. Por ejemplo: ordenadores de sobremesa, portátiles, tablets, etc.",
+	c6s6: "Otros elementos inventariables con duración superior a un año y de importe unitario superior a 300 € (IVA incluido) que no estén incluidos en las anteriores categorías. También los costes necesarios para su puesta en marcha inicial, facturados conjunta o separadamente, como los gastos de transporte, instalación, etc."
 }
 
 const ECONOMICAS = {

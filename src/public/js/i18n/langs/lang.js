@@ -51,6 +51,7 @@ export default class Base {
 		opts.index = opts.index || 0;
 		opts.count = opts.index + 1;
 		opts.matches = opts.keys = 0;
+		opts.yyyy = dt.getYear(); // current year
 		data = data || this.getData(); // default data = lang
 		const fnValue = data.getValue || (k => (data[k]));
 		return str.replace(RE_VAR, (m, k, t) => { // replacer

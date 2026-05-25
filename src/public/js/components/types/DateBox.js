@@ -7,12 +7,12 @@ function DateBox() {
 	const sysdate = new Date(); //global sysdate readonly
 	const ONE_DAY = 86400000; //1d = 24 * 60 * 60 * 1000 = hours*minutes*seconds*milliseconds
 	const daysInMonths = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]; //january..december
-	
+
 	//const lpad = val => (val < 10) ? ("0" + val) : val; //always 2 digits
 	const isDate = date => date && date.getTime && !isNaN(date.getTime()); // full date validator
 	const isLeapYear = year => ((year & 3) == 0) && (((year % 25) != 0) || ((year & 15) == 0)); //año bisiesto?
 	const daysInMonth = (y, m) => daysInMonths[m] + ((m == 1) && isLeapYear(y));
-	
+
 	this.isValid = isDate;
 	globalThis.isDate = isDate;
 

@@ -1,7 +1,6 @@
 
 import sb from "../../../components/types/StringBox.js";
 import api from "../../../components/Api.js";
-import observer from "../../../core/util/Observer.js";
 
 import irse from "../../model/Irse.js";
 import ruta from "../../model/Ruta.js";
@@ -15,8 +14,7 @@ import SavePaso1 from "../../components/paso1/SavePaso1.js";
 
 /** campo objeto y mun **/
 class Paso1 {
-	init() {
-		// actualiza el desplegable del paso 1 (municipio) y el del paso 2 (rutas)
+	init() { // actualiza el desplegable del paso 1 (municipio) y el del paso 2 (rutas)
 		form.onChange("[name='desp']", ev => form.setVisible(".grupo-matricula", ruta.isTipoVP(ev.target.value)));
 		form.getElement("matriculaMun").addChange(ev => {
 			ev.target.value = sb.toUpperWord(ev.target.value);
@@ -29,8 +27,7 @@ class Paso1 {
 
 	view(firmas) {
 		this.setMun(); // prepare municipio
-		form.setValue("objeto", irse.getMemoria()).setFirmas(firmas)
-			.getElement("promotor").setPromotor(firmas);
+		form.setValue("objeto", irse.getMemoria()).setFirmas(firmas);
 	}
 	save() { // send data to server and return promise
 		return api.setJSON(this.#getData()).json("/uae/iris/paso1/save").then(this.#update);

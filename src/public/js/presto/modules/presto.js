@@ -14,7 +14,7 @@ import Memoria from "../components/info/Memoria.js";
 import Subtipo from "../components/info/Subtipo.js";
 import Adjunto from "../components/info/Adjunto.js";
 
-import Firmas from "../components/Firmas.js";
+import Firmas from "../../core/components/Firmas.js";
 import PrestoSolicitudes from "../components/prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
