@@ -35,6 +35,7 @@ export default class Aplicacion extends AutocompleteHTML {
 	select(item) {
 		const tpl = "<b>@lblDisponible;:</b> $imp; €";
 		this.#info.innerHTML = i18n.render(tpl, aplicacion.load(item));
+		console.log("Aplicación:", item);
 		return aplicacion.getId();
 	}
 

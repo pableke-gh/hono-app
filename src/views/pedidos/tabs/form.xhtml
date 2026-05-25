@@ -50,21 +50,21 @@
 				<div class="label required">Categoría:</div>
 				<select name="categoria" is="categoria-pedido" class="ui-input ui-select" tabindex="5">
 					<option value="2">Reparación y mantenimiento (también costes de materiales y repuestos necesarios para los trabajos)</option>
-					<option value="3">Otros servicios</option>
-					<option value="4">Material (exceptuando el destinado a reparaciones), suministros y otros gastos</option>
-					<option value="5">Arrendamientos</option>
-					<option value="6">Inventariable - capítulo 6 (incluye costes de instalación y puesta en marcha inicial)</option>
+					<option value="3">Otros servicios de empresas y profesionales</option>
+					<option value="4">Material no inventariable (exceptuando el destinado a reparaciones)</option>
+					<option value="6">Equipos y bienes inventariables (incluye costes de instalación y puesta en marcha)</option>
+					<option value="5">Alquileres / Arrendamientos</option>
 				</select>
 			</label>
-			<label class="ui-block">
+			<label class="ui-block-xl">
 				<div class="label required">Subcategoría:</div>
 				<select name="subcategoria" is="data-list" class="ui-input ui-select" tabindex="5"></select>
 			</label>
-			<label class="ui-block hide">
-				<div class="label required">Datos de inventario:</div>
-				<select name="inventario" is="data-list" class="ui-input ui-select" tabindex="5"></select>
-			</label>
 		</div>
+		<label class="ui-blocks hide">
+			<div class="ui-block-info"><b>Sustituye a un bien similar dado previamente de baja:</b></div>
+			<input type="checkbox" name="inventario" is="check-input" value="2" class="ui-check" tabindex="5"/>
+		</label>
 		<div id="info-categorias" class="notice notice-info"></div>
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
