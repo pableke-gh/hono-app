@@ -10,9 +10,7 @@ import ButtonSubsanar from "./components/buttons/ButtonSubsanar.js";
 
 coll.ready(() => { // init. presto modules
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
-	const fnUrgente = ev => form.setVisible("[data-refresh='isUrgente']", ev.target.value == "2");
-	form.init().addChange("urgente", fnUrgente).onChange(".ui-ej", fnSync); // init events
-	tabs.show(presto.isUxxiec() ? "init" : "list"); // set view for PAS / PDI
+	form.init().onChange(".ui-ej", fnSync); // init events
 
 	const DATA = {}; // build container
 	DATA.ejercicios = form.getElement("ej").getValues(); // read current open years
@@ -20,6 +18,7 @@ coll.ready(() => { // init. presto modules
 	const fnCreate = (tipo, memo) => { delete DATA.partidas; return fnBuild(tipo, memo); }; // for: tcr, fce, l83, gcr and ant
 	const fnCreateAfc = () => { DATA.partidas = [ DATA.fcb ]; form.create(fnBuild(8)); }  // set partida unica + view
 
+	tabs.show(presto.isUxxiec() ? "init" : "list"); // set view for PAS / PDI
 	tabs.setAction("tcr", () => form.create(fnCreate(1))); // create TCR
 	tabs.setAction("fce", () => form.create(fnCreate(6))); // create FCE
 	tabs.setAction("l83", () => form.create(fnCreate(3, "Liquidación contrato artículo 83"))); // create L83

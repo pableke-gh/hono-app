@@ -6,10 +6,8 @@ import observer from "../../../core/util/Observer.js";
 import getActividad from "../../data/perfiles/actividades.js";
 
 export default class Actividad extends DataList {
-	setEditable() {
-		this.setValue(irse.getActividad());
-		this.setReadonly(!irse.isEditableP0());
-	}
+	load() { this.setValue(irse.getActividad()); }
+	setEditable() { this.setReadonly(!irse.isEditableP0()); }
 
 	isColaboracion = () => (this.value == "OCE") || (this.value == "IAE+OCE");
 	isTribunal = () => (this.value == "ATR") || (this.value == "IAE+ATR");

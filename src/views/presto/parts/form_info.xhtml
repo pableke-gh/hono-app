@@ -17,16 +17,16 @@
 		</label>
 		<label class="ui-block">
 			<div class="label">#{presto.getMsg('lblUrg')}:</div>
-			<select name="urgente" is="data-list" class="ui-input" tabindex="15">
+			<select name="urgente" is="urgencia-list" class="ui-input" tabindex="15">
 				<option value="1">#{presto.getMsg('lblNormal')}</option>
 				<option value="2">#{presto.getMsg('lblUrgente')}</option>
 			</select>
 		</label>
-		<label class="ui-block form-refresh" data-refresh="isUrgente">
+		<label class="ui-block">
 			<div class="label required">#{presto.getMsg('lblFechaUrg')}:</div>
 			<input type="date" name="fMax" is="date-input" tabindex="16" class="ui-input"/>
 		</label>
-		<label class="ui-block-row form-refresh" data-refresh="isUrgente">
+		<label class="ui-block-row">
 			<div class="label required">#{presto.getMsg('lblMotivoUrg')}:</div>
 			<textarea name="extra" is="text-area" tabindex="17"></textarea>
 			<div class="ui-errtip"></div>

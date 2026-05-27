@@ -14,6 +14,7 @@ import Memoria from "../components/info/Memoria.js";
 import Subtipo from "../components/info/Subtipo.js";
 import Adjunto from "../components/info/Adjunto.js";
 
+import Urgencia from "../../core/components/Urgencia.js";
 import Firmas from "../../core/components/Firmas.js";
 import PrestoSolicitudes from "../components/prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";
@@ -63,6 +64,7 @@ customElements.define("memo-text", Memoria, { extends: "textarea" });
 customElements.define("gcr-list", Subtipo, { extends: "select" });
 customElements.define("btn-doc", Adjunto, { extends: "button" });
 
+customElements.define("urgencia-list", Urgencia, { extends: "select" });
 customElements.define("firmas-block", Firmas, { extends: "div" });
 customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });
 

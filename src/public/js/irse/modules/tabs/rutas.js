@@ -31,7 +31,7 @@ class Rutas {
 
 		tabs.setInitEvent(2, place.setScript); // load google api maps once
 		tabs.getTab(2).addEventListener("change", ev => ev.stopPropagation()); // inputs not change form state => only programmatically
-		tabs.setViewEvent(2, () => form.setValue("matricula", irse.getMatricula())); // preload matricula from server
+		//tabs.setViewEvent(2, () => form.setValue("matricula", irse.getMatricula())); // preload matricula from server
 	}
 
 	getRutas = () => this.#tRutas; // get table rutas

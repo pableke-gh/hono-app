@@ -1,6 +1,5 @@
 
 import valid from "../i18n/validators/irse.js";
-import irse from "../model/Irse.js";
 import perfil from "./tabs/perfil.js";
 import paso1 from "./tabs/paso1.js";
 import paso2 from "./tabs/rutas.js";
@@ -10,6 +9,7 @@ import resumen from "./tabs/resumen.js";
 import paso9 from "./tabs/paso9.js";
 import informeISU from "./tabs/otri.js";
 
+import Urgencia from "../../core/components/Urgencia.js";
 import Firmas from "../../core/components/Firmas.js";
 import IrseSolicitudes from "./solicitudes.js";
 import Solicitud from "../../core/modules/solicitud.js";
@@ -37,7 +37,6 @@ class IrseSolicitud extends Solicitud {
 		paso5.view(); // load gastos from register
 		resumen.view(dietas); // tab 6 = resumen
 		paso9.view(cuentas); // tab 9 = fin
-		this.reactivate(irse);
 	}
 
 	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
@@ -51,7 +50,8 @@ class IrseSolicitud extends Solicitud {
 	getPaso9 = () => paso9; // module paso 9
 }
 
-customElements.define("irse-table", IrseSolicitudes, { extends: "table" });
+customElements.define("urgencia-list", Urgencia, { extends: "select" });
 customElements.define("firmas-block", Firmas, { extends: "div" });
+customElements.define("irse-table", IrseSolicitudes, { extends: "table" });
 
 export default new IrseSolicitud();

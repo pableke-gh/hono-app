@@ -176,11 +176,6 @@ export default class FormHTML extends HTMLFormElement {
 	}
 	setRequired = (el, msg) => this.setError(el, "errRequired", msg);
 	setFormatError = (el, msg) => this.setError(el, "errFormat", msg);
-	/*validate(selector, msgError) {
-		let ok = !!alerts.closeAlerts(); // global message
-		this.getInputs(selector).eachPrev(el => { ok = el.validate() && ok; });
-		return ok || !alerts.showError(msgError || this.#opts.defaultMsgError);
-	}*/
 }
 
 // For a valid custom element name, it must: Contain a hyphen (-)

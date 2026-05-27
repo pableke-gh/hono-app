@@ -15,12 +15,8 @@ export default class AutocompleteMaps extends AutocompleteHTML {
 		data[this.name] = this.getLabel();
 		return this;
 	}
-	/*addFormData(fd) {
-		fd.add(this.#getIdName(), this.getValue()); // value
-		fd.add(this.name, this.getLabel()); // label
-		return this;
-	}*/
 
+	addFormData() { } // not append values in form data
 	source() { loading(); maps.getPredictions(this.value).then(this.render).finally(working); }
 	row(place) { return '<i class="fas fa-map-marker-alt icon"></i>' + place.description; }
 	select(place) { return place.place_id; }

@@ -26,8 +26,8 @@ class Paso1 {
 	#update = data => form.setChanged().setFirmas(data.firmas).refresh(irse);
 
 	view(firmas) {
-		this.setMun(); // prepare municipio
-		form.setValue("objeto", irse.getMemoria()).setFirmas(firmas);
+		this.setMun();
+		form.setFirmas(firmas);
 	}
 	save() { // send data to server and return promise
 		return api.setJSON(this.#getData()).json("/uae/iris/paso1/save").then(this.#update);

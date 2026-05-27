@@ -11,8 +11,6 @@ import form from "../irse.js"
 
 class Perfil {
 	#form = document.forms["xeco-model"];
-	#interesado = this.#form.elements["interesado"];
-	#organica = this.#form.elements["organica"];
 	#eAct = this.#form.elements["actividad"];
 
 	isColaboracion = () => this.#eAct.isColaboracion();
@@ -43,10 +41,9 @@ class Perfil {
 	isA83 = () => (irse.getFinanciacion() == "A83") || (irse.getFinanciacion() == "x83");
 	isACA = () => (irse.getFinanciacion() == "ACA") || (irse.getFinanciacion() == "xAC");
 	isOTR = () => (irse.getFinanciacion() == "OTR") || (irse.getFinanciacion() == "xOT");
-	getOrganicas = () => this.#organica.getOrganicas();
+	getOrganicas = () => form.getElement("organica").getOrganicas();
 
 	init = () => {
-		this.#interesado.init(); // prepare events
 		irse.isIsu = this.isIsu; // current input value
 		form.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
 		form.set("isFin", el => (irse.getFinanciacion() == el.dataset.fin));
@@ -55,16 +52,18 @@ class Perfil {
 		form.setClick("a#reg-externo", ev => { form.copyToClipboard(url); ev.preventDefault(); });
 		tabs.setActiveEvent(2, this.isMaps).setActiveEvent(3, this.isIsu);
 		form.afterReset(() => {
-			this.#interesado.clear();
-			this.#organica.clear();
+			form.getElement("interesado").clear();
+			form.getElement("organica").clear();
 		});
 	}
 
 	view = (interesado, organicas) => {
 		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
-		this.#interesado.setInteresado(interesado); // load autocomplete
-		this.#organica.setOrganicas(organicas); // load autocomplete + table
+
+		form.closeAlerts().prepare(irse).setCache(irse.getId()); // prepare all fields
+		form.getElement("interesado").setInteresado(interesado); // load autocomplete
+		form.getElement("organica").setOrganicas(organicas); // load autocomplete + table
 		form.setValue("tramite", irse.getTramite()); // AyL, AUT or LIQ
 	}
 }

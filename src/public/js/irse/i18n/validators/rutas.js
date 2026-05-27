@@ -17,8 +17,8 @@ class RutasValidators extends Validators {
 
 	paso1() {
 		const data = form.getData(); // start validation
-		if (!data.objeto) // valida textarea
-        	this.addRequired("objeto", "errObjeto");
+		if (!data.memo) // valida textarea
+        	this.addRequired("memo", "errObjeto");
 		if (!form.getPerfil().isMun())
 			return this.close(data);
 		const rutaMun = form.getData(".ui-mun");

@@ -25,7 +25,10 @@
 /* Alerts */
 
 /* Notices */
-.notice { margin: 4px 0; padding: .5rem; border-radius: 3px; border: 1px solid; }
+.notice {
+	display: inline-block; width: 100%; margin: 4px 0; padding: .5rem; 
+	border-radius: 3px; border: 1px solid;
+}
 .notice-flex { display: flex; gap: .8rem; align-items: center; }
 
 .notice-ok { color: rgb(17 94 89) /* teal-800 */; border-color: rgb(94 234 212)/* teal-300 */; background-color: rgb(240 253 250)/* teal-50 */; }

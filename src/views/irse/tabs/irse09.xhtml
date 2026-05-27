@@ -16,16 +16,15 @@
 		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
 			<div class="ui-block-xl">
-				<select name="cuentas" is="data-list" class="ui-paso9"></select>
+				<select name="cuentas" is="cuentas-list" class="ui-paso9"></select>
 			</div>
 		</label>
 
-		<div id="grupo-iban" class="navbar hide">
-			<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.iban']}" escape="false" /></div>
-			<div class="ui-blocks">
+		<div class="ui-blocks hide">
+			<div class="ui-block-row notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.iban']}" escape="false" /></div>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.pais']}" escape="false" />:</div>
-				<select name="paises" is="data-list" class="ui-paso9"></select>
+				<select name="paises" is="paises-list" class="ui-paso9"></select>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
@@ -41,13 +40,12 @@
 				<input type="text" name="iban" is="text-input" maxlength="50" class="ui-paso9" />
 				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block swift-block hide">
+			<label class="ui-block hide">
 				<div class="label">Swift:</div>
 				<input type="text" name="swift" is="text-input" maxlength="30" class="ui-code ui-paso9" />
 				<div class="ui-errtip"></div>
 			</label>
-			</div>
-			<hr/>
+			<div class="ui-block-row"><hr/></div>
 		</div>
 
 		<div class="notice notice-info"><h:outputText value="#{msg['uae.irse.tab9.msg.info']}" escape="false" /></div>
@@ -59,22 +57,19 @@
 
 			<label class="ui-block">
 				<div class="label">#{iris.getMsg('lblUrg')}:</div>
-				<select name="urgente" is="data-list" class="ui-paso9">
+				<select name="urgente" is="urgencia-list" class="ui-paso9">
 					<option value="1">#{iris.getMsg('lblNormal')}</option>
 					<option value="2">#{iris.getMsg('lblUrgente')}</option>
 				</select>
 			</label>
-
-			<label class="ui-block form-refresh" data-refresh="isUrgente">
+			<label class="ui-block">
 				<div class="label required">#{iris.getMsg('lblFechaUrg')}:</div>
 				<input type="text" name="fMax" is="date-input" class="ui-paso9" />
 			</label>
-			<label class="ui-block-row form-refresh" data-refresh="isUrgente">
+			<label class="ui-block-row">
 				<div class="label required">#{iris.getMsg('lblMotivoUrg')}:</div>
-				<div class="ui-block-main">
-					<textarea name="extra" is="text-area" class="ui-paso9 rows-2"></textarea>
-					<div class="hide ui-errtip"></div>
-				</div>
+				<textarea name="extra" is="text-area" class="ui-paso9 rows-2"></textarea>
+				<div class="hide ui-errtip"></div>
 			</label>
 		</div>
 	</div>

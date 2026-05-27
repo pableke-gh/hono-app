@@ -6,13 +6,11 @@ import observer from "../../../core/util/Observer.js";
 import DataList from "../../../components/inputs/DataList.js";
 
 export default class EquipoGobierno extends DataList {
-	setVisible = () => this.parentNode.parentNode.setVisible(interesado.isEquipoGob());
-	setEditable() {
-		this.setVisible();
-		this.setReadonly(!irse.isEditable());
-		this.setValue(gastos.getGrupoDieta());
-	}
+	load() { this.setValue(gastos.getGrupoDieta()); }
+	setEditable() { this.setReadonly(!irse.isEditable()); }
 
+	// final arrow functions to preserve "this" context
+	setVisible = () => this.parentNode.parentNode.setVisible(interesado.isEquipoGob());
 	isGrupoDieta1 = () => (this.value == "1");
 	isGrupoDieta2 = () => (this.value == "2");
 

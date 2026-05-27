@@ -5,7 +5,7 @@ import observer from "../../../core/util/Observer.js";
 import irse from "../../model/Irse.js";
 
 export default class Interesado extends AutocompleteHTML {
-	init() { // Initialize element after form
+	connectedCallback() { // Init. element
 		this.setDelay(600).setMinLength(5);
 		observer.subscribe("interesado", interesado => {
 			observer.emit("perfil", irse.setInteresado(interesado)); // propague event
@@ -17,6 +17,7 @@ export default class Interesado extends AutocompleteHTML {
 		});
 	}
 
+	load() { return this; } // not to load on view
 	source() { api.init().json("/uae/iris/interesados", { term: this.value }).then(this.render); }
 	row(item) { return (item.nif + " - " + item.nombre); }
 	select(item) {
