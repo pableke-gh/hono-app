@@ -58,7 +58,7 @@ export default class FileInput extends TextInput {
 		});
 	}
 
-	readAsText() {
+	readAsDataURL() {
 		if (this.isEmpty())
 			return Promise.resolve(); // no files selected
 
@@ -67,7 +67,7 @@ export default class FileInput extends TextInput {
 			const reader = new FileReader();
 			reader.onload = () => resolve(reader.result);
 			reader.onerror = () => reject(reader.error);
-			reader.readAsText(file, "UTF-8");
+			reader.readAsDataURL(file);
 		}));
 
 		// si solo hay un archivo devuelvo la promesa con el texto directamente

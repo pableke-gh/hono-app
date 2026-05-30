@@ -15,7 +15,7 @@ export default class Proveedor extends AutocompleteHTML {
 	}
 
 	load(data) {
-		if (data.id) // view
+		if (data.id) // datos del pedido (no contiene idProveedor)
 			this.setValue(1, data.nif + " - " + data.prov);
 		else
 			this.clear(); // creating

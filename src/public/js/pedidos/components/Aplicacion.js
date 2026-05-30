@@ -16,8 +16,6 @@ export default class Aplicacion extends AutocompleteHTML {
 	load(data) {
 		if (!data.apli || !aplicacion.getId())
 			return this.clear(); // clear input
-		const tpl = "@ej; @org; @func; @getEconomica;"; // plantilla sin importe
-		this.#info.innerText = i18n.render(tpl, aplicacion); // render info
 		return this.setValue(aplicacion.getId(), this.row(aplicacion.getData()));
 	}
 	setEditable() {
@@ -25,7 +23,7 @@ export default class Aplicacion extends AutocompleteHTML {
 	}
 
 	source() {
-		const eco = aplicacion.get("eco"); // calculated value
+		const eco = aplicacion.get("eco") || "21200"; // economica por defecto = categoria 1
 		api.init().json("/uae/pedidos/organicas", { eco, term: this.value }).then(this.render);
 	}
 

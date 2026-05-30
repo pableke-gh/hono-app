@@ -8,23 +8,17 @@ export default class Categoria extends DataList {
 	#subcategoria = this.form.elements["subcategoria"];
 	#inventario = this.form.elements["inventario"];
 	#aplicacion = this.form.elements["aplicacion"];
-	#info = this.form.querySelector("#info-categorias");
 
-	#setInventario(categoria) {
-		this.#inventario.parentNode.setVisible(categoria == 6);
-		aplicacion.setEconomica(this.getEconomica());
-	}
-	#updateSubcategoria(value) {
-		const text = categorias.getInfo(this.getValue(), value);
-		this.#setInventario(this.getValue());
-		this.#info.setVisible(text).setText(text);
-	}
-	#setSubcategoria(categoria) {
+	#update(categoria) { // no actualizo al economica solo subcategorias e inventario
 		this.#subcategoria.setArray(categorias.getSubcategorias(categoria));
-		this.#updateSubcategoria(this.#subcategoria.getValue());
+		this.#inventario.parentNode.setVisible(categoria == "6");
+	}
+	#updateEconomica = () => {
+		aplicacion.setEconomica(this.getEconomica());
+		this.#aplicacion.clear();
 	}
 
-	load(data) { this.#setSubcategoria(super.load(data).getValue()); }
+	load(data) { this.#update(super.load(data).getValue()); }
 	setEditable() { this.setDisabled(!pedido.isEditable()); }
 
 	getEconomica() {
@@ -33,11 +27,10 @@ export default class Categoria extends DataList {
 	loadByEconomica(economica) {
 		if (!economica) return; // not changes
 		const data = categorias.build(economica);
-		this.setValue(data.categoria).#setSubcategoria(data.categoria);
+		this.setValue(data.categoria).#update(data.categoria);
 		this.#subcategoria.setValue(data.subcategoria)
-		this.#updateSubcategoria(data.subcategoria);
 		this.#inventario.setValue(data.inventario);
-		this.#aplicacion.clear();
+		this.#updateEconomica();
 	}
 
 	validate() {
@@ -51,9 +44,8 @@ export default class Categoria extends DataList {
 	}
 
 	connectedCallback() { // init. component
-		this.addChange(ev => { this.#setSubcategoria(ev.target.value); this.#aplicacion.clear(); });
-		this.#subcategoria.addChange(ev => { this.#updateSubcategoria(ev.target.value); this.#aplicacion.clear(); });
-		this.#inventario.addChange(ev => { aplicacion.setEconomica(this.getEconomica()); this.#aplicacion.clear(); });
-		this.#subcategoria.setEditable = this.#inventario.setEditable = this.setEditable; // Override
+		this.addChange(ev => { this.#update(ev.target.value); this.#updateEconomica(); });
+		this.#subcategoria.addChange(this.#updateEconomica);
+		this.#inventario.addChange(this.#updateEconomica);
 	}
 }

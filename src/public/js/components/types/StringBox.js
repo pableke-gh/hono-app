@@ -108,9 +108,10 @@ function StringBox() {
 	this.chunkBySizes = (str, sizes) => {
 		var i, j; // indexes
 		const results = []; // container
-		for (i = j = 0; (i < str.length) && (j < sizes.length); i += sizes[j++])
+		const size = this.size(str); // length
+		for (i = j = 0; (i < size) && (j < sizes.length); i += sizes[j++])
 			results.push(str.substring(i, i + sizes[j])); // add new chunk
-		if (i < str.length) // add final chunk
+		if (i < size) // add final chunk
 			results.push(str.substring(i));
 		return results;
 	}

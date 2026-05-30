@@ -88,8 +88,9 @@ export default {
 	getInfo: (categoria, subcategoria) => INFO["c" + categoria + "s" + subcategoria],
 	getSubcategorias: categoria => (SUBCATEGORIAS["c" + categoria] || SUBCATEGORIAS.c2),
 	getEconomica: (categoria, subcategoria, inventario) => {
+		inventario = inventario || "1"; // default inventario 1
 		const prefix = "c" + categoria + "s" + subcategoria; // required part
-		return inventario ? ECONOMICAS[prefix + "i" + inventario] : ECONOMICAS[prefix];
+		return ECONOMICAS[prefix + ((categoria == 6) ? ("i" + inventario) : "")];
 	},
 	build: economica => {
 		const result = {}; // select values
