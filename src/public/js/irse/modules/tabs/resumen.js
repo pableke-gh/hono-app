@@ -1,7 +1,6 @@
 
 import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
-import valid from "../../i18n/validators/irse.js";
 
 import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";
@@ -12,6 +11,8 @@ import Transportes from "../tables/transportes.js";
 import Pernoctas from "../tables/pernoctas.js";
 import Dietas from "../tables/dietas.js";
 import Extraordinarios from "../tables/extras.js";
+import NextResumen from "../../components/resumen/NextResumen.js";
+import SaveResumen from "../../components/resumen/SaveResumen.js";
 
 import observer from "../../../core/util/Observer.js";
 import form from "../irse.js";
@@ -32,23 +33,6 @@ class Resumen {
 		this.#dietas.init();
 		this.#extra.init();
 		irse.isCenaFinal = () => (rutas.isLlegadaCena() && this.#extra.isCena());
-
-		const fnData = () => ({
-			id: irse.getId(), justifiKm: form.getValue("justifiKm"),
-			rutas: rutas.getRutas(), dietas: this.#dietas.getData()
-		});
-		const fnNext = () => form.setChanged().refresh(irse);
-
-		tabs.setAction("paso6", () => {
-			if (!valid.resumen(this.#km.getResume())) return; // if error => stop
-			if (!irse.isEditable() || !form.isChanged()) return tabs.next(); // go next tab directly
-			api.setJSON(fnData()).json("/uae/iris/resumen/save").then(() => { fnNext(); tabs.goTo(); });
-		});
-		tabs.setAction("save6", () => {
-			if (!valid.resumen(this.#km.getResume())) return; // if error => stop
-			if (!form.isChanged()) return form.setOk(); // nada que guardar => mensaje ok
-			api.setJSON(fnData()).json("/uae/iris/resumen/save").then(fnNext);
-		});
 
 		// download iris-facturas.zip / iris-doc.zip
 		tabs.setAction("zip-com", () => api.init().blob("/uae/iris/zip/com", "iris-facturas.zip"));
@@ -72,6 +56,10 @@ class Resumen {
 		this.updateRutas(dietas); // tablas resumen, dietas/manutenciones
 		this.updateGastos(); // tablas transportes, pernoctas, gastos extraordinarios...
 	}
+	save() {
+		const data = { id: irse.getId(), justifiKm: form.getValue("justifiKm"), rutas: rutas.getRutas(), dietas: this.#dietas.getData() };
+		return api.setJSON(data).json("/uae/iris/resumen/save").then(() => form.setChanged().refresh(irse));
+	}
 
 	getKilometraje = () => this.#km;
 	getTransportes = () => this.#trans;
@@ -85,5 +73,7 @@ customElements.define("table-transportes", Transportes, { extends: "table" });
 customElements.define("table-pernoctas", Pernoctas, { extends: "table" });
 customElements.define("table-dietas", Dietas, { extends: "table" });
 customElements.define("table-extra", Extraordinarios, { extends: "table" });
+customElements.define("next-resumen", NextResumen, { extends: "button" });
+customElements.define("save-resumen", SaveResumen, { extends: "button" });
 
 export default new Resumen();
