@@ -1,8 +1,9 @@
 
-import alerts from "../../components/Alerts.js";
+//import alerts from "../../components/Alerts.js";
+import api from "../../components/Api.js";
 import FileInput from "../../components/inputs/FileInput.js";
-import ocr from "../services/ocr/factory.js";
-import gpt from "../services/chatGPT.js";
+//import ocr from "../services/ocr/factory.js";
+//import gpt from "../services/chatGPT.js";
 
 /**
  * Extract text content of selected file using OCR + chatGPT
@@ -21,12 +22,16 @@ export default class PresupuestoFile extends FileInput {
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (window.location.hostname.indexOf("-local.") < 1)
-			return; // test only for localhost
 
 		this.addChange(async ev => {
 			const file = this.files[0];
 			if (!file) return; // no file selected
+
+			const fd = this.form.getFormData();
+			api.setFormData(fd).send("/uae/pedidos/parse").then(console.log);
+
+			/*if (window.location.hostname.indexOf("-local.") < 1)
+				return; // test only for localhost
 
 			alerts.loading(); // show loading indicator
 			try {
@@ -39,6 +44,7 @@ export default class PresupuestoFile extends FileInput {
 				alerts.showError(ex.message);
 			}
 			alerts.working(); // hide loading indicator
+			*/
 		});
 	}
 }

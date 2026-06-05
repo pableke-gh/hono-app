@@ -45,7 +45,8 @@
 		</div>
 
 		<form id="pedido-form" is="pedido-form" method="post" enctype="multipart/form-data"
-				data-nif="#{pedidos.user.nif}" data-admin="#{pedidos.user.adminFlag}" data-prorrata="#{pedidos.form.prorrata}">
+				data-nif="#{pedidos.user.nif}" data-grupo="#{pedidos.user.idGrupo}" 
+				data-admin="#{pedidos.user.adminFlag}" data-prorrata="#{pedidos.form.prorrata}">
 			<!-- formulario de alta de solicitudes -->
 			<div id="tab-form" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>

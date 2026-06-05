@@ -5,6 +5,7 @@ import valid from "../../i18n/validators/irse.js";
 import irse from "../../model/Irse.js";
 import gastos from "../../model/Gastos.js";
 
+import PrevPaso3 from "../../components/paso3/PrevPaso3.js";
 import NextPaso3 from "../../components/paso3/NextPaso3.js";
 import SavePaso3 from "../../components/paso3/SavePaso3.js";
 import form from "../irse.js";
@@ -55,6 +56,7 @@ class Paso3 {
 	}
 }
 
+customElements.define("prev-paso3", PrevPaso3, { extends: "button" });
 customElements.define("next-paso3", NextPaso3, { extends: "button" });
 customElements.define("save-paso3", SavePaso3, { extends: "button" });
 
