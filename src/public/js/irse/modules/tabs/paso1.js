@@ -25,9 +25,12 @@ class Paso1 {
 	#getData = () => { const data = form.getData(".ui-paso1"); data.id = irse.getId(); return data; }
 	#update = data => form.setChanged().setFirmas(data.firmas).refresh(irse);
 
-	view(firmas) {
-		this.setMun();
-		form.setFirmas(firmas);
+	view() {
+		if (!irse.isMun()) return; // stop
+		const data = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
+		data.f1 = sb.isoDate(data.dt1); // input format date
+		data.matriculaMun = irse.getMatricula(); // matricula from server
+		form.setData(data, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", ruta.isVehiculoPropio(data));
 	}
 	save() { // send data to server and return promise
 		return api.setJSON(this.#getData()).json("/uae/iris/paso1/save").then(this.#update);
@@ -35,13 +38,6 @@ class Paso1 {
 
 	getGrupoDieta = () => form.getValue("grupo-dieta");
 	isGrupoDieta1 = () => form.getElement("grupo-dieta").isGrupoDieta1();
-	setMun() { // only for municipio
-		if (!irse.isMun()) return; // stop
-		const data = rutas.getSalida() || { desp: 1 }; // mun = 1 ruta
-		data.f1 = sb.isoDate(data.dt1); // input format date
-		data.matriculaMun = irse.getMatricula(); // matricula from server
-		form.setData(data, ".ui-mun").setEditable(irse, ".ui-mun").setVisible(".grupo-matricula", ruta.isVehiculoPropio(data));
-	}
 	saveMun() {
 		const data = this.#getData();
 		data.rutas = rutas.getRutas();

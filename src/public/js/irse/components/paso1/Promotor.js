@@ -7,13 +7,12 @@ import firma from "../../../core/model/Firma.js";
 import firmas from "../../../core/model/Firmas.js";
 
 export default class Promotor extends AutocompleteHTML {
+	load() { this.setFirma(firmas.isEmpty() ? null : firmas.getByGrupo(5)); } // grupo promotor = 5
+	setEditable() { this.setReadonly(!irse.isEditable()); }
+
 	source() { api.init().json("/uae/iris/personal", { id: irse.getId(), term: this.value }).then(this.render); }
 	setFirma(data) { return data ? super.setValue(data.nif, firma.getFirmante(data)) : this.clear(); }
 	//setPromotor(firmas) { return firmas ? this.setFirma(firmas.find(firma.isPromotor)) : this.clear(); }
-	setEditable() {
-		this.setFirma(firmas.isEmpty() ? null : firmas.getByGrupo(5)); // grupo promotor = 5
-		this.setReadonly(irse.isEditable()); // editable if irse is editable
-	}
 
 	connectedCallback() { // Initialize element
 		this.setMinLength(4);

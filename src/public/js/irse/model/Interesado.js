@@ -3,6 +3,10 @@ import Base from "../../core/model/Base.js";
 import ue from "../data/ue.js";
 
 class Interesado extends Base {
+	constructor() {
+		super({}); // initialize with empty data
+	}
+
 	getColectivo() { return this.get("ci"); }
 	isAlumno = () => (this.getColectivo() == "ALU");
 	isExterno = () => (this.getColectivo() == "EXT");
