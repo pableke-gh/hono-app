@@ -1,31 +1,50 @@
 
 class Alerts {
-	#alerts = []; // container for alert instances
+	#alerts; // html element
 
-	add(alert) { this.#alerts.push(alert); } // add alert instance to container
-	close() { this.#alerts.forEach(alert => alert.close()); } // hide all alerts
-	isOk() { return this.#alerts[0].isOk() && !this.#alerts[1].isError(); } // check if first alert is success
-	isError() { return this.#alerts.some(alert => alert.isError()); } // check if any alert is error type
+	add(alert) { this.#alerts = alert.parentNode; } // add alert instance to container
+	close() { Array.from(this.#alerts.children).forEach(alert => alert.close()); return this; } // hide all alerts
+	isOk() { return !this.isError() && Array.from(this.#alerts.children).some(alert => alert.isOk()); } // check if first alert is success
+	isError() { return Array.from(this.#alerts.children).some(alert => alert.isError()); } // check if any alert is error type
 
-	setOk(message) {
-		const alert = this.#alerts.at(-1); // get alert element
+	addOk(message) {
+		const alert = this.#alerts.lastElementChild; // get alert element
 		alert.setOk(message); // set message and style
-		alert.parentNode.prepend(alert); // move alert to top
+		this.#alerts.prepend(alert); // move alert to top
+		return this; // for chaining
 	}
-	setInfo(message) {
-		const alert = this.#alerts.at(-1);
+	setOk(message) { // close all alerts and add success alert
+		return this.close().addOk(message);
+	}
+
+	addInfo(message) {
+		const alert = this.#alerts.lastElementChild;
 		alert.setInfo(message);
-		alert.parentNode.prepend(alert);
+		this.#alerts.prepend(alert);
+		return this; // for chaining
 	}
-	setWarn(message) {
-		const alert = this.#alerts.at(-1);
+	setInfo(message) { // close all alerts and add info alert
+		return this.close().addInfo(message);
+	}
+
+	addWarn(message) {
+		const alert = this.#alerts.lastElementChild;
 		alert.setWarn(message);
-		alert.parentNode.prepend(alert);
+		this.#alerts.prepend(alert);
+		return this; // for chaining
 	}
-	setError(message) {
-		const alert = this.#alerts.at(-1);
+	setWarn(message) { // close all alerts and add warn alert
+		return this.close().addWarn(message);
+	}
+
+	addError(message) {
+		const alert = this.#alerts.lastElementChild;
 		alert.setError(message);
-		alert.parentNode.prepend(alert);
+		this.#alerts.prepend(alert);
+		return this; // for chaining
+	}
+	setError(message) { // close all alerts and add error alert
+		return this.close().addError(message);
 	}
 }
 

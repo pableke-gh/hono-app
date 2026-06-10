@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>Página de Inicio</title>
+
+	<link rel="stylesheet" href="../public/css/styles-min.css"/>
+	<script type="text/javascript" src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
+	<script type="module" src="../public/js/web/index.js"></script>
+</head>
+<body>
+	<div class="alerts">
+		<div is="alert-box" class="alert alert-success"></div>
+		<div is="alert-box" class="alert alert-info"></div>
+		<div is="alert-box" class="alert alert-warn"></div>
+		<div is="alert-box" class="alert alert-error"></div>
+	</div>
+	<div class="loading">
+		<b class="far fa-circle-notch fa-3x fa-spin loading-content"></b>
+	</div>
+	<a id="back-to-top" href="#top" class="hide back-to-top">
+		<i class="fas fa-arrow-alt-up"></i>
+	</a>
+
+	<form id="search-form" class="search-form">
+		<div class="ui-blocks">
+			<div class="ui-block-btn">
+				<button type="button" is="btn-file" class="btn btn-info"><i class="fas fa-search"></i>Leer Excel</button>
+				<input type="file" name="adjunto" is="test-file" class="hide" data-filename=".name-file" />
+				<div class="ui-errtip"></div> 
+			</div>
+			<div class="ui-block-row text-height name-file"></div>
+		</div>
+	</form>
+
+	<div is="firmas-block" class="navbar">
+		<hr/>
+		<h3>Firmantes:</h3>
+		<div class="ui-blocks"></div>
+		<p class="notice notice-error">Motivo del rechazo: (@rejectedBy;) @info;</p>
+	</div>
+
+	<hr/>
+	<div class="ui-blocks">
+		<span><i class="fas fa-flag-alt text-warn icon"></i>Pendiente</span> 
+		<span><i class="fas fa-flag-alt text-green icon"></i>Aceptada</span>
+		<span><i class="fas fa-flag-alt text-error icon"></i>Rechazada</span>
+	</div>
+</body>
+</html>

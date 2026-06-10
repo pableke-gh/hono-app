@@ -8,16 +8,21 @@ class Tabs {
 	getTabs = () => this.#tabs; // tabs array
 	add(tab) { this.#tabs.push(tab); }
 	getTabByIndex = index => this.#tabs[index]; // Find by index
-	getTab = id => this.#tabs.find(tab => (tab.id === "tab-" + id)); // Find by id selector
+	getTab = id => this.#tabs.find(tab => (tab.id === ("tab-" + id))); // Find by id selector
 	getCurrent = () => this.#tabs.find(tab => tab.isActive()); // current tab
 	indexOf = tab => this.#tabs.indexOf(tab); // index of single tab
 
 	show(index) {
 		index = index || 0; // default to 0
-		index = (index < 0) ? 0 : Math.min(index, this.#tabs.length - 1); // limit range
+		index = (index < 1) ? 0 : Math.min(index, this.#tabs.length - 1); // limit range
 		this.#tabs.forEach(tab => tab.setInactive());
 		this.#tabs[index].setActive();
 	}
+	next(id) {
+		const source = globalThis.isset(id) ? this.getTab(id) : this.getCurrent(); // get tab by id or current
+		tabs.show(this.indexOf(source) + 1);
+	}
+	prev() { tabs.show(tabs.indexOf(this) - 1); }
 }
 
 const tabs = new Tabs(); // singleton instance

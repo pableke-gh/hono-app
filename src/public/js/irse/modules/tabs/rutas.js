@@ -43,7 +43,8 @@ class Rutas {
 		// recalculo las nuevas dietas y las envio al servidor, el response actualiza la vista (pasos 2, 5 y 6 resumen)
 		const data = { id: irse.getId(), matricula, rutas: rutas.getRutas(), dietas: dietas.build(tipo, grupo) };
 		return api.setJSON(data).json("/uae/iris/rutas/save").then(data => { // send data to server and return promise
-			this.view(data.rutas); // load pk from db
+			rutas.setRutas(data.rutas); // update rutas id's with db response
+			this.view(); // re-load pk from db
 			form.setChanged().getPaso5().updateRutas(); // rutas de consulta y pendientes
 			form.getResumen().updateRutas(data.dietas); // km y dietas del paso resumen
 		});
