@@ -1,7 +1,7 @@
 
 import TableHTML from "../../../components/TableHTML.js";
 import tabs from "../../../components/Tabs.js";
-import i18n from "../../../i18n/langs.js";
+import i18n from "../../../core/i18n/langs.js";
 
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";

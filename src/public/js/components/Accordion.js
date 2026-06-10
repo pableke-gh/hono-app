@@ -1,6 +1,6 @@
 
 import coll from "./CollectionHTML.js";
-import i18n from "../i18n/langs.js";
+import i18n from "../core/i18n/langs.js";
 import cv from "./cv/Resize.js";
 
 export default class Accordion extends HTMLDivElement {

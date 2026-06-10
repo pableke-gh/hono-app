@@ -1,6 +1,6 @@
 
-import dt from "../../../components/types/DateBox.js";
-import nb from "../../../components/types/NumberBox.js";
+import dt from "../../../../components/types/DateBox.js";
+import nb from "../../../../components/types/NumberBox.js";
 import Base from "../lang.js";
 import en from "./en.js";
 

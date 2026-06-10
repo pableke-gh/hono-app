@@ -1,6 +1,6 @@
 
 import TableHTML from "../../components/TableHTML.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 
 export default class Documentos extends TableHTML {
 	constructor() {

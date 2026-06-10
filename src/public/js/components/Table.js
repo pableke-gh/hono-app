@@ -1,7 +1,7 @@
 
 import coll from "./CollectionHTML.js";
 import tabs from "./Tabs.js";
-import i18n from "../i18n/langs.js";
+import i18n from "../core/i18n/langs.js";
 
 export default class Table {
 	#table; #tHead; #tBody; #tFoot; #opts; // table elements and options

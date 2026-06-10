@@ -1,5 +1,5 @@
 
-import i18n from "../../i18n/langs.js";
+import i18n from "../../core/i18n/langs.js";
 import TextInput from "./TextInput.js";
 import input from "./FormInput.js";
 

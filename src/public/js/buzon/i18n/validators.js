@@ -1,5 +1,5 @@
 
-import Validators from "../../i18n/validators.js";
+import Validators from "../../core/i18n/validators.js";
 
 class BuzonValidators extends Validators {
 	#form = document.forms["facturas"];

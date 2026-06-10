@@ -3,7 +3,7 @@ import nav from "./components/Navigation.js";
 //import dom from "./components/forms/DomBox.js";
 import menu from "./components/Menu.js";
 import menus from "./web/data/menus.js";
-import i18n from "./i18n/langs.js";
+import i18n from "./core/i18n/langs.js";
 
 nav.ready(() => {
 	const menuHTML = $1("ul.menu"); // menu UL HTML container

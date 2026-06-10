@@ -1,6 +1,6 @@
 
 
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 import Base from "./Base.js";
 import firma from "./Firma.js";
 

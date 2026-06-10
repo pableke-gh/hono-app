@@ -1,5 +1,5 @@
 
-import EnLang from "../../../../i18n/langs/en/lang.js";
+import EnLang from "../../../../core/i18n/langs/en/lang.js";
 import en from "./en.js";
 
 class PedidoLang extends EnLang {

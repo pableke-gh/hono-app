@@ -15,6 +15,9 @@ import Firmas from "../core/components/Firmas.js";
 import ControlesFilterForm from "./modules/ControlesFilter.js";
 import ControlesTable from "./modules/ControlesTable.js";
 
+import alerts from "../core/components/Alerts.js";
+window.alerts = alerts; // make alerts globally accessible
+
 //document.addEventListener("DOMContentLoaded", () => {});
 
 customElements.define("pedido-filter", PedidoFilterForm, { extends: "form" });

@@ -1,5 +1,5 @@
 
-import Multilang from "../../../i18n/langs/multilang.js";
+import Multilang from "../../../core/i18n/langs/multilang.js";
 
 export default class IrisMultilang extends Multilang {
 	getPerfil(rol, colectivo, actividad, tramite, financiacion) {

@@ -2,7 +2,7 @@
 import coll from "../components/Collection.js";
 import tabs from "../components/Tabs.js";
 import api from "../components/Api.js";
-import i18n from "../i18n/langs.js";
+import i18n from "../core/i18n/langs.js";
 
 import irse from "./model/Irse.js";
 import rutas from "./model/Rutas.js";

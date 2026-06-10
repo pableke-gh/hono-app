@@ -1,5 +1,5 @@
 
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 
 class Firma {
 	#fnAceptada = mask => ((mask & 32) == 32);

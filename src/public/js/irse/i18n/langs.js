@@ -1,5 +1,5 @@
 
-import langs from "../../i18n/langs.js";
+import langs from "../../core/i18n/langs.js";
 import IrisMultilang from "../i18n/langs/multilang.js";
 import en from "./langs/en/lang.js";
 import es from "./langs/es/lang.js";

@@ -16,9 +16,7 @@ const CSS_FILES = "src/public/css/**/*.css";
 const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
 const JS_SRC = [ "src/*.js", "src/dao/**/*", "src/data/**/*", "src/i18n/**/*", "src/lib/**/*", "src/routes/**/*" ];
 const JS_DIST = [ "dist", "dist/dao", "dist/data", "dist/i18n", "dist/lib", "dist/routes" ];
-const SYM_LINKS = [
-	"dist", "dist/controllers", "dist/dao", "dist/data", "dist/lib", "dist/public/js", "dist/public/js/i18n"
-];
+const SYM_LINKS = [ "dist", "dist/controllers", "dist/dao", "dist/data", "dist/lib", "dist/public/js" ];
 
 function deployCV(src, dest, done) {
 	fs.access(dest, err => {

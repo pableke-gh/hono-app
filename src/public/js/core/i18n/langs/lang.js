@@ -1,6 +1,6 @@
 
-import dt from "../../components/types/DateBox.js";
-import nb from "../../components/types/NumberBox.js";
+import dt from "../../../components/types/DateBox.js";
+import nb from "../../../components/types/NumberBox.js";
 
 const RE_VAR = /[@$](\w+)(\.\w+)?;/g; // reg-exp for vars
 const OPTS = { size: 1, index: 0 }; // default options

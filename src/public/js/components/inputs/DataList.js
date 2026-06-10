@@ -1,6 +1,6 @@
 
 import sb from "../types/StringBox.js";
-import i18n from "../../i18n/langs.js";
+import i18n from "../../core/i18n/langs.js";
 import input from "./FormInput.js";
 
 // Register the custom element

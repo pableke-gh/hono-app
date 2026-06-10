@@ -2,7 +2,7 @@
 import FormBase from "../../components/forms/FormBase.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js"
-import i18n from "../../i18n/langs.js";
+import i18n from "../i18n/langs.js";
 import observer from "../util/Observer.js";
 
 export default class Solicitud extends FormBase {
@@ -57,7 +57,8 @@ export default class Solicitud extends FormBase {
 	}
 	reject = data => { // refresh and open reject tab from list
 		const isCached = this.isCached(data.id); // check if data is cached
-		this.set("update-firmas", el => el.setVisible(isCached)).refresh(this.#solicitudes.load());
+		observer.emit("firmas-updated", isCached); // show firmas if cached, hide if not
+		this.refresh(this.#solicitudes.load());
 		tabs.show("reject"); // show form
 	}
 	rechazar = data => { // accion de rechazo
@@ -88,8 +89,10 @@ export default class Solicitud extends FormBase {
 	view = data => { // view action
 		if (data.solicitud) // create action
 			return this.create(data); // load data and show form tab
-		if (this.isCached(data.id)) // view action from solicitudes list
-			return this.set("update-firmas", el => el.show()).showForm(); // datos pre-cargados y firmas visibles
+		if (this.isCached(data.id)) { // view action from solicitudes listç
+			observer.emit("firmas-updated", true); // firmas pre-cargadas
+			return this.showForm(); // datos pre-cargados
+		}
 		api.init().json(this.#solicitud.getUrl() + "/view?id=" + data.id).then(this.#show); // get method
 	}
 	reactivar = data => { // set inputs to editable and update view
