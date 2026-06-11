@@ -24,13 +24,26 @@
 	</a>
 
 	<form id="search-form" class="search-form">
+		<div is="tab-content" class="tab-content active">
 		<div class="ui-blocks">
 			<div class="ui-block-btn">
-				<button type="button" is="btn-file" class="btn btn-info"><i class="fas fa-search"></i>Leer Excel</button>
-				<input type="file" name="adjunto" is="test-file" class="hide" data-filename=".name-file" />
+				<button type="button" is="btn-excel" class="btn btn-info"><i class="fas fa-search"></i>Leer Excel</button>
+				<input type="file" name="excel" is="excel-file" class="hide" data-filename=".name-file" />
 				<div class="ui-errtip"></div> 
 			</div>
 			<div class="ui-block-row text-height name-file"></div>
+		</div>
+
+		<div class="navbar">
+			<a href="#tab-prev" class="btn btn-info"><i class="fas fa-caret-left"></i>Volver</a>
+			<a href="#tab-next" class="btn btn-info">Siguiente<i class="fas fa-caret-right"></i></a>
+		</div>
+		</div>
+		<div is="tab-content">
+		<div class="navbar">
+			<a href="#tab-prev" class="btn btn-info"><i class="fas fa-caret-left"></i>Volver</a>
+			<a href="#tab-next" class="btn btn-info">Siguiente<i class="fas fa-caret-right"></i></a>
+		</div>
 		</div>
 	</form>
 

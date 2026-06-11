@@ -21,5 +21,11 @@
 			"default": true
 		}
 	],
-	"liveServer.settings.root": "/dist/views"
+	"liveServer.settings.wait": 300,
+	"liveServer.settings.host": "localhost",
+	"liveServer.settings.root": "/dist/views",
+	"liveServer.settings.ignoreFiles": [
+		"/dist/views/buzon/**", "/dist/views/factura/**", "/dist/views/irse/**",
+		"/dist/views/isuite/**", "/dist/views/pedidos/**", "/dist/views/presto/**"
+	]
 }

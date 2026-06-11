@@ -3,9 +3,10 @@ import FileInput from "../../components/inputs/FileInput.js";
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs";
 //import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js";
 
-export default class PresupuestoFile extends FileInput {
+export default class ExcelFile extends FileInput {
 	connectedCallback() {
-		super.connectedCallback();
+		super.connectedCallback(); // init. component
+		this.previousElementSibling.addEventListener("click", () => this.click()); // trigger file input on button click
 
 		this.addChange(async ev => {
 			const file = this.files[0];
