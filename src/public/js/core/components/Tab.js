@@ -27,3 +27,8 @@ export default class Tab extends HTMLDivElement {
 		});
 	}
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+	// define custom element after Tabs initialization to avoid circular dependency
+	customElements.define("tab-content", Tab, { extends: "div" });
+});

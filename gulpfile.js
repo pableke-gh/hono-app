@@ -1,7 +1,7 @@
 import fs from "fs";
 import gulp from "gulp";
 import concat from "gulp-concat";
-import uglify from "gulp-uglify";
+import uglify from "gulp-terser";
 import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
 import transform from "gulp-transform";
@@ -9,7 +9,7 @@ import transform from "gulp-transform";
 const fnNone = () => {};
 const VIEW_FILES = "src/views/**/*";
 
-const JS_FILES = "src/public/js/**/*.js";
+const JS_FILES = "src/public/js/**/*.js*"; // .js and .json
 const JS_ROOT = "src/public/js/*.js";
 
 const CSS_FILES = "src/public/css/**/*.css";

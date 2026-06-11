@@ -1,7 +1,9 @@
 
+import alerts from "../../core/components/Alerts.js";
 import FileInput from "../../components/inputs/FileInput.js";
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs";
 //import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js";
+import types from "../../data/mime-types.js";
 
 export default class ExcelFile extends FileInput {
 	connectedCallback() {
@@ -11,6 +13,8 @@ export default class ExcelFile extends FileInput {
 		this.addChange(async ev => {
 			const file = this.files[0];
 			if (!file) return; // no file selected
+			if ((file.type !== types.xls) && (file.type !== types.xlsx))
+				return alerts.setError("Please select a valid Excel file (.xls or .xlsx)");
 
 			const buffer = await file.arrayBuffer();
 			const workbook = XLSX.read(buffer, { type: "array", cellDates: true });

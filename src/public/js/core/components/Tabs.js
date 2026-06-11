@@ -42,6 +42,3 @@ class Tabs {
 }
 
 export default new Tabs(); // singleton instance
-
-// define custom element after Tabs initialization to avoid circular dependency
-customElements.define("tab-content", Tab, { extends: "div" });

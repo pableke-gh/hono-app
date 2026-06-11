@@ -1,19 +1,16 @@
 
 import Alert from "./Alert.js";
 
-class Alerts {
-	#alerts; // html element
-
-	add(alert) { this.#alerts = alert.parentNode; } // add alert instance to container
-	close() { Array.from(this.#alerts.children).forEach(alert => alert.close()); return this; } // hide all alerts
-	isOk() { return !this.isError() && Array.from(this.#alerts.children).some(alert => alert.isOk()); } // check if first alert is success
-	isError() { return Array.from(this.#alerts.children).some(alert => alert.isError()); } // check if any alert is error type
+class Alerts extends HTMLDivElement {
+	close() { this.children.forEach(alert => alert.close()); return this; } // hide all alerts
+	isOk() { return !this.isError() && this.children.some(alert => alert.isOk()); } // check if first alert is success
+	isError() { return this.children.some(alert => alert.isError()); } // check if any alert is error type
 
 	addOk(message) {
 		if (message) { // add only if message is not empty
-			const alert = this.#alerts.lastElementChild; // get alert element
+			const alert = this.lastElementChild; // get alert element
 			alert.setOk(message); // set message and style
-			this.#alerts.prepend(alert); // move alert to top
+			this.prepend(alert); // move alert to top
 		}
 		return this; // for chaining
 	}
@@ -23,9 +20,9 @@ class Alerts {
 
 	addInfo(message) {
 		if (message) { // add only if message is not empty
-			const alert = this.#alerts.lastElementChild;
+			const alert = this.lastElementChild;
 			alert.setInfo(message); // set message and style
-			this.#alerts.prepend(alert);
+			this.prepend(alert);
 		}
 		return this; // for chaining
 	}
@@ -35,9 +32,9 @@ class Alerts {
 
 	addWarn(message) {
 		if (message) { // add only if message is not empty
-			const alert = this.#alerts.lastElementChild;
+			const alert = this.lastElementChild;
 			alert.setWarn(message); // set message and style
-			this.#alerts.prepend(alert);
+			this.prepend(alert);
 		}
 		return this; // for chaining
 	}
@@ -47,9 +44,9 @@ class Alerts {
 
 	addError(message) {
 		if (message) { // add only if message is not empty
-			const alert = this.#alerts.lastElementChild;
+			const alert = this.lastElementChild;
 			alert.setError(message); // set message and style
-			this.#alerts.prepend(alert);
+			this.prepend(alert);
 		}
 		return this; // for chaining
 	}
@@ -65,9 +62,23 @@ class Alerts {
 		}
 		return this; // for chaining
 	}
+
+	connectedCallback() { // Init. component when added to DOM
+		this.appendChild(new Alert()); // add first alert element
+		this.appendChild(new Alert()); // add second alert element
+		this.classList.add("alerts"); // add container class
+	}
 }
 
-export default new Alerts(); // singleton instance
+customElements.define("alerts-box", Alerts, { extends: "div" });
 
-// define custom element after Alerts initialization to avoid circular dependency
-customElements.define("alert-box", Alert, { extends: "div" });
+// Extends HTMLCollection prototype
+HTMLCollection.prototype.map = Array.prototype.map;
+HTMLCollection.prototype.some = Array.prototype.some;
+HTMLCollection.prototype.find = Array.prototype.find;
+HTMLCollection.prototype.filter = Array.prototype.filter;
+HTMLCollection.prototype.forEach = Array.prototype.forEach;
+HTMLCollection.prototype.findIndex = Array.prototype.findIndex;
+HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
+
+export default new Alerts(); // singleton instance

@@ -4,7 +4,8 @@ import firmas from "../model/Firmas.js";
 import observer from "../util/Observer.js";
 
 export default class FirmasBlock extends HTMLDivElement {
-	static #first; // main block
+	static notify(firmas) { observer.emit("firmas-updated", firmas); }
+	static #first; // first block => main for rendering and cloning
 
 	render = data => { // render div contents
 		if (!data) return this.hide(); // hide all firmas

@@ -1,0 +1,62 @@
+[
+    {
+        "fecha": null,
+        "ap2": "GARCÍA",
+        "ap1": "GONZÁLEZ",
+        "grupo": -1,
+        "nif": "22970274J",
+        "id": 164429,
+        "cargo": "Gestor de la Comunicación",
+        "nombre": "ÁNGEL",
+        "mask": 3,
+        "info": null
+    },
+    {
+        "fecha": "2026-06-11",
+        "ap2": "RAMÍREZ",
+        "ap1": "RODRÍGUEZ",
+        "grupo": 1,
+        "nif": "22941114V",
+        "id": 164426,
+        "cargo": "Envío de la Comunicación",
+        "nombre": "ANA MARÍA",
+        "mask": 51,
+        "info": null
+    },
+    {
+        "fecha": "2026-06-11",
+        "ap2": "MARTÍNEZ",
+        "ap1": "PEDREÑO",
+        "grupo": 2,
+        "nif": "21060433T",
+        "id": 164433,
+        "cargo": "Interesado/a",
+        "nombre": "RUBÉN",
+        "mask": 59,
+        "info": null
+    },
+    {
+        "fecha": null,
+        "ap2": "MARTÍNEZ",
+        "ap1": "VIZCAÍNO",
+        "grupo": 3,
+        "nif": "22948472S",
+        "id": 164434,
+        "cargo": "Validación UGI",
+        "nombre": "ANA MARÍA",
+        "mask": 91,
+        "info": null
+    },
+    {
+        "fecha": null,
+        "ap2": "GRANADO",
+        "ap1": "ABADÍAS",
+        "grupo": 4,
+        "nif": "18037797R",
+        "id": 164444,
+        "cargo": "Validación UAE",
+        "nombre": "RAQUEL",
+        "mask": 11,
+        "info": null
+    }
+]

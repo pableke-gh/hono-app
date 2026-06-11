@@ -7,20 +7,15 @@
 
 	<link rel="stylesheet" href="../public/css/styles-min.css"/>
 	<script type="text/javascript" src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
-	<script type="module" src="../public/js/web/index.js"></script>
+	<script type="module" src="../public/js/web/index.js" defer></script>
 </head>
 <body>
-	<div class="alerts">
-		<div is="alert-box" class="alert alert-success"></div>
-		<div is="alert-box" class="alert alert-info"></div>
-		<div is="alert-box" class="alert alert-warn"></div>
-		<div is="alert-box" class="alert alert-error"></div>
-	</div>
+	<div class="alerts"></div>
 	<div class="loading">
 		<b class="far fa-circle-notch fa-3x fa-spin loading-content"></b>
 	</div>
 	<a id="back-to-top" href="#top" class="hide back-to-top">
-		<i class="fas fa-arrow-alt-up"></i>
+		<i class="fas fa-arrow-up"></i>
 	</a>
 
 	<form id="search-form" class="search-form">
@@ -28,7 +23,7 @@
 		<div class="ui-blocks">
 			<div class="ui-block-btn">
 				<button type="button" is="btn-excel" class="btn btn-info"><i class="fas fa-search"></i>Leer Excel</button>
-				<input type="file" name="excel" is="excel-file" class="hide" data-filename=".name-file" />
+				<input type="file" name="excel" is="excel-file" class="hide" data-filename=".name-file" accept=".xls, .xlsx"/>
 				<div class="ui-errtip"></div> 
 			</div>
 			<div class="ui-block-row text-height name-file"></div>
@@ -39,6 +34,7 @@
 			<a href="#tab-next" class="btn btn-info">Siguiente<i class="fas fa-caret-right"></i></a>
 		</div>
 		</div>
+
 		<div is="tab-content">
 		<div class="navbar">
 			<a href="#tab-prev" class="btn btn-info"><i class="fas fa-caret-left"></i>Volver</a>
@@ -56,9 +52,9 @@
 
 	<hr/>
 	<div class="ui-blocks">
-		<span><i class="fas fa-flag-alt text-warn icon"></i>Pendiente</span> 
-		<span><i class="fas fa-flag-alt text-green icon"></i>Aceptada</span>
-		<span><i class="fas fa-flag-alt text-error icon"></i>Rechazada</span>
+		<span><i class="fas fa-flag text-warn icon"></i>Pendiente</span> 
+		<span><i class="fas fa-flag text-green icon"></i>Aceptada</span>
+		<span><i class="fas fa-flag text-error icon"></i>Rechazada</span>
 	</div>
 </body>
 </html>

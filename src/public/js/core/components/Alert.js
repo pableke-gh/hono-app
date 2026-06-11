@@ -1,6 +1,4 @@
 
-import alerts from "./Alerts.js";
-
 export default class Alert extends HTMLDivElement {
 	constructor() {
 		super(); // call super before accessing this
@@ -8,6 +6,7 @@ export default class Alert extends HTMLDivElement {
 			<div class="alert-icon"></div>
 			<div class="alert-text"></div>
 			<div class="alert-close"><i class="fas fa-times"></i></div>`;
+		this.children[2].addEventListener("click", this.close); // add close click event
 	}
 
 	close = () => this.classList.remove("active"); // hide alert
@@ -26,9 +25,7 @@ export default class Alert extends HTMLDivElement {
 	setInfo(message) { this.#setAlert("info", '<i class="fas fa-info fa-3x"></i>', message); }
 	setWarn(message) { this.#setAlert("warn", '<i class="fas fa-exclamation-triangle fa-2x"></i>', message); }
 	setError(message) { this.#setAlert("error", '<i class="fas fa-exclamation fa-3x"></i>', message); }
-
-	connectedCallback() { // Init. component when added to DOM
-		alerts.add(this); // add this to container (after instance alerts to avoid circular dependency)
-		this.children[2].addEventListener("click", this.close); // add close click event
-	}
 }
+
+// auto define custom element after class definition
+customElements.define("alert-box", Alert, { extends: "div" });
