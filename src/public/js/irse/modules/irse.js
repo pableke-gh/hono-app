@@ -30,6 +30,7 @@ class IrseSolicitud extends Solicitud {
 
 	// IMPORTANT! override super view
 	view = (interesado, organicas, dietas, cuentas, firmas) => {
+		console.log('firmas: ', firmas);
 		perfil.view(interesado, organicas, firmas); // load perfil
 		paso2.view(); // preload maps rutas (tab 2)
 		paso1.view(); // mun require rutas preloaded
