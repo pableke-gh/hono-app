@@ -5,7 +5,7 @@ import tabs from "../../../components/Tabs.js";
 import api from "../../../components/Api.js";
 
 import otri from "../../model/Otri.js";
-import xlsx from "../../../services/xlsx.js";
+import xlsx from "../../services/xlsx.js";
 import { KEYS, TITILES } from "../../data/isu.js";
 
 /*********** Informe ISU par la otri ***********/
