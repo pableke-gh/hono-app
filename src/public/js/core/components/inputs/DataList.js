@@ -1,5 +1,6 @@
 
 import sb from "../../../components/types/StringBox.js";
+import alerts from "../Alerts.js";
 import i18n from "../../i18n/langs.js";
 
 // Register the custom element
