@@ -32,7 +32,7 @@ export default class TextInput extends HTMLInputElement {
 	setEditable(force) { this.setReadonly(!force); return this; }
 	prepare(data) { return this.load(data).setEditable((data.estado == 6) && (this.dataset.editable !== "manual")); }
 
-	// Input text Validators
+	// Validators
 	setOk() {
 		const tipElement = this.parentNode.querySelector(".ui-errtip");
 		if (tipElement)
