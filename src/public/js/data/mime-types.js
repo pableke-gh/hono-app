@@ -8,6 +8,8 @@ export default {
 	json: "application/json",
 	png:  "image/png",
 	svg:  "image/svg+xml",
+	tif:  "image/tif",
+	tiff: "image/tiff",
 	pdf:  "application/pdf",
 	rar:  "application/x-rar-compressed",
 	text: "text/plain",

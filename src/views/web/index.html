@@ -11,35 +11,38 @@
 </head>
 <body>
 	<div class="alerts"></div>
-	<div class="loading">
-		<b class="far fa-circle-notch fa-3x fa-spin loading-content"></b>
-	</div>
-	<a id="back-to-top" href="#top" class="hide back-to-top">
-		<i class="fas fa-arrow-up"></i>
-	</a>
 
 	<form id="search-form" class="search-form">
 		<div is="tab-content" class="tab-content active">
-		<div class="ui-blocks">
-			<div class="ui-block-btn">
-				<button type="button" is="btn-excel" class="btn btn-info"><i class="fas fa-search"></i>Leer Excel</button>
-				<input type="file" name="excel" is="excel-file" class="hide" data-filename=".name-file" accept=".xls, .xlsx"/>
-				<div class="ui-errtip"></div> 
+			<div class="ui-blocks">
+				<div class="ui-block-btn">
+					<button type="button" class="btn btn-info"><i class="fas fa-search"></i>Leer Excel</button>
+					<input type="file" name="excel" is="excel-file" class="hide" data-filename=".excel-name" accept=".xls, .xlsx"/>
+					<div class="ui-errtip"></div> 
+				</div>
+				<div class="ui-block-row text-height excel-name"></div>
 			</div>
-			<div class="ui-block-row text-height name-file"></div>
-		</div>
 
-		<div class="navbar">
-			<a href="#tab-prev" class="btn btn-info"><i class="fas fa-caret-left"></i>Volver</a>
-			<a href="#tab-next" class="btn btn-info">Siguiente<i class="fas fa-caret-right"></i></a>
-		</div>
+			<div class="navbar">
+				<a href="#tab-prev" class="btn btn-info"><i class="fas fa-caret-left"></i>Volver</a>
+				<a href="#tab-next" class="btn btn-info">Siguiente<i class="fas fa-caret-right"></i></a>
+			</div>
 		</div>
 
 		<div is="tab-content">
-		<div class="navbar">
-			<a href="#tab-prev" class="btn btn-info"><i class="fas fa-caret-left"></i>Volver</a>
-			<a href="#tab-next" class="btn btn-info">Siguiente<i class="fas fa-caret-right"></i></a>
-		</div>
+			<div class="ui-blocks">
+				<div class="ui-block-btn">
+					<button type="button" class="btn btn-info"><i class="fas fa-search"></i>Fichero OCR</button>
+					<input type="file" name="ocr" is="ocr-file" class="hide" data-filename=".ocr-file" accept=".pdf, image/*"/>
+					<div class="ui-errtip"></div> 
+				</div>
+				<div class="ui-block-row text-height ocr-file"></div>
+			</div>
+
+			<div class="navbar">
+				<a href="#tab-prev" class="btn btn-info"><i class="fas fa-caret-left"></i>Volver</a>
+				<a href="#tab-next" class="btn btn-info">Siguiente<i class="fas fa-caret-right"></i></a>
+			</div>
 		</div>
 	</form>
 

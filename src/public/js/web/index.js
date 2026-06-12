@@ -1,7 +1,11 @@
 
+import dt from "../components/types/DateBox.js";
 import alerts from "../core/components/Alerts.js";
 import tabs from "../core/components/Tabs.js";
+
 import ExcelFile from "./components/ExcelFile.js";
+import OCRFile from "./components/OCRFile.js";
+
 import Firmas from "../core/components/Firmas.js";
 import firmas from "./data/firmas.json" with { type: "json" };
 
@@ -15,7 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	Firmas.notify(firmas); // emit firmas data for testing
 	window.alerts = alerts; // make alerts globally accessible for testing
 	window.tabs = tabs; // make tabs globally accessible for testing
+	window.dt = dt; // make datebox type globally accessible for testing
 });
 
 customElements.define("excel-file", ExcelFile, { extends: "input" });
+customElements.define("ocr-file", OCRFile, { extends: "input" });
 customElements.define("firmas-block", Firmas, { extends: "div" });

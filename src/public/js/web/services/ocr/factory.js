@@ -2,13 +2,14 @@
 import pdf from "./pdf.js";
 import tiff from "./tiff.js";
 import image from "./image.js";
+import types from "../../../data/mime-types.js";
 
 class FactoryOCR {
 	async read(file) {
-		if (file.type === "application/pdf")
+		if (file.type === types.pdf)
 			return await pdf.read(file); // try to extract text from PDF (no OCR)
 
-		if ((file.type === "image/tiff") || (file.type === "image/tif"))
+		if ((file.type === types.tiff) || (file.type === types.tif))
 			return await tiff.read(file);
 
 		if (file.type.startsWith("image/"))

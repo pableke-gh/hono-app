@@ -1,6 +1,6 @@
 
 import alerts from "../../core/components/Alerts.js";
-import FileInput from "../../components/inputs/FileInput.js";
+import FileInput from "../../core/components/inputs/FileInput.js";
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs";
 //import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js";
 import types from "../../data/mime-types.js";

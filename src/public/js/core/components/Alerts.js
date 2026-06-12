@@ -63,10 +63,22 @@ class Alerts extends HTMLDivElement {
 		return this; // for chaining
 	}
 
+	loading = () => { this.nextElementSibling.classList.add("active"); this.close(); }
+	working = () => this.nextElementSibling.classList.remove("active"); // animation = fadeOut
+	top = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
 	connectedCallback() { // Init. component when added to DOM
+		this.classList.add("alerts"); // add container class
 		this.appendChild(new Alert()); // add first alert element
 		this.appendChild(new Alert()); // add second alert element
-		this.classList.add("alerts"); // add container class
+
+		// append loadding and back-to-top elements
+		this.insertAdjacentHTML("afterend", '<a id="back-to-top" href="#top" class="hide back-to-top"><i class="fas fa-arrow-up"></i></a>');
+		this.insertAdjacentHTML("afterend", '<div class="loading"><b class="fas fa-circle-notch fa-3x fa-spin loading-content"></b></div>');
+
+		const _top = this.nextElementSibling.nextElementSibling; // back-to-top element
+		_top.addEventListener("click", ev => { this.top(); ev.preventDefault(); });
+		window.onscroll = () => _top.classList.toggle("hide", window.scrollY < 85);
 	}
 }
 
