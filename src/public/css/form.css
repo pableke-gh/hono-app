@@ -110,7 +110,7 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 /* Inputs icon styles */
 
 /* Inputs error styles */
-.ui-error { border: 2px solid #dc3545; }
+.ui-error { border: 2px solid #dc3545; /*background-color: #fcebeb;*/ }
 .ui-error:focus { border: 2px solid tomato; caret-color: #e32; }
 .ui-errtip { margin-top: 0; font-size: 0.75rem/* 12px */; line-height: 1rem/* 16px */; font-style: italic; color: rgb(239 68 68); }
 /* Inputs error styles */

@@ -11,7 +11,6 @@ import firmas from "./data/firmas.json" with { type: "json" };
 
 // testing components
 document.addEventListener("DOMContentLoaded", () => {
-	document.body.appendChild(alerts); // add alerts container to body
 	alerts.setOk("Welcome to the application!").setInfo("This is an info message.")
 			.setWarn("This is a warning message.").setError("This is an error message.")
 			.addOk("This is another success message.").addInfo("This is another info message.");

@@ -83,6 +83,9 @@ class Alerts extends HTMLDivElement {
 }
 
 customElements.define("alerts-box", Alerts, { extends: "div" });
+// IMPORTANT! instance alerts after definition
+const alerts = new Alerts(); // singleton instance
+document.body.appendChild(alerts); // add alerts to body
 
 // Extends HTMLCollection prototype
 HTMLCollection.prototype.map = Array.prototype.map;
@@ -93,4 +96,4 @@ HTMLCollection.prototype.forEach = Array.prototype.forEach;
 HTMLCollection.prototype.findIndex = Array.prototype.findIndex;
 HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
 
-export default new Alerts(); // singleton instance
+export default alerts; // singleton instance
