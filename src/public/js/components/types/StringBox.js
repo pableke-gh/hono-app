@@ -79,7 +79,7 @@ function StringBox() {
 	this.strTimeShort = str => str ? str.substring(11, 16) : EMPTY; //hh:MM
 	this.toIsoTime = str => str ? (str + ":00") : "00:00:00"; //hh:MM:ss
 	this.toIsoDate = (date, time) => (date + "T" + self.toIsoTime(time) + ".0Z"); //yyyy-mm-ddThh:MM:ss
-	this.direct = str => str ? new Date(str.endsWith("Z") ? str.slice(0, -1) : str) : null; // fecha sin ajuste de hora (sin Z => sin +1h)
+	this.rawDate = str => str ? new Date(str.endsWith("Z") ? str.slice(0, -1) : str) : null; // fecha sin ajuste de hora (sin Z => sin +1h)
 	this.getYear = str => (str || sysdate).substring(0, 4); // yyyy string format
 	this.getHours = str => +(str || sysdate).substring(11, 13); // hh number format [0-23]
 	this.getMonth = str => +(str || sysdate).substring(5, 7); // mm number format [1-12]

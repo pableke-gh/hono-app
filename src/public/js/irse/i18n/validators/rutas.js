@@ -54,7 +54,7 @@ class RutasValidators extends Validators {
 	ruta(data) {
 		if (!data.origen || !data.pais1)
 			this.addRequired("origen", "errOrigen");
-		if (!dt.between(dt.direct(data.dt1), MIN_DATE, MAX_DATE))
+		if (!dt.between(dt.raw(data.dt1), MIN_DATE, MAX_DATE))
 			this.addRequired("f1", "errFechasRuta");
 		if (data.dt1 > data.dt2)
 			this.addRequired("f1", "errFechasOrden");

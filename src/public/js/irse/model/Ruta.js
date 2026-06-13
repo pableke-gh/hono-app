@@ -16,8 +16,8 @@ class Ruta {
 	getFechaSalida = ruta => sb.isoDate(this.getHoraSalida(ruta));
 	getHoraLlegada = ruta => ruta.dt2;
 	getFechaLlegada = ruta => sb.isoDate(this.getHoraLlegada(ruta));
-	salida = ruta => dt.direct(this.getHoraSalida(ruta)); //tb.parse(this.getHoraSalida(ruta));
-	llegada = ruta => dt.direct(this.getHoraLlegada(ruta)); //tb.parse(this.getHoraLlegada(ruta));
+	salida = ruta => dt.raw(this.getHoraSalida(ruta)); //tb.parse(this.getHoraSalida(ruta));
+	llegada = ruta => dt.raw(this.getHoraLlegada(ruta)); //tb.parse(this.getHoraLlegada(ruta));
 
 	// tipos de desplazamiento
 	isTipoVP = desp => (1 == desp);
