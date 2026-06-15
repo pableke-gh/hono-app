@@ -62,6 +62,7 @@ class Alerts extends HTMLDivElement {
 		}
 		return this; // for chaining
 	}
+	msgs = data => this.show(data?.msgs || data); // msgs container
 
 	loading = () => { this.nextElementSibling.classList.add("active"); this.close(); }
 	working = () => this.nextElementSibling.classList.remove("active"); // animation = fadeOut

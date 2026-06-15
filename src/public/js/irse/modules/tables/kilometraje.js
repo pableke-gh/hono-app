@@ -18,7 +18,7 @@ export default class Kilometraje extends TableHTML {
 
 		form.set("is-justifi-km", this.isJustifiKm);
 		this.setChange("km1", (data, el) => {
-			data.km1 = i18n.toFloat(el.value);
+			data.km1 = i18n.toFloat(el.value) ?? 0;
 			this.refresh(); // recalcula tabla completa
 			form.refresh(irse); // save changes + update form
 		});

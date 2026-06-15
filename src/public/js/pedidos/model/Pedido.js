@@ -6,6 +6,10 @@ class Pedido extends Solicitud {
 	getTitulo = () => "Solicitud SPI";
 	isDocumentable = () => (this.isValidada() || this.isErronea()); // muestra el boton de informe pdf
 
+	isAceptado = () => (this.getEstado() === 1);
+	isAprobado = () => (this.getEstado() === 4);
+	isAplicado = () => (this.getEstado() === 14);
+
 	getAdjunto = () => this.get("file");
 	getImporte = () => this.get("imp");
 	setImporte = imp => this.set("imp", imp);

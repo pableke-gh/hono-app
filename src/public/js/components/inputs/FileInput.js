@@ -39,7 +39,7 @@ export default class FileInput extends TextInput {
 		return names + ((this.files.length > max) ? ", ..." : "");
 	}
 
-	onFile(fn) { // deprecated
+	/*onFile(fn) { // deprecated
 		const reader = new FileReader();
 		let file, index; // file, position
 
@@ -56,7 +56,7 @@ export default class FileInput extends TextInput {
 			index = 0; // restart index
 			fnLoad(index);
 		});
-	}
+	}*/
 
 	readAsDataURL() {
 		if (this.isEmpty())

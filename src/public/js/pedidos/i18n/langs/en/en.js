@@ -16,7 +16,7 @@ export default {
 	errPartidaAnt: "No se ha encontrado el anticipo en el sistema",
 
 	descEstados: [
-		"-", "Aprobado", "Rechazado", "Ejecutada", "Aplicado", "Pendiente", "Editable", "Anulado", "Caducada", 
-		"Error Capa SOA", "-", "-", "-", "-", "-", "Subsanable", "Procesando..."
+		"-", "Aceptado", "Rechazado", "Ejecutada", "Aprobado", "Pendiente", "Editable", "Anulado", "Caducada", 
+		"Error Capa SOA", "-", "-", "-", "-", "Aplicado", "Subsanable", "Procesando..."
 	]
 }
