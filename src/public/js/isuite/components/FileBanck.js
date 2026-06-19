@@ -7,8 +7,8 @@ import rb from "../lib/RecibosBancarios.js";
 import TB_CONFIG from "../lib/Tables.js";
 
 export default class FileBanck extends FileInput {
-	connectedCallback() {
-		super.connectedCallback(); // init. component
+	connectedCallback() { // init. component
+		super.connectedCallback();
 		this.addChange(async ev => {
 			const file = this.files[0];
 			if (!file) // no file selected

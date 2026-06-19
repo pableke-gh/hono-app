@@ -31,7 +31,7 @@
 				<input type="text" name="banco" is="text-input" maxlength="50" class="ui-paso9 hide" />
 				<h:selectOneMenu id="entidades" pt:is="data-list" styleClass="ui-paso9">
 					<f:selectItem itemValue="" itemLabel=""/>
-					<f:selectItems value="#{iris.irse.gastos.entidades}" var="banco" itemValue="#{banco.value}" itemLabel="#{banco.label}"/>
+					<f:selectItems value="#{iris.gastos.entidades}" var="banco" itemValue="#{banco.value}" itemLabel="#{banco.label}"/>
 				</h:selectOneMenu>
 				<div class="ui-errtip"></div>
 			</label>

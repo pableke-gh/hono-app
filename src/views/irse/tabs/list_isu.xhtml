@@ -14,17 +14,17 @@
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<h:inputText id="organica-isu" value="#{iris.irse.isu.organica}" pt:is="text-input" styleClass="ui-autocomplete" tabindex="1" />
+				<h:inputText id="organica-isu" value="#{iris.isu.organica}" pt:is="text-input" styleClass="ui-autocomplete" tabindex="1" />
 				<input type="hidden" name="id" is="text-input" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">
 				<div class="label required">Ejercicios:</div>
-				<p:selectCheckboxMenu id="filtro-ej-isu" value="#{iris.irse.isu.ejercicio}"
+				<p:selectCheckboxMenu id="filtro-ej-isu" value="#{iris.isu.ejercicio}"
 						label="Ejercicios" filter="true" filterMatchMode="startsWith" multiple="true" emptyLabel="Seleccione Ejercicio..." updateLabel="true"
 						styleClass="ui-select" style="min-height: 36px" panelStyle="width: 16rem" tabindex="2" title="#{msg['tit.ejercicio']}">
-					<f:selectItems value="#{iris.irse.isu.ejercicios}" />
+					<f:selectItems value="#{iris.isu.ejercicios}" />
 				</p:selectCheckboxMenu>
 			</label>
 		</div>
@@ -32,7 +32,7 @@
 		<div class="navbar">
 			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
 				<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			<p:commandButton id="filter-list-isu" action="#{iris.irse.isu.list()}" onclick="loading()" update="xeco-list-isu" oncomplete="working()"
+			<p:commandButton id="filter-list-isu" action="#{iris.isu.list()}" onclick="loading()" update="xeco-list-isu" oncomplete="working()"
 					icon="far fa-search" value="Buscar" tabindex="13" styleClass="btn btn-info"></p:commandButton>
 		</div>
 	</h:form>
@@ -55,10 +55,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:if test="#{iris.irse.isu.isEmpty()}">
+			<c:if test="#{iris.isu.isEmpty()}">
 				<tr><td class="no-data" colspan="99">No se han encontrado registros asociadas al filtro seleccionado</td></tr>
 			</c:if>
-			<c:forEach items="#{iris.irse.isu.registrosJgs}" var="jg">
+			<c:forEach items="#{iris.isu.registrosJgs}" var="jg">
 			<tr class="tb-data">
 				<td>#{jg.ejercicio}</td>
 				<td>#{jg.codigo}</td>
@@ -66,15 +66,15 @@
 				<td>#{jg.numFactura}</td>
 				<td>#{jg.nifTercero}</td>
 				<td>#{jg.tercero}</td>
-				<td class="currency">#{iris.irse.isu.getImpTotal(jg)} €</td>
-				<td class="text-center">#{iris.irse.isu.getFEmision(jg)}</td>
+				<td class="currency">#{iris.isu.getImpTotal(jg)} €</td>
+				<td class="text-center">#{iris.isu.getFEmision(jg)}</td>
 				<td class="hide-sm">#{jg.descJg}</td>
 				<td class="text-center"></td>
 			</tr>
 			</c:forEach>
 		</tbody>
 		<tfoot>
-			<tr><td colspan="99"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{iris.irse.isu.numJgs}</td></tr>
+			<tr><td colspan="99"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{iris.isu.numJgs}</td></tr>
 		</tfoot>
 	</table>
 	</h:form>
@@ -82,6 +82,6 @@
 	<div class="navbar">
 	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="100">
 		<i class="fas fa-caret-left"></i><span class="ui-button-text ui-c"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
-	<p:commandButton action="#{iris.irse.isu.excel()}" oncomplete="xlsx(xhr, status, args);" icon="fal fa-file-excel" styleClass="btn btn-green success-btn" value="Excel" tabindex="101"/>
+	<p:commandButton action="#{iris.isu.excel()}" oncomplete="xlsx(xhr, status, args);" icon="fal fa-file-excel" styleClass="btn btn-green success-btn" value="Excel" tabindex="101"/>
 	</div>
 </html>

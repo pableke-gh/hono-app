@@ -30,23 +30,23 @@
 						<option value="8" class="form-refresh" data-refresh="getNumRutasPendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
 					</optgroup>
 					<optgroup label="Tickets por transporte">
-						<option value="1" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(1)}</option>
-						<option value="2" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(2)}</option>
-						<option value="3" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(3)}</option>
-						<option value="4" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(4)}</option>
-						<option value="5" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(5)}</option>
-						<option value="6" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(6)}</option>
-						<option value="7" class="form-refresh" data-refresh="isIsu">#{iris.irse.gastos.getMsgTicket(7)}</option>
-						<option value="10" class="form-refresh" data-refresh="not-isu">#{iris.irse.gastos.getMsgTicket(10)}</option>
+						<option value="1" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(1)}</option>
+						<option value="2" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(2)}</option>
+						<option value="3" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(3)}</option>
+						<option value="4" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(4)}</option>
+						<option value="5" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(5)}</option>
+						<option value="6" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(6)}</option>
+						<option value="7" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(7)}</option>
+						<option value="10" class="form-refresh" data-refresh="not-isu">#{iris.gastos.getMsgTicket(10)}</option>
 					</optgroup>
 					<optgroup label="Otra Documentación">
 						<option value="201"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
-						<!--<c:if test="#{iris.irse.form.docProgramaMov}">
+						<!--<c:if test="#{iris.form.docProgramaMov}">
 							<option value="206"><h:outputText value="#{msg['lbl.doc.movilidad']}" escape="false" /></option>
 						</c:if>-->
 						<option value="202"><h:outputText value="#{msg['lbl.doc.otra']}" escape="false" /></option>
 					</optgroup>
-					<!--<c:if test="#{iris.irse.form.extAlu and iris.irse.form.iaeExt}">
+					<!--<c:if test="#{iris.form.extAlu and iris.form.iaeExt}">
 						<optgroup label="Justificaciones">
 							<option value="203"><h:outputText value="#{msg['lbl.justifi.dietas']}" escape="false" /></option>
 						</optgroup>
@@ -55,7 +55,7 @@
 						<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
 						<option value="302" class="form-refresh" data-refresh="not-mun"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
 						<option value="303" class="form-refresh" data-refresh="isCenaFinal"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
-						<!--<c:if test="#{iris.irse.form.alu or iris.irse.form.ext}">
+						<!--<c:if test="#{iris.form.alu or iris.form.ext}">
 							<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
 						</c:if>-->
 					</optgroup>
@@ -106,8 +106,8 @@
 				<h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @getNumRutasPendientes;;
 				<h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @getNochesPendientes;; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />)
 			</p>
-		<!--<c:if test="#{iris.irse.form.extAlu and iris.irse.perfil.tab7}">
-			<p>* <h:outputText value="#{msg['lbl.imp.dietas.prop']}" escape="false" />: #{iris.irse.gastos.impManutencionI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.justifi']}" escape="false" />: #{iris.irse.gastos.impJustifiI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.no.justifi']}" escape="false" />: #{iris.irse.gastos.impNoJustifiI18n} €​</p>
+		<!--<c:if test="#{iris.form.extAlu and iris.perfil.tab7}">
+			<p>* <h:outputText value="#{msg['lbl.imp.dietas.prop']}" escape="false" />: #{iris.gastos.impManutencionI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.justifi']}" escape="false" />: #{iris.gastos.impJustifiI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.no.justifi']}" escape="false" />: #{iris.gastos.impNoJustifiI18n} €​</p>
 		</c:if>-->
 		</div>
 	</div>

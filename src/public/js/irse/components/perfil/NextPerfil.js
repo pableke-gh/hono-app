@@ -26,6 +26,7 @@ export default class NextPerfil extends ButtonForm {
 			irse.setData(data.solicitud); // update irse data
 			observer.emit("perfil", irse); // update changes from server (id, fk, text, etc.)
 			form.setFirmas(data.firmas); // show firmas list
+			form.getPaso1().view(); // actualizo el form para municipio y matricula del interesado
 			form.getPaso9().setCuentas(data.cuentas); // cuentas del interesado (desplegable paso9)
 			form.reactivate(irse).nextTab(1); // prepare changes and show tab
 		});
