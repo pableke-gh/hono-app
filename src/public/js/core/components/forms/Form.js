@@ -75,10 +75,12 @@ export default class FormHTML extends HTMLFormElement {
 	setRequired = (input, msg) => this.setError(input, "errRequired", msg);
 	setFormatError = (input, msg) => this.setError(input, "errFormat", msg);
 
+	// private method to check if element matches selector and is not a default-element
+	#matches = (el, selector) => (!el.classList.contains("default-element") && (!selector || el.matches(selector)));
 	load(data, editable, selector) {
 		this.elements.forEach(el => {
-			if (el.classList.contains("default-element") || !this.#matches(el, selector))
-				return; // skip not input components or not matching selector
+			if (!this.#matches(el, selector))
+				return; // skip input-component
 			el.setValue(data[el.name]); // load value
 			el.setEditable(editable); // recalc. if editable
 			this.setOk(el); // reset input state
@@ -91,7 +93,6 @@ export default class FormHTML extends HTMLFormElement {
 		return this.load(data, true);
 	}
 
-	#matches = (el, selector) => (!selector || el.matches(selector));
 	validate(selector) {
 		let ok = !!alerts.close(); // global message
 		for (let i = this.elements.length - 1; i >= 0; i--) {
