@@ -1,8 +1,5 @@
 
-import dt from "../components/types/DateBox.js";
-import alerts from "../core/components/Alerts.js";
-import tabs from "../core/components/Tabs.js";
-
+import TestForm from "./modules/test.js";
 import ExcelFile from "./components/ExcelFile.js";
 import OCRFile from "./components/OCRFile.js";
 
@@ -11,16 +8,18 @@ import firmas from "./data/firmas.json" with { type: "json" };
 
 // testing components
 document.addEventListener("DOMContentLoaded", () => {
-	alerts.setOk("Welcome to the application!").setInfo("This is an info message.")
-			.setWarn("This is a warning message.").setError("This is an error message.")
-			.addOk("This is another success message.").addInfo("This is another info message.");
-
 	Firmas.notify(firmas); // emit firmas data for testing
-	window.alerts = alerts; // make alerts globally accessible for testing
-	window.tabs = tabs; // make tabs globally accessible for testing
-	window.dt = dt; // make datebox type globally accessible for testing
+
+	const testForm = document.forms["test-form"];
+	document.querySelector("a[href='#load-1']").addEventListener("click", () => {
+		testForm.load({ id: 1, pet: "chicken" }); // show form tab
+	});
+	document.querySelector("a[href='#load-2']").addEventListener("click", () => {
+		testForm.load({ id: 2, pet: "dog" }); // show form tab
+	});
 });
 
+customElements.define("test-form", TestForm, { extends: "form" });
 customElements.define("excel-file", ExcelFile, { extends: "input" });
 customElements.define("ocr-file", OCRFile, { extends: "input" });
 customElements.define("firmas-block", Firmas, { extends: "div" });

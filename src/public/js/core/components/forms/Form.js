@@ -1,5 +1,6 @@
 
 import alerts from "../Alerts.js";
+import i18n from "../../i18n/langs.js";
 import observer from "../../util/Observer.js";
 
 import DataList from "./DataList.js";
@@ -12,9 +13,11 @@ import ButtonForm from "./ButtonForm.js";
 export default class FormHTML extends HTMLFormElement {
 	#isChanged; #data;
 
+	isEmpty = () => !this.#data;
+	isLoaded = () => !!this.#data;
 	isChanged = () => this.#isChanged;
 	setChanged(val) { this.#isChanged = val; return this; }
-	isCached = id => (id == this.#data.id);
+	isCached = id => (this.isLoaded() && (id == this.#data.id));
 
 	setFocus(input) {
 		input = globalThis.isstr(input) ? this.elements[input] : input;
@@ -53,13 +56,17 @@ export default class FormHTML extends HTMLFormElement {
 
 	setOk(input) { // accept input name or element
 		input = globalThis.isstr(input) ? this.elements[input] : input;
-		input.next("." + this.dataset.tipErrorClass)?.setText("");
+		const tipEl = input.parentNode.querySelector("." + this.dataset.tipErrorClass);
+		if (tipEl) // is optional, not all inputs have tip element
+			tipEl.innerText = ""; // clear tip message
 		input.classList.remove(this.dataset.errorClass);
 		return this;
 	}
 	setError(input, tip, msg) { // accept input name or element
 		input = globalThis.isstr(input) ? this.elements[input] : input;
-		input.next("." + this.dataset.tipErrorClass)?.setMsg(tip);
+		const tipEl = input.parentNode.querySelector("." + this.dataset.tipErrorClass);
+		if (tipEl) // is optional, not all inputs have tip element
+			tipEl.innerText = i18n.msg(tip);
 		input.classList.add(this.dataset.errorClass);
 		alerts.setError(msg); // global message
 		input.focus(); // set focus on error
@@ -70,8 +77,8 @@ export default class FormHTML extends HTMLFormElement {
 
 	load(data, editable, selector) {
 		this.elements.forEach(el => {
-			if (!this.#matches(el, selector))
-				return; // skip not selected inputs
+			if (el.classList.contains("default-element") || !this.#matches(el, selector))
+				return; // skip not input components or not matching selector
 			el.setValue(data[el.name]); // load value
 			el.setEditable(editable); // recalc. if editable
 			this.setOk(el); // reset input state
@@ -125,7 +132,7 @@ export default class FormHTML extends HTMLFormElement {
 	}
 }
 
-customElements.define("data-list", DataList, { extends: "datalist" });
+customElements.define("data-list", DataList, { extends: "select" });
 customElements.define("text-input", TextInput, { extends: "input" });
 customElements.define("float-input", FloatInput, { extends: "input" });
 customElements.define("file-input", FileInput, { extends: "input" });

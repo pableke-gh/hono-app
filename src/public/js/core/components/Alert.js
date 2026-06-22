@@ -8,6 +8,7 @@ export default class Alert extends HTMLDivElement {
 			<div class="alert-icon"></div>
 			<div class="alert-text"></div>
 			<div class="alert-close"><i class="fas fa-times"></i></div>`;
+		this.classList.add("alert"); // add base class
 		this.children[2].addEventListener("click", this.close); // add close click event
 	}
 
