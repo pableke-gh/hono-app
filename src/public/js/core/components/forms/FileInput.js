@@ -11,13 +11,12 @@ export default class FileInput extends TextInput {
 
 	// This input element accepts a filename no value (clear previously selected files)
 	setValue() { this.value = this.#filename.innerText = ""; return this; } // clear selected files
-	load() { return this.setValue(); } // clear input and filename
 	reset() { return this.setValue(); } // load / setValue synonym
 	toData(data) { data[this.name] = this.files; } // set all file list
 	isEmpty() { return (this.files.length == 0); } // is selected file
 	isLoaded() { return (this.files.length > 0); } // is selected file
 	isFile() { return true; } // input type file
-	addFormData(fd) {
+	toFormData(fd) {
 		const size = this.files.length;
 		for (let i = 0; i < size; i++) {
 			const file = this.files[i]; // file at i

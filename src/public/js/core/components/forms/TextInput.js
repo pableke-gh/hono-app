@@ -11,9 +11,8 @@ export default class TextInput extends HTMLInputElement {
 
 	getValue() { return this.value && this.value.trim(); }
 	setValue(value) { this.value = value || ""; return this; }
-	load(data) { return this.setValue(data[this.name]); }
 	toData(data) { data[this.name] = this.getValue(); return this; }
-	addFormData(fd) { fd.add(this.name, this.getValue()); return this; }
+	toFormData(fd) { fd.append(this.name, this.getValue()); return this; }
 	reset() { this.value = ""; return this; }
 	restart() { this.focus(); return this.reset(); }
 
@@ -28,25 +27,11 @@ export default class TextInput extends HTMLInputElement {
 
 	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); return this; }
 	setReadonly(force) { this.classList.toggle("readonly", this.toggleAttribute("readonly", force)); return this; }
-	setActive() { this.classList.remove("readonly"); this.removeAttribute("readonly"); return this; }
-	setEditable(force) { this.setReadonly(!force); return this; }
-	prepare(data) { return this.load(data).setEditable((data.estado == 6) && (this.dataset.editable !== "manual")); }
+	setEditable(force) { return this.setReadonly(!force); }
 
 	// Validators
-	setOk() {
-		const tipElement = this.parentNode.querySelector(".ui-errtip");
-		if (tipElement)
-			tipElement.innerText = ""; // clear error tip
-		this.classList.remove("ui-error");
-	}
-	setError(tip, msg) {
-		const tipElement = this.parentNode.querySelector(".ui-errtip");
-		if (tipElement)
-			tipElement.innerText = i18n.msg(tip);
-		this.classList.add("ui-error");
-		alerts.setError(msg); // global message
-		this.focus(); // set focus on error
-	}
+	setOk() { this.form.setOk(this); }
+	setError(tip, msg) { this.form.setError(this, tip, msg); }
 	setRequired(msg) { this.setError("errRequired", msg); }
 	setFormatError(msg) { this.setError("errFormat", msg); }
 	force(msg) { return (this.value ? this.setOk() : !this.setRequired(msg)); } // force required validation
