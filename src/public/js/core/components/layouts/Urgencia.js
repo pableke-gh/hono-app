@@ -19,7 +19,7 @@ export default class Cuentas extends DataList {
 	}
 
 	setValue(value) {
-		super.setValue(value ? "2" : "1"); // 1 = normal / 2 = urgente
+		super.setValue((value == "2") ? "2" : "1"); // 1 = normal / 2 = urgente
 		this.#fMax.parentNode.setVisible(this.isUrgente());
 		this.#extra.parentNode.setVisible(this.isUrgente());
 	}
