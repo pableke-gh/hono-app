@@ -9,8 +9,8 @@ import resumen from "./tabs/resumen.js";
 import paso9 from "./tabs/paso9.js";
 import informeISU from "./tabs/otri.js";
 
-import Urgencia from "../../core/components/Urgencia.js";
-import Firmas from "../../core/components/Firmas.js";
+import Urgencia from "../../core/components/layouts/Urgencia.js";
+import Firmas from "../../core/components/layouts/Firmas.js";
 import IrseSolicitudes from "./solicitudes.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
