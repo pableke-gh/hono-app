@@ -4,9 +4,9 @@ import tabs from "../components/Tabs.js";
 
 import factura from "./model/Factura.js";
 import form from "./modules/factura.js";
-import ButtonSave from "./components/buttons/ButtonSave.js";
-import ButtonSubsanar from "./components/buttons/ButtonSubsanar.js";
-import ButtonReset from "./components/buttons/ButtonReset.js";
+import ButtonSave from "./components/buttons/Save.js";
+import ButtonSubsanar from "./components/buttons/Subsanar.js";
+import ButtonReset from "./components/buttons/Reset.js";
 
 coll.ready(() => { // init. fact modules
 	const fnShowGestor = () => factura.isFace() || factura.isPlataforma();
