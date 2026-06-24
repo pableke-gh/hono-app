@@ -1,7 +1,7 @@
 
 import i18n from "../i18n/langs.js";
 import api from "../../core/components/Api.js";
-import alerts from "../../core/components/helper/Alerts.js";
+import alerts from "../../core/components/helpers/Alerts.js";
 
 import pedido from "../model/Pedido.js";
 import proveedor from "../model/Proveedor.js";

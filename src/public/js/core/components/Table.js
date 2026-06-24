@@ -1,5 +1,5 @@
 
-import tabs from "./helper/Tabs.js";
+import tabs from "./helpers/Tabs.js";
 import i18n from "../i18n/langs.js";
 
 export default class TableHTML extends HTMLTableElement {
