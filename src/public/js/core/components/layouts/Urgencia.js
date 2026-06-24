@@ -1,6 +1,6 @@
 
 import sb from "../../../components/types/StringBox.js";
-import DataList from "../../components/forms/DataList.js";
+import DataList from "../../../components/inputs/DataList.js";
 
 export default class Cuentas extends DataList {
 	#fMax = this.form.elements.fMax;
@@ -10,21 +10,18 @@ export default class Cuentas extends DataList {
 		this.setReadonly(!model.isEditable());
 	}
 
-	load(data) {
-		const isUrgente = data.fMax && data.extra;
-		this.setValue(isUrgente ? "2" : "1"); // 1 = normal / 2 = urgente
-
-		// show extra fields
-		this.#fMax.parentNode.setVisible(isUrgente);
-		this.#extra.parentNode.setVisible(isUrgente);
-	}
-
 	isNormal = () => (this.value == "1");
 	isUrgente = () => (this.value == "2");
 	toggle = () => {
 		const isUrgente = this.isUrgente();
 		this.#fMax.parentNode.setVisible(isUrgente);
 		this.#extra.parentNode.setVisible(isUrgente);
+	}
+
+	setValue(value) {
+		super.setValue((value == "2") ? "2" : "1"); // 1 = normal / 2 = urgente
+		this.#fMax.parentNode.setVisible(this.isUrgente());
+		this.#extra.parentNode.setVisible(this.isUrgente());
 	}
 
 	validate() {

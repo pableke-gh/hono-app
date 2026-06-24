@@ -12,7 +12,7 @@ import AddLinea from "../components/lineas/AddLinea.js";
 import AddAllRecibos from "../components/lineas/AddAllRecibos.js";
 import Lineas from "../components/lineas/lineas.js";
 
-import Firmas from "../../core/components/Firmas.js";
+import Firmas from "../../core/components/layouts/Firmas.js";
 import FacturaSolicitudes from "../components/facturas.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
