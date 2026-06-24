@@ -1,6 +1,6 @@
 
 import api from "../../core/components/Api.js";
-import tabs from "../../core/components/helper/Tabs.js";
+import tabs from "../../core/components/helpers/Tabs.js";
 import i18n from "../i18n/langs.js";
 
 import TableHTML from "../../core/components/Table.js";
@@ -13,7 +13,7 @@ export default class PrestosTable extends TableHTML {
 
 	connectedCallback() { // initialize table
 		const form = document.forms["presto-form"];
-		//form.setTable(this); // set table reference in form
+		form.setTable(this); // set table reference in form
 
 		// table actions
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada");

@@ -14,21 +14,28 @@ import Memoria from "../components/info/Memoria.js";
 import Subtipo from "../components/info/Subtipo.js";
 import Adjunto from "../components/info/Adjunto.js";
 
+import FormHTML from "../../core/components/forms/Form.js";
+import ButtonSave from "../components/buttons/Save.js";
+import ButtonSubsanar from "../components/buttons/Subsanar.js";
 import Urgencia from "../../core/components/layouts/Urgencia.js";
 import Firmas from "../../core/components/layouts/Firmas.js";
-import PrestoSolicitudes from "../components/prestos.js";
-import Solicitud from "../../core/modules/solicitud.js";
 
-class Presto extends Solicitud {
+export default class PrestoForm extends FormHTML {
 	#pDec = new PartidaDec(this);
 	#p030 = new Partida030(this);
 	#partidas = this.querySelector("table");
 
-	init() { // init modules
-		super.init(valid);
+	connectedCallback() {
+		super.connectedCallback(); // initialize form
+		presto.setUser(this.dataset); // load user info
+		this.getElementsByClassName(this.dataset.loadedClass).forEach(el => {
+			const template = el.innerHTML; // save template
+			const fnUpdate = () => { el.innerHTML = presto.render(template); };
+			observer.subscribe(this.dataset.loadedClass, fnUpdate);
+		});
+
 		this.#pDec.init();
 		this.#p030.init();
-		return this;
 	}
 
 	onView(data) {
@@ -66,6 +73,6 @@ customElements.define("btn-doc", Adjunto, { extends: "button" });
 
 customElements.define("urgencia-list", Urgencia, { extends: "select" });
 customElements.define("firmas-block", Firmas, { extends: "div" });
-customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });
 
-export default new Presto();
+customElements.define("btn-save", ButtonSave, { extends: "button" });
+customElements.define("btn-subsanar", ButtonSubsanar, { extends: "button" });

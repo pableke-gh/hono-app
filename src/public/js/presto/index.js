@@ -4,13 +4,13 @@ import tabs from "../components/Tabs.js";
 import api from "../components/Api.js"
 
 import presto from "./model/Presto.js";
-import form from "./modules/presto.js";
-import ButtonSave from "./components/buttons/Save.js";
-import ButtonSubsanar from "./components/buttons/Subsanar.js";
+import PrestoForm from "./modules/presto.js";
+import PrestoSolicitudes from "./modules/prestos.js";
 
 coll.ready(() => { // init. presto modules
+	const form = document.forms["presto-form"];
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
-	form.init().onChange(".ui-ej", fnSync); // init events
+	form.addChange(".ui-ej", fnSync); // init events
 
 	const DATA = {}; // build container
 	DATA.ejercicios = form.getElement("ej").getValues(); // read current open years
@@ -34,5 +34,5 @@ coll.ready(() => { // init. presto modules
 	});
 });
 
-customElements.define("btn-save", ButtonSave, { extends: "button" });
-customElements.define("btn-subsanar", ButtonSubsanar, { extends: "button" });
+customElements.define("presto-form", PrestoForm, { extends: "form" });
+customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });
