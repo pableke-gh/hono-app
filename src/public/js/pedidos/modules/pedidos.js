@@ -12,7 +12,6 @@ export default class PedidosTable extends TableHTML {
 	setWorking = () => { pedido.setProcesando(); this.showList(); } // update current row state
 
 	connectedCallback() { // initialize table
-		window.pedidos = this; // global reference for pedidos table
 		const form = document.forms["pedido-form"];
 		form.setTable(this); // set table reference in form
 
@@ -72,7 +71,6 @@ export default class PedidosTable extends TableHTML {
 
 	flush() { // override super class
 		const id = this.getId() || pedido.getId(); // row selected or current data if remove when creating
-		const fnThen = () => { super.flush(); tabs.showList(); } // fire after success remove
-		api.init().json("/uae/pedidos/remove?id=" + id).then(fnThen); // call service
+		api.init().json("/uae/pedidos/remove?id=" + id).then(() => super.flush()); // call service
 	}
 }

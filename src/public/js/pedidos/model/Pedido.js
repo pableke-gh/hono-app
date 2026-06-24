@@ -5,11 +5,12 @@ class Pedido extends Solicitud {
 	getUrl = () => "/uae/pedido"; // endpoint base path
 	getTitulo = () => "Solicitud SPI";
 	getNifNameProv = () => (this.getNif() + " - " + this.get("prov"));
-	isDocumentable = () => (this.isValidada() || this.isErronea()); // muestra el boton de informe pdf
 
 	isAceptado = () => (this.getEstado() === 1);
 	isAprobado = () => (this.getEstado() === 4);
 	isAplicado = () => (this.getEstado() === 14);
+	isValidada = () => (this.isFirmada() || this.isIntegrada() || this.isAplicado()); // Override super arrow function
+	isDocumentable = () => (this.isValidada() || this.isErronea()); // Muestra el boton de informe pdf
 
 	getAdjunto = () => this.get("file");
 	getImporte = () => this.get("imp");
