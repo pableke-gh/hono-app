@@ -14,6 +14,7 @@ class Presto extends Solicitud {
 	isAnt = () => (this.getTipo() == 5);
 	isAfc = () => (this.getTipo() == 8);
 	is030 = () => (this.isUae() && (this.isGcr() || this.isAnt()));
+	isFa = () => (this.get("omask") & 1);
 
 	isIntegrable = () => (!this.isAfc() && this.isIntegrableSolicitud());
 	isReactivable = () => (this.isUae() && !this.isAfc() && !this.isFce() && this.isErronea());
