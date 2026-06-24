@@ -1,6 +1,6 @@
 
 import api from "../../core/components/Api.js";
-import tabs from "../../core/components/helper/Tabs.js";
+import tabs from "../../core/components/helpers/Tabs.js";
 import observer from "../../core/util/Observer.js";
 
 import pedido from "../model/Pedido.js";

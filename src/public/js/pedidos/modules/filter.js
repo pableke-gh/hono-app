@@ -1,7 +1,7 @@
 
 import api from "../../core/components/Api.js";
 import sb from "../../components/types/StringBox.js";
-import tabs from "../../core/components/helper/Tabs.js";
+import tabs from "../../core/components/helpers/Tabs.js";
 import FormHTML from "../../core/components/forms/Form.js";
 
 export default class PedidoFilterForm extends FormHTML {
