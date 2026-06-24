@@ -1,6 +1,5 @@
 
 import sb from "../../../components/types/StringBox.js";
-import alerts from "../Alerts.js";
 import i18n from "../../i18n/langs.js";
 
 // Register the custom element
@@ -96,13 +95,13 @@ export default class DataList extends HTMLSelectElement {
 
 	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); return this; }
 	setReadonly(force) { this.classList.toggle("readonly", this.toggleAttribute("readonly", force)); return this; }
-	setEditable(force) { this.setReadonly(!force); return this; }
+	setEditable(force) { return this.classList.contains("editable-manual") ? this : this.setReadonly(!force); }
 
 	// Validators
 	setOk() { this.form.setOk(this); }
 	setError(tip, msg) { this.form.setError(this, tip, msg); }
 	setRequired(msg) { this.setError("errRequired", msg); }
 	setFormatError(msg) { this.setError("errFormat", msg); }
-	force(msg) { return (this.value ? this.setOk() : !this.setRequired(msg)); } // force required validation
-	validate() { return (this.required ? this.force() : this.setOk()); } // optional o required with value
+	force(msg) { return (this.value ? !this.setOk() : this.setRequired(msg)); } // force required validation
+	validate() { return (this.required ? this.force() : !this.setOk()); } // optional o required with value
 }

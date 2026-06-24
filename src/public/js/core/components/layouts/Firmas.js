@@ -1,7 +1,7 @@
 
-import firma from "../model/Firma.js";
-import firmas from "../model/Firmas.js";
-import observer from "../util/Observer.js";
+import firma from "../../model/Firma.js";
+import firmas from "../../model/Firmas.js";
+import observer from "../../util/Observer.js";
 
 export default class FirmasBlock extends HTMLDivElement {
 	static notify(firmas) { observer.emit("firmas-updated", firmas); }

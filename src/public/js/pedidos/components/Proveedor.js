@@ -1,22 +1,23 @@
 
-import alerts from "../../components/Alerts.js";
-import AutocompleteHTML from "../../components/inputs/AutocompleteHTML.js";
-import api from "../../components/Api.js";
 import i18n from "../i18n/langs.js";
+import api from "../../core/components/Api.js";
+import alerts from "../../core/components/helper/Alerts.js";
 
 import pedido from "../model/Pedido.js";
 import proveedor from "../model/Proveedor.js";
 
-export default class Proveedor extends AutocompleteHTML {
+import Autocomplete from "../../core/components/forms/Autocomplete.js";
+
+export default class Proveedor extends Autocomplete {
 	#info = this.form.querySelector("#prov-info");
 
 	connectedCallback() { // default initialization
 		this.setMinLength(5); // default initialization
 	}
 
-	load(data) {
-		if (data.id) // datos del pedido (no contiene idProveedor)
-			this.setValue(1, data.nif + " - " + data.prov);
+	setValue(value) {
+		if (pedido.getId()) // datos del pedido (no contiene idProveedor)
+			super.setValue(1, pedido.getNifNameProv()); // nif + nombre del proveedor
 		else
 			this.clear(); // creating
 	}
@@ -36,7 +37,7 @@ export default class Proveedor extends AutocompleteHTML {
 		if (proveedor.getMargen() > 0)
 			this.form.closeAlerts();
 		else // aviso para el margen negativo o 0
-			alerts.showWarn("El proveedor seleccionado puede incumplir el margen para la ley de contratos.");
+			alerts.setWarn("El proveedor seleccionado puede incumplir el margen para la ley de contratos.");
 		return item.id;
 	}
 
@@ -48,10 +49,10 @@ export default class Proveedor extends AutocompleteHTML {
 
 	validate() {
 		if (!this.isLoaded())
-			return !this.setRequired(); // required
+			return this.setRequired(); // required
 		// validación opcional del margen para la ley de contratos
 		const msg = "El proveedor seleccionado puede incumplir el margen para la ley de contratos. ¿Desea continuar?";
 		const ok = (proveedor.getMargen() > 0) || window.confirm(msg);
-		return ok && this.setOk();
+		return ok && !this.setOk();
 	}
 }

@@ -5,8 +5,8 @@ import api from "../components/Api.js"
 
 import presto from "./model/Presto.js";
 import form from "./modules/presto.js";
-import ButtonSave from "./components/buttons/ButtonSave.js";
-import ButtonSubsanar from "./components/buttons/ButtonSubsanar.js";
+import ButtonSave from "./components/buttons/Save.js";
+import ButtonSubsanar from "./components/buttons/Subsanar.js";
 
 coll.ready(() => { // init. presto modules
 	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 

@@ -1,6 +1,6 @@
 
-import TextInput from "../../components/inputs/TextInput.js";
-import pedido from "../model/Pedido.js";
+import TextInput from "../../../core/components/forms/TextInput.js";
+import pedido from "../../model/Pedido.js";
 
 export default class Referencia extends TextInput {
 	setEditable() {
@@ -11,6 +11,6 @@ export default class Referencia extends TextInput {
 
 	validate() { // file or referencia required
 		const file = this.form.elements["adjunto"];
-		return file.isEmpty() ? this.force() : this.setOk();
+		return file.isEmpty() ? this.force() : !this.setOk();
 	}
 }

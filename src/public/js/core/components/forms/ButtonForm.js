@@ -20,6 +20,7 @@ export default class ButtonForm extends HTMLButtonElement {
 	reset() {}
 	restart() {}
 
+	setVisible(visible) { this.classList.toggle("hide", !visible); return this; }
 	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); return this; }
 	setReadonly(force) { this.classList.toggle("readonly", this.toggleAttribute("readonly", force)); return this; }
 	setEditable() { return this; } // preserve state by default, override in child class

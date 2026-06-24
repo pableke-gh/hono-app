@@ -1,22 +1,22 @@
 
-import AutocompleteHTML from "../../components/inputs/AutocompleteHTML.js";
-import api from "../../components/Api.js";
 import i18n from "../i18n/langs.js";
+import api from "../../core/components/Api.js";
+import Autocomplete from "../../core/components/forms/Autocomplete.js";
 
 import pedido from "../model/Pedido.js";
 import aplicacion from "../model/Aplicacion.js";
 
-export default class Aplicacion extends AutocompleteHTML {
+export default class Aplicacion extends Autocomplete {
 	#info = this.form.querySelector("#org-info");
 
 	connectedCallback() { // default initialization
 		this.setMinLength(4);
 	}
 
-	load(data) {
-		if (!data.apli || !aplicacion.getId())
+	setValue(value) {
+		if (!pedido.get("apli") || !aplicacion.getId())
 			return this.clear(); // clear input
-		return this.setValue(aplicacion.getId(), this.row(aplicacion.getData()));
+		return super.setValue(aplicacion.getId(), this.row(aplicacion.getData()));
 	}
 	setEditable() {
 		this.setDisabled(!pedido.isEditable());
@@ -44,13 +44,15 @@ export default class Aplicacion extends AutocompleteHTML {
 	}
 
 	validate() { // executed after impPpto.validate
-		const ok = this.isLoaded() ? this.setOk() : !this.setRequired();
+		const ok = this.isLoaded() ? !this.setOk() : this.setRequired();
 		if (ok && (pedido.getImpPpto() > aplicacion.getCreditoDisp())) // validación de crédito suficiente
 			return !this.form.setError("imp", "errExceeded", "No hay crédito suficiente en la aplicación presupuestaria seleccionada");
 		return ok;
 	}
-	addFormData(fd) {
-		super.addFormData(fd); // aplicacion = id
-		fd.set("ej", aplicacion.getEjercicio()).set("org", aplicacion.getOrganica()).set("func", aplicacion.getFuncional());
+	toFormData(fd) {
+		super.toFormData(fd); // aplicacion = id
+		fd.set("ej", aplicacion.getEjercicio());
+		fd.set("org", aplicacion.getOrganica());
+		fd.set("func", aplicacion.getFuncional());
 	}
 }

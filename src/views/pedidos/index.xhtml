@@ -26,21 +26,19 @@
 	<ui:define name="semilla"><li class="active">SPI</li></ui:define>
 
 	<ui:define name="body">
-		<ui:include src="./parts/msgs.xhtml"></ui:include>
-
 		<!-- Home tab -->
-		<div id="tab-init" class="tab-content active">
+		<div id="tab-init" is="tab-content" class="tab-content active">
 			<ui:include src="./tabs/init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
-		<div id="tab-list" class="tab-content">
+		<div id="tab-list" is="tab-content" class="tab-content">
 			<ui:include src="./tabs/list.xhtml"></ui:include>
 			<ui:include src="./parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
 		<!-- controles de consistencia -->
-		<div id="tab-controles" class="tab-content">
+		<div id="tab-controles" is="tab-content" class="tab-content">
 			<ui:include src="./tabs/controles.xhtml"></ui:include>
 		</div>
 
@@ -48,13 +46,13 @@
 				data-nif="#{pedidos.user.nif}" data-grupo="#{pedidos.user.idGrupo}" 
 				data-admin="#{pedidos.user.adminFlag}" data-prorrata="#{pedidos.form.prorrata}">
 			<!-- formulario de alta de solicitudes -->
-			<div id="tab-form" class="tab-content">
+			<div id="tab-form" is="tab-content" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>
 				<ui:include src="./parts/firmas.xhtml"></ui:include>
 			</div>
 
 			<!-- formulario de rechazo/cancelacion -->
-			<div id="tab-reject" class="tab-content">
+			<div id="tab-reject" is="tab-content" class="tab-content">
 				<ui:include src="./tabs/reject.xhtml"></ui:include>
 				<ui:include src="./parts/firmas.xhtml"></ui:include>
 			</div>

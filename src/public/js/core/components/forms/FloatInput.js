@@ -30,11 +30,11 @@ export default class FloatInput extends TextInput {
 	validate() {
 		const required = this.getAttribute("required");
 		if (!required)
-			return this.setOk(); // not required
+			return !this.setOk(); // not required
 		if (!this.value) // empty value
-			return !this.setRequired(); // empty required field
+			return this.setRequired(); // empty required field
 		if (required == "gt0") // greater than 0 validation
-			return (this.getValue() > 0) ? this.setOk() : !this.setError("errGt0");
-		return this.setOk();
+			return (this.getValue() > 0) ? !this.setOk() : this.setError("errGt0");
+		return !this.setOk();
 	}
 }

@@ -1,5 +1,5 @@
 
-import alerts from "../../core/components/Alerts.js";
+import alerts from "../../core/components/helper/Alerts.js";
 import ocr from "../services/ocr/factory.js";
 import gpt from "../services/chatGPT.js";
 import FileInput from "../../core/components/forms/FileInput.js";

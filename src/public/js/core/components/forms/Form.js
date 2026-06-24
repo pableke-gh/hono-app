@@ -1,23 +1,33 @@
 
-import alerts from "../Alerts.js";
+import alerts from "../helper/Alerts.js";
 import i18n from "../../i18n/langs.js";
 import observer from "../../util/Observer.js";
 
 import DataList from "./DataList.js";
 import TextInput from "./TextInput.js";
+import DateInput from "./DateInput.js";
 import FloatInput from "./FloatInput.js";
+import EmailInput from "./EmailInput.js";
 import FileInput from "./FileInput.js";
 import TextArea from "./TextArea.js";
+import CheckInput from "./CheckInput.js";
 import ButtonForm from "./ButtonForm.js";
 
 export default class FormHTML extends HTMLFormElement {
-	#isChanged; #data;
+	#isChanged; #table; #data;
 
 	isEmpty = () => !this.#data;
 	isLoaded = () => !!this.#data;
 	isChanged = () => this.#isChanged;
 	setChanged(val) { this.#isChanged = val; return this; }
 	isCached = id => (this.isLoaded() && (id == this.#data.id));
+
+	getTable = () => this.#table;
+	setTable = table => { this.#table = table; return this; }
+
+	getElements = () => this.elements;
+	getElement = name => this.elements[name];
+	getInputs = selector => this.elements.filter(el => el.matches(selector));
 
 	setFocus(input) {
 		input = globalThis.isstr(input) ? this.elements[input] : input;
@@ -62,6 +72,12 @@ export default class FormHTML extends HTMLFormElement {
 		input.classList.remove(this.dataset.errorClass);
 		return this;
 	}
+	closeAlerts() {
+		alerts.close(); // global message
+		this.elements.forEach(el => el.classList.remove(this.dataset.errorClass)); // clear input messages
+		this.querySelectorAll("." + this.dataset.tipErrorClass).forEach(el => el.innerText = ""); // clear tip messages
+		return this;
+	}
 	setError(input, tip, msg) { // accept input name or element
 		input = globalThis.isstr(input) ? this.elements[input] : input;
 		const tipEl = input.parentNode.querySelector("." + this.dataset.tipErrorClass);
@@ -75,31 +91,36 @@ export default class FormHTML extends HTMLFormElement {
 	setRequired = (input, msg) => this.setError(input, "errRequired", msg);
 	setFormatError = (input, msg) => this.setError(input, "errFormat", msg);
 
-	// private method to check if element matches selector and is not a default-element
-	#matches = (el, selector) => (!el.classList.contains("default-element") && (!selector || el.matches(selector)));
-	load(data, editable, selector) {
+	#matches(el, selector) { // private method to check if element matches selector and is not a default-element
+		return !el.classList.contains("default-element") && (!selector || el.matches(selector));
+	}
+	update(data, editable, selector) {
 		this.elements.forEach(el => {
-			if (!this.#matches(el, selector))
-				return; // skip input-component
-			el.setValue(data[el.name]); // load value
-			el.setEditable(editable); // recalc. if editable
-			this.setOk(el); // reset input state
+			if (this.#matches(el, selector)) {
+				el.setValue(data[el.name]); // load value
+				el.setEditable(editable); // recalc. if editable
+				this.setOk(el); // reset input state
+			}
 		});
-		this.#data = data; // store data
-		observer.emit("form-updated", data);
+		observer.emit(this.dataset.loadedClass, data);
 		return this.setChanged(false);
 	}
-	create(data) {
-		return this.load(data, true);
+	#load(data, editable, selector) {
+		this.#data = data; // store data cache
+		return this.update(data, editable, selector);
 	}
+	create(data) { return this.#load(data, true); }
+	load(data, editable, selector) { return this.#load(data, editable, selector); }
 
 	validate(selector) {
-		let ok = !!alerts.close(); // global message
+		let ok = !!alerts.close(); // reset global message
 		for (let i = this.elements.length - 1; i >= 0; i--) {
 			const el = this.elements[i]; // current input
 			ok = this.#matches(el, selector) ? (el.validate() && ok) : ok; // validate only selected inputs
 		}
-		return ok;
+		if (!ok && !alerts.isError()) // global message?
+			alerts.setError(this.dataset.msgError); 
+		return ok; // return valid indicator
 	}
 
 	getUrlParams = () => new URLSearchParams(new FormData(this));
@@ -120,12 +141,24 @@ export default class FormHTML extends HTMLFormElement {
 		return data;
 	}
 
+	addListener(input, name, fn) {
+		input = globalThis.isstr(input) ? this.elements[input] : input;
+		input.addListener(name, fn);
+		return this;
+	}
+	addChange(input, fn) {
+		input = globalThis.isstr(input) ? this.elements[input] : input;
+		input.addChange(fn);
+		return this;
+	}
+
 	connectedCallback() {
 		this.dataset.msgOk = this.dataset.msgOk || "saveOk";
 		this.dataset.msgError = this.dataset.msgError || "errForm"; // default key messages
 		this.dataset.errorClass = this.dataset.errorClass || "ui-error";
 		this.dataset.tipErrorClass = this.dataset.tipErrorClass || "ui-errtip";
 		this.dataset.negativeClass = this.dataset.negativeClass || "text-red"; // default css class input
+		this.dataset.loadedClass = this.dataset.loadedClass || "form-loaded"; // reload class selector
 
 		this.setAttribute("novalidate", "1");
 		this.addEventListener("reset", () => alerts.close());
@@ -135,7 +168,10 @@ export default class FormHTML extends HTMLFormElement {
 
 customElements.define("data-list", DataList, { extends: "select" });
 customElements.define("text-input", TextInput, { extends: "input" });
+customElements.define("date-input", DateInput, { extends: "input" });
 customElements.define("float-input", FloatInput, { extends: "input" });
+customElements.define("email-input", EmailInput, { extends: "input" });
 customElements.define("file-input", FileInput, { extends: "input" });
 customElements.define("text-area", TextArea, { extends: "textarea" });
+customElements.define("check-input", CheckInput, { extends: "input" });
 customElements.define("btn-form", ButtonForm, { extends: "button" });

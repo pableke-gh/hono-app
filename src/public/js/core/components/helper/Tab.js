@@ -17,12 +17,16 @@ export default class Tab extends HTMLDivElement {
 		this.querySelectorAll("a[href^='#tab-']").forEach(link => {
 			link.addEventListener("click", ev => {
 				const href = link.getAttribute("href");
+				const id = href.substring(href.lastIndexOf("-") + 1);
 				if ((href == "#tab-back") || (href == "#tab-prev"))
 					this.prev();
 				else if (href == "#tab-next")
 					this.next();
+				else if (href.startsWith("#tab-action"))
+					tabs.invoke(link.dataset.action || id, link); // call handler
 				else
-					tabs.show(href.substring(href.lastIndexOf("-") + 1));
+					tabs.show(id);
+				ev.preventDefault(); // no navigate
 			});
 		});
 	}

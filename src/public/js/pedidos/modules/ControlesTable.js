@@ -1,5 +1,5 @@
 
-import TableHTML from "../../components/TableHTML.js";
+import TableHTML from "../../core/components/Table.js";
 import i18n from "../i18n/langs.js";
 import pedido from "../model/Pedido.js";
 
@@ -7,7 +7,7 @@ export default class ControlesTable extends TableHTML {
 	connectedCallback() { // table initialization
 		const form = document.forms["pedido-form"];
 		this.setMsgEmpty("No existen pedidos que incumplan el control seleccionado");
-		this.set("#view", data => form.view(data));
+		this.set("#view", form.load);
 	}
 
 	row(data) {

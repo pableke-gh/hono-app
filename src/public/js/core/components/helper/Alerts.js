@@ -56,9 +56,9 @@ class Alerts extends HTMLDivElement {
 
 	show(messages) { // show multiple alerts at once
 		this.close(); // close all existing alerts
-		if (messages) { // messages can be empty or null
-			const { ok, info, warn, error } = messages; // extract messages by type
-			this.addOk(ok).addInfo(info).addWarn(warn).addError(error);
+		if (messages && !Array.isArray(messages)) { // messages can be empty or null
+			const { msgOk, msgInfo, msgWarn, msgError } = messages; // extract messages by type
+			this.addOk(msgOk).addInfo(msgInfo).addWarn(msgWarn).addError(msgError);
 		}
 		return this; // for chaining
 	}

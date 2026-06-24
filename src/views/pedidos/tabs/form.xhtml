@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<div class="card-xeco">
-		<h2 class="form-refresh" data-refresh="text-render">@getTitulo; @getCodigo;</h2>
+		<h2 class="form-loaded">@getTitulo; @getCodigo;</h2>
 		<div class="ui-blocks">
 			<div class="ui-block-btn">
 				<button type="button" is="btn-ppto" class="btn btn-info"></button>
@@ -95,19 +95,19 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe IVA:</div>
-				<input type="text" name="impIva" is="float-input" class="ui-input disabled" data-editable="manual" disabled/> €
+				<input type="text" name="impIva" is="float-input" class="ui-input editable-manual disabled" disabled/> €
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe Total:</div>
-				<input type="text" name="impTotal" is="float-input" class="ui-input disabled" data-editable="manual" disabled/> €
+				<input type="text" name="impTotal" is="float-input" class="ui-input editable-manual disabled" data-editable="manual" disabled/> €
 			</label>
 			<label class="ui-block">
 				<div class="label required">Prorrata:</div>
-				<input type="text" name="prorrata" is="float-input" class="ui-input disabled" data-editable="manual" disabled/> %
+				<input type="text" name="prorrata" is="float-input" class="ui-input editable-manual disabled" data-editable="manual" disabled/> %
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe partida presupuestaria:</div>
-				<input type="text" name="impPpto" is="float-input" class="ui-input disabled" data-editable="manual" disabled/> €
+				<input type="text" name="impPpto" is="float-input" class="ui-input editable-manual disabled" data-editable="manual" disabled/> €
 			</label>
 		</div>
 	</div>
@@ -119,17 +119,17 @@
 		<button type="submit" is="btn-save" class="btn btn-green" title="Poner la solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right"></i></button>
 
-		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.firmar']}">
-			<i class="far fa-file-signature"></i>#{msg['lbl.btn.firmar']}</a>
-		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.rechazar']}">
-			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.rechazar']}</a>
-		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isCancelable" title="#{msg['tit.btn.cancelar']}">
-			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</a>
+		<button is="btn-firmar" name="firmar" class="btn btn-green" title="#{msg['tit.btn.firmar']}">
+			<i class="far fa-file-signature"></i>#{msg['lbl.btn.firmar']}</button>
+		<button is="btn-rechazar" name="rechazar" class="btn btn-error" title="#{msg['tit.btn.rechazar']}">
+			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.rechazar']}</button>
+		<button is="btn-cancelar" name="cancelar" class="btn btn-error" title="#{msg['tit.btn.cancelar']}">
+			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</button>
 
-		<a href="#tab-action-report" class="btn btn-danger form-refresh" data-refresh="isDocumentable" title="Informe PRESTO">
-			<i class="fal fa-file-pdf"></i>Informe</a>
+		<button is="btn-report" class="btn btn-danger" title="Informe del pedido">
+			<i class="fal fa-file-pdf"></i>Informe</button>
 
-		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="isRemovable" title="Borra la solicitud del sistema"> 
-			<i class="fal fa-trash-alt"></i>Eliminar</a>
+		<button is="btn-remove" class="btn btn-danger" title="Borra la solicitud del sistema"> 
+			<i class="fal fa-trash-alt"></i>Eliminar</button>
 	</div>
 </html>

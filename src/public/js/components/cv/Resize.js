@@ -18,7 +18,7 @@ function Resize() {
 	if (iframe)
 		iframe.setAttribute("scrolling", "no"); // disable scrollbars
 	else {
-		self.setHeight = globalThis.void;
+		self.setHeight = () => {}; // disable setHeight
 		self.resize = () => fnTop(window);
 	}
 }

@@ -9,7 +9,7 @@
 	<header th:replace="pedidos/emails/general.html :: header"></header>
 	<div class="navbar">
 		<p>
-			<span>Con fecha <b th:text="${dt.toEsDate(firmas.rechazo.fecha)}"></b> se <b>rechaza</b> el pedido con los siguientes datos:</span>
+			<span>Con fecha <b th:text="${dt.toEsDate(firmas.rechazo.fecha)}"></b> se <b>anula</b> el pedido con los siguientes datos:</span>
 			<br/><b>MOTIVO DEL RECHAZO / ANULACIÓN:</b> <span th:text="${firmas.rechazo.info}"></span>
 		</p>
 	</div>

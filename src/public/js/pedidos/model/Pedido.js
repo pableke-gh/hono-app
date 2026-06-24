@@ -4,6 +4,7 @@ import Solicitud from "../../core/model/Solicitud.js";
 class Pedido extends Solicitud {
 	getUrl = () => "/uae/pedido"; // endpoint base path
 	getTitulo = () => "Solicitud SPI";
+	getNifNameProv = () => (this.getNif() + " - " + this.get("prov"));
 	isDocumentable = () => (this.isValidada() || this.isErronea()); // muestra el boton de informe pdf
 
 	isAceptado = () => (this.getEstado() === 1);

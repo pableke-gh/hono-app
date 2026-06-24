@@ -19,6 +19,7 @@ export default class Fiscal extends FormBase {
 		this.set("update-face", el => { // handler to update face inputs group
 			el.innerHTML = factura.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor";
 			el.nextElementSibling.setAttribute("maxlength", factura.isPlataforma() ? 20 : 9);
+			return true;
 		});
 	}
 

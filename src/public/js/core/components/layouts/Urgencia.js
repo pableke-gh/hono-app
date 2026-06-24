@@ -1,10 +1,10 @@
 
-import sb from "../../components/types/StringBox.js";
-import DataList from "../../components/inputs/DataList.js";
+import sb from "../../../components/types/StringBox.js";
+import DataList from "../../components/forms/DataList.js";
 
 export default class Cuentas extends DataList {
-	#fMax = this.form.elements["fMax"];
-	#extra = this.form.elements["extra"];
+	#fMax = this.form.elements.fMax;
+	#extra = this.form.elements.extra;
 
 	setEditable(model) {
 		this.setReadonly(!model.isEditable());

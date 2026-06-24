@@ -13,7 +13,7 @@ class FacturaValidators extends Validators {
 		this.isKey("delegacion", data.delegacion, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
 		this.isKey("organica", data.organica, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
 		if (factura.isRecibo()) //subtipo = ttpp o extension
-			this.size("acRecibo", data.acRecibo, "Debe indicar un número de recibo válido");
+			this.size("recibo", data.recibo, "Debe indicar un número de recibo válido");
 		/*if (factura.isDeportes()) {
 			this.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
 			this.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date

@@ -1,7 +1,7 @@
 
-import api from "../../components/Api.js";
-import pedido from "../model/Pedido.js";
-import ButtonForm from "../../components/inputs/ButtonForm.js";
+import api from "../../../core/components/Api.js";
+import ButtonForm from "../../../core/components/forms/ButtonForm.js";
+import pedido from "../../model/Pedido.js";
 
 export default class Adjunto extends ButtonForm {
 	execute() {

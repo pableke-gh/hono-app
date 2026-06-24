@@ -1,6 +1,6 @@
 
-import alerts from "../../core/components/Alerts.js";
-import tabs from "../../core/components/Tabs.js";
+import alerts from "../../core/components/helper/Alerts.js";
+import tabs from "../../core/components/helper/Tabs.js";
 import FormHTML from "../../core/components/forms/Form.js";
 
 export default class TestForm extends FormHTML {

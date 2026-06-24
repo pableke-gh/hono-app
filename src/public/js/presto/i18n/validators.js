@@ -64,7 +64,7 @@ class PrestoValidators extends Validators {
 		const label = form.getElement("org030").split(" - ");
 		if (sb.isEmpty(label)) // Code separator
 			return this.addError("org030", ERR_ORGANICA, "No ha seleccionada correctamente la aplicación para el DC 030.").fail();
-		if (p080.imp < data030.imp030)
+		if (p080.imp.round(2) < data030.imp030)
 			return this.addError("imp030", "errExceeded", "El importe del documento 030 excede al del 080.").fail();
 
 		// If ok => update partida a incrementar
