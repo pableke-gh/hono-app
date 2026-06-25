@@ -38,7 +38,7 @@ export default class PedidoForm extends FormHTML {
 	#load(firmas) {
 		Firmas.notify(firmas);
 		tabs.showForm(); // show form tab
-	}	
+	}
 	create() {
 		aplicacion.clear(); // vacio la aplicacion
 		const data = { imp: 0, iva: 21, prorrata: +this.dataset.prorrata };

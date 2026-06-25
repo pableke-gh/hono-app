@@ -3,8 +3,8 @@ import tabs from "../../core/components/helpers/Tabs.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 
-import Ejercicio from "../components/dec/Ejercicio.js";
-import Partida030 from "./partida030.js";
+import PartidaDec from "./PartidaDec.js";
+import Partida030 from "./Partida030.js";
 
 import AddPartida from "../components/inc/AddPartida.js";
 import OrganicaInc from "../components/inc/Organica.js";
