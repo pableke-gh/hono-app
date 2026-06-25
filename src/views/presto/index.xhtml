@@ -29,32 +29,33 @@
 		<ui:include src="./parts/msgs.xhtml"></ui:include>
 
 		<!-- Home tab -->
-		<div id="tab-init" class="tab-content">
+		<div id="tab-init" is="tab-content">
 			<ui:include src="./tabs/init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
-		<div id="tab-list" class="tab-content">
+		<div id="tab-list" is="tab-content">
 			<ui:include src="./tabs/list.xhtml"></ui:include>
 			<ui:include src="./parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
 		<!-- vinculación con uxxiec -->
-		<div id="tab-uxxiec" class="tab-content" data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}" data-admin="#{presto.user.adminFlag}">
+		<div id="tab-uxxiec" is="tab-content">
 			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
-		<form id="presto-form" is="presto-form" method="post" enctype="multipart/form-data">
+		<form id="presto-form" is="presto-form" method="post" enctype="multipart/form-data"
+				data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}" data-admin="#{presto.user.adminFlag}">
 			<!-- Form PRESTO -->
-			<div id="tab-form" class="tab-content">
+			<div id="tab-form" is="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>
 			</div>
 			<!-- form 030 -->
-			<div id="tab-030" class="tab-content">
+			<div id="tab-030" is="tab-content">
 				<ui:include src="./partidas/p030.xhtml"></ui:include>
 			</div>
 			<!-- formulario de rechazo/cancelacion -->
-			<div id="tab-reject" class="tab-content">
+			<div id="tab-reject" is="tab-content">
 				<ui:include src="./tabs/reject.xhtml"></ui:include>
 			</div>
 		</form>

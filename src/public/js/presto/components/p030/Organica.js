@@ -1,21 +1,27 @@
 
-import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
-import api from "../../../components/Api.js";
-
+import Autocomplete from "../../../core/components/forms/Autocomplete.js";
+import api from "../../../core/components/Api.js";
 import presto from "../../model/Presto.js";
-import form from "../../modules/presto.js";
 
-export default class Organica030 extends AutocompleteHTML {
-	constructor() {
-		super(); // Must call super before 'this'
+export default class Organica030 extends Autocomplete {
+	connectedCallback() {
 		this.setMinLength(4); // default initialization
 	}
 
+	setValue(value) {
+		this.setValue(presto.get("org030"), presto.get("o030") + " - " + presto.get("dOrg030"));
+	}
 
-	load(data) { this.setValue(data.org030, data.o030 + " - " + data.dOrg030); }
-	setEditable() { return this.setReadonly(!presto.isEditableUae()); }
-	addFormData(fd) {} // not append values in form data
+	setEditable() { this.setReadonly(!presto.isEditableUae()); }
+	toFormData(fd) {} // not append values in form data
 
-	source() { api.init().json("/uae/presto/organicas/030", { ej: form.getValue("ej030"), term: this.value }).then(this.render); }
-	select(item) { form.setValue("eco030", item.imp); return item.value; }
+	source() {
+		const ej = this.form.elements.ej030.value; // current ejercicio
+		api.init().json("/uae/presto/organicas/030", { ej, term: this.value }).then(this.render);
+	}
+
+	select(item) {
+		this.form.setValue("eco030", item.imp);
+		return item.value;
+	}
 }
