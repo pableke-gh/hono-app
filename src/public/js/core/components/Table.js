@@ -5,7 +5,7 @@ import i18n from "../i18n/langs.js";
 export default class TableHTML extends HTMLTableElement {
 	#rows = []; // default = empty array
 	#index = -1; // current item position in data
-	#RESUME = {}; // Table resume parameters
+	#RESUME = { renders: 0 }; // Table resume parameters
 	#tBody = this.tBodies[0] || this.createTBody(); // body element
 	#opts = {
 		sortClass: "sort", sortAscClass: "sort-asc", sortDescClass: "sort-desc", sortNoneClass: "sort-none",
@@ -57,6 +57,7 @@ export default class TableHTML extends HTMLTableElement {
 	getResume = () => this.#RESUME;
 	getProp = name => this.#RESUME[name];
 	setProp = (name, value) => { this.#RESUME[name] = value; return this; }
+	getNumRenders = () => this.#RESUME.renders; // number of renders
 
 	#fnMove = i => (i < 0) ? 0 : Math.min(i, this.#rows.length - 1);
 	first = () => { this.#index = 0; return this; }
@@ -106,6 +107,7 @@ export default class TableHTML extends HTMLTableElement {
 	view(data) {
 		this.#index = -1; // clear previous selects
 		this.#rows = data || []; // data to render on table
+		this.#RESUME.renders++; // Increment render count
 		this.#RESUME.size = this.#rows.length; // init. resume
 		this.#RESUME.columns = this.tHead.rows[0]?.cells.length; // Number of columns <th>
 

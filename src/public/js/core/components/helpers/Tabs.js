@@ -9,8 +9,6 @@ class Tabs {
 
 	getAction = name => this.#events[name]; // get event handler
 	setAction = (name, fn) => { this.#events[name] = fn; return this; } // set event handler
-	setInitEvent = (tab, fn) => this.setAction("init-tab-" + tab, fn);
-	setViewEvent = (tab, fn) => this.setAction("view-tab-" + tab, fn);
 	invoke = (name, param) => {
 		const fn = this.getAction(name);
 		return fn ? fn(param) : true; // optional handler
@@ -28,11 +26,10 @@ class Tabs {
 	setHeight = () => cv.setHeight(this.getCurrent()); // current tab height
 
 	#show(tab) {
-		if (!tab.dataset.loaded) // init event indicator
-			this.invoke("init-" + tab.id, tab); // Fire once when show tab
-		tab.dataset.loaded = "1"; // avoid to fire event again
+		if (!tab.isLoaded()) // init event indicator
+			tab.init(); // Fire once when show tab
+		tab.view(); // fires always when show tab
 		this.#tabs.forEach(tab => tab.setInactive()); // hide all tabs
-		this.invoke("view-" + tab.id, tab); // fires always when show tab
 		tab.setActive(); // active current tab only
 		cv.resize(tab); // resize iframe height
 		return this;
