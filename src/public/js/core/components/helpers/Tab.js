@@ -6,6 +6,10 @@ export default class Tab extends HTMLDivElement {
 	setActive() { this.classList.add("active"); } // update style to show tab
 	setInactive() { this.classList.remove("active"); } // update style to hide tab
 
+	isLoaded = () => this.dataset.loaded; // check if tab is loaded
+	init() { this.dataset.loaded = "1"; } // mark tab as loaded
+	view() { } // optional event when tab is shown (after init)
+
 	next() { tabs.next1(this); }
 	prev() { tabs.prev(); }
 

@@ -1,7 +1,7 @@
 
-import TableHTML from "../../core/components/Table.js";
-import i18n from "../i18n/langs.js";
-import pedido from "../model/Pedido.js";
+import TableHTML from "../../../core/components/Table.js";
+import i18n from "../../i18n/langs.js";
+import pedido from "../../model/Pedido.js";
 
 export default class ControlesTable extends TableHTML {
 	connectedCallback() { // table initialization
