@@ -3,8 +3,8 @@ import valid from "../i18n/validators.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 
-import PartidaDec from "./partidaDec.js";
-import Partida030 from "./partida030.js";
+import PartidaDec from "./PartidaDec.js";
+import Partida030 from "./Partida030.js";
 
 import AddPartida from "../components/inc/AddPartida.js";
 import OrganicaInc from "../components/inc/Organica.js";
