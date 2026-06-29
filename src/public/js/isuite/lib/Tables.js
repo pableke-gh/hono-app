@@ -1,6 +1,5 @@
 
 import tabs from "../../components/Tabs.js";
-import form from "../modules/isuite.js";
 
 const fnHideTable = table => table.parentNode.hide();
 const fnShowTable = function(table) {
@@ -91,12 +90,12 @@ const TB_CONFIG = { // Inicializo la configuracion y eventos de la tabla
 				var ok = (i == 0) || ((i < 4) && (row.txtHabilitar == text($("option", elem).get(i))));
 				ok = ok || ((i == 4) && (row.txtHabilitar.endsWith("00")) && (row.impHabilitar == 0));
 				ok = ok || ((i == 5) && (row.impHabilitar > 0));
-				return ok && form.ilike(row);
+				return ok && document.forms.isuite.ilike(row);
 			}
 		}
 	},
 
-	onFilter: function(row) { return form.ilike(row); },
+	onFilter: function(row) { return document.forms.isuite.ilike(row); },
 	createGroup: function(node, row, name) { node.text += row[name + "Desc"] ? (" - " + row[name + "Desc"]) : ""; }
 };
 

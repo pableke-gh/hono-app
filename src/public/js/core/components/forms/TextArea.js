@@ -21,7 +21,7 @@ export default class TextArea extends HTMLTextAreaElement {
 
 	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); return this; }
 	setReadonly(force) { this.classList.toggle("readonly", this.toggleAttribute("readonly", force)); return this; }
-	setEditable(force) { return this.classList.contains("editable-manual") ? this : this.setReadonly(!force); }
+	setEditable(force) { this.form.isEditableManual(this) ? this : this.setReadonly(!force); }
 
 	// Input Validators
 	setOk() { this.form.setOk(this); }

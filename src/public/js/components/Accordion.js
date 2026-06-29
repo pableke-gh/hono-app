@@ -34,10 +34,11 @@ export default class Accordion extends HTMLDivElement {
 		this.childNodes.forEach((details, i) => {
 			details.openings = 0; // init. counter
 			details.addEventListener("toggle", ev => {
-				if (!ev.target.open) // fired after update open prop
-					return; // close action
+				const isOpen = ev.target.open; // open/close flag
+				this.childNodes.forEach(el => el.removeAttribute("open")); // Close all other panels
+				if (!isOpen) return; // close action => skip
+				ev.target.open = true; // force open current
 				this.onOpen(this.#data[i], ev.target, i); // call open handler
-				details.eachSibling(el => el.removeAttribute("open")); // only one open
 				ev.target.openings++; // number of openings
 				cv.setHeight(); // resize iframe for CV
 			}, true); // set useCapture parameter to true

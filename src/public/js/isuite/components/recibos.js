@@ -1,5 +1,5 @@
 
-import TableHTML from "../../components/TableHTML.js";
+import TableHTML from "../../core/components/Table.js";
 import i18n from "../i18n/langs.js";
 
 export default class Recibos extends TableHTML {
@@ -20,7 +20,11 @@ export default class Recibos extends TableHTML {
 	</tr>`;
 
 	beforeRender(resume) { resume.importe = 0; }
-	beforeRow(recibo, resume) { resume.importe += recibo.importe; }
+	beforeRow(recibo) {
+		const resume = this.getResume();
+		resume.importe += recibo.importe;
+	}
+
 	row = recibo => `<tr class="tb-data">
 		<td>${recibo.refreb}</td><td class="text-center">${i18n.isoDate(recibo.fCobro)}</td><td>${recibo.concepto}</td>
 		<td>${recibo.dnialu}</td><td>${recibo.nombre}</td><td class="currency">${recibo.org}</td><td class="currency">${recibo.eco}</td>
@@ -28,7 +32,7 @@ export default class Recibos extends TableHTML {
 	</tr>`
 
 	tfoot = () => `<tr>
-		<td colspan="7" class="table-refresh" data-refresh="text-render">Recibos: @size;</td>
-		<td colspan="2" class="currency table-refresh" data-refresh="text-render">$importe; €</td>
+		<td colspan="7" class="table-reload" data-reload="text-render">Recibos: @size;</td>
+		<td colspan="2" class="currency table-reload" data-reload="text-render">$importe; €</td>
 	</tr>`;
 }

@@ -28,67 +28,52 @@
 	<ui:define name="body">
 		<ui:include src="./parts/msgs.xhtml"></ui:include>
 		<h1>Panel del Fondo de Cobertura</h1>
-		<c:set var="ctrl" value="#{xecomControlador}" />
-		<f:event type="preRenderView" listener="#{ctrl.readFcb()}"/>
 
-		<div id="tab-fcb" class="tab-content active">
-		<h:form id="isuite" styleClass="card-filter">
+		<form id="isuite" is="isuite-form" action="/uae/isuite/fcb" class="card-filter">
 			<div class="ui-blocks">
-			<label class="ui-block">
-				<div class="label">Ejercicios:</div>
-				<h:selectOneMenu id="ejercicio" value="#{ctrl.ejercicio}" pt:is="data-list" styleClass="ui-input ui-select">
-					<f:selectItems value="#{ctrl.ejercicios}" />
-				</h:selectOneMenu>
-			</label>
+				<label class="ui-block">
+					<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
+					<select name="ej" is="data-list" class="ui-input ui-select"></select>
+					<div class="ui-errtip"></div>
+				</label>
 
-			<label class="ui-block">
-				<div class="label">Orgánica:</div>
-				<input type="text" id="organica" name="organica" is="text-input" size="25" maxlength="20" class="ui-input" group="search" />
-			</label>
+				<label class="ui-block">
+					<div class="label">Orgánica:</div>
+					<input type="text" name="organica" is="text-input" size="25" maxlength="20" class="ui-input" />
+				</label>
 
-			<label class="ui-block"> 
-				<div class="label">Tipo:</div>
-				<select id="tipo" name="tipo" is="data-list" class="ui-input ui-select" group="search">
-					<option value=""></option>
-					<!--<option value="FCB">Fondo de Cobertura</option>-->
-					<option value="FCB1">Fondo de Cobertura 1</option>
-					<option value="FCB2">Fondo de Cobertura 2</option>
-					<option value="FCB3">Fondo de Cobertura 3</option>
-				</select>
-			</label>
+				<label class="ui-block"> 
+					<div class="label">Tipo:</div>
+					<select name="tipo" is="data-list" class="ui-input ui-select">
+						<option value=""></option>
+						<!--<option value="FCB">Fondo de Cobertura</option>-->
+						<option value="FCB1">Fondo de Cobertura 1</option>
+						<option value="FCB2">Fondo de Cobertura 2</option>
+						<option value="FCB3">Fondo de Cobertura 3</option>
+					</select>
+				</label>
 
-			<label for="descripcion" class="ui-block">
-				<div class="label">Desc. Orgánica:</div>
-				<input type="text" id="descripcion" name="descripcion" is="text-input" size="40" maxlength="200" class="ui-input" group="search" />
-			</label>
+				<label for="descripcion" class="ui-block">
+					<div class="label">Desc. Orgánica:</div>
+					<input type="text" name="desc" is="text-input" size="40" maxlength="200" class="ui-input" />
+				</label>
 			</div>
 
 			<div class="navbar">
-			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
-				<i class="fa fa-arrow-left"></i>Volver al Inicio</a>
-			<a href="#tab-action-search" class="btn btn-info" title="Aplica el filtro sobre la consulta">
-				<i class="fa fa-search"></i>Buscar</a>
-			<p:commandButton id="srv-search" value="Buscar" icon="fa fa-search" 
-				action="#{ctrl.loadFcb()}" styleClass="hide btn-xeco" title="Aplica el filtro sobre la consulta" />
-			<p:commandLink id="clearFilter" action="#{ctrl.initFcb()}" styleClass="btn btn-warn" title="Inicializa el filtro a sus valores por defecto">
-				<i class="fa fa-broom"></i>Limpiar Filtro</p:commandLink>
-			<a id="tabla" href="#" class="btn btn-info" title="Muestra los datos en formato tabla">
-				<i class="fa fa-table"></i>Tabla</a>
-			<a id="pivot" href="#" class="btn btn-info hide" title="Pivota la tabla sobre el Grupo de Gasto">
-				<i class="fa fa-cog"></i>Mensual</a>
-			<a href="#tab-action-excel" download="panel_fcb.xls" class="btn btn-green" title="Exportar tabla a formato EXCEL">
-				<i class="fa fa-file-excel"></i>Exportar a Excel</a>
+				<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal"><i class="fa fa-arrow-left"></i>Volver al Inicio</a>
+				<button type="submit" class="btn btn-info" title="Aplica el filtro sobre la consulta"><i class="fa fa-search"></i>Buscar</button>
+				<button type="reset" class="btn btn-warn" title="Inicializa el filtro a sus valores por defecto"><i class="fa fa-broom"></i>Limpiar Filtro</button>
+				<button name="tabla" is="btn-form" class="btn btn-info" title="Muestra los datos en formato tabla"><i class="fa fa-table"></i>Tabla</button>
+				<button name="pivot" is="btn-form" href="#" class="btn btn-info hide" title="Pivota la tabla sobre el Grupo de Gasto"><i class="fa fa-cog"></i>Mensual</button>
+				<button name="excel" is="btn-excel" download="panel_fcb.xlsx" class="btn btn-green" title="Exportar tabla a formato EXCEL"><i class="fa fa-file-excel"></i>Exportar a Excel</button>
 			</div>
-		</h:form>
+		</form>
 
-		<table id="fcb" name="detalle" class="hide tb-xeco tb-group" tb-groups="grupoGasto" tb-key="idFcb"
-				tb-columns="grupoGasto grupoGastoDesc organica funcional economica organicaDesc textoLibre impAplicacion dc tipo fAsiento"
-				tb-xls="grupoGasto grupoGastoDesc organica funcional economica organicaDesc textoLibre impAplicacion dc tipo fAsiento"
-				tb-orderby="grupoGasto dc">
+		<table is="fcb-table" class="hide tb-xeco">
 			<thead>
 				<tr>
 					<th>Grupo de Gasto</th>
-					<th>Desc. del Grupo de Gasto</th>
+					<th>Desc. Grupo de Gasto</th>
 					<th>Orgánica</th>
 					<th>Funcional</th>
 					<th>Económica</th>
@@ -100,30 +85,16 @@
 					<th>F. Asiento</th>
 				</tr>
 			</thead>
-			<tbody>
-				<ui:repeat value="#{ctrl.fcbDocs}" var="row">
-					<tr id="#{row.idFcb}" class="tb-data">
-						<td>#{row.grupoGasto}</td>
-						<td>#{row.grupoGastoDesc}</td>
-						<td>#{row.organica}</td>
-						<td>#{row.funcional}</td>
-						<td>#{row.economica}</td>
-						<td>#{row.organicaDesc}</td>
-						<td>#{row.textoLibre}</td>
-						<td class="currency">#{row.impAplicacion}</td>
-						<td>#{row.dc}</td>
-						<td>#{row.tipo}</td>
-						<td>#{row.FAsiento}</td>
-					</tr>
-				</ui:repeat>
-			</tbody>
+			<tbody></tbody>
+			<tfoot>
+				<tr>
+					<td colspan="7" class="table-reload" data-reload="text-render">Filas: @size;</td>
+					<td class="currency table-reload" data-reload="text-render">$impAplicacion;</td>
+					<td colspan="3"></td>
+				</tr>
+			</tfoot>
 		</table>
-		<table id="fcbpivot" name="mensual" class="tb-xeco" tb-pivot="fcb"
-				tb-columns="grupoGasto Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre impAplicacion"
-				tb-types="String Number Number Number Number Number Number Number Number Number Number Number Number Number"
-				tb-styles="Default LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat LatinFloat"
-				tb-xls="Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre impAplicacion"
-				tb-groups="grupoGasto" tb-pivot-column="mmmm" tb-pivot-cell="impAplicacion">
+		<table is="fcb-pivot" class="tb-xeco">
 			<thead>
 				<tr>
 					<th>Grupo de Gasto</th>
@@ -142,12 +113,30 @@
 					<th>Suma Vic.</th>
 				</tr>
 			</thead>
+			<tbody></tbody>
+			<tfoot class="hide">
+				<tr>
+					<td></td>
+					<td class="currency table-reload" data-reload="text-render">$enero;</td>
+					<td class="currency table-reload" data-reload="text-render">$febrero;</td>
+					<td class="currency table-reload" data-reload="text-render">$marzo;</td>
+					<td class="currency table-reload" data-reload="text-render">$abril;</td>
+					<td class="currency table-reload" data-reload="text-render">$mayo;</td>
+					<td class="currency table-reload" data-reload="text-render">$junio;</td>
+					<td class="currency table-reload" data-reload="text-render">$julio;</td>
+					<td class="currency table-reload" data-reload="text-render">$agosto;</td>
+					<td class="currency table-reload" data-reload="text-render">$septiembre;</td>
+					<td class="currency table-reload" data-reload="text-render">$octubre;</td>
+					<td class="currency table-reload" data-reload="text-render">$noviembre;</td>
+					<td class="currency table-reload" data-reload="text-render">$diciembre;</td>
+					<td class="currency table-reload" data-reload="text-render">$total;</td>
+				</tr>
+			</tfoot>
 		</table>
 
 		<div class="navbar">
 			<a id="back" href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="Volver al menú principal">
 				<i class="fa fa-arrow-left"></i>Volver al Inicio</a>
-		</div>
 		</div>
 	</ui:define>
 </ui:composition>

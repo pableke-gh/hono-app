@@ -91,9 +91,18 @@ export default class FormHTML extends HTMLFormElement {
 	setRequired = (input, msg) => this.setError(input, "errRequired", msg);
 	setFormatError = (input, msg) => this.setError(input, "errFormat", msg);
 
-	#matches(el, selector) { // private method to check if element matches selector and is not a default-element
-		return !el.classList.contains("default-element") && (!selector || el.matches(selector));
+	isDefaultElement(input) {
+		input = globalThis.isstr(input) ? this.elements[input] : input;
+		return input.classList.contains(this.dataset.defaultElementClass)
 	}
+	isEditableManual(input) {
+		input = globalThis.isstr(input) ? this.elements[input] : input;
+		return input.classList.contains(this.dataset.editableManualClass)
+	}
+
+	// private method to check if element matches selector and is not a default-element
+	#matches = (el, selector) => !this.isDefaultElement(el) && (!selector || el.matches(selector));
+
 	update(data, editable, selector) {
 		this.elements.forEach(el => {
 			if (this.#matches(el, selector)) {
@@ -158,6 +167,9 @@ export default class FormHTML extends HTMLFormElement {
 		this.dataset.errorClass = this.dataset.errorClass || "ui-error";
 		this.dataset.tipErrorClass = this.dataset.tipErrorClass || "ui-errtip";
 		this.dataset.negativeClass = this.dataset.negativeClass || "text-red"; // default css class input
+
+		this.dataset.defaultElementClass = this.dataset.defaultElementClass || "default-element"; // HTML Element
+		this.dataset.editableManualClass = this.dataset.editableManualClass || "editable-manual"; // Editable / Readonly Element
 		this.dataset.loadedClass = this.dataset.loadedClass || "form-loaded"; // reload class selector
 
 		this.setAttribute("novalidate", "1");

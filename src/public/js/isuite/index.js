@@ -1,9 +1,10 @@
 
-import FileBanck from "./components/FileBanck.js";
+import Conciliar from "./modules/conciliar.js";
 import Recibos from "./modules/recibos.js";
-import form from "./modules/isuite.js";
+import Isuite from "./modules/isuite.js";
 
-//coll.ready(() => {});
+//document.addEventListener("DOMContentLoaded", () => {});
 
-customElements.define("file-banck", FileBanck, { extends: "input" });
+customElements.define("isuite-form", Isuite, { extends: "form" });
+customElements.define("conciliar-form", Conciliar, { extends: "form" });
 customElements.define("recibos-form", Recibos, { extends: "form" });

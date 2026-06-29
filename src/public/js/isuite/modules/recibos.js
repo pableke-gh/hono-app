@@ -1,19 +1,20 @@
 
 import sb from "../../components/types/StringBox.js";
-import FormHTML from "../../components/forms/FormHTML.js";
 import tabs from "../../components/Tabs.js";
 import api from "../../components/Api.js";
-import Accordion from "../components/accordion.js";
+
+import FormHTML from "../../core/components/forms/Form.js";
+import Accordion from "../components/Accordion.js";
 
 export default class Recibos extends FormHTML {
-	constructor() {
-		super(); // Must call super before 'this'
+	connectedCallback() {
+		super.connectedCallback(); // init. component
 
 		// Table default initialization
-		this.getElement("ej").setLabels(sb.getEjercicios()); // ultimos 6 ej
+		this.elements.ej.setLabels(sb.getEjercicios()); // ultimos 6 ej
 		tabs.setInitEvent("ttpp", this.accordion); // pre-load data on view
 		tabs.setAction("list", () => { this.isChanged() && this.accordion(); });
-		tabs.setAction("relist", () => this.setData({ ej: sb.getYear(), tipo: 43, fecha: "" }).accordion());
+		tabs.setAction("relist", () => this.load({ ej: sb.getYear(), tipo: 43, fecha: "" }).accordion());
 	}
 
 	accordion = () => {

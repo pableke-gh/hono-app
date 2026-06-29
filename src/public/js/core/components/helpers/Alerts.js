@@ -56,7 +56,7 @@ class Alerts extends HTMLDivElement {
 
 	show(messages) { // show multiple alerts at once
 		this.close(); // close all existing alerts
-		if (messages && !Array.isArray(messages)) { // messages can be empty or null
+		if (globalThis.isObject(messages)) { // messages can be empty or null
 			const { msgOk, msgInfo, msgWarn, msgError } = messages; // extract messages by type
 			this.addOk(msgOk).addInfo(msgInfo).addWarn(msgWarn).addError(msgError);
 		}
@@ -96,5 +96,11 @@ HTMLCollection.prototype.filter = Array.prototype.filter;
 HTMLCollection.prototype.forEach = Array.prototype.forEach;
 HTMLCollection.prototype.findIndex = Array.prototype.findIndex;
 HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
+
+// Common global helpers
+globalThis.void = () => {};
+globalThis.isFunc = fn => (typeof fn === "function");
+globalThis.isset = val => ((typeof val !== "undefined") && (val !== null));
+globalThis.isObject = obj => ((typeof obj === "object") && !Array.isArray(obj));
 
 export default alerts; // singleton instance

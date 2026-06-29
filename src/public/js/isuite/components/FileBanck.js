@@ -1,7 +1,8 @@
 
 import api from "../../components/Api.js";
-import FileInput from "../../components/inputs/FileInput.js";
-import form from "../modules/isuite.js";
+
+import FileInput from "../../core/components/forms/FileInput.js";
+import Flyware from "./tables/Flywire.js";
 
 import rb from "../lib/RecibosBancarios.js";
 import TB_CONFIG from "../lib/Tables.js";
@@ -9,16 +10,23 @@ import TB_CONFIG from "../lib/Tables.js";
 export default class FileBanck extends FileInput {
 	connectedCallback() { // init. component
 		super.connectedCallback();
+		this.previousElementSibling.addEventListener("click", () => this.click()); // trigger file input on button click
+
 		this.addChange(async ev => {
 			const file = this.files[0];
 			if (!file) // no file selected
-				return form.reset(); // clear form and table
-			rb.reset().parse(await file.text()); // parse file contents
+				return this.form.reset(); // clear form and table
 
+			const contents = await file.text();
+console.log('contents: ', contents);
+			if (contents.startsWith('{"empresa":"Flywire"'))
+				return Flyware.getInstance().render(contents);
+
+			rb.reset().parse(contents); // parse file contents
 			const n19 = rb.n19();
 			if (n19.files) {
 				Object.assign(TB_CONFIG.tables.n19, n19);
-				return form.setNorma(n19, TB_CONFIG.tables.n19);
+				return this.form.setNorma(n19, TB_CONFIG.tables.n19);
 			}
 
 			const n43 = rb.n43();
@@ -29,7 +37,7 @@ export default class FileBanck extends FileInput {
 						fila.forma = tpv ? (tpv.value + " - " + tpv.label) : fila.forma; // actualizo el texto de agrupacion
 						return rb.normalize(fila);
 					});
-					form.setNorma(n43, TB_CONFIG.tables.tpvs);
+					this.form.setNorma(n43, TB_CONFIG.tables.tpvs);
 				});
 			}
 			if (n43.files) {
@@ -59,7 +67,7 @@ export default class FileBanck extends FileInput {
 					});
 					n43.importe = n43.total + n43.incorporado; // importe recibos cancarios + incorporados
 					TB_CONFIG.tables.n43.data = temp1.concat(temp2); // muestro todos los recibos
-					form.setNorma(n43, TB_CONFIG.tables.n43);
+					this.form.setNorma(n43, TB_CONFIG.tables.n43);
 				});
 			}
 
@@ -74,9 +82,11 @@ export default class FileBanck extends FileInput {
 						fila && rb.acLoad(fila, recibo); // añado los datos de academico
 					});
 					TB_CONFIG.tables.n57.data = temp1;
-					form.setNorma(n57, TB_CONFIG.tables.n57);
+					this.form.setNorma(n57, TB_CONFIG.tables.n57);
 				});
 			}
 		});
 	}
 }
+
+customElements.define("flyware-table", Flyware, { extends: "table" });
