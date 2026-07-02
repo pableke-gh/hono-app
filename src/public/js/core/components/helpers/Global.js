@@ -16,8 +16,7 @@ Object.clear = (data, keys) => {
 	}
 	return data;
 }
-Object.nestGroupBy = (arr, fields, i) => {
-	i = i ?? 0; // current index of fields array
+Object.nestGroupBy = (arr, fields, i = 0) => {
 	if (i === fields.length) return arr; // skip
 	const field = fields[i]; // current field to group by
 	const grouped = Object.groupBy(arr, item => item[field]); // group by current field

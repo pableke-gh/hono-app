@@ -41,22 +41,20 @@ export default class Norma57Accordion extends Accordion {
 				return fila.aplicacion + " - " + fila.aplicacionDesc; // group by aplicacion
 			});
 
-			const names = Object.keys(grupos).sort(); // 2. Calling sort() without arguments sorts strings lexicographically
-			super.setData(names).getTabs().forEach((tab, i) => { // 3. Construyo dinamicamente los acordeones + sub-tablas
-				const rows = grupos[names[i]]; // recibos del grupo
-				const table = new Norma57Table(); // build table dynamically
-				tab.lastElementChild.appendChild(table.view(rows)); // append table to details
-				tab.firstElementChild.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
-			});
-
 			delete n57.referencias;
+			super.setData(grupos).renderGroup();
 			this.previousElementSibling.render(n57);
 			document.forms.conciliar.elements.save.show();
 			this.show();
 		});
 	}
 
-	render = (key, status) => `<details><summary>${status.count}.- ${key}</summary><div></div></details>`;
+	summary(el, key, status) { el.innerHTML = status.count + ".- " + key; }
+	afterTab(tab, rows) {
+		const table = new Norma57Table(); // build table dynamically
+		tab.lastElementChild.appendChild(table.view(rows)); // append table to details
+		tab.firstElementChild.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
+	}
 }
 
 customElements.define("norma57-table", Norma57Table, { extends: "table" });

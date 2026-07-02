@@ -24,7 +24,7 @@ export default class Recibos extends FormHTML {
 
 	accordion = () => {
 		const url = "/uae/ttpp/historico?" + this.getUrlParams().toString();
-		api.init().json(url).then(data => this.nextElementSibling.setData(data)); // update accordion
+		api.init().json(url).then(data => this.nextElementSibling.setData(data).renderTabs()); // update accordion
 		this.setChanged(); // reset indicator
 	}
 }

@@ -5,19 +5,19 @@ import i18n from "../../i18n/langs.js";
 import RecibosTable from "../tablas/Recibos.js";
 
 export default class RecibosAccordion extends Accordion {
-	render = (data, status) => `<details>
-		<summary>${status.count}. Recibos del ${i18n.isoDate(data.f1)} al ${i18n.isoDate(data.f2)} (N${data.tipo})</summary>
-		<div></div>
-	</details>`;
-
-	onOpen(data, details) {
-		const div = details.lastElementChild;
+	onOpen(tab) {
+		const div = tab.lastElementChild;
 		if (div.children.length > 0)
 			return; // recibos ya cargados
-		api.init().json("/uae/ttpp/historico/recibos?id=" + data.id).then(recibos => {
+		api.init().json("/uae/ttpp/historico/recibos?id=" + tab.id).then(recibos => {
 			const tblRecibos = new RecibosTable(); // instance new recibos-table dynamically
 			div.appendChild(tblRecibos.view(recibos)); // append table to details
 		});
+	}
+
+	summary(el, data, status) {
+		el.parentNode.id = data.id; // set id for details/tab element
+		el.innerHTML = `${status.count}. Recibos del ${i18n.isoDate(data.f1)} al ${i18n.isoDate(data.f2)} (N${data.tipo})`;
 	}
 }
 

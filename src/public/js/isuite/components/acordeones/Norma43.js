@@ -1,4 +1,5 @@
 
+import sb from "../../../components/types/StringBox.js";
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
 import Accordion from "../../../core/components/Accordion.js";
@@ -57,18 +58,7 @@ export default class Norma43Accordion extends Accordion {
 			n43.importe = n43.total + n43.incorporado; // importe recibos cancarios + incorporados
 
 			// 1. agrupo todos los recibos del fichero por forma / aplicacion presupuestaria
-			const grupos = Object.groupBy(temp1.concat(temp2), fila => { // filas conciliables del fichero bancario
-				return fila.forma + ": " + fila.aplicacion + " - " + fila.aplicacionDesc; // group by forma / aplicacion
-			});
-			//console.log(Object.nestGroupBy(temp1.concat(temp2), [ "forma", "aplicacion" ]));
-
-			const names = Object.keys(grupos).sort(); // 2. Calling sort() without arguments sorts strings lexicographically
-			super.setData(names).getTabs().forEach((tab, i) => { // 3. Construyo dinamicamente los acordeones + sub-tablas
-				const rows = grupos[names[i]]; // recibos del grupo
-				const table = new Norma43Table(); // build table dynamically
-				tab.lastElementChild.appendChild(table.view(rows)); // append table to details
-				tab.firstElementChild.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
-			});
+			super.setData(Object.nestGroupBy(temp1.concat(temp2), [ "forma", "aplicacion" ])).renderTree();
 
 			delete n43.referencias;
 			this.previousElementSibling.render(n43);
@@ -77,21 +67,13 @@ export default class Norma43Accordion extends Accordion {
 		});
 	}
 
-	render = (key, status) => `<details><summary>${status.count}.- ${key}</summary><div></div></details>`;
-	/*setMultilevel(data) {
-		if (Array.isArray(data))
-			return super.setData(data);
-
-		const names = Object.keys(grupos).sort(); // 2. Calling sort() without arguments sorts strings lexicographically
-		names.forEach(name => { // 3. Construyo dinamicamente los acordeones + sub-tablas
-			this.innerHTML += `<h4>${name}</h4><hr/>`;
-			const subAccordion = new Norma43Accordion();
-			this.appendChild(subAccordion);
-			subAccordion.setData(data[name]);
-			const table = new Norma43Table();
-			this.appendChild(table.view(data[name]));
-		}); 
-	}*/
+	headerGroup(key, status) { this.insertAdjacentHTML("beforeend", `<h4>${key}</h4><hr/>`); }
+	summary(el, key, status) { el.innerHTML = status.count + ".- " + key; }
+	afterTab(tab, rows) {
+		const table = new Norma43Table(); // build table dynamically
+		tab.lastElementChild.appendChild(table.view(rows)); // append table to details
+		tab.firstElementChild.innerHTML += sb.prefix(rows[0].desc, " - ") + " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
+	}
 }
 
 customElements.define("norma43-table", Norma43Table, { extends: "table" });

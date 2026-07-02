@@ -37,8 +37,8 @@ function StringBox() {
 	this.upper = str => str ? str.toUpperCase(str) : str;
     this.starts = (str1, str2) => str1 && str1.startsWith(str2);
 	this.ends = (str1, str2) => str1 && str1.endsWith(str2);
-	this.prefix = (str1, str2) => self.starts(str1, str2) ? str1 : (str2 + str1);
-	this.suffix = (str1, str2) => self.ends(str1, str2) ? str1 : (str1 + str2);
+	this.prefix = (str1, str2) => (str1 ? (str1.startsWith(str2) ? str1 : (str2 + str1)) : "");
+	this.suffix = (str1, str2) => (str1 ? (str1.endsWith(str2) ? str1 : (str1 + str2)) : "");
 	this.trunc = (str, size) => (fnSize(str) > size) ? (str.substr(0, size).trim() + "...") : str;
 
 	this.clean = str => str ? str.replace(/\s+/g, EMPTY) : str;

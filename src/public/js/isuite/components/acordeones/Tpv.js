@@ -39,20 +39,19 @@ export default class TpvAccordion extends Accordion {
 				return rb.normalize(fila).forma; // group by forma
 			});
 
-			const names = Object.keys(grupos).sort(); // 2. Calling sort() without arguments sorts strings lexicographically
-			super.setData(names).getTabs().forEach((tab, i) => { // 3. Construyo dinamicamente los acordeones + sub-tablas
-				const rows = grupos[names[i]]; // recibos del grupo
-				const table = new TpvTable(); // build table dynamically
-				tab.lastElementChild.appendChild(table.view(rows)); // append table to details
-				tab.firstElementChild.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
-			});
-
+			super.setData(grupos).renderGroup();
 			this.previousElementSibling.render(n43);
 			this.show();
 		});
 	}
 
-	render = (key, status) => `<details><summary>${status.count}.- ${key}</summary><div></div></details>`;
+
+	summary(el, key, status) { el.innerHTML = status.count + ".- " + key; }
+	afterTab(tab, rows) {
+		const table = new TpvTable(); // build table dynamically
+		tab.lastElementChild.appendChild(table.view(rows)); // append table to details
+		tab.firstElementChild.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
+	}
 }
 
 customElements.define("tpv-table", TpvTable, { extends: "table" });

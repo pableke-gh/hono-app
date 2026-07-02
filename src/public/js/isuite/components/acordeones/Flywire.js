@@ -42,14 +42,7 @@ export default class FlywireAccordion extends Accordion {
 					return recibo.org + " " + recibo.eco + ": " + recibo.desc; // group by aplicacion
 				});
 
-				const names = Object.keys(grupos).sort(); // 2. Calling sort() without arguments sorts strings lexicographically
-				super.setData(names).getTabs().forEach((tab, i) => { // 3. Construyo dinamicamente los acordeones + sub-tablas
-					const rows = grupos[names[i]]; // recibos del grupo
-					const table = new FlywireTable(); // build table dynamically
-					tab.lastElementChild.appendChild(table.view(rows)); // append table to details
-					tab.firstElementChild.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
-				});
-
+				super.setData(grupos).renderGroup();
 				this.show();
 			});
 		} catch(ex) {
@@ -58,7 +51,12 @@ export default class FlywireAccordion extends Accordion {
 		}
 	}
 
-	render = (key, status) => `<details><summary>${status.count}.- ${key}</summary><div></div></details>`;
+	summary(el, key, status) { el.innerHTML = status.count + ".- " + key; }
+	afterTab(tab, rows) {
+		const table = new FlywireTable(); // build table dynamically
+		tab.lastElementChild.appendChild(table.view(rows)); // append table to details
+		tab.firstElementChild.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
+	}
 }
 
 customElements.define("flywire-table", FlywireTable, { extends: "table" });
