@@ -1,0 +1,12 @@
+{"empresa":"Flywire",
+"data":[
+{		"recibo":"2026432786660",		"nif":"G40690293",		"nombre":"Alanmauleon aguilera",		"importe":250.00,		"fecha":"2026-06-23T10:19:10.0Z"	},
+{		"recibo":"2026432683696",		"nif":"122137298",		"nombre":"Nelson alvaroayqui chuctaya",		"importe":2845.97,		"fecha":"2026-05-27T11:12:00.0Z"	},	
+{		"recibo":"2026432525732",		"nif":"G40613311",		"nombre":"Gilma ivonnecortes araiza",		"importe":3478.33,		"fecha":"2026-05-22T10:31:13.0Z"	},	
+{		"recibo":"2026432526524",		"nif":"G42249441",		"nombre":"Diegocasado navarro",		"importe":3478.33,		"fecha":"2026-05-22T10:31:13.0Z"	},	
+{		"recibo":"2025430155977",		"nif":"51215887",		"nombre":"Omaymalaaziri ezziani",		"importe":140.22,		"fecha":"2026-05-11T10:06:07.0Z"	},	
+{		"recibo":"2026432324195",		"nif":"BG437696",		"nombre":"German jairperez guardo",		"importe":3479.45,		"fecha":"2026-05-11T10:06:07.0Z"	},	
+{		"recibo":"2026431900895",		"nif":"123015879",		"nombre":"Sebastianmarin pimentel",		"importe":55.00,		"fecha":"2026-05-08T10:12:39.0Z"	},	
+{		"recibo":"2026431848411",		"nif":"AX486834",		"nombre":"Jennyoicata murcia",		"importe":3660.73,		"fecha":"2026-05-07T10:01:56.0Z"	},	
+{		"recibo":"2026431786408",		"nif":"123015879",		"nombre":"Sebastianmarin pimentel",		"importe":3823.13,		"fecha":"2026-05-07T10:01:56.0Z"	}
+]}

@@ -17,7 +17,11 @@ export default class Accordion extends HTMLDivElement {
 	isEmpty = () => !this.#data.length;
 	getFirst = () => this.#data[0];
 	getLastItem = () => this.#data.at(-1);
-	getTabs = () => this.children;
+	getTabs = () => (this.#opts.size ? this.childNodes : []);
+
+	hide() { this.classList.add("hide"); }
+	show() { this.classList.remove("hide"); }
+	setVisible(visible) { visible ? this.show() : this.hide(); }
 
 	onOpen() {} // optional onOpen envent
 	beforeTab(data, i) { this.#opts.index = i; this.#opts.count = i + 1; } // optional event
@@ -37,7 +41,7 @@ export default class Accordion extends HTMLDivElement {
 		return this;
 	}
 
-	setData = data => {
+	setData(data) {
 		this.#data = data; // set container
 		this.#opts.size = data ? data.length : 0; // data length
 		const fnRender = (row, i) => { this.beforeTab(row, i); return this.render(row, this.#opts); }

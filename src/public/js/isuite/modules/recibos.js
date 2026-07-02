@@ -1,27 +1,32 @@
 
 import sb from "../../components/types/StringBox.js";
-import tabs from "../../components/Tabs.js";
-import api from "../../components/Api.js";
+import tabs from "../../core/components/helpers/Tabs.js";
+import api from "../../core/components/Api.js";
 
 import FormHTML from "../../core/components/forms/Form.js";
-import Accordion from "../components/Accordion.js";
+import RecibosAccordion from "../components/acordeones/Recibos.js";
 
 export default class Recibos extends FormHTML {
 	connectedCallback() {
 		super.connectedCallback(); // init. component
-
-		// Table default initialization
 		this.elements.ej.setLabels(sb.getEjercicios()); // ultimos 6 ej
-		tabs.setInitEvent("ttpp", this.accordion); // pre-load data on view
-		tabs.setAction("list", () => { this.isChanged() && this.accordion(); });
-		tabs.setAction("relist", () => this.load({ ej: sb.getYear(), tipo: 43, fecha: "" }).accordion());
+		this.addEventListener("reset", ev => setTimeout(this.accordion, 1));
+		this.addEventListener("submit", ev => {
+			this.isChanged() && this.accordion();
+			ev.preventDefault();
+		});
+
+		tabs.setAction("ttpp", () => {
+			tabs.isLoaded("ttpp") || this.accordion();
+			tabs.show("ttpp");
+		});
 	}
 
 	accordion = () => {
 		const url = "/uae/ttpp/historico?" + this.getUrlParams().toString();
-		api.init().json(url).then(this.nextElementSibling.setData); // update accordion
+		api.init().json(url).then(data => this.nextElementSibling.setData(data)); // update accordion
 		this.setChanged(); // reset indicator
 	}
 }
 
-customElements.define("recibos-accordion", Accordion, { extends: "div" });
+customElements.define("recibos-accordion", RecibosAccordion, { extends: "div" });

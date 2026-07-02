@@ -1,6 +1,6 @@
 
 const isset = val => ((typeof val !== "undefined") && (val !== null));
-const isObject = obj => ((typeof obj === "object") && !Array.isArray(obj));
+const isObject = obj => ((typeof obj === "object") && (obj !== null) && !Array.isArray(obj));
 
 // Extends Object
 Object.copy = (output, data, keys) => {

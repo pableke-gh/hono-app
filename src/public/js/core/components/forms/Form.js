@@ -135,17 +135,15 @@ export default class FormHTML extends HTMLFormElement {
 	getUrlParams = () => new URLSearchParams(new FormData(this));
 	getFormData(selector) {
 		const fd = new FormData();
-		this.elements.forEach(el => {
-			if (this.#matches(el, selector))
-				el.toFormData(fd); // only selected inputs
+		this.elements.forEach(el => { // only selected inputs
+			this.#matches(el, selector) && el.toFormData(fd);
 		});
 		return fd;
 	}
 	getData(selector) {
 		const data = {}; // results container
-		this.elements.forEach(el => {
-			if (this.#matches(el, selector))
-				el.toData(data); // only selected inputs
+		this.elements.forEach(el => { // only selected inputs
+			this.#matches(el, selector) && el.toData(data);
 		});
 		return data;
 	}

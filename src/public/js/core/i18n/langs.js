@@ -14,7 +14,8 @@ HTMLElement.prototype.render = function(data, opts) {
 	opts = opts || OPTS; // default options
 	this.dataset.template = this.dataset.template || this.innerHTML; // save current template
 	this.innerHTML = langs.render(this.dataset.template, data, opts); // display new data
-	return this.setVisible(opts.matches); // hide if empty
+	this.classList.toggle("hide", !opts.matches); // hide if empty
+	return this;
 }
 
 export default langs;

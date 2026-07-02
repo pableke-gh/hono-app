@@ -1,4 +1,7 @@
 
+import sb from "../../components/types/StringBox.js";
+import coll from "../../components/CollectionHTML.js";
+
 function RecibosBancarios() {
 	//asociaciones entre los campos del fichero bancario y las estructuras de sorolla
 	const DOMICILIACION = "Domiciliación";
@@ -17,9 +20,9 @@ function RecibosBancarios() {
 	const NC = "No Conciliables - ";
 
 	// Helpers
-	function fnLines(str) { return str ? str.trim().split(/[\n\r]+/) : []; };
-	function lpad(val) { return (val < 10) ? ("0" + val) : val; } //always 2 digits
-	function dfLatin(date) { return date && (lpad(date.getDate()) + "/" + lpad(date.getMonth() + 1) + "/" + date.getFullYear()); } //dd/mm/yyyy
+	const fnLines = str => (str ? str.trim().split(/[\n\r]+/) : []);
+	const lpad = val => ((val < 10) ? ("0" + val) : val); //always 2 digits
+	const dfLatin = date => (date && (lpad(date.getDate()) + "/" + lpad(date.getMonth() + 1) + "/" + date.getFullYear())); //dd/mm/yyyy
 
 	//Norma 19
 	const n19 = { tipo: 19, files: 0, total: 0, numrows: 0, data: [] };
@@ -36,7 +39,7 @@ function RecibosBancarios() {
 		}
 	};
 
-	function n19Parse(contents) {
+	this.n19Parse = function(contents) {
 		$(HTML_P).html(contents); //root node
 		//inicializo los datos a mostrar en la cabecera del informe
 		$("MsgId, CreDtTm, OrgnlMsgId, OrgnlMsgNmId", HTML_P).get().reduce(xmlAppend, n19);
@@ -51,7 +54,7 @@ function RecibosBancarios() {
 
 	function n19Reset() {
 		n19.files = n19.numrows = 0;
-		n19.data.reset();
+		coll.reset(n19.data);
 	};
 	//********************************************//
 
@@ -80,7 +83,7 @@ function RecibosBancarios() {
 	function setApplicacion(row) {
 		row.org = row.org || ORGANICA[row.sufijo] || ORGANICA[row.ref1] || ORGANICA[row.propio] || "";
 		row.eco = row.eco || ECONOMICA[row.sufijo] || ECONOMICA[row.ref1] || ECONOMICA[row.propio] || "Manual";
-		row.aplicacion = fnTrim(row.org + " " + row.eco); //aplicacion a mostrar en la vista
+		row.aplicacion = sb.trim(row.org + " " + row.eco); //aplicacion a mostrar en la vista
 		row.desc = row.desc || DESCRIPCIONES[row.aplicacion] || DESCRIPCIONES[row.org] || "";
 		row.fCobro = (row.forma == DOMICILIACION) ? row.fCobro : row.fOperacion;
 		row.dnialu = row.dnialu || "";
@@ -89,14 +92,14 @@ function RecibosBancarios() {
 		return row;
 	};
 
-	function n43Parse(contents) {
+	this.n43Parse = function(contents) {
 		fnLines(contents).forEach(function(row) {
 			if (row.startsWith("11")) {
-				n43k1.combine(row.chunk(2, 4, 4, 10, 6, 6, 1, 14, 3, 1).map(fnTrim), n43);
+				n43k1.combine(sb.chunkBySizes(row, [2, 4, 4, 10, 6, 6, 1, 14, 3, 1]).map(sb.trim), n43);
 				n43Head(n43Date(n43.fInicio), n43Date(n43.fFin), +n43.inicial.insertAt(12, "."));
 			}
 			else if (row.startsWith("22")) {
-				var fila = n43k2.combine(row.chunk(2, 4, 4, 6, 6, 2, 3, 1, 14, 10, 12).map(fnTrim));
+				var fila = n43k2.combine(sb.chunkBySizes(row, [2, 4, 4, 6, 6, 2, 3, 1, 14, 10, 12]).map(sb.trim));
 				fila.ref1 = fila.ref1 ? ("2" + fila.ref1) : fila.ref1;
 				fila.importe = +fila.importe.insertAt(12, ".");
 				fila.importe *= (fila.debe == "1") ? -1 : 1;
@@ -118,7 +121,7 @@ function RecibosBancarios() {
 				var fila = n43.data.last();
 				fila.concepto1 = row.substr(4, 38).trim();
 				fila.concepto2 = row.substr(42, 38).trim();
-				fila.concepto = fnTrim(fila.concepto1 + " " + fila.concepto2);
+				fila.concepto = sb.trim(fila.concepto1 + " " + fila.concepto2);
 				if (fila.concepto2.indexOf("0 3.104 6.261 0") > 0) {
 					n43.ncElavon += fila.importe; //sumo importe no conciliable
 					setForma(fila, NC + "Redsys", "Redsys"); //redsys
@@ -144,16 +147,16 @@ function RecibosBancarios() {
 				var fila = n43.data.last();
 				fila.concepto7 = row.substr(4, 38).trim();
 				fila.concepto8 = row.substr(42, 38).trim();
-				fila.concepto = fnTrim(fila.concepto + " " + fila.concepto7 + " " + fila.concepto8);
+				fila.concepto = sb.trim(fila.concepto + " " + fila.concepto7 + " " + fila.concepto8);
 			}
 			else if (row.startsWith("2305")) {
 				var fila = n43.data.last();
 				fila.concepto9 = row.substr(4, 38).trim();
 				fila.concepto10 = row.substr(42, 38).trim();
-				fila.concepto = fnTrim(fila.concepto + " " + fila.concepto9 + " " + fila.concepto10);
+				fila.concepto = sb.trim(fila.concepto + " " + fila.concepto9 + " " + fila.concepto10);
 			}
 			else if (row.startsWith("33")) { //linea final => comprobacion de importes
-				var fila = n43k3.combine(row.chunk(2, 4, 4, 10, 5, 14, 5, 14, 1, 14, 3, 4).map(fnTrim));
+				var fila = n43k3.combine(sb.chunkBySizes(row, [2, 4, 4, 10, 5, 14, 5, 14, 1, 14, 3, 4]).map(sb.trim));
 				//n43.importe = (+fila.haber.insertAt(12, ".")) - (+fila.debe.insertAt(12, "."));
 				n43.numrows = (+fila.nHaber) + (+fila.nDebes); //ojo con los incorporados TVP!
 				n43.saldo = +fila.saldo.insertAt(12, ".");
@@ -169,7 +172,7 @@ function RecibosBancarios() {
 
 	function n43Reset() {
 		n43.files = n43.total = n43.ncGdc = n43.ncElavon = n43.incorporado = n43.numrows = 0;
-		n43.data.reset();
+		coll.reset(n43.data);
 	};
 	//********************************************//
 
@@ -180,7 +183,7 @@ function RecibosBancarios() {
 	const n57k3 = ["codigo", "op", "libre1", "emisor", "sufijo", "canal", "entidad", "oficina", "fCobro", "importe",  "idCobro", "dEntidad", "dSucursal", "dc", "dCuenta", "domiciliacion", "anulacion", "ref1", "ref2"];
 	//var n57k4 = ["codigo", "op", "libre1", "emisor", "sufijo", "libre2", "numrows", "libre3", "importe", "libre4", "libre5", "libre6", "signo", "libre7"];
 
-	function n57Date(str) { return Date.build(str.insertAt(4, "20").chunk(2, 2).swap(0, 2)); }
+	function n57Date(str) { return Date.build(sb.chunkBySizes(str.insertAt(4, "20"), [2, 2]).swap(0, 2)); }
 	function n57Row60(fila) {
 		n57.fInicio = fila.fCobro.min(n57.fInicio);
 		n57.total += fila.importe;
@@ -188,20 +191,20 @@ function RecibosBancarios() {
 		return fila
 	};
 
-	function n57Parse(contents) {
+	this.n57Parse = contents => {
 		fnLines(contents).forEach(function(row) {
 			if (row.startsWith("01")) { //registro cabecera de fichero
-				n57k1.combine(row.chunk(2, 2, 6, 8, 3, 1, 4, 10, 6, 6, 6, 20, 1, 14, 11).map(fnTrim), n57);
+				n57k1.combine(sb.chunkBySizes(row, [2, 2, 6, 8, 3, 1, 4, 10, 6, 6, 6, 20, 1, 14, 11]).map(sb.trim), n57);
 				var aux = n57Date(n57.fecha);
 				n57.fecha = aux.max(n57.fecha);
 				n57.files++;
 			}
 			else if (row.startsWith("02")) { //registro cabecera de emisora - sufijo
-				var fila = n57k2.combine(row.chunk(2, 2, 6, 8, 3, 1, 4, 10, 6, 6, 6, 20, 1, 14, 11).map(fnTrim));
+				var fila = n57k2.combine(sb.chunkBySizes(row, [2, 2, 6, 8, 3, 1, 4, 10, 6, 6, 6, 20, 1, 14, 11]).map(sb.trim));
 				n57.sufijo = fila.sufijo;
 			}
 			else if (row.startsWith("60")) { //registro individual
-				var fila = n57k3.combine(row.chunk(2, 2, 6, 8, 3, 1, 4, 4, 6, 12, 6, 4, 4, 2, 10, 1, 1, 13, 11).map(fnTrim));
+				var fila = n57k3.combine(sb.chunkBySizes(row, [2, 2, 6, 8, 3, 1, 4, 4, 6, 12, 6, 4, 4, 2, 10, 1, 1, 13, 11]).map(sb.trim));
 				fila.propio = "043"; //default = rafaga
 				fila.plan = fila.idActividad = fila.actNombre = "";
 				fila.canal = (fila.canal == "2") ? "Autoservicio" : (fila.canal == "3") ? "Banca Virtual" : "Ventanilla";
@@ -219,19 +222,19 @@ function RecibosBancarios() {
 	};
 
 	function n57ResetStats() { n57.files = n57.total = n57.numrows = 0; delete n57.fInicio; };
-	function n57Reset() { n57ResetStats(); n57.data.reset(); };
+	function n57Reset() { n57ResetStats(); coll.reset(n57.data); };
 	//********************************************//
 
 	//metodos propios de la factoria
-	this.parse = function(contents) {
+	/*this.parse = function(contents) {
 		if (contents.startsWith("<?xml"))
-			n19Parse(contents);
+			this.n19Parse(contents);
 		else if (contents.startsWith("11"))
-			n43Parse(contents);
+			this.n43Parse(contents);
 		else if (contents.startsWith("01"))
-			n57Parse(contents);
+			this.n57Parse(contents);
 		return this;
-	};
+	};*/
 
 	this.acLoad = function(row, recibo) {
 		row.ji = recibo.ji ? ("Factura Previa - " + recibo.ji) : row.ji;
@@ -239,7 +242,7 @@ function RecibosBancarios() {
 			row.org = recibo.org || row.org;
 			row.eco = recibo.eco || row.eco;
 			row.desc = recibo.desc || row.desc || DESCRIPCIONES[row.org] || "";
-			row.aplicacion = fnTrim(row.org + " " + row.eco); //aplicacion a mostrar en la vista
+			row.aplicacion = sb.trim(row.org + " " + row.eco); //aplicacion a mostrar en la vista
 		}
 		row.dnialu = recibo.dnialu || row.dnialu;
 		row.nombre = recibo.nombre || row.nombre;
@@ -321,7 +324,7 @@ function RecibosBancarios() {
 	this.getTpv = row => (row.concepto5 || (row.concepto2 && row.concepto2.split(/\W+/)[1]));
 	this.isConciliable = row => (!row.ji || !row.ji.startsWith(NC));;
 	this.reset = function() {
-		referencias.reset();
+		coll.reset(referencias.data);
 		n19Reset(); n43Reset(); n57Reset();
 		return this;
 	};

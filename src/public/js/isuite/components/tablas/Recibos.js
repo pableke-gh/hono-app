@@ -1,8 +1,8 @@
 
-import TableHTML from "../../core/components/Table.js";
-import i18n from "../i18n/langs.js";
+import TableHTML from "../../../core/components/Table.js";
+import i18n from "../../i18n/langs.js";
 
-export default class Recibos extends TableHTML {
+export default class RecibosTable extends TableHTML {
 	constructor() {
 		super(); // Must call super before 'this'
 

@@ -1,5 +1,5 @@
 
-import api from "../../components/Api.js"
+import api from "../../core/components/Api.js"
 import ButtonForm from "../../core/components/forms/ButtonForm.js"
 
 export default class ButtonSave extends ButtonForm {

@@ -1,8 +1,8 @@
 
-import Accordion from "../../core/components/Accordion.js";
-import api from "../../components/Api.js";
-import i18n from "../i18n/langs.js";
-import Recibos from "./Recibos.js";
+import Accordion from "../../../core/components/Accordion.js";
+import api from "../../../core/components/Api.js";
+import i18n from "../../i18n/langs.js";
+import RecibosTable from "../tablas/Recibos.js";
 
 export default class RecibosAccordion extends Accordion {
 	render = (data, status) => `<details>
@@ -15,10 +15,10 @@ export default class RecibosAccordion extends Accordion {
 		if (div.children.length > 0)
 			return; // recibos ya cargados
 		api.init().json("/uae/ttpp/historico/recibos?id=" + data.id).then(recibos => {
-			const tblRecibos = new Recibos(); // instance new recibos-table dynamically
+			const tblRecibos = new RecibosTable(); // instance new recibos-table dynamically
 			div.appendChild(tblRecibos.view(recibos)); // append table to details
 		});
 	}
 }
 
-customElements.define("recibos-table", Recibos, { extends: "table" });
+customElements.define("recibos-table", RecibosTable, { extends: "table" });

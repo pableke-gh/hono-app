@@ -1,5 +1,6 @@
 
 import Alert from "./Alert.js";
+import global from "./Global.js";
 
 class Alerts extends HTMLDivElement {
 	close() { this.children.forEach(alert => alert.close()); return this; } // hide all alerts
@@ -56,7 +57,7 @@ class Alerts extends HTMLDivElement {
 
 	show(messages) { // show multiple alerts at once
 		this.close(); // close all existing alerts
-		if (globalThis.isObject(messages)) { // messages can be empty or null
+		if (global.isObject(messages)) { // messages can be empty or null
 			const { msgOk, msgInfo, msgWarn, msgError } = messages; // extract messages by type
 			this.addOk(msgOk).addInfo(msgInfo).addWarn(msgWarn).addError(msgError);
 		}
@@ -87,20 +88,5 @@ customElements.define("alerts-box", Alerts, { extends: "div" });
 // IMPORTANT! instance alerts after definition
 const alerts = new Alerts(); // singleton instance
 document.body.appendChild(alerts); // add alerts to body
-
-// Extends HTMLCollection prototype
-HTMLCollection.prototype.map = Array.prototype.map;
-HTMLCollection.prototype.some = Array.prototype.some;
-HTMLCollection.prototype.find = Array.prototype.find;
-HTMLCollection.prototype.filter = Array.prototype.filter;
-HTMLCollection.prototype.forEach = Array.prototype.forEach;
-HTMLCollection.prototype.findIndex = Array.prototype.findIndex;
-HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
-
-// Common global helpers
-globalThis.void = () => {};
-globalThis.isFunc = fn => (typeof fn === "function");
-globalThis.isset = val => ((typeof val !== "undefined") && (val !== null));
-globalThis.isObject = obj => ((typeof obj === "object") && !Array.isArray(obj));
 
 export default alerts; // singleton instance

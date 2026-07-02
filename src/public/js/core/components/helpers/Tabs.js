@@ -23,6 +23,7 @@ class Tabs {
 	getCurrent = () => this.#tabs.find(tab => tab.isActive()); // current tab
 	indexOf = tab => this.#tabs.indexOf(tab); // index of single tab
 	isActive = tab => this.getTab(tab).isActive(); // check if tab is active
+	isLoaded = tab => this.getTab(tab).isLoaded(); // check if tab is preloaded
 	setHeight = () => cv.setHeight(this.getCurrent()); // current tab height
 
 	#show(tab) {

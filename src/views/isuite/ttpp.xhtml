@@ -16,7 +16,6 @@
 		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
-		<script type="text/javascript" src="/uae/resources/js/isuite/lib/jquery-ui.min.js"></script> 
 		<script type="text/javascript" src="/uae/resources/js/isuite/lib/uae-box.min.js"></script> 
 		<script type="module" src="/uae/resources/js/isuite/index.js"></script> 
 	</ui:define>
@@ -26,14 +25,13 @@
 	<ui:define name="semilla"><li class="active">TTPP</li></ui:define>
 
 	<ui:define name="body">
-		<ui:include src="./parts/msgs.xhtml"></ui:include>
 		<h1 id="title">Ingresos de Gestión Académica</h1>
 
-		<div id="tab-bancos" class="tab-content active">
+		<div id="tab-bancos" is="tab-content" class="tab-content active">
 			<ui:include src="./tabs/bancos.xhtml"></ui:include>
 		</div>
 
-		<div id="tab-ttpp" class="tab-content">
+		<div id="tab-ttpp" is="tab-content" class="tab-content">
 			<ui:include src="./tabs/ttpp_historico.xhtml"></ui:include>
 		</div>
 	</ui:define>

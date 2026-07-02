@@ -49,7 +49,7 @@ export default class FCBTablePivot extends TableHTML {
 		// 1 agrupo por grupo de gasto
 		const grupos = Object.groupBy(data, row => (row.grupoGasto + " - " + row.grupoGastoDesc));
 
-		// 2. Sumo importes
+		// 2. Sumo importes mensuales
 		const pivot = Object.entries(grupos).map(([grupo, items]) => {
 			const enero = items.reduce((sum, item) => (sum + (sb.getMonth(item.fAsiento) == 1) ? item.impAplicacion : 0), 0);
 			const febrero = items.reduce((sum, item) => (sum + (sb.getMonth(item.fAsiento) == 2) ? item.impAplicacion : 0), 0);

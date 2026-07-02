@@ -43,8 +43,7 @@ class Result {
 
 	async catch(promise) {
 		try {
-			const data = await promise;
-			return this.ok(data);
+			return this.ok(await promise);
 		} catch(err) {
 			console.error(err);
 			return this.fail(err);
