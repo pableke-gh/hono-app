@@ -9,11 +9,8 @@ import ButtonSave from "./components/buttons/Save.js";
 import ButtonSubsanar from "./components/buttons/Subsanar.js";
 
 coll.ready(() => { // init. presto modules
-	const fnSync = ev => form.eachInput(".ui-ej", el => { el.value = ev.target.value; }); 
-	form.init().onChange(".ui-ej", fnSync); // init events
-
 	const DATA = {}; // build container
-	DATA.ejercicios = form.getElement("ej").getValues(); // read current open years
+	DATA.ejercicios = form.init().getElement("ej").getValues(); // read current open years
 	const fnBuild = (tipo, memo) => { DATA.solicitud = { tipo, memo }; return DATA; }; // build container befor view
 	const fnCreate = (tipo, memo) => { delete DATA.partidas; return fnBuild(tipo, memo); }; // for: tcr, fce, l83, gcr and ant
 	const fnCreateAfc = () => { DATA.partidas = [ DATA.fcb ]; form.create(fnBuild(8)); }  // set partida unica + view

@@ -7,14 +7,14 @@ import presto from "../../model/Presto.js";
 import form from "../../modules/presto.js";
 
 export default class OrganicaDec extends AutocompleteHTML {
-	#economica = this.form.elements["ecoDec"];
-
-	constructor() {
-		super(); // Must call super before 'this'
+	connectedCallback() {
 		this.setMinLength(4); // default initialization
 	}
 
-	load(data) { this.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec); }
+	load(data) {
+		this.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);
+		this.form.elements.faDec.setValue(presto.isFa()); // set indicador de organica afectada
+	}
 	setEditable() { return this.setReadonly(!presto.isEditable()); }
 
 	source() {
@@ -25,15 +25,15 @@ export default class OrganicaDec extends AutocompleteHTML {
 	select(item) {
 		presto.isAutoLoadInc() && form.getPartidas().reset(); //autoload => clear table
 		const url = presto.isAutoLoadInc() ? "/uae/presto/economicas/l83" : "/uae/presto/economicas/dec"; // url by type
-		api.init().json(url + "?org=" + item.value).then(this.#economica.reload); // reload economicas
+		api.init().json(url + "?org=" + item.value).then(this.form.elements.ecoDec.reload); // reload economicas
 		form.setAvisoFa(item).setValue("faDec", item.int & 1); // indicador de organica afectada
 		return item.value;
 	}
 
 	reset() {
 		presto.isAutoLoadInc() && form.getPartidas().reset(); //autoload => clear table
-		this.#economica.clear();
-		form.setValue("faDec");
+		this.form.elements.ecoDec.clear();
+		this.form.elements.faDec.reset();
 		return super.reset();
 	}
 }

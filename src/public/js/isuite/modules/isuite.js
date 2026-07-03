@@ -5,7 +5,7 @@ import api from "../../core/components/Api.js";
 import FormHTML from "../../core/components/forms/Form.js";
 import GCTable from "../components/paneles/GCTable.js";
 import FCBTable from "../components/paneles/FCBTable.js";
-import ButtonExcel from "../components/paneles/Excel.js";
+import ExcelButton from "../components/paneles/Excel.js";
 
 export default class IsuiteForm extends FormHTML {
 	connectedCallback() {
@@ -30,5 +30,5 @@ export default class IsuiteForm extends FormHTML {
 setTimeout(() => { // define after isuite form
 	customElements.define("gc-table", GCTable, { extends: "table" });
 	customElements.define("fcb-table", FCBTable, { extends: "table" });
-	customElements.define("btn-excel", ButtonExcel, { extends: "button" });
+	customElements.define("panel-excel", ExcelButton, { extends: "button" });
 }, 1);

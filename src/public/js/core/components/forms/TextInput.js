@@ -22,9 +22,9 @@ export default class TextInput extends HTMLInputElement {
 	addListener(name, fn) { this.addEventListener(name, fn); return this; }
 	addChange(fn) { return this.addListener("change", fn); }
 
-	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); return this; }
-	setReadonly(force) { this.classList.toggle("readonly", this.toggleAttribute("readonly", force)); return this; }
-	setEditable(force) { this.form.isEditableManual(this) ? this : this.setReadonly(!force); }
+	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); }
+	setReadonly(force) { this.classList.toggle("readonly", this.toggleAttribute("readonly", force)); }
+	setEditable(force) { this.form.isEditableManual(this) || this.setReadonly(!force); }
 
 	// Validators
 	setOk() { this.form.setOk(this); }

@@ -4,11 +4,11 @@ import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs";
 
 export default class ExcelButton extends ButtonForm {
 	execute() {
-		// 1. get current table instance
-		const table = this.form.getTable();
+		// 1. get current accordion instance
+		const accordion = this.form.getAccordion();
 
 		// 2. Define custom headers
-		const headers = table.getHeaders();
+		const headers = accordion.getHeaders();
 
 		// 3. Create a new workbook and empty worksheet
 		const workbook = XLSX.utils.book_new();
@@ -18,10 +18,10 @@ export default class ExcelButton extends ButtonForm {
 		XLSX.utils.sheet_add_aoa(worksheet, [ headers ], { origin: "A1" });
 
 		// 5. Add JSON data starting at A2 (skipping the header row)
-		XLSX.utils.sheet_add_json(worksheet, table.getExcel(), { origin: "A2", skipHeader: true });
+		XLSX.utils.sheet_add_json(worksheet, accordion.getExcel(), { origin: "A2", skipHeader: true });
 
 		// 6. Append worksheet to workbook and save
 		XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-		XLSX.writeFile(workbook, this.getAttribute("download") || "panel.xlsx");
+		XLSX.writeFile(workbook, accordion.getFilename());
 	}
 }

@@ -63,20 +63,20 @@ export default class DataList extends HTMLSelectElement {
 		this.value = value; // set selected value
 		return this.setData(null); // data empty
 	}
-	setItems = (items, isOptional) => {
+	setItems(items, isOptional) {
 		if (!items) return this.clear(); // vacio el desplegable
 		const fnItem = item => `<option value="${item.value}">${item.label}</option>`; // Item list
 		this.innerHTML = (isOptional ? this.#empty() : "") + items.map(fnItem).join(""); // Render items
 		return this.setData(items); // set data and fire change event
 	}
-	setObject = (data, isOptional) => {
+	setObject(data, isOptional) {
 		if (!data) return this.clear(); // vacio el desplegable
 		this.innerHTML = isOptional ? this.#empty() : "";
 		for (const k in data) // Iterate over all keys
 			this.innerHTML += `<option value="${k}">${data[k]}</option>`;
 		return this.setData(data); // set data and fire change event
 	}
-	setLabels = (labels, isOptional) => {
+	setLabels(labels, isOptional) {
 		if (!labels) return this.clear(); // vacio el desplegable
 		const fnLabel = label => `<option value="${label}">${label}</option>`; // label list
 		this.innerHTML = (isOptional ? this.#empty() : "") + labels.map(fnLabel).join(""); // Render labels

@@ -10,6 +10,7 @@ export default class GCTable extends TableHTML {
 		this.view(); // show empty message
 	}
 
+	getFilename = () => "panel_gc.xlsx";
 	getHeaders = () => this.tHead.querySelectorAll("th").map(th => th.textContent);
 	getExcel = () => this.getData().map(row => { // map data to excel
 		const { ejercicio, organica, descripcion, porGg, drnAcum, rnAcum, maxHabilitar, orAcum, ctHabilitado, txtHabilitar, aipOrg, fMaxCobro } = row;

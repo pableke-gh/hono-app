@@ -5,12 +5,18 @@ import i18n from "../../i18n/langs.js";
 import FlywireTable from "../tablas/Flywire.js";
 
 export default class FlywireAccordion extends Accordion {
-	static #instance;
 	static getInstance = () => FlywireAccordion.#instance;
+	static #instance;
+	#rows;
 
 	connectedCallback() {
 		FlywireAccordion.#instance = this;
 	}
+
+	size() { return this.#rows ? this.#rows.length : 0; }
+	isEmpty() { return !this.#rows || super.isEmpty(); }
+	isLoaded() { return this.#rows && super.isLoaded(); }
+	reset() { this.#rows = null; super.reset(); }
 
 	hide() {
 		super.hide();
@@ -28,6 +34,8 @@ export default class FlywireAccordion extends Accordion {
 		super.show();
 		this.showBack();
 		this.previousElementSibling.classList.remove("hide");
+		document.forms.conciliar.elements.excel.show();
+		document.forms.conciliar.setAccordion(this);
 	}
 
 	setData(contents) {
@@ -42,8 +50,9 @@ export default class FlywireAccordion extends Accordion {
 					return recibo.org + " " + recibo.eco + ": " + recibo.desc; // group by aplicacion
 				});
 
-				super.setData(grupos).renderGroup();
-				this.show();
+				this.#rows = data.recibos; // 2. store all recibos
+				super.setData(grupos).renderGroup(); // 3. render accordion
+				this.show(); // 4. show accordion
 			});
 		} catch(ex) {
 			console.error("Error parsing Flywire JSON data:", ex);
@@ -52,11 +61,20 @@ export default class FlywireAccordion extends Accordion {
 	}
 
 	summary(el, key, status) { el.innerHTML = status.count + ".- " + key; }
-	afterTab(tab, rows) {
+	body(body, rows) {
 		const table = new FlywireTable(); // build table dynamically
-		tab.lastElementChild.appendChild(table.view(rows)); // append table to details
-		tab.firstElementChild.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
+		body.appendChild(table.view(rows)); // append table to details
+		body.previousElementSibling.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
 	}
+
+	getFilename = () => "flywire.xlsx";
+	getHeaders = () => [
+		"F. Operación", "Nombre del Plan", "Act.", "Nombre de la Act.", "DNI Alumno", "Nombre del Alumno", "Orgánica", "Económica", "Importe"
+	];
+	getExcel = () => this.#rows.map(row => { // map data to excel
+		const { fCobro, plan, idActividad, actNombre, dnialu, nombre, org, eco, importe } = row;
+		return { fCobro, plan, idActividad, actNombre, dnialu, nombre, org, eco, importe };
+	});
 }
 
 customElements.define("flywire-table", FlywireTable, { extends: "table" });

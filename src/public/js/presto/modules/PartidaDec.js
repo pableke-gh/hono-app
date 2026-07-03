@@ -1,29 +1,26 @@
 
 import FormBase from "../../components/forms/FormBase.js";
-import OrganicaDec from "../components/dec/Organica.js";
+import Ejercicio from "../components/dec/Ejercicio.js";
 import presto from "../model/Presto.js";
 import form from "./presto.js";
 
 export default class PartidaDec extends FormBase {
-	#organica = this.getElement("orgDec"); // autocomplete
-
 	constructor(form) {
 		super(form.getForm(), form.getOptions());
 	}
 
 	init() {
-		this.addChange("ej", this.#organica.reload);
 		this.addChange("imp", ev => { // autoload importe
 			presto.isAutoLoadImp() && form.getPartidas().setImp(ev.target.getValue());
 		});
 	}
 
 	view(data) {
-		this.setLabels("select.ui-ej", data.ejercicios).setValue("faDec", data.solicitud.omask & 1);
+		this.getElement("ej").setLabels(data.ejercicios);
 	}
 	reload() {
-		this.#organica.reload();
+		this.getElement("orgDec").reload();
 	}
 }
 
-customElements.define("organica-dec", OrganicaDec, { extends: "input" });
+customElements.define("ej-dec", Ejercicio, { extends: "select" });

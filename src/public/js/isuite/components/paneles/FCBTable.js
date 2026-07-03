@@ -34,6 +34,7 @@ export default class FCBTable extends TableHTML {
 		tabs.setHeight();
 	}
 
+	getFilename = () => "panel_fcb.xlsx";
 	getHeaders = () => this.tHead.querySelectorAll("th").map(th => th.textContent);
 	getExcel = () => this.getData().map(row => { // map data to excel
 		const { grupoGasto, grupoGastoDesc, organica, funcional, economica, organicaDesc, textoLibre, impAplicacion, dc, tipo, fAsiento } = row;

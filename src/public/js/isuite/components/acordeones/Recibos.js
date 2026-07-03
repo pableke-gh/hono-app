@@ -10,8 +10,8 @@ export default class RecibosAccordion extends Accordion {
 		if (div.children.length > 0)
 			return; // recibos ya cargados
 		api.init().json("/uae/ttpp/historico/recibos?id=" + tab.id).then(recibos => {
-			const tblRecibos = new RecibosTable(); // instance new recibos-table dynamically
-			div.appendChild(tblRecibos.view(recibos)); // append table to details
+			const table = new RecibosTable(); // instance new recibos-table dynamically
+			div.appendChild(table.view(recibos)); // append table to details
 		});
 	}
 

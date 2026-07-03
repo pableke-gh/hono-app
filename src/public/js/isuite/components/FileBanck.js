@@ -22,14 +22,8 @@ export default class FileBanck extends FileInput {
 
 			if ((await result.catch(file.text())).isError()) // try to read file contents
 				return this.setError("Error al leer el archivo", "No se pudo leer el contenido del archivo.");
+
 			const contents = result.getData(); // read file contents		
-
-			/*if (n19.files) {
-				const n19 = rb.reset().n19Parse(contents);
-				Object.assign(TB_CONFIG.tables.n19, n19);
-				return this.setNorma(n19, TB_CONFIG.tables.n19);
-			}*/
-
 			if (window.location.search.endsWith("tpv=1") && contents.startsWith("11")) // cuaderno 43 tpv
 				return TpvAccordion.getInstance().setData(contents);
 
@@ -48,10 +42,10 @@ export default class FileBanck extends FileInput {
 
 	restart() {
 		rb.reset(); // reset recibos bancarios
-		TpvAccordion.getInstance().hide();
-		Norma43Accordion.getInstance().hide();
-		Norma57Accordion.getInstance().hide();
-		FlywireAccordion.getInstance().hide();
+		TpvAccordion.getInstance().reset();
+		Norma43Accordion.getInstance().reset();
+		Norma57Accordion.getInstance().reset();
+		FlywireAccordion.getInstance().reset();
 		this.form.restart();
 	}
 }

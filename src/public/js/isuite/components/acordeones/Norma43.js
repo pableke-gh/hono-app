@@ -7,12 +7,18 @@ import Norma43Table from "../tablas/Norma43.js";
 import rb from "../../lib/RecibosBancarios.js";
 
 export default class Norma43Accordion extends Accordion {
-	static #instance;
 	static getInstance = () => Norma43Accordion.#instance;
+	static #instance;
+	#rows;
 
 	connectedCallback() {
 		Norma43Accordion.#instance = this;
 	}
+
+	size() { return this.#rows ? this.#rows.length : 0; }
+	isEmpty() { return !this.#rows || super.isEmpty(); }
+	isLoaded() { return this.#rows && super.isLoaded(); }
+	reset() { this.#rows = null; super.reset(); }
 
 	hide() {
 		super.hide();
@@ -27,6 +33,9 @@ export default class Norma43Accordion extends Accordion {
 		this.showBack();
 		this.previousElementSibling.classList.remove("hide"); // ul
 		this.previousElementSibling.previousElementSibling.classList.remove("hide"); // h3
+		document.forms.conciliar.elements.save.show();
+		document.forms.conciliar.elements.excel.show();
+		document.forms.conciliar.setAccordion(this);
 	}
 
 	setData(contents) {
@@ -58,22 +67,31 @@ export default class Norma43Accordion extends Accordion {
 			n43.importe = n43.total + n43.incorporado; // importe recibos cancarios + incorporados
 
 			// 1. agrupo todos los recibos del fichero por forma / aplicacion presupuestaria
-			super.setData(Object.nestGroupBy(temp1.concat(temp2), [ "forma", "aplicacion" ])).renderTree();
+			this.#rows = temp1.concat(temp2); // store conciliable recibos
+			super.setData(Object.nestGroupBy(this.#rows, [ "forma", "aplicacion" ])).renderTree();
 
 			delete n43.referencias;
 			this.previousElementSibling.render(n43);
-			document.forms.conciliar.elements.save.show();
 			this.show();
 		});
 	}
 
-	headerGroup(key, status) { this.insertAdjacentHTML("beforeend", `<h4>${key}</h4><hr/>`); }
+	headerGroup(key) { this.insertAdjacentHTML("beforeend", `<h4>${key}</h4><hr/>`); }
 	summary(el, key, status) { el.innerHTML = status.count + ".- " + key; }
-	afterTab(tab, rows) {
+	body(body, rows) {
 		const table = new Norma43Table(); // build table dynamically
-		tab.lastElementChild.appendChild(table.view(rows)); // append table to details
-		tab.firstElementChild.innerHTML += sb.prefix(rows[0].desc, " - ") + " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
+		body.appendChild(table.view(rows)); // append table to details
+		body.previousElementSibling.innerHTML += sb.prefix(rows[0].desc, " - ") + " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
 	}
+
+	getFilename = () => "norma43.xlsx";
+	getHeaders = () => [
+		"Nº JI", "F. Operación", "Forma de Cobro", "Recibo", "Concepto", "DNI Alumno", "Nombre del Alumno", "Orgánica", "Económica", "Descripción", "Importe"
+	];
+	getExcel = () => this.#rows.map(row => { // map data to excel
+		const { ji, fCobro, forma, ref1, concepto, dnialu, nombre, org, eco, desc, importe } = row;
+		return { ji, fCobro, forma, ref1, concepto, dnialu, nombre, org, eco, desc, importe };
+	});
 }
 
 customElements.define("norma43-table", Norma43Table, { extends: "table" });
