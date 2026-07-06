@@ -12,7 +12,7 @@ export default class PedidoFilterForm extends FormHTML {
 
 	listAll() {
 		const ej = this.elements.ej.value; // store selected ej
-		this.reset(); // reset values
+		this.reset(); // reset all values
 		this.elements.ej.value = ej; // preserve selected ej
 		this.list(); // fetch list
 	}

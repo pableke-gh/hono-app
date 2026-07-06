@@ -18,17 +18,6 @@ export default class Organica030 extends AutocompleteHTML {
 
 	source() { api.init().json("/uae/presto/organicas/030", { ej: form.getValue("ej030"), term: this.value }).then(this.render); }
 	select(item) { form.setValue("eco030", item.imp); return item.value; }
-
-	view = partida => { // load tab 030
-		const eco030 = this.form.elements.eco030;
-		if (eco030.isLoaded(partida.ej))
-			return eco030.showTab(partida); // change tab
-
-		// actualizo las economicas de ingresos 030 para el nuevo ejercicio
-		api.init().json("/uae/presto/economicas/030?ej=" + partida.ej).then(economicas => {
-			eco030.reload(partida, economicas);
-		});
-	}
 }
 
 customElements.define("economica-030", Economica030, { extends: "select" });

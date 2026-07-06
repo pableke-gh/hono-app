@@ -22,7 +22,7 @@ class Presto extends Solicitud {
 
 	init() { // init modules
 		super.init(valid); // load validators
-		this.#partidas.set("#doc030", this.getElement("org030").view);
+		this.#partidas.set("#doc030", this.getElement("eco030").view);
 		return this;
 	}
 

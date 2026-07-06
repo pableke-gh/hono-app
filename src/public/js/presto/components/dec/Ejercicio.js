@@ -1,4 +1,5 @@
 
+import sb from "../../../components/types/StringBox.js";
 import DataList from "../../../components/inputs/DataList.js";
 import OrganicaDec from "./Organica.js";
 import presto from "../../model/Presto.js";
@@ -25,7 +26,9 @@ export default class Ejercicio extends DataList {
 		super.setLabels(ejercicios).reset();
 		this.form.elements.ejInc.setLabels(ejercicios).reset();
 		this.form.elements.ej030.setLabels(ejercicios).reset();
-		this.value = this.form.elements.ejInc.value = this.form.elements.ej030.value = presto.get("ej");
+
+		const ej = presto.get("ej") || sb.getYear();
+		this.value = this.form.elements.ejInc.value = this.form.elements.ej030.value = ej;
 	}
 }
 

@@ -1,7 +1,8 @@
 
-import Accordion from "../../../core/components/Accordion.js";
+import dt from "../../../components/types/DateBox.js";
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
+import Accordion from "../../../core/components/Accordion.js";
 import FlywireTable from "../tablas/Flywire.js";
 
 export default class FlywireAccordion extends Accordion {
@@ -42,7 +43,12 @@ export default class FlywireAccordion extends Accordion {
 	setData(contents) {
 		try {
 			const recibos = JSON.parse(contents);
-			const referencias = recibos.data.map(item => item.recibo).join(); // extract references
+			const referencias = recibos.data.map(item => {
+				item.impFlywire = item.importe; // mapeo el importe para evitar colision de nombres
+				delete item.importe; // override by academico
+				return item.recibo
+			}).join(); // extract references
+
 			api.setJSON({ tipo: recibos.empresa, referencias }).json("/uae/ttpp/flywire").then(data => {
 				// 1. agrupo los recibos por aplicacion presupuestaria
 				const grupos = Object.groupBy(data.recibos, recibo => { // merge and group data
@@ -69,11 +75,15 @@ export default class FlywireAccordion extends Accordion {
 	}
 
 	getHeaders = () => [
-		"F. Operación", "Nombre del Plan", "Act.", "Nombre de la Act.", "DNI Alumno", "Nombre del Alumno", "Orgánica", "Económica", "Importe"
+		"F. Operación", "Nombre del Plan", "Act.", "Nombre de la Act.", "DNI Alumno", "Nombre del Alumno", 
+		"Orgánica", "Económica", "Imp. Académico", "Imp. Flywire"
 	];
 	getExcel = () => this.#rows.map(row => { // map data to excel
-		const { fCobro, plan, idActividad, actNombre, dnialu, nombre, org, eco, importe } = row;
-		return { fCobro, plan, idActividad, actNombre, dnialu, nombre, org, eco, importe };
+		const { fCobro, plan, idActividad, actNombre, dnialu, nombre, org, eco, importe, impFlywire } = row;
+		return {
+			fCobro: dt.toDate(fCobro),
+			plan, idActividad, actNombre, dnialu, nombre, org, eco, importe, impFlywire
+		};
 	});
 }
 
