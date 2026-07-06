@@ -15,6 +15,7 @@ export default class Norma43Accordion extends Accordion {
 		Norma43Accordion.#instance = this;
 	}
 
+	getName = () => "norma43";
 	size() { return this.#rows ? this.#rows.length : 0; }
 	isEmpty() { return !this.#rows || super.isEmpty(); }
 	isLoaded() { return this.#rows && super.isLoaded(); }
@@ -84,7 +85,6 @@ export default class Norma43Accordion extends Accordion {
 		body.previousElementSibling.innerHTML += sb.prefix(rows[0].desc, " - ") + " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
 	}
 
-	getFilename = () => "norma43.xlsx";
 	getHeaders = () => [
 		"Nº JI", "F. Operación", "Forma de Cobro", "Recibo", "Concepto", "DNI Alumno", "Nombre del Alumno", "Orgánica", "Económica", "Descripción", "Importe"
 	];

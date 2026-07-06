@@ -18,13 +18,14 @@ export default class Ejercicio extends DataList {
 
 	setEditable() {
 		this.setReadonly(!presto.isEditable());
+		this.parentNode.parentNode.parentNode.classList.toggle("hide", !presto.isPartidaDec()); // show / hide partida dec group
 	}
 
-	setLabels(ejercicios) {
-		super.setLabels(ejercicios);
-		this.form.elements.ejInc.setLabels(ejercicios);
-		this.form.elements.ej030.setLabels(ejercicios);
-		return this;
+	setLabels(ejercicios) { // force reload
+		super.setLabels(ejercicios).reset();
+		this.form.elements.ejInc.setLabels(ejercicios).reset();
+		this.form.elements.ej030.setLabels(ejercicios).reset();
+		this.value = this.form.elements.ejInc.value = this.form.elements.ej030.value = presto.get("ej");
 	}
 }
 

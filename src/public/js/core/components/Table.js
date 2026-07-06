@@ -39,6 +39,8 @@ export default class TableHTML extends HTMLTableElement {
 	get = name => this.#opts[name];
 	set = (name, fn) => { this.#opts[name] = fn; return this; }
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
+	getName = () => "table"; // default name for table
+	getHeaders = () => this.tHead.querySelectorAll("th").map(th => th.textContent);
 
 	setRowEmpty = html => this.set("rowEmptyTable", html);
 	setMsgEmpty = msg => this.setRowEmpty(`<tr><td class="no-data" colspan="99">${i18n.msg(msg)}</td></tr>`);

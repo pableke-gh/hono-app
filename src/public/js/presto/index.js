@@ -5,6 +5,7 @@ import api from "../components/Api.js"
 
 import presto from "./model/Presto.js";
 import form from "./modules/presto.js";
+import Ejercicio from "./components/dec/Ejercicio.js";
 import ButtonSave from "./components/buttons/Save.js";
 import ButtonSubsanar from "./components/buttons/Subsanar.js";
 
@@ -31,5 +32,6 @@ coll.ready(() => { // init. presto modules
 	});
 });
 
+customElements.define("ej-dec", Ejercicio, { extends: "select" });
 customElements.define("btn-save", ButtonSave, { extends: "button" });
 customElements.define("btn-subsanar", ButtonSubsanar, { extends: "button" });

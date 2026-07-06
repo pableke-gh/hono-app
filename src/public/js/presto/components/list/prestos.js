@@ -1,8 +1,8 @@
 
-import i18n from "../i18n/langs.js";
-import presto from "../model/Presto.js";
-import firma from "../../core/model/Firma.js";
-import Solicitudes from "../../core/modules/solicitudes.js";
+import i18n from "../../i18n/langs.js";
+import presto from "../../model/Presto.js";
+import firma from "../../../core/model/Firma.js";
+import Solicitudes from "../../../core/modules/solicitudes.js";
 
 export default class PrestoSolicitudes extends Solicitudes {
 	constructor() {

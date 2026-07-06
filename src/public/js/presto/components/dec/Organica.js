@@ -9,13 +9,17 @@ import form from "../../modules/presto.js";
 export default class OrganicaDec extends AutocompleteHTML {
 	connectedCallback() {
 		this.setMinLength(4); // default initialization
+		form.addChange("imp", ev => { // autoload importe
+			presto.isAutoLoadImp() && form.getPartidas().setImp(ev.target.getValue());
+		});
 	}
 
 	load(data) {
 		this.setValue(data.idOrgDec, data.orgDec + " - " + data.dOrgDec);
-		this.form.elements.faDec.setValue(presto.isFa()); // set indicador de organica afectada
 	}
-	setEditable() { return this.setReadonly(!presto.isEditable()); }
+	setEditable() {
+		this.setReadonly(!presto.isEditable());
+	}
 
 	source() {
 		const opts = { 3: "/uae/presto/organicas/l83", 5: "/uae/presto/organicas/ant" };

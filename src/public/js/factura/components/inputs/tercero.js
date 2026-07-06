@@ -6,27 +6,25 @@ import form from "../../modules/factura.js";
 
 // Item list: value = id tercero / label = nif - nombre
 export default class Tercero extends AutocompleteHTML {
-	#delegaciones = this.form.elements["delegacion"];
-
-	constructor() {
-		super(); // Must call super before 'this'
+	connectedCallback() {
 		this.setDelay(500).setMinLength(5);
 	}
 
 	load(data) {
 		this.setValue(data.idTer, data.nif + " - " + data.tercero); // autocomplete
-		this.#delegaciones.setOption(data.delegacion, data.delName); // data-list
+		this.form.elements.delegacion.setOption(data.delegacion, data.delName); // data-list
 	}
 
 	source() { api.init().json("/uae/fact/terceros", { term: this.value }).then(this.render); }
 	select(item) {
-		api.init().json(`/uae/fact/delegaciones?ter=${item.value}`).then(this.#delegaciones.setItems);
+		const fnItems = items => this.form.elements.delegacion.setItems(items);
+		api.init().json(`/uae/fact/delegaciones?ter=${item.value}`).then(fnItems);
 		form.getFiscal().update(factura.getSubtipo());
 		return item.value;
 	}
 
 	reset() {
-		this.#delegaciones.clear();
+		this.form.elements.delegacion.clear();
 		return super.reset();
 	}
 }

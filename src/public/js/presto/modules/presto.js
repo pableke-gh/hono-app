@@ -3,12 +3,10 @@ import valid from "../i18n/validators.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 
-import PartidaDec from "./PartidaDec.js";
-import Partida030 from "./Partida030.js";
-
 import AddPartida from "../components/inc/AddPartida.js";
 import OrganicaInc from "../components/inc/Organica.js";
 import Partidas from "../components/inc/Partidas.js";
+import Organica030 from "../components/p030/Organica.js";
 
 import Memoria from "../components/info/Memoria.js";
 import Subtipo from "../components/info/Subtipo.js";
@@ -16,29 +14,24 @@ import Adjunto from "../components/info/Adjunto.js";
 
 import Urgencia from "../../core/components/layouts/Urgencia.js";
 import Firmas from "../../core/components/layouts/Firmas.js";
-import PrestoSolicitudes from "../components/prestos.js";
+import PrestoSolicitudes from "../components/list/prestos.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class Presto extends Solicitud {
-	#pDec = new PartidaDec(this);
-	#p030 = new Partida030(this);
 	#partidas = this.querySelector("table");
 
 	init() { // init modules
-		super.init(valid);
-		this.#pDec.init();
-		this.#p030.init();
+		super.init(valid); // load validators
+		this.#partidas.set("#doc030", this.getElement("org030").view);
 		return this;
 	}
 
 	onView(data) {
-		this.#pDec.view(data); // cargo el formulario de la partida a decrementar
+		this.getElement("ej").setLabels(data.ejercicios); // load ejercicios
 		this.#partidas.render(data.partidas); // cargo la tabla de partidas a incrementar
 	}
 
 	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
-	getPartidaDec = () => this.#pDec; // partida que se decrementa
-	getPartida030 = () => this.#p030; // formulario del DC 030
 	getPartidas = () => this.#partidas; // tabla de partidas a incrementar
 
 	setAvisoFa = item => { //aviso para organicas afectadas en TCR o FCE
@@ -59,6 +52,7 @@ class Presto extends Solicitud {
 customElements.define("organica-inc", OrganicaInc, { extends: "input" });
 customElements.define("add-partida-inc", AddPartida, { extends: "button" });
 customElements.define("partidas-table", Partidas, { extends: "table" });
+customElements.define("organica-030", Organica030, { extends: "input" });
 
 customElements.define("memo-text", Memoria, { extends: "textarea" });
 customElements.define("gcr-list", Subtipo, { extends: "select" });

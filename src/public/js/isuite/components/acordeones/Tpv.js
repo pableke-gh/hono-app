@@ -14,6 +14,7 @@ export default class TpvAccordion extends Accordion {
 		TpvAccordion.#instance = this;
 	}
 
+	getName = () => "tpv";
 	size() { return this.#rows ? this.#rows.length : 0; }
 	isEmpty() { return !this.#rows || super.isEmpty(); }
 	isLoaded() { return this.#rows && super.isLoaded(); }
@@ -60,7 +61,6 @@ export default class TpvAccordion extends Accordion {
 		body.previousElementSibling.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
 	}
 
-	getFilename = () => "tpv.xlsx";
 	getHeaders = () => [ "Tipo", "F. Operación", "Descripción", "Importe" ];
 	getExcel = () => this.#rows.map(row => { // map data to excel
 		const { forma, fCobro, concepto, importe } = row;

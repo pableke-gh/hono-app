@@ -24,11 +24,10 @@ export default class FileBanck extends FileInput {
 				return this.setError("Error al leer el archivo", "No se pudo leer el contenido del archivo.");
 
 			const contents = result.getData(); // read file contents		
-			if (window.location.search.endsWith("tpv=1") && contents.startsWith("11")) // cuaderno 43 tpv
-				return TpvAccordion.getInstance().setData(contents);
-
-			if (contents.startsWith("11")) // cuaderno 43
-				return Norma43Accordion.getInstance().setData(contents);
+			if (contents.startsWith("11")) { // cuaderno 43 / tpv
+				const isTpv = window.location.search.endsWith("tpv=1"); // tpv flag in url
+				return isTpv ? TpvAccordion.getInstance().setData(contents) : Norma43Accordion.getInstance().setData(contents);
+			}
 
 			if (contents.startsWith("01")) // cuaderno 57
 				return Norma57Accordion.getInstance().setData(contents);

@@ -56,7 +56,7 @@ export default class Partidas extends TableHTML {
 	}
 
 	flush() { // override super class
-		presto.isAutoLoadInc() && form.getPartidaDec().reload();
+		presto.isAutoLoadInc() && form.getElement("orgDec").reload();
 		super.flush();
 	}
 

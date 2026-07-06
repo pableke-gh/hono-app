@@ -22,6 +22,6 @@ export default class ExcelButton extends ButtonForm {
 
 		// 6. Append worksheet to workbook and save
 		XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-		XLSX.writeFile(workbook, accordion.getFilename());
+		XLSX.writeFile(workbook, accordion.getName() + ".xlsx");
 	}
 }

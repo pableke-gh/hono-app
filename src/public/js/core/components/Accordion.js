@@ -9,6 +9,7 @@ export default class Accordion extends HTMLDivElement {
 		tplEmpty: `<p class="notice notice-warn">${i18n.get("noResults")}</p>`
 	};
 
+	getName = () => "accordion"; // default name for accordion
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
 	setTplEmpty = html => { this.#opts.tplEmpty = html; return this; }
 	setMsgEmpty = msg => this.setTplEmpty(`<p class="notice notice-warn">${i18n.get(msg)}</p>`);

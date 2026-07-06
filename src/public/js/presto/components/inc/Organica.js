@@ -7,18 +7,17 @@ import form from "../../modules/presto.js";
 import EconomicaInc from "./Economica.js";
 
 export default class OrganicaInc extends AutocompleteHTML {
-	#economica = this.form.elements["ecoInc"];
-
 	addFormData(fd) {} // not append values in form data
 	setEditable() { return this; } // preserve state always editable
 
 	connectedCallback() {
 		this.setMinLength(4); // default initialization
-		this.form.elements["ejInc"].addEventListener("change", this.reload);
+		this.form.elements.ejInc.addEventListener("change", this.reload);
 	}
 
 	select(item) { // override => final select
-		api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(this.#economica.setItems); // load economicas inc.
+		const fnItems = items => this.form.elements.ecoInc.setItems(items);
+		api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(fnItems); // load economicas inc.
 		form.setAvisoFa(item).setValue("faInc", item.int & 1); // organica afectada
 		return item.value;
 	}
@@ -28,7 +27,7 @@ export default class OrganicaInc extends AutocompleteHTML {
 	}
 
 	reset() {
-		this.#economica.clear(); // clear select box
+		this.form.elements.ecoInc.clear(); // clear select box
 		form.setValue("faInc").setValue("impInc");
 		return super.reset();
 	}

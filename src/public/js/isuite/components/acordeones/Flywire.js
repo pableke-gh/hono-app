@@ -13,6 +13,7 @@ export default class FlywireAccordion extends Accordion {
 		FlywireAccordion.#instance = this;
 	}
 
+	getName = () => "flywire";
 	size() { return this.#rows ? this.#rows.length : 0; }
 	isEmpty() { return !this.#rows || super.isEmpty(); }
 	isLoaded() { return this.#rows && super.isLoaded(); }
@@ -67,7 +68,6 @@ export default class FlywireAccordion extends Accordion {
 		body.previousElementSibling.innerHTML += " (" + i18n.isoFloat(table.getProp("importe")) + " €)"; // summary element
 	}
 
-	getFilename = () => "flywire.xlsx";
 	getHeaders = () => [
 		"F. Operación", "Nombre del Plan", "Act.", "Nombre de la Act.", "DNI Alumno", "Nombre del Alumno", "Orgánica", "Económica", "Importe"
 	];
