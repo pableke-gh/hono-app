@@ -46,7 +46,7 @@ export default class FlywireAccordion extends Accordion {
 			const referencias = recibos.data.map(item => {
 				item.impFlywire = item.importe; // mapeo el importe para evitar colision de nombres
 				delete item.importe; // override by academico
-				return item.recibo
+				return item.recibo; // referencia a consultar
 			}).join(); // extract references
 
 			api.setJSON({ tipo: recibos.empresa, referencias }).json("/uae/ttpp/flywire").then(data => {

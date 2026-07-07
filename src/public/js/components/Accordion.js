@@ -1,7 +1,6 @@
 
 import coll from "./CollectionHTML.js";
 import i18n from "../core/i18n/langs.js";
-import cv from "./cv/Resize.js";
 
 export default class Accordion extends HTMLDivElement {
 	#data; // data container
@@ -40,7 +39,6 @@ export default class Accordion extends HTMLDivElement {
 				ev.target.open = true; // force open current
 				this.onOpen(this.#data[i], ev.target, i); // call open handler
 				ev.target.openings++; // number of openings
-				cv.setHeight(); // resize iframe for CV
 			}, true); // set useCapture parameter to true
 		});
 		return this;

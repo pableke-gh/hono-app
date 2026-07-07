@@ -1,6 +1,5 @@
 
 import i18n from "../i18n/langs.js";
-import cv from "../../components/cv/Resize.js";
 
 export default class Accordion extends HTMLDivElement {
 	#data; // data container
@@ -29,12 +28,23 @@ export default class Accordion extends HTMLDivElement {
 
 	onOpen() {} // optional open envent
 	#eventToggle(details) {
+		function isInViewport(element) {
+			const rect = element.getBoundingClientRect();
+			return (rect.top >= 0 && rect.left >= 0 &&
+					rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+					rect.right <= (window.innerWidth || document.documentElement.clientWidth));
+		}
+
 		details.addEventListener("toggle", ev => {
 			if (!ev.target.open) return; // close action => skip
 			const fnToggle = el => el.toggleAttribute("open", ev.target == el);
 			this.querySelectorAll("details").forEach(fnToggle); // Close all other tabs
+			if (!isInViewport(ev.target.firstElementChild)) { // current summary
+				const elView = ev.target.previousElementSibling || ev.target.parentNode;
+				// Scroll to the top of the now-closed details element in accordion
+				elView.scrollIntoView({ behavior: "smooth", block: "start" });
+			}
 			this.onOpen(ev.target); // call open handler
-			cv.setHeight(); // resize iframe for CV
 		}, true); // set useCapture parameter to true
 	}
 

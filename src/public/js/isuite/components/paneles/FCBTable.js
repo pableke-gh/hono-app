@@ -1,6 +1,5 @@
 
 import dt from "../../../components/types/DateBox.js";
-import tabs from "../../../core/components/helpers/Tabs.js";
 import i18n from "../../i18n/langs.js";
 
 import TableHTML from "../../../core/components/Table.js";
@@ -23,7 +22,6 @@ export default class FCBTable extends TableHTML {
 		form.elements.pivot.show();
 		this.classList.remove("hide");
 		this.nextElementSibling.classList.add("hide");
-		tabs.setHeight();
 	}
 	setPivotMode = () => {
 		const form = document.forms.isuite;
@@ -31,7 +29,6 @@ export default class FCBTable extends TableHTML {
 		form.elements.pivot.hide();
 		this.classList.add("hide");
 		this.nextElementSibling.classList.remove("hide");
-		tabs.setHeight();
 	}
 
 	getName = () => "panel_fcb";

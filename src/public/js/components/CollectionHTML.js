@@ -92,7 +92,15 @@ window.$$ = selector => document.querySelectorAll(selector);
 HTMLElement.prototype.$1 = HTMLElement.prototype.querySelector;
 HTMLElement.prototype.$$ = HTMLElement.prototype.querySelectorAll;
 
-coll.ready = fn => document.addEventListener("DOMContentLoaded", fn); // shortcut
 coll.getDivNull = () => divNull; // readonly element
+coll.ready = fn => document.addEventListener("DOMContentLoaded", fn); // shortcut
+coll.ready(ev => {
+	const iframe = window.parent.document.querySelector("#ifPage-frame");
+	if (!iframe) return; // hack ifPage-frame styles for CV prod.
+	iframe.style.minHeight = "500px"; // force min height
+	const resizer = new ResizeObserver(() => { iframe.style.height = document.body.scrollHeight + "px"; });
+	window.addEventListener("beforeunload", ev => resizer.disconnect());
+	resizer.observe(document.body);
+});
 
 export default coll;

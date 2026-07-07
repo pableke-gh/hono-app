@@ -13,7 +13,10 @@ import rb from "../lib/RecibosBancarios.js";
 export default class FileBanck extends FileInput {
 	connectedCallback() { // init. component
 		super.connectedCallback();
-		this.previousElementSibling.addEventListener("click", () => this.click()); // trigger file input on button click
+		this.previousElementSibling.addEventListener("click", ev => {
+			ev.preventDefault(); // preserve height scroll
+			this.click(); // trigger file input on button click
+		});
 
 		this.addChange(async ev => {
 			this.restart(); // clear form and table

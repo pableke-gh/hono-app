@@ -122,7 +122,6 @@ export default class TableHTML extends HTMLTableElement {
 		this.afterRender(this.#RESUME); // After body event
 		this.reloadFooter(); // reload footer
 		this.#tBody.classList.add(this.#opts.activeClass); // Add styles (animation)
-		tabs.setHeight(); // resize iframe height
 		return this;
 	}
 	render(data) {
@@ -170,7 +169,7 @@ export default class TableHTML extends HTMLTableElement {
 		else
 			this.#tBody.innerHTML = this.#opts.rowEmptyTable; // empty body
 		this.recalc().reloadFooter(); // reload footer
-		tabs.showList().setHeight(); // resize iframe height
+		tabs.showList(); // resize iframe height
 	}
 	remove = () => { i18n.confirm(this.#opts.msgConfirmRemove) && this.flush(); }
 }

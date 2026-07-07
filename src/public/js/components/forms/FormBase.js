@@ -88,7 +88,7 @@ export default class FormBase {
 	setText = (selector, text) => { this.#fnQuery(selector).innerText = text; return this; }
 	text = (selector, text) => { this.#form.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.#form.$$(selector).render(data); return this; } // NodeList.prototype.render
-	refresh(model) { observer.emit("form-updated", model); tabs.setHeight(); return this; } // NodeList.prototype.refresh
+	refresh(model) { observer.emit("form-updated", model); return this; } // NodeList.prototype.refresh
 	send = url => api.setForm(this.#form).send(url || this.#form.action).catch(info => { this.setErrors(info); throw info; });
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
@@ -98,8 +98,8 @@ export default class FormBase {
 	}
 
 	eachInput = (selector, fn) => this.#fnUpdate(selector, fn);
-	hide = selector => { this.#form.$$(selector).hide(); tabs.setHeight(); return this; }
-	show = selector => { this.#form.$$(selector).show(); tabs.setHeight(); return this; }
+	hide = selector => { this.#form.$$(selector).hide(); return this; }
+	show = selector => { this.#form.$$(selector).show(); return this; }
 	setVisible = (selector, force) => force ? this.show(selector) : this.hide(selector);
 	disabled = (force, selector) => this.#fnUpdate(selector, el => el.setDisabled(force));
 	readonly = (force, selector) => this.#fnUpdate(selector, el => el.setReadonly(force));

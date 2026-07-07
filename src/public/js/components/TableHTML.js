@@ -1,6 +1,5 @@
 
 import coll from "./CollectionHTML.js";
-import tabs from "./Tabs.js";
 import i18n from "../core/i18n/langs.js";
 
 export default class TableHTML extends HTMLTableElement {
@@ -111,7 +110,6 @@ export default class TableHTML extends HTMLTableElement {
 		this.afterRender(this.#RESUME); // After body event
 		this.refreshFooter(); // Refresh footer
 		this.#tBody.classList.add(this.#opts.activeClass); // Add styles (animation)
-		tabs.setHeight(); // resize iframe height
 		return this;
 	}
 	render(data) {
@@ -152,7 +150,6 @@ export default class TableHTML extends HTMLTableElement {
 		else
 			this.#tBody.innerHTML = this.#opts.rowEmptyTable; // empty body
 		this.recalc().refreshFooter(); // refresh footer
-		tabs.setHeight(); // resize iframe height
 	}
 	remove = () => { i18n.confirm(this.#opts.msgConfirmRemove) && this.flush(); }
 }

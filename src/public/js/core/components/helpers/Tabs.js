@@ -1,7 +1,6 @@
 
 import alerts from "./Alerts.js";
 import Tab from "./Tab.js";
-import cv from "../../../components/cv/Resize.js";
 
 class Tabs {
 	#tabs = []; // all tabs
@@ -24,7 +23,6 @@ class Tabs {
 	indexOf = tab => this.#tabs.indexOf(tab); // index of single tab
 	isActive = tab => this.getTab(tab).isActive(); // check if tab is active
 	isLoaded = tab => this.getTab(tab).isLoaded(); // check if tab is preloaded
-	setHeight = () => cv.setHeight(this.getCurrent()); // current tab height
 
 	#show(tab) {
 		if (!tab.isLoaded()) // init event indicator
@@ -32,7 +30,7 @@ class Tabs {
 		tab.view(); // fires always when show tab
 		this.#tabs.forEach(tab => tab.setInactive()); // hide all tabs
 		tab.setActive(); // active current tab only
-		cv.resize(tab); // resize iframe height
+		window.parent.scrollTo({ top: 0, behavior: "smooth" });
 		return this;
 	}
 	show(id) {

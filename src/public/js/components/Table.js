@@ -1,6 +1,5 @@
 
 import coll from "./CollectionHTML.js";
-import tabs from "./Tabs.js";
 import i18n from "../core/i18n/langs.js";
 
 export default class Table {
@@ -152,7 +151,6 @@ export default class Table {
 		this.afterRender(this.#RESUME); // After body event
 		this.refreshFooter(); // Refresh footer
 		this.#tBody.classList.add(this.#opts.activeClass); // Add styles (animation)
-		tabs.setHeight(); // resize iframe height
 		return this;
 	}
 	render(data) {

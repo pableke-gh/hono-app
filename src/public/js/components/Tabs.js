@@ -1,7 +1,6 @@
 
 import alerts from "./Alerts.js";
 import coll from "./CollectionHTML.js";
-import cv from "./cv/Resize.js";
 
 function Tabs() {
 	const self = this; //self instance
@@ -51,8 +50,7 @@ function Tabs() {
 			tab.dataset.loaded = "1"; // avoid to fire event again
 		}
 		_fire("view", tab); // Fire when show tab
-		cv.resize(tab); // resize iframe height
-		//alerts.top(); // scroll to top
+		window.parent.scrollTo({ top: 0, behavior: "smooth" });
 		return autofocus(tab);
 	}
 	const _goAgead = (tab, i) => {
@@ -107,13 +105,11 @@ function Tabs() {
 		const fnToggle = el => { el.classList.toggle("hide") || autofocus(el); }; // toggle and set focus
 		$$(el.dataset.target || (".info-" + el.id)).eachPrev(fnToggle);
 		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
-		self.setHeight(); // recalc height
 		return self;
 	}
 
 	this.setActive = id => _show(self.getTab(id)); // Force active class whithot events and alerts
 	this.isActive = id => fnActive(self.getTab(id)); // is current tab active
-	this.setHeight = () => cv.setHeight(self.getCurrent()); // current tab height
 
 	// if message is ok => go tab and preserve alerts after change
 	this.showInit = () => self.view("init"); // show init view
