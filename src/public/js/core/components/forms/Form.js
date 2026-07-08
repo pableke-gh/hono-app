@@ -91,13 +91,17 @@ export default class FormHTML extends HTMLFormElement {
 	setRequired = (input, msg) => this.setError(input, "errRequired", msg);
 	setFormatError = (input, msg) => this.setError(input, "errFormat", msg);
 
+	toggle(input, force) {
+		input = globalThis.isstr(input) ? this.elements[input] : input;
+		return input.classList.toggle("hide", force);
+	}
 	isDefaultElement(input) {
 		input = globalThis.isstr(input) ? this.elements[input] : input;
-		return input.classList.contains(this.dataset.defaultElementClass)
+		return input.classList.contains(this.dataset.defaultElementClass);
 	}
 	isEditableManual(input) {
 		input = globalThis.isstr(input) ? this.elements[input] : input;
-		return input.classList.contains(this.dataset.editableManualClass)
+		return input.classList.contains(this.dataset.editableManualClass);
 	}
 
 	// private method to check if element matches selector and is not a default-element
@@ -120,6 +124,7 @@ export default class FormHTML extends HTMLFormElement {
 	}
 	create(data) { return this.#load(data, true); }
 	load(data, editable, selector) { return this.#load(data, editable, selector); }
+	addObserver(fn) { observer.subscribe(this.dataset.loadedClass, fn); }
 
 	validate(selector) {
 		let ok = !!alerts.close(); // reset global message

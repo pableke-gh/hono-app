@@ -11,9 +11,8 @@ export default class Recibo extends AutocompleteHTML {
 		this.setMinLength(4); // init. component
 	}
 
-	load(data) {
-		this.setValue(data.idRecibo, data.acRecibo);
-	}
+	load(data) { this.setValue(data.idRecibo, data.acRecibo); }
+	setEditable() { this.setReadonly(!factura.isEditable()); }
 
 	source() {
 		const id = form.getValue("organica") || 0; // pk de la organica optional

@@ -6,8 +6,16 @@ import observer from "../../../core/util/Observer.js";
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 
 export default class AutocompleteTTPP extends AutocompleteHTML {
+	update = () => { // final arrow function
+		this.parentNode.classList.toggle("hide", !factura.isTtppEmpresa());
+		this.parentNode.parentNode.classList.toggle("hide", !factura.isEditable());
+
+		const impLinea = this.parentNode.previousElementSibling;
+		impLinea.classList.toggle("hide", !factura.isConceptos());
+		impLinea.previousElementSibling.classList.toggle("hide", !factura.isConceptos());
+	}
+
 	setEditable() {
-		this.parentNode.setVisible(factura.isTtppEmpresa());
 		this.setDisabled(!factura.isTtppEmpresa());
 	}
 
@@ -18,6 +26,6 @@ export default class AutocompleteTTPP extends AutocompleteHTML {
 
 	connectedCallback() {
 		this.setMinLength(4); // init. component
-		observer.subscribe("form-updated", () => this.setEditable()); // update button state on pedido changes
+		observer.subscribe("form-updated", this.update);
 	}
 }

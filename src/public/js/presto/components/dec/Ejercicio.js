@@ -22,6 +22,7 @@ export default class Ejercicio extends DataList {
 		this.parentNode.parentNode.parentNode.classList.toggle("hide", !presto.isPartidaDec()); // show / hide partida dec group
 	}
 
+	// executed onView after load data
 	setLabels(ejercicios) { // force reload
 		super.setLabels(ejercicios).reset();
 		this.form.elements.ejInc.setLabels(ejercicios).reset();

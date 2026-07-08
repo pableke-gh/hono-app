@@ -9,9 +9,8 @@ import ButtonSubsanar from "./components/buttons/Subsanar.js";
 import ButtonReset from "./components/buttons/Reset.js";
 
 coll.ready(() => { // init. fact modules
-	const fnShowGestor = () => factura.isFace() || factura.isPlataforma();
 	const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
-	form.init().set("show-factura-uae", fnShowFactUae).set("show-gestor", fnShowGestor);
+	form.init().set("show-factura-uae", fnShowFactUae);
 
 	const fnBuild = (tipo, subtipo) => ({ solicitud: { tipo, subtipo, imp: 0, iva: 0 } });
 	tabs.setAction("factura", () => form.create(fnBuild(1, 14))); // create factura
