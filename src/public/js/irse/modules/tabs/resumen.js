@@ -1,6 +1,6 @@
 
 import tabs from "../../../components/Tabs.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 
 import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";

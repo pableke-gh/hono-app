@@ -1,7 +1,7 @@
 
 import coll from "../components/CollectionHTML.js";
 import tabs from "../components/Tabs.js";
-import api from "../components/Api.js"
+import api from "../core/components/Api.js"
 
 import presto from "./model/Presto.js";
 import form from "./modules/presto.js";

@@ -1,7 +1,7 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import tabs from "../../../components/Tabs.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 import observer from "../../../core/util/Observer.js";
 
 import irse from "../../model/Irse.js";

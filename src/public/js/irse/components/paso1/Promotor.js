@@ -1,6 +1,6 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 
 import irse from "../../model/Irse.js";
 import firma from "../../../core/model/Firma.js";

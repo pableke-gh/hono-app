@@ -3,6 +3,7 @@ import dt from "../../../components/types/DateBox.js";
 import tabs from "../../../components/Tabs.js";
 import Validators from "../../../core/i18n/validators.js";
 
+import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";
 import gasto from "../../model/Gasto.js";
 import form from "../../modules/irse.js";
@@ -95,7 +96,7 @@ class IrseValidators extends Validators {
 		}
 		if (data.urgente == "2")
 			this.size500("extra", data.extra, "errExtra").geToday("fMax", data.fMax, "errFechaMax");
-		return this.close(data);
+		return (irse.getImpTotal() < .1) ? this.fail("errImpTotal") : this.close(data);
 	}
 }
 

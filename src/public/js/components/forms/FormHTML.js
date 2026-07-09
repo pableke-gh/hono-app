@@ -1,7 +1,7 @@
 
-import api from "../Api.js";
+//import api from "../Api.js";
 import tabs from "../Tabs.js";
-import alerts from "../Alerts.js";
+import alerts from "../../core/components/helpers/Alerts.js";
 import observer from "../../core/util/Observer.js";
 
 import Table from "../Table.js";
@@ -60,11 +60,11 @@ export default class FormHTML extends HTMLFormElement {
 	resetCache() { delete this.#opts.cache; return this.setChanged(); } // reset cache => NO changes
 
 	// Alerts helpers
-	showOk = msg => { alerts.showOk(msg); return this; } // Encapsule showOk message
+	showOk = msg => { alerts.setOk(msg); return this; } // Encapsule showOk message
 	setOk = () => this.showOk(this.#opts.defaultMsgOk); // Force ok message
-	showInfo = msg => { alerts.showInfo(msg); return this; } // Encapsule showInfo message
-	showWarn = msg => { alerts.showWarn(msg); return this; } // Encapsule showWarn message
-	showError = msg => { alerts.showError(msg); return this; } // Encapsule showError message
+	showInfo = msg => { alerts.setInfo(msg); return this; } // Encapsule showInfo message
+	showWarn = msg => { alerts.setWarn(msg); return this; } // Encapsule showWarn message
+	showError = msg => { alerts.setError(msg); return this; } // Encapsule showError message
 
 	focus = el => { el.focus(); return this; }
 	setFocus = selector => this.#fnAction(selector, el => el.focus());
@@ -81,7 +81,7 @@ export default class FormHTML extends HTMLFormElement {
 	text = (selector, text) => { this.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.$$(selector).render(data); return this; } // NodeList.prototype.render
 	refresh(model) { observer.emit("form-updated", model, this.#opts); return this; } // NodeList.prototype.refresh
-	send = url => api.setForm(this).send(url || this.action).catch(info => { this.setErrors(info); throw info; });
+	//send = url => api.setForm(this).send(url || this.action).catch(info => { this.setErrors(info); throw info; });
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return this.setOk(); // show ok msg
@@ -160,14 +160,14 @@ export default class FormHTML extends HTMLFormElement {
 
 	// Form Validator
 	closeAlerts() {
-		alerts.closeAlerts(); // global message
+		alerts.close(); // global message
 		this.elements.forEach(el => el.setOk()); // clear input messages
 		return this;
 	}
 	setErrors(messages) {
 		messages.msgError = messages.msgError || this.#opts.defaultMsgError;
 		this.elements.eachPrev(el => el.update(messages[el.name]));
-		alerts.setMsgs(messages); // show all messages
+		alerts.msgs(messages); // show all messages
 		return this;
 	}
 	setError(el, tip, msg) {

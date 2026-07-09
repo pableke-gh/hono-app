@@ -1,5 +1,6 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
+import result from "../../../core/util/Result.js";
 import maps from "../../services/maps.js";
 import ct from "../../data/place-ct.js";
 
@@ -17,7 +18,7 @@ export default class AutocompleteMaps extends AutocompleteHTML {
 	}
 
 	addFormData() { } // not append values in form data
-	source() { loading(); maps.getPredictions(this.value).then(this.render).finally(working); }
+	async source() { result.catch(maps.getPredictions(this.value).then(this.render)); }
 	row(place) { return '<i class="fas fa-map-marker-alt icon"></i>' + place.description; }
 	select(place) { return place.place_id; }
 

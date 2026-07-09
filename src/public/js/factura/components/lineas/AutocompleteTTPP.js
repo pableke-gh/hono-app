@@ -1,5 +1,5 @@
 
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 import factura from "../../model/Factura.js";
 import form from "../../modules/factura.js";
 import observer from "../../../core/util/Observer.js";

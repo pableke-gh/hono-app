@@ -10,7 +10,8 @@ import ExcelButton from "../components/paneles/Excel.js";
 export default class IsuiteForm extends FormHTML {
 	connectedCallback() {
 		super.connectedCallback(); // init. component
-		this.elements.ej.setLabels(sb.getEjercicios());
+		this.setTable(this.nextElementSibling); // linked table
+		this.elements.ej.setLabels(sb.getEjercicios()); // default ejercicios
 
 		this.addEventListener("reset", ev => setTimeout(this.list, 1)); // after-reset event
 		this.addEventListener("submit", ev => {
@@ -27,8 +28,6 @@ export default class IsuiteForm extends FormHTML {
 	}
 }
 
-setTimeout(() => { // define after isuite form
-	customElements.define("gc-table", GCTable, { extends: "table" });
-	customElements.define("fcb-table", FCBTable, { extends: "table" });
-	customElements.define("panel-excel", ExcelButton, { extends: "button" });
-}, 1);
+customElements.define("gc-table", GCTable, { extends: "table" });
+customElements.define("fcb-table", FCBTable, { extends: "table" });
+customElements.define("panel-excel", ExcelButton, { extends: "button" });

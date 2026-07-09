@@ -1,28 +1,14 @@
 
-import alerts from "../../components/Alerts.js";
+import alerts from "../components/helpers/Alerts.js";
 
 class Result {
-	#data; #error; // single result
-	//#msgs = {}; // msgs container
-
-	/*init() {
-		for (let key in this.#msgs)
-			delete this.#msgs[key];
-		this.#data = this.#error = null;
-		return this;
-	}*/
+	#data;
+	#error;
 
 	isOk = () => !this.#error;
 	isError = () => !this.#data && this.#error;
 	getData = () => this.#data;
 	getError = () => this.#error;
-	//getMsgs = () => this.#msgs;
-	/*setError(name, tip, error) {
-		this.#msgs[name] = tip;
-		return this.fail(error);
-	}
-	setRequired = (name, error) => this.setError(name, "errRequired", error);
-	setFormatError = (name, error) => this.setError(name, "errFormat", error);*/
 
 	ok(data) {
 		this.#data = data;
@@ -33,21 +19,24 @@ class Result {
 	fail(error) {
 		this.#data = null;
 		this.#error = error;
+		alerts.setError(error);
 		return this;
 	}
 	error(error) {
 		error = error || this.#error;
-		alerts.showError(error);
 		return this.fail(error);
 	}
 
 	async catch(promise) {
+		alerts.loading(); // show loading indicator
 		try {
-			return this.ok(await promise);
-		} catch(err) {
-			console.error(err);
-			return this.fail(err);
+			this.ok(await promise);
+		} catch(ex) {
+			console.error(ex);
+			this.fail(ex);
 		}
+		alerts.working(); // hide loading indicator
+		return this;
 	}
 }
 

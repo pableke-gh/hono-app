@@ -1,5 +1,5 @@
 
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 import DataList from "../../../components/inputs/DataList.js";
 import tabs from "../../../components/Tabs.js";
 

@@ -2,7 +2,7 @@
 import sb from "../../components/types/StringBox.js";
 import FormHTML from "../../components/forms/FormHTML.js";
 import tabs from "../../components/Tabs.js";
-import api from "../../components/Api.js"
+import api from "../../core/components/Api.js"
 
 // Filter se ejecuta antes que la tabla de solicitudes
 export default class FilterForm extends FormHTML {

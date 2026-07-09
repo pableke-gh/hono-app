@@ -14,7 +14,7 @@ import AddAllRecibos from "../components/lineas/AddAllRecibos.js";
 import Lineas from "../components/lineas/lineas.js";
 
 import Firmas from "../../core/components/layouts/Firmas.js";
-import FacturaSolicitudes from "../components/facturas.js";
+import FacturaSolicitudes from "../components/list/facturas.js";
 import Solicitud from "../../core/modules/solicitud.js";
 
 class Factura extends Solicitud {
@@ -22,7 +22,7 @@ class Factura extends Solicitud {
 
 	init() { // init modules
 		super.init(valid);
-		this.addChange("subtipo", ev => this.getElement("tercero").update(+ev.target.value))
+		this.addChange("subtipo", ev => this.getElement("tercero").setSubtipo(+ev.target.value))
 			.addChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
 			.addChange("iva", ev => this.setIva(+ev.target.value));
 		return this;

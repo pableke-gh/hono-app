@@ -1,6 +1,6 @@
 
 import TableHTML from "../../../components/TableHTML.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 import buzon from "../../model/Buzon.js";
 
 export default class Usuarios extends TableHTML {

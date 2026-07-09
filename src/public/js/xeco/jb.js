@@ -2,7 +2,7 @@
 import coll from "../components/CollectionHTML.js";
 import Form from "../components/forms/Form.js";
 import tabs from "../components/Tabs.js";
-import api from "../components/Api.js";
+import api from "../core/components/Api.js";
 
 coll.ready(() => {
     const form = new Form("xeco-jb");
@@ -30,9 +30,8 @@ coll.ready(() => {
 		const ulAdjuntos = formDoc.querySelector("ul#adjuntos");
 		if (ulAdjuntos && !ulAdjuntos.children.length)
 			ulAdjuntos.outerText = " -";
-        window.working(); // hide loading frame
 	}
-	window.jbReset = () => { loading(); acDocContable.reload(); }
+	window.jbReset = () => acDocContable.reload();
 	window.jbLoaded = fnBuildXecoDoc;
     fnBuildXecoDoc();
 

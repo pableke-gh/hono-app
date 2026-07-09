@@ -40,6 +40,7 @@ function Api() {
 	this.setMethod = method => self.set("method", method);
 	this.setPost = () => self.setMethod("POST");
 	this.setBody = data => self.set("body", data);
+	this.setText = data => self.init().setPost().setContentType(mt.text).setBody(data);
 	this.setJSON = data => self.init().setPost().setContentType(mt.json).setBody(JSON.stringify(data));
 	//this.setPdf = () => self.init().setPost().setContentType(mt.pdf); // pdf type
 	//this.setZip = () => self.init().setPost().setContentType(mt.zip); // zip type

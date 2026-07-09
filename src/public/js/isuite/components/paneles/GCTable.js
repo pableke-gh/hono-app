@@ -5,7 +5,6 @@ import i18n from "../../i18n/langs.js";
 
 export default class GCTable extends TableHTML {
 	connectedCallback() {
-		document.forms.isuite.setTable(this);
 		this.setMsgEmpty("No se han encontrado orgánicas asociadas a la búsqueda seleccionada");
 		this.view(); // show empty message
 	}

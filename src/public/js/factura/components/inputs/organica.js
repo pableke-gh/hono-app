@@ -1,6 +1,6 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 import factura from "../../model/Factura.js";
 
 export default class Organica extends AutocompleteHTML {

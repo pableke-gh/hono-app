@@ -1,5 +1,5 @@
 
-import alerts from "./Alerts.js";
+import alerts from "../core/components/helpers/Alerts.js";
 import coll from "./CollectionHTML.js";
 
 function Tabs() {
@@ -80,7 +80,7 @@ function Tabs() {
 	const _findIndex = id => tabs.findIndexBy("#tab-" + id); //find index tab by id
 	const _nextIndex = id => (globalThis.isset(id) ? _findIndex(id) : (_tabIndex + 1)); //next index tab
 	const _viewTab = i => { _goTo(i); return self; } // show tab by index and preserve alerts
-	const _showTab = i => { _goTo(i) && alerts.closeAlerts(); return self; }; // show tab by index and close alerts
+	const _showTab = i => { _goTo(i) && alerts.close(); return self; }; // show tab by index and close alerts
 
 	this.view = id => _viewTab(_findIndex(id)); // find by id selector and preserve alerts
 	this.show = id => _showTab(_findIndex(id)); // find by id selector and close alerts
@@ -115,9 +115,9 @@ function Tabs() {
 	this.showInit = () => self.view("init"); // show init view
 	this.showForm = () => self.view("form"); // show form view
 	this.showList = () => self.view("list"); // show list view
-	this.showOk = msg => { alerts.showOk(msg || "saveOk"); return this; } // Encapsule showOk message
-	this.showError = msg => { alerts.showError(msg); return this; } // Encapsule showError message
-	this.setMsgs = alerts.setMsgs; // Encapsule setMsgs container
+	this.showOk = msg => { alerts.setOk(msg || "saveOk"); return this; } // Encapsule showOk message
+	this.showError = msg => { alerts.setError(msg); return this; } // Encapsule showError message
+	this.setMsgs = alerts.msgs; // Encapsule setMsgs container
 
 	this.load = el => { // set default actions
 		el.querySelectorAll("[href^='#tab-']").setClick((ev, link) => {

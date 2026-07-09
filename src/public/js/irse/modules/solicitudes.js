@@ -1,6 +1,6 @@
 
 import sb from "../../components/types/StringBox.js";
-import api from "../../components/Api.js";
+import api from "../../core/components/Api.js";
 import i18n from "../i18n/langs.js";
 
 import irse from "../model/Irse.js";

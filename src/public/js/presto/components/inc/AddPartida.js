@@ -1,5 +1,5 @@
 
-import api from "../../../components/Api.js"
+import api from "../../../core/components/Api.js"
 import valid from "../../i18n/validators.js";
 
 import form from "../../modules/presto.js";

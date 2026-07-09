@@ -1,5 +1,5 @@
 
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 import tabs from "../../../components/Tabs.js";
 import valid from "../../i18n/validators/irse.js";
 import i18n from "../../i18n/langs.js";

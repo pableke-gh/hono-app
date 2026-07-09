@@ -50,6 +50,7 @@ export default {
 	errMaxTrans: "Importe máximo por transporte excedido.",
 	errMaxAsist: "Importe máximo por asistencios excedido.",
 	errImpBruto: "El importe a imputar no coincide con el bruto de la comunicación.",
+	errImpTotal: "El importe de la comisión debe ser mayor de 0.",
 	errTipo: "No ha seleccionado correctamente el tipo de operación.",
 	errTipoGasto: "Debe seleccionar un tipo de gasto.",
 	errIban: "Debe indicar un IBAN válido.",

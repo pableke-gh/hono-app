@@ -2,7 +2,7 @@
 import coll from "../../../components/CollectionHTML.js";
 import TableHTML from "../../../components/TableHTML.js";
 import tabs from "../../../components/Tabs.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 
 import buzon from "../../model/Buzon.js";
 import Observer from "../../../core/util/Observer.js";
@@ -11,8 +11,8 @@ export default class Organicas extends TableHTML {
 	static #organcias;
 
 	init() {
-		const facturas = document.forms["facturas"];
-		const usuarios = document.forms["usuarios"];
+		const facturas = document.forms.facturas;
+		const usuarios = document.forms.usuarios;
 
 		const fnAnclar = data => { buzon.setAnclado(data); Observer.emit("anclar", data); }
 		const fnDesanclar = data => { buzon.setReciente(data); Observer.emit("desanclar", data); }

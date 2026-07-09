@@ -1,7 +1,7 @@
 
-import api from "../Api.js";
+//import api from "../../core/components/Api.js";
 import tabs from "../Tabs.js";
-import alerts from "../Alerts.js";
+import alerts from "../../core/components/helpers/Alerts.js";
 import observer from "../../core/util/Observer.js";
 
 import Table from "../Table.js";
@@ -67,12 +67,12 @@ export default class FormBase {
 	// Alerts helpers
 	loading = () => { alerts.loading(); return this; } // Encapsule loading frame
 	working = () => { alerts.working(); return this; } // Encapsule working frame
-	showOk = msg => { alerts.showOk(msg); return this; } // Encapsule showOk message
+	showOk = msg => { alerts.setOk(msg); return this; } // Encapsule showOk message
 	setOk = () => this.showOk(this.#opts.defaultMsgOk); // Force ok message
-	showInfo = msg => { alerts.showInfo(msg); return this; } // Encapsule showInfo message
-	showWarn = msg => { alerts.showWarn(msg); return this; } // Encapsule showWarn message
-	showError = msg => { alerts.showError(msg); return this; } // Encapsule showError message
-	showAlerts = alerts.showAlerts; // showAlerts synonym
+	showInfo = msg => { alerts.setInfo(msg); return this; } // Encapsule showInfo message
+	showWarn = msg => { alerts.setWarn(msg); return this; } // Encapsule showWarn message
+	showError = msg => { alerts.setError(msg); return this; } // Encapsule showError message
+	showAlerts = alerts.msgs; // showAlerts synonym
 
 	focus = el => { el.focus(); return this; }
 	setFocus = selector => this.#fnAction(selector, el => el.focus());
@@ -89,7 +89,7 @@ export default class FormBase {
 	text = (selector, text) => { this.#form.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.#form.$$(selector).render(data); return this; } // NodeList.prototype.render
 	refresh(model) { observer.emit("form-updated", model); return this; } // NodeList.prototype.refresh
-	send = url => api.setForm(this.#form).send(url || this.#form.action).catch(info => { this.setErrors(info); throw info; });
+	//send = url => api.setForm(this.#form).send(url || this.#form.action).catch(info => { this.setErrors(info); throw info; });
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return this.setOk(); // show ok msg
@@ -170,14 +170,14 @@ export default class FormBase {
 
 	// Form Validator
 	closeAlerts() {
-		alerts.closeAlerts(); // globbal message
+		alerts.close(); // globbal message
 		this.#form.elements.forEach(el => el.setOk()); // clear input messages
 		return this;
 	}
 	setErrors(messages) {
 		messages.msgError = messages.msgError || this.#opts.defaultMsgError;
 		this.#form.elements.eachPrev(el => el.update(messages[el.name]));
-		alerts.setMsgs(messages); // show all messages
+		alerts.msgs(messages); // show all messages
 		return this;
 	}
 	setError(el, tip, msg) {

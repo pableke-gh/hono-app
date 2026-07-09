@@ -1,6 +1,6 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 
 import factura from "../../model/Factura.js";
 import form from "../../modules/factura.js";
@@ -11,7 +11,7 @@ export default class Recibo extends AutocompleteHTML {
 		this.setMinLength(4); // init. component
 	}
 
-	load(data) { this.setValue(data.idRecibo, data.acRecibo); }
+	load(data) { this.setValue(data.recibo, data.acRecibo); }
 	setEditable() { this.setReadonly(!factura.isEditable()); }
 
 	source() {

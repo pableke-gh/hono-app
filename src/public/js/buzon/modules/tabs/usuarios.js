@@ -1,7 +1,7 @@
 
 import FormHTML from "../../../components/forms/FormHTML.js";
 import tabs from "../../../components/Tabs.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 
 import buzon from "../../model/Buzon.js";
 import Usuarios from "../tables/usuarios.js";

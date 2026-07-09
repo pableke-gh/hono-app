@@ -1,5 +1,5 @@
 
-import alerts from "../Alerts.js";
+import alerts from "../../core/components/helpers/Alerts.js";
 
 class FormInput {
 	#opts; // options container
@@ -35,7 +35,7 @@ class FormInput {
 	setError(input, tip, msg) {
 		input.next("." + this.#opts.tipErrorClass)?.setMsg(tip);
 		input.classList.add(this.#opts.errorClass);
-		alerts.showError(msg); // global message
+		alerts.setError(msg); // global message
 		input.focus(); // set focus on error
 		return input;
 	}

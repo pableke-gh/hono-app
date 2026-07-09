@@ -31,18 +31,18 @@
 
 		<h2>Justificaciones Bancarias + ICM</h2>
 		<div id="tab-0" class="tab-content active">
-			<h:form id="xeco-jb" prependId="false" class="card-filter" onsubmit="loading();">
+			<h:form id="xeco-jb" prependId="false" class="card-filter">
 				<div class="ui-blocks">
 					<label class="ui-block">
 						<div class="label required"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
-						<h:selectOneMenu id="ejercicio" pt:is="data-list" styleClass="ui-filter" tabindex="1" title="#{msg['tit.ejercicio']}">
+						<h:selectOneMenu id="ejercicio" pt:is="data-list" styleClass="ui-input ui-select" tabindex="1" title="#{msg['tit.ejercicio']}">
 							<f:selectItems value="#{jb.ejercicios}" />
 						</h:selectOneMenu>
 					</label>
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Documento Contable:</div>
 						<i class="fas fa-search ui-input-icon left"></i>
-						<input type="search" id="num-dc" name="numDc" is="text-input" class="ui-autocomplete" tabindex="2" />
+						<input type="search" id="num-dc" name="numDc" is="text-input" class="ui-input ui-autocomplete" tabindex="2" />
 						<h:inputText id="dc" value="#{jb.idDc}" pt:is="text-input" styleClass="hide" />
 						<ul role="list" class="results"></ul>
 						<div class="ui-errtip"></div> 
@@ -52,9 +52,9 @@
 				<div class="navbar">
 					<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" tabindex="12" title="#{msg['tit.btn.volver.ini']}">
 						<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-					<p:commandButton id="search" action="#{jb.search()}" onclick="loading();" update="info-doc" oncomplete="jbLoaded();"
+					<p:commandButton id="search" action="#{jb.search()}" update="info-doc" oncomplete="jbLoaded();"
 							icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
-					<p:commandLink id="reset" action="#{jb.reset()}" onclick="jbReset();" update="info-doc" oncomplete="working();" styleClass="btn btn-warn warning-btn" tabindex="14">
+					<p:commandLink id="reset" action="#{jb.reset()}" onclick="jbReset();" update="info-doc" styleClass="btn btn-warn warning-btn" tabindex="14">
 						<i class="far fa-times-circle"></i>Limpiar</p:commandLink>
 				</div>
 
@@ -83,7 +83,7 @@
 				</dialog>
 			</h:form>
 
-			<h:form id="xeco-doc" prependId="false" class="navbar" onsubmit="loading();">
+			<h:form id="xeco-doc" prependId="false" class="navbar">
 			<p:outputPanel id="info-doc">
 			<c:choose>
 				<c:when test="#{jb.docSelected}">

@@ -1,6 +1,6 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 import factura from "../../model/Factura.js";
 import form from "../../modules/factura.js";
 import fiscalidad from "../../data/fiscal.js"
@@ -22,7 +22,7 @@ export default class Tercero extends AutocompleteHTML {
 	select(item) {
 		const fnItems = items => this.form.elements.delegacion.setItems(items);
 		api.init().json(`/uae/fact/delegaciones?ter=${item.value}`).then(fnItems);
-		this.update(factura.getSubtipo());
+		this.setSubtipo(factura.getSubtipo());
 		return item.value;
 	}
 
@@ -50,7 +50,7 @@ export default class Tercero extends AutocompleteHTML {
 		factura.setSujeto(data.sujeto);
 	}
 
-	update(subtipo) {
+	setSubtipo(subtipo) {
 		factura.setSubtipo(subtipo).setNifTercero(this.getCode());
 		this.setTercero(this.getCurrent());
 		form.refresh(factura); // force refresh view

@@ -4,31 +4,12 @@ import i18n from "../../i18n/langs.js";
 
 import TableHTML from "../../../core/components/Table.js";
 import TablePivot from "./FCBTablePivot.js";
+import ToggleButton from "./FCBToggle.js";
 
 export default class FCBTable extends TableHTML {
 	connectedCallback() {
-		const form = document.forms.isuite;
-		form.elements.tabla.addEventListener("click", this.setTableMode);
-		form.elements.pivot.addEventListener("click", this.setPivotMode);
-		form.setTable(this);
-
 		this.setMsgEmpty("No se han encontrado resultados asociados a la búsqueda seleccionada");
 		this.view(); // show empty message
-	}
-
-	setTableMode = () => {
-		const form = document.forms.isuite;
-		form.elements.tabla.hide();
-		form.elements.pivot.show();
-		this.classList.remove("hide");
-		this.nextElementSibling.classList.add("hide");
-	}
-	setPivotMode = () => {
-		const form = document.forms.isuite;
-		form.elements.tabla.show();
-		form.elements.pivot.hide();
-		this.classList.add("hide");
-		this.nextElementSibling.classList.remove("hide");
 	}
 
 	getName = () => "panel_fcb";
@@ -77,3 +58,4 @@ export default class FCBTable extends TableHTML {
 }
 
 customElements.define("fcb-pivot", TablePivot, { extends: "table" });
+customElements.define("btn-toggle", ToggleButton, { extends: "button" });

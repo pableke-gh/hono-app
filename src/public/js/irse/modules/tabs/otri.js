@@ -2,7 +2,7 @@
 import coll from "../../../components/CollectionHTML.js";
 import FormBase from "../../../components/forms/FormBase.js";
 import tabs from "../../../components/Tabs.js";
-import api from "../../../components/Api.js";
+import api from "../../../core/components/Api.js";
 
 import otri from "../../model/Otri.js";
 import xlsx from "../../services/xlsx.js";
