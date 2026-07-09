@@ -23,7 +23,7 @@ class ChatGPT {
 						content: [
 							{
 								type: "text",
-								content: "Extrae en formato JSON los datos del proveedor relativos al nif, email, fecha de emisión, nº de factura/pedido, porcentaje de iva, importe total y descripción del servicio. Las claves del objeto JSON deben llamarse: 'nif', 'email', 'fecha', 'num_factura', 'iva', 'total', 'desc'. La factura a procesar es la siguiente: " + contents
+								content: "Extrae en formato JSON los datos del proveedor relativos al nif, nombre/denominación fiscal, email, fecha de emisión, nº de factura/pedido, porcentaje de iva, importe sin iva / base imponible y descripción del servicio. Las claves del objeto JSON deben llamarse: 'nif', 'nombre', 'email', 'fecha', 'num_factura', 'iva', 'importe', 'desc'. El iva e importe deben estar en formato numérico. La factura a procesar es la siguiente: " + contents
 							}
 						]
 					}

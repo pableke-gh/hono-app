@@ -1,6 +1,6 @@
 
+import sb from "./types/StringBox.js";
 import alerts from "../core/components/helpers/Alerts.js";
-import coll from "./CollectionHTML.js";
 
 function Tabs() {
 	const self = this; //self instance
@@ -104,7 +104,7 @@ function Tabs() {
 		const icon = el.$1(el.dataset.icon || "i"); // icon indicator
 		const fnToggle = el => { el.classList.toggle("hide") || autofocus(el); }; // toggle and set focus
 		$$(el.dataset.target || (".info-" + el.id)).eachPrev(fnToggle);
-		coll.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
+		sb.split(el.dataset.toggle, " ").forEach(name => icon.toggle(name));
 		return self;
 	}
 
@@ -140,7 +140,7 @@ function Tabs() {
         return self;
     }
 
-	coll.ready(() => { // when dom is fully loaded
+	document.addEventListener("DOMContentLoaded", () => {
 		_tabIndex = fnCurrentIndex(); // current index tab
 		self.load(document); // set tab actions
 	});

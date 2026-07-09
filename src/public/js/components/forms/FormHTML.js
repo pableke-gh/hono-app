@@ -1,10 +1,8 @@
 
-//import api from "../Api.js";
 import tabs from "../Tabs.js";
 import alerts from "../../core/components/helpers/Alerts.js";
 import observer from "../../core/util/Observer.js";
 
-import Table from "../Table.js";
 import FormDataBox from "./FormData.js";
 import input from "../inputs/FormInput.js";
 import TextInput from "../inputs/TextInput.js";
@@ -81,7 +79,6 @@ export default class FormHTML extends HTMLFormElement {
 	text = (selector, text) => { this.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.$$(selector).render(data); return this; } // NodeList.prototype.render
 	refresh(model) { observer.emit("form-updated", model, this.#opts); return this; } // NodeList.prototype.refresh
-	//send = url => api.setForm(this).send(url || this.action).catch(info => { this.setErrors(info); throw info; });
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return this.setOk(); // show ok msg
@@ -133,7 +130,6 @@ export default class FormHTML extends HTMLFormElement {
 	}
 
 	// Inputs helpers
-	setTable = (selector, opts) => new Table(this.$1(selector), opts); // table
 	stringify = (name, data, replacer) => this.setValue(name, JSON.stringify(data, replacer));
 	getOptionText = name => this.getElement(name).getText(); // data-list required
 	select(name, mask) { this.getElement(name).select(mask); return this; }

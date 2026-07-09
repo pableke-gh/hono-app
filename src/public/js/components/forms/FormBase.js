@@ -1,10 +1,8 @@
 
-//import api from "../../core/components/Api.js";
 import tabs from "../Tabs.js";
 import alerts from "../../core/components/helpers/Alerts.js";
 import observer from "../../core/util/Observer.js";
 
-import Table from "../Table.js";
 import FormDataBox from "./FormData.js";
 import input from "../inputs/FormInput.js";
 import Autocomplete from "../inputs/Autocomplete.js";
@@ -89,7 +87,6 @@ export default class FormBase {
 	text = (selector, text) => { this.#form.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.#form.$$(selector).render(data); return this; } // NodeList.prototype.render
 	refresh(model) { observer.emit("form-updated", model); return this; } // NodeList.prototype.refresh
-	//send = url => api.setForm(this.#form).send(url || this.#form.action).catch(info => { this.setErrors(info); throw info; });
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return this.setOk(); // show ok msg
@@ -141,7 +138,6 @@ export default class FormBase {
 	}
 
 	// Inputs helpers
-	setTable = (selector, opts) => new Table(this.#form.$1(selector), opts); // table
 	stringify = (name, data, replacer) => this.setValue(name, JSON.stringify(data, replacer));
 	getOptionText = name => this.getElement(name).getText(); // data-list required
 	select(name, mask) { this.getElement(name).select(mask); return this; }
