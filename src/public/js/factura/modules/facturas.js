@@ -1,14 +1,10 @@
 
-import i18n from "../../i18n/langs.js";
-import factura from "../../model/Factura.js";
-import firma from "../../../core/model/Firma.js";
-import Solicitudes from "../../../core/modules/solicitudes.js";
+import i18n from "../i18n/langs.js";
+import factura from "../model/Factura.js";
+import firma from "../../core/model/Firma.js";
+import Solicitudes from "../../core/modules/solicitudes.js";
 
 export default class FacturaSolicitudes extends Solicitudes {
-	constructor() {
-		super(factura); // Must call super before 'this'
-	}
-
 	getSolicitud = () => factura; // get current instance
 	connectedCallback() { super.connectedCallback(); } // init super with model reference
 

@@ -38,11 +38,12 @@
 		</div>
 
 		<!-- vinculación con uxxiec -->
-		<div id="tab-uxxiec" class="tab-content" data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}" data-admin="#{presto.user.adminFlag}">
+		<div id="tab-uxxiec" class="tab-content">
 			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
-		<form id="xeco-model" method="post" enctype="multipart/form-data">
+		<form id="xeco-model" method="post" enctype="multipart/form-data"
+				data-nif="#{presto.user.nif}" data-grupo="#{presto.user.idGrupo}" data-admin="#{presto.user.adminFlag}">
 			<!-- Form PRESTO -->
 			<div id="tab-form" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>

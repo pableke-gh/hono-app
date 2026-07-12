@@ -14,8 +14,8 @@ import AddAllRecibos from "../components/lineas/AddAllRecibos.js";
 import Lineas from "../components/lineas/lineas.js";
 
 import Firmas from "../../core/components/layouts/Firmas.js";
-import FacturaSolicitudes from "../components/list/facturas.js";
 import Solicitud from "../../core/modules/solicitud.js";
+import FacturaSolicitudes from "./facturas.js";
 
 class Factura extends Solicitud {
 	#lineas = this.querySelector("table");

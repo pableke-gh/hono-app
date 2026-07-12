@@ -8,10 +8,6 @@ import firma from "../../core/model/Firma.js";
 import Solicitudes from "../../core/modules/solicitudes.js";
 
 export default class IrseSolicitudes extends Solicitudes {
-	constructor() {
-		super(irse); // Must call super before 'this'
-	}
-
 	getSolicitud = () => irse;
 	connectedCallback() {
 		super.connectedCallback(); // 1º.- init super handlers with model reference
@@ -24,11 +20,8 @@ export default class IrseSolicitudes extends Solicitudes {
 	row(data) {
 		let acciones = super.row(data);
 		if (irse.isDocumentable()) {
-			if (irse.isAdmin()) {
-				acciones += '<a href="#rptFinalizar" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
-				//acciones += '<a href="#pdf" title="Informe IRIS"><i class="fas fa-file-pdf action text-red resize"></i></a>';
-			}
 			acciones += '<a href="#report" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
+			acciones += '<a href="#rptFinalizar" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
 		}
 		if (irse.isReactivable())
 			acciones += '<a href="#clone" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';

@@ -14,8 +14,9 @@ import Adjunto from "../components/info/Adjunto.js";
 
 import Urgencia from "../../core/components/layouts/Urgencia.js";
 import Firmas from "../../core/components/layouts/Firmas.js";
-import PrestoSolicitudes from "../components/list/prestos.js";
+
 import Solicitud from "../../core/modules/solicitud.js";
+import PrestoSolicitudes from "./prestos.js";
 
 class Presto extends Solicitud {
 	#partidas = this.querySelector("table");

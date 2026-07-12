@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<form is="uxxiec-form" action="/uae/presto">
+	<form id="uxxiec" is="uxxiec-form" action="/uae/presto">
 		<h2 class="underline">Consulta de Formación de Expediente</h2>
 		<p class="notice notice-info form-refresh" data-refresh="text-render">@codigo;: @memo;</p>
 
@@ -19,13 +19,12 @@
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Operación UXXI-EC:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<input type="search" id="uxxi" name="uxxi" is="text-input" class="ui-autocomplete" tabindex="2" />
-				<input type="text" id="idUxxi" name="idUxxi" is="text-input" class="hide" />
+				<input type="search" name="uxxi" is="doc-uxxiec" class="ui-autocomplete" tabindex="2" />
 				<ul role="list" class="results"></ul>
 				<div class="errtip"></div>
 			</label>
 			<div class="ui-block-btn">
-				<a href="#tab-action-addUxxi" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus"></i> Añadir</a>
+				<button is="add-doc" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus"></i> Añadir</button>
 			</div>
 		</div>
 	</form>
@@ -43,7 +42,7 @@
 		</thead>
 		<tbody></tbody>
 		<tfoot>
-			<tr><td colspan="99" class="table-refresh" data-refresh="text-render">Operaciones: @size;</td></tr>
+			<tr><td colspan="99" class="table-reload" data-reload="text-render">Operaciones: @size;</td></tr>
 		</tfoot>
 	</table>
 

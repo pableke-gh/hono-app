@@ -72,7 +72,7 @@ export default class FormBase {
 	showError = msg => { alerts.setError(msg); return this; } // Encapsule showError message
 	showAlerts = alerts.msgs; // showAlerts synonym
 
-	focus = el => { el.focus(); return this; }
+	focus = el => { el && el.focus(); return this; }
 	setFocus = selector => this.#fnAction(selector, el => el.focus());
 	autofocus = () => this.focus(this.#form.elements.find(el => el.isVisible("[tabindex]:not([type=hidden],[readonly],[disabled])")));
 	copyToClipboard = str => navigator.clipboard.writeText(str)
@@ -114,7 +114,7 @@ export default class FormBase {
 	}
 
 	setValue(name, value) { this.getElement(name).setValue(value); return this; }
-	reset(selector) { return this.#fnUpdate(selector, el => el.reset()); } // clear selected inputs values
+	//reset(selector) { return this.#fnUpdate(selector, el => el.reset()); } // clear selected inputs values
 	restart(name) { this.getElement(name).restart(); return this; }; // remove value + focus
 	setData(data, selector) {
 		const fnLoad = el => el.load(data);
@@ -122,8 +122,8 @@ export default class FormBase {
 			this.#fnUpdate(selector, fnLoad);
 		else if (data) // update all inputs
 			this.#form.elements.forEach(el => (el.name && fnLoad(el)));
-		else
-			this.reset(selector); // clear selected inputs values
+		//else
+			//this.reset(selector); // clear selected inputs values
 		return this;
 	}
 

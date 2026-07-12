@@ -7,7 +7,7 @@ import GCTable from "../components/paneles/GCTable.js";
 import FCBTable from "../components/paneles/FCBTable.js";
 import ExcelButton from "../components/paneles/Excel.js";
 
-export default class IsuiteForm extends FormHTML {
+export default class PanelesForm extends FormHTML {
 	connectedCallback() {
 		super.connectedCallback(); // init. component
 		this.setTable(this.nextElementSibling); // linked table

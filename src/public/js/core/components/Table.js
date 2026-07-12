@@ -1,5 +1,4 @@
 
-import tabs from "./helpers/Tabs.js";
 import i18n from "../i18n/langs.js";
 
 export default class TableHTML extends HTMLTableElement {
@@ -137,11 +136,10 @@ export default class TableHTML extends HTMLTableElement {
 	}
 
 	reset = this.view; // reset table
-	reload = () => this.render(this.#rows);
-	push(row) { this.#rows.push(row); return this.reload(); } // Push data and render
+	push(row) { this.#rows.push(row); return this.render(this.#rows); } // Push data and render
 	add(row) { delete row.id; return this.push(row); } // Force insert => remove PK
 	insert = (row, id) => { row.id = id; return this.push(row); } // New row with PK
-	update = data => { Object.assign(this.getCurrent(), data); return this.reload(); }
+	update = data => { Object.assign(this.getCurrent(), data); return this.render(this.#rows); }
 	save = (row, id) => (id ? this.insert(row, id) : this.update(row)); // Insert or update
 
 	#fnReload = (el, data) => {
@@ -153,11 +151,11 @@ export default class TableHTML extends HTMLTableElement {
 		});
 		return this;
 	}
-	reloadHeader = () => this.#fnReload(this.tHead, this.#RESUME); // reload table header
+	reloadHeader() { return this.#fnReload(this.tHead, this.#RESUME); } // reload table header
 	reloadRow() { return this.#fnReload(this.getCurrentRow(), this.getCurrent()); } // reload a row
 	reloadBody() { this.#tBody.rows.forEach((tr, i) => this.#fnReload(tr, this.#rows[i])); return this; } // reload each row
-	reloadFooter = () => this.#fnReload(this.tFoot, this.#RESUME); // reload footer only
-	reload = () => this.recalc().reloadBody().reloadFooter(); // recalc. all rows and reload body and footer
+	reloadFooter() { return this.#fnReload(this.tFoot, this.#RESUME); } // reload footer only
+	reload() { return this.recalc().reloadBody().reloadFooter(); } // recalc. all rows and reload body and footer
 
 	flush() {
 		if (!this.isSelected()) return; // nothing to remove
@@ -169,7 +167,6 @@ export default class TableHTML extends HTMLTableElement {
 		else
 			this.#tBody.innerHTML = this.#opts.rowEmptyTable; // empty body
 		this.recalc().reloadFooter(); // reload footer
-		tabs.showList(); // resize iframe height
 	}
 	remove = () => { i18n.confirm(this.#opts.msgConfirmRemove) && this.flush(); }
 }

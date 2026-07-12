@@ -4,25 +4,17 @@ import tabs from "../../components/Tabs.js";
 import api from "../components/Api.js";
 import i18n from "../i18n/langs.js";
 
+import Solicitud from "../model/Solicitud.js";
 import Filter from "./filter.js";
 import Uxxiec from "./uxxiec.js";
 
 export default class Solicitudes extends TableHTML {
-	#solicitud; // model instance
-
-	constructor(solicitud) {
-		super(); // Must call super before 'this'
-		window.solicitudes = this; // global access before connectedCallback
-		this.#solicitud = solicitud; // set current instance
-		customElements.define("filter-form", Filter, { extends: "form" });
-		customElements.define("uxxiec-form", Uxxiec, { extends: "form" });
-	}
+	#solicitud = Solicitud.getInstance(); // model instance
 
 	connectedCallback() { // default list handlers
+		window.solicitudes = this; // global access before connectedCallback
 		const solicitud = this.#solicitud; // current instance
 		const url = solicitud.getUrl(); // url base path
-		const tabUxxi = tabs.getTab("uxxiec"); // server info.
-		this.#solicitud = solicitud.setUser(tabUxxi.dataset);
 
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada")
 			.set("#emails", data => api.init().json(url + "/emails?id=" + data.id)); // admin test email
@@ -35,6 +27,7 @@ export default class Solicitudes extends TableHTML {
 			td.innerHTML = solicitud.setData(data).getDescEstado(); // set texto de estado
 			td.className = solicitud.getStyleByEstado() + " hide-xs table-refresh"; // set estilos
 		});
+		this.set("#uxxiec", document.forms.uxxiec.view); // solicitudes module list
 		this.view(); // initial render
 		tabs.setAction("remove", this.remove); // default remove
 		return this;
@@ -68,3 +61,6 @@ export default class Solicitudes extends TableHTML {
 		api.init().json(this.#solicitud.getUrl() + "/remove?id=" + id).then(fnThen);
 	}
 }
+
+customElements.define("filter-form", Filter, { extends: "form" });
+customElements.define("uxxiec-form", Uxxiec, { extends: "form" });

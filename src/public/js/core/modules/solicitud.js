@@ -4,18 +4,19 @@ import tabs from "../../components/Tabs.js";
 import api from "../components/Api.js";
 import i18n from "../i18n/langs.js";
 import observer from "../util/Observer.js";
+import Solicitud from "../model/Solicitud.js";
 
-export default class Solicitud extends FormBase {
+export default class SolicitudForm extends FormBase {
 	#solicitudes; #solicitud; #valid;
 
-	constructor(opts) { // build instance
-		super("xeco-model", opts);
+	constructor(opts) {
+		super("xeco-model", opts); // build instance
+		this.#solicitud = Solicitud.getInstance().setUser(this.getForm().dataset);
 	}
 
 	init(valid) {
 		const solicitudes = window.solicitudes; // tabla de solicitudes
 		this.#solicitudes = solicitudes; // solicitudes module list
-		this.#solicitud = solicitudes.getSolicitud(); // solicitud model instance
 		this.#valid = valid; // current validator instance
 
 		// set default handlers
@@ -73,7 +74,8 @@ export default class Solicitud extends FormBase {
 	}
 	setFirmas(firmas) {
 		observer.emit("firmas-updated", firmas);
-		return this.reset("#rechazo");
+		this.getElement("rechazo").reset();
+		return this;
 	}
 
 	onView() {} // optional event on view action

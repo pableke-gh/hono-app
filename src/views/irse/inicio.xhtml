@@ -34,7 +34,7 @@
 		</div>
 
 		<!-- vinculación con uxxiec v2 -->
-		<div id="tab-uxxiec" class="tab-content" data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
+		<div id="tab-uxxiec" class="tab-content">
 			<ui:include src="tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
@@ -45,55 +45,56 @@
 		</div>
 
 		<!-- Form IRSE -->
-		<form id="xeco-model" method="post" enctype="multipart/form-data">
-		<!-- Tab0 = perfil PAS / PDI -->
-		<div id="tab-0" class="tab-content">
-			<ui:include src="tabs/irse00.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+		<form id="xeco-model" method="post" enctype="multipart/form-data"
+				data-nif="#{iris.user.nif}" data-grupo="#{iris.user.idGrupo}" data-admin="#{iris.user.adminFlag}">
+			<!-- Tab0 = perfil PAS / PDI -->
+			<div id="tab-0" class="tab-content">
+				<ui:include src="tabs/irse00.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 
-		<!-- Itinerarios rutas de tab1 y tab2 -->
-		<div id="tab-1" class="tab-content">
-			<ui:include src="tabs/irse01.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+			<!-- Itinerarios rutas de tab1 y tab2 -->
+			<div id="tab-1" class="tab-content">
+				<ui:include src="tabs/irse01.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 
-		<div id="tab-2" class="tab-content">
-			<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+			<div id="tab-2" class="tab-content">
+				<ui:include src="tabs/irse02_maps.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 
-		<div id="tab-3" class="tab-content">
-			<ui:include src="tabs/irse03.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+			<div id="tab-3" class="tab-content">
+				<ui:include src="tabs/irse03.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 
-		<div id="tab-5" class="tab-content">
-			<ui:include src="tabs/irse05.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+			<div id="tab-5" class="tab-content">
+				<ui:include src="tabs/irse05.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 
-		<div id="tab-6" class="tab-content">
-			<ui:include src="tabs/irse06.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+			<div id="tab-6" class="tab-content">
+				<ui:include src="tabs/irse06.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 
-		<div id="tab-9" class="tab-content">
-			<ui:include src="tabs/irse09.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+			<div id="tab-9" class="tab-content">
+				<ui:include src="tabs/irse09.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 
-		<div id="tab-12" class="tab-content">
-			<ui:include src="tabs/irse12.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+			<div id="tab-12" class="tab-content">
+				<ui:include src="tabs/irse12.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 
-		<!-- formulario de rechazo / cancelacion -->
-		<div id="tab-reject" class="tab-content">
-			<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
-			<ui:include src="tabs/reject.xhtml"></ui:include>
-			<ui:include src="parts/firmas.xhtml"></ui:include>
-		</div>
+			<!-- formulario de rechazo / cancelacion -->
+			<div id="tab-reject" class="tab-content">
+				<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+				<ui:include src="tabs/reject.xhtml"></ui:include>
+				<ui:include src="parts/firmas.xhtml"></ui:include>
+			</div>
 		</form>
 
 		<!-- listado ISU para la OTRI -->

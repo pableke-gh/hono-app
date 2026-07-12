@@ -38,11 +38,11 @@
 		</div>
 
 		<!-- vinculación con uxxiec -->
-		<div id="tab-uxxiec" class="tab-content" data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}" data-admin="#{fact.user.adminFlag}">
+		<div id="tab-uxxiec" class="tab-content">
 			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
-		<form id="xeco-model" method="post">
+		<form id="xeco-model" method="post" data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}" data-admin="#{fact.user.adminFlag}">
 			<!-- Form factura -->
 			<div id="tab-form" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>

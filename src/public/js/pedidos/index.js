@@ -1,7 +1,7 @@
 
 import PedidoForm from "./modules/pedido.js";
-import PedidoFilterForm from "./components/list/Filter.js";
-import PedidosTable from "./components/list/Pedidos.js";
+import PedidoFilterForm from "../core/modules/FilterHTML.js";
+import PedidosTable from "./modules/pedidos.js";
 import ControlesFilter from "./components/controles/Filter.js";
 import ControlesTable from "./components/controles/Table.js";
 

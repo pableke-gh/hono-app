@@ -1,5 +1,4 @@
 
-
 import i18n from "../i18n/langs.js";
 import Base from "./Base.js";
 import firma from "./Firma.js";
@@ -14,7 +13,14 @@ const CSS_ESTADOS = [
 ];
 
 export default class Solicitud extends Base {
+	static #instance; // singleton instance
+	static getInstance = () => this.#instance;
 	#nif; #grupo; #admin; // User params
+
+	constructor(data) {
+		super(data); // invoke super before this
+		Solicitud.#instance = this; // set singleton
+	}
 
 	build = () => new Solicitud(); // create a new instance
 	load(obj) { return super.setData(obj.getData()).setNif(obj.getNif()).setGrupo(obj.getGrupo()).setAdmin(obj.isAdmin()); } // load from other Solicitud

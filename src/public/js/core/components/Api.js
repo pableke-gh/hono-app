@@ -130,6 +130,9 @@ function Api() {
 		}));
 	}
 
+	this.open = (url, err) => { // open external resource
+		url ? window.open(url, "_blank") : alerts.setError(err || "errReport");
+	}
 	this.html = data => { // open a new html tab
 		const wnd = window.open("about:blank", "_blank");
 		wnd.document.write(data); // parse all html
