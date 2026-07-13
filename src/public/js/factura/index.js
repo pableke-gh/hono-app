@@ -1,6 +1,6 @@
 
 import coll from "../components/CollectionHTML.js";
-import tabs from "../components/Tabs.js";
+import tabs from "../core/components/tabs/TabsOld.js";
 
 import factura from "./model/Factura.js";
 import form from "./modules/factura.js";

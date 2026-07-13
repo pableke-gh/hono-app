@@ -1,7 +1,7 @@
 
 import sb from "../../../components/types/StringBox.js";
 import api from "../../../core/components/Api.js";
-import tabs from "../../../components/Tabs.js";
+import tabs from "../../../core/components/tabs/TabsOld.js";
 
 import irse from "../../model/Irse.js";
 import rutas from "../../model/Rutas.js";
@@ -20,7 +20,7 @@ import form from "../irse.js";
 class Rutas {
 	#tRutas = tabs.$1(2, "table");
 
-	init = () => {
+	init() {
 		this.#tRutas.init(); // init. itinerario
 		const fnBlur = (ev, f1, f2) => { f2.value = ev.target.value; f1.removeAttribute("max"); f2.removeAttribute("max"); }
 		form.getInput("#f1.ui-ruta").setRange("f2", fnBlur);

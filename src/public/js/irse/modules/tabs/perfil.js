@@ -1,5 +1,5 @@
 
-import tabs from "../../../components/Tabs.js";
+import tabs from "../../../core/components/tabs/TabsOld.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -10,8 +10,7 @@ import NextPerfil from "../../components/perfil/NextPerfil.js";
 import form from "../irse.js"
 
 class Perfil {
-	#form = document.forms["xeco-model"];
-	#eAct = this.#form.elements["actividad"];
+	#eAct = document.forms.solicitud.elements.actividad;
 
 	isColaboracion = () => this.#eAct.isColaboracion();
 	isTribunal = () => this.#eAct.isTribunal();
@@ -43,7 +42,7 @@ class Perfil {
 	isOTR = () => (irse.getFinanciacion() == "OTR") || (irse.getFinanciacion() == "xOT");
 	getOrganicas = () => form.getElement("organica").getOrganicas();
 
-	init = () => {
+	init() {
 		irse.isIsu = this.isIsu; // current input value
 		form.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
 		form.set("isFin", el => (irse.getFinanciacion() == el.dataset.fin));
@@ -57,7 +56,7 @@ class Perfil {
 		});
 	}
 
-	view = (interesado, organicas, firmas) => {
+	view(interesado, organicas, firmas) {
 		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
 

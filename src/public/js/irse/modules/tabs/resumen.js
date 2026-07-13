@@ -1,5 +1,5 @@
 
-import tabs from "../../../components/Tabs.js";
+import tabs from "../../../core/components/tabs/TabsOld.js";
 import api from "../../../core/components/Api.js";
 
 import irse from "../../model/Irse.js";
@@ -26,7 +26,7 @@ class Resumen {
 	#dietas = this.#tab.$1("#dietas");
 	#extra = this.#tab.$1("#g-extra");
 
-	init = () => {
+	init() {
 		this.#km.init();
 		this.#trans.init();
 		this.#pernoctas.init();
@@ -51,7 +51,7 @@ class Resumen {
 		this.#km.render(); // tabla resumen de kilometraje vehiculo propio
 		this.#dietas.render(dietas); // tabla resumen dietas/manutenciones
 	}
-	view = dietas => {
+	view(dietas) {
 		form.setValue("justifiKm", gastos.getJustifiKm()); // exceso km
 		this.updateRutas(dietas); // tablas resumen, dietas/manutenciones
 		this.updateGastos(); // tablas transportes, pernoctas, gastos extraordinarios...

@@ -1,6 +1,6 @@
 
 import TableHTML from "../../../components/TableHTML.js";
-import tabs from "../../../components/Tabs.js";
+import tabs from "../../../core/components/tabs/TabsOld.js";
 import i18n from "../../../core/i18n/langs.js";
 
 import ruta from "../../model/Ruta.js";

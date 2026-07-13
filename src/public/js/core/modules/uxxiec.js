@@ -1,6 +1,6 @@
 
 import sb from "../../components/types/StringBox.js";
-import tabs from "../../components/Tabs.js";
+import tabs from "../components/tabs/TabsOld.js";
 import api from "../components/Api.js"
 
 import Solicitud from "../model/Solicitud.js";

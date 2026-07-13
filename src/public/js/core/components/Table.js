@@ -58,7 +58,6 @@ export default class TableHTML extends HTMLTableElement {
 	getResume = () => this.#RESUME;
 	getProp = name => this.#RESUME[name];
 	setProp = (name, value) => { this.#RESUME[name] = value; return this; }
-	getNumRenders = () => this.#RESUME.renders; // number of renders
 
 	#fnMove = i => (i < 0) ? 0 : Math.min(i, this.#rows.length - 1);
 	first = () => { this.#index = 0; return this; }

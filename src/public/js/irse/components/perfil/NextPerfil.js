@@ -1,5 +1,5 @@
 
-import tabs from "../../../components/Tabs.js";
+import tabs from "../../../core/components/tabs/TabsOld.js";
 import api from "../../../core/components/Api.js";
 import valid from "../../i18n/validators/irse.js";
 import observer from "../../../core/util/Observer.js";

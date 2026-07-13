@@ -1,6 +1,6 @@
 
 import coll from "../components/Collection.js";
-import tabs from "../components/Tabs.js";
+import tabs from "../core/components/tabs/TabsOld.js";
 import api from "../core/components/Api.js";
 import i18n from "../core/i18n/langs.js";
 

@@ -1,6 +1,6 @@
 
 import coll from "../components/CollectionHTML.js";
-import tabs from "../components/Tabs.js";
+import tabs from "../core/components/tabs/TabsOld.js";
 import api from "../core/components/Api.js"
 
 import presto from "./model/Presto.js";

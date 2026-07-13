@@ -1,5 +1,5 @@
 
-import alerts from "../components/helpers/Alerts.js";
+import alerts from "../components/alerts/Alerts.js";
 
 class Result {
 	#data;

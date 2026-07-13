@@ -1,6 +1,6 @@
 
-import sb from "./types/StringBox.js";
-import alerts from "../core/components/helpers/Alerts.js";
+import sb from "../../../components/types/StringBox.js";
+import alerts from "../alerts/Alerts.js";
 
 function Tabs() {
 	const self = this; //self instance

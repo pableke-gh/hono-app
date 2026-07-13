@@ -1,6 +1,6 @@
 
 import api from "../../core/components/Api.js";
-import tabs from "../../core/components/helpers/Tabs.js";
+import tabs from "../../core/components/tabs/Tabs.js";
 import i18n from "../i18n/langs.js";
 
 import TableHTML from "../../core/components/Table.js";

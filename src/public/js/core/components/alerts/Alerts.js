@@ -1,6 +1,6 @@
 
 import Alert from "./Alert.js";
-import global from "./Global.js";
+import global from "../Global.js";
 
 class Alerts extends HTMLDivElement {
 	close() { this.children.forEach(alert => alert.close()); return this; } // hide all alerts

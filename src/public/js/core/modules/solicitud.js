@@ -1,6 +1,6 @@
 
 import FormBase from "../../components/forms/FormBase.js";
-import tabs from "../../components/Tabs.js";
+import tabs from "../components/tabs/TabsOld.js";
 import api from "../components/Api.js";
 import i18n from "../i18n/langs.js";
 import observer from "../util/Observer.js";
@@ -10,7 +10,7 @@ export default class SolicitudForm extends FormBase {
 	#solicitudes; #solicitud; #valid;
 
 	constructor(opts) {
-		super("xeco-model", opts); // build instance
+		super("solicitud", opts); // build instance
 		this.#solicitud = Solicitud.getInstance().setUser(this.getForm().dataset);
 	}
 

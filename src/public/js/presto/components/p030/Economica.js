@@ -1,7 +1,7 @@
 
 import api from "../../../core/components/Api.js";
 import DataList from "../../../components/inputs/DataList.js";
-import tabs from "../../../components/Tabs.js";
+import tabs from "../../../core/components/tabs/TabsOld.js";
 
 import presto from "../../model/Presto.js";
 import form from "../../modules/presto.js";

@@ -1,5 +1,5 @@
 
-import tabs from "../../../core/components/helpers/Tabs.js";
+import tabs from "../../../core/components/tabs/Tabs.js";
 import pedido from "../../model/Pedido.js";
 import ButtonForm from "../../../core/components/forms/ButtonForm.js";
 

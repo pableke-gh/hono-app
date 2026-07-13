@@ -19,10 +19,10 @@ export default class IrseSolicitudes extends Solicitudes {
 
 	row(data) {
 		let acciones = super.row(data);
-		if (irse.isDocumentable()) {
+		if (irse.isDocumentable())
 			acciones += '<a href="#report" title="Informe IRIS"><i class="fal fa-file-pdf action text-red resize"></i></a>';
+		if (irse.isUae() && irse.isDocumentable())
 			acciones += '<a href="#rptFinalizar" title="Consulta los datos de la solicitud"><i class="fas fa-clipboard-list action text-blue resize"></i></a>'; 
-		}
 		if (irse.isReactivable())
 			acciones += '<a href="#clone" title="Subsanar la comunicación"><i class="far fa-edit action text-blue resize"></i></a>';
 		if (irse.isActivablePaso8())

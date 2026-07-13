@@ -1,7 +1,7 @@
 
 import sb from "../../../components/types/StringBox.js";
 import api from "../../../core/components/Api.js";
-import tabs from "../../../core/components/helpers/Tabs.js";
+import tabs from "../../../core/components/tabs/Tabs.js";
 import FormHTML from "../../../core/components/forms/Form.js";
 
 export default class ControlesFilter extends FormHTML {

@@ -1,8 +1,11 @@
 
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
+
 import Accordion from "../../../core/components/Accordion.js";
 import TpvTable from "../tablas/Tpv.js";
+import Norma43 from "./Norma43.js";
+
 import rb from "../../lib/RecibosBancarios.js";
 
 export default class TpvAccordion extends Accordion {
@@ -26,7 +29,7 @@ export default class TpvAccordion extends Accordion {
 		this.previousElementSibling.previousElementSibling.classList.add("hide"); // h3
 	}
 	showBack() {
-		this.nextElementSibling.nextElementSibling.nextElementSibling.showBack(); // norma43-accordion
+		Norma43.getInstance().showBack(); // norma43-accordion
 	}
 	show() {
 		super.show();

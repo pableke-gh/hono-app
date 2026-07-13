@@ -1,5 +1,5 @@
 
-import alerts from "../helpers/Alerts.js";
+import alerts from "../alerts/Alerts.js";
 import i18n from "../../i18n/langs.js";
 import observer from "../../util/Observer.js";
 

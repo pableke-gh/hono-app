@@ -2,8 +2,11 @@
 import sb from "../../../components/types/StringBox.js";
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
+
 import Accordion from "../../../core/components/Accordion.js";
 import Norma43Table from "../tablas/Norma43.js";
+import Norma57 from "./Norma57.js";
+
 import rb from "../../lib/RecibosBancarios.js";
 
 export default class Norma43Accordion extends Accordion {
@@ -27,7 +30,7 @@ export default class Norma43Accordion extends Accordion {
 		this.previousElementSibling.previousElementSibling.classList.add("hide"); // h3
 	}
 	showBack() {
-		this.nextElementSibling.nextElementSibling.nextElementSibling.showBack(); // norma57-accordion
+		Norma57.getInstance().showBack(); // norma57-accordion
 	}
 	show() {
 		super.show();

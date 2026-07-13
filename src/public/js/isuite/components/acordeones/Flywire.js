@@ -23,7 +23,7 @@ export default class FlywireAccordion extends Accordion {
 	hide() {
 		super.hide();
 		const back = this.nextElementSibling;
-		this.previousElementSibling.classList.add("hide");
+		this.previousElementSibling.classList.add("hide"); // h3
 		back.nextElementSibling.classList.add("hide"); // button
 		back.classList.add("hide"); // hr
 	}
@@ -35,7 +35,7 @@ export default class FlywireAccordion extends Accordion {
 	show() {
 		super.show();
 		this.showBack();
-		this.previousElementSibling.classList.remove("hide");
+		this.previousElementSibling.classList.remove("hide"); // h3
 		document.forms.conciliar.elements.excel.show();
 		document.forms.conciliar.setAccordion(this);
 	}

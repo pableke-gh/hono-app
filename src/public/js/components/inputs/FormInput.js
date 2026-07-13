@@ -1,5 +1,5 @@
 
-import alerts from "../../core/components/helpers/Alerts.js";
+import alerts from "../../core/components/alerts/Alerts.js";
 
 class FormInput {
 	#opts; // options container

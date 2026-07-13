@@ -1,5 +1,5 @@
 
-import alerts from "./Alerts.js";
+import alerts from "../alerts/Alerts.js";
 import Tab from "./Tab.js";
 
 class Tabs {
@@ -35,7 +35,7 @@ class Tabs {
 	}
 	show(id) {
 		const tab = this.getTab(id); // destination tab
-		const current = this.getCurrent();
+		const current = this.getCurrent(); // source tab
 		if (current !== tab) // are different => move to new tab
 			tab.dataset.back = this.indexOf(current); // set back index for current tab
 		return this.#show(tab); // show new tab

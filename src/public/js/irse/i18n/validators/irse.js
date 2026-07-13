@@ -1,6 +1,6 @@
 
 import dt from "../../../components/types/DateBox.js";
-import tabs from "../../../components/Tabs.js";
+import tabs from "../../../core/components/tabs/TabsOld.js";
 import Validators from "../../../core/i18n/validators.js";
 
 import irse from "../../model/Irse.js";

@@ -1,8 +1,11 @@
 
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
+
 import Accordion from "../../../core/components/Accordion.js";
 import Norma57Table from "../tablas/Norma57.js";
+import Flywire from "./Flywire.js";
+
 import rb from "../../lib/RecibosBancarios.js";
 
 export default class Norma57Accordion extends Accordion {
@@ -26,7 +29,7 @@ export default class Norma57Accordion extends Accordion {
 		this.previousElementSibling.previousElementSibling.classList.add("hide"); // h3
 	}
 	showBack() {
-		this.nextElementSibling.nextElementSibling.showBack(); // flywire-accordion
+		Flywire.getInstance().showBack(); // flywire-accordion
 	}
 	show() {
 		super.show();

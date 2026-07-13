@@ -1,6 +1,6 @@
 
-import tabs from "../Tabs.js";
-import alerts from "../../core/components/helpers/Alerts.js";
+import tabs from "../../core/components/tabs/TabsOld.js";
+import alerts from "../../core/components/alerts/Alerts.js";
 import observer from "../../core/util/Observer.js";
 
 import FormDataBox from "./FormData.js";

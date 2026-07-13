@@ -1,6 +1,6 @@
 
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
-import tabs from "../../../components/Tabs.js";
+import tabs from "../../../core/components/tabs/TabsOld.js";
 import api from "../../../core/components/Api.js";
 import observer from "../../../core/util/Observer.js";
 

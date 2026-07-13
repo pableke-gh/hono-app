@@ -1,7 +1,7 @@
 
 import sb from "../../components/types/StringBox.js";
 import FormHTML from "../../components/forms/FormHTML.js";
-import tabs from "../../components/Tabs.js";
+import tabs from "../components/tabs/TabsOld.js";
 import api from "../components/Api.js"
 
 /**

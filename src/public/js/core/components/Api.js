@@ -1,5 +1,5 @@
 
-import alerts from "./helpers/Alerts.js";
+import alerts from "./alerts/Alerts.js";
 import mt from "../../data/mime-types.js";
 
 function Api() {
