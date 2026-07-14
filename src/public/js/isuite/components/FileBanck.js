@@ -26,7 +26,7 @@ export default class FileBanck extends FileInput {
 			if ((await result.catch(file.text())).isError()) // try to read file contents
 				return this.setError("Error al leer el archivo", "No se pudo leer el contenido del archivo.");
 
-			const contents = result.getData(); // read file contents		
+			const contents = result.getData(); // read file contents
 			if (contents.startsWith("11")) { // cuaderno 43 / tpv
 				const isTpv = window.location.search.endsWith("tpv=1"); // tpv flag in url
 				return isTpv ? TpvAccordion.getInstance().setData(contents) : Norma43Accordion.getInstance().setData(contents);

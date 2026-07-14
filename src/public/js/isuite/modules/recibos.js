@@ -1,8 +1,8 @@
 
 import sb from "../../components/types/StringBox.js";
-import tabs from "../../core/components/tabs/Tabs.js";
 import api from "../../core/components/Api.js";
 
+import TabRecibos from "../components/TabRecibos.js";
 import FormHTML from "../../core/components/forms/Form.js";
 import RecibosAccordion from "../components/acordeones/Recibos.js";
 
@@ -15,11 +15,6 @@ export default class Recibos extends FormHTML {
 			this.isChanged() && this.accordion();
 			ev.preventDefault();
 		});
-
-		tabs.setAction("ttpp", () => {
-			tabs.isLoaded("ttpp") || this.accordion();
-			tabs.show("ttpp");
-		});
 	}
 
 	accordion = () => {
@@ -29,4 +24,5 @@ export default class Recibos extends FormHTML {
 	}
 }
 
+customElements.define("tab-recibos", TabRecibos, { extends: "div" });
 customElements.define("recibos-accordion", RecibosAccordion, { extends: "div" });

@@ -1,5 +1,5 @@
 
-import Tab from "../../components/tabs/Tab.js";
+import Tab from "./Tab.js";
 
 export default class ListTab extends Tab {
 	init() {

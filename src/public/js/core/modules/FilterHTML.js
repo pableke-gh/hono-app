@@ -2,9 +2,7 @@
 import api from "../components/Api.js";
 import sb from "../../components/types/StringBox.js";
 import tabs from "../components/tabs/Tabs.js";
-
 import FormHTML from "../components/forms/Form.js";
-import ListTab from "./tabs/List.js";
 
 /**
  * Nuevo filtro de consulta para la tabla principal
@@ -58,5 +56,3 @@ export default class FilterForm extends FormHTML {
 		tabs.setAction("vinc", () => this.aceptadas()); // solicitudes aceptadas a vincular
 	}
 }
-
-customElements.define("tab-list", ListTab, { extends: "div" });

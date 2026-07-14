@@ -30,6 +30,3 @@ export default class Alert extends HTMLDivElement {
 	setWarn(message) { this.#setAlert("warn", '<i class="fas fa-exclamation-triangle fa-2x"></i>', message); }
 	setError(message) { this.#setAlert("error", '<i class="fas fa-exclamation fa-3x"></i>', message); }
 }
-
-// auto define custom element after class definition
-customElements.define("alert-box", Alert, { extends: "div" });
