@@ -16,9 +16,10 @@ export default class OrganicaInc extends AutocompleteHTML {
 	}
 
 	select(item) { // override => final select
-		const fnItems = items => this.form.elements.ecoInc.setItems(items);
-		api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(fnItems); // load economicas inc.
-		form.setAvisoFa(item).setValue("faInc", item.int & 1); // organica afectada
+		api.init().json("/uae/presto/economicas/inc?org=" + item.value).then(items => {
+			this.form.elements.ecoInc.setItems(items); // load economicas inc.
+			form.setAvisoFa(item).setValue("faInc", item.int & 1); // organica afectada
+		});
 		return item.value;
 	}
 	source() {

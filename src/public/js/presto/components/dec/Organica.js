@@ -28,9 +28,9 @@ export default class OrganicaDec extends AutocompleteHTML {
 	}
 	select(item) {
 		presto.isAutoLoadInc() && form.getPartidas().reset(); //autoload => clear table
+		const fnThen = () => form.setAvisoFa(item).setValue("faDec", item.int & 1); // indicador de organica afectada
 		const url = presto.isAutoLoadInc() ? "/uae/presto/economicas/l83" : "/uae/presto/economicas/dec"; // url by type
-		api.init().json(url + "?org=" + item.value).then(this.form.elements.ecoDec.reload); // reload economicas
-		form.setAvisoFa(item).setValue("faDec", item.int & 1); // indicador de organica afectada
+		api.init().json(url + "?org=" + item.value).then(this.form.elements.ecoDec.reload).then(fnThen); // reload economicas
 		return item.value;
 	}
 
