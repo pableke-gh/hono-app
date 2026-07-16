@@ -3,7 +3,7 @@ import tabs from "../../../core/components/tabs/TabsOld.js";
 import valid from "../../i18n/validators/irse.js";
 import irse from "../../model/Irse.js";
 import form from "../../modules/irse.js";
-import paso3 from "../../modules/tabs/paso3.js";
+import paso3 from "../../modules/paso3.js";
 import ButtonForm from "../../../components/inputs/ButtonForm.js";
 
 export default class PrevPaso3 extends ButtonForm {

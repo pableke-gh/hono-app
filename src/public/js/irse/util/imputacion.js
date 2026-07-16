@@ -1,7 +1,7 @@
 
 import irse from "../model/Irse.js";
 import organica from "../model/Organica.js";
-import perfil from "../modules/tabs/perfil.js";
+import perfil from "../modules/perfil.js";
 import form from "../modules/irse.js";
 
 function IrseImputacion() {

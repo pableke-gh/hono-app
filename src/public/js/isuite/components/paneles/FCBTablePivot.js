@@ -1,6 +1,6 @@
 
 import sb from "../../../components/types/StringBox.js";
-import TableHTML from "../../../core/components/Table.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 export default class FCBTablePivot extends TableHTML {

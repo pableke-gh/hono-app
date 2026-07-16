@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../components/TableHTML.js";
+import TableHTML from "../../../core/components/tables/TableOld.js";
 import api from "../../../core/components/Api.js";
 import buzon from "../../model/Buzon.js";
 

@@ -49,7 +49,6 @@ export default class FilterForm extends FormHTML {
 			this.setChanged();
 		});
 
-		window.solicitudes = this.nextElementSibling; // global access before connectedCallback
 		this.elements.ej.setLabels(sb.getEjercicios()); // ultimos 6 ej
 		this.elements.fmask.value = "5"; // firma en estado pendiente
 

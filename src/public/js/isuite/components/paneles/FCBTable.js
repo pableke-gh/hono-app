@@ -2,7 +2,7 @@
 import dt from "../../../components/types/DateBox.js";
 import i18n from "../../i18n/langs.js";
 
-import TableHTML from "../../../core/components/Table.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import TablePivot from "./FCBTablePivot.js";
 import ToggleButton from "./FCBToggle.js";
 

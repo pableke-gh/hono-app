@@ -1,18 +1,18 @@
 
 import valid from "../i18n/validators/irse.js";
-import perfil from "./tabs/perfil.js";
-import paso1 from "./tabs/paso1.js";
-import paso2 from "./tabs/rutas.js";
-import paso3 from "./tabs/paso3.js";
-import paso5 from "./tabs/paso5.js";
-import resumen from "./tabs/resumen.js";
-import paso9 from "./tabs/paso9.js";
-import informeISU from "./tabs/otri.js";
+import perfil from "./perfil.js";
+import paso1 from "./paso1.js";
+import paso2 from "./rutas.js";
+import paso3 from "./paso3.js";
+import paso5 from "./paso5.js";
+import resumen from "./resumen.js";
+import paso9 from "./paso9.js";
+import informeISU from "./otri.js";
 
 import Urgencia from "../../core/components/layouts/Urgencia.js";
 import Firmas from "../../core/components/layouts/Firmas.js";
-import IrseSolicitudes from "./solicitudes.js";
 import Solicitud from "../../core/modules/solicitud.js";
+import tables from "../components/tables/tables.js";
 
 class IrseSolicitud extends Solicitud {
 	init() { // init modules
@@ -39,7 +39,7 @@ class IrseSolicitud extends Solicitud {
 		paso9.view(cuentas); // tab 9 = fin
 	}
 
-	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
+	getSolicitudes = () => tables.get("solicitudes"); // tabla de solicitudes
 	getPerfil = () => perfil; // module perfil paso 0
 	getOrganicas = perfil.getOrganicas; // table organicas
 	getPaso1 = () => paso1; // module paso 1
@@ -52,6 +52,5 @@ class IrseSolicitud extends Solicitud {
 
 customElements.define("urgencia-list", Urgencia, { extends: "select" });
 customElements.define("firmas-block", Firmas, { extends: "div" });
-customElements.define("irse-table", IrseSolicitudes, { extends: "table" });
 
 export default new IrseSolicitud();

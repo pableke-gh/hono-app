@@ -5,7 +5,7 @@ import api from "../core/components/Api.js"
 
 import presto from "./model/Presto.js";
 import form from "./modules/presto.js";
-import Ejercicio from "./components/dec/Ejercicio.js";
+import Ejercicio from "./components/pDec/Ejercicio.js";
 import ButtonSave from "./components/buttons/Save.js";
 import ButtonSubsanar from "./components/buttons/Subsanar.js";
 

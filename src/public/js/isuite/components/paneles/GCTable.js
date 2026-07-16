@@ -1,6 +1,6 @@
 
 import dt from "../../../components/types/DateBox.js";
-import TableHTML from "../../../core/components/Table.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 export default class GCTable extends TableHTML {

@@ -1,5 +1,5 @@
 
-import tabs from "./TabsContainer.js";
+import tabs from "./container.js";
 
 export default class Tab extends HTMLDivElement {
 	isActive() { return this.classList.contains("active"); } // is current tab

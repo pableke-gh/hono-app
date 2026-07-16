@@ -3,7 +3,7 @@ import api from "../../core/components/Api.js";
 import tabs from "../../core/components/tabs/Tabs.js";
 import i18n from "../i18n/langs.js";
 
-import TableHTML from "../../core/components/Table.js";
+import TableHTML from "../../core/components/tables/Table.js";
 import firma from "../../core/model/Firma.js";
 import pedido from "../model/Pedido.js";
 

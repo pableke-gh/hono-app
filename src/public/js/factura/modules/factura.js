@@ -11,14 +11,14 @@ import Face from "../components/inputs/Face.js";
 import AutocompleteTTPP from "../components/lineas/AutocompleteTTPP.js";
 import AddLinea from "../components/lineas/AddLinea.js";
 import AddAllRecibos from "../components/lineas/AddAllRecibos.js";
-import Lineas from "../components/lineas/lineas.js";
 
 import Firmas from "../../core/components/layouts/Firmas.js";
 import Solicitud from "../../core/modules/solicitud.js";
-import FacturaSolicitudes from "./facturas.js";
+import tables from "../components/tables/tables.js";
 
 class Factura extends Solicitud {
-	#lineas = this.querySelector("table");
+	getSolicitudes = () => tables.get("solicitudes"); // tabla de solicitudes
+	getLineas = () => tables.get("lineas"); // tabla de conceptos de la factura
 
 	init() { // init modules
 		super.init(valid);
@@ -30,14 +30,11 @@ class Factura extends Solicitud {
 
 	onView(data) {
 		//this.getElement("tercero").setTercero(data.tercero);
-		this.#lineas.render(data.lineas); // render table
+		this.getLineas().render(data.lineas); // render table
 	}
 
-	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
-	getLineas = () => this.#lineas;
-
 	setIva = iva => {
-		this.#lineas.setIva(iva);
+		this.getLineas().setIva(iva);
 		return this;
 	}
 
@@ -58,9 +55,6 @@ customElements.define("face-list", Face, { extends: "select" });
 customElements.define("ttpp-input", AutocompleteTTPP, { extends: "input" });
 customElements.define("add-linea", AddLinea, { extends: "button" });
 customElements.define("add-all-recibos", AddAllRecibos, { extends: "button" });
-customElements.define("linea-table", Lineas, { extends: "table" });
-
 customElements.define("firmas-block", Firmas, { extends: "div" });
-customElements.define("fact-table", FacturaSolicitudes, { extends: "table" });
 
 export default new Factura();

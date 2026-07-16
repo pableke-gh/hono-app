@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/Table.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 export default class RecibosTable extends TableHTML {

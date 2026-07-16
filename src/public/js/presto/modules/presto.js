@@ -3,9 +3,8 @@ import valid from "../i18n/validators.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 
-import AddPartida from "../components/inc/AddPartida.js";
-import OrganicaInc from "../components/inc/Organica.js";
-import Partidas from "../components/inc/Partidas.js";
+import AddPartida from "../components/pInc/AddPartida.js";
+import OrganicaInc from "../components/pInc/Organica.js";
 import Organica030 from "../components/p030/Organica.js";
 
 import Memoria from "../components/info/Memoria.js";
@@ -14,26 +13,23 @@ import Adjunto from "../components/info/Adjunto.js";
 
 import Urgencia from "../../core/components/layouts/Urgencia.js";
 import Firmas from "../../core/components/layouts/Firmas.js";
-
 import Solicitud from "../../core/modules/solicitud.js";
-import PrestoSolicitudes from "./prestos.js";
+import tables from "../components/tables/tables.js";
 
 class Presto extends Solicitud {
-	#partidas = this.querySelector("table");
+	getSolicitudes = () => tables.get("solicitudes"); // tabla de solicitudes
+	getPartidas = () => tables.get("partidas"); // tabla de partidas a incrementar
 
 	init() { // init modules
 		super.init(valid); // load validators
-		this.#partidas.set("#doc030", this.getElement("eco030").view);
+		this.getPartidas().set("#doc030", this.getElement("eco030").view);
 		return this;
 	}
 
 	onView(data) {
 		this.getElement("ej").setLabels(data.ejercicios); // load ejercicios
-		this.#partidas.render(data.partidas); // cargo la tabla de partidas a incrementar
+		this.getPartidas().render(data.partidas); // cargo la tabla de partidas a incrementar
 	}
-
-	getSolicitudes = () => window.solicitudes; // tabla de solicitudes
-	getPartidas = () => this.#partidas; // tabla de partidas a incrementar
 
 	setAvisoFa = item => { //aviso para organicas afectadas en TCR o FCE
 		const info = "La orgánica seleccionada es afectada, por lo que su solicitud solo se aceptará para determinado tipo de operaciones.";
@@ -52,7 +48,6 @@ class Presto extends Solicitud {
 
 customElements.define("organica-inc", OrganicaInc, { extends: "input" });
 customElements.define("add-partida-inc", AddPartida, { extends: "button" });
-customElements.define("partidas-table", Partidas, { extends: "table" });
 customElements.define("organica-030", Organica030, { extends: "input" });
 
 customElements.define("memo-text", Memoria, { extends: "textarea" });
@@ -61,6 +56,5 @@ customElements.define("btn-doc", Adjunto, { extends: "button" });
 
 customElements.define("urgencia-list", Urgencia, { extends: "select" });
 customElements.define("firmas-block", Firmas, { extends: "div" });
-customElements.define("presto-table", PrestoSolicitudes, { extends: "table" });
 
 export default new Presto();

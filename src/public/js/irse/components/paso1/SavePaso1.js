@@ -2,8 +2,8 @@
 import valid from "../../i18n/validators/rutas.js";
 import irse from "../../model/Irse.js";
 import form from "../../modules/irse.js";
-import perfil from "../../modules/tabs/perfil.js";
-import paso1 from "../../modules/tabs/paso1.js";
+import perfil from "../../modules/perfil.js";
+import paso1 from "../../modules/paso1.js";
 import ButtonForm from "../../../components/inputs/ButtonForm.js";
 
 export default class SavePaso1 extends ButtonForm {

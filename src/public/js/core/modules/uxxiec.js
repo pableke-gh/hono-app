@@ -7,12 +7,12 @@ import Solicitud from "../model/Solicitud.js";
 import FormHTML from "../../components/forms/FormHTML.js";
 import Uxxiec from "./uxxiec/Autocomplete.js";
 import AddDocumento from "./uxxiec/AddDocumento.js";
-import Documentos from "./uxxiec/Documentos.js";
+import tables from "../components/tables/Tables.js";
 
 export default class UxxiecForm extends FormHTML {
+	getSolicitudes = () => tables.get("solicitudes"); // tabla de solicitudes
 	connectedCallback() {
 		//super.connectedCallback(); // init. component
-		const solicitudes = window.solicitudes; // tabla de solicitudes
 		const documentos = this.nextElementSibling; // tabla de documentos
 		const solicitud = Solicitud.getInstance(); // solicitud model instance
 		//this.setTable(documentos); // set linked table
@@ -27,7 +27,7 @@ export default class UxxiecForm extends FormHTML {
 				return this.showError("Debe asociar al menos una operación de UXXI-EC a la solicitud.");
 			api.setJSON(documentos.getData()).json(url).then(() => {
 				solicitud.setEstado(estado); // update estado
-				solicitudes.showList(); // refresh row in list
+				this.getSolicitudes().showList(); // refresh row in list
 				this.updateButtons(); // update buttons navbar
 			});
 		}
@@ -36,12 +36,11 @@ export default class UxxiecForm extends FormHTML {
 	}
 
 	updateButtons() { // refresh buttons navbar
-		const solicitud = window.solicitudes.getSolicitud(); // current instance
-		this.next("div").$$(".form-refresh").refresh(solicitud, this.getOptions());
+		this.next("div").$$(".form-refresh").refresh(Solicitud.getInstance(), this.getOptions());
 	}
-	view = data => {
+	view(data) {
 		const fnLoadUxxiec = data => { // refresh form and buttons
-			this.refresh(window.solicitudes.load(data)).setCache(data.id);
+			this.refresh(this.getSolicitudes().load(data)).setCache(data.id);
 			this.updateButtons(); // update buttons navbar
 			tabs.show("uxxiec"); // show selected tab
 			this.getElement("uxxi").reload(); // Reload autocomplete
@@ -60,4 +59,3 @@ export default class UxxiecForm extends FormHTML {
 
 customElements.define("doc-uxxiec", Uxxiec, { extends: "input" });
 customElements.define("add-doc", AddDocumento, { extends: "button" });
-customElements.define("docs-table", Documentos, { extends: "table" });

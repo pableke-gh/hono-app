@@ -1,5 +1,5 @@
 
-import tabs from "./TabsContainer.js";
+import tabs from "./container.js";
 import Tab from "./Tab.js";
 import ToggleLink from "./Toggle.js";
 import ListTab from "./List.js";

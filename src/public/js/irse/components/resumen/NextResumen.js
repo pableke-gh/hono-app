@@ -4,7 +4,7 @@ import valid from "../../i18n/validators/irse.js";
 
 import irse from "../../model/Irse.js";
 import form from "../../modules/irse.js";
-import resumen from "../../modules/tabs/resumen.js";
+import resumen from "../../modules/resumen.js";
 import ButtonForm from "../../../components/inputs/ButtonForm.js";
 
 export default class NextResumen extends ButtonForm {

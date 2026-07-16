@@ -1,7 +1,7 @@
 
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
-import TableHTML from "../../../core/components/Table.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 
 export default class Norma57Table extends TableHTML {
 	constructor() {

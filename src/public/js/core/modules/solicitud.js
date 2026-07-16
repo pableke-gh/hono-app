@@ -6,6 +6,9 @@ import i18n from "../i18n/langs.js";
 import observer from "../util/Observer.js";
 import Solicitud from "../model/Solicitud.js";
 
+import Filter from "./filter.js";
+import Uxxiec from "./uxxiec.js";
+
 export default class SolicitudForm extends FormBase {
 	#solicitudes; #solicitud; #valid;
 
@@ -104,3 +107,6 @@ export default class SolicitudForm extends FormBase {
 		api.init().json(this.#solicitud.getUrl() + "/reactivar?id=" + data.id).then(this.#show); // get method
 	}
 }
+
+customElements.define("filter-form", Filter, { extends: "form" });
+customElements.define("uxxiec-form", Uxxiec, { extends: "form" });
