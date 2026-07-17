@@ -5,6 +5,7 @@ import api from "../components/Api.js";
 import i18n from "../i18n/langs.js";
 import observer from "../util/Observer.js";
 import Solicitud from "../model/Solicitud.js";
+import tables from "../components/tables/Tables.js";
 
 import Filter from "./filter.js";
 import Uxxiec from "./uxxiec.js";
@@ -18,7 +19,7 @@ export default class SolicitudForm extends FormBase {
 	}
 
 	init(valid) {
-		const solicitudes = window.solicitudes; // tabla de solicitudes
+		const solicitudes = tables.get("solicitudes"); // tabla de solicitudes
 		this.#solicitudes = solicitudes; // solicitudes module list
 		this.#valid = valid; // current validator instance
 

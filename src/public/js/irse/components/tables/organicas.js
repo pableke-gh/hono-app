@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import observer from "../../../core/util/Observer.js";
 import i18n from "../../i18n/langs.js";
 

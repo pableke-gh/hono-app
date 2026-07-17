@@ -50,10 +50,10 @@ class Ruta {
 	getImpKm = ruta => (ruta.km1 * this.getImpGasolina());
 
 	// table calculators
-	beforeRender = resume => {
+	beforeRender(resume) {
 		resume.vp = resume.impKm = resume.totKm = resume.totKmCalc = 0;
 	}
-	rowCalc = (data, resume) => {
+	rowCalc(data, i, resume) {
 		if (this.isVehiculoPropio(data)) {
 			resume.vp++;
 			resume.totKm += data.km1;

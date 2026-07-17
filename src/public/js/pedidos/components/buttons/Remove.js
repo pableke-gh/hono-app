@@ -9,7 +9,7 @@ export default class ButtonRemove extends ButtonForm {
 	}
 
 	execute() {
-		this.form.getTable().remove(); // execute remove action
+		this.form.getPedidos().remove(); // execute remove action
 		tabs.showList(); // force to show list tab
 	}
 }

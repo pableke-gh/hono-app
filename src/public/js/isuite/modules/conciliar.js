@@ -6,13 +6,14 @@ import Save from "../components/buttons/Save.js";
 import Excel from "../components/buttons/Excel.js";
 
 export default class Conciliar extends FormHTML {
-	// Override table reference
-	getAccordion() { return this.getTable(); }
-	setAccordion(accordion) { this.setTable(accordion); }
+	showBack() {
+		const back = this.parentNode.lastElementChild;
+		back.previousElementSibling.classList.remove("hide"); // hr
+		back.classList.remove("hide"); // button
+	}
 
 	restart() {
 		this.closeAlerts();
-		this.setTable(null);
 		this.elements.save.hide();
 		this.elements.excel.hide();
 	}

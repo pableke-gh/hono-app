@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js"
@@ -18,12 +18,12 @@ export default class Transportes extends TableHTML {
 	beforeRender(resume) {
 		resume.num = resume.imp1 = 0;
 	}
-	beforeRow(data, resume) {
+	beforeRow(data, i, resume) {
 		resume.num += data.num;
 		resume.imp1 += data.imp1;
 	}
-	row = (data, resume) => `<tr class="tb-data tb-data-tc">
-		<td data-cell="Nº">${resume.count}</td>
+	row = (data, i) => `<tr class="tb-data tb-data-tc">
+		<td data-cell="Nº">${i + 1}</td>
 		<td data-cell="${i18n.get("lblTipoGasto")}">${gasto.getDescSubtipo(data)}</td>
 		<td data-cell="${i18n.get("lblDescObserv")}">${gasto.getDescGasto(data)}</td>
 		<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>
@@ -34,4 +34,3 @@ export default class Transportes extends TableHTML {
 		super.render(gastos.getTransporte());
 	}
 }
-

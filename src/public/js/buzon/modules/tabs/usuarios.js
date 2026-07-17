@@ -7,20 +7,20 @@ import buzon from "../../model/Buzon.js";
 import Usuarios from "../tables/usuarios.js";
 
 export default class UsuariosForm extends FormHTML {
-	#acUser = this.setAutocomplete("acUsuarios");
+	//#acUser = this.setAutocomplete("acUsuarios");
 
 	connectedCallback() {
 		const usuarios = this.nextElementSibling;
-		const fnSource = term => api.init().json("/uae/buzon/usuarios/filter", { term }).then(this.#acUser.render);
-		this.#acUser.setItemMode(4).setSource(fnSource);
+		//const fnSource = term => api.init().json("/uae/buzon/usuarios/filter", { term }).then(this.#acUser.render);
+		//this.#acUser.setItemMode(4).setSource(fnSource);
 
-		tabs.setAction("add-user", () => {
+		/*tabs.setAction("add-user", () => {
 			if (!this.#acUser.isLoaded()) return this.#acUser.reload(); // nada que hacer
 			const params = { org: buzon.getOrganica(), ut: buzon.getUnidadTramit(), nif: this.#acUser.getValue() };
 			const fnUsuarios = data => { usuarios.push(data.user); this.setOk(); }
 			api.init().json("/uae/buzon/user/add", params).then(fnUsuarios);
 			this.#acUser.reload(); // clear data and autofocus
-		});
+		});*/
 		tabs.setAction("save-users", () => tabs.show(0).showOk("saveOk"));
 	}
 

@@ -13,9 +13,6 @@ export default class PedidosTable extends TableHTML {
 
 	connectedCallback() { // initialize table
 		const form = document.forms["pedido-form"];
-		form.setTable(this); // set table reference in form
-
-		// table actions
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada");
 		this.set("#emails", data => api.init().json("/uae/pedidos/emails?id=" + data.id)); // admin test email
 		this.set("#integrar", data => { // integra la solicitud seleccionada en uxxiec

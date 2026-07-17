@@ -11,8 +11,8 @@ export default class TableHTML extends HTMLTableElement {
 
 	constructor() { // Default initialization
 		super(); // Must call super before 'this'
-		tables.set(this, this.id); // register table
-		this.setMsgEmpty(this.#opts.msgEmptyTable);
+		this.id && tables.set(this.id, this); // register table
+		this.setMsgEmpty(this.#opts.msgEmptyTable); // empty message
 
 		this.#opts["#"] = globalThis.void;
 		this.#opts["#remove"] = this.remove;
@@ -102,7 +102,7 @@ export default class TableHTML extends HTMLTableElement {
 		this.#tBody.classList.remove(this.#opts.activeClass); // Remove animation
 		this.beforeRender(this.#RESUME); // Fired event before render
 		this.reloadHeader(); // reload table header
-		const renderRow = (row, i) => { this.beforeRow(row, i); return this.row(row, i); };
+		const renderRow = (row, i) => { this.beforeRow(row, i, this.#RESUME); return this.row(row, i, this.#RESUME); };
 		const renderBody = () => (this.#rows.map(renderRow).join("") + this.lastRow(this.#RESUME));
 		this.#tBody.innerHTML = this.#RESUME.size ? renderBody() : this.#opts.rowEmptyTable; // set body
 		this.afterRender(this.#RESUME); // After body event
@@ -117,7 +117,7 @@ export default class TableHTML extends HTMLTableElement {
 	}
 	recalc() {
 		this.beforeRender(this.#RESUME); // Fired event before render
-		this.#rows.forEach((row, i) => this.beforeRow(row, i)); // recalc. each row
+		this.#rows.forEach((row, i) => this.beforeRow(row, i, this.#RESUME)); // recalc. each row
 		this.afterRender(this.#RESUME); // Fire after render event
 		return this;
 	}

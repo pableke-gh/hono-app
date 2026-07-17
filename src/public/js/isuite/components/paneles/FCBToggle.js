@@ -14,7 +14,7 @@ export default class FCBToggleButton extends ButtonForm {
 	isPivot = () => this.firstElementChild.classList.contains("fa-table");
 
 	setTableMode() {
-		const table = this.form.getTable();
+		const table = this.form.getPanel();
 		table.classList.remove("hide");
 		table.nextElementSibling.classList.add("hide");
 		this.setAttribute("title", "Pivota la tabla sobre el Grupo de Gasto");
@@ -22,7 +22,7 @@ export default class FCBToggleButton extends ButtonForm {
 	}
 
 	setPivotMode() {
-		const table = this.form.getTable();
+		const table = this.form.getPanel();
 		table.classList.add("hide");
 		table.nextElementSibling.classList.remove("hide");
 		this.setAttribute("title", "Muestra los datos en formato tabla");

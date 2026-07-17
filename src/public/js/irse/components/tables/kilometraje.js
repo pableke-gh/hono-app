@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -19,7 +19,7 @@ export default class Kilometraje extends TableHTML {
 		form.set("is-justifi-km", this.isJustifiKm);
 		this.setChange("km1", (data, el) => {
 			data.km1 = i18n.toFloat(el.value) ?? 0;
-			this.refresh(); // recalcula tabla completa
+			this.reload(); // recalcula tabla completa
 			form.refresh(irse); // save changes + update form
 		});
 	}
@@ -29,16 +29,16 @@ export default class Kilometraje extends TableHTML {
 	isJustifiKm = () => this.getProp("justifi");
 
 	// render tables
-	beforeRender = resume => {
+	beforeRender(resume) {
 		resume.impKm = resume.totKm = resume.totKmCalc = 0;
 	}
-	beforeRow = (data, resume) => {
+	beforeRow(data, i, resume) {
 		resume.totKm += data.km1;
 		resume.totKmCalc += data.km2;
 		data.impKm = ruta.getImpKm(data);
 		resume.impKm += data.impKm;
 	}
-	row = ruta => {
+	row(ruta) {
 		const km1 = i18n.isoFloat(ruta.km1);
 		const cell = irse.isEditable() ? `<input type="text" name="km1" value="${km1}" is="float-input"/>` : km1;
 		return `<tr class="tb-data tb-data-tc">
@@ -51,7 +51,7 @@ export default class Kilometraje extends TableHTML {
 			<td data-cell="${i18n.get("lblTransporte")}">${i18n.getItem("tiposDesp", ruta.desp)}</td>
 			<td data-cell="Google km">${i18n.isoFloat(ruta.km2) || "-"}</td>
 			<td data-cell="${i18n.get("lblTusKm")}">${cell}</td>
-			<td data-cell="${i18n.get("lblImporte")}" class="table-refresh" data-refresh="text-render" data-template="$impKm; €">${i18n.isoFloat(ruta.impKm)} €</td>
+			<td data-cell="${i18n.get("lblImporte")}" class="table-reload" data-reload="text-render" data-template="$impKm; €">${i18n.isoFloat(ruta.impKm)} €</td>
 		</tr>`;
 	}
 	afterRender = resume => {

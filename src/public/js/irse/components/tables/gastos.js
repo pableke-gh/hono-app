@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
 
@@ -26,21 +26,21 @@ export default class GastosTable extends TableHTML {
 	link = data => { gastos.push(data); this.render(); } // añado un nuevo gasto
 	unlink = data => { gastos.removeById(data.id); } // elimina el gasto del array
 
-	beforeRender = resume => {
+	beforeRender(resume) {
 		resume.noches = resume.numTransportes = resume.numPernoctas = resume.docComisionado = resume.otraDoc = 0;
 	}
-	beforeRow = (data, resume) => {
+	beforeRow(data, i, resume) {
 		resume.noches += gasto.isPernocta(data) ? data.num : 0;
 		resume.numTransportes += gasto.isTransporte(data);
 		resume.numPernoctas += gasto.isPernocta(data);
 		resume.docComisionado += gasto.isDocComisionado(data);
 		resume.otraDoc += gasto.isOtraDoc(data);
 	}
-	row(data, resume) {
+	row(data, i) {
 		const link = `<a href="#adjunto" target="_blank" class="far fa-paperclip action resize" title="Ver adjunto"></a>`;
 		const remove = irse.isEditable() ? `<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>` : "";
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="Nº">${resume.count}</td>
+			<td data-cell="Nº">${i + 1}</td>
 			<td data-cell="${i18n.get("lblTipoGasto")}">${gasto.getDescSubtipo(data)}</td>
 			<td data-cell="${i18n.get("lblDescObserv")}">${gasto.getDescGasto(data)}</td>
 			<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>

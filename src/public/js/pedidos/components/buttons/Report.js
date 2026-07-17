@@ -8,6 +8,6 @@ export default class ButtonReport extends ButtonForm {
 	}
 
 	execute() {
-		this.form.getTable().report(); // execute report action
+		this.form.getPedidos().report(); // execute report action
 	}
 }

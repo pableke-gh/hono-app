@@ -14,31 +14,21 @@ import ButtonCancelar from "../components/buttons/Cancelar.js"
 import ButtonReport from "../components/buttons/Report.js"
 import ButtonRemove from "../components/buttons/Remove.js"
 import Firmas from "../../core/components/layouts/Firmas.js";
+import tables from "../../core/components/tables/Tables.js";
 
 export default class PedidoForm extends FormHTML {
 	#setImportes() {
 		return this.setValue("impIva", pedido.getImpIva()).setValue("impTotal", pedido.getImpTotal())
 					.setValue("prorrata", pedido.getProrrata()).setValue("impPpto", pedido.getImpPpto());
 	}
-
-	connectedCallback() {
-		super.connectedCallback(); // initialize form
-		pedido.setUser(this.dataset); // load user info
-		tabs.setAction("create", () => this.create()); // set handlers
-
-		this.addChange("imp", ev => { pedido.setImporte(ev.target.getValue()); this.#setImportes(); });
-		this.addChange("iva", ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });
-		this.getElementsByClassName(this.dataset.loadedClass).forEach(el => {
-			const template = el.innerHTML; // save template
-			const fnUpdate = () => { el.innerHTML = pedido.render(template); };
-			observer.subscribe(this.dataset.loadedClass, fnUpdate);
-		});
-	}
-
 	#load(firmas) {
 		Firmas.notify(firmas);
 		tabs.showForm(); // show form tab
 	}	
+
+	getPedidos = () => tables.get("pedidos"); // tabla de solicitudes / registros
+	getRegistros = () => this.getPedidos(); // tabla de solicitudes / registros
+
 	create() {
 		aplicacion.clear(); // vacio la aplicacion
 		const data = { imp: 0, iva: 21, prorrata: +this.dataset.prorrata };
@@ -63,12 +53,26 @@ export default class PedidoForm extends FormHTML {
 
 	close = firmas => {
 		this.isCached(pedido.getId()) && Firmas.notify(firmas);
-		this.getTable().showList(); // show list tab
+		this.getPedidos().showList(); // show list tab
 	}
 	reject = row => {
 		super.update(row, pedido.setData(row).isEditable()); // load form with data
 		Firmas.notify(this.isCached(row.id));
 		tabs.show("reject");
+	}
+
+	connectedCallback() {
+		super.connectedCallback(); // initialize form
+		pedido.setUser(this.dataset); // load user info
+		tabs.setAction("create", () => this.create()); // set handlers
+
+		this.addChange("imp", ev => { pedido.setImporte(ev.target.getValue()); this.#setImportes(); });
+		this.addChange("iva", ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });
+		this.getElementsByClassName(this.dataset.loadedClass).forEach(el => {
+			const template = el.innerHTML; // save template
+			const fnUpdate = () => { el.innerHTML = pedido.render(template); };
+			observer.subscribe(this.dataset.loadedClass, fnUpdate);
+		});
 	}
 }
 

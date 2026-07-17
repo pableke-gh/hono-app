@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -30,17 +30,17 @@ export default class Imputacion extends TableHTML {
 		resume.totManutenciones = resume.totPernoctas = 0;
 		resume.totTransporte = resume.totAc = 0;
 	}
-	beforeRow(data, resume) {
+	beforeRow(data, i, resume) {
 		resume.imp1 += data.imp1;
 		resume.totManutenciones += organica.isDieta(data) ? data.imp1 : 0;
 		resume.totPernoctas += organica.isPernocta(data) ? data.imp1 : 0;
 		resume.totTransporte += organica.isTransporte(data) ? data.imp1 : 0;
 		resume.totAc += organica.isAc(data) ? data.imp1 : 0;
 	}
-	row(data, resume) {
+	row(data, i) {
 		const remove = irse.isEditable() ? `<a href="#remove"><i class="fas fa-times action text-red resize"></i></a>` : "";
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="Nº">${resume.count}</td>
+			<td data-cell="Nº">${i + 1}</td>
 			<td data-cell="${i18n.get("lblTipoGasto")}">${i18n.getItem("tiposMultiorganica", data.subtipo)}</td>
 			<td data-cell="Orgánica">${data.cod}</td>
 			<td data-cell="Económica">${data.nombre}</td>

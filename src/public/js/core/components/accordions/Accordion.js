@@ -1,12 +1,15 @@
 
-import i18n from "../i18n/langs.js";
+import i18n from "../../i18n/langs.js";
+import accordions from "./container.js";
 
 export default class Accordion extends HTMLDivElement {
+	#opts = Object.assign({}, accordions.getOptions(), this.dataset);
 	#data; // data container
-	#opts = { // default options
-		msgEmpty: "noResults", // default empty table message
-		tplEmpty: `<p class="notice notice-warn">${i18n.get("noResults")}</p>`
-	};
+
+	connectedCallback() { // default initialization
+		this.id && accordions.set(this.id, this); // register accordion
+		this.setMsgEmpty(this.#opts.msgEmptyTable); // empty message
+	}
 
 	getName = () => "accordion"; // default name for accordion
 	setOptions = data => { Object.assign(this.#opts, data); return this; }
@@ -15,7 +18,7 @@ export default class Accordion extends HTMLDivElement {
 
 	getData = () => this.#data;
 	restart() { this.#opts.index = this.#opts.count = this.#opts.size = 0; return this; }
-	setData(data) { this.#data = data; this.innerHTML = ""; return this.restart(); }
+	setData(data) { this.#data = data; this.innerHTML = ""; accordions.setMain(this); return this.restart(); }
 
 	hide() { this.classList.add("hide"); }
 	show() { this.classList.remove("hide"); }

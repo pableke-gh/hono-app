@@ -5,7 +5,7 @@ import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs";
 export default class ExcelButton extends ButtonForm {
 	execute() {
 		// 1. get current table instance
-		const table = this.form.getTable();
+		const table = this.form.nextElementSibling;
 
 		// 2. Define custom headers
 		const headers = table.getHeaders();

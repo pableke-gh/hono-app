@@ -1,6 +1,6 @@
 
 import coll from "../../../components/CollectionHTML.js";
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import tabs from "../../../core/components/tabs/TabsOld.js";
 import api from "../../../core/components/Api.js";
 

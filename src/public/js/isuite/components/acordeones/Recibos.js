@@ -1,5 +1,5 @@
 
-import Accordion from "../../../core/components/Accordion.js";
+import Accordion from "../../../core/components/accordions/Accordion.js";
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
 import RecibosTable from "../tablas/Recibos.js";

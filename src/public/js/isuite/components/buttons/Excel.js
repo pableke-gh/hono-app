@@ -1,11 +1,12 @@
 
-import ButtonForm from "../../../core/components/forms/ButtonForm.js"
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs";
+import ButtonForm from "../../../core/components/forms/ButtonForm.js"
+import acordeones from "../acordeones/acordeones.js";
 
 export default class ExcelButton extends ButtonForm {
 	execute() {
 		// 1. get current accordion instance
-		const accordion = this.form.getAccordion();
+		const accordion = acordeones.getMain();
 
 		// 2. Define custom headers
 		const headers = accordion.getHeaders();

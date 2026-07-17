@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 import irse from "../../model/Irse.js";
 import form from "../../modules/irse.js"
@@ -11,17 +11,17 @@ export default class Dietas extends TableHTML {
 		irse.getImpDietas = () => this.getProp("percibir");
 		this.setChange("dietas", (dieta, element) => {
 			dieta.imp1 = +element.value; // [0, 0.5, 1, 1.5, 2, ...]
-			this.refresh(); // update table
+			this.reload(); // update table
 			form.refresh(irse); // save changes + update view
 		});
 	}
 
-	beforeRender = resume => {
+	beforeRender(resume) {
 		resume.dias = resume.impMax = resume.reducido = resume.percibir =  0;
 	}
-	beforeRow = (data, resume) => {
-		const isFirst = (resume.index == 0);
-		const isLast = (resume.count == resume.size);
+	beforeRow(data, i, resume) {
+		const isFirst = (i == 0);
+		const isLast = ((i + 1) == resume.size);
 
 		data.maxDietas = (isFirst || isLast) ? (data.estado / 2) : data.num;
 		data.impMax = data.imp2 * data.maxDietas;
@@ -56,8 +56,8 @@ export default class Dietas extends TableHTML {
 			<td data-cell="${i18n.get("lblImpDietaDia")}">${i18n.isoFloat(dieta.imp2)} €</td>
 			<td data-cell="${i18n.get("lblImpPropuesto")}">${i18n.isoFloat(dieta.impMax)} €</td>
 			<td data-cell="${i18n.get("lblTusDietas")}">${dietas}</td>
-			<td data-cell="${i18n.get("lblReduccion")}" class="table-refresh" data-refresh="text-render" data-template="$reducido; €">${i18n.isoFloat(dieta.reducido)} €</td>
-			<td data-cell="${i18n.get("lblImpTotal")}" class="table-refresh" data-refresh="text-render" data-template="$percibir; €">${i18n.isoFloat(dieta.percibir)} €</td>
+			<td data-cell="${i18n.get("lblReduccion")}" class="table-reload" data-reload="text-render" data-template="$reducido; €">${i18n.isoFloat(dieta.reducido)} €</td>
+			<td data-cell="${i18n.get("lblImpTotal")}" class="table-reload" data-reload="text-render" data-template="$percibir; €">${i18n.isoFloat(dieta.percibir)} €</td>
 		</tr>`;
 	}
 	afterRender() {

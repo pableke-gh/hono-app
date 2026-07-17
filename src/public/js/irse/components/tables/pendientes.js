@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import tabs from "../../../core/components/tabs/TabsOld.js";
 import i18n from "../../../core/i18n/langs.js";
 
@@ -37,11 +37,13 @@ export default class RutasPendientes extends TableHTML {
 		this.view(); // update changes in pending routes
 	}
 
-	beforeRender = ruta.beforeRender;
-	row(data, status) {
+	beforeRender(resume) { // overrride
+		ruta.beforeRender(resume);
+	}
+	row(data, i) {
 		const flag = ruta.isPrincipal(data) ? '<span class="text-warn icon"><i class="fal fa-flag-checkered"></i></span>' : "";
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="Nº" class="hide-sm">${status.count}</td>
+			<td data-cell="Nº" class="hide-sm">${i + 1}</td>
 			<td data-cell="${i18n.get("lblOrigen")}">${data.origen}</td>
 			<td data-cell="${i18n.get("lblFechaSalida")}">${i18n.isoDate(data.dt1)}</td>
 			<td data-cell="${i18n.get("lblHoraSalida")}">${i18n.isoTimeShort(data.dt1)}</td>

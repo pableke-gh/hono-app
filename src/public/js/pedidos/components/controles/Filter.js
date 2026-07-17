@@ -5,8 +5,11 @@ import tabs from "../../../core/components/tabs/Tabs.js";
 import FormHTML from "../../../core/components/forms/Form.js";
 
 export default class ControlesFilter extends FormHTML {
+	getRegistros = () => this.nextElementSibling; // tabla de solicitudes / registros
+	getPedidos = () => this.nextElementSibling; // tabla de solicitudes / registros
+
 	list() {
-		const fnThen = data => this.getTable().render(data); // rebuild table
+		const fnThen = data => this.getPedidos().render(data); // rebuild table
 		api.setJSON(this.getData()).json("/uae/pedidos/controles").then(fnThen);
 	}
 
@@ -17,8 +20,6 @@ export default class ControlesFilter extends FormHTML {
 
 	connectedCallback() {
 		super.connectedCallback(); // initialize form
-		const pedidos = this.nextElementSibling; // tabla de pedidos
-		this.setTable(pedidos); // set table to form
 
 		this.addEventListener("submit", ev => {
 			this.isChanged() && this.list();
@@ -29,6 +30,7 @@ export default class ControlesFilter extends FormHTML {
 		this.elements.ej.setLabels(sb.getEjercicios()); // ultimos 6 ej
 		tabs.setAction("rectrl", this.relist);
 		tabs.setAction("ctrl", link => {
+			const pedidos = this.getPedidos(); // tabla de pedidos
 			const isChanged = pedidos.isEmpty() || (link.dataset.tipo != this.elements.tipo.value);
 			this.elements.tipo.value = link.dataset.tipo; // set tipo
 			isChanged && this.list(); // fetch list if changed

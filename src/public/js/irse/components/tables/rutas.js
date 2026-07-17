@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -14,25 +14,24 @@ export default class TableRutas extends TableHTML {
 	init() { // tabla del paso 2 (rutas maps)
 		const fnGt1 = () => ((this.size() > 1) && irse.isEditable());
 		form.set("is-rutas-gt-1", () => (this.size() > 1)).set("is-editable-rutas-gt-1", fnGt1);
-		this.setMsgEmpty("msgRutasEmpty");
-		this.set("#main", data => {
-			rutas.setRutaPrincipal(data);
-			form.setChanged(true);
-			this.refresh();
-		});
-		this.set("update-principal", (el, data) => {
-			el.children.forEach(el => el.hide());
-			el.children[+ruta.isPrincipal(data)].show();
-		});
-		observer.subscribe("close", () => this.view(rutas.getRutas()));
+	}
+
+	setMain(data) {
+		data = data || this.getCurrent();
+		rutas.setRutaPrincipal(data);
+		form.setChanged(true);
+		this.reload();
 	}
 
 	beforeRender(resume) {
 		ruta.beforeRender(resume);
 		resume.matricula = irse.getMatricula();
 	}
-	beforeRow = ruta.rowCalc; // overrride
-	row(data, resume) {
+	beforeRow(data, i, resume) {
+		super.beforeRow(data, i, resume);
+		ruta.rowCalc(data, i, resume);
+	}
+	row(data, i, resume) {
 		const isPrincipal = ruta.isPrincipal(data);
 		const TPL_FLAG = '<span class="text-warn icon"><i class="fal fa-flag-checkered"></i></span>';
 		const TPL_ORDINARIO = `<a href="#main" class="${isPrincipal ? "hide" : ""}">${data.destino}</a>`;
@@ -47,7 +46,7 @@ export default class TableRutas extends TableHTML {
 			<td data-cell="${i18n.get("lblOrigen")}">${data.origen}</td>
 			<td data-cell="${i18n.get("lblFechaSalida")}">${i18n.isoDate(data.dt1)}</td>
 			<td data-cell="${i18n.get("lblHoraSalida")}">${i18n.isoTimeShort(data.dt1)}</td>
-			<td data-cell="${i18n.get("lblDestino")}" class="table-refresh" data-refresh="update-principal">${destino}</td>
+			<td data-cell="${i18n.get("lblDestino")}" class="table-reload" data-reload="update-principal">${destino}</td>
 			<td data-cell="${i18n.get("lblFechaLlegada")}">${i18n.isoDate(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblHoraLlegada")}">${i18n.isoTimeShort(data.dt2)}</td>
 			<td data-cell="${i18n.get("lblTransporte")}">${i18n.getItem("tiposDesp", data.desp) + matricula}</td>
@@ -66,4 +65,13 @@ export default class TableRutas extends TableHTML {
 
 	render() { super.render(rutas.getRutas()); }
 	flush() { form.setChanged(true); super.flush(); }
+	connectedCallback() {
+		this.setMsgEmpty("msgRutasEmpty");
+		this.set("#main", data => this.setMain(data));
+		observer.subscribe("close", () => this.view(rutas.getRutas()));
+		this.set("update-principal", (el, data) => {
+			el.children.forEach(el => el.hide()); // hide all
+			return el.children[+ruta.isPrincipal(data)].show();
+		});
+	}
 }

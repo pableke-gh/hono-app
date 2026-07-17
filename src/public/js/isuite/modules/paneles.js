@@ -8,9 +8,10 @@ import FCBTable from "../components/paneles/FCBTable.js";
 import ExcelButton from "../components/paneles/Excel.js";
 
 export default class PanelesForm extends FormHTML {
+	getPanel = () => this.nextElementSibling; // detalle gc / fcb
+
 	connectedCallback() {
 		super.connectedCallback(); // init. component
-		this.setTable(this.nextElementSibling); // linked table
 		this.elements.ej.setLabels(sb.getEjercicios()); // default ejercicios
 
 		this.addEventListener("reset", ev => setTimeout(this.list, 1)); // after-reset event
@@ -24,7 +25,7 @@ export default class PanelesForm extends FormHTML {
 
 	list = () => {
 		const url = this.getAttribute("action") + "?" + this.getUrlParams().toString();
-		api.init().json(url).then(data => this.getTable().render(data));
+		api.init().json(url).then(data => this.getPanel().render(data));
 	}
 }
 

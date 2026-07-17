@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 import factura from "../../model/Factura.js";
@@ -23,11 +23,11 @@ export default class Lineas extends TableHTML {
 	}
 
 	beforeRender(resume) { resume.imp = 0; }
-	beforeRow(data, resume) { resume.imp += data.imp; }
-	row(data, resume) {
+	beforeRow(data, i, resume) { resume.imp += data.imp; }
+	row(data, i) {
 		const remove = factura.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red" title="Desasociar partida"></a>' : "";
 		return `<tr class="tb-data">
-			<td class="text-center">${resume.count}</td>
+			<td class="text-center">${i + 1}</td>
 			<td>${data.desc}</td><td class="currency">${i18n.isoFloat(data.imp)} €</td>
 			<td class="text-center">${remove}</td>
 		</tr>`;
@@ -41,6 +41,6 @@ export default class Lineas extends TableHTML {
 
 	setIva(iva) { // actualizo el iva y el total
 		factura.setIva(iva); // set new iva value
-		this.afterRender().refreshFooter()
+		this.afterRender().reloadFooter()
 	}
 }

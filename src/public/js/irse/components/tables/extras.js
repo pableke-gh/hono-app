@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js"
@@ -36,15 +36,15 @@ export default class Extraordinarios extends TableHTML {
 	beforeRender(resume) {
 		resume.imp1 = resume.trans = resume.pernocta = resume.dieta = resume.cena = 0;
 	}
-	beforeRow(data, resume) {
+	beforeRow(data, i, resume) {
 		resume.imp1 += data.imp1;
 		resume.trans += gasto.isExtraTrans(data) ? data.imp1 : 0;
 		resume.pernocta += gasto.isExtraPernocta(data) ? data.imp1 : 0;
 		resume.cena += gasto.isCenaFin(data) ? data.imp1 : 0;
 		resume.dieta += gasto.isExtraDieta(data) ? data.imp1 : 0;
 	}
-	row = (data, resume) => `<tr class="tb-data tb-data-tc">
-		<td data-cell="Nº">${resume.count}</td>
+	row = (data, i) => `<tr class="tb-data tb-data-tc">
+		<td data-cell="Nº">${i + 1}</td>
 		<td data-cell="${i18n.get("lblTipoGasto")}">${gasto.getDescSubtipo(data)}</td>
 		<td data-cell="${i18n.get("lblDescObserv")}">${gasto.getDescGasto(data)}</td>
 		<td data-cell="${i18n.get("lblAdjunto")}">${data.nombre}</td>

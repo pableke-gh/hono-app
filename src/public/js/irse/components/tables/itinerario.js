@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import tabs from "../../../core/components/tabs/TabsOld.js";
 import i18n from "../../../core/i18n/langs.js";
 
@@ -11,12 +11,12 @@ export default class Itinerario extends TableHTML {
 		tabs.setViewEvent("itinerario", () => this.view()); // render rows
 	}
 
-	beforeRender = ruta.beforeRender;
-	beforeRow = ruta.rowCalc;
-	row(data, resume) { 
+	beforeRender(resume) { ruta.beforeRender(resume); } // overrride
+	beforeRow(data, i, resume) { ruta.rowCalc(data, i, resume); } // overrride
+	row(data, i) { 
 		const flag = ruta.isPrincipal(data) ? '<span class="text-warn icon"><i class="fal fa-flag-checkered"></i></span>' : "";
 		return `<tr class="tb-data tb-data-tc">
-			<td data-cell="Nº" class="hide-sm">${resume.count}</td>
+			<td data-cell="Nº" class="hide-sm">${i + 1}</td>
 			<td data-cell="${i18n.get("lblOrigen")}">${data.origen}</td>
 			<td data-cell="${i18n.get("lblFechaSalida")}">${i18n.isoDate(data.dt1)}</td>
 			<td data-cell="${i18n.get("lblHoraSalida")}">${i18n.isoTimeShort(data.dt1)}</td>

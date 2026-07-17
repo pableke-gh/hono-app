@@ -2,17 +2,11 @@
 import dt from "../../../components/types/DateBox.js";
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
-import Accordion from "../../../core/components/Accordion.js";
+import Accordion from "../../../core/components/accordions/Accordion.js";
 import FlywireTable from "../tablas/Flywire.js";
 
 export default class FlywireAccordion extends Accordion {
-	static getInstance = () => FlywireAccordion.#instance;
-	static #instance;
 	#rows;
-
-	connectedCallback() {
-		FlywireAccordion.#instance = this;
-	}
 
 	getName = () => "flywire";
 	size() { return this.#rows ? this.#rows.length : 0; }
@@ -27,17 +21,11 @@ export default class FlywireAccordion extends Accordion {
 		back.nextElementSibling.classList.add("hide"); // button
 		back.classList.add("hide"); // hr
 	}
-	showBack() {
-		const back = this.nextElementSibling;
-		back.nextElementSibling.classList.remove("hide"); // button
-		back.classList.remove("hide"); // hr
-	}
 	show() {
 		super.show();
-		this.showBack();
 		this.previousElementSibling.classList.remove("hide"); // h3
 		document.forms.conciliar.elements.excel.show();
-		document.forms.conciliar.setAccordion(this);
+		document.forms.conciliar.showBack();
 	}
 
 	setData(contents) {

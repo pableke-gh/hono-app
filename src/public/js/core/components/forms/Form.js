@@ -14,16 +14,13 @@ import CheckInput from "./CheckInput.js";
 import ButtonForm from "./ButtonForm.js";
 
 export default class FormHTML extends HTMLFormElement {
-	#isChanged; #table; #data;
+	#isChanged; #data;
 
 	isEmpty = () => !this.#data;
 	isLoaded = () => !!this.#data;
 	isChanged = () => this.#isChanged;
 	setChanged(val) { this.#isChanged = val; return this; }
 	isCached = id => (this.isLoaded() && (id == this.#data.id));
-
-	getTable = () => this.#table;
-	setTable = table => { this.#table = table; return this; }
 
 	getElements = () => this.elements;
 	getElement = name => this.elements[name];

@@ -14,7 +14,7 @@ export default class FilterForm extends FormHTML {
 
 	list() {
 		const url = this.getAttribute("action") + "/list"; // build url
-		const fnThen = data => this.getTable().render(data); // show table data
+		const fnThen = data => this.getSolicitudes().render(data); // show table data
 		api.setJSON(this.getData()).json(url).then(fnThen); // request query
 	}
 
@@ -40,9 +40,6 @@ export default class FilterForm extends FormHTML {
 
 	connectedCallback() {
 		super.connectedCallback(); // initialize form
-		const solicitudes = this.nextElementSibling; // tabla de solicitudes
-		this.setTable(solicitudes); // set table to reload
-
 		this.addEventListener("submit", ev => {
 			this.isChanged() && this.list();
 			ev.preventDefault();

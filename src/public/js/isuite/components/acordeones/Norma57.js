@@ -2,20 +2,12 @@
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
 
-import Accordion from "../../../core/components/Accordion.js";
+import Accordion from "../../../core/components/accordions/Accordion.js";
 import Norma57Table from "../tablas/Norma57.js";
-import Flywire from "./Flywire.js";
-
 import rb from "../../lib/RecibosBancarios.js";
 
 export default class Norma57Accordion extends Accordion {
-	static getInstance = () => Norma57Accordion.#instance;
-	static #instance;
 	#rows;
-
-	connectedCallback() {
-		Norma57Accordion.#instance = this;
-	}
 
 	getName = () => "norma57";
 	size() { return this.#rows ? this.#rows.length : 0; }
@@ -28,17 +20,13 @@ export default class Norma57Accordion extends Accordion {
 		this.previousElementSibling.classList.add("hide"); // ul
 		this.previousElementSibling.previousElementSibling.classList.add("hide"); // h3
 	}
-	showBack() {
-		Flywire.getInstance().showBack(); // flywire-accordion
-	}
 	show() {
 		super.show();
-		this.showBack();
 		this.previousElementSibling.classList.remove("hide"); // ul
 		this.previousElementSibling.previousElementSibling.classList.remove("hide"); // h3
 		document.forms.conciliar.elements.save.show();
 		document.forms.conciliar.elements.excel.show();
-		document.forms.conciliar.setAccordion(this);
+		document.forms.conciliar.showBack();
 	}
 
 	setData(contents) {

@@ -4,14 +4,12 @@ import api from "../Api.js";
 import i18n from "../../i18n/langs.js";
 
 import Solicitud from "../../model/Solicitud.js";
-import TableHTML from "./TableOld.js";
-import tables from "./Tables.js";
+import TableHTML from "./Table.js";
 
 export default class Solicitudes extends TableHTML {
 	#solicitud = Solicitud.getInstance(); // model instance
 
 	connectedCallback() { // default list handlers
-		window.solicitudes = this; // global access before connectedCallback
 		const solicitud = this.#solicitud; // current instance
 		const url = solicitud.getUrl(); // url base path
 
@@ -24,7 +22,7 @@ export default class Solicitudes extends TableHTML {
 		this.set("isIntegrable", (link, data) => solicitud.setData(data).isIntegrable())
 		this.set("update-estado", (td, data) => { // actualizo la celda del estado
 			td.innerHTML = solicitud.setData(data).getDescEstado(); // set texto de estado
-			td.className = solicitud.getStyleByEstado() + " hide-xs table-refresh"; // set estilos
+			td.className = solicitud.getStyleByEstado() + " hide-xs table-reload"; // set estilos
 		});
 		this.set("#uxxiec", row => document.forms.uxxiec.view(row)); // solicitudes module list
 		this.view(); // initial render
@@ -33,7 +31,7 @@ export default class Solicitudes extends TableHTML {
 	}
 
 	getSolicitud = () => this.#solicitud; // get solicitud
-	showList() { this.refreshRow(); tabs.showList(); } // refresh current row + show list tab
+	showList() { this.reloadRow(); tabs.showList(); } // reload current row + show list tab
 	load = data => this.#solicitud.setData(data || this.getCurrent()); // update data model
 	setProcesando = () => this.load().setProcesando(); // set estado procesando ...
 	setWorking = () => { this.setProcesando(); this.showList(); } // update current row state
@@ -41,13 +39,13 @@ export default class Solicitudes extends TableHTML {
 	row(data) { // to simulate super keyword from arrow function, 'row' must be defined as a function
 		let acciones = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>';
 		if (this.load(data).isFirmable()) { // initialize and verify state
-			acciones += '<a href="#firmar" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-check action resize text-green"></i></a>';
-			acciones += '<a href="#reject" class="resize table-refresh" data-refresh="isFirmable"><i class="fas fa-times action resize text-red"></i></a>';
+			acciones += '<a href="#firmar" class="resize table-reload" data-reload="isFirmable"><i class="fas fa-check action resize text-green"></i></a>';
+			acciones += '<a href="#reject" class="resize table-reload" data-reload="isFirmable"><i class="fas fa-times action resize text-red"></i></a>';
 		}
 		if (this.#solicitud.isEjecutable())
 			acciones += '<a href="#uxxiec"><i class="fal fa-cog action resize text-green"></i></a>';
 		if (this.#solicitud.isIntegrable())
-			acciones += '<a href="#integrar" class="table-refresh" data-refresh="isIntegrable"><i class="far fa-save action resize text-blue"></i></a>';
+			acciones += '<a href="#integrar" class="table-reload" data-reload="isIntegrable"><i class="far fa-save action resize text-blue"></i></a>';
 		if (this.#solicitud.isAdmin())
 			acciones += '<a href="#emails"><i class="fal fa-mail-bulk action resize text-blue"></i></a><a href="#remove"><i class="fal fa-trash-alt action resize text-red"></i></a>';
 		return acciones;

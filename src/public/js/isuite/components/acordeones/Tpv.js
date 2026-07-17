@@ -2,20 +2,12 @@
 import api from "../../../core/components/Api.js";
 import i18n from "../../i18n/langs.js";
 
-import Accordion from "../../../core/components/Accordion.js";
+import Accordion from "../../../core/components/accordions/Accordion.js";
 import TpvTable from "../tablas/Tpv.js";
-import Norma43 from "./Norma43.js";
-
 import rb from "../../lib/RecibosBancarios.js";
 
 export default class TpvAccordion extends Accordion {
-	static getInstance = () => TpvAccordion.#instance;
-	static #instance;
 	#rows;
-
-	connectedCallback() {
-		TpvAccordion.#instance = this;
-	}
 
 	getName = () => "tpv";
 	size() { return this.#rows ? this.#rows.length : 0; }
@@ -28,16 +20,12 @@ export default class TpvAccordion extends Accordion {
 		this.previousElementSibling.classList.add("hide"); // ul
 		this.previousElementSibling.previousElementSibling.classList.add("hide"); // h3
 	}
-	showBack() {
-		Norma43.getInstance().showBack(); // norma43-accordion
-	}
 	show() {
 		super.show();
-		this.showBack();
 		this.previousElementSibling.classList.remove("hide"); // ul
 		this.previousElementSibling.previousElementSibling.classList.remove("hide"); // h3
 		document.forms.conciliar.elements.excel.show();
-		document.forms.conciliar.setAccordion(this);
+		document.forms.conciliar.showBack();
 	}
 
 	setData(contents) { // group by forma

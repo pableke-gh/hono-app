@@ -9,10 +9,7 @@ class TablesContainer {
 
 	getOptions = () => this.#opts;
 	get = name => this.#tables[name];
-	set(table, name) {
-		if (name) // register named tables
-			this.#tables[name] = table;
-	}
+	set(name, table) { this.#tables[name] = table; } // register named tables
 }
 
 export default new TablesContainer();

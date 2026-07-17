@@ -1,5 +1,5 @@
 
-import TableHTML from "../../../core/components/tables/TableOld.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 import i18n from "../../i18n/langs.js";
 
 import presto from "../../model/Presto.js";
@@ -21,7 +21,7 @@ export default class Partidas extends TableHTML {
 	}
 
 	beforeRender(resume) { resume.imp = 0; }
-	beforeRow(data, resume) { resume.imp += data.imp; }
+	beforeRow(data, i, resume) { resume.imp += data.imp; }
 	row(data) {
 		const NO_APLICA = "N/A"; // default table float
 		const css = presto.isPartidaExt() ? "currency" : "hide";

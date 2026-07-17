@@ -34,7 +34,7 @@ class Paso9 {
 			if (!valid.paso9() || !i18n.confirm("msgFirmarEnviar")) return;
 			api.setJSON(fnData()).json("/uae/iris/paso9/send").then(data => {
 				form.setFirmas(data.firmas).setEditable(irse.setProcesando()).refresh(irse); // update form
-				form.getSolicitudes().refreshRow(); // try to update row list state (for editing)
+				form.getSolicitudes().reloadRow(); // try to update row list state (for editing)
 				observer.emit("close"); // no parameter needed
 				tabs.showInit(); // return to init tab
 			});

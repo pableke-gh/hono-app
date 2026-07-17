@@ -15,7 +15,6 @@ export default class UxxiecForm extends FormHTML {
 		//super.connectedCallback(); // init. component
 		const documentos = this.nextElementSibling; // tabla de documentos
 		const solicitud = Solicitud.getInstance(); // solicitud model instance
-		//this.setTable(documentos); // set linked table
 
 		const fnNotificable = () => (documentos.size() && solicitud.isNotificable());
 		this.set("is-ejecutable", documentos.size).set("is-notificable", fnNotificable);
