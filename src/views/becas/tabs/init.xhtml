@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
+	<c:if test="#{becas.user.close}">
+		<div class="notice notice-warn"><h:outputText value="#{msg['uae.msg.trabajando']}" escape="false" /></div>
+	</c:if>
+	<ul>
+		<c:choose>
+			<c:when test="#{becas.user.open}">
+				<li><a href="#tab-action-create" title="Crear una nueva solicitud">Nueva Solicitud</a></li>
+			</c:when>
+			<c:otherwise>
+				<li>Nueva Solicitud</li>
+			</c:otherwise>
+		</c:choose>
+		<li><a href="#tab-list" title="Solicitudes pendientes de firma">Consulta de Solicitudes</a></li>
+	</ul>
+</html>

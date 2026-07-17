@@ -10,20 +10,20 @@
 
 	<ui:define name="metadata">
 		<f:metadata>
-            <f:viewParam name="lang" value="#{pedidos.lang}" />
-            <f:viewAction action="#{pedidos.initLang()}" />
+            <f:viewParam name="lang" value="#{becas.lang}" />
+            <f:viewAction action="#{becas.initLang()}" />
 		</f:metadata>
 	</ui:define>
 	<ui:define name="header">
 		<link rel="stylesheet" type="text/css" href="/uae/resources/css/styles-min.css" />
 	</ui:define>
 	<ui:define name="outputScript">
-		<script type="module" src="/uae/resources/js/pedidos/index.js"></script>
+		<script type="module" src="/uae/resources/js/becas/index.js"></script>
 	</ui:define>
 
-	<ui:define name="title">SPI</ui:define>
-	<ui:define name="description">Sistema de pedidos de Infraestructuras - SPI</ui:define>
-	<ui:define name="semilla"><li class="active">SPI</li></ui:define>
+	<ui:define name="title">BECAS</ui:define>
+	<ui:define name="description">Comunicación de sbuvenciones, becas y premios</ui:define>
+	<ui:define name="semilla"><li class="active">BECAS</li></ui:define>
 
 	<ui:define name="body">
 		<!-- Home tab -->
@@ -37,24 +37,23 @@
 			<ui:include src="./parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
-		<!-- controles de consistencia -->
-		<div id="tab-ctrl" is="tab-content" class="tab-content">
-			<ui:include src="./tabs/controles.xhtml"></ui:include>
+		<!-- vinculación con uxxiec -->
+		<div id="tab-uxxiec" is="tab-content" class="tab-content">
+			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
-		<form id="pedido" is="pedido-form" method="post" enctype="multipart/form-data"
-				data-nif="#{pedidos.user.nif}" data-grupo="#{pedidos.user.idGrupo}" 
-				data-admin="#{pedidos.user.adminFlag}" data-prorrata="#{pedidos.form.prorrata}">
-			<!-- formulario de alta de solicitudes -->
+		<form id="solicitud" is="beca-form" method="post" enctype="multipart/form-data"
+				data-nif="#{becas.user.nif}" data-grupo="#{becas.user.idGrupo}" data-admin="#{becas.user.adminFlag}">
+			<!-- Form beca -->
 			<div id="tab-form" is="tab-content" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>
-				<ui:include src="./parts/firmas.xhtml"></ui:include>
 			</div>
-
+			<div id="tab-tercero" is="tab-tercero" class="tab-content">
+				<ui:include src="./tabs/tercero.xhtml"></ui:include>
+			</div>
 			<!-- formulario de rechazo/cancelacion -->
 			<div id="tab-reject" is="tab-content" class="tab-content">
 				<ui:include src="./tabs/reject.xhtml"></ui:include>
-				<ui:include src="./parts/firmas.xhtml"></ui:include>
 			</div>
 		</form>
 	</ui:define>

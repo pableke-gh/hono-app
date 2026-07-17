@@ -12,6 +12,7 @@ import FileInput from "./FileInput.js";
 import TextArea from "./TextArea.js";
 import CheckInput from "./CheckInput.js";
 import ButtonForm from "./ButtonForm.js";
+import Solicitud from "../../model/Solicitud.js";
 
 export default class FormHTML extends HTMLFormElement {
 	#isChanged; #data;
@@ -103,7 +104,6 @@ export default class FormHTML extends HTMLFormElement {
 
 	// private method to check if element matches selector and is not a default-element
 	#matches = (el, selector) => !this.isDefaultElement(el) && (!selector || el.matches(selector));
-
 	update(data, editable, selector) {
 		this.elements.forEach(el => {
 			if (this.#matches(el, selector)) {
@@ -175,6 +175,12 @@ export default class FormHTML extends HTMLFormElement {
 		this.setAttribute("novalidate", "1");
 		this.addEventListener("reset", () => alerts.close());
 		this.addEventListener("change", () => this.setChanged(true));
+		this.getElementsByClassName(this.dataset.loadedClass).forEach(el => {
+			const template = el.innerHTML; // save template
+			observer.subscribe(this.dataset.loadedClass, () => {
+				el.innerHTML = Solicitud.getInstance().render(template);
+			});
+		});
 	}
 }
 

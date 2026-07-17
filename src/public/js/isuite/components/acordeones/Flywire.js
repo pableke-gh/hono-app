@@ -30,8 +30,8 @@ export default class FlywireAccordion extends Accordion {
 
 	setData(contents) {
 		try {
-			const recibos = JSON.parse(contents);
-			const referencias = recibos.data.map(item => {
+			const recibos = JSON.parse(contents); // objeto flywire
+			const referencias = recibos.data.filter(item => (item.estado == "delivered")).map(item => {
 				item.impFlywire = item.importe; // mapeo el importe para evitar colision de nombres
 				delete item.importe; // override by academico
 				return item.recibo; // referencia a consultar
@@ -63,13 +63,13 @@ export default class FlywireAccordion extends Accordion {
 	}
 
 	getHeaders = () => [
-		"F. Operación", "Nombre del Plan", "Act.", "Nombre de la Act.", "DNI Alumno", "Nombre del Alumno", 
+		"Recibo", "F. Operación", "Nombre del Plan", "Act.", "Nombre de la Act.", "DNI Alumno", "Nombre del Alumno", 
 		"Orgánica", "Económica", "Imp. Académico", "Imp. Flywire"
 	];
 	getExcel = () => this.#rows.map(row => { // map data to excel
-		const { fCobro, plan, idActividad, actNombre, dnialu, nombre, org, eco, importe, impFlywire } = row;
+		const { recibo, fCobro, plan, idActividad, actNombre, dnialu, nombre, org, eco, importe, impFlywire } = row;
 		return {
-			fCobro: dt.toDate(fCobro),
+			recibo, fCobro: dt.toDate(fCobro),
 			plan, idActividad, actNombre, dnialu, nombre, org, eco, importe, impFlywire
 		};
 	});

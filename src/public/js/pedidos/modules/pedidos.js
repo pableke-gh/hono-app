@@ -12,7 +12,7 @@ export default class PedidosTable extends TableHTML {
 	setWorking = () => { pedido.setProcesando(); this.showList(); } // update current row state
 
 	connectedCallback() { // initialize table
-		const form = document.forms["pedido-form"];
+		const form = document.forms.pedido;
 		this.setMsgEmpty("No se han encontrado solicitudes para a la búsqueda seleccionada");
 		this.set("#emails", data => api.init().json("/uae/pedidos/emails?id=" + data.id)); // admin test email
 		this.set("#integrar", data => { // integra la solicitud seleccionada en uxxiec

@@ -1,7 +1,6 @@
 
 import api from "../../core/components/Api.js";
 import tabs from "../../core/components/tabs/Tabs.js";
-import observer from "../../core/util/Observer.js";
 
 import pedido from "../model/Pedido.js";
 import aplicacion from "../model/Aplicacion.js";
@@ -65,14 +64,8 @@ export default class PedidoForm extends FormHTML {
 		super.connectedCallback(); // initialize form
 		pedido.setUser(this.dataset); // load user info
 		tabs.setAction("create", () => this.create()); // set handlers
-
 		this.addChange("imp", ev => { pedido.setImporte(ev.target.getValue()); this.#setImportes(); });
 		this.addChange("iva", ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });
-		this.getElementsByClassName(this.dataset.loadedClass).forEach(el => {
-			const template = el.innerHTML; // save template
-			const fnUpdate = () => { el.innerHTML = pedido.render(template); };
-			observer.subscribe(this.dataset.loadedClass, fnUpdate);
-		});
 	}
 }
 

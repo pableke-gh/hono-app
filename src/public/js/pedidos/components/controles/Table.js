@@ -5,9 +5,8 @@ import pedido from "../../model/Pedido.js";
 
 export default class ControlesTable extends TableHTML {
 	connectedCallback() { // table initialization
-		const form = document.forms["pedido-form"];
 		this.setMsgEmpty("No existen pedidos que incumplan el control seleccionado");
-		this.set("#view", form.load);
+		this.set("#view", document.forms.pedido.load);
 	}
 
 	row(data) {
