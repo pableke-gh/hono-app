@@ -8,6 +8,7 @@ class TablesContainer {
 	};
 
 	getOptions = () => this.#opts;
+	getAll = () => this.#tables;
 	get = name => this.#tables[name];
 	set(name, table) { this.#tables[name] = table; } // register named tables
 }

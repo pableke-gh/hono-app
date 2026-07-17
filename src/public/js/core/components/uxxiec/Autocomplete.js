@@ -1,6 +1,6 @@
 
-import api from "../../components/Api.js";
-import AutocompleteHTML from "../../components/forms/Autocomplete.js";
+import api from "../Api.js";
+import AutocompleteHTML from "../forms/Autocomplete.js";
 
 export default class AutocompleteUxxiec extends AutocompleteHTML {
 	connectedCallback() {

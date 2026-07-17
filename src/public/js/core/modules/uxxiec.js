@@ -5,8 +5,8 @@ import api from "../components/Api.js"
 
 import Solicitud from "../model/Solicitud.js";
 import FormHTML from "../../components/forms/FormHTML.js";
-import Uxxiec from "./uxxiec/Autocomplete.js";
-import AddDocumento from "./uxxiec/AddDocumento.js";
+import Uxxiec from "../components/uxxiec/Autocomplete.js";
+import AddDocumento from "../components/uxxiec/AddDocumento.js";
 import tables from "../components/tables/Tables.js";
 
 export default class UxxiecForm extends FormHTML {

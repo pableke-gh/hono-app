@@ -1,5 +1,5 @@
 
-import ButtonForm from "../../components/forms/ButtonForm.js"
+import ButtonForm from "../forms/ButtonForm.js"
 
 export default class AddDocumento extends ButtonForm {
 	execute() {
