@@ -39,7 +39,7 @@ class IrseSolicitud extends Solicitud {
 		paso9.view(cuentas); // tab 9 = fin
 	}
 
-	getSolicitudes = () => tables.get("solicitudes"); // tabla de solicitudes
+	getSolicitudes = () => tables.getSolicitudes(); // tabla de solicitudes
 	getPerfil = () => perfil; // module perfil paso 0
 	getOrganicas = perfil.getOrganicas; // table organicas
 	getPaso1 = () => paso1; // module paso 1

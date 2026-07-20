@@ -42,11 +42,13 @@ export default class Solicitud extends Base {
 	isPendiente = () => (this.getEstado() == 5); // Pendiente de las firmas
 	isAceptada = () => (this.getEstado() == 1); // Aceptada por todos los firmantes
 	isRechazada = () => (this.getEstado() == 2); // Rechazada no llega a estado finalizada
-	setRechazada = () => this.setEstado(2); // marca la solicitud como rechazada
+	rechazar(data) { data.estado = 2; } // marco el estado de data como rechazado
+	setRechazada = () => this.rechazar(this.getData()); // marca la solicitud como rechazada
 	isEjecutada = () => (this.getEstado() == 3); // Documentos creados en uxxiec y asociados a la solicitud
 	isIntegrada = () => (this.getEstado() == 4); // Solicitud integrada en uxxiec y notificada a los firmantes
 	isCancelada = () => (this.getEstado() == 7); // Solicitud cancelada por la UAE
-	setCancelada = () => this.setEstado(7); // marca la solicitud como cancelada
+	cancelar(data) { data.estado = 7; } // marco el estado de data como cancelada
+	setCancelada = () => this.cancelar(this.getData()); // marca la solicitud como cancelada
 	isCaducada = () => (this.getEstado() == 8); // Solicitud caducada por expiración
 	isErronea = () => ((this.getEstado() == 9) || (this.getEstado() == 10)); // estado de error
 	isReactivable = () => (this.isUae() && this.isErronea()); // La solicitud se puede reactivar / subsanar

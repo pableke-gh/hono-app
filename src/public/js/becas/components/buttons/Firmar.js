@@ -2,17 +2,17 @@
 import i18n from "../../i18n/langs.js";
 import api from "../../../core/components/Api.js"
 import ButtonForm from "../../../core/components/forms/ButtonForm.js";
-import pedido from "../../model/Pedido.js";
+import beca from "../../model/Beca.js";
 
 export default class ButtonFirmar extends ButtonForm {
 	setEditable() {
-		this.setVisible(pedido.isFirmable());
+		this.setVisible(beca.isFirmable());
 	}
 
 	execute() {
-		const url = "/uae/pedidos/firmar?id=" + pedido.getId();
+		const url = "/uae/becas/firmar?id=" + beca.getId();
 		i18n.confirm("msgFirmar") && api.init().json(url).then(data => {
-			pedido.setProcesando(); // update current state
+			beca.setProcesando(); // update current state
 			this.form.close(data.firmas); // update view
 		});
 	}

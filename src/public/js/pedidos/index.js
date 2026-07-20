@@ -11,6 +11,7 @@ import Referencia from "./components/ppto/Referencia.js";
 import Proveedor from "./components/Proveedor.js";
 import Categoria from "./components/Categoria.js";
 import Aplicacion from "./components/Aplicacion.js";
+import MsgReject from "./components/MsgReject.js";
 
 //document.addEventListener("DOMContentLoaded", () => {});
 
@@ -27,3 +28,4 @@ customElements.define("ref-input", Referencia, { extends: "input" });
 customElements.define("proveedor-input", Proveedor, { extends: "input" });
 customElements.define("categoria-pedido", Categoria, { extends: "select" });
 customElements.define("aplicacion-input", Aplicacion, { extends: "input" });
+customElements.define("msg-reject", MsgReject, { extends: "p" });

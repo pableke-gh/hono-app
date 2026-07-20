@@ -17,7 +17,7 @@ import Solicitud from "../../core/modules/solicitud.js";
 import tables from "../components/tables/tables.js";
 
 class Factura extends Solicitud {
-	getSolicitudes = () => tables.get("solicitudes"); // tabla de solicitudes
+	getSolicitudes = () => tables.getSolicitudes(); // tabla de solicitudes
 	getLineas = () => tables.get("lineas"); // tabla de conceptos de la factura
 
 	init() { // init modules

@@ -12,17 +12,22 @@ export default class ToggleLink extends HTMLAnchorElement {
 	isClose = () => ((this.#clicks % 2) == 0);
 	isOpen = () => ((this.#clicks % 2) == 1);
 
-	execute() {
-		if (!this.#clicks)
-			this.init();
-		if (this.isClose())
-			this.view();
-
+	#toggle() {
 		this.#clicks++; // increment counter
 		const icon = this.querySelector(this.dataset.icon || "i"); // icon indicator
 		sb.split(this.dataset.toggle, " ").forEach(name => icon.classList.toggle(name));
 		const target = document.querySelector(this.dataset.target || (".tab-" + this.id));
 		target.classList.toggle("hide"); // target must exists
+	}
+	execute() {
+		if (!this.#clicks)
+			this.init();
+		if (this.isClose())
+			this.view();
+		this.#toggle();
+	}
+	open() {
+		this.isClose() && this.#toggle();
 	}
 
 	connectedCallback() {

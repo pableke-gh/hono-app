@@ -10,7 +10,7 @@ import AddDocumento from "../components/uxxiec/AddDocumento.js";
 import tables from "../components/tables/Tables.js";
 
 export default class UxxiecForm extends FormHTML {
-	getSolicitudes = () => tables.get("solicitudes"); // tabla de solicitudes
+	getSolicitudes = () => tables.getSolicitudes(); // tabla de solicitudes
 	connectedCallback() {
 		//super.connectedCallback(); // init. component
 		const documentos = this.nextElementSibling; // tabla de documentos

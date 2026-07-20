@@ -17,7 +17,7 @@ import Solicitud from "../../core/modules/solicitud.js";
 import tables from "../components/tables/tables.js";
 
 class Presto extends Solicitud {
-	getSolicitudes = () => tables.get("solicitudes"); // tabla de solicitudes
+	getSolicitudes = () => tables.getSolicitudes(); // tabla de solicitudes
 	getPartidas = () => tables.get("partidas"); // tabla de partidas a incrementar
 
 	init() { // init modules

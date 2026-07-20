@@ -12,16 +12,15 @@ import FileInput from "./FileInput.js";
 import TextArea from "./TextArea.js";
 import CheckInput from "./CheckInput.js";
 import ButtonForm from "./ButtonForm.js";
-import Solicitud from "../../model/Solicitud.js";
 
 export default class FormHTML extends HTMLFormElement {
-	#isChanged; #data;
+	#isChanged; #id;
 
-	isEmpty = () => !this.#data;
-	isLoaded = () => !!this.#data;
+	isEmpty = () => !this.#id;
+	isLoaded = () => !!this.#id;
 	isChanged = () => this.#isChanged;
 	setChanged(val) { this.#isChanged = val; return this; }
-	isCached = id => (this.isLoaded() && (id == this.#data.id));
+	isCached = id => (this.isLoaded() && (id == this.#id));
 
 	getElements = () => this.elements;
 	getElement = name => this.elements[name];
@@ -104,7 +103,8 @@ export default class FormHTML extends HTMLFormElement {
 
 	// private method to check if element matches selector and is not a default-element
 	#matches = (el, selector) => !this.isDefaultElement(el) && (!selector || el.matches(selector));
-	update(data, editable, selector) {
+	#load(data, editable, selector) {
+		this.#id = data.id; // cache id
 		this.elements.forEach(el => {
 			if (this.#matches(el, selector)) {
 				el.setValue(data[el.name]); // load value
@@ -112,16 +112,12 @@ export default class FormHTML extends HTMLFormElement {
 				this.setOk(el); // reset input state
 			}
 		});
-		observer.emit(this.dataset.loadedClass, data);
-		return this.setChanged(false);
-	}
-	#load(data, editable, selector) {
-		this.#data = data; // store data cache
-		return this.update(data, editable, selector);
+		return this.setChanged(false).notify(data);
 	}
 	create(data) { return this.#load(data, true); }
 	load(data, editable, selector) { return this.#load(data, editable, selector); }
-	addObserver(fn) { observer.subscribe(this.dataset.loadedClass, fn); }
+	addObserver(fn) { observer.subscribe(this.dataset.loadedClass, fn); return this; }
+	notify(data) { observer.emit(this.dataset.loadedClass, data); return this; }
 
 	validate(selector) {
 		let ok = !!alerts.close(); // reset global message
@@ -175,12 +171,6 @@ export default class FormHTML extends HTMLFormElement {
 		this.setAttribute("novalidate", "1");
 		this.addEventListener("reset", () => alerts.close());
 		this.addEventListener("change", () => this.setChanged(true));
-		this.getElementsByClassName(this.dataset.loadedClass).forEach(el => {
-			const template = el.innerHTML; // save template
-			observer.subscribe(this.dataset.loadedClass, () => {
-				el.innerHTML = Solicitud.getInstance().render(template);
-			});
-		});
 	}
 }
 

@@ -19,7 +19,7 @@ export default class SolicitudForm extends FormBase {
 	}
 
 	init(valid) {
-		const solicitudes = tables.get("solicitudes"); // tabla de solicitudes
+		const solicitudes = tables.getSolicitudes(); // tabla de solicitudes
 		this.#solicitudes = solicitudes; // solicitudes module list
 		this.#valid = valid; // current validator instance
 

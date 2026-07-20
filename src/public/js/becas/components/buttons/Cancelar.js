@@ -3,11 +3,11 @@ import i18n from "../../i18n/langs.js";
 import api from "../../../core/components/Api.js"
 import tabs from "../../../core/components/tabs/Tabs.js";
 import ButtonForm from "../../../core/components/forms/ButtonForm.js";
-import pedido from "../../model/Pedido.js";
+import beca from "../../model/Beca.js";
 
-export default class ButtonRechazar extends ButtonForm {
+export default class ButtonCancelar extends ButtonForm {
 	setEditable() {
-		this.setVisible(pedido.isFirmable());
+		this.setVisible(beca.isCancelable());
 	}
 
 	execute() {
@@ -15,13 +15,13 @@ export default class ButtonRechazar extends ButtonForm {
 			return tabs.show("reject"); // move to reject tab
 
 		const el = this.form.elements.rechazo; // textarea input
-		if (!el.force("errRechazar") || !i18n.confirm("msgRechazar"))
+		if (!el.force("errRechazar") || !i18n.confirm("msgCancelar"))
 			return; // validation error or cancel by user
 
-		const row = this.form.getPedidos().getCurrent(); // current row
+		const row = this.form.getBecas().getCurrent(); // current row
 		const params = { id: row.id, rechazo: el.getValue() }; // url params
-		api.init().json("/uae/pedidos/rechazar", params).then(data => {
-			pedido.rechazar(row); // update current row
+		api.init().json("/uae/becas/cancelar", params).then(data => {
+			beca.cancelar(row); // update current row
 			this.form.close(data.firmas); // update view
 		});
 	}

@@ -61,7 +61,7 @@ export default class Alerts extends HTMLDivElement {
 			const { msgOk, msgInfo, msgWarn, msgError } = messages; // extract messages by type
 			this.addOk(msgOk).addInfo(msgInfo).addWarn(msgWarn).addError(msgError);
 		}
-		return this; // for chaining
+		return !this.isError(); // for chaining
 	}
 	msgs = data => this.show(data?.msgs || data); // msgs container
 

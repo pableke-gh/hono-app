@@ -50,14 +50,14 @@ export default class PedidoForm extends FormHTML {
 		});
 	}
 
-	close = firmas => {
+	close(firmas) {
 		this.isCached(pedido.getId()) && Firmas.notify(firmas);
 		this.getPedidos().showList(); // show list tab
 	}
 	reject = row => {
-		super.update(row, pedido.setData(row).isEditable()); // load form with data
+		super.notify(row); // notify row
 		Firmas.notify(this.isCached(row.id));
-		tabs.show("reject");
+		tabs.show("reject"); // show tab
 	}
 
 	connectedCallback() {
@@ -66,6 +66,9 @@ export default class PedidoForm extends FormHTML {
 		tabs.setAction("create", () => this.create()); // set handlers
 		this.addChange("imp", ev => { pedido.setImporte(ev.target.getValue()); this.#setImportes(); });
 		this.addChange("iva", ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });
+
+		const header = this.querySelector("h2"); // form header
+		this.addObserver(data => { header.innerText = pedido.getTitulo(); });
 	}
 }
 

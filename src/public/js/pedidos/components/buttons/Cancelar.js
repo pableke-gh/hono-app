@@ -13,10 +13,16 @@ export default class ButtonCancelar extends ButtonForm {
 	execute() {
 		if (!tabs.isActive("reject"))
 			return tabs.show("reject"); // move to reject tab
+
 		const el = this.form.elements.rechazo; // textarea input
-		if (!el.force("errRechazar") || !i18n.confirm("msgCancelar")) return; // validation error or cancel by user
-		const params = { id: pedido.getId(), rechazo: el.getValue() }; // url params
-		const fnThen = data => this.form.close(data.firmas, pedido.setCancelada());
-		api.init().json("/uae/pedidos/cancelar", params).then(fnThen);
+		if (!el.force("errRechazar") || !i18n.confirm("msgCancelar"))
+			return; // validation error or cancel by user
+
+		const row = this.form.getPedidos().getCurrent(); // current row
+		const params = { id: row.id, rechazo: el.getValue() }; // url params
+		api.init().json("/uae/pedidos/cancelar", params).then(data => {
+			pedido.cancelar(row); // update current row
+			this.form.close(data.firmas); // update view
+		});
 	}
 }

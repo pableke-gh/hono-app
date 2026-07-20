@@ -15,7 +15,7 @@ export default class BecaForm extends FormHTML {
 	#load(firmas) {
 		Firmas.notify(firmas);
 		tabs.showForm(); // show form tab
-	}	
+	}
 	create() {
 		const data = { imp: 0, iva: 21, prorrata: +this.dataset.prorrata };
 		super.create(beca.setData(data).getData()).#load(); // load form with default data
@@ -36,20 +36,23 @@ export default class BecaForm extends FormHTML {
 		});
 	}
 
-	close = firmas => {
+	close(firmas) {
 		this.isCached(beca.getId()) && Firmas.notify(firmas);
 		this.getBecas().showList(); // show list tab
 	}
 	reject = row => {
-		super.update(row, beca.setData(row).isEditable()); // load form with data
+		super.notify(row); // notify row
 		Firmas.notify(this.isCached(row.id));
-		tabs.show("reject");
+		tabs.show("reject"); // show tab
 	}
 
 	connectedCallback() {
 		super.connectedCallback(); // initialize form
 		beca.setUser(this.dataset); // load user info
 		tabs.setAction("create", () => this.create()); // set handlers
+
+		const header = this.querySelector("h2"); // form header
+		this.addObserver(data => { header.innerText = beca.getTitulo(); });
 	}
 }
 
