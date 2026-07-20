@@ -32,7 +32,7 @@ export default class Usuarios extends TableHTML {
 		return `<tr class="tb-data">
 			<td class="text-center">${resume.count}</td>
 			<td class="text-center">${data.nif}</td><td>${data.nombre}</td><td>${buzon.getRol()}</td>
-			<td class="currency table-refresh" data-refresh="update-icons">
+			<td class="currency table-reload" data-reload="update-icons">
 				<a href="#toggleUsers" class="action resize text-purple" title="Gestión de permisos"><i class="fas fa-user"></i></a>
 				<a href="#toggleGastos" class="action resize text-warn" title="Avance de Gastos"><i class="fab fa-google"></i></a>
 				<a href="#toggleIngresos" class="action resize text-green" title="Avance de Ingresos"><i class="fas fa-info"></i></a>

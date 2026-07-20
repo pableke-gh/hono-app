@@ -29,10 +29,10 @@ class Paso9 {
 		form.setValue("observaciones", gastos.getObservaciones()).refresh(irse); // refresh form with new data
 	}
 	save(url) {
-		const data = form.getData(".ui-paso9");
-		data.id = irse.getId(); // solicitud actual
+		const data = form.setChanged().getData(".ui-paso9");
+		data.id = irse.getId(); // id de la solicitud actual
 		data.inputacion = this.getImputacion().getData();
-		return api.setJSON(data).json(url).then(() => form.setChanged(false));
+		return api.setJSON(data).json(url);
 	}
 }
 

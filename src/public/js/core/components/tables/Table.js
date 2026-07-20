@@ -132,7 +132,7 @@ export default class TableHTML extends HTMLTableElement {
 	update = data => { Object.assign(this.getCurrent(), data); return this.render(this.#rows); }
 	save = (row, id) => (id ? this.insert(row, id) : this.update(row)); // Insert or update
 
-	#fnReload = (el, data) => {
+	#fnReload(el, data) {
 		// IMPORTANTE! element puede no estar seleccionado (ej: al crear)
 		el?.getElementsByClassName(this.#opts.reloadClass).forEach(el => {
 			const value = el.dataset.reload; // get update handler by name

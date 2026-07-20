@@ -13,7 +13,7 @@ export default class Facturas extends Solicitudes {
 		return `<tr class="tb-data">
 			<td class="text-center"><a href="#view">${data.codigo}</a></td>
 			<td class="hide-sm text-upper1">${factura.getTitulo()}</td>
-			<td class="${factura.getStyleByEstado()} hide-xs table-refresh" data-refresh="update-estado">${factura.getDescEstado()}</td>
+			<td class="${factura.getStyleByEstado()} hide-xs table-reload" data-reload="update-estado">${factura.getDescEstado()}</td>
 			<td class="text-center hide-xs">${firma.myFlag(data)}</td>
 			<td class="hide-sm">${data.sig || ""}</td>
 			<td class="text-center hide-xs">${i18n.isoDate(data.fCreacion)}</td>

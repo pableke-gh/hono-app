@@ -26,7 +26,7 @@ export default class Prestos extends Solicitudes {
 			${info}
 			<td class="text-center"><a href="#view">${data.codigo}</a></td>
 			<td class="hide-sm">${presto.getTitulo()}</td>
-			<td class="${presto.getStyleByEstado()} hide-xs table-refresh" data-refresh="update-estado">${presto.getDescEstado()}</td>
+			<td class="${presto.getStyleByEstado()} hide-xs table-reload" data-reload="update-estado">${presto.getDescEstado()}</td>
 			<td class="text-center hide-xs">${firma.myFlag(data)}</td>
 			<td class="hide-sm">${data.sig || ""}</td>
 			<td title="${data.oIncDesc}">${data.orgInc}${otras}</td>

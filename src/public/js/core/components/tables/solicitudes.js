@@ -23,6 +23,7 @@ export default class Solicitudes extends TableHTML {
 		this.set("update-estado", (td, data) => { // actualizo la celda del estado
 			td.innerHTML = solicitud.setData(data).getDescEstado(); // set texto de estado
 			td.className = solicitud.getStyleByEstado() + " hide-xs table-reload"; // set estilos
+			return true; // set visible
 		});
 		this.set("#uxxiec", row => document.forms.uxxiec.view(row)); // solicitudes module list
 		this.view(); // initial render
