@@ -40,7 +40,10 @@ export default class Organicas extends TableHTML {
 		this.tBodies[0].querySelectorAll(selector).show(); // show column cv and actions
 		this.tHead.rows[0].cells[1].show(); // show crédito vinculante
 	}
-	setEditable = () => (irse.isEditableP0() ? this.setActive() : this.setReadonly());
+	setEditable = () => {
+		irse.isEditableP0() ? this.setActive() : this.setReadonly();
+		this.setVisible(irse.isUxxiec()); // show table only for uxxiec users
+	}
 
 	beforeRender() {
 		this.#financiacion = "OTR"; //default fin.

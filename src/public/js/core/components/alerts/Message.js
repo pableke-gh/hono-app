@@ -7,6 +7,10 @@ export default class Message extends HTMLParagraphElement {
 	isWarn = () => this.classList.contains("alert-warn"); // check if alert is warning type
 	isError = () => this.classList.contains("alert-error"); // check if alert is error type
 
+	hide = () => this.classList.add("hide"); // arrow final function
+	show = () => this.classList.remove("hide"); // arrow final function
+	setVisible(visible) { visible ? this.show() : this.hide(); }
+
 	#setMessage(type, icon, message) {
 		this.className = "notice notice-" + type;
 		if (this.children.length > 1) { // assume left icon

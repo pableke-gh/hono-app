@@ -22,7 +22,7 @@ function IrseImputacion() {
 	this.get = function(tipo, org) {
 		/*if (tipo == 4) { //Asistencias/colaboraciones = 4
 			//organica de investigacion 642
-			if (perfil.isIsu()) {
+			if (irse.isIsu()) {
 				if (perfil.isColaboracion())
 					return "642.29";
 				if (perfil.isTribunal() || perfil.isFormacion())
@@ -55,7 +55,7 @@ function IrseImputacion() {
 		finalidad = finalidad || "XX";
 
 		const colectivo = COLECTIVOS[irse.getColectivo()] || "XX";
-		if (perfil.isIsu()) //642
+		if (irse.isIsu()) //642
 			return "642." + finalidad + "." + colectivo;
 		if (organica.isInve3005(org)) //64X
 			return (organica.is643(org) ? "643." : "64X.") + SUBCONCEPTOS_CAP6[tipo] + "." + colectivo;

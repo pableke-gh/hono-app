@@ -2,12 +2,13 @@
 import tabs from "../../core/components/tabs/TabsOld.js";
 import i18n from "../i18n/langs.js";
 
-import irse from "../model/Irse.js";
-import Interesado from "../components/perfil/Interesado.js";
-import Organica from "../components/perfil/Organica.js";
 import Actividad from "../components/perfil/Actividad.js";
+import Interesado from "../components/perfil/Interesado.js";
+import MsgFinanciacion from "../components/perfil/MsgFinanciacion.js";
 import NextPerfil from "../components/perfil/NextPerfil.js";
-import form from "./irse.js"
+import Organica from "../components/perfil/Organica.js";
+import irse from "../model/Irse.js";
+import form from "./irse.js";
 
 class Perfil {
 	#eAct = document.forms.solicitud.elements.actividad;
@@ -34,22 +35,13 @@ class Perfil {
 	isRutaUnica = () => (this.isAutA7j() || this.is1Dia());
 	isLocalizaciones = () => (this.isMun() || this.isAutA7j());
 	isMaps = () => (!this.isLocalizaciones() && !this.is1Dia());
-
-	getFinanciacion = () => irse.getFinanciacion();
-	isIsu = () => (irse.getFinanciacion() == "ISU") || (irse.getFinanciacion() == "xSU");
-	isA83 = () => (irse.getFinanciacion() == "A83") || (irse.getFinanciacion() == "x83");
-	isACA = () => (irse.getFinanciacion() == "ACA") || (irse.getFinanciacion() == "xAC");
-	isOTR = () => (irse.getFinanciacion() == "OTR") || (irse.getFinanciacion() == "xOT");
 	getOrganicas = () => form.getElement("organica").getOrganicas();
 
 	init() {
-		irse.isIsu = this.isIsu; // current input value
-		form.set("not-isu", () => !this.isIsu()).set("not-mun", () => !this.isMun());
-		form.set("isFin", el => (irse.getFinanciacion() == el.dataset.fin));
-
+		form.set("not-isu", () => !irse.isIsu()).set("not-mun", () => !this.isMun());
 		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
 		form.setClick("a#reg-externo", ev => { form.copyToClipboard(url); ev.preventDefault(); });
-		tabs.setActiveEvent(2, this.isMaps).setActiveEvent(3, this.isIsu);
+		tabs.setActiveEvent(2, this.isMaps).setActiveEvent(3, irse.isIsu);
 		form.afterReset(() => {
 			form.getElement("interesado").clear();
 			form.getElement("organica").clear();
@@ -57,7 +49,7 @@ class Perfil {
 	}
 
 	view(interesado, organicas, firmas) {
-		i18n.set("pasos", 2 + this.isIsu() + this.isMaps()); // set global number of pasos
+		i18n.set("pasos", 2 + irse.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
 
 		form.closeAlerts().setFirmas(firmas).prepare(irse).setCache(irse.getId()); // prepare all fields
@@ -70,6 +62,7 @@ class Perfil {
 customElements.define("interesado-input", Interesado, { extends: "input" });
 customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("actividades-list", Actividad, { extends: "select" });
+customElements.define("msg-financiacion", MsgFinanciacion, { extends: "p" });
 customElements.define("next-perfil", NextPerfil, { extends: "button" });
 
 export default new Perfil();

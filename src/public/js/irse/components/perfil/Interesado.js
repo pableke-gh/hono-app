@@ -8,6 +8,7 @@ export default class Interesado extends AutocompleteHTML {
 	connectedCallback() { // Init. element
 		this.setDelay(600).setMinLength(5);
 		observer.subscribe("interesado", interesado => {
+			this.setVisible(irse.isUxxiec()); // show table only for uxxiec users
 			observer.emit("perfil", irse.setInteresado(interesado)); // propague event
 			const div = this.parentNode.nextElementSibling; // info element
 			div.lastElementChild.setVisible(interesado.email);
@@ -18,6 +19,9 @@ export default class Interesado extends AutocompleteHTML {
 	}
 
 	load() { return this; } // not to load on view
+	hide() { this.parentNode.parentNode.classList.add("hide"); }
+	show() { this.parentNode.parentNode.classList.remove("hide"); }
+
 	source() { api.init().json("/uae/iris/interesados", { term: this.value }).then(this.render); }
 	row(item) { return (item.nif + " - " + item.nombre); }
 	select(item) {

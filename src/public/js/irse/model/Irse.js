@@ -34,8 +34,9 @@ class Iris extends Solicitud {
 	getFinanciacion = () => this.get("financiacion");
 	setFinanciacion = val => this.set("financiacion", val);
 	isXsu = () => (this.getFinanciacion() == "xSU");
-	is1su = () => (this.getFinanciacion() == "ISU");
-	isIsu = () => (this.is1su() || this.isXsu());
+	isIsu = () => ((this.getFinanciacion() == "ISU") || this.isXsu());
+	isX83 = () => (this.getFinanciacion() == "x83");
+	isA83 = () => ((this.getFinanciacion() == "A83") || this.isX83());
 
 	setInteresado(data) {
 		if (data) {

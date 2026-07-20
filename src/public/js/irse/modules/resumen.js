@@ -7,6 +7,7 @@ import rutas from "../model/Rutas.js";
 import gastos from "../model/Gastos.js";
 
 import observer from "../../core/util/Observer.js";
+import PrevResumen from "../components/resumen/PrevResumen.js";
 import NextResumen from "../components/resumen/NextResumen.js";
 import SaveResumen from "../components/resumen/SaveResumen.js";
 import tables from "../components/tables/tables.js";
@@ -56,6 +57,7 @@ class Resumen {
 	}
 }
 
+customElements.define("prev-resumen", PrevResumen, { extends: "button" });
 customElements.define("next-resumen", NextResumen, { extends: "button" });
 customElements.define("save-resumen", SaveResumen, { extends: "button" });
 

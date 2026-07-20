@@ -17,6 +17,11 @@ export default {
 	msgReactivar: "¿Confirma que desea reactivar esta comunicación?",
 	msgReactivarP8: "¿Confirma que desea activar: Otras Indemnizaciones Extraordinarias?",
 
+	msgXsu: "Alguna de las orgánicas seleccionadas corresponde a un proyecto de investigación subvencionada, pueden existir requisitos especiales para su tramitación como rendición de información específica y validaciones previas de la UITT.",
+	msgIsu: "Se trata de un proyecto de investigación subvencionada. Puede requerir información específica y validaciones previas de la UITT.",
+	msgX83: "Se trata de un contrato celebrado al amparo del Art. 83 de la LOU. Se precisará el visto bueno del/la Director/a de Departamento o Vicerrector/a de Investigación.",
+	msgA83: "Se trata de un contrato celebrado al amparo del Art. 83 de la LOU. Se precisará el visto bueno del/la Director/a de Departamento o Vicerrector/a de Investigación.",
+
 	docObligatoria: "Otra documentación acreditativa (Art. 61 NEP)",
 	docMovilidad: "Documentación acreditativa del programa de movilidad",
 	docOpcional: "Otra documentación (opcional)",

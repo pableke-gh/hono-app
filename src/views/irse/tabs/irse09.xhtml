@@ -79,14 +79,15 @@
 
 	<!-- Botones -->
 	<div class="navbar">
-		<a href="#tab-0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}" tabindex="190"><i class="fas fa-arrow-to-left"></i></a>
-		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}" tabindex="191">
-			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		<button type="button" is="prev-paso9" data-tab="0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}">
+			<i class="fas fa-arrow-to-left"></i></button>
+		<button type="button" is="prev-paso9" class="btn btn-info" title="#{msg['tit.btn.volver']}">
+			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></button>
 
-		<a href="#tab-action-save9" class="btn btn-warn form-refresh" data-refresh="isEditable" title="#{msg['lbl.btn.no.enviar']}">
-			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
-		<a href="#tab-action-send" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.firmar.enviar']}">
-			<i class="far fa-file-signature"></i><h:outputText value="#{msg['lbl.btn.enviar']}" escape="false" /></a>
+		<button type="button" is="save-paso9" class="btn btn-warn" title="#{msg['lbl.btn.no.enviar']}">
+			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>
+		<button type="button" is="send-paso9" class="btn btn-green" title="#{msg['tit.btn.firmar.enviar']}">
+			<i class="far fa-file-signature"></i><h:outputText value="#{msg['lbl.btn.enviar']}" escape="false" /></button>
 
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 		<ui:include src="../parts/btn_doc.xhtml"></ui:include>
