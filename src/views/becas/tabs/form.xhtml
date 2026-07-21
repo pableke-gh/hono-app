@@ -8,7 +8,105 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<div class="card-xeco">
-		<h2>Titulo + codigo</h2>
+		<h2></h2>
+		<div class="ui-blocks">
+			<label class="ui-block">
+				<div class="label required">Tipo de Ayuda:</div>
+				<select name="tipo" is="data-list">
+					<option value="1">Becas Erasmus</option>
+					<option value="2">Otras becas y ayudas</option>
+					<option value="3">Premios</option>
+				</select>
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block-row">
+				<div class="label required">Denominación de la convocatoria o ayuda:</div>
+				<textarea name="memo" is="text-area"></textarea>
+				<div class="ui-errtip"></div>
+			</label>
+		</div>
+
+		<hr/>
+		<div class="ui-blocks">
+			<div class="ui-block-row">
+				<button type="button" is="btn-bases" class="btn btn-info"></button>
+				<input type="file" name="bases" is="file-input" accept="application/pdf" class="hide" /><span></span>
+				<div class="ui-errtip"></div>
+			</div>
+			<div class="ui-block-row">
+				<button type="button" is="btn-resolucion" class="btn btn-info"></button>
+				<input type="file" name="resolucion" is="file-input" accept="application/pdf" class="hide" /><span></span>
+				<div class="ui-errtip"></div>
+			</div>
+			<div class="ui-block-row">
+				<button type="button" is="btn-beneficiarios" class="btn btn-info"></button>
+				<input type="file" name="beneficiarios" is="file-input" accept=".xls, .xlsx" class="hide" /><span></span>
+				<div class="ui-errtip"></div>
+			</div>
+		</div>
+
+		<hr/>
+		<div class="ui-blocks">
+			<label class="ui-block">
+				<div class="label required">Fecha de la resolución de concesión:</div>
+				<input type="date" name="fResolucion" is="date-input" class="ui-input"/>
+			</label>
+			<label class="ui-block">
+				<div class="label required">Fecha máxima de pago:</div>
+				<input type="date" name="fPago" is="date-input" class="ui-input"/>
+			</label>
+			<label class="ui-block">
+				<div class="label required">Importe total concedido:</div>
+				<input type="text" name="total" is="float-input"/> €
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block-row">
+				<div class="label">Observaciones:</div>
+				<textarea name="desc" is="text-area"></textarea>
+				<div class="ui-errtip"></div>
+			</label>
+		</div>
+	</div>
+
+	<div class="card-xeco">
+		<h2>Detalle de beneficiarios</h2>
+		<div class="ui-blocks">
+			<label class="ui-block-xl autocomplete">
+				<div class="label required">Tercero (CIF / NIF / Nombre):</div>
+				<i class="fas fa-search ui-input-icon left"></i>
+				<input type="search" name="tercero" is="tercero-input" class="ui-autocomplete" tabindex="1" placeholder="Indique un tercero" />
+				<ul role="list" class="results"></ul>
+				<div class="ui-errtip"></div> 
+			</label>
+			<label class="ui-block">
+				<div class="label required">Importe concedido:</div>
+				<input type="text" name="imp" is="float-input"/> €
+				<div class="ui-errtip"></div>
+			</label>
+			<div class="ui-block-btn">
+				<button is="add-tercero" class="btn btn-green"><i class="fas fa-plus"></i>Añadir</button>
+				<a href="#tab-tercero" class="btn btn-warn" title="Alta de un nuevo tercero">
+					<i class="fas fa-plus-octagon"></i>Nuevo Tercero</a>
+			</div>
+		</div>
+
+		<table id="terceros" is="terceros-table" class="tb-xeco">
+			<thead>
+				<tr>
+					<th>NIF</th><th>Estado</th>
+					<th>Nombre</th><th>Primer Apellido</th><th>Segundo Apellido</th>
+					<th>País de Residencia</th><th>Domicilio</th><th>CP</th><th>Municipio</th>
+					<th>IBAN</th><th>Swift</th><th class="currency">Importe</th><th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr>
+					<td colspan="11" class="table-reload" data-reload="text-render">Terceros: @size;</td>
+					<td class="currency table-reload" data-reload="text-render">$importe; €</td><td></td>
+				</tr>
+			</tfoot>
+		</table>
 	</div>
 
 	<!-- Botones -->
@@ -18,23 +116,18 @@
 		<button type="submit" is="btn-save" class="btn btn-green" title="Poner solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right"></i></button>
 
-		<a href="#tab-action-reactivar" class="btn btn-warn form-refresh" data-refresh="isReactivable" title="Activa los campos modificables por la UAE">
-			<i class="fas fa-wrench"></i>Reactivar</a>
-		<button type="submit" is="btn-subsanar" class="btn btn-green" title="Guarda los cambios realizados">
-			<i class="far fa-save"></i>Subsanar</button>
+		<button is="btn-firmar" class="btn btn-green" title="#{msg['tit.btn.firmar']}">
+			<i class="far fa-file-signature"></i>#{msg['lbl.btn.firmar']}</button>
+		<button is="btn-rechazar" class="btn btn-error" title="#{msg['tit.btn.rechazar']}">
+			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.rechazar']}</button>
+		<button is="btn-cancelar" class="btn btn-error" title="#{msg['tit.btn.cancelar']}">
+			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</button>
 
-		<a href="#tab-action-firmar" class="btn btn-green form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.firmar']}">
-			<i class="far fa-file-signature"></i>#{msg['lbl.btn.firmar']}</a>
-		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isFirmable" title="#{msg['tit.btn.rechazar']}">
-			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.rechazar']}</a>
-		<a href="#tab-reject" class="btn btn-error form-refresh" data-refresh="isCancelable" title="#{msg['tit.btn.cancelar']}">
-			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</a>
+		<button is="btn-report" class="btn btn-danger" title="Informe de la solicitud">
+			<i class="fal fa-file-pdf"></i>Informe</button>
 
-		<a href="#tab-action-report" class="btn btn-danger form-refresh" data-refresh="isDocumentable" title="Informe PRESTO">
-			<i class="fal fa-file-pdf"></i>Informe</a>
-
-		<a href="#tab-action-remove" class="btn btn-danger form-refresh" data-refresh="isRemovable" title="Borra la solicitud del sistema"> 
-			<i class="fal fa-trash-alt"></i>Eliminar</a>
+		<button is="btn-remove" class="btn btn-danger" title="Borra la solicitud del sistema"> 
+			<i class="fal fa-trash-alt"></i>Eliminar</button>
 	</div>
 	<ui:include src="../parts/firmas.xhtml"></ui:include>
 </html>

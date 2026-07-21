@@ -30,7 +30,7 @@ export default class ButtonForm extends HTMLButtonElement {
 	// Validators
 	setOk() { return this; } // restore default styles
 	setError() { return this; } // set css class error
-	validate() { return true; }
+	validate() { return true; } // default validation
 
 	connectedCallback() { // init. component
 		if (this.execute) // execute action on click or default button behavior

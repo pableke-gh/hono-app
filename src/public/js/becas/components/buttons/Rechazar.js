@@ -20,7 +20,7 @@ export default class ButtonRechazar extends ButtonForm {
 
 		const row = this.form.getBecas().getCurrent(); // current row
 		const params = { id: row.id, rechazo: el.getValue() }; // url params
-		api.init().json("/uae/pedidos/rechazar", params).then(data => {
+		api.init().json("/uae/becas/rechazar", params).then(data => {
 			beca.rechazar(row); // update current row
 			this.form.close(data.firmas); // update view
 		});

@@ -7,15 +7,49 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; @codigo;</h2>
 	<div class="card-xeco">
+		<h2>Nuevo tercero</h2>
+		<div class="ui-blocks">
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.pais']}" escape="false" />:</div>
+				<select name="paises" is="paises-list">
+					<option value="ES">España</option>
+					<option value="GR">Inglaterra</option>
+				</select>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
+				<input type="text" name="banco" is="text-input" maxlength="50" />
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
+				<select name="entidades" is="data-list">
+					<c:forEach items="#{iris.gastos.entidades}" var="banco">
+						<option value="#{banco.value}">#{banco.label}</option>
+					</c:forEach>
+				</select>
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block-lg">
+				<div class="label required"><h:outputText value="#{msg['lbl.num.cuenta']}" escape="false" />:</div>
+				<input type="text" name="iban" is="text-input" maxlength="50" />
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block hide">
+				<div class="label">Swift:</div>
+				<input type="text" name="swift" is="text-input" maxlength="30" class="ui-code" />
+				<div class="ui-errtip"></div>
+			</label>
+			<div class="ui-block-row"><hr/></div>
+		</div>
 	</div>
 
 	<!-- Botones -->
 	<div class="navbar">
 		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
-		<button type="submit" is="btn-save" class="btn btn-green" title="Poner solicitud a la firma">
-			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right"></i></button>
+		<button type="button" is="create-tercero" class="btn btn-green" title="Añadir nuevo tercero a la solicitud">
+			Añadir tercero<i class="fas fa-plus"></i></button>
 	</div>
 </html>

@@ -53,6 +53,10 @@ export default class DataList extends HTMLSelectElement {
 	addListener(name, fn) { this.addEventListener(name, fn); return this; }
 	addChange(fn) { return this.addListener("change", fn); }
 
+	hide() { this.parentNode.classList.add("hide"); }
+	show() { this.parentNode.classList.remove("hide"); }
+	setVisible(visible) { visible ? this.show() : this.hide(); }
+
 	reset() { this.selectedIndex = 0; return this; } // force first option
 	clear() { this.innerHTML = this.#empty(); return this.setData(null).reset(); } // remove data and set first option
 	restart() { this.focus(); return this.reset(); } // set focus and force first option

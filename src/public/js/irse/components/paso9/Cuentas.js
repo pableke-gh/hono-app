@@ -7,8 +7,8 @@ import gastos from "../../model/Gastos.js";
 import DataList from "../../../components/inputs/DataList.js";
 
 export default class Cuentas extends DataList {
-	#paises = this.form.elements["paises"];
-	#iban = this.form.elements["iban"];
+	#paises = this.form.elements.paises;
+	#iban = this.form.elements.iban;
 
 	setEditable() {
 		this.setReadonly(!irse.isEditable());

@@ -10,9 +10,10 @@ export default class ButtonFirmar extends ButtonForm {
 	}
 
 	execute() {
-		const url = "/uae/pedidos/firmar?id=" + pedido.getId();
+		const row = this.form.getPedidos().getCurrent(); // current row
+		const url = "/uae/pedidos/firmar?id=" + row.id; // url de firma
 		i18n.confirm("msgFirmar") && api.init().json(url).then(data => {
-			pedido.setProcesando(); // update current state
+			pedido.procesando(row); // update current state
 			this.form.close(data.firmas); // update view
 		});
 	}

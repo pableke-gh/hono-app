@@ -28,7 +28,11 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
-				<input type="text" name="banco" is="text-input" maxlength="50" class="ui-paso9 hide" />
+				<input type="text" name="banco" is="text-input" maxlength="50" class="ui-paso9" />
+				<div class="ui-errtip"></div>
+			</label>
+			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
 				<h:selectOneMenu id="entidades" pt:is="data-list" styleClass="ui-paso9">
 					<f:selectItem itemValue="" itemLabel=""/>
 					<f:selectItems value="#{iris.gastos.entidades}" var="banco" itemValue="#{banco.value}" itemLabel="#{banco.label}"/>

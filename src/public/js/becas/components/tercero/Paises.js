@@ -1,22 +1,15 @@
 
 import sb from "../../../components/types/StringBox.js";
-import i18n from "../../i18n/langs.js";
-
-import irse from "../../model/Irse.js";
-import gastos from "../../model/Gastos.js";
-import DataList from "../../../components/inputs/DataList.js";
+import beca from "../../model/Beca.js";
+import DataList from "../../../core/components/forms/DataList.js";
 
 export default class Paises extends DataList {
 	#entidades = this.form.elements.entidades;
 	#banco = this.form.elements.banco;
 	#swift = this.form.elements.swift;
 
-	load() {
-		this.setValue(gastos.getPaisEntidad());
-	}
-
 	setEditable() {
-		this.setReadonly(!irse.isEditable());
+		this.setReadonly(!beca.isEditable());
 	}
 
 	setValue(pais) {
@@ -26,17 +19,9 @@ export default class Paises extends DataList {
 		this.#swift.setVisible(!es);
 		super.setValue(pais);
 	}
-	setEntidad(entidad) {
-		this.#entidades.setValue(entidad);
-	}
-	setGrupoIban() {
-		this.#entidades.setValue(gastos.getCodigoEntidad());
-		this.#banco.setValue(gastos.getNombreEntidad());
-		this.#swift.setValue(gastos.getSwift());
-	}
 
 	connectedCallback() { // init. component
-		this.setObject(i18n.getPaises()).addChange(ev => {
+		this.addChange(ev => {
 			this.setValue(ev.target.value);
 			this.#banco.setValue();
 		});

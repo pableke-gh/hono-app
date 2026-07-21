@@ -49,9 +49,8 @@ class Paso3 {
 			.setValue("justifiCong", gastos.getJustifiCong());
 	}
 	save() {
-		form.setChanged(); // update indicator
-		const data = form.getData(".ui-isu");
-		data.id = irse.getId(); // add current id
+		const data = form.setChanged().getData(".ui-isu");
+		data.id = irse.getId(); // add current id as request param
 		return api.setJSON(data).json("/uae/iris/isu/save");
 	}
 }

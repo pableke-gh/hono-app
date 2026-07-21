@@ -10,9 +10,10 @@ export default class ButtonFirmar extends ButtonForm {
 	}
 
 	execute() {
-		const url = "/uae/becas/firmar?id=" + beca.getId();
+		const row = this.form.getBecas().getCurrent(); // current row
+		const url = "/uae/becas/firmar?id=" + row.id; // url de firma
 		i18n.confirm("msgFirmar") && api.init().json(url).then(data => {
-			beca.setProcesando(); // update current state
+			beca.procesando(row); // update current state
 			this.form.close(data.firmas); // update view
 		});
 	}

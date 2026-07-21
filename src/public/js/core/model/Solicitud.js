@@ -38,23 +38,25 @@ export default class Solicitud extends Base {
 
 	isDisabled = () => !this.isEditable();
 	isReadonly = () => !this.isEditable();
+	setEditable = () => this.setEstado(6);
 	isEditable = () => (!this.getId() || (this.getEstado() == 6));
 	isPendiente = () => (this.getEstado() == 5); // Pendiente de las firmas
 	isAceptada = () => (this.getEstado() == 1); // Aceptada por todos los firmantes
 	isRechazada = () => (this.getEstado() == 2); // Rechazada no llega a estado finalizada
-	rechazar(data) { data.estado = 2; } // marco el estado de data como rechazado
+	rechazar(data) { data.estado = 2; return this; } // marco el estado de data como rechazado
 	setRechazada = () => this.rechazar(this.getData()); // marca la solicitud como rechazada
 	isEjecutada = () => (this.getEstado() == 3); // Documentos creados en uxxiec y asociados a la solicitud
 	isIntegrada = () => (this.getEstado() == 4); // Solicitud integrada en uxxiec y notificada a los firmantes
 	isCancelada = () => (this.getEstado() == 7); // Solicitud cancelada por la UAE
-	cancelar(data) { data.estado = 7; } // marco el estado de data como cancelada
+	cancelar(data) { data.estado = 7; return this; } // marco el estado de data como cancelada
 	setCancelada = () => this.cancelar(this.getData()); // marca la solicitud como cancelada
 	isCaducada = () => (this.getEstado() == 8); // Solicitud caducada por expiración
 	isErronea = () => ((this.getEstado() == 9) || (this.getEstado() == 10)); // estado de error
 	isReactivable = () => (this.isUae() && this.isErronea()); // La solicitud se puede reactivar / subsanar
 	//isProcesable = () => (this.getEstado() != PROCESANDO); // Solicitud en estado procesable
 	//isProcesando = () => (this.getEstado() == PROCESANDO); // Solicitud procesando tarea
-	setProcesando = () => this.setEstado(PROCESANDO); // solicitud ejecutando tarea
+	procesando(data) { data.estado = PROCESANDO; return this; } // marco el estado de data como procesando
+	setProcesando = () => this.procesando(this.getData()); // solicitud ejecutando/procesando tarea
 	isSubsanable = () => (this.getEstado() == SUBSANABLE); // Solicitud subsanable en el cliente
 	setSubsanable = () => this.setEstado(SUBSANABLE); // marca la solicitud como subsanable
 	//isModificable = () => (this.isEditable() || this.isSubsanable()); // la solicitud se puede modificar

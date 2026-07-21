@@ -20,8 +20,8 @@ export default class PedidosTable extends TableHTML {
 			i18n.confirm("msgIntegrar") && api.init().json(url).then(this.setWorking);
 		});
 
-		this.set("#view", form.load).set("#reject", form.reject).set("#report", this.report);
-		this.set("#firmar", data => { pedido.setData(data); form.firmar.execute(); });
+		this.set("#view", form.load).set("#firmar", () => form.firmar.execute())
+			.set("#reject", form.reject).set("#report", this.report);
 		this.set("isFirmable", (link, data) => pedido.setData(data).isFirmable())
 		this.set("isIntegrable", (link, data) => pedido.setData(data).isIntegrable())
 		this.set("update-estado", (td, data) => { // actualizo la celda del estado
