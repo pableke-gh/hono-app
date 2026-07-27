@@ -3,8 +3,10 @@ import api from "../../core/components/Api.js";
 import tabs from "../../core/components/tabs/Tabs.js";
 
 import beca from "../model/Beca.js";
+import tables from "../components/tables/tables.js";
 
 import Tercero from "./tercero.js";
+import Organica from "../components/Organica.js";
 import ButtonBases from "../components/buttons/Bases.js";
 import ButtonResolucion from "../components/buttons/Resolucion.js";
 import ButtonBeneficiarios from "../components/buttons/Beneficiarios.js";
@@ -22,6 +24,7 @@ export default class BecaForm extends FormHTML {
 	getRegistros = () => this.getBecas(); // tabla de solicitudes / registros
 
 	#load(firmas) {
+		tables.get("terceros").view();
 		Firmas.notify(firmas);
 		tabs.showForm(); // show form tab
 	}
@@ -66,6 +69,7 @@ export default class BecaForm extends FormHTML {
 }
 
 customElements.define("tab-tercero", Tercero, { extends: "div" });
+customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("btn-bases", ButtonBases, { extends: "button" });
 customElements.define("btn-resolucion", ButtonResolucion, { extends: "button" });
 customElements.define("btn-beneficiarios", ButtonBeneficiarios, { extends: "button" });

@@ -96,6 +96,7 @@ export default class Autocomplete extends TextInput {
 
 	isItem() { return (this.#index > -1); }
 	isLoaded() { return this.#value; }
+	isEmpty() { return !this.#value; }
 	getValue() { return this.#value; }
 	setval(value) { this.#value = value; return this; }
 	getLabel() { return this.value; }

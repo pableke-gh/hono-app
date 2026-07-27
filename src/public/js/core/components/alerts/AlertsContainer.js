@@ -7,52 +7,56 @@ export default class Alerts extends HTMLDivElement {
 	isOk() { return !this.isError() && this.children.some(alert => alert.isOk()); } // check if first alert is success
 	isError() { return this.children.some(alert => alert.isError()); } // check if any alert is error type
 
-	addOk(message) {
-		if (message) { // add only if message is not empty
-			const alert = this.lastElementChild; // get alert element
-			alert.setOk(message); // set message and style
-			this.prepend(alert); // move alert to top
-		}
+	#ok(message) {
+		const alert = this.lastElementChild; // get alert element
+		alert.setOk(message); // set message and style
+		this.prepend(alert); // move alert to top
 		return this; // for chaining
+	}
+	addOk(message) {
+		return message ? this.#ok(message) : this;
 	}
 	setOk(message) { // close all alerts and add success alert
-		return this.close().addOk(message);
+		return message ? this.close().#ok(message) : this;
 	}
 
-	addInfo(message) {
-		if (message) { // add only if message is not empty
-			const alert = this.lastElementChild;
-			alert.setInfo(message); // set message and style
-			this.prepend(alert);
-		}
+	#info(message) {
+		const alert = this.lastElementChild;
+		alert.setInfo(message); // set message and style
+		this.prepend(alert);
 		return this; // for chaining
+	}
+	addInfo(message) {
+		return message ? this.#info(message) : this;
 	}
 	setInfo(message) { // close all alerts and add info alert
-		return this.close().addInfo(message);
+		return message ? this.close().#info(message) : this;
 	}
 
-	addWarn(message) {
-		if (message) { // add only if message is not empty
-			const alert = this.lastElementChild;
-			alert.setWarn(message); // set message and style
-			this.prepend(alert);
-		}
+	#warn(message) {
+		const alert = this.lastElementChild;
+		alert.setWarn(message); // set message and style
+		this.prepend(alert);
 		return this; // for chaining
+	}
+	addWarn(message) {
+		return message ? this.#warn(message) : this;
 	}
 	setWarn(message) { // close all alerts and add warn alert
-		return this.close().addWarn(message);
+		return message ? this.close().#warn(message) : this;
 	}
 
-	addError(message) {
-		if (message) { // add only if message is not empty
-			const alert = this.lastElementChild;
-			alert.setError(message); // set message and style
-			this.prepend(alert);
-		}
+	#error(message) {
+		const alert = this.lastElementChild;
+		alert.setError(message); // set message and style
+		this.prepend(alert);
 		return this; // for chaining
 	}
+	addError(message) {
+		return message ? this.#error(message) : this;
+	}
 	setError(message) { // close all alerts and add error alert
-		return this.close().addError(message);
+		return message ? this.close().#error(message) : this;
 	}
 
 	show(messages) { // show multiple alerts at once

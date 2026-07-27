@@ -1,7 +1,7 @@
 import fs from "fs";
 import gulp from "gulp";
 import concat from "gulp-concat";
-import uglify from "gulp-terser";
+import terser from "gulp-terser";
 import htmlmin from "gulp-htmlmin";
 import cssnano from "gulp-cssnano";
 import transform from "gulp-transform";
@@ -108,12 +108,12 @@ gulp.task("minify-js", done => {
 	const fnRemoveWhitespace = contents => new Buffer(contents.toString().replace(/\s+/g, " "), "utf8"); // remove all whitespace   
 
 	fs.rmSync(JS_DEST, { recursive: true, force: true }); // Remove previous unused files
-	gulp.src(JS_FILES).pipe(uglify()).pipe(transform(fnRemoveWhitespace)).pipe(gulp.dest(JS_DEST)).on("end", () => {
+	gulp.src(JS_FILES).pipe(terser()).pipe(transform(fnRemoveWhitespace)).pipe(gulp.dest(JS_DEST)).on("end", () => {
 		deployCV("dist/public/js/**/*.js", CV, done); // deploy JS in Campus Virtual
 	});
 });
 gulp.task("minify-js-root", done => { // root js's
-	gulp.src(JS_ROOT).pipe(uglify()).pipe(gulp.dest("dist/public/js")).on("end", done);
+	gulp.src(JS_ROOT).pipe(terser()).pipe(gulp.dest("dist/public/js")).on("end", done);
 });
 
 // Tasks to create js modules

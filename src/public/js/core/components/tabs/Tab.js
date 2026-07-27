@@ -8,7 +8,8 @@ export default class Tab extends HTMLDivElement {
 
 	isLoaded = () => this.dataset.loaded; // check if tab is loaded
 	init() { this.dataset.loaded = "1"; } // mark tab as loaded
-	view() { } // optional event when tab is shown (after init)
+	beforeView() { } // optional event fire before tab si visible
+	afterView() { } // optional event fire when tab is visible
 
 	next() { tabs.next1(this); }
 	prev() { tabs.prev(); }

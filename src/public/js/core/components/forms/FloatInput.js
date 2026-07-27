@@ -27,14 +27,15 @@ export default class FloatInput extends TextInput {
 		return this;
 	}
 
-	validate() {
-		const required = this.getAttribute("required");
-		if (!required)
-			return !this.setOk(); // not required
+	force(msg) { // force required validation
 		if (!this.value) // empty value
-			return this.setRequired(); // empty required field
-		if (required == "gt0") // greater than 0 validation
+			return this.setRequired(msg); // empty required field
+		if (this.getAttribute("required") == "gt0") // greater than 0 validation
 			return (this.getValue() > 0) ? !this.setOk() : this.setError("errGt0");
 		return !this.setOk();
+	}
+	validate() {
+		const required = this.getAttribute("required");
+		return required ? this.force() : !this.setOk();
 	}
 }

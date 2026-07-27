@@ -1,11 +1,13 @@
 
+import alerts from "../../../core/components/alerts/Alerts.js";
+import i18n from "../../i18n/langs.js";
+
 // Register the custom element
 //customElements.define("text-area", TextArea, { extends: "textarea" });
 //Use in HTML: <textarea name="myTextArea" is="text-area" class="ui-input ..." />   
 export default class TextArea extends HTMLTextAreaElement {
-	constructor() {
+	constructor() { // Initialize the element
 		super(); // Must call super before 'this'
-		// Initialize the element
 		this.classList.add("ui-input", "ui-ta");
 	}
 
@@ -19,15 +21,32 @@ export default class TextArea extends HTMLTextAreaElement {
 	addListener(name, fn) { this.addEventListener(name, fn); return this; }
 	addChange(fn) { return this.addListener("change", fn); }
 
+	hide() { this.parentNode.classList.add("hide"); }
+	show() { this.parentNode.classList.remove("hide"); }
+	setVisible(visible) { visible ? this.show() : this.hide(); }
+
 	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); }
 	setReadonly(force) { this.classList.toggle("readonly", this.toggleAttribute("readonly", force)); }
 	setEditable(force) { this.form.isEditableManual(this) || this.setReadonly(!force); }
 
 	// Input Validators
-	setOk() { this.form.setOk(this); }
-	setError(tip, msg) { this.form.setError(this, tip, msg); }
+	#setTipError(tip) { // optional tag => not all inputs have tip element
+		const tipEl = this.parentNode.querySelector("." + this.form.dataset.tipErrorClass);
+		if (tipEl) tipEl.innerText = i18n.msg(tip);
+	}
+	setOk() {
+		this.#setTipError(""); // set optional tip-msg
+		this.classList.remove(this.form.dataset.errorClass);
+	}
+	setError(tip, msg) {
+		this.#setTipError(tip); // set optional tip-msg
+		this.classList.add(this.form.dataset.errorClass); // update styles
+		alerts.setError(msg); // global message
+		this.focus(); // set focus on error
+	}
 	setRequired(msg) { this.setError("errRequired", msg); }
 	setFormatError(msg) { this.setError("errFormat", msg); }
+
 	force(msg) { return (this.value ? !this.setOk() : this.setRequired(msg)); } // force required validation
 	validate() { return (this.required ? this.force() : !this.setOk()); } // optional o required with value
 }

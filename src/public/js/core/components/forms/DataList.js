@@ -1,4 +1,5 @@
 
+import alerts from "../../../core/components/alerts/Alerts.js";
 import sb from "../../../components/types/StringBox.js";
 import i18n from "../../i18n/langs.js";
 
@@ -8,9 +9,8 @@ import i18n from "../../i18n/langs.js";
 export default class DataList extends HTMLSelectElement {
 	#data;
 
-	constructor() {
+	constructor() { // Initialize the element HTML
 		super(); // Must call super before 'this'
-		// Initialize the element HTML
 		this.classList.add("ui-input", "ui-select");
 		this.setEmptyOption(this.dataset.empty || "selectOption");
 	}
@@ -78,6 +78,11 @@ export default class DataList extends HTMLSelectElement {
 			this.innerHTML += `<option value="${k}">${data[k]}</option>`;
 		return this.setData(data); // set data and fire change event
 	}
+	toObject() {
+		const data = {};
+		this.options.array.forEach(opt => { data[opt.value] = opt.innerText; });
+		return data;
+	}
 	setLabels(labels, isOptional) {
 		if (!labels) return this.clear(); // vacio el desplegable
 		const fnLabel = label => `<option value="${label}">${label}</option>`; // label list
@@ -102,10 +107,23 @@ export default class DataList extends HTMLSelectElement {
 	setEditable(force) { this.form.isEditableManual(this) || this.setReadonly(!force); }
 
 	// Validators
-	setOk() { this.form.setOk(this); }
-	setError(tip, msg) { this.form.setError(this, tip, msg); }
+	#setTipError(tip) { // optional tag => not all inputs have tip element
+		const tipEl = this.parentNode.querySelector("." + this.form.dataset.tipErrorClass);
+		if (tipEl) tipEl.innerText = i18n.msg(tip);
+	}
+	setOk() {
+		this.#setTipError(""); // set optional tip-msg
+		this.classList.remove(this.form.dataset.errorClass);
+	}
+	setError(tip, msg) {
+		this.#setTipError(tip); // set optional tip-msg
+		this.classList.add(this.form.dataset.errorClass); // update styles
+		alerts.setError(msg); // global message
+		this.focus(); // set focus on error
+	}
 	setRequired(msg) { this.setError("errRequired", msg); }
 	setFormatError(msg) { this.setError("errFormat", msg); }
+
 	force(msg) { return (this.value ? !this.setOk() : this.setRequired(msg)); } // force required validation
 	validate() { return (this.required ? this.force() : !this.setOk()); } // optional o required with value
 }

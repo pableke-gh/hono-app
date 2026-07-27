@@ -8,6 +8,7 @@ import Tercero from "../components/inputs/Tercero.js";
 import Organica from "../components/inputs/Organica.js";
 import AutocompleteRecibo from "../components/inputs/Recibo.js";
 import Face from "../components/inputs/Face.js";
+import Memoria from "../components/inputs/Memoria.js";
 import AutocompleteTTPP from "../components/lineas/AutocompleteTTPP.js";
 import AddLinea from "../components/lineas/AddLinea.js";
 import AddAllRecibos from "../components/lineas/AddAllRecibos.js";
@@ -51,6 +52,7 @@ customElements.define("tercero-input", Tercero, { extends: "input" });
 customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("recibo-input", AutocompleteRecibo, { extends: "input" });
 customElements.define("face-list", Face, { extends: "select" });
+customElements.define("memo-text", Memoria, { extends: "textarea" });
 
 customElements.define("ttpp-input", AutocompleteTTPP, { extends: "input" });
 customElements.define("add-linea", AddLinea, { extends: "button" });

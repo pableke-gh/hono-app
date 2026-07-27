@@ -113,14 +113,11 @@
 				<input type="text" id="op" name="op" is="text-input" maxlength="10" tabindex="12" class="ui-input" />
 				<div class="ui-errtip"></div> 
 			</label>
-		</div>
-
-		<div class="ui-blocks form-refresh" data-refresh="isMemo">
-		<label class="ui-block-row">
-			<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
-			<textarea id="memo" name="memo" is="text-area" data-editable="isEditableGaca" tabindex="13" maxlength="600" title="Observaciones de la factura"></textarea>
-			<div class="ui-errtip"></div>
-		</label>
+			<label class="ui-block-row">
+				<div class="label required"><h:outputText value="#{msg['lbl.observaciones']}" escape="false" />:</div>
+				<textarea id="memo" name="memo" is="memo-text" tabindex="13" maxlength="600" title="Observaciones de la factura"></textarea>
+				<div class="ui-errtip"></div>
+			</label>
 		</div>
 	</div>
 

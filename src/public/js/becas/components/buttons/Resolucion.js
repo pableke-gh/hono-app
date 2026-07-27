@@ -15,14 +15,14 @@ export default class ResolucionButton extends ButtonForm {
 	}
 	setEditable() {
 		if (beca.getResolucion())
-			this.setModeSelect();
-		else
 			this.setModeAdjunto();
+		else
+			this.setModeSelect();
 	}
 
 	validate() {
 		const file = this.form.elements.resolucion;
-		return file.isLoaded() || file.setRequired(this, "Debe adjuntar la resolución o acuerdo de la concesión");
+		return file.isLoaded() || file.setRequired("Debe adjuntar la resolución o acuerdo de la concesión");
 	}
 
 	connectedCallback() {

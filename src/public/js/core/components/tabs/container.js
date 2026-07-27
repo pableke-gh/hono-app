@@ -26,10 +26,11 @@ class Tabs {
 	#show(tab) {
 		if (!tab.isLoaded()) // init event indicator
 			tab.init(); // Fire once when show tab
-		tab.view(); // fires always when show tab
+		tab.beforeView(); // fires always before tab is visible
 		this.#tabs.forEach(tab => tab.setInactive()); // hide all tabs
 		tab.setActive(); // active current tab only
 		window.parent.scrollTo({ top: 0, behavior: "smooth" });
+		tab.afterView(); // fires always when tab is visible
 		return this;
 	}
 	show(id) {

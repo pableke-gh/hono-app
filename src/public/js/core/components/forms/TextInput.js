@@ -1,8 +1,10 @@
 
+import alerts from "../../../core/components/alerts/Alerts.js";
+import i18n from "../../i18n/langs.js";
+
 export default class TextInput extends HTMLInputElement {
-	constructor() {
+	constructor() { // Initialize the element
 		super(); // Must call super before 'this'
-		// Initialize the element
 		this.classList.add("ui-input");
 	}
 
@@ -31,10 +33,24 @@ export default class TextInput extends HTMLInputElement {
 	setEditable(force) { this.form.isEditableManual(this) || this.setReadonly(!force); }
 
 	// Validators
-	setOk() { this.form.setOk(this); }
-	setError(tip, msg) { this.form.setError(this, tip, msg); }
+	#setTipError(tip) { // optional tag for inputs
+		const selector = "." + this.form.dataset.tipErrorClass;
+		const tipEl = this.parentNode.querySelector(selector);
+		if (tipEl) tipEl.innerText = i18n.msg(tip);
+	}
+	setOk() {
+		this.#setTipError(""); // set optional tip-msg
+		this.classList.remove(this.form.dataset.errorClass);
+	}
+	setError(tip, msg) {
+		this.#setTipError(tip); // set optional tip-msg
+		this.classList.add(this.form.dataset.errorClass); // update styles
+		alerts.setError(msg); // global message
+		this.focus(); // set focus on error
+	}
 	setRequired(msg) { this.setError("errRequired", msg); }
 	setFormatError(msg) { this.setError("errFormat", msg); }
+
 	force(msg) { return (this.value ? !this.setOk() : this.setRequired(msg)); } // force required validation
 	validate() { return (this.required ? this.force() : !this.setOk()); } // optional o required with value
 }

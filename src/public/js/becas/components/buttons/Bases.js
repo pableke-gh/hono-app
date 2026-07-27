@@ -15,14 +15,14 @@ export default class BasesButton extends ButtonForm {
 	}
 	setEditable() {
 		if (beca.getBases())
-			this.setModeSelect();
-		else
 			this.setModeAdjunto();
+		else
+			this.setModeSelect();
 	}
 
 	validate() {
 		const file = this.form.elements.bases;
-		return file.isLoaded() || file.setRequired(this, "Debe adjuntar las bases de la convocatoria");
+		return file.isLoaded() || file.setRequired("Debe adjuntar las bases de la convocatoria");
 	}
 
 	connectedCallback() {

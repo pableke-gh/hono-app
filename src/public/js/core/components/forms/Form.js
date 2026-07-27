@@ -1,6 +1,5 @@
 
 import alerts from "../alerts/Alerts.js";
-import i18n from "../../i18n/langs.js";
 import observer from "../../util/Observer.js";
 
 import DataList from "./DataList.js";
@@ -63,10 +62,7 @@ export default class FormHTML extends HTMLFormElement {
 
 	setOk(input) { // accept input name or element
 		input = globalThis.isstr(input) ? this.elements[input] : input;
-		const tipEl = input.parentNode.querySelector("." + this.dataset.tipErrorClass);
-		if (tipEl) // is optional, not all inputs have tip element
-			tipEl.innerText = ""; // clear tip message
-		input.classList.remove(this.dataset.errorClass);
+		input.setOk(); // update input
 		return this;
 	}
 	closeAlerts() {
@@ -77,12 +73,7 @@ export default class FormHTML extends HTMLFormElement {
 	}
 	setError(input, tip, msg) { // accept input name or element
 		input = globalThis.isstr(input) ? this.elements[input] : input;
-		const tipEl = input.parentNode.querySelector("." + this.dataset.tipErrorClass);
-		if (tipEl) // is optional, not all inputs have tip element
-			tipEl.innerText = i18n.msg(tip);
-		input.classList.add(this.dataset.errorClass);
-		alerts.setError(msg); // global message
-		input.focus(); // set focus on error
+		input.setError(tip, msg); // update input and alerts
 		return this;
 	}
 	setRequired = (input, msg) => this.setError(input, "errRequired", msg);
@@ -120,7 +111,7 @@ export default class FormHTML extends HTMLFormElement {
 	notify(data) { observer.emit(this.dataset.loadedClass, data); return this; }
 
 	validate(selector) {
-		let ok = !!alerts.close(); // reset global message
+		let ok = this.closeAlerts(); // reset all errors
 		for (let i = this.elements.length - 1; i >= 0; i--) {
 			const el = this.elements[i]; // current input
 			ok = this.#matches(el, selector) ? (el.validate() && ok) : ok; // validate only selected inputs

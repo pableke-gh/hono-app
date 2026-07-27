@@ -19,27 +19,35 @@
 				</select>
 				<div class="ui-errtip"></div>
 			</label>
+			<label class="ui-block-xl autocomplete">
+				<div class="label required">Cual es la orgánica para la factura:</div>
+				<i class="fas fa-search ui-input-icon left"></i>
+				<input type="search" name="organica" is="organica-input" class="ui-autocomplete ui-beca" placeholder="Introduce una orgánica" />
+				<ul role="list" class="results"></ul>
+				<div class="ui-errtip"></div>
+			</label>
 			<label class="ui-block-row">
 				<div class="label required">Denominación de la convocatoria o ayuda:</div>
-				<textarea name="memo" is="text-area"></textarea>
+				<textarea name="memo" is="text-area" class="ui-beca" required="1"></textarea>
 				<div class="ui-errtip"></div>
 			</label>
 		</div>
 
-		<hr/>
+		<hr/> <!-- Adjuntos -->
 		<div class="ui-blocks">
 			<div class="ui-block-row">
-				<button type="button" is="btn-bases" class="btn btn-info"></button>
+				<button type="button" is="btn-bases" class="btn btn-info ui-beca"></button>
 				<input type="file" name="bases" is="file-input" accept="application/pdf" class="hide" /><span></span>
 				<div class="ui-errtip"></div>
 			</div>
 			<div class="ui-block-row">
-				<button type="button" is="btn-resolucion" class="btn btn-info"></button>
+				<button type="button" is="btn-resolucion" class="btn btn-info ui-beca"></button>
 				<input type="file" name="resolucion" is="file-input" accept="application/pdf" class="hide" /><span></span>
 				<div class="ui-errtip"></div>
 			</div>
 			<div class="ui-block-row">
-				<button type="button" is="btn-beneficiarios" class="btn btn-info"></button>
+				<button type="button" name="btnBeneficiarios" is="btn-beneficiarios" class="btn btn-info ui-beca"></button>
+				<a href="#" class="btn btn-error hide"><i class="fas fa-times"></i></a>
 				<input type="file" name="beneficiarios" is="file-input" accept=".xls, .xlsx" class="hide" /><span></span>
 				<div class="ui-errtip"></div>
 			</div>
@@ -57,7 +65,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe total concedido:</div>
-				<input type="text" name="total" is="float-input"/> €
+				<input type="text" name="total" is="float-input" required="gt0"/> €
 				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-row">
@@ -72,15 +80,15 @@
 		<h2>Detalle de beneficiarios</h2>
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
-				<div class="label required">Tercero (CIF / NIF / Nombre):</div>
+				<div class="label required">Beneficiario (CIF / NIF / Nombre):</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<input type="search" name="tercero" is="tercero-input" class="ui-autocomplete" tabindex="1" placeholder="Indique un tercero" />
+				<input type="search" name="tercero" is="ac-tercero" class="ui-autocomplete" placeholder="Indique un tercero" />
 				<ul role="list" class="results"></ul>
 				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe concedido:</div>
-				<input type="text" name="imp" is="float-input"/> €
+				<input type="text" name="imp" is="float-input" required="gt0"/> €
 				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn">
@@ -93,16 +101,16 @@
 		<table id="terceros" is="terceros-table" class="tb-xeco">
 			<thead>
 				<tr>
-					<th>NIF</th><th>Estado</th>
-					<th>Nombre</th><th>Primer Apellido</th><th>Segundo Apellido</th>
-					<th>País de Residencia</th><th>Domicilio</th><th>CP</th><th>Municipio</th>
-					<th>IBAN</th><th>Swift</th><th class="currency">Importe</th><th>Acciones</th>
+					<th>Nº</th><th>NIF</th><th>Estado</th><th>Nombre</th>
+					<th>País de Residencia</th><th>Domicilio</th><th>Municipio</th><th>CP</th>
+					<th>Entidad</th><th>IBAN</th><th>Swift</th>
+					<th class="currency">Importe</th><th>Acciones</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
 			<tfoot>
 				<tr>
-					<td colspan="11" class="table-reload" data-reload="text-render">Terceros: @size;</td>
+					<td colspan="11" class="table-reload" data-reload="text-render">Beneficiarios: @size;</td>
 					<td class="currency table-reload" data-reload="text-render">$importe; €</td><td></td>
 				</tr>
 			</tfoot>

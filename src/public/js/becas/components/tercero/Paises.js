@@ -2,9 +2,10 @@
 import sb from "../../../components/types/StringBox.js";
 import beca from "../../model/Beca.js";
 import DataList from "../../../core/components/forms/DataList.js";
+import paises from "../../data/paises.js";
 
 export default class Paises extends DataList {
-	#entidades = this.form.elements.entidades;
+	#entidad = this.form.elements.entidad;
 	#banco = this.form.elements.banco;
 	#swift = this.form.elements.swift;
 
@@ -12,21 +13,32 @@ export default class Paises extends DataList {
 		this.setReadonly(!beca.isEditable());
 	}
 
-	setValue(pais) {
+	#update(pais) {
 		const es = !pais || (pais == "ES");
-		this.#entidades.setVisible(es);
+		this.#entidad.setVisible(es);
 		this.#banco.setVisible(!es);
 		this.#swift.setVisible(!es);
-		super.setValue(pais);
+		this.#banco.setValue(es ? this.#entidad.getText() : "");
+	}
+	setValue(pais) { super.setValue(pais).#update(pais); }
+	reset() { super.reset().#update(this.value); }
+
+	isEs() { return this.value == "ES"; }
+	isExtranjero() { return !this.isEs(); }
+
+	validate() {
+		if (this.isExtranjero())
+			this.#swift.force("Debe indicar el swift de la cuenta bancaria del beneficiario");
+		const ok = this.#banco.force("Debe indicar el nombre de la entidad bancaria del beneficiario");
+		return this.form.elements.iban.force("Debe indicar el IBAN del beneficiario") && ok;
 	}
 
 	connectedCallback() { // init. component
-		this.addChange(ev => {
-			this.setValue(ev.target.value);
-			this.#banco.setValue();
-		});
-
-		this.#entidades.addEventListener("change", ev => this.#banco.setValue(this.#entidades.getText()));
-		this.#swift.addEventListener("change", ev => { ev.target.value = sb.toWord(ev.target.value); });
+		this.setObject(paises);
+		this.form.elements.residencia.innerHTML = this.innerHTML;
+		this.#entidad.addEventListener("change", ev => this.#banco.setValue(this.#entidad.getText()));
+		this.form.elements.iban.addEventListener("change", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
+		this.#swift.addEventListener("change", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
+		this.addChange(ev => this.setValue(ev.target.value));
 	}
 }

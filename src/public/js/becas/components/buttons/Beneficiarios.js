@@ -1,5 +1,6 @@
 
 import beca from "../../model/Beca.js";
+import tables from "../tables/tables.js";
 import ButtonForm from "../../../core/components/forms/ButtonForm.js";
 
 export default class BeneficiariosButton extends ButtonForm {
@@ -15,16 +16,35 @@ export default class BeneficiariosButton extends ButtonForm {
 	}
 	setEditable() {
 		if (beca.getBeneficiarios())
-			this.setModeSelect();
-		else if (beca.isEditable())
 			this.setModeAdjunto();
+		else if (beca.isEditable())
+			this.setModeSelect();
 		else
 			this.hide();
+		this.nextElementSibling.classList.add("hide");
+	}
+
+	validate() {
+		const terceros = tables.get("terceros");
+		const file = this.form.elements.beneficiarios;
+		return file.isLoaded() || terceros.size() || file.setRequired("Debe indicar quienes son los beneficiarios de la solicitud");
 	}
 
 	connectedCallback() {
-		this.addEventListener("click", ev => {
-			this.form.elements.beneficiarios.click();
+		const remove = this.nextElementSibling;
+		const file = this.form.elements.beneficiarios;
+		const anexo = tables.get("terceros").parentNode;
+
+		this.addEventListener("click", ev => file.click());
+		file.addEventListener("change", ev => {
+			anexo.classList.toggle("hide", file.isLoaded());
+			remove.classList.toggle("hide", !file.isLoaded());
+		});
+		remove.addEventListener("click", ev => {
+			anexo.classList.remove("hide");
+			remove.classList.add("hide");
+			ev.preventDefault();
+			file.reset();
 		});
 	}
 }
