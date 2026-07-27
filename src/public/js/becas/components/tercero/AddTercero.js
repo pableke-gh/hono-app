@@ -6,7 +6,7 @@ import tables from "../tables/tables.js";
 import beca from "../../model/Beca.js";
 import tercero from "../../model/Tercero.js";
 
-export default class ButtonAddTercero extends ButtonForm {
+export default class AddTercero extends ButtonForm {
 	setEditable() {
 		this.setVisible(beca.isEditable());
 	}

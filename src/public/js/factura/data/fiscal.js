@@ -122,6 +122,6 @@ const FACTURAS = {
 
 export default {
 	getTtppEmpresa: () => TTPP_EMPRESA,
-	get: (key, subtipo) => (FACTURAS[key + subtipo] || DEFAULT_FACT),
-	getCartaPago: subtipo => ((subtipo == 27) ? MECENAZGO : CARTA_PAGO)
+	getCartaPago: subtipo => ((subtipo == 27) ? MECENAZGO : CARTA_PAGO),
+	get: (key, subtipo) => (FACTURAS[key + subtipo] || DEFAULT_FACT)
 }

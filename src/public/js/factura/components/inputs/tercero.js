@@ -2,6 +2,7 @@
 import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 import api from "../../../core/components/Api.js";
 import factura from "../../model/Factura.js";
+import tercero from "../../model/Tercero.js";
 import form from "../../modules/factura.js";
 import fiscalidad from "../../data/fiscal.js"
 
@@ -31,17 +32,12 @@ export default class Tercero extends AutocompleteHTML {
 		return super.reset();
 	}
 
-	#fiscalidad(tercero) {
+	#fiscalidad(data) {
 		if (factura.isCartaPago()) // no es facturable
 			return fiscalidad.getCartaPago(factura.getSubtipo());
 		if (factura.isTtppEmpresa())
 			return fiscalidad.getTtppEmpresa(); // TTPP a empresa
-		let key = "c" + tercero.imp; //caracter => persona fisica=1, persona juridica=2, est. publico=3
-		key += (tercero.int & 256) ? "ep" : "no"; // Establecimiento permanente
-		const ep_es = (tercero.int & 128) || (tercero.int & 256); //Establecimiento permanente o Residente
-		// Residente en la peninsula=es, ceuta-melillacanarias=np, comunitario=ue, resto del mundo=zz
-		key += ep_es ? ((tercero.int & 2048) ? "es" : "np") : ((tercero.int & 2) ? "ue" : "zz");
-		return fiscalidad.get(key, factura.getSubtipo()); // complete key
+		return fiscalidad.get(tercero.getKeyFiscal(data), factura.getSubtipo()); // complete key
 	}
 	setTercero(tercero) { // actualizo la fiscalidad
 		if (!tercero) return; // nada que modificar

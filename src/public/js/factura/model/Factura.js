@@ -42,8 +42,8 @@ class Factura extends Solicitud {
 
 	isConceptos = () => !this.isTtppEmpresa();
 	isGrupoFace = () => (this.isFacturable() && !this.isTtppEmpresa());
-	isFace = () => (this.get("face") == 1); //factura electronica FACe
-	isPlataforma = () => (this.get("face") == 2); //factura electronica Otras
+	isFace = () => (this.isGrupoFace() && (this.get("face") == 1)); //factura electronica FACe
+	isPlataforma = () => (this.isGrupoFace() && (this.get("face") == 2)); //factura electronica Otras
 	setFace = val => this.set("face", val); // update plataforma / FACe
 }
 

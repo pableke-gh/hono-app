@@ -12,9 +12,9 @@ export default class Face extends DataList {
 		organoGestor.previousElementSibling.innerHTML = factura.isPlataforma() ? "Nombre de la plataforma" : "Órgano Gestor";
 
 		// show / hide grupo face
-		this.form.elements.oc.setVisible(factura.isGrupoFace()); // oficina contable
-		this.form.elements.ut.setVisible(factura.isGrupoFace()); // unidad tramitadora
-		this.form.elements.op.setVisible(factura.isGrupoFace()); // organo proponente
+		this.form.elements.oc.setVisible(factura.isFace()); // oficina contable
+		this.form.elements.ut.setVisible(factura.isFace()); // unidad tramitadora
+		this.form.elements.op.setVisible(factura.isFace()); // organo proponente
 		this.setVisible(factura.isGrupoFace()); // tipo de plataforma
 	}
 
@@ -24,6 +24,6 @@ export default class Face extends DataList {
 
 	connectedCallback() {
 		observer.subscribe("form-updated", this.update); // update state of face inputs
-		this.addChange(ev => { factura.setFace(+ev.target.value); form.refresh(factura); });
+		this.addChange(ev => { factura.setFace(+ev.target.value); this.update(); });
 	}
 }
