@@ -36,7 +36,6 @@ class Factura extends Solicitud {
 
 	getIva = () => this.get("iva");
 	setIva = imp => this.set("iva", imp ?? 0);
-	setNifTercero = nif => this.set("nif", nif); 
 	getImpIva = () => 0; // importes calculados default = 0
 	getImpTotal = () => 0; // importes calculados default = 0
 

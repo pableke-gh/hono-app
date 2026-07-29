@@ -1,4 +1,8 @@
 
+// id provincia => 42=GRAN CANARIA, 43=SANTA CRUZ DE TENERIFE, 61=CEUTA, 63=MELILLA
+// codigo prov. => 35=GRAN CANARIA, 38=SANTA CRUZ DE TENERIFE, 51=CEUTA, 52=MELILLA
+//const NO_PENINSULA = [ 35, 38, 51, 52 ];
+
 export default {
 	"01": "ÁLAVA",
 	"02": "ALBACETE",
@@ -19,7 +23,6 @@ export default {
 	"14": "CÓRDOBA",
 	"15": "CORUÑA, LA",
 	"16": "CUENCA",
-	"0": "DESCONOCIDA",
 	"17": "GIRONA",
 	"35": "GRAN CANARIA",
 	"18": "GRANADA",

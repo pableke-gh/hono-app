@@ -1,5 +1,6 @@
 
 import coll from "../components/CollectionHTML.js";
+import sb from "../components/types/StringBox.js";
 import tabs from "../core/components/tabs/TabsOld.js";
 
 import factura from "./model/Factura.js";
@@ -12,7 +13,8 @@ coll.ready(() => { // init. fact modules
 	const fnShowFactUae = () => factura.isUae() && factura.isFacturable();
 	form.init().set("show-factura-uae", fnShowFactUae);
 
-	const fnBuild = (tipo, subtipo) => ({ solicitud: { tipo, subtipo, imp: 0, iva: 0 } });
+	const ej = sb.getYear(); // current year
+	const fnBuild = (tipo, subtipo) => ({ solicitud: { ej, tipo, subtipo, imp: 0, iva: 0 } });
 	tabs.setAction("factura", () => form.create(fnBuild(1, 14))); // create factura
 	tabs.setAction("cartap", () => form.create(fnBuild(3, 13))); // create carta de pago
 	//tabs.setAction("ttpp", () => form.create(fnBuild(6, 25))); // TTPP a empresa

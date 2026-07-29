@@ -7,16 +7,14 @@ import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 
 export default class AutocompleteTTPP extends AutocompleteHTML {
 	update = () => { // final arrow function
-		this.parentNode.classList.toggle("hide", !factura.isTtppEmpresa());
+		this.setVisible(factura.isTtppEmpresa());
 		this.parentNode.parentNode.classList.toggle("hide", !factura.isEditable());
-
-		const impLinea = this.parentNode.previousElementSibling;
-		impLinea.classList.toggle("hide", !factura.isConceptos());
-		impLinea.previousElementSibling.classList.toggle("hide", !factura.isConceptos());
+		this.form.elements.desc.setVisible(factura.isConceptos());
+		this.form.elements.imp.setVisible(factura.isConceptos());
 	}
 
 	setEditable() {
-		this.setDisabled(!factura.isTtppEmpresa());
+		this.setDisabled(!factura.isEditable());
 	}
 
 	source() {

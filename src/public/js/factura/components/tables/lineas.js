@@ -41,6 +41,7 @@ export default class Lineas extends TableHTML {
 
 	setIva(iva) { // actualizo el iva y el total
 		factura.setIva(iva); // set new iva value
+		form.getElement("iva").setValue(iva);
 		this.afterRender().reloadFooter()
 	}
 }

@@ -7,6 +7,7 @@ import factura from "../model/Factura.js";
 import Tercero from "../components/inputs/Tercero.js";
 import Organica from "../components/inputs/Organica.js";
 import AutocompleteRecibo from "../components/inputs/Recibo.js";
+import Economica from "../components/inputs/Economica.js";
 import Face from "../components/inputs/Face.js";
 import Memoria from "../components/inputs/Memoria.js";
 import AutocompleteTTPP from "../components/lineas/AutocompleteTTPP.js";
@@ -30,7 +31,6 @@ class Factura extends Solicitud {
 	}
 
 	onView(data) {
-		//this.getElement("tercero").setTercero(data.tercero);
 		this.getLineas().render(data.lineas); // render table
 	}
 
@@ -51,6 +51,7 @@ class Factura extends Solicitud {
 customElements.define("tercero-input", Tercero, { extends: "input" });
 customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("recibo-input", AutocompleteRecibo, { extends: "input" });
+customElements.define("eco-list", Economica, { extends: "select" });
 customElements.define("face-list", Face, { extends: "select" });
 customElements.define("memo-text", Memoria, { extends: "textarea" });
 

@@ -62,10 +62,10 @@
 			</label>
 		</div>
 
-		<div class="ui-blocks form-refresh" data-refresh="isUae">
+		<div class="ui-blocks">
 			<label class="ui-block-xl">
 				<div class="label required">Económica:</div>
-				<select name="economica" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="7">
+				<select name="idEco" is="eco-list" tabindex="7">
 					<option value="">Seleccione una económica</option>
 					<c:forEach items="#{fact.form.economicas}" var="eco">
 						<option value="#{eco.value}">#{eco.label}</option>

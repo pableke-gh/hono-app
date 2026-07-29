@@ -19,7 +19,7 @@ class FacturaValidators extends Validators {
 			this.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
 		}*/
 		if (factura.isUae()) // economica required
-			this.size10("economica", data.economica, "Debe asociar una económica de ingreso a la solicitud.");
+			this.isKey("idEco", data.idEco, "Debe asociar una económica de ingreso a la solicitud.");
 		if (factura.isTtppEmpresa()) // Required string
 			this.size("memo", data.memo, "Debe indicar las observaciones asociadas a la factura.");
 		if (factura.isFace())

@@ -18,14 +18,15 @@ export default class Terceros extends TableHTML {
 	}
 
 	row(data, i, resume) {
-		const estado = [ "text-green", "text-error", "text-warn" ]; // style css
+		const estado = tercero.buildEstado(data); // indice de estado
+		const cssEstado = [ "text-warn", "text-green", "text-error" ]; // style css
 		const remove = beca.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red" title="Eliminar beneficiario"></a>' : "";
 
 		resume.importe += data.imp;
 		return `<tr class="tb-data">
 			<td class="text-center">${resume.count}</td>
 			<td>${data.nif}</td>
-			<td class="${estado[data.estado]}">${i18n.getItem("descEstados", data.estado)}</td>
+			<td class="${cssEstado[estado]}">${i18n.getItem("descEstados", estado)}</td>
 			<td>${tercero.buildName(data)}</td>
 			<td>${paises[data.residencia]}</td><td>${data.dir}</td><td>${data.mun || ""}</td><td>${data.cp || ""}</td>
 			<td>${data.banco || "-"}</td><td>${data.iban || "-"}</td><td>${data.swift || "-"}</td>

@@ -5,7 +5,7 @@ import doc from "../../i18n/Documento.js";
 
 export default class NifTercero extends TextInput {
 	connectedCallback() {
-		this.addEventListener("change", ev => {
+		this.addChange(ev => {
 			ev.target.value = sb.toUpperWord(ev.target.value);
 
 			if (doc.isDni(this.value) || doc.isCif(this.value))

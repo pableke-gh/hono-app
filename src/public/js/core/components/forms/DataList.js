@@ -27,7 +27,7 @@ export default class DataList extends HTMLSelectElement {
 	isEmpty = () => !this.#data;
 
 	getOption = () => this.options[this.getIndex()]; // current option element
-	getText = () => this.getOption()?.innerHTML; // current option text
+	getText = () => this.getOption()?.innerText; // current option text
 	getCode = sep => sb.getCode(this.getText(), sep);
 	select(mask) {
 		const option = this.getOption(); //get current option
@@ -38,13 +38,11 @@ export default class DataList extends HTMLSelectElement {
 	}
 
 	getValue = () => this.value;
-	setValue(value) {
-		this.value = value; // force select an option
-		this.selectedIndex = Math.max(0, this.selectedIndex);
-		return this;
-	}
+	setIndex(index) { this.selectedIndex = Math.max(0, index); return this; }  // force select an option
+	setValue(value) { this.value = value; return this.setIndex(this.selectedIndex); }
 	getValues = () => Array.from(this.options).map(option => option.value);
 	getLabels = () => Array.from(this.options).map(option => option.innerText);
+	//getCodes = () => Array.from(this.options).map(option => sb.getCode(option.innerText));
 	toData(data) { data[this.name] = this.getValue(); return this; }
 	toFormData(fd) { fd.append(this.name, this.getValue()); return this; }
 
