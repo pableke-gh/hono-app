@@ -42,7 +42,9 @@
 			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
-		<form id="solicitud" method="post" data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}" data-admin="#{fact.user.adminFlag}">
+		<form id="solicitud" method="post"
+				data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}" data-admin="#{fact.user.adminFlag}"
+				data-error-class="ui-error" data-tip-error-class="ui-errtip">
 			<!-- Form factura -->
 			<div id="tab-form" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>

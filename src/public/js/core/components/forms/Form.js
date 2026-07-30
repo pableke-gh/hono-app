@@ -100,7 +100,7 @@ export default class FormHTML extends HTMLFormElement {
 			if (this.#matches(el, selector)) {
 				el.setValue(data[el.name]); // load value
 				el.setEditable(editable); // recalc. if editable
-				this.setOk(el); // reset input state
+				el.setOk(); // reset input state
 			}
 		});
 		return this.setChanged(false).notify(data);
