@@ -1,14 +1,44 @@
 
-html { color-scheme: dark light; font-family: system-ui, sans-serif; }
+:root {
+	color-scheme: light dark;
+
+	/*--font-size-base: 16px;*/
+	--text-color: light-dark(#13151a, #f9fafb); /* text-color */
+	--bg-color: light-dark(#f9fafb, #13151a); /* background-color */
+
+	--primary-color: light-dark(#2563eb, #1d4ed8); /* primary-color */
+	--secondary-color: light-dark(#6c757d, #adb5bd); /* secondary-color */
+	--light-color: light-dark(#e3e3e3, #1f2937); /* light-color */
+	--info-color: light-dark(#2196F3, #0ea5e9); /* info-color */
+	--green-color: light-dark(#16a34a, #15803d); /* green-color */
+	--success-color: light-dark(#05a66a, #04775a); /* success-color */
+	--warn-color: light-dark(#ffc107, #facc15); /* warn-color */
+	--error-color: light-dark(#dc2626, #b91c1c); /* error-color */
+	--danger-color: light-dark(#912c2d, #741b2a); /* danger-color */
+	--dark-color: light-dark(#1f2937, #374151); /* dark-color */
+
+	/*  light dark gradients  */
+	--light-grad: linear-gradient(135deg, var(--bg-color) 20%, tomato);
+	--dark-grad: linear-gradient(45deg, var(--bg-color) 30%, gold);
+}
+
+.light { color-scheme: light; } /* forces light color-scheme */
+.dark { color-scheme: dark; } /* forces dark color-scheme */
+
 body {
 	display: flex; flex-direction: column;
 	width: 100%; min-height: 100vh; margin: 0;
-	color: #13151A; background-color: rgb(249 250 251);
+
+	font-family: system-ui, sans-serif;
+	color: var(--text-color);
+	background-color: var(--bg-color);
 }
+
 main {
 	margin: 0 auto; padding: min(1rem, 1%);
 	width: clamp(420px, 90%, 1200px);
 }
+
 footer { position: relative; margin-top: auto; }
 footer > .info {
 	margin: 0 auto; padding: min(1rem, 1%);
@@ -72,31 +102,3 @@ img.inline { display: inline-block; width: 24px; height: auto; }
 .icon-yellow, .icon-warn { color: rgb(253 224 71)/* yellow-300 */; }
 .icon-red, .icon-error { color: red; }
 /* Icons */
-
-/* Extra small devices (portrait phones, less than 576px) */
-@media screen and (max-width: 575.98px) {
-	main { width: 98%; padding: 4px;}
-	footer > .info { width: 98%; padding: 4px; }
-
-	.hide-xs, .hide-sm, .hide-md, .hide-lg { display: none !important; }
-    .action { font-size: large; }
-
-	/* CV specific styles */
-	.layout-wrapper .layout-main .layout-content { padding: 4px; }
-}
-/* Small devices (landscape phones, 576px and up) */
-@media screen and (min-width: 576px) and (max-width: 767.98px) {
-	.hide-sm, .hide-md, .hide-lg, .show-xs { display: none !important; }
-}
-/* Medium devices (tablets, 768px and up) */
-@media screen and (min-width: 768px) and (max-width: 991.98px) {
-	.hide-md, .hide-lg, .show-xs, .show-sm { display: none !important; }
-}
-/* Large devices (desktops, 992px and up) */
-@media screen and (min-width: 992px) and (max-width: 1199.98px) {
-	.hide-lg, .show-xs, .show-sm, .show-md { display: none !important; }
-}
-/* Extra large devices (large desktops, 1200px and up) */
-@media screen and (min-width: 1200px) {
-	.hide-xl, .show-xs, .show-sm, .show-md, .show-lg { display: none !important; }
-}

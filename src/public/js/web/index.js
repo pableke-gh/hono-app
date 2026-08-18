@@ -10,11 +10,25 @@ import firmas from "./data/firmas.json" with { type: "json" };
 document.addEventListener("DOMContentLoaded", () => {
 	Firmas.notify(firmas); // emit firmas data for testing
 
-	const testForm = document.forms["test-form"];
-	document.querySelector("a[href='#load-1']").addEventListener("click", () => {
+	/*** Light / dark mode detection ***/
+	document.documentElement.classList.remove("light", "dark");
+	const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+	const theme = darkModeQuery.matches ? "dark" : "light";
+	document.documentElement.classList.add(theme); // Initial check
+
+	// Listen for changes
+	darkModeQuery.addEventListener("change", ev => {
+		const newTheme = ev.matches ? "dark" : "light";
+		document.documentElement.classList.remove("light", "dark");
+		document.documentElement.classList.add(newTheme);
+	});
+	/*** Light / dark mode detection ***/
+
+	const testForm = document.forms.ftest;
+	document.querySelector('a[href="#load-1"]').addEventListener("click", () => {
 		testForm.load({ id: 1, pet: "chicken" }); // show form tab
 	});
-	document.querySelector("a[href='#load-2']").addEventListener("click", () => {
+	document.querySelector('a[href="#load-2"]').addEventListener("click", () => {
 		testForm.load({ id: 2, pet: "dog" }); // show form tab
 	});
 });

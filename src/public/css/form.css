@@ -51,7 +51,7 @@
 .ui-check { max-width: 20px; margin: 0 1px; }
 input[type="checkbox"]:hover { cursor: pointer; }
 
-.ui-toggle {
+/*.ui-toggle {
     appearance: none;
     position: relative;
     display: inline-block;
@@ -79,12 +79,13 @@ input[type="checkbox"]:hover { cursor: pointer; }
     transform: translateX(0rem);
 }
 .ui-toggle:checked { background: green; }
-.ui-toggle:checked::before { transform: translateX(1rem); }
+.ui-toggle:checked::before { transform: translateX(1rem); }*/
 
 .ui-bool, .ui-xs { width: 60px; }
-.ui-time-sec, .ui-sm { width: 90px; }
-.ui-date, .ui-md { width: 140px; }
+.ui-small, .ui-sm { width: 90px; }
+.ui-medium, .ui-md { width: 140px; }
 
+.ui-date { box-sizing: border-box; } /* Explicit to override browser defaults */
 input[type="time"]::-webkit-calendar-picker-indicator { display: none; } /*remove icon from timer*/
 input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: pointer; }
 
@@ -97,7 +98,7 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 /* Inputs icon styles */
 .ui-input-icon {
     position: absolute; height: 40px; /* same height than ui-input */
-    color: rgb(107 114 128); opacity: .8; z-index: 2;
+    color: #6b7280; opacity: .8; z-index: 2;
 }
 
 .ui-input-icon.left { top: 31px; left: .5rem; }
@@ -112,11 +113,11 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 /* Inputs error styles */
 .ui-error { border: 2px solid #dc3545; /*background-color: #fcebeb;*/ }
 .ui-error:focus { border: 2px solid tomato; caret-color: #e32; }
-.ui-errtip { margin-top: 0; font-size: 0.75rem/* 12px */; line-height: 1rem/* 16px */; font-style: italic; color: rgb(239 68 68); }
+.ui-errtip { margin-top: 0; font-size: 0.75rem/* 12px */; line-height: 1rem/* 16px */; font-style: italic; color: var(--error-color); }
+label[data-tip]::after { display: block; content: attr(data-tip); color: var(--error-color); }
 /* Inputs error styles */
 
 /* Autocomplete */
-input[type="search"]::-webkit-search-cancel-button { filter: invert(0); }
 input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); cursor: pointer; }
 .autocomplete {
 	position: relative;
@@ -156,24 +157,4 @@ input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); c
 	.options.active { display: block; min-width: 100%; z-index: 3; }
 	.options li:hover { color: white; background-color: #2196f3; }
 	.options li { padding: 3px; white-space: nowrap; transition: background-color 0.3s, color 0.3s; }
-}
-
-/* Extra small devices (portrait phones, less than 576px) */
-@media screen and (max-width: 575.98px) {
-    .label.inline { width: 100%; }
-	.ui-block-md, .ui-block-lg, .ui-block-xl { min-width: 100%; }
-}
-/* Small devices (landscape phones, 576px and up) */
-@media screen and (min-width: 576px) and (max-width: 767.98px) {
-    .label.inline { width: 100%; }
-}
-/* Medium devices (tablets, 768px and up) */
-@media screen and (min-width: 768px) and (max-width: 991.98px) {
-    .label.inline { width: 100%; }
-}
-/* Large devices (desktops, 992px and up) */
-@media screen and (min-width: 992px) and (max-width: 1199.98px) {
-}
-/* Extra large devices (large desktops, 1200px and up) */
-@media screen and (min-width: 1200px) {
 }

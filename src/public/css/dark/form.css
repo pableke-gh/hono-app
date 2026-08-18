@@ -9,7 +9,4 @@ html.dark {
 	.ui-input-icon { color: rgb(243 244 246)/* gray-100 */; }
 	.autocomplete .results { background-color: #ccc; }
 	.multiselect .options { background-color: #ccc; }
-
-	input::-webkit-calendar-picker-indicator { filter: invert(1); } /* white color */
-	input[type="search"]::-webkit-search-cancel-button { filter: invert(1); } /* white color */
 }

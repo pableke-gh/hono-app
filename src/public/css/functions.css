@@ -1,0 +1,12 @@
+
+@function --transparent(--color <color>, --alpha type(<number> | <percentage>)) returns <color> {
+	result: oklch(from var(--color) l c h / var(--alpha));
+}
+
+/* Modificar la luminosidad de un color base */
+@function --lighter(--color <color>, --amount <number> : 10) returns <color> {
+	result: lch(from var(--color) calc(l + var(--amount)) c h);
+}
+@function --darker(--color <color>, --amount <number> : 10) returns <color> {
+	result: lch(from var(--color) calc(l - var(--amount)) c h);
+}

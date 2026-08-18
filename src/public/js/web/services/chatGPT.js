@@ -1,4 +1,3 @@
-import { type } from "os";
 
 class ChatGPT {
 	async request(contents) {

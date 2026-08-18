@@ -1,7 +1,7 @@
 
 html.dark {
 	.dropdown > .list {
-		background-color: rgb(75, 80, 87);
+		background-color: #4b5057;
 		border-color: #ccc;
 	}
 }

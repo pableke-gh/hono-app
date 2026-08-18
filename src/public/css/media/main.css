@@ -1,0 +1,28 @@
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media screen and (max-width: 575.98px) {
+	main { width: 98%; padding: 4px;}
+	footer > .info { width: 98%; padding: 4px; }
+
+	.hide-xs, .hide-sm, .hide-md, .hide-lg { display: none !important; }
+    .action { font-size: large; }
+
+	/* CV specific styles */
+	.layout-wrapper .layout-main .layout-content { padding: 4px; }
+}
+/* Small devices (landscape phones, 576px and up) */
+@media screen and (min-width: 576px) and (max-width: 767.98px) {
+	.hide-sm, .hide-md, .hide-lg, .show-xs { display: none !important; }
+}
+/* Medium devices (tablets, 768px and up) */
+@media screen and (min-width: 768px) and (max-width: 991.98px) {
+	.hide-md, .hide-lg, .show-xs, .show-sm { display: none !important; }
+}
+/* Large devices (desktops, 992px and up) */
+@media screen and (min-width: 992px) and (max-width: 1199.98px) {
+	.hide-lg, .show-xs, .show-sm, .show-md { display: none !important; }
+}
+/* Extra large devices (large desktops, 1200px and up) */
+@media screen and (min-width: 1200px) {
+	.hide-xl, .show-xs, .show-sm, .show-md, .show-lg { display: none !important; }
+}

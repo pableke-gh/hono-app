@@ -22,10 +22,10 @@
 		}
 	</style>
 	<script type="text/javascript" src="https://kit.fontawesome.com/76f12cea70.js" crossorigin="anonymous"></script>
-	<script type="module" src="../public/js/web/index.js" defer></script>
+	<script type="module" src="../public/js/web/index.js"></script>
 </head>
 <body>
-	<form id="test-form" is="test-form" class="search-form">
+	<form id="ftest" is="test-form" class="search-form">
 		<div id="tab-0" is="tab-content" class="tab-content active">
 			<div class="ui-blocks">
 				<div class="ui-block-btn">
@@ -34,7 +34,7 @@
 					<div class="ui-errtip"></div> 
 				</div>
 				<div class="ui-block-row text-height excel-name"></div>
-				<label class="ui-block">
+				<label class="ui-block" data-tip="prueba de mensaje">
 					<div class="label">Select pet:</div>
 					<select is="data-list" name="pet" class="ui-input ui-select" data-empty="Please select a pet">
 						<button type="button" class="default-element">
@@ -60,6 +60,16 @@
 							<span class="icon" aria-hidden="true">🐍</span><span class="option-label">Snake</span>
 						</option>
 					</select>
+				</label>
+				<label class="ui-block-xl autocomplete">
+					<div class="label required">Orgánica:</div>
+					<i class="fas fa-search ui-input-icon left"></i>
+					<input type="search" name="organica" is="text-input" class="ui-autocomplete" placeholder="Introduce una orgánica" />
+					<ul role="list" class="results"></ul>
+				</label>
+				<label class="ui-block">
+					<div class="label">Date example:</div>
+					<input type="date" name="f1" is="date-input" class="ui-input ui-date"/>
 				</label>
 			</div>
 
