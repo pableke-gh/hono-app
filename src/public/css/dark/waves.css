@@ -1,5 +1,5 @@
 
-html.dark {
+@media (prefers-color-scheme: dark) {
 	.parallax > use:nth-child(1) {
 		fill: rgba(202, 202, 202, .7);
 	}

@@ -1,12 +1,5 @@
 
-html.dark {
-	.ui-block-box { border: 1px solid #ccc; }
-	.label { color: white; }
-
-	.ui-input { color: white; background-color: #434a4e; border-color: #434a4e; }
-	.ui-input:focus { border-color: rgb(147 197 253)/* blue-300 */; }
-
-	.ui-input-icon { color: rgb(243 244 246)/* gray-100 */; }
-	.autocomplete .results { background-color: #ccc; }
-	.multiselect .options { background-color: #ccc; }
+@media (prefers-color-scheme: dark) {
+	.autocomplete .results { border-color: --lighter(var(--bg-color)); }
+	.multiselect .options { border-color: --lighter(var(--bg-color)); }
 }

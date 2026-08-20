@@ -1,0 +1,5 @@
+
+/* Print media for messages */
+@media print {
+	.alerts, .loading, .back-to-top { display: none; }
+}

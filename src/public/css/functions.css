@@ -1,5 +1,5 @@
 
-@function --transparent(--color <color>, --alpha type(<number> | <percentage>)) returns <color> {
+@function --transparent(--color <color>, --alpha type(<number> | <percentage>) : .5) returns <color> {
 	result: oklch(from var(--color) l c h / var(--alpha));
 }
 

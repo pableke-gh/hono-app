@@ -1,4 +1,5 @@
 
+import alerts from "../core/components/alerts/Alerts.js";
 import TestForm from "./modules/test.js";
 import ExcelFile from "./components/ExcelFile.js";
 import OCRFile from "./components/OCRFile.js";
@@ -10,19 +11,9 @@ import firmas from "./data/firmas.json" with { type: "json" };
 document.addEventListener("DOMContentLoaded", () => {
 	Firmas.notify(firmas); // emit firmas data for testing
 
-	/*** Light / dark mode detection ***/
-	document.documentElement.classList.remove("light", "dark");
-	const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-	const theme = darkModeQuery.matches ? "dark" : "light";
-	document.documentElement.classList.add(theme); // Initial check
-
-	// Listen for changes
-	darkModeQuery.addEventListener("change", ev => {
-		const newTheme = ev.matches ? "dark" : "light";
-		document.documentElement.classList.remove("light", "dark");
-		document.documentElement.classList.add(newTheme);
-	});
-	/*** Light / dark mode detection ***/
+	window.alerts = alerts; // expose alerts for testing
+	alerts.setError("This is an error message");
+	alerts.addOk("This is an ok message");
 
 	const testForm = document.forms.ftest;
 	document.querySelector('a[href="#load-1"]').addEventListener("click", () => {

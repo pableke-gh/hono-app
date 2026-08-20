@@ -12,7 +12,8 @@
 .ui-block-break { flex-basis: 100%; }
 .ui-block-box {
 	min-width: 250px; padding: 6px;
-	border: 1px solid #888; border-radius: .4rem;
+	border: 1px solid var(--gray-color); 
+	border-radius: .4rem;
 }
 .ui-block-img {
     width: 200px; height: 200px;
@@ -26,7 +27,6 @@
 .label {
     padding: 0 3px;
     font-weight: 700; font-size: 0.875rem/* 14px */; line-height: 1.25rem/* 20px */;
-    color: rgb(17 24 39)/* text-gray-900 */;
 }
 .label.inline { margin-top: 8px; width: 20%; }
 .label.required:after { color: #e32; content: " *"; }
@@ -36,17 +36,16 @@
 .ui-input {
     width: 100%; height: 36px; padding: .4em;
     transition: border-color 0.3s, box-shadow 0.3s;
-    border-radius: 3px; border: 2px solid rgb(209 213 219)/* gray-300 */;
+    border-radius: 3px; border: 2px solid var(--gray-color);
     outline: 2px solid transparent; outline-offset: 2px;
     font-size: 0.875rem !important; line-height: 1.25rem/* 20px */;
-    color: rgb(17 24 39)/* text-gray-900 */;
-    background-color: white; cursor: auto;
+    background-color: light-dark(#f8f9fa, #343a40); /* light-gray 100-800 */
 }
 .ui-input.inline {
     width: auto; height: auto;
     margin: 0 4px; padding: .2em;
 }
-.ui-input:focus { border-color: rgb(147 197 253)/* blue-300 */; }
+.ui-input:focus { border-color: #93c5fd/* blue-300 */; }
 
 .ui-check { max-width: 20px; margin: 0 1px; }
 input[type="checkbox"]:hover { cursor: pointer; }
@@ -90,7 +89,7 @@ input[type="time"]::-webkit-calendar-picker-indicator { display: none; } /*remov
 input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: pointer; }
 
 .ui-integer, .ui-float { width: 130px; text-align: right; }
-.ui-ta { min-height: 36px; height: 76px/*3 rows aprox.*/; max-height: 100px; resize: vertical; form-sizing: content; }
+.ui-ta { min-height: 36px; height: 76px/*3 rows aprox.*/; max-height: 100px; resize: vertical; field-sizing: content; }
 .ui-ta.rows-2 { height: 54px/*2 rows aprox.*/; }
 .disabled, .readonly { opacity: 0.5; pointer-events: none; text-decoration: none; }
 /* Inputs */
@@ -98,7 +97,7 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 /* Inputs icon styles */
 .ui-input-icon {
     position: absolute; height: 40px; /* same height than ui-input */
-    color: #6b7280; opacity: .8; z-index: 2;
+    color: var(--gray-color); z-index: 2;
 }
 
 .ui-input-icon.left { top: 31px; left: .5rem; }
@@ -111,13 +110,13 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 /* Inputs icon styles */
 
 /* Inputs error styles */
-.ui-error { border: 2px solid #dc3545; /*background-color: #fcebeb;*/ }
+.ui-error { border: 2px solid var(--error-color); background-color: --transparent(var(--error-color)); }
 .ui-error:focus { border: 2px solid tomato; caret-color: #e32; }
 .ui-errtip { margin-top: 0; font-size: 0.75rem/* 12px */; line-height: 1rem/* 16px */; font-style: italic; color: var(--error-color); }
 label[data-tip]::after { display: block; content: attr(data-tip); color: var(--error-color); }
 /* Inputs error styles */
 
-/* Autocomplete */
+/* Autocomplete Input */
 input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); cursor: pointer; }
 .autocomplete {
 	position: relative;
@@ -128,13 +127,14 @@ input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); c
 		width: 100%; /* same width than ui-input */
 		position: absolute; margin: 0; padding: 0; z-index: 3;
 		font-weight: normal !important; font-size: 13px;
-		color: black; background-color: #f7f7f7;
+		border-color: --darker(var(--bg-color));
 	}
-	.results.active { border: solid 1px silver; }
+	.results.active { border: solid 1px var(--gray-color); }
 	li { padding: 3px; list-style: none; cursor: pointer; transition: background-color 0.3s, color 0.3s; }
-	li:hover, li.active { color: white; background-color: #2196f3; }
+	li:hover, li.active { color: var(--alt-color); background-color: var(--bg-hover); }
 	/*li:hover > .icon, li.active > .icon { color: tomato; }*/
 }
+/* Autocomplete Input */
 
 .multiselect {
 	position: relative; min-width: 150px;
@@ -145,16 +145,16 @@ input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); c
 	button [data-index] { cursor: pointer; }
 	button span.checked {
 		padding: 0 3px;
-		border: solid 1px gold; border-radius: 5px;
-		color: black; background-color: yellow;
+		border: solid 1px var(--gold-color); border-radius: 5px;
+		background-color: var(--yellow-color);
 	}
 
 	.options {
 		position: absolute; top: calc(100%); display: none; margin: 0; padding: 0;
-		color: black; border: solid 1px gray; background-color: white;
+		border: solid 1px var(--gray-color); border-color: --darker(var(--bg-color));
 		text-wrap: nowrap; list-style: none; cursor: pointer;
 	}
 	.options.active { display: block; min-width: 100%; z-index: 3; }
-	.options li:hover { color: white; background-color: #2196f3; }
+	.options li:hover { color: var(--alt-color); background-color: var(--bg-hover); }
 	.options li { padding: 3px; white-space: nowrap; transition: background-color 0.3s, color 0.3s; }
 }

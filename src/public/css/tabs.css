@@ -5,18 +5,21 @@
 /* Tabs classes */
 
 /* Accordion */
-details { margin-bottom: 12px; border: solid 1px #2196F3; border-radius: 8px; }
+details {
+	margin-bottom: 12px; border-radius: 8px;
+	border: solid 1px --darker(var(--primary-color), 20);
+}
 details[open] > summary { border-radius: 8px 8px 0 0; }
 details[open] > summary::after{ transform: rotate(90deg); }
 details > div {  padding: 0 12px; transition: all 0.3s; } /* contents for each accordion */
 
 summary {
 	display: flex; justify-content: space-between; padding: .8rem 1rem;
-	background: #2196F3; color: white;
 	font-weight: bold; font-size: large; cursor: pointer;
 	border-radius: 8px; box-shadow: 0 -1px 1px 1px;
+	background-color: var(--primary-color);
 }
-summary:hover { background: #1976d2; }
+summary:hover { background-color: --darker(var(--primary-color)); }
 summary::after { content: "\276F"; text-align: center; transition: all 0.3s; }
 summary::marker { content: ""; }
 /* Accordion */
@@ -24,15 +27,16 @@ summary::marker { content: ""; }
 /* Cards */
 .cards { display: flex; gap: 1rem; flex-wrap: wrap; }
 .card-xeco {
-	flex-basis: fit-content; padding: 15px; margin: 10px 0;
-	border: 1px solid #999; border-left: 6px solid #1976D2; 
-	box-shadow: .1rem .1rem .3rem #ccc; border-radius: .3rem;
-	background: #f8f9fa;
+	flex-basis: fit-content; padding: 15px; margin: 10px 6px;
+	border: 1px solid var(--gray-color); border-left: 6px solid var(--primary-color);
+	box-shadow: .1rem .1rem .2rem var(--gray-color); border-radius: .3rem;
+	background-color: var(--light-color);
 }
 .card-xeco h2, .card-xeco h3 {
 	display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
-	margin: .4em .2em; padding-bottom: 4px;
-	color: #1976D2; border-bottom: 1px solid #1976D2;
+	margin: .2rem; padding-bottom: 4px;
+	color: var(--blue-color);
+	border-bottom: 1px solid var(--blue-color);
 }
 .card-xeco h2 > span, .card-xeco h3 > span {
 	min-width: fit-content;
@@ -40,8 +44,8 @@ summary::marker { content: ""; }
 
 .card-filter {
   padding: 8px;
-  background-color: #F4F5F5;
-  border-bottom: 1px solid #527da7;
-  border-top: 1px solid #527da7;
+  background-color: var(--light-color);
+  border-bottom: 1px solid var(--gray-color);
+  border-top: 1px solid var(--gray-color);
 }
 /* Cards */

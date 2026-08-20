@@ -1,5 +1,5 @@
 
-html.dark {
+@media (prefers-color-scheme: dark) {
 	.dropdown > .list {
 		background-color: #4b5057;
 		border-color: #ccc;

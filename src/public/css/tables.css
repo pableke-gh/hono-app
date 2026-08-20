@@ -1,38 +1,41 @@
 
 table {
 	margin: 10px auto; width: 100%; border-collapse: collapse;
-	box-shadow: .1rem .1rem .4rem #0005; border-radius: .3rem;
-	overflow: hidden; backdrop-filter: blur(7px);
+	border-radius: .3rem; overflow: hidden; backdrop-filter: blur(7px);
 }
 caption {
 	font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
 }
 
 thead {
-	background-color: hsl(207deg 90% 54% / 80%); color: white;
-	border-bottom: 2px solid hsl(220, 90%, 54%);
+	background-color: var(--primary-color);
+	border-bottom: 2px solid --darker(var(--primary-color), 20);
 }
 th { padding: .5rem .6rem; }
 th.slim { padding: 0; }
 
 tbody td.no-data { padding: 1rem; text-align: center; }
 
-/* tr.tb-data:nth-child(odd) {  } */
-tr.tb-data:nth-child(even) { background-color: rgb(229 231 235)/* gray-200 */; }
-tr.tb-data:hover { background-color: rgb(209 213 219 / .9)/* gray-300 */ }
-/* tr:last-of-type { border-bottom: 2px solid #009879; } */
+tr.tb-data:nth-child(odd) { background-color: --darker(var(--bg-color)); } /* impar */
+tr.tb-data:nth-child(even) { background-color: --darker(var(--bg-color), 20); } /* par */
+tr.tb-data:hover { background-color: --darker(var(--bg-color), 30); }
 tr.active { font-weight: bold; }
 
-tfoot { font-weight: bold; border-top: 1px dashed black; background-color: rgb(226 226 226 / 40%); }
+tfoot {
+	font-weight: bold;
+	border-top: 1px dashed var(--primary-color);
+	background-color: var(--light-color);
+}
 tfoot td:first-child { padding: .5rem; }
 
-.tb-xeco { box-shadow: none; }
 .tb-xeco tbody.active { animation: fadeIn .8s forwards; }
-.tb-xeco tbody tr td:first-child::after { content: ""; display: inline-block; min-height: 34px; vertical-align: middle; }
+.tb-xeco tbody tr td:first-child::after {
+	display: inline-block; min-height: 34px;
+	content: ""; vertical-align: middle;
+}
 .tb-xeco .tb-data-tc { text-align: center; }
 .tb-xeco td { padding: 2px; }
 .tb-xeco td.currency { min-width: 74px; text-align: right; }
-.tb-xeco tfoot { font-weight: bold; border-top: 1px dashed #1976d2; }
 
 .sort {
 	display: inline-block; margin-left: 5px; width: 40px;

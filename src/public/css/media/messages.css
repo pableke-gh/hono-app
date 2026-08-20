@@ -17,8 +17,3 @@
 /* Extra large devices (large desktops, 1200px and up) */
 @media screen and (min-width: 1200px) {
 }
-
-/* Print media for messages */
-@media print {
-	.alerts, .loading, .back-to-top { display: none; }
-}

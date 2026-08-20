@@ -1,18 +1,6 @@
 
-/* Navigation.js component define theme dark/light from system */
-/* @media (prefers-color-scheme: dark) { } */ /* System dark */
-
-html.dark {
-	table { box-shadow: 0 .4rem .8rem #fff4; }
-	caption { background-color: hsl(0 0% 0%); }
-
-	thead {
-		background-color: hsl(207, 90%, 54%, .5);
-		border-bottom: 2px solid #2196F3;
-	}
-
-	tr.tb-data:nth-child(odd) { background-color: hsl(0 0% 0% / .1); }
-    tr.tb-data:hover { background-color: rgb(75 85 99 / .6); }
-
-	tfoot { border-top: 1px dashed #ccc; background-color: rgb(108 194 255 / 30%); }
+@media (prefers-color-scheme: dark) {
+	tr.tb-data:nth-child(odd) { background-color: --lighter(var(--bg-color)); } /* impar */
+	tr.tb-data:nth-child(even) { background-color: --lighter(var(--bg-color), 20); } /* par */
+    tr.tb-data:hover { background-color: --lighter(var(--bg-color), 30); }
 }

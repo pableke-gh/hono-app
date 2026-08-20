@@ -1,32 +1,35 @@
 
-html.dark {
-	.btn-primary { border-color: --lighter(var(--primary-color), 10); }
-	.btn-primary:hover { background-color: --lighter(var(--primary-color), 10); border-color: --lighter(var(--primary-color), 20); }
+@media (prefers-color-scheme: dark) {
+	.btn-primary { border-color: --lighter(var(--primary-color)); }
+	.btn-primary:hover { background-color: --lighter(var(--primary-color)); border-color: --lighter(var(--primary-color), 20); }
 
-	.btn-secondary { border-color: --lighter(var(--secondary-color), 10); }
-	.btn-secondary:hover { background-color: --lighter(var(--secondary-color), 10); border-color: --lighter(var(--secondary-color), 20); }
+	.btn-secondary { border-color: --lighter(var(--secondary-color)); }
+	.btn-secondary:hover { background-color: --lighter(var(--secondary-color)); border-color: --lighter(var(--secondary-color), 20); }
 
-	.btn-light { border-color: --lighter(var(--light-color), 10); }
-	.btn-light:hover { background-color: --lighter(var(--light-color), 10); border-color: --lighter(var(--light-color), 20); }
+	.btn-light { border-color: --lighter(var(--light-color)); }
+	.btn-light:hover { background-color: --lighter(var(--light-color)); border-color: --lighter(var(--light-color), 20); }
 
-	.btn-info { border-color: --lighter(var(--info-color), 10); }
-	.btn-info:hover { background-color: --lighter(var(--info-color), 5); border-color: --lighter(var(--info-color), 20); }
+	.btn-info { border-color: --lighter(var(--info-color)); }
+	.btn-info:hover {
+		background-color: --lighter(var(--info-color), 5);
+		border-color: --lighter(var(--info-color), 20);
+	}
 
-	.btn-green { border-color: --lighter(var(--green-color), 10); }
-	.btn-green:hover { background-color: --lighter(var(--green-color), 10); border-color: --lighter(var(--green-color), 20); }
+	.btn-green { border-color: --lighter(var(--green-color)); }
+	.btn-green:hover { background-color: --lighter(var(--green-color)); border-color: --lighter(var(--green-color), 20); }
 
-	.btn-success { border-color: --lighter(var(--success-color), 10); }
-	.btn-success:hover { background-color: --lighter(var(--success-color), 10); border-color: --lighter(var(--success-color), 20); }
+	.btn-success { border-color: --lighter(var(--success-color)); }
+	.btn-success:hover { background-color: --lighter(var(--success-color)); border-color: --lighter(var(--success-color), 20); }
 
-	.btn-warn { border-color: --lighter(var(--warn-color), 10); }
-	.btn-warn:hover { background-color: --lighter(var(--warn-color), 10); border-color: --lighter(var(--warn-color), 20); }
+	.btn-warn { border-color: --lighter(var(--warn-color)); }
+	.btn-warn:hover { background-color: --lighter(var(--warn-color)); border-color: --lighter(var(--warn-color), 20); }
 
-	.btn-error { border-color: --lighter(var(--error-color), 10); }
-	.btn-error:hover { background-color: --lighter(var(--error-color), 10); border-color: --lighter(var(--error-color), 20); }
+	.btn-error { border-color: --lighter(var(--error-color)); }
+	.btn-error:hover { background-color: --lighter(var(--error-color)); border-color: --lighter(var(--error-color), 20); }
 
-	.btn-danger { border-color: --lighter(var(--danger-color), 10); }
-	.btn-danger:hover { background-color: --lighter(var(--danger-color), 10); border-color: --lighter(var(--danger-color), 20); }
+	.btn-danger { border-color: --lighter(var(--danger-color)); }
+	.btn-danger:hover { background-color: --lighter(var(--danger-color)); border-color: --lighter(var(--danger-color), 20); }
 
-	.btn-dark { border-color: --lighter(var(--dark-color), 10); }
-	.btn-dark:hover { background-color: --lighter(var(--dark-color), 10); border-color: --lighter(var(--dark-color), 20); }
+	.btn-dark { border-color: --lighter(var(--dark-color)); }
+	.btn-dark:hover { background-color: --lighter(var(--dark-color)); border-color: --lighter(var(--dark-color), 20); }
 }
