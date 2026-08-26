@@ -21,8 +21,8 @@
 	.btn-success { border-color: --lighter(var(--success-color)); }
 	.btn-success:hover { background-color: --lighter(var(--success-color)); border-color: --lighter(var(--success-color), 20); }
 
-	.btn-warn { border-color: --lighter(var(--warn-color)); }
-	.btn-warn:hover { background-color: --lighter(var(--warn-color)); border-color: --lighter(var(--warn-color), 20); }
+	.btn-warn { border-color: --lighter(var(--gold-color)); }
+	.btn-warn:hover { background-color: --lighter(var(--gold-color)); border-color: --lighter(var(--gold-color), 20); }
 
 	.btn-error { border-color: --lighter(var(--error-color)); }
 	.btn-error:hover { background-color: --lighter(var(--error-color)); border-color: --lighter(var(--error-color), 20); }

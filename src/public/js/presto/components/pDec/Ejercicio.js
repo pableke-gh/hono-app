@@ -17,9 +17,15 @@ export default class Ejercicio extends DataList {
 		this.form.elements.ej030.addEventListener("change", fnSync);
 	}
 
+	// show / hide grupo partida a decrementar
+	hide() { this.parentNode.parentNode.parentNode.classList.add("hide"); }
+	show() { this.parentNode.parentNode.parentNode.classList.remove("hide"); }
+
 	setEditable() {
+		this.setVisible(presto.isPartidaDec());
 		this.setReadonly(!presto.isEditable());
-		this.parentNode.parentNode.parentNode.classList.toggle("hide", !presto.isPartidaDec()); // show / hide partida dec group
+		const fnFocus = () => { presto.isPartidaDec() ? this.focus() : this.form.elements.ejInc.focus(); }
+		setTimeout(fnFocus, 9); // set focus on first input after view is loaded
 	}
 
 	// executed onView after load data

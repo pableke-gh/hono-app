@@ -1,5 +1,5 @@
 
-import tabs from "../../../core/components/tabs/TabsOld.js";
+import tabs from "../../../core/components/tabs/Tabs.js";
 import api from "../../../core/components/Api.js"
 import valid from "../../i18n/validators.js";
 
@@ -18,7 +18,7 @@ export default class Save030 extends ButtonForm {
 			return false; // not valid data
 
 		if (presto.isEditable() || !form.isChanged()) // if editable => back
-			return tabs.back().showOk("msgSave030"); // show msg ok
+			return tabs.back().showOk("msgSave030"); // go back show msg ok
 
 		const data = form.getPartidas().getData();
 		api.setJSON(data).json("/uae/presto/save/030").then(tabs.showForm);

@@ -10,7 +10,8 @@
 	<div class="notice notice-info form-refresh" data-refresh="text-render" data-event="interesado">@lblDomicilio;: @dir;, @cp;, @municipio;, @provincia; (@residencia;)</div>
 	<div class="notice notice-info form-refresh" data-refresh="isEditable">
 		<h:outputText value="#{msg['uae.irse.tab2.msg.ruta']}" escape="false" />
-		<a id="msgs" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
+		<a id="msgs" href="#" is="toggle-link" data-toggle="fa-angle-double-down fa-angle-double-up">
+			<h:outputText value="#{msg['lbl.mas.info']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
 		<div class="info-msgs hide">
 		<ol>
 			<li><h:outputText value="#{msg['uae.irse.tab2.msg.ruta1.1']}" escape="false" /></li>
@@ -18,7 +19,10 @@
 			<li><h:outputText value="#{msg['uae.irse.tab2.msg.ruta1.3']}" escape="false" /></li>
 			<li><h:outputText value="#{msg['uae.irse.tab2.msg.ruta1.4']}" escape="false" /></li>
 			<li><h:outputText value="#{msg['uae.irse.tab2.msg.ruta1.5']}" escape="false" /></li>
-			<li><a id="loc" href="#tab-toggle" data-toggle="fa-angle-double-down fa-angle-double-up"><h:outputText value="#{msg['lbl.mas.ej']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a></li>
+			<li>
+				<a id="loc" href="#" is="toggle-link" data-toggle="fa-angle-double-down fa-angle-double-up">
+					<h:outputText value="#{msg['lbl.mas.ej']}" escape="false" /><i class="fas fa-angle-double-down icon"></i></a>
+			</li>
 		</ol>
 		<div class="info-loc hide">
 			<hr/>

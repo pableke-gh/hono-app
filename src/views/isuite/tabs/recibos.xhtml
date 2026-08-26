@@ -12,7 +12,6 @@
 			<label class="ui-block">
 				<div class="label"><h:outputText value="#{msg['lbl.ejercicio']}" escape="false" />:</div>
 				<select name="ej" is="data-list" class="editable-manual"></select>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label">Tipo:</div>
@@ -20,7 +19,6 @@
 					<option value="43">N43</option>
 					<option value="57">N57</option>
 				</select>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label">Fecha:</div>
@@ -29,8 +27,8 @@
 		</div>
 
 		<div class="navbar">
-			<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver']}"><i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
-			<button type="submit" class="btn btn-info"><i class="far fa-search"></i>Buscar</button>
+			<a href="#tab-back" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver']}"><i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
+			<button type="submit" class="btn btn-primary"><i class="far fa-search"></i>Buscar</button>
 			<button type="reset" class="btn btn-warn"><i class="far fa-times-circle"></i>Limpiar</button>
 		</div>
 	</form>

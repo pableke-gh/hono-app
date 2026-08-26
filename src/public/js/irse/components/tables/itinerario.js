@@ -1,16 +1,12 @@
 
 import TableHTML from "../../../core/components/tables/Table.js";
-import tabs from "../../../core/components/tabs/TabsOld.js";
+import ToggleItinerario from "../gastos/ToggleItinerario.js";
 import i18n from "../../../core/i18n/langs.js";
 
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 
 export default class Itinerario extends TableHTML {
-	connectedCallback() { // tabla del paso 0 (organicas del perfil)
-		tabs.setViewEvent("itinerario", () => this.view()); // render rows
-	}
-
 	beforeRender(resume) { ruta.beforeRender(resume); } // overrride
 	beforeRow(data, i, resume) { ruta.rowCalc(data, i, resume); } // overrride
 	row(data, i) { 
@@ -27,11 +23,12 @@ export default class Itinerario extends TableHTML {
 			<td data-cell="Km." class="hide-sm">${i18n.isoFloat(data.km2) || "-"}</td>
 		</tr>`;
 	}
-	afterRender = resume => {
+	afterRender(resume) {
 		resume.totKmCalcFmt = (resume.totKmCalc > 0) ? i18n.isoFloat(resume.totKmCalc) : "-";
 	}
 
-	view() {
-		return super.view(rutas.getRutas());
-	}
+	view() { return super.view(rutas.getRutas()); }
+	render() { return this.view(); } // no events
 }
+
+customElements.define("toggle-itinerario", ToggleItinerario, { extends: "a" });

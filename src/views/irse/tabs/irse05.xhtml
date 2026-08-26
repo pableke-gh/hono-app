@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<h2 is="titulo-h2" class="underline"></h2>
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
@@ -16,67 +16,27 @@
 		</h2>
 
 		<ui:include src="./irse05_info.xhtml"></ui:include>
-		<div is="grupo-gasto" class="ui-blocks form-refresh" data-refresh="isEditable">
+		<div is="grupo-gasto" class="ui-blocks">
 			<div class="ui-block-btn">
 				<a href="#tab-action-clickNext" class="btn btn-green" tabindex="100"><i class="fas fa-share"></i>¡Por Aquí!</a>
 				<input type="file" name="fileGasto" is="file-input" class="ui-gasto hide" data-filename=".fg-name" />
 			</div>
 			<label class="ui-block hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.tipo.fac.doc']}" escape="false" />:</div>
-				<select id="tipoGasto" name="tipoGasto" is="tipo-gasto" class="ui-gasto" tabindex="100">
-					<option value=""></option>
-					<optgroup label="Factura a nombre del comisionado" class="form-refresh" data-refresh="isFacturasComisionado">
-						<option value="9" class="form-refresh" data-refresh="getNochesPendientes"><h:outputText value="#{msg['lbl.por.alojamiento']}" escape="false" /></option>
-						<option value="8" class="form-refresh" data-refresh="getNumRutasPendientes"><h:outputText value="#{msg['lbl.por.transporte']}" escape="false" /></option>
-					</optgroup>
-					<optgroup label="Tickets por transporte">
-						<option value="1" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(1)}</option>
-						<option value="2" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(2)}</option>
-						<option value="3" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(3)}</option>
-						<option value="4" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(4)}</option>
-						<option value="5" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(5)}</option>
-						<option value="6" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(6)}</option>
-						<option value="7" class="form-refresh" data-refresh="isIsu">#{iris.gastos.getMsgTicket(7)}</option>
-						<option value="10" class="form-refresh" data-refresh="not-isu">#{iris.gastos.getMsgTicket(10)}</option>
-					</optgroup>
-					<optgroup label="Otra Documentación">
-						<option value="201"><h:outputText value="#{msg['lbl.doc.obligatoria']}" escape="false" /></option>
-						<!--<c:if test="#{iris.form.docProgramaMov}">
-							<option value="206"><h:outputText value="#{msg['lbl.doc.movilidad']}" escape="false" /></option>
-						</c:if>-->
-						<option value="202"><h:outputText value="#{msg['lbl.doc.otra']}" escape="false" /></option>
-					</optgroup>
-					<!--<c:if test="#{iris.form.extAlu and iris.form.iaeExt}">
-						<optgroup label="Justificaciones">
-							<option value="203"><h:outputText value="#{msg['lbl.justifi.dietas']}" escape="false" /></option>
-						</optgroup>
-					</c:if>-->
-					<optgroup label="Gasto Extraordinario" class="form-refresh" data-refresh="isPaso8">
-						<option value="301"><h:outputText value="#{msg['lbl.transporte']}" escape="false" /></option>
-						<option value="302" class="form-refresh" data-refresh="not-mun"><h:outputText value="#{msg['lbl.alojamiento']}" escape="false" /></option>
-						<option value="303" class="form-refresh" data-refresh="isCenaFinal"><h:outputText value="#{msg['lbl.cena.final']}" escape="false" /></option>
-						<!--<c:if test="#{iris.form.alu or iris.form.ext}">
-							<option value="304"><h:outputText value="#{msg['lbl.otras.dietas']}" escape="false" /></option>
-						</c:if>-->
-					</optgroup>
-				</select>
-				<div class="ui-errtip"></div>
+				<select name="tipoGasto" is="tipo-gasto" class="ui-gasto" tabindex="100"></select>
 			</label>
 			<label class="ui-block hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
 				<input type="text" id="impGasto" name="impGasto" is="float-input" tabindex="101" class="ui-gasto" title="Importe de la factura que corresponde a la comisión" /><span class="icon">€</span>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg hide">
-				<div class="label required label-text-gasto"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
+				<div class="label required"><h:outputText value="#{msg['lbl.desc.obsev']}" escape="false" />:</div>
 				<input type="text" id="txtGasto" name="txtGasto" is="text-input" maxlength="300" tabindex="102" class="ui-text ui-gasto"/>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.check.in.out']}" escape="false" />:</div>
 				<input type="date" id="fAloMin" name="fAloMin" is="date-input" tabindex="102" class="ui-gasto" title="Límite inferior del rango de fechas"/> ...
 				<input type="date" id="fAloMax" name="fAloMax" is="date-input" tabindex="103" class="ui-gasto" title="Límite superior del rango de fechas"/>
-				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn hide">
 				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down"></i></a>
@@ -101,22 +61,18 @@
 			</tfoot>
 		</table>
 
-		<div class="navbar form-refresh" data-refresh="is-rutas-gt-1">
-			<p class="form-refresh" data-refresh="text-render">*
-				<h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @getNumRutasPendientes;;
-				<h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @getNochesPendientes;; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />)
-			</p>
-		<!--<c:if test="#{iris.form.extAlu and iris.perfil.tab7}">
-			<p>* <h:outputText value="#{msg['lbl.imp.dietas.prop']}" escape="false" />: #{iris.gastos.impManutencionI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.justifi']}" escape="false" />: #{iris.gastos.impJustifiI18n} €; <h:outputText value="#{msg['lbl.imp.dietas.no.justifi']}" escape="false" />: #{iris.gastos.impNoJustifiI18n} €​</p>
-		</c:if>-->
-		</div>
+		<p is="msg-gastos">
+			<span class="text-block">*</span>
+			<h:outputText value="#{msg['msg.etapas.no.asociadas']}" escape="false" />: @getNumRutasPendientes;;
+			<h:outputText value="#{msg['msg.noches.no.asociadas']}" escape="false" />: @getNochesPendientes;; (<h:outputText value="#{msg['msg.info.etapas']}" escape="false" />)
+		</p>
 	</div>
 
 	<!-- Botones -->
 	<div class="navbar">
-		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
+		<a href="#tab-prev" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver']}">
 			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-		<a href="#tab-action-paso5" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
+		<a href="#tab-next" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></a>
 		<a href="#tab-action-save5" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>

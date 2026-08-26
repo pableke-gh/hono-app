@@ -24,12 +24,12 @@ coll.ready(() => {
 		api.init().text("/uae/jb/report?jg=" + acJustGast.getValue()).then(api.open).then(form.closeModal);
 	});
 
-	const formDoc = new Form("xeco-doc");
     const fnBuildXecoDoc = () => {
-		tabs.load(formDoc.getForm()); // reload tab actions
+		const formDoc = document.forms.doc;
 		const ulAdjuntos = formDoc.querySelector("ul#adjuntos");
 		if (ulAdjuntos && !ulAdjuntos.children.length)
 			ulAdjuntos.outerText = " -";
+		tabs.load(formDoc); // reload tab actions
 	}
 	window.jbReset = () => acDocContable.reload();
 	window.jbLoaded = fnBuildXecoDoc;

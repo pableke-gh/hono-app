@@ -80,7 +80,7 @@ export default class Solicitud extends Base {
 
 	isMultilinea = () => (this.getMask() & 1);
 	isFirmable = () => (this.isPendiente() && firma.isFirmable(this.get("fmask")));
-	isCancelable = () => (this.isUae() && (this.isValidada() || this.isErronea()));
+	isCancelable = () => (this.isUae() && (this.isValidada() || this.isErronea() || this.isSubsanable()));
 	isInvalidable = () => (this.isFirmable() || this.isCancelable()); // show reject form 
 	isEditableUae = () => (this.isEditable() || this.isSubsanable() || (this.isUae() && this.isFirmable()));
 	isEjecutable = () => (this.isUae() && [1, 3, 4, 5, 9].includes(this.getEstado())); // Pendiente, Aceptada, Ejecutada, Notificada ó Erronea

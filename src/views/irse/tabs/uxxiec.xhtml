@@ -9,12 +9,12 @@
 
 	<form id="uxxiec" is="uxxiec-form" action="/uae/iris">
 		<h2 class="underline">Consulta de Formación de Expediente</h2>
-		<p class="notice notice-info form-refresh" data-refresh="text-render">@codigo;: @memo;</p>
+		<p is="msg-uxxiec" class="notice notice-info"></p>
 
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required">Ejercicio:</div>
-				<select name="ej" is="data-list"></select>
+				<select name="ej" is="data-list" data-editable="manual"></select>
 			</label>
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Operación UXXI-EC:</div>
@@ -27,33 +27,35 @@
 				<button is="add-doc" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus"></i>Añadir</button>
 			</div>
 		</div>
+
+		<table id="docs" is="docs-table" class="tb-xeco">
+			<thead>
+				<tr>
+					<th>Operación</th>
+					<th>Doc.</th>
+					<th>Importe</th>
+					<th>F. Creación</th>
+					<th>Descripción</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr><td colspan="99" class="table-reload" data-reload="text-render">Operaciones: @size;</td></tr>
+			</tfoot>
+		</table>
+
+		<div class="navbar">
+			<a href="#tab-list" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
+				<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
+			<a href="#tab-action-view" class="btn btn-primary" title="Muestra los datos de la comunicación">
+				<i class="fas fa-search"></i>Ver</a>
+			<button type="button" is="btn-ejecutar" class="btn btn-green" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
+				<i class="far fa-save"></i>Guardar</button>
+			<button type="button" is="btn-notificar" class="btn btn-green" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
+				<i class="fal fa-paper-plane"></i>Notificar</button>
+			<button type="button" is="btn-cancelar" class="btn btn-error" title="#{msg['tit.btn.cancelar']}">
+				<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</button>
+		</div>
 	</form>
-
-	<table is="docs-table" class="tb-xeco">
-		<thead>
-			<tr>
-				<th>Operación</th>
-				<th>Doc.</th>
-				<th>Importe</th>
-				<th>F. Creación</th>
-				<th>Descripción</th>
-				<th>Acciones</th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-		<tfoot>
-			<tr><td colspan="99" class="table-reload" data-reload="text-render">Operaciones: @size;</td></tr>
-		</tfoot>
-	</table>
-
-	<div class="navbar">
-		<a href="#tab-list" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
-			<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
-		<a href="#tab-action-ejecutar" class="btn btn-green form-refresh" data-refresh="is-ejecutable" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
-			<i class="far fa-save"></i>Guardar</a>
-		<a href="#tab-action-notificar" class="btn btn-green form-refresh" data-refresh="is-notificable" title="Notifica a los responsables vía e-mail, que la solicitud ya esta mecanizada en UXXI-EC">
-			<i class="fal fa-paper-plane"></i>Notificar</a>
-		<a href="#tab-action-reject" class="table-action btn btn-error form-refresh" data-refresh="isCancelable" title="#{msg['tit.btn.cancelar']}">
-			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</a>
-	</div>
 </html>

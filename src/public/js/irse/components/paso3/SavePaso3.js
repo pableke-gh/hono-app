@@ -2,8 +2,7 @@
 import valid from "../../i18n/validators/irse.js";
 import irse from "../../model/Irse.js";
 import form from "../../modules/irse.js";
-import paso3 from "../../modules/paso3.js";
-import ButtonForm from "../../../components/inputs/ButtonForm.js";
+import ButtonForm from "../../../core/components/forms/ButtonForm.js";
 
 export default class SavePaso3 extends ButtonForm {
 	setEditable() {
@@ -16,7 +15,7 @@ export default class SavePaso3 extends ButtonForm {
 			return; // if error => stop
 		if (!form.isChanged())
 			return form.setOk(); // nada que guardar
-		paso3.save(); // send data to server
+		form.getPaso3().send(); // send data to server
 	}
 
 }

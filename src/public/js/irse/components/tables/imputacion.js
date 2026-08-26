@@ -50,7 +50,7 @@ export default class Imputacion extends TableHTML {
 		</tr>`;
 	}
 
-	render = () => { // auto-build mono-organica
+	render() { // auto-build mono-organica
 		const organicas = []; // container
 		const org = form.getOrganicas().getFirst();
 		const fnAdd = (subtipo, imp) => {
@@ -66,6 +66,6 @@ export default class Imputacion extends TableHTML {
 		fnAdd(2, this.getTotPernoctas());
 		fnAdd(3, this.getTotTransporte());
 		fnAdd(4, irse.getTotAc());
-		return super.render(organicas); // super keyword
+		super.render(organicas); // super keyword
 	}
 }

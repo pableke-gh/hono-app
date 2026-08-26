@@ -21,21 +21,14 @@ class RutasValidators extends Validators {
         	this.addRequired("memo", "errObjeto");
 		if (!form.getPerfil().isMun())
 			return this.close(data);
-		const rutaMun = form.getData(".ui-mun");
-		this.size("origen", rutaMun.origen, "errOrigen").isDate("f1", rutaMun.f1); //ha seleccionado un origen
+		const rutaMun = form.getElement("despMun").export();
+		this.size("origenMun", rutaMun.origen, "errOrigen").isDate("f1Mun", rutaMun.dt1);
 		if (ruta.isVehiculoPropio(rutaMun)) { // vehiculo propio
 			const msg = "Debe indicar el kilometraje del desplazamiento";
-			this.size20("matriculaMun", rutaMun.matriculaMun, "errMatricula").gt0("km1", rutaMun.km1, msg);
+			this.size20("matriculaMun", rutaMun.matricula, "errMatricula").gt0("km1Mun", rutaMun.km1, msg);
 		}
-		if (this.isError()) // valido mun
-			return this.fail(); // error en mun
-		rutaMun.destino = rutaMun.origen;
-		rutaMun.pais1 = rutaMun.pais2 = "ES";
-		rutaMun.dt1 = rutaMun.dt2 = rutaMun.f1; // fecha llegada = fecha salida
-		rutaMun.km2 = rutaMun.km1; // km1 = km2
-		rutaMun.mask = 5; // es cartagena + principal
-		if (!this.ruta(rutaMun))
-			return this.fail(); // valido la ruta mun
+		if (this.isError() || !this.ruta(rutaMun)) // valido mun
+			return this.fail(); // error en la ruta de mun
 		// ruta por defecto para MUN = VP, principal  y ES
 		rutas.setRuta(rutaMun); // actualizo las rutas
 		return this.success(rutaMun);

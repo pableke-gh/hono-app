@@ -1,4 +1,5 @@
 
+import Messages from "../../core/i18n/Messages.js";
 import Solicitud from "../../core/model/Solicitud.js";
 
 const TITULOS = [ "-", "factura", "abono", "carta de pago", "factura de TTPP", "factura de congreso", "factura de TTPP empresas" ];
@@ -44,6 +45,23 @@ class Factura extends Solicitud {
 	isFace = () => (this.isGrupoFace() && (this.get("face") == 1)); //factura electronica FACe
 	isPlataforma = () => (this.isGrupoFace() && (this.get("face") == 2)); //factura electronica Otras
 	setFace = val => this.set("face", val); // update plataforma / FACe
+
+	validate(data) {
+		const msgs = new Messages(); // validate messages
+		if (!data.idTer || (data.idTer < 1)) // autocomplete required
+			msgs.setFail("tercero", "Debe seleccionar un tercero válido");
+		if (!data.delegacion || (data.delegacion < 1)) // desplegable de las delegaciones
+			msgs.setFail("delegacion", "Debe seleccionar una delegación del tercero");
+		if (!data.idOrg || (data.idOrg < 1)) // autocomplete required
+			msgs.setFail("organica", "No ha seleccionado correctamente la orgánica");
+		if (this.isUae() && (!data.idEco || (data.idEco < 1))) // economica required
+			msgs.setFail("idEco", "Debe asociar una económica de ingreso a la solicitud.");
+		if (this.isFace() && !data.og) // validaciones para FACe
+			msgs.setFail("og", "Debe indicar el órgano gestor asociado a la factura");
+		if (this.isPlataforma() && !data.og)
+			msgs.setFail("og", "Debe indicar la plataforma asociada");
+		return msgs;
+	}
 }
 
 export default new Factura();

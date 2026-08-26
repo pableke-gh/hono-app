@@ -1,6 +1,7 @@
 
 import api from "../../core/components/Api.js";
-import tabs from "../../core/components/tabs/TabsOld.js";
+import Tab from "../../core/components/tabs/Tab.js";
+import tabs from "../../core/components/tabs/Tabs.js";
 import valid from "../i18n/validators/irse.js";
 
 import irse from "../model/Irse.js";
@@ -8,35 +9,32 @@ import rutas from "../model/Rutas.js";
 
 import observer from "../../core/util/Observer.js";
 import TipoGasto from "../components/gastos/TipoGasto.js";
+import MsgGastos from "../components/gastos/MsgGastos.js";
 import tables from "../components/tables/tables.js";
 import form from "./irse.js";
 
 /*********** FACTURAS, TICKETS y demás DOCUMENTACIÓN para liquidar ***********/
-class Paso5 {
+export default class Paso5 extends Tab {
 	getGastos = () => tables.get("gastos");
 	getRutasPendientes = () => tables.get("pendientes");
 
-	#reload = () => {
+	init() {
+		super.init();
+		observer.subscribe("fileGasto", input => {
+			input.isEmpty() ? this.beforeView() : form.getElement("tipoGasto").update();
+		});
+
+		// el paso 5 requiere validaciones en el servidor
+		this.addEventListener("change", ev => ev.stopPropagation()); // tab not change form state
+		tabs.setAction("save5", () => this.send().then(form.setOk)); // todo: build custom element
+		tabs.setAction("uploadGasto", () => (valid.upload() && this.upload())); // todo: build custom element
+	}
+	beforeView() {
 		form.getElement("tipoGasto").reset();
 		form.setValue("impGasto", 0).setValue("txtGasto");
 		if (rutas.size()) // preload date range for pernoctas
 			form.getElement("fAloMin").setLimit("fAloMax", rutas.getHoraSalida(), rutas.getHoraLlegada());
-	}
-	init() {
-		this.getGastos().init(); // 1º en observar
-		this.getRutasPendientes().init(); // 2º en observar
-		tabs.setViewEvent(5, this.#reload);
-		observer.subscribe("fileGasto", input => { input.isEmpty() ? this.#reload() : form.getElement("tipoGasto").update(); });
-
-		// el paso 5 requiere validaciones en el servidor
-		const fnSend = () => api.init().json("/uae/iris/paso5/save?id=" + irse.getId());
-		tabs.getTab(5).addEventListener("change", ev => ev.stopPropagation()); // tab not change form state
-		tabs.setAction("paso5", () => {
-			if (!irse.isEditable()) return tabs.next(); // go next tab directly
-			fnSend().then(() => tabs.goTo(6)); // validaciones del servidor
-		});
-		tabs.setAction("save5", () => fnSend().then(form.setOk));
-		tabs.setAction("uploadGasto", () => (valid.upload() && this.upload()));
+		return super.beforeView();
 	}
 
 	updateRutas() {
@@ -50,10 +48,20 @@ class Paso5 {
 	upload(rutas) { // merge data to send
 		const fd = form.getFormData(".ui-gasto").set("id", irse.getId()).set("trayectos", rutas); // set id + etapas
 		api.setFormData(fd).json("/uae/iris/upload/gasto").then(data => observer.emit("link", data.gasto)); // send data
-		this.#reload();
+		this.beforeView();
+	}
+
+	send() { return api.init().json("/uae/iris/paso5/save?id=" + irse.getId()); }
+	prev1() {
+		const tab = form.getPerfil().isMaps() ? 2 : 1;
+		super.show(irse.isIsu() ? 3 : tab);
+	}
+	next1() {
+		if (!irse.isEditable())
+			return super.next1(); // go next tab directly
+		this.send().then(() => super.next1()); // validaciones del servidor
 	}
 }
 
 customElements.define("tipo-gasto", TipoGasto, { extends: "select" });
-
-export default new Paso5();
+customElements.define("msg-gastos", MsgGastos, { extends: "p" });

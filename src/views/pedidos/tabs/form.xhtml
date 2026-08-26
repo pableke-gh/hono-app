@@ -11,14 +11,12 @@
 		<h2></h2>
 		<div class="ui-blocks">
 			<div class="ui-block-btn">
-				<button type="button" is="btn-ppto" class="btn btn-info"></button>
+				<button type="button" is="btn-ppto" class="btn btn-primary"></button>
 				<input type="file" name="adjunto" is="ppto-file" class="hide" data-filename=".spi-file" />
-				<div class="ui-errtip"></div> 
 			</div>
 			<label class="ui-block">
 				<div class="label required">Referencia proveedor:</div>
 				<input type="text" name="ref" is="ref-input" class="ui-input" tabindex="1" /> 
-				<div class="ui-errtip"></div> 
 			</label>
 			<div class="ui-block-row text-height spi-file"></div>
 		</div>
@@ -30,19 +28,16 @@
 				<i class="fas fa-search ui-input-icon left"></i>
 				<input type="search" name="proveedor" is="proveedor-input" class="ui-autocomplete" tabindex="2" placeholder="Indique un proveedor" /> 
 				<ul role="list" class="results"></ul>
-				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required">Correo del Proveedor:</div>
 				<input type="email" name="email" is="email-input" class="ui-input" required="1" tabindex="3" placeholder="nombre@correo.com" /> 
-				<div class="ui-errtip"></div> 
 			</label>
 			<div id="prov-info" class="ui-block-row text-height"></div>
 			<hr class="slim ui-block-row"/>
 			<label class="ui-block-row">
 				<div class="label required">Descripción del servicio o bien a contratar:</div>
 				<textarea name="desc" is="text-area" class="ui-input ui-ta" required="1" tabindex="4" maxlength="1000"></textarea>
-				<div class="ui-errtip"></div>
 			</label>
 		</div>
 		<div class="ui-blocks">
@@ -71,7 +66,6 @@
 				<i class="fas fa-search ui-input-icon left"></i>
 				<input type="search" name="aplicacion" is="aplicacion-input" class="ui-autocomplete" tabindex="6" placeholder="Introduce una orgánica" /> 
 				<ul role="list" class="results"></ul>
-				<div class="ui-errtip"></div> 
 			</label>
 			<div id="org-info" class="ui-block-info text-height"></div>
 		</div>
@@ -82,7 +76,6 @@
 			<label class="ui-block">
 				<div class="label required">Importe estimado sin IVA:</div>
 				<input type="text" name="imp" is="float-input" class="ui-input" required="gt0" tabindex="7"/> €
-				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">
 				<div class="label required">IVA:</div>
@@ -114,7 +107,7 @@
 
 	<!-- Botones -->
 	<div class="navbar">
-		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+		<a href="#tab-back" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
 		<button type="submit" is="btn-save" class="btn btn-green" title="Poner la solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right"></i></button>

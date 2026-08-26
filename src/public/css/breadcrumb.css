@@ -1,0 +1,35 @@
+/* Estilos para el contenedor de las migas de pan */
+.breadcrumb {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 14px; /* Tamaño base del texto */
+    color: #333; /* Color del texto de los enlaces */
+}
+
+/* Estilos para cada elemento individual */
+.breadcrumb-item a {
+    text-decoration: none;
+    color: #007bff; /* Color azul para los enlaces */
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: #0056b3; /* Color al pasar el cursor */
+    text-decoration: underline;
+}
+
+/* Separador visual entre elementos */
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    padding: 0 8px;
+    color: #6c757d; /* Color del separador */
+}
+
+/* Estilo para el elemento activo (página actual) */
+.breadcrumb-item.active {
+    color: #6c757d; /* Texto gris para indicar la página actual */
+    font-weight: bold;
+    pointer-events: none; /* Desactiva el clic en el texto actual */
+}

@@ -19,6 +19,6 @@ export default class Uxxiec extends TableHTML {
 	}
 
 	afterRender() {
-		document.forms.uxxiec.updateButtons();
+		document.forms.uxxiec.reactivate();
 	}
 }

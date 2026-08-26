@@ -6,4 +6,8 @@ export default class ListTab extends Tab {
 		super.init();
 		document.forms.flist.list();
 	}
+
+	afterView() {
+		document.forms.flist.elements[0].focus();
+	}
 }

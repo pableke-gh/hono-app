@@ -1,6 +1,6 @@
 
 import BecaForm from "./modules/beca.js";
-import BecaFilterForm from "../core/modules/FilterHTML.js";
+import BecaFilterForm from "../core/modules/Filter.js";
 import MsgReject from "./components/MsgReject.js";
 
 //document.addEventListener("DOMContentLoaded", () => {});

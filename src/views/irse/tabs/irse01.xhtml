@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<h2 is="titulo-h2" class="underline"></h2>
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
@@ -19,7 +19,6 @@
 			<div class="label required inline"><h:outputText value="#{msg['lbl.objeto.act']}" escape="false" />:</div>
 			<div class="ui-block-main">
 				<textarea name="memo" is="text-area" class="rows-2 ui-paso1" tabindex="41" maxlength="600" title="Objeto de la actividad"></textarea>
-				<span class="ui-errtip"></span>
 			</div>
 		</label>
 
@@ -47,44 +46,40 @@
 			</div>
 		</label>
 
-		<hr class="form-refresh" data-refresh="isMun" />
-		<div class="ui-blocks form-refresh" data-refresh="isMun">
+		<hr />
+		<div class="ui-blocks">
 			<label class="ui-block-xl">
 				<div class="label required"><h:outputText value="#{msg['lbl.fui']}" escape="false" />:</div>
-				<input type="text" name="origen" is="text-input" class="ui-mun" tabindex="46" placeholder="#{iris.getMsg('ph.ubicacion')}" />
-				<div class="ui-errtip"></div>
+				<input type="text" name="origenMun" is="text-input" tabindex="46" placeholder="#{iris.getMsg('ph.ubicacion')}" />
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select name="desp" is="data-list" class="ui-mun" tabindex="47">
+				<select name="despMun" is="desp-mun" tabindex="47">
 					<option value="1">#{iris.rutas.getMsgDesp(1)}</option>
 					<option value="10">#{iris.rutas.getMsgDesp(10)}</option>
 				</select>
 			</label>
-			<label class="ui-block grupo-matricula">
+			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
-				<input type="text" name="matriculaMun" is="text-input" maxlength="10" tabindex="48" class="ui-sm ui-mun ui-paso1"/>
-				<div class="ui-errtip"></div>
+				<input type="text" name="matriculaMun" is="matricula-input" maxlength="10" tabindex="48" class="ui-sm ui-paso1"/>
 			</label>
-			<label class="ui-block grupo-matricula">
+			<label class="ui-block">
 				<div class="label required">km:</div>
-				<input type="text" name="km1" is="float-input" tabindex="49" class="ui-mun"/>
-				<div class="ui-errtip"></div>
+				<input type="text" name="km1Mun" is="float-input" tabindex="49"/>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
-				<input type="date" name="f1" is="date-input" class="ui-mun" tabindex="50" />
-				<div class="ui-errtip"></div>
+				<input type="date" name="f1Mun" is="date-input" tabindex="50" />
 			</label>
 		</div>
 	</div>
 
 	<!-- Botones -->
 	<div class="navbar">
-		<a href="#tab-prev" class="btn btn-info" title="#{msg['tit.btn.volver']}">
+		<a href="#tab-prev" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver']}">
 			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-		<button type="button" is="next-paso1" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></button>
+		<a href="#tab-next" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.siguiente']}">
+			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></a>
 		<button type="button" is="save-paso1" class="btn btn-green" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>

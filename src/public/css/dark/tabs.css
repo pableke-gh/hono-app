@@ -6,8 +6,11 @@
 
 	/* Cards */
 	.card-xeco {
-		background-color: var(--dark-color);
-		border-left: 6px solid var(--gray-color);
+		--border-color: --lighter(var(--light-color));
+
+		background-color: var(--light-color);
+		border: 1px solid var(--border-color); border-left: 6px solid var(--gray-color);
+		box-shadow: .1rem .1rem .2rem var(--border-color);
 	}
 	/* Cards */
 		

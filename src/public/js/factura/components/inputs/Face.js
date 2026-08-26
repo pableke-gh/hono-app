@@ -23,7 +23,7 @@ export default class Face extends DataList {
 	}
 
 	connectedCallback() {
-		observer.subscribe("form-updated", this.update); // update state of face inputs
+		observer.subscribe("solicitud", this.update); // update state of face inputs
 		this.addChange(ev => { factura.setFace(+ev.target.value); this.update(); });
 	}
 }

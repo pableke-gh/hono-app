@@ -27,30 +27,30 @@
 
 	<ui:define name="body">
 		<!-- Home tab -->
-		<div id="tab-init" class="tab-content active">
+		<div id="tab-init" is="tab-content" class="tab-content active">
 			<ui:include src="./tabs/init.xhtml"></ui:include>
 		</div>
 
 		<!-- listado de solicitudes -->
-		<div id="tab-list" class="tab-content">
+		<div id="tab-list" is="tab-list" class="tab-content">
 			<ui:include src="./tabs/list.xhtml"></ui:include>
 			<ui:include src="./parts/leyenda_firmas.xhtml"></ui:include>
 		</div>
 
 		<!-- vinculación con uxxiec -->
-		<div id="tab-uxxiec" class="tab-content">
+		<div id="tab-uxxiec" is="tab-content" class="tab-content">
 			<ui:include src="./tabs/uxxiec.xhtml"></ui:include>
 		</div>
 
 		<form id="solicitud" method="post"
 				data-nif="#{fact.user.nif}" data-grupo="#{fact.user.idGrupo}" data-admin="#{fact.user.adminFlag}"
-				data-error-class="ui-error" data-tip-error-class="ui-errtip">
+				data-error-class="ui-error">
 			<!-- Form factura -->
-			<div id="tab-form" class="tab-content">
+			<div id="tab-form" is="tab-content" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>
 			</div>
 			<!-- formulario de rechazo/cancelacion -->
-			<div id="tab-reject" class="tab-content">
+			<div id="tab-reject" is="tab-content" class="tab-content">
 				<ui:include src="./tabs/reject.xhtml"></ui:include>
 			</div>
 		</form>

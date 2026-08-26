@@ -104,17 +104,14 @@ export default class DataList extends HTMLSelectElement {
 	setReadonly(force) { this.classList.toggle("readonly", this.toggleAttribute("readonly", force)); }
 	setEditable(force) { this.form.isEditableManual(this) || this.setReadonly(!force); }
 
-	// Validators
-	#setTipError(tip) { // optional tag => not all inputs have tip element
-		const tipEl = this.parentNode.querySelector("." + this.form.dataset.tipErrorClass);
-		if (tipEl) tipEl.innerText = i18n.msg(tip);
-	}
+	// Input validators
 	setOk() {
-		this.#setTipError(""); // set optional tip-msg
+		delete this.parentNode.dataset.tip; // remove tip-msg
 		this.classList.remove(this.form.dataset.errorClass);
 	}
 	setError(tip, msg) {
-		this.#setTipError(tip); // set optional tip-msg
+		if (tip) // set optional tip-msg
+			this.parentNode.dataset.tip = i18n.msg(tip);
 		this.classList.add(this.form.dataset.errorClass); // update styles
 		alerts.setError(msg); // global message
 		this.focus(); // set focus on error

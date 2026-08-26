@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<h2 is="titulo-h2" class="underline"></h2>
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
@@ -15,18 +15,16 @@
 			<span><h:outputText value="#{msg['uae.irse.tab2.msg.tit.maps']}" escape="false" /></span>
 		</h2>
 		<ui:include src="./irse02_info.xhtml"></ui:include>
-		<div class="ui-blocks no-print form-refresh" data-refresh="isEditable">
+		<div class="ui-blocks no-print">
 			<label class="ui-block-xl autocomplete">
 				<div class="label required"><h:outputText value="#{msg['lbl.sali']}" escape="false" />:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
 				<input type="search" id="origen" name="origen" is="autocomplete-maps" class="ui-autocomplete ui-ruta" tabindex="30" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}" />
 				<ul role="list" class="results"></ul>
-				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
 				<input type="date" id="f1" name="f1" is="date-input" class="ui-ruta" tabindex="31" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.a.las']}" escape="false" />:</div>
@@ -38,12 +36,10 @@
 				<i class="fas fa-search ui-input-icon left"></i>
 				<input type="search" id="destino" name="destino" is="autocomplete-maps" class="ui-autocomplete ui-ruta" tabindex="33" title="#{msg['tit.ubicacion']}" placeholder="#{iris.getMsg('ph.ubicacion')}"/>
 				<ul role="list" class="results"></ul>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.el.dia']}" escape="false" />:</div>
 				<input type="date" id="f2" name="f2" is="date-input" class="ui-ruta" tabindex="34" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.a.las']}" escape="false" />:</div>
@@ -52,7 +48,7 @@
 
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.util']}" escape="false" />:</div>
-				<select name="desp" is="data-list" class="ui-ruta" tabindex="37" title="#{msg['tit.medio.trans']}">
+				<select name="desp" is="desp-ruta" class="ui-ruta" tabindex="37" title="#{msg['tit.medio.trans']}">
 					<option value=""></option>
 					<option value="1">#{iris.rutas.getMsgDesp(1)}</option>
 					<option value="8">#{iris.rutas.getMsgDesp(8)}</option>
@@ -64,12 +60,10 @@
 					<option value="7">#{iris.rutas.getMsgDesp(7)}</option>
 					<option value="9">#{iris.rutas.getMsgDesp(9)}</option>
 				</select>
-				<div class="ui-errtip"></div>
 			</label>
-			<label class="ui-block hide grupo-matricula">
+			<label class="ui-block hide">
 				<div class="label required"><h:outputText value="#{msg['lbl.matricula']}" escape="false" />:</div>
-				<input type="text" name="matricula" is="text-input" maxlength="10" tabindex="38" class="ui-sm ui-ruta"/>
-				<div class="ui-errtip"></div>
+				<input type="text" name="matricula" is="matricula-input" maxlength="10" tabindex="38" class="ui-sm ui-ruta"/>
 			</label>
 			<div class="ui-block-btn">
 				<button type="button" is="add-ruta" class="btn btn-green" tabindex="39">
@@ -109,10 +103,10 @@
 
 	<!-- Botones -->
 	<div class="navbar">
-		<button type="button" is="prev-rutas" class="btn btn-info" title="#{msg['tit.btn.volver']}">
-			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></button>
-		<button type="button" is="next-rutas" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></button>
+		<a href="#tab-prev" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver']}">
+			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		<a href="#tab-next" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.siguiente']}">
+			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></a>
 		<button type="button" is="save-rutas" class="btn btn-green" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>

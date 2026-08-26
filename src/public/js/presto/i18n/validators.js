@@ -9,7 +9,7 @@ class PrestoValidators extends Validators {
 	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
 	rechazar() { return super.rechazar(form.getData()); } // specific implementation
 
-	presto = data => {
+	presto(data) {
 		if (presto.isPartidaDec()) { // valido la partida a disminuir
 			this.isKey("orgDec", data.orgDec, "Debe seleccionar la orgánica que disminuye"); // autocomplete required key
 			this.isKey("ecoDec", data.ecoDec, "Debe seleccionar la económica que disminuye"); // select required number
@@ -27,14 +27,26 @@ class PrestoValidators extends Validators {
 		return this.close(data);
 	}
 
-	all() {
-		const data = form.getData(); // start validation
+	#partidas(data) {
 		const partidas = form.getPartidas(); // paartidas de la solicitud
 		if (presto.isPartidaDec() && (partidas.getImporte() != data.imp)) // Valido los importes a decrementar e incrementar
 			this.addError("imp", "notValid", "¡Los importes a decrementar e incrementar no coinciden!");
 		if (partidas.isEmpty())
 			this.addRequired("orgInc", "Debe seleccionar al menos una partida a incrementar");
-        return this.presto(data);
+    }
+	firmar() {
+		const data = form.getData(); // start validation
+		if (!data.ej || !data.subtipo) // minimum values
+			this.addError("subtipo", "notValid", "Tipo de solicitud incorrecto");
+		this.size("memo", data.memo, "Debe asociar una memoria justificativa a la solicitud."); // Required string
+		this.#partidas(data); // subtable validation
+		return this.close(data);
+    }
+
+	all() {
+		const data = form.getData(); // start validation
+		this.#partidas(data); // subtable validation
+        return this.presto(data); // validate form
     }
 
 	partidaInc() {

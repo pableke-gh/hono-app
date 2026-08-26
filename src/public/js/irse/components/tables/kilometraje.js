@@ -9,14 +9,11 @@ import form from "../../modules/irse.js"
 
 // tabla del paso 6 (kilometraje del vehiculo propio)
 export default class Kilometraje extends TableHTML {
-	init() {
+	connectedCallback() {
 		irse.getNumRutasVp = rutas.getNumRutasVp;
 		irse.getImpGasolina = ruta.getImpGasolina;
 		irse.getImpKm = () => (irse.isMun() ? rutas.getImpKm() : this.getImpKm());
 		irse.getNumRutasVpMun = () => (irse.isMun() && rutas.getNumRutasVp());
-		irse.getNumRutasVpMaps = () => (!irse.isMun() && rutas.getNumRutasVp());
-
-		form.set("is-justifi-km", this.isJustifiKm);
 		this.setChange("km1", (data, el) => {
 			data.km1 = i18n.toFloat(el.value) ?? 0;
 			this.reload(); // recalcula tabla completa
@@ -27,6 +24,8 @@ export default class Kilometraje extends TableHTML {
 	getTotKm = () => this.getProp("totKm");
 	getImpKm = () => this.getProp("impKm");
 	isJustifiKm = () => this.getProp("justifi");
+	hide = () => this.parentNode.parentNode.classList.add("hide"); // arrow final function
+	show = () => this.parentNode.parentNode.classList.remove("hide"); // arrow final function
 
 	// render tables
 	beforeRender(resume) {
@@ -54,11 +53,13 @@ export default class Kilometraje extends TableHTML {
 			<td data-cell="${i18n.get("lblImporte")}" class="table-reload" data-reload="text-render" data-template="$impKm; €">${i18n.isoFloat(ruta.impKm)} €</td>
 		</tr>`;
 	}
-	afterRender = resume => {
+	afterRender(resume) {
 		resume.totKm = resume.totKm.round(2);
 		resume.totKmCalc = resume.totKmCalc.round(2);
 		resume.impKm = (resume.totKm * ruta.getImpGasolina()).round(2);
 		resume.justifi = (resume.totKmCalc + .01) < resume.totKm;
+		this.nextElementSibling.classList.toggle("hide", !resume.justifi); // textarea justifi km
+		this.setVisible(!irse.isMun() && rutas.getNumRutasVp()); // mostrar grupo
 	}
 
 	render() {

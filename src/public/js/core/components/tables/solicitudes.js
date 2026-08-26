@@ -1,5 +1,5 @@
 
-import tabs from "../tabs/TabsOld.js";
+import tabs from "../tabs/Tabs.js";
 import api from "../Api.js";
 import i18n from "../../i18n/langs.js";
 

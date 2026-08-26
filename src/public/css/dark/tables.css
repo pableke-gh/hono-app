@@ -1,6 +1,6 @@
 
 @media (prefers-color-scheme: dark) {
-	tr.tb-data:nth-child(odd) { background-color: --lighter(var(--bg-color)); } /* impar */
-	tr.tb-data:nth-child(even) { background-color: --lighter(var(--bg-color), 20); } /* par */
-    tr.tb-data:hover { background-color: --lighter(var(--bg-color), 30); }
+	/*tr.tb-data:nth-child(odd) { background-color: --lighter(var(--bg-color)); } /* impar */
+	tr.tb-data:nth-child(even) { background-color: --lighter(var(--bg-color)); } /* par */
+    tr.tb-data:hover { background-color: --lighter(var(--bg-color), 20); }
 }

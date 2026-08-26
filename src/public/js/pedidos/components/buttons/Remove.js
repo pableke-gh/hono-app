@@ -10,6 +10,5 @@ export default class ButtonRemove extends ButtonForm {
 
 	execute() {
 		this.form.getPedidos().remove(); // execute remove action
-		tabs.showList(); // force to show list tab
 	}
 }

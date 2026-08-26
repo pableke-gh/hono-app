@@ -5,37 +5,34 @@
 		xmlns:p="http://primefaces.org/ui" 
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:c="http://java.sun.com/jsp/jstl/core"
-		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h2>Informe ISU</h2>
-	<h:form id="xeco-filtro-isu" prependId="false" class="card-filter">
+	<form id="otri" action="/uae/iris/isu">
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica:</div>
-				<i class="fas fa-search ui-input-icon left"></i>
-				<h:inputText id="organica-isu" value="#{iris.isu.organica}" pt:is="text-input" styleClass="ui-autocomplete" tabindex="1" />
-				<input type="hidden" name="id" is="text-input" />
+				<i class="fas fa-search ui-input-icon left inline"></i>
+				<input type="search" name="orgIsu" is="organica-isu" class="ui-autocomplete" title="#{msg['uae.irse.index.msg.cd']}" />
 				<ul role="list" class="results"></ul>
-				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">
 				<div class="label required">Ejercicios:</div>
 				<p:selectCheckboxMenu id="filtro-ej-isu" value="#{iris.isu.ejercicio}"
 						label="Ejercicios" filter="true" filterMatchMode="startsWith" multiple="true" emptyLabel="Seleccione Ejercicio..." updateLabel="true"
-						styleClass="ui-select" style="min-height: 36px" panelStyle="width: 16rem" tabindex="2" title="#{msg['tit.ejercicio']}">
+						styleClass="ui-select" style="min-height: 36px" panelStyle="width: 16rem" title="#{msg['tit.ejercicio']}">
 					<f:selectItems value="#{iris.isu.ejercicios}" />
 				</p:selectCheckboxMenu>
 			</label>
 		</div>
 
 		<div class="navbar">
-			<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="12">
+			<a href="#tab-init" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
 				<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 			<p:commandButton id="filter-list-isu" action="#{iris.isu.list()}" update="xeco-list-isu"
-				icon="far fa-search" value="Buscar" tabindex="13" styleClass="btn btn-info"></p:commandButton>
+				icon="far fa-search" value="Buscar" styleClass="btn btn-primary"></p:commandButton>
 		</div>
-	</h:form>
+	</form>
 
 	<br class="clear"/>
 	<h:form id="xeco-list-isu" prependId="false">
@@ -80,7 +77,7 @@
 	</h:form>
 
 	<div class="navbar">
-	<a href="#tab-init" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}" tabindex="100">
+	<a href="#tab-init" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="100">
 		<i class="fas fa-caret-left"></i><span class="ui-button-text ui-c"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
 	<p:commandButton action="#{iris.isu.excel()}" oncomplete="xlsx(xhr, status, args);" icon="fal fa-file-excel" styleClass="btn btn-green success-btn" value="Excel" tabindex="101"/>
 	</div>

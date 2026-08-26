@@ -27,6 +27,7 @@ Object.nestGroupBy = (arr, fields, i = 0) => {
 }
 
 // Extends HTMLCollection prototype
+HTMLCollection.prototype.at = Array.prototype.at;
 HTMLCollection.prototype.map = Array.prototype.map;
 HTMLCollection.prototype.some = Array.prototype.some;
 HTMLCollection.prototype.find = Array.prototype.find;
@@ -36,6 +37,7 @@ HTMLCollection.prototype.findIndex = Array.prototype.findIndex;
 HTMLCollection.prototype.findLastIndex = Array.prototype.findLastIndex;
 
 // Extends NodeList prototype
+NodeList.prototype.at = Array.prototype.at;
 NodeList.prototype.map = Array.prototype.map;
 NodeList.prototype.some = Array.prototype.some;
 NodeList.prototype.find = Array.prototype.find;

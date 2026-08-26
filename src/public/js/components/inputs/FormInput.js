@@ -1,5 +1,6 @@
 
 import alerts from "../../core/components/alerts/Alerts.js";
+import i18n from "../../core/i18n/langs.js";
 
 class FormInput {
 	#opts; // options container
@@ -28,12 +29,13 @@ class FormInput {
 
 	// Input Validators
 	setOk(input) {
-		input.next("." + this.#opts.tipErrorClass)?.setText("");
+		delete input.parentNode.dataset.tip; // remove tip-msg
 		input.classList.remove(this.#opts.errorClass);
 		return input;
 	}
 	setError(input, tip, msg) {
-		input.next("." + this.#opts.tipErrorClass)?.setMsg(tip);
+		if (tip) // set optional tip-msg
+			input.parentNode.dataset.tip = i18n.msg(tip);
 		input.classList.add(this.#opts.errorClass);
 		alerts.setError(msg); // global message
 		input.focus(); // set focus on error

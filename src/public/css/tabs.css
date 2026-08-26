@@ -17,7 +17,7 @@ summary {
 	display: flex; justify-content: space-between; padding: .8rem 1rem;
 	font-weight: bold; font-size: large; cursor: pointer;
 	border-radius: 8px; box-shadow: 0 -1px 1px 1px;
-	background-color: var(--primary-color);
+	color: white; background-color: var(--primary-color);
 }
 summary:hover { background-color: --darker(var(--primary-color)); }
 summary::after { content: "\276F"; text-align: center; transition: all 0.3s; }
@@ -27,16 +27,18 @@ summary::marker { content: ""; }
 /* Cards */
 .cards { display: flex; gap: 1rem; flex-wrap: wrap; }
 .card-xeco {
+	--border-color: --darker(var(--light-color));
+
 	flex-basis: fit-content; padding: 15px; margin: 10px 6px;
-	border: 1px solid var(--gray-color); border-left: 6px solid var(--primary-color);
-	box-shadow: .1rem .1rem .2rem var(--gray-color); border-radius: .3rem;
+	border: 1px solid var(--border-color); border-left: 6px solid var(--primary-color);
+	box-shadow: .1rem .1rem .2rem var(--border-color); border-radius: .3rem;
 	background-color: var(--light-color);
 }
 .card-xeco h2, .card-xeco h3 {
 	display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
-	margin: .2rem; padding-bottom: 4px;
-	color: var(--blue-color);
-	border-bottom: 1px solid var(--blue-color);
+	margin-top: .2rem; padding-bottom: 4px;
+	color: var(--primary-color);
+	border-bottom: 1px solid var(--primary-color);
 }
 .card-xeco h2 > span, .card-xeco h3 > span {
 	min-width: fit-content;

@@ -1,17 +1,22 @@
 
 import sb from "../../../components/types/StringBox.js";
-import ButtonForm from "../../../components/inputs/ButtonForm.js";
 import valid from "../../i18n/validators/rutas.js";
 import result from "../../../core/util/Result.js";
 
 import maps from "../../services/maps.js";
 import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
+import irse from "../../model/Irse.js";
 
 import place from "../../util/place.js";
 import form from "../../modules/irse.js";
+import ButtonForm from "../../../core/components/forms/ButtonForm.js";
 
 export default class AddRuta extends ButtonForm {
+	hide() { this.parentNode.parentNode.classList.add("hide"); } // hide block
+	show() { this.parentNode.parentNode.classList.remove("hide"); } // show block
+	setEditable() { this.setVisible(irse.isEditable()); }
+
 	async execute() {
 		const data = valid.addRuta(); // form data
 		if (!data) return false; // invalid inputs

@@ -13,6 +13,6 @@ export default class Memoria extends TextArea {
 	}
 
 	connectedCallback() {
-		observer.subscribe("form-updated", this.update); // update state of face inputs
+		observer.subscribe("solicitud", this.update); // update state of face inputs
 	}
 }

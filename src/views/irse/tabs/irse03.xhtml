@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<h2 is="titulo-h2" class="underline"></h2>
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
@@ -19,14 +19,12 @@
 			<div class="label required inline"><h:outputText value="#{msg['lbl.justifi']}" escape="false" />:</div>
 			<div class="ui-block-main">
 				<textarea name="justifi" is="text-area" class="rows-2 ui-isu" tabindex="50"></textarea>
-				<div class="ui-errtip"></div>
 			</div>
 		</label>
 		<label class="ui-blocks form-refresh" data-refresh="getNumRutasVp">
 			<div class="label required inline"><h:outputText value="#{msg['lbl.justifi.vp']}" escape="false" />:</div>
 			<div class="ui-block-main">
 				<textarea name="justifiVp" is="text-area" class="rows-2 ui-isu" tabindex="51"></textarea>
-				<br/><span class="ui-errtip"></span>
 			</div>
 		</label>
 
@@ -72,17 +70,14 @@
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.imp.inscripcion']}" escape="false" />:</div>
 				<input type="text" name="impInsc" is="float-input" tabindex="66" class="ui-isu"/><span class="icon">€</span>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">#{msg['lbl.f1.congreso']}:</div>
 				<input type="date" name="fIniCong" is="date-input" tabindex="67" class="ui-isu"/>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">#{msg['lbl.f2.congreso']}:</div>
 				<input type="date" name="fFinCong" is="date-input" tabindex="68" class="ui-isu"/>
-				<div class="ui-errtip"></div>
 			</label>
 		</div>
 		<div class="hide">
@@ -91,7 +86,6 @@
 				<div class="label required inline"><h:outputText value="#{msg['lbl.justifi.comision']}" escape="false" />:</div>
 				<div class="ui-block-main">
 					<textarea name="justifiCong" is="text-area" class="rows-2 ui-isu" tabindex="69"></textarea>
-					<div class="ui-errtip"></div>
 				</div>
 			</label>
 		</div>
@@ -99,10 +93,10 @@
 
 	<!-- Botones -->
 	<div class="navbar">
-		<button type="button" is="prev-paso3" class="btn btn-info" title="#{msg['tit.btn.volver']}">
-			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></button>
-		<button type="button" is="next-paso3" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></button>
+		<a href="#tab-prev" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver']}">
+			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
+		<a href="#tab-next" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.siguiente']}">
+			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></a>
 		<button type="button" is="save-paso3" class="btn btn-green" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>

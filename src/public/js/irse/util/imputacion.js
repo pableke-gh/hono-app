@@ -1,7 +1,6 @@
 
 import irse from "../model/Irse.js";
 import organica from "../model/Organica.js";
-import perfil from "../modules/perfil.js";
 import form from "../modules/irse.js";
 
 function IrseImputacion() {
@@ -62,7 +61,7 @@ function IrseImputacion() {
 
 		//capitulo 2
 		if (organica.isTipoDieta(tipo)) // dietas
-			return CONCEPTOS_CAP2[tipo] + (perfil.isMes() ? ".02." : ".00.") + colectivo;
+			return CONCEPTOS_CAP2[tipo] + (irse.isMes() ? ".02." : ".00.") + colectivo;
 		return CONCEPTOS_CAP2[tipo] + (organica.isTipoPernocta(tipo) ? ".01." : ".00.") + colectivo;
 	}
 }

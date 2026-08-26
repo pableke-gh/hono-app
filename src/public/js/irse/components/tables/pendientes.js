@@ -1,6 +1,6 @@
 
 import TableHTML from "../../../core/components/tables/Table.js";
-import tabs from "../../../core/components/tabs/TabsOld.js";
+import tabs from "../../../core/components/tabs/Tabs.js";
 import i18n from "../../../core/i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -13,7 +13,7 @@ import form from "../../modules/irse.js"
 
 /*********** ASOCIAR RUTAS / GASTOS ***********/
 export default class RutasPendientes extends TableHTML {
-	init() {
+	connectedCallback() {
 		irse.getNumRutasPendientes = this.size;
 		observer.subscribe("link", this.link).subscribe("unlink", this.unlink);
 		tabs.setAction("rtog", () => {
@@ -28,7 +28,7 @@ export default class RutasPendientes extends TableHTML {
 	link = data => {
 		if (!gasto.isFactura(data)) return; // no es factura
 		rutas.link(this.getChecked(), data.id); // link gasto id to rutas
-		tabs.goTo(5); // allways go back to step 5
+		tabs.next(5); // allways go back to step 5
 		this.view(); // update changes in pending routes
 	}
 	unlink = data => {

@@ -6,8 +6,7 @@ import form from "../../modules/irse.js"
 
 // tabla del paso 6 resumen de dietas
 export default class Dietas extends TableHTML {
-	init() {
-		form.set("is-dietas", this.size);
+	connectedCallback() {
 		irse.getImpDietas = () => this.getProp("percibir");
 		this.setChange("dietas", (dieta, element) => {
 			dieta.imp1 = +element.value; // [0, 0.5, 1, 1.5, 2, ...]
@@ -15,6 +14,9 @@ export default class Dietas extends TableHTML {
 			form.refresh(irse); // save changes + update view
 		});
 	}
+
+	hide() { this.parentNode.parentNode.classList.add("hide"); }
+	show() { this.parentNode.parentNode.classList.remove("hide"); }
 
 	beforeRender(resume) {
 		resume.dias = resume.impMax = resume.reducido = resume.percibir =  0;
@@ -62,5 +64,6 @@ export default class Dietas extends TableHTML {
 	}
 	afterRender() {
 		form.refresh(irse);
+		this.setVisible(this.size());
 	}
 }

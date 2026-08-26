@@ -39,7 +39,7 @@
     border-radius: 3px; border: 2px solid var(--gray-color);
     outline: 2px solid transparent; outline-offset: 2px;
     font-size: 0.875rem !important; line-height: 1.25rem/* 20px */;
-    background-color: light-dark(#f8f9fa, #343a40); /* light-gray 100-800 */
+    background-color: light-dark(white, #343a40); /* gray 100 (#f8f9fa) - 800 */
 }
 .ui-input.inline {
     width: auto; height: auto;
@@ -84,7 +84,7 @@ input[type="checkbox"]:hover { cursor: pointer; }
 .ui-small, .ui-sm { width: 90px; }
 .ui-medium, .ui-md { width: 140px; }
 
-.ui-date { box-sizing: border-box; } /* Explicit to override browser defaults */
+.ui-date { width: 142px; box-sizing: border-box; } /* Explicit to override browser defaults */
 input[type="time"]::-webkit-calendar-picker-indicator { display: none; } /*remove icon from timer*/
 input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: pointer; }
 
@@ -110,10 +110,12 @@ input::-webkit-calendar-picker-indicator:hover { filter: invert(.5); cursor: poi
 /* Inputs icon styles */
 
 /* Inputs error styles */
-.ui-error { border: 2px solid var(--error-color); background-color: --transparent(var(--error-color)); }
+.ui-error {
+	border: 2px solid var(--error-color); /* error-color 500-600 */
+	background-color: --transparent(light-dark(#f8d7da, #b02a37)); /* bg-error 100-600 */
+}
 .ui-error:focus { border: 2px solid tomato; caret-color: #e32; }
-.ui-errtip { margin-top: 0; font-size: 0.75rem/* 12px */; line-height: 1rem/* 16px */; font-style: italic; color: var(--error-color); }
-label[data-tip]::after { display: block; content: attr(data-tip); color: var(--error-color); }
+[data-tip]::after { display: block; content: attr(data-tip); color: var(--error-color); font-style: italic; }
 /* Inputs error styles */
 
 /* Autocomplete Input */
@@ -127,7 +129,7 @@ input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); c
 		width: 100%; /* same width than ui-input */
 		position: absolute; margin: 0; padding: 0; z-index: 3;
 		font-weight: normal !important; font-size: 13px;
-		border-color: --darker(var(--bg-color));
+		background-color: var(--bg-color);
 	}
 	.results.active { border: solid 1px var(--gray-color); }
 	li { padding: 3px; list-style: none; cursor: pointer; transition: background-color 0.3s, color 0.3s; }

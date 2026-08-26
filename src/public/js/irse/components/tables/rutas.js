@@ -11,11 +11,6 @@ import observer from "../../../core/util/Observer.js";
 import ct from "../../data/place-ct.js";
 
 export default class TableRutas extends TableHTML {
-	init() { // tabla del paso 2 (rutas maps)
-		const fnGt1 = () => ((this.size() > 1) && irse.isEditable());
-		form.set("is-rutas-gt-1", () => (this.size() > 1)).set("is-editable-rutas-gt-1", fnGt1);
-	}
-
 	setMain(data) {
 		data = data || this.getCurrent();
 		rutas.setRutaPrincipal(data);
@@ -60,7 +55,8 @@ export default class TableRutas extends TableHTML {
 
 		const last = rutas.getLlegada() || ct;
 		const data = { oid: last.did, origen: last.destino, f1: last.dt2, h1: last.dt2, f2: last.dt2, matricula: resume.matricula };
-		form.setData(data, ".ui-ruta").delAttr("#f1", "max").restart("destino").hide(".grupo-matricula");
+		form.setData(data, ".ui-ruta").delAttr("#f1", "max").restart("destino");
+		form.getElement("desp").setTipo();
 	}
 
 	render() { super.render(rutas.getRutas()); }

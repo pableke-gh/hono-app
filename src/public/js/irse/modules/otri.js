@@ -1,26 +1,15 @@
 
-import coll from "../../components/CollectionHTML.js";
-import FormBase from "../../components/forms/FormBase.js";
-import tabs from "../../core/components/tabs/TabsOld.js";
-import api from "../../core/components/Api.js";
+import Tab from "../../core/components/tabs/Tab.js";
+import Organica from "../components/otri/Organica.js";
 
 import otri from "../model/Otri.js";
 import xlsx from "../services/xlsx.js";
 import { KEYS, TITILES } from "../data/isu.js";
 
 /*********** Informe ISU par la otri ***********/
-class InformeISU extends FormBase {
-	constructor() {
-		super("xeco-filtro-isu"); // call super before to use this reference
-	}
-
-	init() {
-		tabs.setInitEvent("listIsu", this.initTab);
-	}
-
-	initTab = () => {
-		const acOrganicas = this.setAutocomplete("organica-isu", otri.getAutocomplete());
-		acOrganicas.setSource(term => api.init().json("/uae/iris/organicas", { term }).then(acOrganicas.render));
+export default class OtriTab extends Tab {
+	afterView() {
+		document.forms.otri.elements.organica.focus(); // focus on first input
 	}
 }
 
@@ -32,4 +21,4 @@ window.xlsx = (xhr, status, args) => {
 	xlsx.download("Informe ISU.xlsx"); // download XLSX file
 }
 
-export default new InformeISU();
+customElements.define("organica-isu", Organica, { extends: "input" });

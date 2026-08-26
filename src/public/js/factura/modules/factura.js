@@ -1,7 +1,5 @@
 
 import sb from "../../components/types/StringBox.js";
-import valid from "../i18n/validators.js";
-
 import factura from "../model/Factura.js";
 
 import Tercero from "../components/inputs/Tercero.js";
@@ -23,15 +21,15 @@ class Factura extends Solicitud {
 	getLineas = () => tables.get("lineas"); // tabla de conceptos de la factura
 
 	init() { // init modules
-		super.init(valid);
 		this.addChange("subtipo", ev => this.getElement("tercero").setSubtipo(+ev.target.value))
 			.addChange("sujeto", ev => { factura.setSujeto(+ev.target.value); this.refresh(factura); })
 			.addChange("iva", ev => this.setIva(+ev.target.value));
-		return this;
+		return super.init();
 	}
 
 	onView(data) {
 		this.getLineas().render(data.lineas); // render table
+		setTimeout(() => this.getElement("tercero").focus(), 9); // set focus on first input after view is loaded
 	}
 
 	setIva = iva => {

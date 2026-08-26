@@ -14,18 +14,15 @@
 		<label class="ui-block-xl">
 			<div class="label required"><h:outputText value="#{msg['lbl.descripcion']}" escape="false" />:</div>
 			<input id="desc" name="desc" is="text-input" class="ui-linea" tabindex="30" maxlength="240"/>
-			<div class="ui-errtip"></div>
 		</label>
 		<label class="ui-block">
 			<div class="label required"><h:outputText value="#{msg['lbl.importe']}" escape="false" />:</div>
 			<input id="imp" name="imp" is="float-input" class="ui-linea" tabindex="31" maxlength="12"/>
-			<div class="ui-errtip"></div> 
 		</label>
 		<label class="autocomplete ui-block-xl">
 			<div class="label required">Recibo asociado a la factura:</div>
 			<input type="search" name="ttpp" is="ttpp-input" class="ui-autocomplete" tabindex="30" />
 			<ul role="list" class="results"></ul>
-			<div class="ui-errtip"></div> 
 		</label>
 		<div class="ui-block-btn">
 			<button type="button" is="add-linea" class="btn btn-green" tabindex="32"><i class="far fa-plus icon"></i>Añadir</button>

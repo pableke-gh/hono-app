@@ -13,7 +13,6 @@
 			<label class="ui-block">
 				<div class="label required">NIF:</div>
 				<input type="text" name="nif" is="nif-input" required="1" class="ui-tercero ui-code" maxlength="50" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">Tipo de documento:</div>
@@ -43,17 +42,14 @@
 			<label class="ui-block-lg">
 				<div class="label required">Nombre:</div>
 				<input type="text" name="nombre" is="text-input" required="1" class="ui-tercero" maxlength="90" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required">Primer Apellido:</div>
 				<input type="text" name="ap1" is="text-input" required="1" class="ui-tercero" maxlength="90" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label">Segundo Apellido:</div>
 				<input type="text" name="ap2" is="text-input" class="ui-tercero" maxlength="90" />
-				<div class="ui-errtip"></div>
 			</label>
 		</div>
 		<br/>
@@ -67,17 +63,14 @@
 			<label class="ui-block-lg">
 				<div class="label required">Domicilio:</div>
 				<input type="text" name="dir" is="text-input" required="1" class="ui-tercero" maxlength="200" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required">Municipio:</div>
 				<input type="text" name="mun" is="text-input" required="1" class="ui-tercero" maxlength="90" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">Código Postal:</div>
 				<input type="text" name="cp" is="text-input" required="1" class="ui-tercero" maxlength="20" />
-				<div class="ui-errtip"></div>
 			</label>
 		</div>
 		<br/>
@@ -91,7 +84,6 @@
 			<label class="ui-block-lg">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
 				<input type="text" name="banco" is="text-input" maxlength="50" class="ui-tercero" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
@@ -100,29 +92,25 @@
 						<option value="#{banco.value}">#{banco.label}</option>
 					</c:forEach>
 				</select>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required"><h:outputText value="#{msg['lbl.num.cuenta']}" escape="false" />:</div>
 				<input type="text" name="iban" is="text-input" required="1" maxlength="50" class="ui-tercero" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block hide">
 				<div class="label">Swift:</div>
 				<input type="text" name="swift" is="text-input" maxlength="30" class="ui-code ui-tercero" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe concedido:</div>
 				<input type="text" name="impNuevo" is="float-input" required="gt0" class="ui-tercero"/> €
-				<div class="ui-errtip"></div>
 			</label>
 		</div>
 	</div>
 
 	<!-- Botones -->
 	<div class="navbar">
-		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+		<a href="#tab-back" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
 		<button type="button" is="create-tercero" class="btn btn-green" title="Añadir nuevo tercero a la solicitud">
 			Añadir tercero<i class="fas fa-plus"></i></button>

@@ -45,15 +45,14 @@
 						<input type="search" id="num-dc" name="numDc" is="text-input" class="ui-input ui-autocomplete" tabindex="2" />
 						<h:inputText id="dc" value="#{jb.idDc}" pt:is="text-input" styleClass="hide" />
 						<ul role="list" class="results"></ul>
-						<div class="ui-errtip"></div> 
 					</label>
 				</div>
 
 				<div class="navbar">
-					<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" tabindex="12" title="#{msg['tit.btn.volver.ini']}">
+					<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-primary" tabindex="12" title="#{msg['tit.btn.volver.ini']}">
 						<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 					<p:commandButton id="search" action="#{jb.search()}" update="info-doc" oncomplete="jbLoaded();"
-							icon="far fa-search" styleClass="btn btn-info" value="Buscar" tabindex="13"></p:commandButton>
+							icon="far fa-search" styleClass="btn btn-primary" value="Buscar" tabindex="13"></p:commandButton>
 					<p:commandLink id="reset" action="#{jb.reset()}" onclick="jbReset();" update="info-doc" styleClass="btn btn-warn warning-btn" tabindex="14">
 						<i class="far fa-times-circle"></i>Limpiar</p:commandLink>
 				</div>
@@ -72,18 +71,17 @@
 							<input type="search" id="num-jg" name="numJg" class="ui-autocomplete" tabindex="1" />
 							<input type="hidden" id="jg" />
 							<ul role="list" class="results"></ul>
-							<div class="ui-errtip"></div> 
 						</label>
 					</div>
 					</div>
 					<div class="dialog-footer">
-						<a href="#tab-action-closeModal" class="btn btn-info"><i class="fas fa-times"></i>Cerrar</a>
+						<a href="#tab-action-closeModal" class="btn btn-primary"><i class="fas fa-times"></i>Cerrar</a>
 						<a href="#tab-action-report" class="btn btn-warn"><i class="fal fa-file-pdf"></i>Informe</a>
 					</div>
 				</dialog>
 			</h:form>
 
-			<h:form id="xeco-doc" prependId="false" class="navbar">
+			<form id="doc" class="navbar">
 			<p:outputPanel id="info-doc">
 			<c:choose>
 				<c:when test="#{jb.docSelected}">
@@ -139,10 +137,10 @@
 				</c:otherwise>
 			</c:choose>
 			</p:outputPanel>
-			</h:form>
+			</form>
 
 			<br class="clear"/><hr/>
-			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+			<a href="/uae/modules/xeco/inicio.xhtml" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
 				<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		</div>
 	</ui:define>

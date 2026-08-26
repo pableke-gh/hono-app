@@ -71,8 +71,8 @@ export default class TableHTML extends HTMLTableElement {
 	getCurrentRow = () => this.#tBody.rows[this.#index];
 	getLastRow = () => this.#tBody.lastElementChild;
 
-	hide = () => this.classList.add("hide"); // arrow final function
-	show = () => this.classList.remove("hide"); // arrow final function
+	hide() { this.classList.add("hide"); }
+	show() { this.classList.remove("hide"); }
 	setVisible(visible) { visible ? this.show() : this.hide(); }
 	getText = selector => this.querySelector(selector)?.innerText; // read text
 	invoke = (name, data, el, tr, i) => {

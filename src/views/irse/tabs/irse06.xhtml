@@ -7,7 +7,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<h2 is="titulo-h2" class="underline"></h2>
 	<div class="card-xeco">
 		<h2>
 			<img src="/uae/resources/images/speaker.png" width="30px"/>
@@ -32,13 +32,13 @@
 
 	<!-- Botones -->
 	<div class="navbar">
-		<button type="button" is="prev-resumen" data-tab="0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}">
-			<i class="fas fa-arrow-to-left"></i></button>
-		<button type="button" is="prev-resumen" class="btn btn-info" title="#{msg['tit.btn.volver']}">
-			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></button>
+		<a href="#tab-form" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.paso.0']}">
+			<i class="fas fa-arrow-to-left"></i></a>
+		<a href="#tab-prev" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver']}">
+			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 
-		<button type="button" is="next-resumen" class="btn btn-info" title="#{msg['tit.btn.siguiente']}">
-			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></button>
+		<a href="#tab-next" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.siguiente']}">
+			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></a>
 		<button type="button" is="save-resumen" class="btn btn-green" title="#{msg['tit.btn.no.enviar']}">
 			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>
 

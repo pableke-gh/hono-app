@@ -2,8 +2,7 @@
 import valid from "../../i18n/validators/irse.js";
 import irse from "../../model/Irse.js";
 import form from "../../modules/irse.js";
-import paso9 from "../../modules/paso9.js";
-import ButtonForm from "../../../components/inputs/ButtonForm.js";
+import ButtonForm from "../../../core/components/forms/ButtonForm.js";
 
 export default class SavePaso9 extends ButtonForm {
 	setEditable() {
@@ -13,7 +12,7 @@ export default class SavePaso9 extends ButtonForm {
 
 	execute() {
 		if (valid.paso9()) // ok => save data
-			paso9.save("/uae/iris/paso9/save");
+			form.getPaso9().send("/uae/iris/paso9/save");
 		else // reset change flag to avoid unnecessary saves
 			form.setChanged(false);
 	}

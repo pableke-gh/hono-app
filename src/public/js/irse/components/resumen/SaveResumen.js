@@ -2,8 +2,7 @@
 import valid from "../../i18n/validators/irse.js";
 import irse from "../../model/Irse.js";
 import form from "../../modules/irse.js";
-import resumen from "../../modules/resumen.js";
-import ButtonForm from "../../../components/inputs/ButtonForm.js";
+import ButtonForm from "../../../core/components/forms/ButtonForm.js";
 
 export default class SaveResumen extends ButtonForm {
 	setEditable() {
@@ -12,12 +11,13 @@ export default class SaveResumen extends ButtonForm {
 	}
 
 	execute() {
+		const resumen = form.getResumen(); // tab resumen id = 6
 		const km = resumen.getKilometraje().getResume();
 		if (!valid.resumen(km))
 			return; // if error => stop
 		if (!form.isChanged())
 			return form.setOk(); // nada que guardar => mensaje ok
-		resumen.save(); // call server
+		resumen.send(); // call server
 	}
 
 }

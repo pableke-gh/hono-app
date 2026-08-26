@@ -17,39 +17,33 @@
 					<option value="2">Otras becas y ayudas</option>
 					<option value="3">Premios</option>
 				</select>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Cual es la orgánica para la factura:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
 				<input type="search" name="organica" is="organica-input" class="ui-autocomplete ui-beca" placeholder="Introduce una orgánica" />
 				<ul role="list" class="results"></ul>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-row">
 				<div class="label required">Denominación de la convocatoria o ayuda:</div>
 				<textarea name="memo" is="text-area" class="ui-beca" required="1"></textarea>
-				<div class="ui-errtip"></div>
 			</label>
 		</div>
 
 		<hr/> <!-- Adjuntos -->
 		<div class="ui-blocks">
 			<div class="ui-block-row">
-				<button type="button" is="btn-bases" class="btn btn-info ui-beca"></button>
+				<button type="button" is="btn-bases" class="btn btn-primary ui-beca"></button>
 				<input type="file" name="bases" is="file-input" accept="application/pdf" class="hide" /><span></span>
-				<div class="ui-errtip"></div>
 			</div>
 			<div class="ui-block-row">
-				<button type="button" is="btn-resolucion" class="btn btn-info ui-beca"></button>
+				<button type="button" is="btn-resolucion" class="btn btn-primary ui-beca"></button>
 				<input type="file" name="resolucion" is="file-input" accept="application/pdf" class="hide" /><span></span>
-				<div class="ui-errtip"></div>
 			</div>
 			<div class="ui-block-row">
-				<button type="button" name="btnBeneficiarios" is="btn-beneficiarios" class="btn btn-info ui-beca"></button>
+				<button type="button" name="btnBeneficiarios" is="btn-beneficiarios" class="btn btn-primary ui-beca"></button>
 				<a href="#" class="btn btn-error hide"><i class="fas fa-times"></i></a>
 				<input type="file" name="beneficiarios" is="file-input" accept=".xls, .xlsx" class="hide" /><span></span>
-				<div class="ui-errtip"></div>
 			</div>
 		</div>
 
@@ -66,12 +60,10 @@
 			<label class="ui-block">
 				<div class="label required">Importe total concedido:</div>
 				<input type="text" name="total" is="float-input" required="gt0"/> €
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-row">
 				<div class="label">Observaciones:</div>
 				<textarea name="desc" is="text-area"></textarea>
-				<div class="ui-errtip"></div>
 			</label>
 		</div>
 	</div>
@@ -84,16 +76,14 @@
 				<i class="fas fa-search ui-input-icon left"></i>
 				<input type="search" name="tercero" is="ac-tercero" class="ui-autocomplete" placeholder="Indique un tercero" />
 				<ul role="list" class="results"></ul>
-				<div class="ui-errtip"></div> 
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe concedido:</div>
 				<input type="text" name="imp" is="float-input" required="gt0"/> €
-				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-btn">
 				<button is="add-tercero" class="btn btn-green"><i class="fas fa-plus"></i>Añadir</button>
-				<a href="#tab-tercero" class="btn btn-warn" title="Alta de un nuevo tercero">
+				<a href="#tab-tercero" is="nav-link" class="btn btn-warn" title="Alta de un nuevo tercero">
 					<i class="fas fa-plus-octagon"></i>Nuevo Tercero</a>
 			</div>
 		</div>
@@ -119,7 +109,7 @@
 
 	<!-- Botones -->
 	<div class="navbar">
-		<a href="#tab-back" class="btn btn-info" title="#{msg['tit.btn.volver.ini']}">
+		<a href="#tab-back" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
 		<button type="submit" is="btn-save" class="btn btn-green" title="Poner solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right"></i></button>

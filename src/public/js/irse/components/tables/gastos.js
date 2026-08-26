@@ -12,10 +12,8 @@ import form from "../../modules/irse.js"
 
 // tabla de gastos del paso 5 (facturas, tickets y demás documentación para liquidar)
 export default class GastosTable extends TableHTML {
-	init() {
+	connectedCallback() {
 		observer.subscribe("link", this.link).subscribe("unlink", this.unlink);
-		form.set("is-zip-doc", () => (irse.isDisabled() && this.getProp("otraDoc")))
-			.set("is-zip-com", () => (irse.isDisabled() && this.getProp("docComisionado")));
 		this.set("#adjunto", gasto => api.init().blob("/uae/iris/download?id=" + gasto.cod, gasto.nombre)); // uuid file and name
 		observer.subscribe("close", () => this.view(gastos.getGastos()));
 	}

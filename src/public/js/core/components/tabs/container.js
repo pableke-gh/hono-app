@@ -2,8 +2,15 @@
 import alerts from "../alerts/Alerts.js";
 
 class Tabs {
-	#tabs = []; // all tabs
 	#events = {}; // handlers for events
+	#tabs; // all tabs
+
+	constructor() {
+		document.addEventListener("DOMContentLoaded", () => {
+			this.#tabs = document.querySelectorAll("div.tab-content"); // all tabs
+			this.#tabs.forEach((tab, index) => tab.setIndex(index)); // set position
+		});
+	}
 
 	getAction = name => this.#events[name]; // get event handler
 	setAction = (name, fn) => { this.#events[name] = fn; return this; } // set event handler
@@ -17,42 +24,26 @@ class Tabs {
 
 	getTabs = () => this.#tabs; // tabs array
 	add(tab) { this.#tabs.push(tab); } // append new tab
+	at = index => this.#tabs.at(index); // get tab by position
 	getTab = id => this.#tabs.find(tab => (tab.id === ("tab-" + id))); // Find by id selector
 	getCurrent = () => this.#tabs.find(tab => tab.isActive()); // current tab
 	indexOf = tab => this.#tabs.indexOf(tab); // index of single tab
 	isActive = tab => this.getTab(tab).isActive(); // check if tab is active
 	isLoaded = tab => this.getTab(tab).isLoaded(); // check if tab is preloaded
+	setInactive() { this.#tabs.forEach(tab => tab.setInactive()); }
 
-	#show(tab) {
-		if (!tab.isLoaded()) // init event indicator
-			tab.init(); // Fire once when show tab
-		tab.beforeView(); // fires always before tab is visible
-		this.#tabs.forEach(tab => tab.setInactive()); // hide all tabs
-		tab.setActive(); // active current tab only
-		window.parent.scrollTo({ top: 0, behavior: "smooth" });
-		tab.afterView(); // fires always when tab is visible
-		return this;
-	}
-	show(id) {
-		const tab = this.getTab(id); // destination tab
-		const current = this.getCurrent(); // source tab
-		if (current !== tab) // are different => move to new tab
-			tab.dataset.back = this.indexOf(current); // set back index for current tab
-		return this.#show(tab); // show new tab
-	}
-	next1(tab) {
-		const index = this.indexOf(tab || this.getCurrent());
-		return this.#show(this.#tabs[index + 1] || this.#tabs[index]);
-	}
-	next(id) {
-		return globalThis.isset(id) ? this.show(id) : this.next1();
-	}
-	prev() {
-		alerts.close();
-		const tab = this.getCurrent();
-		const index = tab.dataset.back ? +tab.dataset.back : (this.indexOf(tab) - 1);
-		return this.#show(this.#tabs[index] || this.#tabs[0]);
-	}
+	open(id) { this.#tabs[0].show(id); return this; }
+	show(id) { this.getCurrent().show(id); return this; }
+	view(id) { return this.show(id); } // synonym of show function
+
+	prev(id) { this.getCurrent().prev(id); return this; }
+	back(id) { return this.prev(id); } // synonym of prev function
+	next(id) { this.getCurrent().next(id); return this; }
+
+	showOk(msg) { alerts.setOk(msg); } // set ok alert
+	showInfo(msg) { alerts.setInfo(msg); } // set info alert
+	showWarn(msg) { alerts.setWarn(msg); } // set warn alert
+	showError(msg) { alerts.setError(msg); } // set error alert
 
 	showInit = () => this.show("init"); // show init view
 	showForm = () => this.show("form"); // show form view

@@ -8,7 +8,7 @@ caption {
 }
 
 thead {
-	background-color: var(--primary-color);
+	color: white; background-color: var(--primary-color);
 	border-bottom: 2px solid --darker(var(--primary-color), 20);
 }
 th { padding: .5rem .6rem; }
@@ -16,15 +16,15 @@ th.slim { padding: 0; }
 
 tbody td.no-data { padding: 1rem; text-align: center; }
 
-tr.tb-data:nth-child(odd) { background-color: --darker(var(--bg-color)); } /* impar */
-tr.tb-data:nth-child(even) { background-color: --darker(var(--bg-color), 20); } /* par */
-tr.tb-data:hover { background-color: --darker(var(--bg-color), 30); }
+/*tr.tb-data:nth-child(odd) { background-color: --darker(var(--bg-color)); } /* impar */
+tr.tb-data:nth-child(even) { background-color: --darker(var(--bg-color)); } /* par */
+tr.tb-data:hover { background-color: --darker(var(--bg-color), 20); }
 tr.active { font-weight: bold; }
 
 tfoot {
 	font-weight: bold;
 	border-top: 1px dashed var(--primary-color);
-	background-color: var(--light-color);
+	background-color: var(--bg-light);
 }
 tfoot td:first-child { padding: .5rem; }
 

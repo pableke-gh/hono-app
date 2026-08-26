@@ -1,5 +1,5 @@
 
-import tabs from "../../core/components/tabs/TabsOld.js";
+import tabs from "../../core/components/tabs/Tabs.js";
 import alerts from "../../core/components/alerts/Alerts.js";
 import observer from "../../core/util/Observer.js";
 
@@ -22,7 +22,7 @@ import MultiSelectCheckbox from "../inputs/MultiSelectCheckbox.js";
 export default class FormHTML extends HTMLFormElement {
 	#opts = {
 		defaultMsgOk: "saveOk", defaultMsgError: "errForm", // default key messages
-		errorClass: "ui-error", tipErrorClass: "ui-errtip", negativeClass: "text-red", // default css class input
+		errorClass: "ui-error", negativeClass: "text-red", // default css class input
 		refreshSelector: ".form-refresh" // element selector for refresh
 	};
 
@@ -78,7 +78,8 @@ export default class FormHTML extends HTMLFormElement {
 	setText = (selector, text) => { this.#fnQuery(selector).innerText = text; return this; }
 	text = (selector, text) => { this.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.$$(selector).render(data); return this; } // NodeList.prototype.render
-	refresh(model) { observer.emit("form-updated", model, this.#opts); return this; } // NodeList.prototype.refresh
+	addObserver(fn) { observer.subscribe(this.getAttribute("id"), fn); return this; }
+	refresh(model) { observer.emit(this.getAttribute("id"), model); return this; }
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return this.setOk(); // show ok msg
@@ -92,10 +93,10 @@ export default class FormHTML extends HTMLFormElement {
 	setVisible = (selector, force) => force ? this.show(selector) : this.hide(selector);
 	disabled = (force, selector) => this.#fnUpdate(selector, el => el.setDisabled(force));
 	readonly = (force, selector) => this.#fnUpdate(selector, el => el.setReadonly(force));
-	setEditable = (model, selector) => this.#fnUpdate(selector, el => el.setEditable(model));
-	prepare = (model, selector) => this.#fnUpdate(selector, el => el.prepare(model));
-	reactivate = model => this.closeAlerts().setEditable(model).setCache(model.getId()).refresh(model);
-	load = model => this.closeAlerts().prepare(model).setCache(model.getId()).refresh(model);
+	setEditable(model, selector) { return this.#fnUpdate(selector, el => el.setEditable(model)); }
+	prepare(model, selector) { return this.#fnUpdate(selector, el => el.prepare(model)); }
+	reactivate(model) { return this.closeAlerts().setEditable(model).setCache(model.getId()).refresh(model); }
+	load(model) { return this.closeAlerts().prepare(model).setCache(model.getId()).refresh(model); }
 
 	// Value property
 	getValue = name => this.getElement(name).getValue();

@@ -1,11 +1,14 @@
 
 import sb from "../../../components/types/StringBox.js";
+import ActionLink from "./Action.js";
 
-export default class ToggleLink extends HTMLAnchorElement {
+export default class ToggleLink extends ActionLink {
 	#clicks = 0;
 
 	init() {}
-	view() {}
+	beforeOpen() {}
+	afterOpen() {}
+	afterClose() {}
 
 	getNumClicks = () => this.#clicks;
 	getNumOpens = () => (this.#clicks / 2);
@@ -16,24 +19,29 @@ export default class ToggleLink extends HTMLAnchorElement {
 		this.#clicks++; // increment counter
 		const icon = this.querySelector(this.dataset.icon || "i"); // icon indicator
 		sb.split(this.dataset.toggle, " ").forEach(name => icon.classList.toggle(name));
-		const target = document.querySelector(this.dataset.target || (".tab-" + this.id));
-		target.classList.toggle("hide"); // target must exists
+		const target = this.dataset.target || (".info-" + this.getAttribute("id"));
+		document.querySelectorAll(target).forEach(el => el.classList.toggle("hide"));
+		if (this.dataset.focus) // set focus input
+			this.closest("form").elements[this.dataset.focus].focus();
 	}
+	#setOpen() {
+		this.beforeOpen();
+		this.#toggle();
+		this.afterOpen();
+	}
+	#setClose() {
+		this.#toggle();
+		this.afterClose();
+	}
+
+	open() { this.isClose() && this.#setOpen(); }
+	close() { this.isOpen() && this.#setClose(); }
 	execute() {
 		if (!this.#clicks)
 			this.init();
 		if (this.isClose())
-			this.view();
-		this.#toggle();
-	}
-	open() {
-		this.isClose() && this.#toggle();
-	}
-
-	connectedCallback() {
-		this.addEventListener("click", ev => {
-			ev.preventDefault();
-			this.execute();
-		});
+			this.#setOpen();
+		else
+			this.#setClose();
 	}
 }

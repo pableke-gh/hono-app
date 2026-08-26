@@ -1,5 +1,4 @@
 
-import valid from "../i18n/validators.js";
 import presto from "../model/Presto.js";
 import partida from "../model/Partida.js";
 
@@ -21,9 +20,8 @@ class Presto extends Solicitud {
 	getPartidas = () => tables.get("partidas"); // tabla de partidas a incrementar
 
 	init() { // init modules
-		super.init(valid); // load validators
 		this.getPartidas().set("#doc030", this.getElement("eco030").view);
-		return this;
+		return super.init();
 	}
 
 	onView(data) {

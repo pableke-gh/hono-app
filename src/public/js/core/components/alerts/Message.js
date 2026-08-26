@@ -7,8 +7,8 @@ export default class Message extends HTMLParagraphElement {
 	isWarn = () => this.classList.contains("alert-warn"); // check if alert is warning type
 	isError = () => this.classList.contains("alert-error"); // check if alert is error type
 
-	hide = () => this.classList.add("hide"); // arrow final function
-	show = () => this.classList.remove("hide"); // arrow final function
+	hide() { this.classList.add("hide"); }
+	show() { this.classList.remove("hide"); }
 	setVisible(visible) { visible ? this.show() : this.hide(); }
 
 	#setMessage(type, icon, message) {
@@ -24,6 +24,7 @@ export default class Message extends HTMLParagraphElement {
 	setInfo(message) { this.#setMessage("info", '<i class="fas fa-info fa-3x"></i>', message); }
 	setWarn(message) { this.#setMessage("warn", '<i class="fas fa-exclamation-triangle fa-2x"></i>', message); }
 	setError(message) { this.#setMessage("error", '<i class="fas fa-exclamation fa-3x"></i>', message); }
+	setText(text) { this.className = "navbar"; this.innerHTML = text; }
 
 	connectedCallback() {
 		this.id && msgs.set(this.id, this); // register message

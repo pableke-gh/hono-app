@@ -8,16 +8,12 @@ class FacturaValidators extends Validators {
 	fail(msg) { form.setErrors(super.fail(msg)); return !this.reset(); } // force error for validation
 	rechazar() { return super.rechazar(form.getData()); } // specific implementation
 
-	factura(data) { 
+	factura(data) {
 		this.isKey("tercero", data.tercero, "Debe seleccionar un tercero válido"); // autocomplete required key
 		this.isKey("delegacion", data.delegacion, "Debe seleccionar una delegación del tercero"); // desplegable de las delegaciones
 		this.isKey("organica", data.organica, "No ha seleccionado correctamente la orgánica"); // autocomplete required key
 		if (factura.isRecibo()) //subtipo = ttpp o extension
 			this.size("recibo", data.recibo, "Debe indicar un número de recibo válido");
-		/*if (factura.isDeportes()) {
-			this.size("extra", data.extra, "errRequired", "Debe indicar un número de recibo válido"); // Required string
-			this.leToday("fMax", data.fMax, "Debe indicar la fecha del recibo asociado"); // Required date
-		}*/
 		if (factura.isUae()) // economica required
 			this.isKey("idEco", data.idEco, "Debe asociar una económica de ingreso a la solicitud.");
 		if (factura.isTtppEmpresa()) // Required string

@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core"
 		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
-	<h2 class="underline form-refresh" data-refresh="text-render">@getTitulo; <i>@codigo;</i></h2>
+	<h2 is="titulo-h2" class="underline"></h2>
 	<div class="card-xeco">
 		<h2><img src="/uae/resources/images/speaker.png" width="30px"/><h:outputText value="#{msg['uae.irse.tab9.tit']}" escape="false" />​</h2>
 
@@ -29,7 +29,6 @@
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
 				<input type="text" name="banco" is="text-input" maxlength="50" class="ui-paso9" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
@@ -37,17 +36,14 @@
 					<f:selectItem itemValue="" itemLabel=""/>
 					<f:selectItems value="#{iris.gastos.entidades}" var="banco" itemValue="#{banco.value}" itemLabel="#{banco.label}"/>
 				</h:selectOneMenu>
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required"><h:outputText value="#{msg['lbl.num.cuenta']}" escape="false" />:</div>
 				<input type="text" name="iban" is="text-input" maxlength="50" class="ui-paso9" />
-				<div class="ui-errtip"></div>
 			</label>
 			<label class="ui-block hide">
 				<div class="label">Swift:</div>
 				<input type="text" name="swift" is="text-input" maxlength="30" class="ui-code ui-paso9" />
-				<div class="ui-errtip"></div>
 			</label>
 			<div class="ui-block-row"><hr/></div>
 		</div>
@@ -73,7 +69,6 @@
 			<label class="ui-block-row">
 				<div class="label required">#{iris.getMsg('lblMotivoUrg')}:</div>
 				<textarea name="extra" is="text-area" class="ui-paso9 rows-2"></textarea>
-				<div class="hide ui-errtip"></div>
 			</label>
 		</div>
 	</div>
@@ -83,10 +78,10 @@
 
 	<!-- Botones -->
 	<div class="navbar">
-		<button type="button" is="prev-paso9" data-tab="0" class="btn btn-info" title="#{msg['tit.btn.paso.0']}">
-			<i class="fas fa-arrow-to-left"></i></button>
-		<button type="button" is="prev-paso9" class="btn btn-info" title="#{msg['tit.btn.volver']}">
-			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></button>
+		<a href="#tab-form" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.paso.0']}">
+			<i class="fas fa-arrow-to-left"></i></a>
+		<a href="#tab-prev" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver']}">
+			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 
 		<button type="button" is="save-paso9" class="btn btn-warn" title="#{msg['lbl.btn.no.enviar']}">
 			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>

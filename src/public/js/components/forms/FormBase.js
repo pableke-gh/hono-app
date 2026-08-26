@@ -1,5 +1,5 @@
 
-import tabs from "../../core/components/tabs/TabsOld.js";
+import tabs from "../../core/components/tabs/Tabs.js";
 import alerts from "../../core/components/alerts/Alerts.js";
 import observer from "../../core/util/Observer.js";
 
@@ -19,7 +19,6 @@ export default class FormBase {
 		this.#opts.defaultMsgOk = this.#opts.defaultMsgOk || "saveOk"; // default key for message ok
 		this.#opts.defaultMsgError = this.#opts.defaultMsgError || "errForm"; // default key error
 		this.#opts.errorClass = this.#opts.errorClass || "ui-error"; // Input error styles
-		this.#opts.tipErrorClass = this.#opts.tipErrorClass || "ui-errtip"; // Tip error style
 		this.#opts.negativeClass = this.#opts.negativeClass || "text-red"; // Negative numbers styles
 		this.#opts.refreshSelector = this.#opts.refreshSelector || ".form-refresh"; // selector for refresh
 
@@ -86,7 +85,8 @@ export default class FormBase {
 	setText = (selector, text) => { this.#fnQuery(selector).innerText = text; return this; }
 	text = (selector, text) => { this.#form.$$(selector).text(text); return this; } // Update all texts info in form
 	render = (selector, data) => { this.#form.$$(selector).render(data); return this; } // NodeList.prototype.render
-	refresh(model) { observer.emit("form-updated", model); return this; } // NodeList.prototype.refresh
+	addObserver(fn) { observer.subscribe(this.#form.getAttribute("id"), fn); return this; }
+	refresh(model) { observer.emit(this.#form.getAttribute("id"), model); return this; }
 	nextTab = tab => { // change tab inside form
 		if (tab && tabs.isActive(tab)) // same tab
 			return this.setOk(); // show ok msg

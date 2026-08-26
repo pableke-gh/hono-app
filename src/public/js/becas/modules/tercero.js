@@ -11,7 +11,7 @@ export default class TerceroTab extends Tab {
 		const form = document.forms.beca;
 		form.elements.forEach(el => el.reset());
 		form.elements.paisEntidad.reset();
-		form.closeAlerts();
+		return form.closeAlerts();
 	}
 
 	afterView() {

@@ -20,8 +20,8 @@ export default class ButtonForm extends HTMLButtonElement {
 	reset() {}
 	restart() {}
 
-	hide = () => this.classList.add("hide"); // arrow final function
-	show = () => this.classList.remove("hide"); // arrow final function
+	hide() { this.classList.add("hide"); } // hide button
+	show() { this.classList.remove("hide"); } // show button
 	setVisible(visible) { visible ? this.show() : this.hide(); }
 
 	setDisabled(force) { this.classList.toggle("disabled", this.toggleAttribute("disabled", force)); return this; }
@@ -29,13 +29,26 @@ export default class ButtonForm extends HTMLButtonElement {
 	setEditable() { return this; } // preserve state by default, override in child class
 
 	// Validators
-	setOk() { return this; } // restore default styles
-	setError() { return this; } // set css class error
+	setOk() {} // restore default styles
+	setError() {} // set css class error
 	validate() { return true; } // default validation
 
-	connectedCallback() { // init. component
-		if (this.execute) // execute action on click or default button behavior
-			this.addEventListener("click", ev => { ev.preventDefault(); this.execute(); });
-		this.classList.add("btn"); // default button class
+	execute() { // override in subclass
+		console.error("Execute method must be implemented!");
 	}
+
+	connectedCallback() { // init. component
+		this.classList.add("btn"); // default button class
+		this.addEventListener("click", ev => {
+			ev.preventDefault(); // avoid page reload
+			this.execute();
+		});
+	}
+
+	/* deprecated functions, preserve for old compatibility */
+	load(data) {} // deprecated: old compatibility
+	prepare(model) { this.setEditable(); } // deprecated: old compatibility
+	update(tip, msg) {} // deprecated: old compatibility
+	addFormData(fd) {} // not append values in form data
+	/* deprecated functions, preserve for old compatibility */
 }

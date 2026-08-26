@@ -5,7 +5,7 @@ export default class AddDocumento extends ButtonForm {
 	execute() {
 		const docElem = this.form.elements.uxxi;
 		if (docElem.isLoaded()) // add document to table
-			this.form.nextElementSibling.add(docElem.getCurrent())
+			this.form.getDocumentos().add(docElem.getCurrent())
 		docElem.reload(); // Reload autocomplete
 	}
 }

@@ -1,6 +1,6 @@
 
 import coll from "../components/CollectionHTML.js";
-import tabs from "../core/components/tabs/TabsOld.js";
+import tabs from "../core/components/tabs/Tabs.js";
 
 import Ancladas from "./modules/tables/ancladas.js";
 import Recientes from "./modules/tables/recientes.js";

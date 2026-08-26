@@ -1,16 +1,19 @@
 
-import tabs from "../../core/components/tabs/TabsOld.js";
+import api from "../../core/components/Api.js";
+import Tab from "../../core/components/tabs/Tab.js";
+import observer from "../../core/util/Observer.js";
+import valid from "../i18n/validators/irse.js";
 import i18n from "../i18n/langs.js";
 
 import Actividad from "../components/perfil/Actividad.js";
 import Interesado from "../components/perfil/Interesado.js";
 import MsgFinanciacion from "../components/perfil/MsgFinanciacion.js";
-import NextPerfil from "../components/perfil/NextPerfil.js";
+import Remove from "../components/perfil/Remove.js";
 import Organica from "../components/perfil/Organica.js";
 import irse from "../model/Irse.js";
 import form from "./irse.js";
 
-class Perfil {
+export default class Perfil extends Tab {
 	#eAct = document.forms.solicitud.elements.actividad;
 
 	isColaboracion = () => this.#eAct.isColaboracion();
@@ -38,14 +41,22 @@ class Perfil {
 	getOrganicas = () => form.getElement("organica").getOrganicas();
 
 	init() {
-		form.set("not-isu", () => !irse.isIsu()).set("not-mun", () => !this.isMun());
-		const url = "https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO";
-		form.setClick("a#reg-externo", ev => { form.copyToClipboard(url); ev.preventDefault(); });
-		tabs.setActiveEvent(2, this.isMaps).setActiveEvent(3, irse.isIsu);
+		super.init(); // init. tab perfol (paso 0)
+		this.querySelector("a#reg-externo").addEventListener("click", ev => {
+			form.copyToClipboard("https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO");
+			ev.preventDefault(); // avoid navigation
+		});
 		form.afterReset(() => {
 			form.getElement("interesado").clear();
 			form.getElement("organica").clear();
 		});
+	}
+	beforeView(tab) { // redirect
+		return !tab.isForward() || !irse.isResumable() || super.show(6);
+	}
+	afterView() {
+		const name = irse.isUxxiec() ? "interesado" : "organica";
+		form.getElement(name).focus(); // focus on first input
 	}
 
 	view(interesado, organicas, firmas) {
@@ -57,12 +68,27 @@ class Perfil {
 		form.getElement("organica").setOrganicas(organicas); // load autocomplete + table
 		form.setValue("tramite", irse.getTramite()); // AyL, AUT or LIQ
 	}
+
+	next1() {
+		if (!valid.perfil()) return; // if error => stop
+		if (!irse.isEditableP0()) // is form readonly?
+			return super.next1(); // go next without saving
+
+		const data = form.getData(".ui-perfil");
+		data.financiacion = irse.getFinanciacion();
+		data.organicas = form.getElement("organica").getOrganicas().getData();
+		api.setJSON(data).json("/uae/iris/perfil/save").then(data => {
+			irse.setData(data.solicitud); // update irse data
+			observer.emit("perfil", irse); // update changes from server (id, fk, text, etc.)
+			form.setFirmas(data.firmas); // show firmas list
+			form.getPaso9().setCuentas(data.cuentas); // cuentas del interesado (desplegable paso9)
+			form.reactivate(irse).nextTab(1); // prepare changes and show tab
+		});
+	}
 }
 
 customElements.define("interesado-input", Interesado, { extends: "input" });
 customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("actividades-list", Actividad, { extends: "select" });
 customElements.define("msg-financiacion", MsgFinanciacion, { extends: "p" });
-customElements.define("next-perfil", NextPerfil, { extends: "button" });
-
-export default new Perfil();
+customElements.define("btn-remove", Remove, { extends: "button" });

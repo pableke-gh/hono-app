@@ -18,7 +18,6 @@ class Iris extends Solicitud {
 	isActivablePaso8 = () => (this.isUae() && this.isEditable()); // pueden mostrarse los campos del paso 8
 	isReactivable = () => (sb.inYear(this.get("fCreacion")) && (this.isInvalidada() || this.isErronea())); // La solicitud se puede reactivar / subsanar
 	isResumable = () => (this.isPendiente() || this.isFirmada() || this.isIntegrada()); // muestra el boton de resumen (paso 6)
-	getInitTab = () => (this.isResumable() ? 6 : 0); // paso a mostrar
 
 	getRol = () => this.get("rol");
 	getCodigoRol = nif => ((nif == this.getNif()) ? "P" : "A");
@@ -29,7 +28,10 @@ class Iris extends Solicitud {
 
 	getActividad = () => this.get("actividad");
 	setActividad = val => this.set("actividad", val);
+	isCom = () => (this.getActividad() == "COM");
 	isMun = () => (this.getActividad() == "MUN");
+	isMes = () => (this.getActividad() == "MES");
+
 	getTramite = () => this.get("tramite");
 	getFinanciacion = () => this.get("financiacion");
 	setFinanciacion = val => this.set("financiacion", val);
@@ -37,6 +39,7 @@ class Iris extends Solicitud {
 	isIsu = () => ((this.getFinanciacion() == "ISU") || this.isXsu());
 	isX83 = () => (this.getFinanciacion() == "x83");
 	isA83 = () => ((this.getFinanciacion() == "A83") || this.isX83());
+	isNotIsu = () => !this.isIsu();
 
 	setInteresado(data) {
 		if (data) {
@@ -71,7 +74,7 @@ class Iris extends Solicitud {
 	// handlers for select in step 5
 	getNochesPendientes = () => 0;
 	getNumRutasPendientes = () => 0;
-	isFacturasComisionado = () => ((this.getNochesPendientes() > 0) || (this.getNumRutasPendientes() > 0));
+	isFacturasComisionado = () => (!this.isMun() && ((this.getNochesPendientes() > 0) || (this.getNumRutasPendientes() > 0)));
 
 	// params from server
 	getImpTransporte = () => 0;

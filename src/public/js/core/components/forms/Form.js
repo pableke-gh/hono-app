@@ -67,8 +67,7 @@ export default class FormHTML extends HTMLFormElement {
 	}
 	closeAlerts() {
 		alerts.close(); // global message
-		this.elements.forEach(el => el.classList.remove(this.dataset.errorClass)); // clear input messages
-		this.querySelectorAll("." + this.dataset.tipErrorClass).forEach(el => el.innerText = ""); // clear tip messages
+		this.elements.forEach(el => el.setOk()); // clear styles and messages
 		return this;
 	}
 	setError(input, tip, msg) { // accept input name or element
@@ -78,6 +77,16 @@ export default class FormHTML extends HTMLFormElement {
 	}
 	setRequired = (input, msg) => this.setError(input, "errRequired", msg);
 	setFormatError = (input, msg) => this.setError(input, "errFormat", msg);
+	/*setErrors(messages) { // update all inputs and global message
+		const size = this.elements.length; // number of inputs
+		for (let i = size - 1; i >= 0; i--) { // reverse iterator
+			const el = this.elements[i]; // current input
+			const msg = messages[el.name]; // get message for input
+			msg ? el.setError(msg) : el.setOk(); // update input state
+		}
+		alerts.setError(messages.msgError); // global message
+		return this;
+	}*/
 
 	toggle(input, force) {
 		input = globalThis.isstr(input) ? this.elements[input] : input;
@@ -107,8 +116,8 @@ export default class FormHTML extends HTMLFormElement {
 	}
 	create(data) { return this.#load(data, true); }
 	load(data, editable, selector) { return this.#load(data, editable, selector); }
-	addObserver(fn) { observer.subscribe(this.dataset.loadedClass, fn); return this; }
-	notify(data) { observer.emit(this.dataset.loadedClass, data); return this; }
+	addObserver(fn) { observer.subscribe(this.getAttribute("id"), fn); return this; }
+	notify(data) { observer.emit(this.getAttribute("id"), data); return this; }
 
 	validate(selector) {
 		let ok = this.closeAlerts(); // reset all errors
@@ -152,12 +161,9 @@ export default class FormHTML extends HTMLFormElement {
 		this.dataset.msgOk = this.dataset.msgOk || "saveOk";
 		this.dataset.msgError = this.dataset.msgError || "errForm"; // default key messages
 		this.dataset.errorClass = this.dataset.errorClass || "ui-error";
-		this.dataset.tipErrorClass = this.dataset.tipErrorClass || "ui-errtip";
 		this.dataset.negativeClass = this.dataset.negativeClass || "text-red"; // default css class input
-
 		this.dataset.defaultElementClass = this.dataset.defaultElementClass || "default-element"; // HTML Element
 		this.dataset.editableManualClass = this.dataset.editableManualClass || "editable-manual"; // Editable / Readonly Element
-		this.dataset.loadedClass = this.dataset.loadedClass || "form-loaded"; // reload class selector
 
 		this.setAttribute("novalidate", "1");
 		this.addEventListener("reset", () => alerts.close());

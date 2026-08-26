@@ -9,7 +9,7 @@ import form from "../../modules/irse.js"
 
 // tabla del paso 6 resumen de transportes
 export default class Pernoctas extends TableHTML {
-	init = () => {
+	connectedCallback() {
 		this.setMsgEmpty("No existen gastos por alojamiento asociados a la comunicación."); // msg.no.gastos.extra
 		irse.getNochesPendientes = () => (rutas.getNumNoches() - this.getNumNoches());
 		irse.getImpPernoctas = this.getImporte;
@@ -18,6 +18,8 @@ export default class Pernoctas extends TableHTML {
 	getImporte = () => this.getProp("impMin");
 	getNumNoches = () => this.getProp("numNoches");
 	getImpNoche = () => this.getProp("imp2");
+	hide = () => this.parentNode.classList.add("hide"); // arrow final function
+	show = () => this.parentNode.classList.remove("hide"); // arrow final function
 
 	beforeRender = resume => {
 		resume.imp1 = resume.imp2 = resume.numNoches = 0;
@@ -45,8 +47,9 @@ export default class Pernoctas extends TableHTML {
 			<td data-cell="${i18n.get("lblImpPercibir")}">${i18n.isoFloat(data.impMin)} €</td>
 		</tr>`;
 	}
-	afterRender = resume => {
+	afterRender(resume) {
 		resume.impTotal = resume.imp2 * resume.numNoches; // importe total por noche
+		this.setVisible(resume.impMin > 0); // mostrar grupo
 	}
 
 	render() {

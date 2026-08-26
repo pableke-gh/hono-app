@@ -17,33 +17,34 @@
 .alert-close { font-size: large; cursor: pointer; }
 .alert-close:hover { animation: resize .5s forwards; }
 
-.alert-ok { border-color: --darker(var(--ok-color)); background-color: var(--ok-color); }
-.alert-green { border-color: --darker(var(--green-color)); background-color: var(--green-color); }
-.alert-success { border-color: --darker(var(--success-color)); background-color: var(--success-color); }
-.alert-info { border-color: --darker(var(--info-color)); background-color: var(--info-color); }
-.alert-note { border-color: --darker(var(--note-color)); background-color: var(--note-color); }
-.alert-warn { border-color: --darker(var(--warn-color)); background-color: var(--warn-color); }
-.alert-error { border-color: --darker(var(--error-color)); background-color: var(--error-color); }
-.alert-danger { border-color: --darker(var(--danger-color)); background-color: var(--danger-color); }
-.alert-dark { border-color: --darker(var(--dark-color)); background-color: var(--dark-color); }
+.alert-ok { color: white; border-color: --darker(var(--ok-color)); background-color: var(--ok-color); }
+.alert-green { color: white; border-color: --darker(var(--green-color)); background-color: var(--green-color); }
+.alert-success { color: white; border-color: --darker(var(--success-color)); background-color: var(--success-color); }
+.alert-info { color: var(--text-info); border-color: --darker(var(--info-color)); background-color: var(--info-color); }
+.alert-note { color: white; border-color: --darker(var(--note-color)); background-color: var(--note-color); }
+.alert-warn { color: var(--text-warn); border-color: --darker(var(--warn-color)); background-color: var(--warn-color); }
+.alert-error { color: white; border-color: --darker(var(--error-color)); background-color: var(--error-color); }
+.alert-danger { color: white; border-color: --darker(var(--danger-color)); background-color: var(--danger-color); }
+.alert-dark { color: white; border-color: --darker(var(--dark-color)); background-color: var(--dark-color); }
 /* Alerts */
 
 /* Notices */
 .notice {
-	display: inline-block; width: 100%; margin: 4px 0; padding: .5rem; 
+	display: inline-block; width: 100%;
+	margin: 4px 0; padding: .5rem; 
 	border-radius: 3px; border: 1px solid;
 }
 .notice-flex { display: flex; gap: .8rem; align-items: center; }
 
-.notice-ok { border-color: --darker(var(--ok-color)); background-color: var(--ok-color); }
-.notice-green { border-color: --darker(var(--green-color)); background-color: var(--green-color); }
-.notice-success { border-color: --darker(var(--success-color)); background-color: var(--success-color); }
-.notice-info { border-color: --darker(var(--info-color)); background-color: var(--info-color); }
-.notice-note { border-color: --darker(var(--note-color)); background-color: var(--note-color); }
-.notice-warn { border-color: --darker(var(--warn-color)); background-color: var(--warn-color); }
-.notice-error { border-color: --darker(var(--error-color)); background-color: var(--error-color); }
-.notice-danger { border-color: --darker(var(--danger-color)); background-color: var(--danger-color); }
-.notice-dark { border-color: --darker(var(--dark-color)); background-color: var(--dark-color); }
+.notice-ok { color: white; border-color: --darker(var(--ok-color)); background-color: var(--ok-color); }
+.notice-green { color: white; border-color: --darker(var(--green-color)); background-color: var(--green-color); }
+.notice-success { color: white; border-color: --darker(var(--success-color)); background-color: var(--success-color); }
+.notice-info {  color: var(--text-info); border-color: --darker(var(--info-color)); background-color: var(--info-color); }
+.notice-note { color: white; border-color: --darker(var(--note-color)); background-color: var(--note-color); }
+.notice-warn { color: var(--text-warn); border-color: --darker(var(--warn-color)); background-color: var(--warn-color); }
+.notice-error { color: white; border-color: --darker(var(--error-color)); background-color: var(--error-color); }
+.notice-danger { color: white; border-color: --darker(var(--danger-color)); background-color: var(--danger-color); }
+.notice-dark { color: white; border-color: --darker(var(--dark-color)); background-color: var(--dark-color); }
 
 .notice-icon { width: 1.5rem/* 24px */; }
 .notice-text { flex-grow: 1; }
@@ -53,7 +54,7 @@
 .loading {
 	display: none; position: fixed;
 	left: 0px; top: 0px; width: 100%; height: 100%;
-	background-color: --darker(var(--bg-color)); z-index: 9;
+	background-color: --transparent(var(--bg-color), .9); z-index: 9;
 }
 .loading-content { position: absolute; top: 50%; left: 50%; color: #0086dd; text-align: center; }
 .loading.active { display: block; }
