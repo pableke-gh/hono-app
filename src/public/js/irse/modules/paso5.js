@@ -1,15 +1,15 @@
 
 import api from "../../core/components/Api.js";
 import Tab from "../../core/components/tabs/Tab.js";
-import tabs from "../../core/components/tabs/Tabs.js";
-import valid from "../i18n/validators/irse.js";
 
 import irse from "../model/Irse.js";
 import rutas from "../model/Rutas.js";
 
 import observer from "../../core/util/Observer.js";
 import TipoGasto from "../components/gastos/TipoGasto.js";
+import Upload from "../components/gastos/Upload.js";
 import MsgGastos from "../components/gastos/MsgGastos.js";
+import Save from "../components/gastos/Save.js";
 import tables from "../components/tables/tables.js";
 import form from "./irse.js";
 
@@ -19,15 +19,11 @@ export default class Paso5 extends Tab {
 	getRutasPendientes = () => tables.get("pendientes");
 
 	init() {
-		super.init();
+		super.init(); // el paso 5 requiere validaciones en el servidor
+		this.addEventListener("change", ev => ev.stopPropagation()); // tab not change form state
 		observer.subscribe("fileGasto", input => {
 			input.isEmpty() ? this.beforeView() : form.getElement("tipoGasto").update();
 		});
-
-		// el paso 5 requiere validaciones en el servidor
-		this.addEventListener("change", ev => ev.stopPropagation()); // tab not change form state
-		tabs.setAction("save5", () => this.send().then(form.setOk)); // todo: build custom element
-		tabs.setAction("uploadGasto", () => (valid.upload() && this.upload())); // todo: build custom element
 	}
 	beforeView() {
 		form.getElement("tipoGasto").reset();
@@ -45,13 +41,9 @@ export default class Paso5 extends Tab {
 		this.updateRutas(); // tebles rutas
 	}
 
-	upload(rutas) { // merge data to send
-		const fd = form.getFormData(".ui-gasto").set("id", irse.getId()).set("trayectos", rutas); // set id + etapas
-		api.setFormData(fd).json("/uae/iris/upload/gasto").then(data => observer.emit("link", data.gasto)); // send data
-		this.beforeView();
+	send() {
+		return api.init().json("/uae/iris/paso5/save?id=" + irse.getId());
 	}
-
-	send() { return api.init().json("/uae/iris/paso5/save?id=" + irse.getId()); }
 	prev1() {
 		const tab = form.getPerfil().isMaps() ? 2 : 1;
 		super.show(irse.isIsu() ? 3 : tab);
@@ -64,4 +56,6 @@ export default class Paso5 extends Tab {
 }
 
 customElements.define("tipo-gasto", TipoGasto, { extends: "select" });
+customElements.define("upload-gasto", Upload, { extends: "button" });
 customElements.define("msg-gastos", MsgGastos, { extends: "p" });
+customElements.define("save-gasto", Save, { extends: "button" });

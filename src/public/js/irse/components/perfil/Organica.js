@@ -1,10 +1,10 @@
 
-import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
-import tabs from "../../../core/components/tabs/Tabs.js";
 import api from "../../../core/components/Api.js";
 import observer from "../../../core/util/Observer.js";
+
 import irse from "../../model/Irse.js";
 import tables from "../tables/tables.js";
+import AutocompleteHTML from "../../../components/inputs/AutocompleteHTML.js";
 
 export default class Organica extends AutocompleteHTML {
 	connectedCallback() {
@@ -13,11 +13,6 @@ export default class Organica extends AutocompleteHTML {
 			const label = this.parentNode.parentNode; // element container
 			label.children[3].render(irse); // importe de crédito vinculante
 			label.setVisible(irse.isUxxiec() ? !this.isLoaded() : label.children[2].hide());
-		});
-		tabs.setAction("addOrganica", () => {
-			const current = this.getItem();
-			current ? this.getOrganicas().push(current) : this.reload(); // new organica
-			super.reset().setLabel(); // clear autocomplete => data in table
 		});
 	}
 
@@ -37,11 +32,5 @@ export default class Organica extends AutocompleteHTML {
 	setOrganicas(organicas) {
 		this.setOrganica(organicas && organicas[0]);
 		this.getOrganicas().render(organicas);
-	}
-
-	reset() {
-		const organicas = this.getOrganicas();
-		organicas.size() && organicas.reset();
-		return super.reset();
 	}
 }

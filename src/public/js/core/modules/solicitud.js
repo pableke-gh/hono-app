@@ -24,7 +24,6 @@ export default class SolicitudForm extends FormBase {
 		this.#solicitudes.set("#view", this.view).set("#firmar", this.firmar).set("#reject", this.showReject)
 				.set("#report", this.report) // call report service //.set("#pdf", fnPdf); // report template service 
 				.set("#reactivar", this.reactivar).set("#reset", this.reactivar); // acciones para reactivar / resetear solicitud
-		tabs.setAction("view", () => this.view(this.#solicitudes.getCurrent()));
 		return super.init();
 	}
 

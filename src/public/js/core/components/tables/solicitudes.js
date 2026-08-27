@@ -27,7 +27,6 @@ export default class Solicitudes extends TableHTML {
 		});
 		this.set("#uxxiec", row => document.forms.uxxiec.view(row)); // solicitudes module list
 		this.view(); // initial render
-		tabs.setAction("remove", this.remove); // default remove
 		return this;
 	}
 

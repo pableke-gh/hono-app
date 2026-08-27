@@ -5,13 +5,16 @@ import observer from "../../core/util/Observer.js";
 import valid from "../i18n/validators/irse.js";
 import i18n from "../i18n/langs.js";
 
-import Actividad from "../components/perfil/Actividad.js";
-import Interesado from "../components/perfil/Interesado.js";
-import MsgFinanciacion from "../components/perfil/MsgFinanciacion.js";
-import Remove from "../components/perfil/Remove.js";
-import Organica from "../components/perfil/Organica.js";
 import irse from "../model/Irse.js";
 import form from "./irse.js";
+
+import Interesado from "../components/perfil/Interesado.js";
+import Organica from "../components/perfil/Organica.js";
+import AddOrganica from "../components/perfil/AddOrganica.js";
+import MsgFinanciacion from "../components/perfil/MsgFinanciacion.js";
+import Actividad from "../components/perfil/Actividad.js";
+import Reset from "../components/perfil/Reset.js";
+import Remove from "../components/perfil/Remove.js";
 
 export default class Perfil extends Tab {
 	#eAct = document.forms.solicitud.elements.actividad;
@@ -45,10 +48,6 @@ export default class Perfil extends Tab {
 		this.querySelector("a#reg-externo").addEventListener("click", ev => {
 			form.copyToClipboard("https://campusvirtual.upct.es/uportal/pubIfPage.xhtml?module=REGISTRO_EXTERNO");
 			ev.preventDefault(); // avoid navigation
-		});
-		form.afterReset(() => {
-			form.getElement("interesado").clear();
-			form.getElement("organica").clear();
 		});
 	}
 	beforeView(tab) { // redirect
@@ -89,6 +88,8 @@ export default class Perfil extends Tab {
 
 customElements.define("interesado-input", Interesado, { extends: "input" });
 customElements.define("organica-input", Organica, { extends: "input" });
+customElements.define("add-organica", AddOrganica, { extends: "button" });
 customElements.define("actividades-list", Actividad, { extends: "select" });
 customElements.define("msg-financiacion", MsgFinanciacion, { extends: "p" });
+customElements.define("btn-reset", Reset, { extends: "button" });
 customElements.define("btn-remove", Remove, { extends: "button" });

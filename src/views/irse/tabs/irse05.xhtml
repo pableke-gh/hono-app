@@ -18,7 +18,7 @@
 		<ui:include src="./irse05_info.xhtml"></ui:include>
 		<div is="grupo-gasto" class="ui-blocks">
 			<div class="ui-block-btn">
-				<a href="#tab-action-clickNext" class="btn btn-green" tabindex="100"><i class="fas fa-share"></i>¡Por Aquí!</a>
+				<a href="next" is="run-action" class="btn btn-green" tabindex="100"><i class="fas fa-share"></i>¡Por Aquí!</a>
 				<input type="file" name="fileGasto" is="file-input" class="ui-gasto hide" data-filename=".fg-name" />
 			</div>
 			<label class="ui-block hide">
@@ -39,7 +39,7 @@
 				<input type="date" id="fAloMax" name="fAloMax" is="date-input" tabindex="103" class="ui-gasto" title="Límite superior del rango de fechas"/>
 			</label>
 			<div class="ui-block-btn hide">
-				<a href="#tab-action-uploadGasto" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down"></i></a>
+				<button type="button" is="upload-gasto" name="upload" class="btn btn-green">Añadir<i class="fas fa-arrow-alt-down"></i></button>
 			</div>
 		</div>
 		<div class="text-height fg-name"></div>
@@ -74,8 +74,8 @@
 			<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
 		<a href="#tab-next" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.siguiente']}">
 			<h:outputText value="#{msg['lbl.btn.siguiente']}" escape="false" /><i class="fas fa-caret-right"></i></a>
-		<a href="#tab-action-save5" class="btn btn-green form-refresh" data-refresh="isEditable" title="#{msg['tit.btn.no.enviar']}">
-			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></a>
+		<button type="button" is="save-gasto" class="btn btn-green" title="#{msg['tit.btn.no.enviar']}">
+			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
 	</div>
 </html>

@@ -57,7 +57,7 @@ export default class FilterForm extends FormHTML {
 		tabs.setAction("vinc", () => this.aceptadas()); // solicitudes aceptadas a vincular
 
 		// global tabs actions
-		tabs.setAction("clickNext", link => link.nextElementSibling.click()); // fire click event for next sibling element
-		tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
+		//tabs.setAction("clickNext", link => link.nextElementSibling.click()); // fire click event for next sibling element
+		//tabs.setAction("closeModal", link => link.closest("dialog").close()); // close modal action
 	}
 }

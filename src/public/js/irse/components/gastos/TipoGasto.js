@@ -7,13 +7,9 @@ import irse from "../../model/Irse.js";
 import gasto from "../../model/Gasto.js";
 
 export default class TipoGasto extends DataList {
-	hide() { this.parentNode.parentNode.hide(); } // hide GrupoGasto instance
-	show() { this.parentNode.parentNode.show(); } // show GrupoGasto instance
-	setVisible(visible) { this.parentNode.parentNode.setVisible(visible); }
-
-	setEditable() {
-		this.setVisible(irse.isEditable()); // GrupoGasto instance
-	}
+	hide() { this.parentNode.parentNode.classList.add("hide"); } // hide GrupoGasto instance
+	show() { this.parentNode.parentNode.classList.remove("hide"); } // show GrupoGasto instance
+	setEditable() { this.setVisible(irse.isEditable()); } // GrupoGasto instance
 
 	isTicket = () => gasto.isTipoTicket(this.value);
 	isPernocta = () => gasto.isTipoPernocta(this.value);
@@ -37,7 +33,7 @@ export default class TipoGasto extends DataList {
 			grupo.setDefault();
 	}
 
-	render = () => {
+	render = () => { // final arrow function
 		this.replaceChildren(); // removes all children
 		this.appendChild(new Option("", "")); // empty option
 

@@ -1,6 +1,6 @@
 
-import TableHTML from "../../../core/components/tables/Table.js";
 import tabs from "../../../core/components/tabs/Tabs.js";
+import observer from "../../../core/util/Observer.js";
 import i18n from "../../../core/i18n/langs.js";
 
 import irse from "../../model/Irse.js";
@@ -8,20 +8,14 @@ import ruta from "../../model/Ruta.js";
 import rutas from "../../model/Rutas.js";
 import gasto from "../../model/Gasto.js";
 
-import observer from "../../../core/util/Observer.js";
-import form from "../../modules/irse.js"
+import Pendientes from "../gastos/Pendientes.js";
+import TableHTML from "../../../core/components/tables/Table.js";
 
 /*********** ASOCIAR RUTAS / GASTOS ***********/
 export default class RutasPendientes extends TableHTML {
 	connectedCallback() {
 		irse.getNumRutasPendientes = this.size;
 		observer.subscribe("link", this.link).subscribe("unlink", this.unlink);
-		tabs.setAction("rtog", () => {
-			const rutas = this.getChecked();
-			if (!rutas || !rutas.length) // no hay rutas seleccionadas
-				return form.showError("errLinkRuta"); // mensaje de error
-			form.getPaso5().upload(rutas.join()); // upload PK de las rutas seleccionadas
-		});
 	}
 
 	getChecked = () => this.getBody().$$(":checked").map(el => +el.value);
@@ -59,3 +53,5 @@ export default class RutasPendientes extends TableHTML {
 		super.view(rutas.getRutasPendientes());
 	}
 }
+
+customElements.define("add-pendientes", Pendientes, { extends: "button" });

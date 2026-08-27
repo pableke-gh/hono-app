@@ -41,7 +41,7 @@ export default class ButtonForm extends HTMLButtonElement {
 		this.classList.add("btn"); // default button class
 		this.addEventListener("click", ev => {
 			ev.preventDefault(); // avoid page reload
-			this.execute();
+			this.execute(); // execute action
 		});
 	}
 
