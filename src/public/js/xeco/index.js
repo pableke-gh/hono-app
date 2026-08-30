@@ -1,7 +1,7 @@
 
 import coll from "../components/CollectionHTML.js";
 import Form from "../components/forms/Form.js";
-import tabs from "../core/components/tabs/Tabs.js";
+import tabs from "../core/components/tabs/TabsOld.js";
 import api from "../core/components/Api.js";
 
 coll.ready(() => {

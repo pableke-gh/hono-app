@@ -25,7 +25,7 @@ export default class PedidoForm extends FormHTML {
 		tabs.showForm(); // show form tab
 	}	
 
-	getPedidos = () => tables.get("pedidos"); // tabla de solicitudes / registros
+	getPedidos = () => tables.getSolicitudes(); // tabla de solicitudes / registros
 	getRegistros = () => this.getPedidos(); // tabla de solicitudes / registros
 
 	create() {
@@ -63,12 +63,8 @@ export default class PedidoForm extends FormHTML {
 	connectedCallback() {
 		super.connectedCallback(); // initialize form
 		pedido.setUser(this.dataset); // load user info
-		tabs.setAction("create", () => this.create()); // set handlers
 		this.addChange("imp", ev => { pedido.setImporte(ev.target.getValue()); this.#setImportes(); });
 		this.addChange("iva", ev => { pedido.setIva(+ev.target.value); this.#setImportes(); });
-
-		const header = this.querySelector("h2"); // form header
-		this.addObserver(data => { header.innerText = pedido.getTitulo(); });
 	}
 }
 

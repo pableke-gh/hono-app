@@ -33,16 +33,11 @@ export default class ButtonForm extends HTMLButtonElement {
 	setError() {} // set css class error
 	validate() { return true; } // default validation
 
-	execute() { // override in subclass
-		console.error("Execute method must be implemented!");
-	}
+	execute() { } // optional override in subclass
 
 	connectedCallback() { // init. component
 		this.classList.add("btn"); // default button class
-		this.addEventListener("click", ev => {
-			ev.preventDefault(); // avoid page reload
-			this.execute(); // execute action
-		});
+		this.addEventListener("click", ev => this.execute(ev)); // execute action
 	}
 
 	/* deprecated functions, preserve for old compatibility */

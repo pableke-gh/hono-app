@@ -2,7 +2,6 @@
 import alerts from "../alerts/Alerts.js";
 
 class Tabs {
-	#events = {}; // handlers for events
 	#tabs; // all tabs
 
 	constructor() {
@@ -10,13 +9,6 @@ class Tabs {
 			this.#tabs = document.querySelectorAll("div.tab-content"); // all tabs
 			this.#tabs.forEach((tab, index) => tab.setIndex(index)); // set position
 		});
-	}
-
-	getAction = name => this.#events[name]; // get event handler
-	setAction = (name, fn) => { this.#events[name] = fn; return this; } // set event handler
-	invoke = (name, param) => {
-		const fn = this.getAction(name);
-		return fn ? fn(param) : true; // optional handler
 	}
 
 	size() { return this.#tabs.length; }

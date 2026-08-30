@@ -29,9 +29,6 @@ export default class PedidosTable extends TableHTML {
 			td.className = pedido.getStyleByEstado() + " hide-xs table-reload"; // set estilos
 			return true; // show td cell
 		});
-
-		// buttons action
-		tabs.setAction("view", () => form.load(this.getCurrent()));
 	}
 
 	row(data) {

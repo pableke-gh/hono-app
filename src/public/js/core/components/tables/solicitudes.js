@@ -27,7 +27,6 @@ export default class Solicitudes extends TableHTML {
 		});
 		this.set("#uxxiec", row => document.forms.uxxiec.view(row)); // solicitudes module list
 		this.view(); // initial render
-		return this;
 	}
 
 	getSolicitud = () => this.#solicitud; // get solicitud
@@ -54,7 +53,12 @@ export default class Solicitudes extends TableHTML {
 	flush() { // override super class
 		const data = this.getCurrent(); // current data row
 		const id = data?.id || this.#solicitud.getId(); // row selected or current data if remove when creating
-		const fnThen = () => { super.flush(); tabs.showList(); } // fire after success remove
-		api.init().json(this.#solicitud.getUrl() + "/remove?id=" + id).then(fnThen);
+		api.init().json(this.#solicitud.getUrl() + "/remove?id=" + id).then(() => {
+			super.flush();
+			if (data)
+				tabs.showList()
+			else
+				tabs.showInit();
+		});
 	}
 }

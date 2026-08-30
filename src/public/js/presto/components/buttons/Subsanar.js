@@ -43,8 +43,9 @@ export default class ButtonSubsanar extends ButtonForm {
 			api.setFormData(form.getFormData()).send("/uae/presto/subsanar").then(tabs.showList);
 	}
 
-	execute() {
+	execute(ev) {
 		if (presto.isSubsanable()) this.subsanar();
 		else this.reactivar(); // default mode
+		ev.preventDefault(); // ajax call
 	}
 }

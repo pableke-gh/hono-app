@@ -34,9 +34,10 @@ export default class ButtonForm extends HTMLButtonElement {
 	update() { return this; } // deprecated
 	validate() { return true; }
 
+	execute() { } // optional override in subclass
+
 	connectedCallback() { // init. component
-		if (this.execute) // execute action on click or default button behavior
-			this.addEventListener("click", ev => { ev.preventDefault(); this.execute(); });
+		this.addEventListener("click", ev => this.execute(ev));
 		this.classList.add("btn"); // default button class
 	}
 }

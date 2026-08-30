@@ -9,7 +9,7 @@ import form from "../../modules/presto.js";
 export default class OrganicaDec extends AutocompleteHTML {
 	connectedCallback() {
 		this.setMinLength(4); // default initialization
-		form.addChange("imp", ev => { // autoload importe
+		this.form.elements.imp.addEventListener("change", ev => { // autoload importe
 			presto.isAutoLoadImp() && form.getPartidas().setImp(ev.target.getValue());
 		});
 	}

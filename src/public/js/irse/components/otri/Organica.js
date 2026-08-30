@@ -7,14 +7,6 @@ import irse from "../../model/Irse.js";
 import tables from "../tables/tables.js";
 
 export default class Organica extends AutocompleteHTML {
-	/*connectedCallback() {
-		tabs.setAction("addOrganica", () => {
-			const current = this.getItem();
-			current ? this.getOrganicas().push(current) : this.reload(); // new organica
-			super.reset().setLabel(); // clear autocomplete => data in table
-		});
-	}*/
-
 	/* deprecated functions, preserve for old compatibility */
 	load(data) {} // deprecated: old compatibility
 	prepare(model) { this.setEditable(); this.load(model.getData()); } // deprecated: old compatibility

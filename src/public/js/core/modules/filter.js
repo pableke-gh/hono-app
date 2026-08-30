@@ -40,16 +40,12 @@ export default class FilterForm extends FormHTML {
 
 	connectedCallback() {
 		super.connectedCallback(); // initialize form
+		this.elements.ej.setLabels(sb.getEjercicios()); // ultimos 6 ej
+		this.elements.firma.value = "5"; // firma en estado pendiente
 		this.addEventListener("submit", ev => {
 			this.isChanged() && this.list();
 			ev.preventDefault();
 			this.setChanged();
 		});
-
-		this.elements.ej.setLabels(sb.getEjercicios()); // ultimos 6 ej
-		this.elements.firma.value = "5"; // firma en estado pendiente
-		tabs.setAction("relist", () => this.relist()); // reload list with default filter
-		tabs.setAction("list-all", () => this.listAll()); // list all  solicitudes in year
-		tabs.setAction("vinc", () => this.aceptadas()); // solicitudes aceptadas a vincular
 	}
 }

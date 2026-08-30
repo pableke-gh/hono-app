@@ -3,7 +3,7 @@ import Solicitud from "../../core/model/Solicitud.js";
 
 class Pedido extends Solicitud {
 	getUrl = () => "/uae/pedido"; // endpoint base path
-	getTitulo = () => ("Solicitud de pedidos de Infraestructuras " + (this.get("codigo") || ""));
+	getTitulo = () => "Solicitud de pedidos de Infraestructuras";
 	getNifNameProv = () => (this.getNif() + " - " + this.get("prov"));
 
 	isAceptado = () => (this.getEstado() === 1);

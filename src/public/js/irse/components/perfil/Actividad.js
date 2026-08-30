@@ -30,7 +30,6 @@ export default class Actividad extends DataList {
 		this.addChange(() => observer.emit("perfil", irse.setActividad(this.value)));
 		observer.subscribe("perfil", () => { // notify changes in perfil
 			this.select(getActividad(irse.getRol(), irse.getColectivo(), irse.getFinanciacion()));
-			form.select("tramite", this.isCom() ? 7 : 1); // default = AyL
 		});
 	}
 }

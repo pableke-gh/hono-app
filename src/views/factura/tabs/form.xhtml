@@ -25,18 +25,18 @@
 			<ui:include src="../parts/subtipos.xhtml"></ui:include>
 		</div>
 
-		<div class="ui-blocks form-refresh" data-refresh="show-factura-uae">
+		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label">Causas de no sujeción a IVA:</div>
-				<select id="sujeto" name="sujeto" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="5">
+				<select name="sujeto" is="sujeto-list" tabindex="5">
 					<option value="0">Seleccione una causa de no sujeción</option>
 					<option value="2">TAI Reglas Localización.</option>
 					<option value="1">Art. 7, 14, otros.</option>
 				</select>
 			</label>
-			<label class="ui-block form-refresh" data-refresh="isExento">
+			<label class="ui-block">
 				<div class="label">Causas de exención en IVA:</div>
-				<select id="exento" name="exento" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="6">
+				<select name="exento" is="exento-list" tabindex="6">
 					<option value="0">Seleccione una causa de exención</option>
 					<option value="1">E1 Exenta por el artículo 20.</option>
 					<option value="2">E2 Exenta por el artículo 21.</option>
@@ -46,9 +46,9 @@
 					<option value="6">E6 Exenta por Otros.</option>
 				</select>
 			</label>
-			<label class="ui-block-row form-refresh" data-refresh="show-factura-uae">
+			<label class="ui-block-row">
 				<div class="label">Modelo fiscal 349:</div>
-				<select id="m349" name="m349" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="7">
+				<select name="m349" is="data-list" tabindex="7">
 					<option value="0">No</option>
 					<option value="1">D - Devoluciones de bienes desde otro Estado miembro al que previamente fueron enviados desde el TAI en el marco de acuerdos de ventas de bienes en consigna</option>
 					<option value="2">E - Entregas intracomunitarias</option>
@@ -73,7 +73,7 @@
 			</label>
 			<label class="ui-block-xl">
 				<div class="label">IBAN:</div>
-				<select name="iban" is="data-list" data-editable="isEditableUae" class="ui-fiscal" tabindex="7">
+				<select name="iban" is="data-list" tabindex="7">
 					<option value="">Seleccione un IBAN</option>
 					<c:forEach items="#{fact.form.getCuentasUpct()}" var="item">
 						<option value="#{item.value}">#{item.label}</option>

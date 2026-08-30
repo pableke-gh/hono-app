@@ -61,10 +61,6 @@ export default class BecaForm extends FormHTML {
 	connectedCallback() {
 		super.connectedCallback(); // initialize form
 		beca.setUser(this.dataset); // load user info
-		tabs.setAction("create", () => this.create()); // set handlers
-
-		const header = this.querySelector("h2"); // form header
-		this.addObserver(data => { header.innerText = beca.getTitulo(); });
 	}
 }
 

@@ -9,7 +9,7 @@
 
 	<label class="ui-block-xl">
 		<div class="label required">Tipos de Ingreso:</div>
-		<select id="subtipo" name="subtipo" is="data-list" class="ui-number" tabindex="4">
+		<select name="subtipo" is="subtipo-list" class="ui-number" tabindex="4">
 			<option value="14" class="form-refresh" data-refresh="isFacturable">MATRÍCULAS ENSEÑANZA OFICIAL - CONVENIOS EDUCATIVOS (SUBV. PRECIO)</option> 
 			<option value="4"  class="form-refresh" data-refresh="isFacturable">MATRÍCULA ENSEÑANZA OFICIAL</option>
 			<option value="3"  class="form-refresh" data-refresh="isFacturable">TÍTULOS PROPIOS (INCLUYE IDIOMAS, EXTRANJEROS, CAP, …)</option>
@@ -36,7 +36,7 @@
 			<option value="13" class="form-refresh" data-refresh="isCartaPago">OTROS</option>
 		</select>
 	</label>
-	<label class="autocomplete ui-block-md form-refresh" data-refresh="isRecibo">
+	<label class="autocomplete ui-block-md">
 		<div class="label required">Recibo asociado a la factura:</div>
 		<input type="search" name="recibo" is="recibo-input" class="ui-autocomplete" tabindex="4" />
 		<ul role="list" class="results"></ul>

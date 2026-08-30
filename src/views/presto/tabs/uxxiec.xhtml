@@ -21,10 +21,10 @@
 				<i class="fas fa-search ui-input-icon left"></i>
 				<input type="search" name="uxxi" is="doc-uxxiec" class="ui-autocomplete" tabindex="2" />
 				<ul role="list" class="results"></ul>
-				<div class="errtip"></div>
 			</label>
 			<div class="ui-block-btn">
-				<button is="add-doc" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud"><i class="far fa-plus"></i> Añadir</button>
+				<button type="button" is="add-doc" class="btn btn-green" tabindex="5" title="Asocia la operación a la solicitud">
+					<i class="far fa-plus"></i> Añadir</button>
 			</div>
 		</div>
 
@@ -48,7 +48,7 @@
 		<div class="navbar">
 			<a href="#tab-list" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
 				<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
-			<a href="#tab-action-view" class="btn btn-primary" title="Muestra los datos de la solicitud">
+			<a href="view" is="run-action" class="btn btn-primary" title="Muestra los datos de la solicitud">
 				<i class="fas fa-search"></i>Ver</a>
 			<button type="button" is="btn-ejecutar" class="btn btn-green" title="Guarda los cambios realizados, sin notificar a los responsables de la solicitud">
 				<i class="far fa-save"></i>Guardar</button>

@@ -55,9 +55,10 @@ export default class ButtonSubsanar extends ButtonForm {
 			api.setJSON(form.getFormData(data)).json("/uae/fact/reset").then(tabs.showList);
 	}
 
-	execute() { // click event button
+	execute(ev) { // click event button
 		if (factura.isSubsanableUae()) this.subsanar();
 		else if (factura.isSubsanableGaca()) this.reset();
 		else this.reactivar(); // default mode
+		ev.preventDefault(); // ajax call
 	}
 }

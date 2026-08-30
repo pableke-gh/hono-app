@@ -11,8 +11,9 @@ export default class ButtonSave extends ButtonForm {
 		this.setDisabled(!pedido.isEditable());
 	}
 
-	execute() {
+	execute(ev) {
 		if (this.form.validate() && i18n.confirm("msgSend")) // validate and user confirmation
 			api.setFormData(this.form.getFormData()).json("/uae/pedidos/save").then(tabs.showInit);
+		ev.preventDefault(); // ajax call
 	}
 }

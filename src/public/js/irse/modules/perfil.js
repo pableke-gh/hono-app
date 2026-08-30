@@ -13,6 +13,7 @@ import Organica from "../components/perfil/Organica.js";
 import AddOrganica from "../components/perfil/AddOrganica.js";
 import MsgFinanciacion from "../components/perfil/MsgFinanciacion.js";
 import Actividad from "../components/perfil/Actividad.js";
+import Tramite from "../components/perfil/Tramite.js";
 import Reset from "../components/perfil/Reset.js";
 import Remove from "../components/perfil/Remove.js";
 
@@ -90,6 +91,7 @@ customElements.define("interesado-input", Interesado, { extends: "input" });
 customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("add-organica", AddOrganica, { extends: "button" });
 customElements.define("actividades-list", Actividad, { extends: "select" });
+customElements.define("tramite-list", Tramite, { extends: "select" });
 customElements.define("msg-financiacion", MsgFinanciacion, { extends: "p" });
 customElements.define("btn-reset", Reset, { extends: "button" });
 customElements.define("btn-remove", Remove, { extends: "button" });

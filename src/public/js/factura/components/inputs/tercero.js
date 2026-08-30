@@ -42,17 +42,10 @@ export default class Tercero extends Autocomplete {
 	}
 
 	setTercero(data) {
-		if (data) { // actualizo la fiscalidad si hay tercero
-			const fiscal = tercero.getFiscal(data); // new data
-			form.setData(fiscal, ".ui-fiscal").setIva(fiscal.iva); // update fields + iva
-			form.getElement("idEco").setEconomica(fiscal.economica); // set economica by code
-			factura.setSujeto(fiscal.sujeto);
-		}
+		data = data || this.getCurrent();
+		if (data) // actualizo la fiscalidad si hay tercero
+			this.form.elements.iva.setFiscal(tercero.getFiscal(data));
 		form.refresh(factura); // force refresh view
-	}
-	setSubtipo(subtipo) {
-		factura.setSubtipo(subtipo);
-		this.setTercero(this.getCurrent()); // reload fiscal
 	}
 
 	connectedCallback() { // init. component

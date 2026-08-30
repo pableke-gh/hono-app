@@ -1,10 +1,10 @@
 
 import api from "../../../core/components/Api.js";
-import DataList from "../../../components/inputs/DataList.js";
 import tabs from "../../../core/components/tabs/Tabs.js";
 
 import presto from "../../model/Presto.js";
 import form from "../../modules/presto.js";
+import DataList from "../../../components/inputs/DataList.js";
 
 export default class Economica030 extends DataList {
 	#ej030; // is tab preloaded

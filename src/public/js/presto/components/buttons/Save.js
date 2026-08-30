@@ -14,8 +14,9 @@ export default class ButtonSave extends ButtonForm {
 		this.setDisabled(!presto.isEditable());
 	}
 
-	execute() {
+	execute(ev) {
 		if (valid.all() && i18n.confirm("msgSend")) // validate and user confirmation
 			api.setFormData(form.getFormData()).send("/uae/presto/save").then(tabs.showInit);
+		ev.preventDefault(); // ajax call
 	}
 }

@@ -8,7 +8,7 @@
 		xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<div class="card-xeco">
-		<h2></h2>
+		<h2 is="titulo-h2" class="underline"></h2>
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required">Tipo de Ayuda:</div>
@@ -82,7 +82,7 @@
 				<input type="text" name="imp" is="float-input" required="gt0"/> €
 			</label>
 			<div class="ui-block-btn">
-				<button is="add-tercero" class="btn btn-green"><i class="fas fa-plus"></i>Añadir</button>
+				<button type="button" is="add-tercero" class="btn btn-green"><i class="fas fa-plus"></i>Añadir</button>
 				<a href="#tab-tercero" is="nav-link" class="btn btn-warn" title="Alta de un nuevo tercero">
 					<i class="fas fa-plus-octagon"></i>Nuevo Tercero</a>
 			</div>
@@ -114,17 +114,17 @@
 		<button type="submit" is="btn-save" class="btn btn-green" title="Poner solicitud a la firma">
 			#{msg['lbl.btn.enviar']}<i class="fas fa-caret-right"></i></button>
 
-		<button is="btn-firmar" class="btn btn-green" title="#{msg['tit.btn.firmar']}">
+		<button type="button" is="btn-firmar" class="btn btn-green" title="#{msg['tit.btn.firmar']}">
 			<i class="far fa-file-signature"></i>#{msg['lbl.btn.firmar']}</button>
-		<button is="btn-rechazar" class="btn btn-error" title="#{msg['tit.btn.rechazar']}">
+		<button type="button" is="btn-rechazar" class="btn btn-error" title="#{msg['tit.btn.rechazar']}">
 			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.rechazar']}</button>
-		<button is="btn-cancelar" class="btn btn-error" title="#{msg['tit.btn.cancelar']}">
+		<button type="button" is="btn-cancelar" class="btn btn-error" title="#{msg['tit.btn.cancelar']}">
 			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</button>
 
-		<button is="btn-report" class="btn btn-danger" title="Informe de la solicitud">
+		<button type="button" is="btn-report" class="btn btn-danger" title="Informe de la solicitud">
 			<i class="fal fa-file-pdf"></i>Informe</button>
 
-		<button is="btn-remove" class="btn btn-danger" title="Borra la solicitud del sistema"> 
+		<button type="button" is="btn-remove" class="btn btn-danger" title="Borra la solicitud del sistema"> 
 			<i class="fal fa-trash-alt"></i>Eliminar</button>
 	</div>
 	<ui:include src="../parts/firmas.xhtml"></ui:include>

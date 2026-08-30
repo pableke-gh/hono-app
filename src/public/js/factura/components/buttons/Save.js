@@ -14,9 +14,10 @@ export default class ButtonSave extends ButtonForm {
 		this.setDisabled(!factura.isEditable());
 	}
 
-	execute() {
+	execute(ev) {
 		const data = valid.all(); // form data
 		if (data && i18n.confirm("msgSend")) // validate and user confirmation
 			api.setJSON(form.getFormData(data)).json("/uae/fact/save").then(tabs.showInit);
+		ev.preventDefault(); // ajax call
 	}
 }

@@ -13,6 +13,5 @@ export default class Reset extends ButtonForm {
 		this.form.elements.organica.clear();
 		this.form.elements.organica.getOrganicas().reset();
 		this.form.elements.interesado.reload();
-		this.form.reset(); // fire default action
 	}
 }

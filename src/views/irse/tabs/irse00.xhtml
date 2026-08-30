@@ -89,10 +89,10 @@
 			</div>
 		</label>
 
-		<label class="ui-blocks form-refresh" data-refresh="isUxxiec">
+		<label class="ui-blocks">
 			<div class="label required inline"><h:outputText value="#{msg['uae.irse.tab0.lbl.tramite']}" escape="false" />:</div>
 			<div class="ui-block">
-			<select name="tramite" is="data-list" data-editable="isEditableP0" class="ui-perfil" tabindex="8">
+			<select name="tramite" is="tramite-list" class="ui-perfil" tabindex="8">
 				<option value="AyL">#{msg['uae.irse.tab0.tramit.ayl']}</option>
 				<option value="AUT">#{msg['uae.irse.tab0.tramit.aut']}</option>
 				<option value="LIQ">#{msg['uae.irse.tab0.tramit.liq']}</option>
@@ -119,7 +119,7 @@
 			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.rechazar']}</button>
 		<button type="button" is="btn-cancelar" name="cancelar" class="btn btn-error" title="#{msg['tit.btn.cancelar']}">
 			<i class="fas fa-times-circle"></i>#{msg['lbl.btn.cancelar']}</button>
-		<button is="btn-remove" class="btn btn-danger" title="Borra la solicitud del sistema"> 
+		<button type="button" is="btn-remove" class="btn btn-danger" title="Borra la solicitud del sistema"> 
 			<i class="fal fa-trash-alt"></i>Eliminar</button>
 	</div>
 </html>

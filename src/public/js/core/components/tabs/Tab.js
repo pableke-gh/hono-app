@@ -60,13 +60,5 @@ export default class Tab extends HTMLDivElement {
 
 	connectedCallback() { // Init. component when added to DOM
 		this.classList.add("tab-content"); // default class for all tabs
-		this.querySelectorAll("a[href^='#tab-action']").forEach(link => {
-			link.addEventListener("click", ev => { // deprecated
-				const href = link.getAttribute("href");
-				const id = href.substring(href.lastIndexOf("-") + 1);
-				tabs.invoke(link.dataset.action || id, link); // call handler
-				ev.preventDefault(); // no navigate
-			});
-		});
 	}
 }
