@@ -19,5 +19,8 @@ export default class ActionLink extends Action {
 	vinc() { document.forms.flist.aceptadas(); }
 	next() { this.nextElementSibling.click(); }
 
-	execute() { this[this.getAttribute("href")](); }
+	execute() {// href attribute stats with #
+		const action = this.getAttribute("href").substring(1);
+		this[action](); // invoke method
+	}
 }

@@ -1,6 +1,9 @@
 
+import sb from "../../components/types/StringBox.js";
 import Tab from "../../core/components/tabs/Tab.js";
 import Organica from "../components/otri/Organica.js";
+import Ejercicios from "../../core/components/forms/MultiSelectBox.js";
+import Excel from "../components/otri/Excel.js";
 
 import otri from "../model/Otri.js";
 import xlsx from "../services/xlsx.js";
@@ -8,8 +11,14 @@ import { KEYS, TITILES } from "../data/isu.js";
 
 /*********** Informe ISU par la otri ***********/
 export default class OtriTab extends Tab {
+	init() {
+		super.init();
+		const ejercicios = this.querySelector("ul[name='ejercicios']");
+		ejercicios.setLabels(sb.getEjercicios()).setFirst().render();
+	}
+
 	afterView() {
-		document.forms.otri.elements.organica.focus(); // focus on first input
+		document.forms.otri.elements.orgIsu.focus(); // focus on first input
 	}
 }
 
@@ -22,3 +31,5 @@ window.xlsx = (xhr, status, args) => {
 }
 
 customElements.define("organica-isu", Organica, { extends: "input" });
+customElements.define("ej-list", Ejercicios, { extends: "ul" });
+customElements.define("btn-excel", Excel, { extends: "button" });

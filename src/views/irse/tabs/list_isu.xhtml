@@ -12,30 +12,24 @@
 		<div class="ui-blocks">
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Orgánica:</div>
-				<i class="fas fa-search ui-input-icon left inline"></i>
-				<input type="search" name="orgIsu" is="organica-isu" class="ui-autocomplete" title="#{msg['uae.irse.index.msg.cd']}" />
+				<i class="fas fa-search ui-input-icon left"></i>
+				<input type="search" name="orgIsu" is="organica-isu" class="ui-autocomplete" title="#{msg['uae.irse.index.msg.cd']}" placeholder="Selecciona una orgánica" />
 				<ul role="list" class="results"></ul>
 			</label>
 			<label class="ui-block">
 				<div class="label required">Ejercicios:</div>
-				<p:selectCheckboxMenu id="filtro-ej-isu" value="#{iris.isu.ejercicio}"
-						label="Ejercicios" filter="true" filterMatchMode="startsWith" multiple="true" emptyLabel="Seleccione Ejercicio..." updateLabel="true"
-						styleClass="ui-select" style="min-height: 36px" panelStyle="width: 16rem" title="#{msg['tit.ejercicio']}">
-					<f:selectItems value="#{iris.isu.ejercicios}" />
-				</p:selectCheckboxMenu>
+				<ul name="ejercicios" is="ej-list" class="multiselect"></ul>
 			</label>
 		</div>
 
 		<div class="navbar">
 			<a href="#tab-init" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
 				<i class="fas fa-caret-left"></i><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></a>
-			<p:commandButton id="filter-list-isu" action="#{iris.isu.list()}" update="xeco-list-isu"
-				icon="far fa-search" value="Buscar" styleClass="btn btn-primary"></p:commandButton>
+			<button type="submit" is="btn-form" class="btn btn-primary" tabindex="13"><i class="far fa-search"></i>Buscar</button><!--action="#{iris.isu.list()}"-->
 		</div>
 	</form>
 
 	<br class="clear"/>
-	<h:form id="xeco-list-isu" prependId="false">
 	<table id="solicitudes" class="tb-xeco">
 		<thead>
 			<tr>
@@ -74,11 +68,10 @@
 			<tr><td colspan="99"><h:outputText value="#{msg['lbl.filas']}" escape="false" />: #{iris.isu.numJgs}</td></tr>
 		</tfoot>
 	</table>
-	</h:form>
 
 	<div class="navbar">
-	<a href="#tab-init" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="100">
-		<i class="fas fa-caret-left"></i><span class="ui-button-text ui-c"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
-	<p:commandButton action="#{iris.isu.excel()}" oncomplete="xlsx(xhr, status, args);" icon="fal fa-file-excel" styleClass="btn btn-green success-btn" value="Excel" tabindex="101"/>
+		<a href="#tab-init" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}" tabindex="100">
+			<i class="fas fa-caret-left"><h:outputText value="#{msg['lbl.btn.volver']}" escape="false" /></span></a>
+		<button type="button" name="excel" is="btn-excel" class="btn btn-green hide" title="Exportar datos a formato EXCEL"><i class="fa fa-file-excel"></i>Exportar a Excel</button>
 	</div>
 </html>

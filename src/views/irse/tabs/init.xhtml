@@ -13,11 +13,11 @@
 		<h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
 		<ul>
 			<li>
-				<a href="create" is="run-action"><h:outputText value="#{msg['uae.irse.index.msg.new.comunicacion']}" escape="false" /></a>
+				<a href="#create" is="run-action"><h:outputText value="#{msg['uae.irse.index.msg.new.comunicacion']}" escape="false" /></a>
 			</li>
 			<li><a href="#tab-list" is="nav-link"><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></a></li>
 			<c:if test="#{iris.user.uae}">
-				<li><a href="vinc" is="run-action"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a></li>
+				<li><a href="#vinc" is="run-action"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a></li>
 			</c:if>
 			<c:if test="#{iris.user.admin}">
 				<li><a href="#tab-otri" is="nav-link">Informe ISU</a></li>
@@ -31,7 +31,7 @@
 			<li><h:outputText value="#{msg['uae.irse.index.msg.new.comunicacion']}" escape="false" /></li>
 			<li><a href="#tab-list" is="nav-link"><h:outputText value="#{msg['uae.irse.index.msg.list']}" escape="false" /></a></li>
 			<c:if test="#{iris.user.uae}">
-				<li><a href="vinc" is="run-action"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a></li>
+				<li><a href="#vinc" is="run-action"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a></li>
 			</c:if>
 		</ul>
 	</c:otherwise>

@@ -140,23 +140,32 @@ input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); c
 
 .multiselect {
 	position: relative; min-width: 150px;
+	margin: 0; padding: 0;
+    list-style-type: none;
+	cursor: pointer;
 
-	.label { cursor: default; }
-	button { display: flex; gap: 4px; justify-content: center; align-items: center; }
-	button > *:last-child { margin-left: auto; padding-left: 4px; }
-	button [data-index] { cursor: pointer; }
-	button span.checked {
-		padding: 0 3px;
+	li > *:last-child { margin-left: auto; padding-left: 4px; } /* dropdown icon */
+	li:nth-child(n+2) { display: none; }
+	&.active li { display: list-item; }
+
+	button {
+		display: flex; gap: 4px; height: 36px;
+		justify-content: center; align-items: center;
+		/*border: none; /*background-color: var(--bg-color);*/
+	}
+	button > span {
+		display: flex; gap: 4px;
+		justify-content: center; align-items: center; padding: 4px 6px;
 		border: solid 1px var(--gold-color); border-radius: 5px;
 		background-color: var(--yellow-color);
 	}
 
-	.options {
+	/*.options {
 		position: absolute; top: calc(100%); display: none; margin: 0; padding: 0;
 		border: solid 1px var(--gray-color); border-color: --darker(var(--bg-color));
 		text-wrap: nowrap; list-style: none; cursor: pointer;
 	}
 	.options.active { display: block; min-width: 100%; z-index: 3; }
 	.options li:hover { color: var(--alt-color); background-color: var(--bg-hover); }
-	.options li { padding: 3px; white-space: nowrap; transition: background-color 0.3s, color 0.3s; }
+	.options li { padding: 3px; white-space: nowrap; transition: background-color 0.3s, color 0.3s; }*/
 }

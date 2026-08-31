@@ -19,5 +19,8 @@ export default class ActionLink extends Action {
 	ctrl5() { document.forms.fcontrol.ctrl(5); }
 	rectrl() { document.forms.fcontrol.relist(); }
 
-	execute() { this[this.getAttribute("href")](); }
+	execute() {// href attribute stats with #
+		const action = this.getAttribute("href").substring(1);
+		this[action](); // invoke method
+	}
 }

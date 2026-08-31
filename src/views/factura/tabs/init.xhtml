@@ -12,8 +12,8 @@
 		<h3><h:outputText value="#{msg['uae.irse.index.msg.titulo']}" escape="false" /></h3>
 		<ul>
 			<li>Nueva solicitud de emisión factura o carta de pago:<ul>
-				<li><a href="factura" is="run-action">Solicitud Emisión de Factura</a></li>
-				<li><a href="cartap" is="run-action">Solicitud Emisión de Carta de Pago</a></li>
+				<li><a href="#factura" is="run-action">Solicitud Emisión de Factura</a></li>
+				<li><a href="#cartap" is="run-action">Solicitud Emisión de Carta de Pago</a></li>
 			</ul></li>
 		</ul>
 	</c:when>
@@ -31,7 +31,7 @@
 	<ul>
 		<li><a href="#tab-list" is="nav-link" title="Consulta de Solicitudes pendientes de firma">Consulta de Solicitudes</a></li>
 		<c:if test="#{fact.user.uae}">
-			<li><a href="vinc" is="run-action" title="Asociación entre las solicitudes de factura y operaciones de UXXI-EC">Consulta de Formación de Expediente</a></li>
+			<li><a href="#vinc" is="run-action" title="Asociación entre las solicitudes de factura y operaciones de UXXI-EC">Consulta de Formación de Expediente</a></li>
 		</c:if>
 	</ul>
 </html>
