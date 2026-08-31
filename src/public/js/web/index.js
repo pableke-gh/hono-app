@@ -1,8 +1,10 @@
 
+import sb from "../components/types/StringBox.js";
 import alerts from "../core/components/alerts/Alerts.js";
 import TestForm from "./modules/test.js";
 import ExcelFile from "./components/ExcelFile.js";
 import OCRFile from "./components/OCRFile.js";
+import Ejercicios from "../core/components/forms/MultiSelectBox.js";
 
 import Firmas from "../core/components/layouts/Firmas.js";
 import firmas from "./data/firmas.json" with { type: "json" };
@@ -22,9 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.querySelector('a[href="#load-2"]').addEventListener("click", () => {
 		testForm.load({ id: 2, pet: "dog" }); // show form tab
 	});
+
+	testForm.elements.ejercicios.setLabels(sb.getEjercicios()).setFirst().render();
 });
 
 customElements.define("test-form", TestForm, { extends: "form" });
 customElements.define("excel-file", ExcelFile, { extends: "input" });
 customElements.define("ocr-file", OCRFile, { extends: "input" });
+customElements.define("ej-list", Ejercicios, { extends: "button" });
 customElements.define("firmas-block", Firmas, { extends: "div" });

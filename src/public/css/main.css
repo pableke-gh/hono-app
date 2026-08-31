@@ -6,6 +6,7 @@
 	--alt-color: light-dark(white, #212529); /* inverse text-color fff-900 */
 	--bg-color: light-dark(white, #212529); /* background-color fff-900 */
 	--bg-hover: light-dark(#0a58ca, #6ea8fe); /* background-hover 600-300 */
+	--bg-input: light-dark(white, #343a40); /* gray 100 (#f8f9fa) - 800 */
 
 	--primary-color: light-dark(#0d6efd, #0a58ca); /* primary-color 500-600 */
 	--info-color: light-dark(#eff6ff, #1e40af); /* bg info-color */

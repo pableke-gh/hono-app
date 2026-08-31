@@ -31,5 +31,5 @@ window.xlsx = (xhr, status, args) => {
 }
 
 customElements.define("organica-isu", Organica, { extends: "input" });
-customElements.define("ej-list", Ejercicios, { extends: "ul" });
+customElements.define("ej-list", Ejercicios, { extends: "button" });
 customElements.define("btn-excel", Excel, { extends: "button" });
