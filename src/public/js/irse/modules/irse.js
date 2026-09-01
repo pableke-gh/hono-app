@@ -27,6 +27,11 @@ class IrseSolicitud extends Solicitud {
 	getResumen = () => tabs.getTab(6); // module resumen paso 6
 	getPaso9 = () => tabs.getTab(9); // module paso 9
 
+	init() {
+		this.getSolicitudes().set("#clone", row => this.clone(row));
+		return super.init();
+	}
+
 	open = data => { // override super arrow function
 		// merge server data with list and set in current irse instance
 		const row = this.getSolicitudes().getCurrent(); // current row

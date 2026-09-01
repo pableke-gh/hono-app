@@ -7,10 +7,8 @@ import Titulo from "./components/Titulo.js";
 import MsgReject from "./components/MsgReject.js";
 import Firmas from "../core/components/layouts/Firmas.js";
 
-coll.ready(() => {
-	const list = form.init().getSolicitudes(); // init modules
-	list.set("#clone", row => form.clone(row));
-});
+// init irse modules
+coll.ready(() => form.init());
 
 customElements.define("titulo-h2", Titulo, { extends: "h2" });
 customElements.define("run-action", Actions, { extends: "a" });

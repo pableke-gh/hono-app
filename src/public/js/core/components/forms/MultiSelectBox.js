@@ -2,9 +2,6 @@
 import i18n from "../../i18n/langs.js";
 import ButtonForm from "./ButtonForm.js";
 
-/**
- * Register the custom element: customElements.define("multi-list", MultiSelectBox, { extends: "button" });
- */
 export default class MultiSelectBox extends ButtonForm {
 	#data; // data container
 
@@ -14,9 +11,9 @@ export default class MultiSelectBox extends ButtonForm {
 	size = () => (this.#data ? this.#data.length : 0);
 	isEmpty = () => (this.size() == 0); // no data loaded
 	isLoaded = () => (this.#data && this.#data.some(item => item.checked));
-	getValues() { return this.#data && this.#data.map(item => item.value); } // selected values
-	getChecked() { return (this.#data ? this.#data.filter(item => item.checked) : []); } // get checked items
-	getSelected() { return this.getChecked(); } // sinonym for getChecked items
+	getChecked() { return (this.#data ? this.#data.filter(item => item.checked) : []); } // filter checked items
+	getValues() { return this.getChecked().map(item => item.value); } // selected values
+	toData(data) { data[this.name] = this.getValues(); }
 
 	#stopPropagation(ev) { // avoid to fire document onclick event
 		ev.stopPropagation();
@@ -57,6 +54,7 @@ export default class MultiSelectBox extends ButtonForm {
 		if (!this.innerHTML) // if no selected items
 			this.innerHTML = i18n.get(this.dataset.msgEmptyOption);
 		this.insertAdjacentHTML("beforeend", this.dataset.dropdownIcon);
+		this.form.setChanged(true); // update change indicator
 	}
 
 	setLabels(labels) { // build items array from label array

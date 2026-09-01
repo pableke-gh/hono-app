@@ -12,6 +12,7 @@ import Pernoctas from "./pernoctas.js";
 import Dietas from "./dietas.js";
 import Extraordinarios from "./extras.js";
 import Imputacion from "./imputacion.js";
+import Otri from "./otri.js";
 
 customElements.define("irse-table", Solicitudes, { extends: "table" });
 customElements.define("organicas-table", Organicas, { extends: "table" });
@@ -25,5 +26,6 @@ customElements.define("pernoctas-table", Pernoctas, { extends: "table" });
 customElements.define("dietas-table", Dietas, { extends: "table" });
 customElements.define("extra-table", Extraordinarios, { extends: "table" });
 customElements.define("imputacion-table", Imputacion, { extends: "table" });
+customElements.define("otri-table", Otri, { extends: "table" });
 
 export default tables;
