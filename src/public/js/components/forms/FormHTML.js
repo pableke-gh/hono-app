@@ -176,7 +176,7 @@ export default class FormHTML extends HTMLFormElement {
 }
 
 // For a valid custom element name, it must: Contain a hyphen (-)
-customElements.define("model-form", FormHTML, { extends: "form" });
+customElements.define("xeco-form", FormHTML, { extends: "form" });
 customElements.define("text-input", TextInput, { extends: "input" });
 customElements.define("data-list", DataList, { extends: "select" });
 customElements.define("date-input", DateInput, { extends: "input" });

@@ -11,6 +11,7 @@ import FileInput from "./FileInput.js";
 import TextArea from "./TextArea.js";
 import CheckInput from "./CheckInput.js";
 import ButtonForm from "./ButtonForm.js";
+import MultiSelectBox from "./MultiSelectBox.js";
 
 export default class FormHTML extends HTMLFormElement {
 	#isChanged; #id;
@@ -171,6 +172,7 @@ export default class FormHTML extends HTMLFormElement {
 	}
 }
 
+customElements.define("xeco-form", FormHTML, { extends: "form" });
 customElements.define("data-list", DataList, { extends: "select" });
 customElements.define("text-input", TextInput, { extends: "input" });
 customElements.define("date-input", DateInput, { extends: "input" });
@@ -180,3 +182,4 @@ customElements.define("file-input", FileInput, { extends: "input" });
 customElements.define("text-area", TextArea, { extends: "textarea" });
 customElements.define("check-input", CheckInput, { extends: "input" });
 customElements.define("btn-form", ButtonForm, { extends: "button" });
+customElements.define("multi-list", MultiSelectBox, { extends: "button" });
