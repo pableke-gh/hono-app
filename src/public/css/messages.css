@@ -17,34 +17,34 @@
 .alert-close { font-size: large; cursor: pointer; }
 .alert-close:hover { animation: resize .5s forwards; }
 
-.alert-ok { color: white; border-color: --darker(var(--ok-color)); background-color: var(--ok-color); }
-.alert-green { color: white; border-color: --darker(var(--green-color)); background-color: var(--green-color); }
+.alert-ok { color: contrast-color(var(--ok-color)); border-color: --darker(var(--ok-color)); background-color: var(--ok-color); }
+.alert-green { color: contrast-color(var(--green-color)); border-color: --darker(var(--green-color)); background-color: var(--green-color); }
 .alert-success { color: white; border-color: --darker(var(--success-color)); background-color: var(--success-color); }
 .alert-info { color: var(--text-info); border-color: --darker(var(--info-color)); background-color: var(--info-color); }
-.alert-note { color: white; border-color: --darker(var(--note-color)); background-color: var(--note-color); }
+.alert-note { color: contrast-color(var(--note-color)); border-color: --darker(var(--note-color)); background-color: var(--note-color); }
 .alert-warn { color: var(--text-warn); border-color: --darker(var(--warn-color)); background-color: var(--warn-color); }
 .alert-error { color: white; border-color: --darker(var(--error-color)); background-color: var(--error-color); }
-.alert-danger { color: white; border-color: --darker(var(--danger-color)); background-color: var(--danger-color); }
-.alert-dark { color: white; border-color: --darker(var(--dark-color)); background-color: var(--dark-color); }
+.alert-danger { color: contrast-color(var(--danger-color)); border-color: --darker(var(--danger-color)); background-color: var(--danger-color); }
+.alert-dark { color: contrast-color(var(--dark-color)); border-color: --darker(var(--dark-color)); background-color: var(--dark-color); }
 /* Alerts */
 
 /* Notices */
 .notice {
-	display: inline-block; width: 100%;
+	display: inline-block; width: 99%;
 	margin: 4px 0; padding: .5rem; 
 	border-radius: 3px; border: 1px solid;
 }
 .notice-flex { display: flex; gap: .8rem; align-items: center; }
 
-.notice-ok { color: white; border-color: --darker(var(--ok-color)); background-color: var(--ok-color); }
-.notice-green { color: white; border-color: --darker(var(--green-color)); background-color: var(--green-color); }
+.notice-ok { color: contrast-color(var(--ok-color)); border-color: --darker(var(--ok-color)); background-color: var(--ok-color); }
+.notice-green { color: contrast-color(var(--green-color)); border-color: --darker(var(--green-color)); background-color: var(--green-color); }
 .notice-success { color: white; border-color: --darker(var(--success-color)); background-color: var(--success-color); }
 .notice-info {  color: var(--text-info); border-color: --darker(var(--info-color)); background-color: var(--info-color); }
-.notice-note { color: white; border-color: --darker(var(--note-color)); background-color: var(--note-color); }
+.notice-note { color: contrast-color(var(--note-color)); border-color: --darker(var(--note-color)); background-color: var(--note-color); }
 .notice-warn { color: var(--text-warn); border-color: --darker(var(--warn-color)); background-color: var(--warn-color); }
 .notice-error { color: white; border-color: --darker(var(--error-color)); background-color: var(--error-color); }
-.notice-danger { color: white; border-color: --darker(var(--danger-color)); background-color: var(--danger-color); }
-.notice-dark { color: white; border-color: --darker(var(--dark-color)); background-color: var(--dark-color); }
+.notice-danger { color: contrast-color(var(--danger-color)); border-color: --darker(var(--danger-color)); background-color: var(--danger-color); }
+.notice-dark { color: contrast-color(var(--dark-color)); border-color: --darker(var(--dark-color)); background-color: var(--dark-color); }
 
 .notice-icon { width: 1.5rem/* 24px */; }
 .notice-text { flex-grow: 1; }

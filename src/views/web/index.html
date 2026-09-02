@@ -55,7 +55,7 @@
 					<label class="ui-block-xl autocomplete">
 						<div class="label required">Orgánica:</div>
 						<i class="fas fa-search ui-input-icon left"></i>
-						<input type="search" name="organica" is="text-input" class="ui-autocomplete ui-error" placeholder="Introduce una orgánica" />
+						<input type="search" name="organica" is="text-input" class="ui-error" placeholder="Introduce una orgánica" />
 						<ul role="list" class="results"></ul>
 					</label>
 					<label class="ui-block">
@@ -63,12 +63,24 @@
 						<input type="date" name="f1" is="date-input" class="ui-input ui-date"/>
 					</label>
 				</div>
+				<hr/>
+				<p class="notice notice-info">aasdfas dfalkf aslkdjf asdkljf alsdkjf ajf aksdjf asdkfjaskldfj asdklñfj aksld fjasdk akdsfj skdljfa skjfaklsfj asdkfj</p>
+				<div class="navbar">
+					<a href="#tab-prev" is="nav-link">Ejemplo link 1</a>
+					<span class="text-block hide-xs">|</span>
+					<a href="#tab-next" is="nav-link">Ejemplo link 2</a>
+				</div>
 			</div>
 
 			<div class="navbar">
 				<a href="#tab-prev" is="nav-link" class="btn btn-primary"><i class="fas fa-caret-left"></i>Volver</a>
 				<a href="#tab-next" is="nav-link" class="btn btn-primary">Siguiente<i class="fas fa-caret-right"></i></a>
+				<button type="reset" is="btn-form" class="btn btn-light" title="#{msg['tit.btn.limpiar']}" tabindex="13">
+					<i class="fas fa-broom"></i>Limpiar</button>
+				<a href="#relist" is="nav-link" class="btn btn-warn" tabindex="14"><i class="far fa-times-circle"></i>Limpiar</a>
 				<a href="#load-2" class="btn btn-success">Load data 1</a>
+				<button type="button" is="btn-report" class="btn btn-danger" title="#{msg['tit.btn.informe']}">
+					<i class="fas fa-file-pdf"></i>Informe</button>
 			</div>
 		</div>
 

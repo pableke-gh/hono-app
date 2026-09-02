@@ -6,7 +6,7 @@
 	.alert-success { border-color: --lighter(var(--success-color)); }
 	.alert-info { border-color: --lighter(var(--info-color)); }
 	.alert-note { border-color: --lighter(var(--note-color)); }
-	.alert-warn { border-color: --lighter(var(--warn-color)); }
+	.alert-warn { color: var(--text-color); border-color: --lighter(var(--warn-color)); }
 	.alert-error { border-color: --lighter(var(--error-color)); }
 	.alert-danger { border-color: --lighter(var(--danger-color)); }
 	.alert-dark { border-color: --lighter(var(--dark-color)); }
