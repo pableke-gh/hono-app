@@ -95,7 +95,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.entidad']}" escape="false" />:</div>
-				<select name="entidad" is="data-list" class="ui-tercero">
+				<select name="entidad" is="entidades-list" class="ui-tercero">
 					<c:forEach items="#{becas.tercero.entidades}" var="banco">
 						<option value="#{banco.value}">#{banco.label}</option>
 					</c:forEach>

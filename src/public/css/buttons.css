@@ -1,13 +1,12 @@
 
-/* Buttons (!important override CV styles) */
 .btn {
-	--_btn-color: var(--info-color);
+	--_btn-color: var(--info-color); /* local buton variable */
 
-	display: inline-flex; align-items: center; gap: 8px; height: 24px;
-	margin: 2px 4px !important; padding: .5rem 1rem;
+	display: inline-flex; align-items: center; gap: 8px;
+	margin: 2px 4px; padding: .5rem 1rem; height: 24px;
 
-	color: contrast-color(var(--_btn-color));
-	background-color: var(--_btn-color);
+	color: contrast-color(var(--_btn-color)); /* white or black */
+	background-color: var(--_btn-color); /* color reference */
 
 	border: solid 1px --darker(var(--_btn-color));
 	border-radius: 0.25rem/* 4px */; box-sizing: content-box;
@@ -15,10 +14,10 @@
 	font-weight: 500; font-size: 0.875rem/* 14px */; line-height: 1.25rem/* 20px */;
 	outline: 2px solid transparent; outline-offset: 2px;
 	text-decoration: none; cursor: pointer;
-	transition: none;  /* Override bootstrap styles in CV */
+	transition: none; /* Override bootstrap styles in CV */
 }
 .btn:hover {
-	color: contrast-color(var(--_btn-color)); /* white or black */
+	color: contrast-color(var(--_btn-color)); /* Override bootstrap styles in CV */
 	background-color: --darker(var(--_btn-color));
 	border-color: --darker(var(--_btn-color), 20);
 }
@@ -27,7 +26,8 @@
 .btn-secondary { --_btn-color: var(--secondary-color); }
 .btn-light { --_btn-color: var(--bg-light); }
 .btn-info { --_btn-color: var(--info-color); }
-.btn-green { --_btn-color: var(--green-color); }
+.btn-green { --_btn-color: var(--green-color); color: white; }
+.btn-green:hover { color: white; }
 .btn-success { --_btn-color: var(--success-color); }
 .btn-warn { --_btn-color: var(--warn-color); }
 .btn-error { --_btn-color: var(--error-color); }

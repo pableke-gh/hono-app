@@ -1,14 +1,16 @@
 
 table {
-	margin: 10px auto; width: 100%; border-collapse: collapse;
-	border-radius: .3rem; overflow: hidden; backdrop-filter: blur(7px);
+	margin: 10px auto; width: 100%;
+	border-collapse: collapse;
+	border-radius: .3rem;
+	overflow: hidden;
 }
 caption {
 	font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
 }
 
 thead {
-	color: white; background-color: var(--primary-color);
+	color: white; background-color: --lighter(var(--primary-color));
 	border-bottom: 2px solid --darker(var(--primary-color), 20);
 }
 th { padding: .5rem .6rem; }

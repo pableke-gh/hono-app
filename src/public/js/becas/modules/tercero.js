@@ -2,12 +2,10 @@
 import Tab from "../../core/components/tabs/Tab.js";
 import tercero from "../model/Tercero.js";
 
-import TerceroAutocomplete from "../components/tercero/Tercero.js";
-import AddTercero from "../components/tercero/AddTercero.js";
-
 import NifTercero from "../components/tercero/Nif.js";
 import Cuentas from "../components/tercero/Cuentas.js";
 import Paises from "../components/tercero/Paises.js";
+import Entidades from "../components/tercero/Entidades.js";
 import CreateTercero from "../components/tercero/Create.js";
 
 export default class TerceroTab extends Tab {
@@ -46,9 +44,8 @@ export default class TerceroTab extends Tab {
 	}
 }
 
-customElements.define("ac-tercero", TerceroAutocomplete, { extends: "input" });
-customElements.define("add-tercero", AddTercero, { extends: "button" });
 customElements.define("nif-input", NifTercero, { extends: "input" });
 customElements.define("cuentas-list", Cuentas, { extends: "select" });
 customElements.define("paises-list", Paises, { extends: "select" });
+customElements.define("entidades-list", Entidades, { extends: "select" });
 customElements.define("create-tercero", CreateTercero, { extends: "button" });

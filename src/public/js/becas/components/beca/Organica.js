@@ -1,7 +1,7 @@
 
-import Autocomplete from "../../core/components/forms/Autocomplete.js";
-import api from "../../core/components/Api.js";
-import beca from "../model/Beca.js";
+import api from "../../../core/components/Api.js";
+import beca from "../../model/Beca.js";
+import Autocomplete from "../../../core/components/forms/Autocomplete.js";
 
 export default class Organica extends Autocomplete {
 	connectedCallback() {

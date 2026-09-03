@@ -10,12 +10,12 @@ export default class Cuentas extends DataList {
 
 	#update(cuenta) {
 		this.form.paisEntidad.setVisible(!cuenta);
-		this.form.entidad.setVisible(!cuenta);
 		this.form.iban.setVisible(!cuenta);
 
 		if (cuenta) {
 			this.form.iban.setValue(cuenta);
 			this.form.entidad.setValue(getIban2(cuenta));
+			this.form.entidad.setHidden();
 		}
 		else {
 			this.form.iban.reset();

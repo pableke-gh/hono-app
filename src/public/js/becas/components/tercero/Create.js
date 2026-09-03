@@ -21,7 +21,7 @@ export default class ButtonCreateTercero extends ButtonForm {
 		if (terceros.contains(tercero.getNif())) // verifico si el nif ya esta asociado
 			return alerts.setWarn("Beneficiario asociado previamente a la solicitud");
 
-		tercero.setEntidad(tercero.getBanco());
+		//tercero.setEntidad(tercero.getBanco());
 		this.form.cuentas.value || tercero.setNuevoIban();
 		terceros.add(tercero.getData()); // add data row
 

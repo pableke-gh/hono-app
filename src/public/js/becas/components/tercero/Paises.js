@@ -13,7 +13,6 @@ export default class Paises extends DataList {
 	#update(pais) {
 		const es = !pais || (pais == "ES");
 		this.form.entidad.setVisible(es);
-		this.form.banco.setVisible(!es);
 		this.form.swift.setVisible(!es);
 		this.form.banco.setValue(es ? this.form.entidad.getText() : "");
 	}
@@ -24,16 +23,13 @@ export default class Paises extends DataList {
 	isExtranjero() { return !this.isEs(); }
 
 	validate() {
-		if (this.isExtranjero())
-			this.form.swift.force("Debe indicar el swift de la cuenta bancaria del beneficiario");
-		const ok = this.form.banco.force("Debe indicar el nombre de la entidad bancaria del beneficiario");
+		const ok = this.isExtranjero() ? this.form.swift.force("Debe indicar el swift de la cuenta bancaria del beneficiario") : true;
 		return this.form.iban.force("Debe indicar el IBAN del beneficiario") && ok;
 	}
 
 	connectedCallback() { // init. component
 		this.setObject(paises);
 		this.form.residencia.innerHTML = this.innerHTML; // clone contents
-		this.form.entidad.addEventListener("change", ev => this.form.banco.setValue(this.form.entidad.getText()));
 		this.form.iban.addEventListener("change", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
 		this.form.swift.addEventListener("change", ev => { ev.target.value = sb.toUpperWord(ev.target.value); });
 		this.addChange(ev => this.setValue(ev.target.value));

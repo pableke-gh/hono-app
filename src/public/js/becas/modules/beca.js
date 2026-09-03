@@ -6,7 +6,10 @@ import beca from "../model/Beca.js";
 import tables from "../components/tables/tables.js";
 
 import Tercero from "./tercero.js";
-import Organica from "../components/Organica.js";
+import Organica from "../components/beca/Organica.js";
+import TerceroAutocomplete from "../components/beca/Tercero.js";
+import AddTercero from "../components/beca/AddTercero.js";
+
 import ButtonBases from "../components/buttons/Bases.js";
 import ButtonResolucion from "../components/buttons/Resolucion.js";
 import ButtonBeneficiarios from "../components/buttons/Beneficiarios.js";
@@ -66,6 +69,9 @@ export default class BecaForm extends FormHTML {
 
 customElements.define("tab-tercero", Tercero, { extends: "div" });
 customElements.define("organica-input", Organica, { extends: "input" });
+customElements.define("ac-tercero", TerceroAutocomplete, { extends: "input" });
+customElements.define("add-tercero", AddTercero, { extends: "button" });
+
 customElements.define("btn-bases", ButtonBases, { extends: "button" });
 customElements.define("btn-resolucion", ButtonResolucion, { extends: "button" });
 customElements.define("btn-beneficiarios", ButtonBeneficiarios, { extends: "button" });
