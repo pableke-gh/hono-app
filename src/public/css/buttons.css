@@ -1,43 +1,35 @@
 
 /* Buttons (!important override CV styles) */
 .btn {
-	display: inline-flex; align-items: center; gap: 8px; height: 24px;
-    margin: 2px 4px !important; padding: .5rem 1rem;
+	--_btn-color: var(--info-color);
 
-	color: white; font-weight: 500; font-size: 0.875rem/* 14px */; line-height: 1.25rem/* 20px */;
-	border-width: 1px; border-radius: 0.25rem/* 4px */; border-style: solid; box-sizing: content-box;
-    outline: 2px solid transparent; outline-offset: 2px;
-    text-decoration: none; cursor: pointer;
+	display: inline-flex; align-items: center; gap: 8px; height: 24px;
+	margin: 2px 4px !important; padding: .5rem 1rem;
+
+	color: contrast-color(var(--_btn-color));
+	background-color: var(--_btn-color);
+
+	border: solid 1px --darker(var(--_btn-color));
+	border-radius: 0.25rem/* 4px */; box-sizing: content-box;
+
+	font-weight: 500; font-size: 0.875rem/* 14px */; line-height: 1.25rem/* 20px */;
+	outline: 2px solid transparent; outline-offset: 2px;
+	text-decoration: none; cursor: pointer;
 	transition: none;  /* Override bootstrap styles in CV */
 }
-.btn:hover { color: white; }
+.btn:hover {
+	color: contrast-color(var(--_btn-color)); /* white or black */
+	background-color: --darker(var(--_btn-color));
+	border-color: --darker(var(--_btn-color), 20);
+}
 
-.btn-primary { background-color: var(--primary-color); border-color: --darker(var(--primary-color)); }
-.btn-primary:hover { background-color: --darker(var(--primary-color)); border-color: --darker(var(--primary-color), 20); }
-
-.btn-secondary { background-color: var(--secondary-color); border-color: --darker(var(--secondary-color)); }
-.btn-secondary:hover { background-color: --darker(var(--secondary-color)); border-color: --darker(var(--secondary-color), 20); }
-
-.btn-light { color: contrast-color(var(--bg-light)); background-color: var(--bg-light); border-color: --darker(var(--light-color)); }
-.btn-light:hover { color: contrast-color(var(--bg-light)); background-color: --darker(var(--light-color)); border-color: --darker(var(--light-color), 20); }
-
-.btn-info { color: var(--text-info); background-color: var(--info-color); border-color: --darker(var(--info-color)); }
-.btn-info:hover { color: var(--text-info); background-color: --darker(var(--info-color)); border-color: --darker(var(--info-color), 20); }
-
-.btn-green { background-color: var(--green-color); border-color: --darker(var(--green-color)); }
-.btn-green:hover { background-color: --darker(var(--green-color)); border-color: --darker(var(--green-color), 20); }
-
-.btn-success { background-color: var(--success-color); border-color: --darker(var(--success-color)); }
-.btn-success:hover { background-color: --darker(var(--success-color)); border-color: --darker(var(--success-color), 20); }
-
-.btn-warn { color: contrast-color(var(--gold-color)); background-color: var(--gold-color); border-color: --darker(var(--gold-color)); }
-.btn-warn:hover { color: contrast-color(var(--gold-color)); background-color: --darker(var(--gold-color)); border-color: --darker(var(--gold-color), 20); }
-
-.btn-error { background-color: var(--error-color); border-color: --darker(var(--error-color)); }
-.btn-error:hover { background-color: --darker(var(--error-color)); border-color: --darker(var(--error-color), 20); }
-
-.btn-danger { background-color: var(--danger-color); border-color: --darker(var(--danger-color)); }
-.btn-danger:hover { background-color: --darker(var(--danger-color)); border-color: --darker(var(--danger-color), 20); }
-
-.btn-dark { background-color: var(--dark-color); border-color: --darker(var(--dark-color)); }
-.btn-dark:hover { background-color: --darker(var(--dark-color)); border-color: --darker(var(--dark-color), 20); }
+.btn-primary { --_btn-color: var(--primary-color); }
+.btn-secondary { --_btn-color: var(--secondary-color); }
+.btn-light { --_btn-color: var(--bg-light); }
+.btn-info { --_btn-color: var(--info-color); }
+.btn-green { --_btn-color: var(--green-color); }
+.btn-success { --_btn-color: var(--success-color); }
+.btn-warn { --_btn-color: var(--warn-color); }
+.btn-error { --_btn-color: var(--error-color); }
+.btn-danger { --_btn-color: var(--danger-color); }
+.btn-dark { --_btn-color: var(--dark-color); }

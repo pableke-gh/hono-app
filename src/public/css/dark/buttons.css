@@ -1,35 +1,7 @@
 
 @media (prefers-color-scheme: dark) {
-	.btn-primary { border-color: --lighter(var(--primary-color)); }
-	.btn-primary:hover { background-color: --lighter(var(--primary-color)); border-color: --lighter(var(--primary-color), 20); }
-
-	.btn-secondary { border-color: --lighter(var(--secondary-color)); }
-	.btn-secondary:hover { background-color: --lighter(var(--secondary-color)); border-color: --lighter(var(--secondary-color), 20); }
-
-	.btn-light { background-color: --lighter(var(--light-color)); border-color: --lighter(var(--light-color), 15); }
-	.btn-light:hover { background-color: --lighter(var(--light-color), 20); border-color: --lighter(var(--light-color), 30); }
-
-	.btn-info { border-color: --lighter(var(--info-color)); }
-	.btn-info:hover {
-		background-color: --lighter(var(--info-color), 5);
-		border-color: --lighter(var(--info-color), 20);
+	.btn:hover {
+		background-color: --lighter(var(--_btn-color));
+		border-color: --lighter(var(--_btn-color), 20);
 	}
-
-	.btn-green { border-color: --lighter(var(--green-color)); }
-	.btn-green:hover { background-color: --lighter(var(--green-color)); border-color: --lighter(var(--green-color), 20); }
-
-	.btn-success { border-color: --lighter(var(--success-color)); }
-	.btn-success:hover { background-color: --lighter(var(--success-color)); border-color: --lighter(var(--success-color), 20); }
-
-	.btn-warn { background-color: --lighter(var(--gold-color), 15); border-color: --lighter(var(--gold-color), 20); }
-	.btn-warn:hover { background-color: --lighter(var(--gold-color), 25); border-color: --lighter(var(--gold-color), 30); }
-
-	.btn-error { border-color: --lighter(var(--error-color)); }
-	.btn-error:hover { background-color: --lighter(var(--error-color)); border-color: --lighter(var(--error-color), 20); }
-
-	.btn-danger { border-color: --lighter(var(--danger-color)); }
-	.btn-danger:hover { background-color: --lighter(var(--danger-color)); border-color: --lighter(var(--danger-color), 20); }
-
-	.btn-dark { border-color: --lighter(var(--dark-color)); }
-	.btn-dark:hover { background-color: --lighter(var(--dark-color)); border-color: --lighter(var(--dark-color), 20); }
 }
