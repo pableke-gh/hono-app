@@ -6,6 +6,7 @@ import NavigationLink from "./Navigation.js";
 import ToggleLink from "./Toggle.js";
 
 // define custom element after Tabs initialization to avoid circular dependency
+// For a valid custom element name, it must: Contain a hyphen (-)
 customElements.define("tab-content", Tab, { extends: "div" });
 customElements.define("tab-list", ListTab, { extends: "div" });
 customElements.define("nav-link", NavigationLink, { extends: "a" });

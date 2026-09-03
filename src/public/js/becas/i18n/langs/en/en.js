@@ -1,4 +1,4 @@
 
 export default {
-	descEstados: [ "Nuevo", "Activo", "Cancelado" ]
+	descEstados: [ "Nuevo", "Cancelado", "Activo" ]
 }

@@ -32,9 +32,9 @@
 			<label class="ui-block">
 				<div class="label required">Estado:</div>
 				<select name="estado" is="data-list" disabled="1" class="editable-manual ui-disabled ui-tercero">
-					<option value="2">Nuevo</option>
+					<option value="0">Nuevo</option>
 					<option value="1">Cancelado</option>
-					<option value="0">Activo</option>
+					<option value="2">Activo</option>
 				</select>
 			</label>
 		</div>
@@ -50,6 +50,10 @@
 			<label class="ui-block-lg">
 				<div class="label">Segundo Apellido:</div>
 				<input type="text" name="ap2" is="text-input" class="ui-tercero" maxlength="90" />
+			</label>
+			<label class="ui-block-lg">
+				<div class="label">Email:</div>
+				<input type="text" name="email" is="text-input" class="ui-tercero" maxlength="150" />
 			</label>
 		</div>
 		<br/>
@@ -78,6 +82,10 @@
 		<h2>Datos bancarios</h2>
 		<div class="ui-blocks">
 			<label class="ui-block">
+				<div class="label required"><h:outputText value="#{msg['uae.irse.tab9.lbl.cuenta']}" escape="false" />:</div>
+				<select name="cuentas" is="cuentas-list"></select>
+			</label>
+			<label class="ui-block">
 				<div class="label required"><h:outputText value="#{msg['lbl.pais']}" escape="false" />:</div>
 				<select name="paisEntidad" is="paises-list" required="1" class="ui-tercero"></select>
 			</label>
@@ -103,7 +111,7 @@
 			</label>
 			<label class="ui-block">
 				<div class="label required">Importe concedido:</div>
-				<input type="text" name="impNuevo" is="float-input" required="gt0" class="ui-tercero"/> €
+				<input type="text" name="imp" is="float-input" required="gt0" class="ui-tercero"/> €
 			</label>
 		</div>
 	</div>

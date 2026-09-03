@@ -25,7 +25,7 @@ export default class Paso9 extends Tab {
 	}
 	view(cuentas) {
 		form.getElement("cuentas").setCuentas(cuentas);
-		form.setValue("observaciones", gastos.getObservaciones()).refresh(irse); // refresh form with new data
+		form.setValue("observaciones", gastos.getObservaciones());
 	}
 
 	send(url) {

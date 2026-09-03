@@ -1,10 +1,10 @@
 
-import FormHTML from "../../../components/forms/FormHTML.js";
-import tabs from "../../../core/components/tabs/Tabs.js";
-import api from "../../../core/components/Api.js";
+import FormHTML from "../../components/forms/FormHTML.js";
+import tabs from "../../core/components/tabs/Tabs.js";
+import api from "../../core/components/Api.js";
 
-import buzon from "../../model/Buzon.js";
-import Usuarios from "../tables/usuarios.js";
+import buzon from "../model/Buzon.js";
+import Usuarios from "../components/tables/usuarios.js";
 
 export default class UsuariosForm extends FormHTML {
 	//#acUser = this.setAutocomplete("acUsuarios");

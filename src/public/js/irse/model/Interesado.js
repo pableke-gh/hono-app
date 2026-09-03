@@ -3,10 +3,6 @@ import Base from "../../core/model/Base.js";
 import ue from "../data/ue.js";
 
 class Interesado extends Base {
-	constructor() {
-		super({}); // initialize with empty data
-	}
-
 	getColectivo() { return this.get("ci"); }
 	isAlumno = () => (this.getColectivo() == "ALU");
 	isExterno = () => (this.getColectivo() == "EXT");
@@ -17,6 +13,7 @@ class Interesado extends Base {
 
 	getCargos() { return this.get("cargos"); } // mascara de cargos
 	isEquipoGob = () => ((this.getCargos() & 64) == 64); // el interesado forma parte del equipo de gobierno
+	getDomicilio() { return `${this.get("dir")}, ${this.get("cp")}, ${this.get("municipio")}, ${this.get("provincia")} (${this.getResidencia()})`; }
 }
 
 export default new Interesado();

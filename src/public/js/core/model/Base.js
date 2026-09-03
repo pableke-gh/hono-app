@@ -25,15 +25,15 @@ export default class Base {
 	render = (template, opts) => i18n.render(template, this, opts);
 
 	// Generc getters and setters
-	getId = () => this.#data.id; // id de la instancia
-	eq = id => (this.isLoaded() && (this.#data.id == id)); // equal id
-	getNif = () => this.#data.nif; // nif del usuario de creacion
-	getTipo = () => this.#data.tipo; // tipo de la insaancia
+	getId() { return this.#data.id; } // id de la instancia
+	eq(id) { return (this.isLoaded() && (this.#data.id == id)); } // equal id
+	getNif() { return this.#data.nif; } // nif del usuario de creacion
+	getTipo() { return this.#data.tipo; } // tipo de la insaancia
 	setTipo(value) { this.#data.tipo = value; return this; }
-	getSubtipo = () => this.#data.subtipo;
+	getSubtipo() { return this.#data.subtipo; }
 	setSubtipo(value) { this.#data.subtipo = value; return this; }
-	getEstado = () => this.#data.estado;
+	getEstado() { return this.#data.estado; }
 	setEstado(value) { this.#data.estado = value; return this; }
-	getMask = () => this.#data.mask;
+	getMask() { return this.#data.mask; }
 	setMask(value) { this.#data.mask = value; return this; }
 }

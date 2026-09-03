@@ -59,13 +59,12 @@ export default class Perfil extends Tab {
 		form.getElement(name).focus(); // focus on first input
 	}
 
-	view(interesado, organicas, firmas) {
+	view(interesado, organicas) {
 		i18n.set("pasos", 2 + irse.isIsu() + this.isMaps()); // set global number of pasos
 		irse.getPasoMaps = () => i18n.render(i18n.set("paso", i18n.get("paso") + this.isMaps()).get("lblPasos"), irse);
 
-		form.closeAlerts().setFirmas(firmas).prepare(irse).setCache(irse.getId()); // prepare all fields
-		form.getElement("interesado").setInteresado(interesado); // load autocomplete
-		form.getElement("organica").setOrganicas(organicas); // load autocomplete + table
+		form.prepare(irse).getElement("interesado").setInteresado(interesado); // load inputs + autocomplete interesado
+		form.getElement("organica").setOrganicas(organicas); // load autocomplete + table organicas
 		form.setValue("tramite", irse.getTramite()); // AyL, AUT or LIQ
 	}
 

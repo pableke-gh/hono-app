@@ -11,6 +11,7 @@ export default class Organicas extends TableHTML {
 	static #organcias;
 
 	init() {
+		// todo: extract ancladas and recientes tables to a separate module using tables container
 		const facturas = document.forms.facturas;
 		const usuarios = document.forms.usuarios;
 

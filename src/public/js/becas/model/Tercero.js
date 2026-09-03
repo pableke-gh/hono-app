@@ -7,7 +7,11 @@ class Tercero extends Base {
 	isCancelado() { return (this.getMask() & 1); }
 	isActivo() { return !this.isCancelado(); }
 
-	buildEstado(data) { return data.mask ? ((data.mask & 1) + 1) : 0; }
+	// estado => nuevo = 0, cancelado = 1, activo = 2
+	buildEstado(data) { return data.mask ? ((data.mask & 1) ? 1 : 2) : 0; }
+	getEstado() { return this.buildEstado(this.getData()); } // override super
+	setEstado() { return this; }
+
 	buildName(data) { return (data.nombre + " " + (data.ap1 || "") + " " + (data.ap2 || "")).trim(); }
 	buildNifName(data) { return data.nif + " - " + this.buildName(data); }
 	getNombreCompleto() { return this.buildName(this.getData()); }
@@ -15,7 +19,13 @@ class Tercero extends Base {
 
 	getDireccion() { return this.get("dir"); }
 	getDomicilio() { return (this.get("via") + " " + this.getDireccion()).trim(); }
+
+	getImporte() { return this.get("imp"); }
 	setImporte(imp) { this.set("imp", imp); }
+
+	getIban() { return this.get("iban"); } // cuenta bancaria
+	isNuevoIban() { return this.getMask() & 131072; } // bit17 = nuevo iban
+	setNuevoIban() { return this.setMask(this.getMask() | 131072); } // bit17 = nuevo iban
 
 	getBanco() { return this.get("banco"); } // nombre de la entidad
 	getEntidad() { return this.get("entidad"); } // nombre de la entidad
@@ -23,10 +33,6 @@ class Tercero extends Base {
 	getPaisEntidad() { return this.get("paisEntidad"); }
 	isEntidadEs() { return ("ES" == this.getPaisEntidad()); }
 	isEntidadExtranjera() { return !this.isEntidadEs(); }
-
-	create() { // update data for new tercero
-		return this.setNuevo().setEntidad(this.getBanco()).setImporte(this.get("impNuevo"));
-	}
 }
 
 export default new Tercero();

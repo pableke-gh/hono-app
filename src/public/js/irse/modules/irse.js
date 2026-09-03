@@ -43,12 +43,14 @@ class IrseSolicitud extends Solicitud {
 				.setKm(data.km).setAc(data.ac) // pasos 3/4 y resumen
 				.setIban(data.iban).setBanco(data.banco); // paso 9
 
-		this.getPerfil().view(data.interesado, data.organicas, data.firmas); // load perfil
+		this.getPerfil().view(data.interesado, data.organicas); // load perfil
 		this.getRutas().view(); // load rutas maps (tab 2)
 		this.getPaso3().view(); // load isu tab (optional tab)
 		this.getPaso5().view(); // load gastos from register
 		this.getResumen().view(data.dietas); // tab 6 = resumen
 		this.getPaso9().view(data.cuentas); // tab 9 = fin
+		this.closeAlerts().setEditable(irse).setFirmas(data.firmas)
+			.setCache(irse.getId()).refresh(irse); // refresh all fields
 		tabs.showForm(); // destination tab
 	}
 

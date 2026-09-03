@@ -19,5 +19,4 @@ export default class SaveResumen extends ButtonForm {
 			return form.setOk(); // nada que guardar => mensaje ok
 		resumen.send(); // call server
 	}
-
 }

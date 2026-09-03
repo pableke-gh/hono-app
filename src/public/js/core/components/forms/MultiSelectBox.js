@@ -77,6 +77,16 @@ export default class MultiSelectBox extends ButtonForm {
 		return this.setIndex(0);
 	}
 
+	reset() { // remove selected items
+		this.#data.forEach(item => { delete item.checked; });
+		this.render();
+	}
+	clear() {
+		this.#data = null; // remove all items
+		this.nextElementSibling.replaceChildren(); // removes all li children
+		this.innerHTML = i18n.get(this.dataset.msgEmptyOption) + this.dataset.dropdownIcon;
+	}
+
 	execute(ev) { // execute action on selected items
 		this.nextElementSibling.classList.toggle(this.dataset.activeClassName); // toggle ul dropdown
 		this.#stopPropagation(ev); // avoid to fire document onclick event
@@ -94,7 +104,7 @@ export default class MultiSelectBox extends ButtonForm {
 		this.type = "button"; // no action by default
 		this.classList.remove("btn"); // remove buton styles
 		this.classList.add("ui-input"); // same style than input elements
-		this.innerHTML = i18n.get(this.dataset.msgEmptyOption) + this.dataset.dropdownIcon;
+		this.clear(); // clear data and render empty state
 
 		this.nextElementSibling.onclick = ev => {
 			this.#stopPropagation(ev); // avoid to close ul dropdown on click inside

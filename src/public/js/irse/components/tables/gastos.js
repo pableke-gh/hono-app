@@ -1,14 +1,12 @@
 
-import TableHTML from "../../../core/components/tables/Table.js";
 import api from "../../../core/components/Api.js";
+import observer from "../../../core/util/Observer.js";
 import i18n from "../../i18n/langs.js";
 
 import irse from "../../model/Irse.js";
 import gasto from "../../model/Gasto.js";
 import gastos from "../../model/Gastos.js";
-
-import observer from "../../../core/util/Observer.js";
-import form from "../../modules/irse.js"
+import TableHTML from "../../../core/components/tables/Table.js";
 
 // tabla de gastos del paso 5 (facturas, tickets y demás documentación para liquidar)
 export default class GastosTable extends TableHTML {

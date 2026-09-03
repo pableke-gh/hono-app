@@ -20,3 +20,11 @@ export const IbanCodeLengths = {
     AL: 28, BY: 28, CR: 22, EG: 29, GE: 22, IQ: 23, LC: 32, SC: 31, ST: 25,
     SV: 28, TL: 23, UA: 29, VA: 22, VG: 24, XK: 20
 };
+
+export function getEntidades() { return BankNames; }
+export function getIban1(iban) { return iban && iban.substring(0, 4); }
+export function getIban2(iban) { return iban && iban.substring(4, 8); }
+export function getEntidad(iban) { return BankNames[getIban2(iban)]; }
+export function getIban3(iban) { return iban && iban.substring(8, 12); }
+export function getOficina(iban) { return iban && iban.substring(8, 12); }
+export function getDC(iban) { return iban && iban.substring(12, 14); }

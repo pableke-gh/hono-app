@@ -19,7 +19,7 @@
 			<c:if test="#{iris.user.uae}">
 				<li><a href="#vinc" is="run-action"><h:outputText value="#{msg['uae.irse.index.msg.vinc']}" escape="false" /></a></li>
 			</c:if>
-			<c:if test="#{iris.user.admin}">
+			<c:if test="#{iris.user.admin or iris.user.otri}">
 				<li><a href="#tab-otri" is="nav-link">Informe ISU</a></li>
 			</c:if>
 		</ul>

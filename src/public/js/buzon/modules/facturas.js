@@ -1,9 +1,9 @@
 
-import FormHTML from "../../../components/forms/FormHTML.js";
-import tabs from "../../../core/components/tabs/Tabs.js";
-import api from "../../../core/components/Api.js";
-import valid from "../../i18n/validators.js";
-import buzon from "../../model/Buzon.js";
+import FormHTML from "../../components/forms/FormHTML.js";
+import tabs from "../../core/components/tabs/Tabs.js";
+import api from "../../core/components/Api.js";
+import valid from "../i18n/validators.js";
+import buzon from "../model/Buzon.js";
 
 export default class FacturasForm extends FormHTML {
 	#tipo = this.getElement("tipo");

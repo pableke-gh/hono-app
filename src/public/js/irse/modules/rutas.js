@@ -7,6 +7,7 @@ import irse from "../model/Irse.js";
 import rutas from "../model/Rutas.js";
 import dietas from "../model/Dietas.js";
 
+import MsgInteresado from "../components/rutas/MsgInteresado.js";
 import AutocompleteMaps from "../components/rutas/Autocomplete.js";
 import Transportes from "../components/rutas/Transportes.js";
 import AddRuta from "../components/rutas/AddRuta.js";
@@ -62,6 +63,7 @@ export default class Rutas extends Tab {
 	}
 }
 
+customElements.define("msg-interesado", MsgInteresado, { extends: "p" });
 customElements.define("autocomplete-maps", AutocompleteMaps, { extends: "input" });
 customElements.define("desp-ruta", Transportes, { extends: "select" });
 customElements.define("add-ruta", AddRuta, { extends: "button" });

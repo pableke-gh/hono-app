@@ -8,13 +8,13 @@ export default class Ejercicio extends DataList {
 	connectedCallback() {
 		const fnSync = ev => {
 			this.setValue(ev.target.value);
-			this.form.elements.ejInc.setValue(ev.target.value);
-			this.form.elements.ej030.setValue(ev.target.value);
+			this.form.ejInc.setValue(ev.target.value);
+			this.form.ej030.setValue(ev.target.value);
 		}
 
-		this.addChange(fnSync).addChange(this.form.elements.orgDec.reload);
-		this.form.elements.ejInc.addEventListener("change", fnSync);
-		this.form.elements.ej030.addEventListener("change", fnSync);
+		this.addChange(fnSync).addChange(this.form.orgDec.reload);
+		this.form.ejInc.addEventListener("change", fnSync);
+		this.form.ej030.addEventListener("change", fnSync);
 	}
 
 	// show / hide grupo partida a decrementar
@@ -24,18 +24,19 @@ export default class Ejercicio extends DataList {
 	setEditable() {
 		this.setVisible(presto.isPartidaDec());
 		this.setReadonly(!presto.isEditable());
-		const fnFocus = () => { presto.isPartidaDec() ? this.focus() : this.form.elements.ejInc.focus(); }
+		this.form.cd.setVisible(presto.isImpCd()); // importe del credito disponible
+		const fnFocus = () => { presto.isPartidaDec() ? this.focus() : this.form.ejInc.focus(); }
 		setTimeout(fnFocus, 9); // set focus on first input after view is loaded
 	}
 
 	// executed onView after load data
 	setLabels(ejercicios) { // force reload
 		super.setLabels(ejercicios).reset();
-		this.form.elements.ejInc.setLabels(ejercicios).reset();
-		this.form.elements.ej030.setLabels(ejercicios).reset();
+		this.form.ejInc.setLabels(ejercicios).reset();
+		this.form.ej030.setLabels(ejercicios).reset();
 
 		const ej = presto.get("ej") || sb.getYear();
-		this.value = this.form.elements.ejInc.value = this.form.elements.ej030.value = ej;
+		this.value = this.form.ejInc.value = this.form.ej030.value = ej;
 	}
 }
 

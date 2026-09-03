@@ -17,12 +17,15 @@ export default class ButtonCreateTercero extends ButtonForm {
 			return; // validation error
 
 		const terceros = tables.get("terceros");
-		const data = this.form.getData(".ui-tercero");
-		tercero.setData(data).create(); // update form data for create
+		Object.assign(tercero.getData(), this.form.getData(".ui-tercero")); // update form data
 		if (terceros.contains(tercero.getNif())) // verifico si el nif ya esta asociado
 			return alerts.setWarn("Beneficiario asociado previamente a la solicitud");
 
+		tercero.setEntidad(tercero.getBanco());
+		this.form.cuentas.value || tercero.setNuevoIban();
 		terceros.add(tercero.getData()); // add data row
+
 		tabs.showForm(); // vuelvo al form principal
+		this.form.tercero.reload(); // reload autocomplete
 	}
 }

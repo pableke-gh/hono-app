@@ -2,10 +2,10 @@
 import coll from "../components/CollectionHTML.js";
 import tabs from "../core/components/tabs/Tabs.js";
 
-import Ancladas from "./modules/tables/ancladas.js";
-import Recientes from "./modules/tables/recientes.js";
-import Facturas from "./modules/tabs/facturas.js";
-import Usuarios from "./modules/tabs/usuarios.js";
+import Ancladas from "./components/tables/ancladas.js";
+import Recientes from "./components/tables/recientes.js";
+import Facturas from "./modules/facturas.js";
+import Usuarios from "./modules/usuarios.js";
 
 coll.ready(() => {
 	// global tabs actions
@@ -15,6 +15,5 @@ coll.ready(() => {
 
 customElements.define("facturas-form", Facturas, { extends: "form" });
 customElements.define("usuarios-form", Usuarios, { extends: "form" });
-// For a valid custom element name, it must: Contain a hyphen (-)
 customElements.define("ancladas-table", Ancladas, { extends: "table" });
 customElements.define("recientes-table", Recientes, { extends: "table" });
