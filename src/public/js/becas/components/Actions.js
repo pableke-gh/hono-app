@@ -1,10 +1,12 @@
 
 import tables from "./tables/tables.js";
+import TerceroTab from "../modules/tercero.js";
 import Action from "../../core/components/tabs/Action.js";
 
 export default class ActionLink extends Action {
 	create() { document.forms.beca.create(); }
 	view() { document.forms.beca.load(tables.getSolicitudes().getCurrent()); }
+	newTercero() { TerceroTab.instance.create(); }
 	next() { this.nextElementSibling.click(); }
 
 	list() { document.forms.flist.list(); }

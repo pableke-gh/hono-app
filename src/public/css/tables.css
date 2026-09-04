@@ -10,7 +10,7 @@ caption {
 }
 
 thead {
-	color: white; background-color: --lighter(var(--primary-color));
+	color: white; background-color: var(--link-color);
 	border-bottom: 2px solid --darker(var(--primary-color), 20);
 }
 th { padding: .5rem .6rem; }

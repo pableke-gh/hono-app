@@ -7,7 +7,7 @@
 /* Accordion */
 details {
 	margin-bottom: 12px; border-radius: 8px;
-	border: solid 1px --darker(var(--primary-color), 20);
+	border: solid 1px --darker(var(--link-color), 20);
 }
 details[open] > summary { border-radius: 8px 8px 0 0; }
 details[open] > summary::after{ transform: rotate(90deg); }
@@ -17,9 +17,9 @@ summary {
 	display: flex; justify-content: space-between; padding: .8rem 1rem;
 	font-weight: bold; font-size: large; cursor: pointer;
 	border-radius: 8px; box-shadow: 0 -1px 1px 1px;
-	color: white; background-color: var(--primary-color);
+	color: white; background-color: var(--link-color);
 }
-summary:hover { background-color: --darker(var(--primary-color)); }
+summary:hover { background-color: --darker(var(--link-color)); }
 summary::after { content: "\276F"; text-align: center; transition: all 0.3s; }
 summary::marker { content: ""; }
 /* Accordion */

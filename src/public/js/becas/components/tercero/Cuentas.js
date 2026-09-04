@@ -1,11 +1,13 @@
 
 import beca from "../../model/Beca.js";
+import tercero from "../../model/Tercero.js";
 import DataList from "../../../core/components/forms/DataList.js";
 import { getIban2, getEntidad } from "../../../data/bancos.js";
 
 export default class Cuentas extends DataList {
 	setEditable() {
 		this.setReadonly(!beca.isEditable());
+		this.form.imp.setReadonly(!beca.isEditable());
 	}
 
 	#update(cuenta) {
@@ -13,11 +15,13 @@ export default class Cuentas extends DataList {
 		this.form.iban.setVisible(!cuenta);
 
 		if (cuenta) {
+			tercero.setIbanActivo();
 			this.form.iban.setValue(cuenta);
 			this.form.entidad.setValue(getIban2(cuenta));
 			this.form.entidad.setHidden();
 		}
 		else {
+			tercero.setIbanNuevo();
 			this.form.iban.reset();
 			this.form.entidad.reset();
 			this.form.paisEntidad.reset();

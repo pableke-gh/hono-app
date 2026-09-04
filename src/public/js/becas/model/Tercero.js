@@ -24,8 +24,12 @@ class Tercero extends Base {
 	setImporte(imp) { this.set("imp", imp); }
 
 	getIban() { return this.get("iban"); } // cuenta bancaria
-	isNuevoIban() { return this.getMask() & 131072; } // bit17 = nuevo iban
-	setNuevoIban() { return this.setMask(this.getMask() | 131072); } // bit17 = nuevo iban
+	setIbanNuevo() { return this.setMask(this.getMask() | 131072); } // bit17 = iban nuevo (no en uxxiec)
+	setIbanActivo() { return this.setMask(this.getMask() & ~131072); } // bit17 = iban activo en uxxiec
+	isIbanNuevo(mask) {
+		mask = mask ?? this.getMask(); // default to current mask
+		return mask & 131072; // bit17 = nuevo iban
+	}
 
 	getBanco() { return this.get("banco"); } // nombre de la entidad
 	getEntidad() { return this.get("entidad"); } // nombre de la entidad

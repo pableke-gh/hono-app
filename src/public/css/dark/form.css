@@ -1,5 +1,5 @@
 
 @media (prefers-color-scheme: dark) {
 	.autocomplete .results { border-color: --lighter(var(--bg-color)); }
-	.multiselect .options { border-color: --lighter(var(--bg-color)); }
+	.multiselect  .results { border-color: --lighter(var(--bg-color)); }
 }

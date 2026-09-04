@@ -15,6 +15,7 @@ export default class Entidades extends DataList {
 	setEditable() {
 		this.setReadonly(!beca.isEditable());
 		this.form.banco.setReadonly(!beca.isEditable());
+		this.form.swift.setReadonly(!beca.isEditable());
 	}
 
 	setValue(entidad) {

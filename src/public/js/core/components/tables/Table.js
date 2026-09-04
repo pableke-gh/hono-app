@@ -126,10 +126,11 @@ export default class TableHTML extends HTMLTableElement {
 	}
 
 	reset = this.view; // reset table
-	push(row) { this.#rows.push(row); return this.render(this.#rows); } // Push data and render
+	refresh() { return this.render(this.#rows); } // reload data table
+	push(row) { this.#rows.push(row); return this.refresh(); } // Push data and render
 	add(row) { delete row.id; return this.push(row); } // Force insert => remove PK
 	insert = (row, id) => { row.id = id; return this.push(row); } // New row with PK
-	update = data => { Object.assign(this.getCurrent(), data); return this.render(this.#rows); }
+	update = data => { Object.assign(this.getCurrent(), data); return this.refresh(); }
 	save = (row, id) => (id ? this.insert(row, id) : this.update(row)); // Insert or update
 
 	#fnReload(el, data) {

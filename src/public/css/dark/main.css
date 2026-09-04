@@ -5,10 +5,8 @@
 		--bg-color:   #212529; /* gray-900 */ --bg-hover:   #6ea8fe; /* blue-300 */ --bg-input: #343a40; /* gray-800 */
 		--link-color: #0d6efd; /* blue-500 */ --link-hover: #3d8bfd; /* blue-400 */
 
-		--light-color: #343a40; /* gray-800 */
-		--bg-light: --lighter(var(--light-color), 5); /* bg-light */
-		--gray-color: #adb5bd; /*gray-400 */
-		--secondary-color: #495057; /* gray-700 */
+		--light-color: #343a40; /* gray-800 */ --bg-light: --lighter(var(--light-color), 5); /* bg-light */
+		--gray-color: #adb5bd; /*gray-400 */   --secondary-color: #495057; /* gray-700 */
 		--dark-color: #374151; /* dark-color */
 	}
 

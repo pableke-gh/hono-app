@@ -23,13 +23,19 @@
 }
 
 .btn-primary { --_btn-color: var(--primary-color); }
+.btn-info { --_btn-color: var(--info-color); }
+.btn-link { --_btn-color: var(--link-color); color: white; }
+.btn-link:hover { color: white; }
+
 .btn-secondary { --_btn-color: var(--secondary-color); }
 .btn-light { --_btn-color: var(--bg-light); }
-.btn-info { --_btn-color: var(--info-color); }
-.btn-green { --_btn-color: var(--green-color); color: white; }
-.btn-green:hover { color: white; }
+
+.btn-green { --_btn-color: var(--green-color); color: var(--text-green); }
+.btn-green:hover { color: var(--text-green); }
 .btn-success { --_btn-color: var(--success-color); }
+
 .btn-warn { --_btn-color: var(--warn-color); }
-.btn-error { --_btn-color: var(--error-color); }
+.btn-error { --_btn-color: var(--error-color); color: var(--text-error); }
+.btn-error:hover { color: var(--text-error); }
 .btn-danger { --_btn-color: var(--danger-color); }
 .btn-dark { --_btn-color: var(--dark-color); }

@@ -148,9 +148,9 @@ input[type="search"]::-webkit-search-cancel-button:hover { filter: invert(.5); c
 		display: flex; gap: 4px;
 		justify-content: center; align-items: center; padding: 2px 4px;
 
-		color: contrast-color(var(--yellow-color)); /* white or black */
-		border: solid 1px --darker(var(--yellow-color)); border-radius: 5px;
-		background-color: var(--yellow-color);
+		color: contrast-color(var(--warn-color)); /* white or black */
+		border: solid 1px --darker(var(--warn-color)); border-radius: 5px;
+		background-color: var(--warn-color);
 	}
 	button > i {
 		margin-left: auto; /* Pushes the last item to the right end */
