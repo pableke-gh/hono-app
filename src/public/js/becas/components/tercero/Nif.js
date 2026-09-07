@@ -1,7 +1,8 @@
 
-import TextInput from "../../../core/components/forms/TextInput.js";
 import sb from "../../../components/types/StringBox.js";
+import api from "../../../core/components/Api.js";
 import doc from "../../i18n/Documento.js";
+import TextInput from "../../../core/components/forms/TextInput.js";
 
 export default class NifTercero extends TextInput {
 	setDocumento(value) {
@@ -28,6 +29,10 @@ export default class NifTercero extends TextInput {
 	connectedCallback() {
 		this.addChange(ev => {
 			this.setValue(sb.toUpperWord(ev.target.value));
+			if (sb.size(this.value) < 5) return; // nif invalido
+			api.init().json("/uae/becas/tercero/nif", { nif: this.value }).then(data => {
+				this.form.view(data.tercero, data.cuentas); // update inputs
+			});
 		});
 	}
 }

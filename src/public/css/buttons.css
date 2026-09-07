@@ -25,7 +25,7 @@
 .btn-primary { --_btn-color: var(--primary-color); }
 .btn-info { --_btn-color: var(--info-color); }
 .btn-link { --_btn-color: var(--link-color); color: white; }
-.btn-link:hover { color: white; }
+.btn-link:hover { color: white; text-decoration: none; } /* Override bootstrap styles in CV */
 
 .btn-secondary { --_btn-color: var(--secondary-color); }
 .btn-light { --_btn-color: var(--bg-light); }

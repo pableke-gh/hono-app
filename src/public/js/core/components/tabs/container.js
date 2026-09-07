@@ -6,7 +6,7 @@ class Tabs {
 
 	constructor() {
 		document.addEventListener("DOMContentLoaded", () => {
-			this.#tabs = document.querySelectorAll("div.tab-content"); // all tabs
+			this.#tabs = document.querySelectorAll(".tab-content"); // all tabs
 			this.#tabs.forEach((tab, index) => tab.setIndex(index)); // set position
 		});
 	}

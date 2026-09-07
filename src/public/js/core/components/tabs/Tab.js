@@ -33,7 +33,6 @@ export default class Tab extends HTMLDivElement {
 		window.parent.scrollTo({ top: 0, behavior: "smooth" });
 		tab.afterView(); // fires always when tab is visible
 	}
-	open() { this.#show(this); } // show current tab
 	show(id) { this.#show(tabs.getTab(id)); }
 	view(id) { this.show(id); }
 

@@ -103,7 +103,7 @@
 			</label>
 			<label class="ui-block-lg">
 				<div class="label required"><h:outputText value="#{msg['lbl.num.cuenta']}" escape="false" />:</div>
-				<input type="text" name="iban" is="text-input" required="1" maxlength="50" class="ui-tercero" />
+				<input type="text" name="iban" is="iban-input" required="1" maxlength="50" class="ui-tercero" />
 			</label>
 			<label class="ui-block hide">
 				<div class="label">Swift:</div>
@@ -120,7 +120,7 @@
 	<div class="navbar">
 		<a href="#tab-back" is="nav-link" class="btn btn-primary" title="#{msg['tit.btn.volver.ini']}">
 			<i class="fas fa-caret-left"></i>#{msg['lbl.btn.volver']}</a>
-		<button type="button" is="create-tercero" class="btn btn-green" title="Añadir nuevo tercero a la solicitud">
+		<button type="submit" is="create-tercero" class="btn btn-green" title="Añadir nuevo tercero a la solicitud">
 			Añadir tercero<i class="fas fa-plus"></i></button>
 	</div>
 </html>

@@ -48,12 +48,16 @@
 			<div id="tab-form" is="tab-content" class="tab-content">
 				<ui:include src="./tabs/form.xhtml"></ui:include>
 			</div>
-			<div id="tab-tercero" is="tab-tercero" class="tab-content">
-				<ui:include src="./tabs/tercero.xhtml"></ui:include>
-			</div>
 			<!-- formulario de rechazo/cancelacion -->
 			<div id="tab-reject" is="tab-content" class="tab-content">
 				<ui:include src="./tabs/reject.xhtml"></ui:include>
+			</div>
+		</form>
+
+		<form id="tercero" is="tercero-form">
+			<!-- Form tercero -->
+			<div id="tab-tercero" is="tab-content" class="tab-content">
+				<ui:include src="./tabs/tercero.xhtml"></ui:include>
 			</div>
 		</form>
 	</ui:define>

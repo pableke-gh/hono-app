@@ -12,18 +12,19 @@ export default class ButtonCreateTercero extends ButtonForm {
 		this.setVisible(beca.isEditable());
 	}
 
-	execute() {
-		if (!this.form.validate(".ui-tercero"))
-			return; // validation error
+	execute(ev) {
+		if (this.form.validate(".ui-tercero")) {
+			const terceros = tables.get("terceros"); // get table
+			const data = this.form.getData(".ui-tercero"); // form data
+			Object.assign(tercero.getData(), data); // merge data
+			if (terceros.contains(tercero.getNif())) // verifico si el nif ya esta asociado
+				terceros.refresh(); // update current row
+			else
+				terceros.add(tercero.getData()); // add data row
 
-		const terceros = tables.get("terceros"); // get table
-		const data = this.form.getData(".ui-tercero"); // form data
-		Object.assign(tercero.getData(), data); // merge data
-		if (terceros.contains(tercero.getNif())) // verifico si el nif ya esta asociado
-			terceros.refresh(); // update current row
-		else
-			terceros.add(tercero.getData()); // add data row
-		tabs.showForm(); // vuelvo al form principal
-		this.form.tercero.reload(); // reload autocomplete
+			tabs.showForm(); // vuelvo al form principal
+			document.forms.beca.tercero.reload(); // reload autocomplete
+		}
+		ev.preventDefault(); // ajax call
 	}
 }

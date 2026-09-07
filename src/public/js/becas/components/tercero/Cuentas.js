@@ -10,27 +10,28 @@ export default class Cuentas extends DataList {
 		this.form.imp.setReadonly(!beca.isEditable());
 	}
 
-	#update(cuenta) {
-		this.form.paisEntidad.setVisible(!cuenta);
-		this.form.iban.setVisible(!cuenta);
-
-		if (cuenta) {
-			tercero.setIbanActivo();
-			this.form.iban.setValue(cuenta);
-			this.form.entidad.setValue(getIban2(cuenta));
-			this.form.entidad.setHidden();
-		}
-		else {
-			tercero.setIbanNuevo();
-			this.form.iban.reset();
-			this.form.entidad.reset();
-			this.form.paisEntidad.reset();
-		}
+	setModeNuevo() {
+		tercero.setIbanNuevo();
+		this.form.paisEntidad.setModeNuevo();
+		this.form.iban.setModeNuevo(); // force visible
 	}
+	setModeActivo(cuenta) {
+		if (!cuenta) // no cuenta => set new mode
+			return this.setModeNuevo();
+		tercero.setIbanActivo();
+		this.form.paisEntidad.setModeActivo();
+		this.form.entidad.setValue(getIban2(cuenta)); // update entidad de uxxiec
+		this.form.iban.setModeActivo();
+	}
+
 	setValue(cuenta) {
-		cuenta = cuenta || this.firstElementChild.value;
-		super.setValue(cuenta); // set calculated value
-		this.#update(cuenta); // update form fields
+		if (tercero.isIbanNuevo())
+			this.setModeNuevo(); // new iban
+		else {
+			cuenta = cuenta || tercero.getIban() || this.firstElementChild.value;
+			this.setModeActivo(cuenta); // update form fields for tercero
+		}
+		super.setValue(cuenta || "");  // default last option
 	}
 
 	setCuentas(cuentas) {
@@ -46,7 +47,7 @@ export default class Cuentas extends DataList {
 	}
 
 	clear() {
-		this.#update(); // update form fields
+		this.setModeNuevo(); // new iban
 		this.replaceChildren(this.lastElementChild); // clear options
 		return this.setData(null).reset(); // reset data
 	}
@@ -54,6 +55,6 @@ export default class Cuentas extends DataList {
 	connectedCallback() { // init. component
 		// IMPORTANT! force value = "", to avoid change event return text content
 		this.appendChild(new Option("Dar de alta una nueva cuenta", "")); // create new account
-		this.addChange(ev => this.#update(ev.target.value)); // update form fields
+		this.addChange(ev => this.setModeActivo(ev.target.value)); // update form fields
 	}
 }

@@ -5,7 +5,6 @@ import tabs from "../../core/components/tabs/Tabs.js";
 import beca from "../model/Beca.js";
 import tables from "../components/tables/tables.js";
 
-import Tercero from "./tercero.js";
 import Organica from "../components/beca/Organica.js";
 import TerceroAutocomplete from "../components/beca/Tercero.js";
 import AddTercero from "../components/beca/AddTercero.js";
@@ -67,7 +66,6 @@ export default class BecaForm extends FormHTML {
 	}
 }
 
-customElements.define("tab-tercero", Tercero, { extends: "div" });
 customElements.define("organica-input", Organica, { extends: "input" });
 customElements.define("ac-tercero", TerceroAutocomplete, { extends: "input" });
 customElements.define("add-tercero", AddTercero, { extends: "button" });

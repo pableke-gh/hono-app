@@ -1,56 +1,34 @@
 
-import Tab from "../../core/components/tabs/Tab.js";
+import tabs from "../../core/components/tabs/Tabs.js";
+
+import beca from "../model/Beca.js";
 import tercero from "../model/Tercero.js";
 
 import NifTercero from "../components/tercero/Nif.js";
 import Cuentas from "../components/tercero/Cuentas.js";
 import Paises from "../components/tercero/Paises.js";
 import Entidades from "../components/tercero/Entidades.js";
+import Iban from "../components/tercero/Iban.js";
 import CreateTercero from "../components/tercero/Create.js";
+import FormHTML from "../../core/components/forms/Form.js";
 
-export default class TerceroTab extends Tab {
-	static instance; // singleton
-
-	afterView() {
-		const form = document.forms.beca;
-		form.tercero.clear();
-		form.nif.focus();
-	}
-
+export default class TerceroForm extends FormHTML {
 	create() {
 		tercero.clear(); // clear tercero model
-		const form = document.forms.beca; // form reference
-		form.nif.reset(); form.doc.reset(); form.estado.reset();
-		form.nombre.reset(); form.ap1.reset(); form.ap2.reset(); form.email.reset();
-		form.residencia.reset(); form.dir.reset(); form.mun.reset(); form.cp.reset();
-		form.cuentas.clear(); form.paisEntidad.reset(); form.swift.reset(); form.imp.reset();
+		super.create(tercero.getData()); // clear form
+		tabs.show("tercero"); // show tercero tab
+		this.nif.focus();
 	}
 
-	view(data) {
+	load(data) {
 		tercero.setData(data); // update tercero model
-		const form = document.forms.beca; // form reference
-		form.nif.setValue(tercero.getNif());
-		form.doc.setValue(tercero.get("doc"));
-		form.estado.setValue(tercero.getEstado());
-		form.nombre.setValue(tercero.get("nombre"));
-		form.ap1.setValue(tercero.get("ap1"));
-		form.ap2.setValue(tercero.get("ap2"));
-		form.email.setValue(tercero.get("email"));
-		form.residencia.setValue(tercero.get("residencia"));
-		form.dir.setValue(tercero.get("dir"));
-		form.mun.setValue(tercero.get("mun"));
-		form.cp.setValue(tercero.get("cp"));
-
-		form.paisEntidad.setValue(tercero.getPaisEntidad());
-		form.cuentas.setValue(tercero.getIban());
-		form.swift.setValue(tercero.get("swift"));
-		form.imp.setValue(tercero.getImporte());
-		this.open(); // show tercero tab
+		super.load(data, beca.isEditable()); // load form with data
+		tabs.show("tercero"); // show tercero tab
+		this.nombre.focus();
 	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		TerceroTab.instance = this;
+	view(data, cuentas) {
+		this.cuentas.setCuentas(cuentas); // update cuentas list
+		this.load(data); // cargo los datos del tercero
 	}
 }
 
@@ -58,4 +36,5 @@ customElements.define("nif-input", NifTercero, { extends: "input" });
 customElements.define("cuentas-list", Cuentas, { extends: "select" });
 customElements.define("paises-list", Paises, { extends: "select" });
 customElements.define("entidades-list", Entidades, { extends: "select" });
+customElements.define("iban-input", Iban, { extends: "input" });
 customElements.define("create-tercero", CreateTercero, { extends: "button" });
