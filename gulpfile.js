@@ -1,3 +1,4 @@
+
 import fs from "fs";
 import gulp from "gulp";
 import concat from "gulp-concat";
@@ -51,53 +52,65 @@ gulp.task("minify-views", done => {
 	fs.rmSync(VIEW_DEST, { recursive: true, force: true }); // remove obsolete files
 	gulp.src("dist/public").pipe(gulp.symlink("dist/views")); // static server links
 	gulp.src(VIEW_FILES).pipe(htmlmin(options)).pipe(gulp.dest(VIEW_DEST)).on("end", () => {
+		// deploy xeco XHTML in Campus Virtual
 		const CV_XECO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/xeco";
 		const CV_XECO_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules/xeco";
-		//const CV_XECO_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/uae/emails";
-		deployCV("dist/views/xeco/**/*", CV_XECO, fnNone); // deploy xeco XHTML in Campus Virtual
-		deployCV("dist/views/xeco/**/*", CV_XECO_TARGET, fnNone); // deploy xeco XHTML in target Campus Virtual
-		//deployCV("dist/views/xeco/emails/**/*", CV_XECO_EMAILS, fnNone); // deploy xeco XHTML in CV
+		const CV_XECO_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/xeco/emails";
+		deployCV("dist/views/xeco/**/*", CV_XECO, fnNone);
+		deployCV("dist/views/xeco/**/*", CV_XECO_TARGET, fnNone);
+		deployCV("dist/views/xeco/emails/**/*", CV_XECO_EMAILS, fnNone);
 
+		// deploy isuite XHTML in Campus Virtual
 		const CV_ISUITE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-xeco/src/main/resources/META-INF/resources/modules/xecom";
-		deployCV("dist/views/isuite/**/*", CV_ISUITE, fnNone); // deploy xeco XHTML in Campus Virtual
+		const CV_ISUITE_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-xeco/target/classes/META-INF/resources/modules/xecom";
+		deployCV("dist/views/isuite/**/*", CV_ISUITE, fnNone);
+		deployCV("dist/views/isuite/**/*", CV_ISUITE_TARGET, fnNone);
 
+		// deploy presto XHTML in Campus Virtual
 		const CV_PRESTO = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/presto";
 		const CV_PRESTO_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules/presto";
 		const CV_PRESTO_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/presto/emails";
-		deployCV("dist/views/presto/**/*", CV_PRESTO, fnNone); // deploy presto XHTML in Campus Virtual
-		deployCV("dist/views/presto/**/*", CV_PRESTO_TARGET, fnNone); // deploy presto XHTML in target Campus Virtual
-		deployCV("dist/views/presto/emails/**/*", CV_PRESTO_EMAILS, fnNone); // deploy presto XHTML in CV
+		deployCV("dist/views/presto/**/*", CV_PRESTO, fnNone);
+		deployCV("dist/views/presto/**/*", CV_PRESTO_TARGET, fnNone);
+		deployCV("dist/views/presto/emails/**/*", CV_PRESTO_EMAILS, fnNone);
 
+		// deploy factura XHTML in Campus Virtual
 		const CV_FACT = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/factura";
 		const CV_FACT_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules/factura";
 		const CV_FACT_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/factura/emails";
-		deployCV("dist/views/factura/**/*", CV_FACT, fnNone); // deploy factura XHTML in Campus Virtual 
-		deployCV("dist/views/factura/**/*", CV_FACT_TARGET, fnNone); // deploy factura XHTML in target Campus Virtual
-		deployCV("dist/views/factura/emails/**/*", CV_FACT_EMAILS, fnNone); // deploy factura XHTML in Campus Virtual
+		deployCV("dist/views/factura/**/*", CV_FACT, fnNone);
+		deployCV("dist/views/factura/**/*", CV_FACT_TARGET, fnNone);
+		deployCV("dist/views/factura/emails/**/*", CV_FACT_EMAILS, fnNone);
 
+		// deploy buzon XHTML in Campus Virtual 
 		const CV_BUZON = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/buzon";
-		deployCV("dist/views/buzon/**/*", CV_BUZON, fnNone); // deploy buzon XHTML in Campus Virtual 
+		const CV_BUZON_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules/buzon";
+		deployCV("dist/views/buzon/**/*", CV_BUZON, fnNone);
+		deployCV("dist/views/buzon/**/*", CV_BUZON_TARGET, fnNone);
 
+		// deploy pedidos XHTML in Campus Virtual 
 		const CV_PEDIDOS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/pedidos";
 		const CV_PEDIDOS_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules/pedidos";
 		const CV_PEDIDOS_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/pedidos/emails";
-		deployCV("dist/views/pedidos/**/*", CV_PEDIDOS, fnNone); // deploy pedidos XHTML in Campus Virtual 
-		deployCV("dist/views/pedidos/**/*", CV_PEDIDOS_TARGET, fnNone); // deploy pedidos XHTML in target Campus Virtual
-		deployCV("dist/views/pedidos/emails/**/*", CV_PEDIDOS_EMAILS, fnNone); // deploy pedidos XHTML in CV
+		deployCV("dist/views/pedidos/**/*", CV_PEDIDOS, fnNone);
+		deployCV("dist/views/pedidos/**/*", CV_PEDIDOS_TARGET, fnNone);
+		deployCV("dist/views/pedidos/emails/**/*", CV_PEDIDOS_EMAILS, fnNone);
 
+		// deploy becas XHTML in Campus Virtual
 		const CV_BECAS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/becas";
 		const CV_BECAS_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules/becas";
 		const CV_BECAS_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/becas/emails";
-		deployCV("dist/views/becas/**/*", CV_BECAS, fnNone); // deploy becas XHTML in Campus Virtual
-		deployCV("dist/views/becas/**/*", CV_BECAS_TARGET, fnNone); // deploy becas XHTML in target Campus Virtual
-		deployCV("dist/views/becas/emails/**/*", CV_BECAS_EMAILS, fnNone); // deploy becas XHTML in Campus Virtual
+		deployCV("dist/views/becas/**/*", CV_BECAS, fnNone);
+		deployCV("dist/views/becas/**/*", CV_BECAS_TARGET, fnNone);
+		deployCV("dist/views/becas/emails/**/*", CV_BECAS_EMAILS, fnNone);
 
+		// deploy irse XHTML in Campus Virtual
 		const CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/irse";
 		const CV_IRSE_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/target/classes/META-INF/resources/modules/irse";
-		//const CV_IRSE_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates/irse/emails";
-		deployCV("dist/views/irse/**/*", CV_IRSE, done); // deploy irse XHTML in Campus Virtual
-		deployCV("dist/views/irse/**/*", CV_IRSE_TARGET, done); // deploy irse XHTML in target Campus Virtual
-		//deployCV("dist/views/irse/emails/**/*", CV_IRSE_EMAILS, fnNone); // deploy irse XHTML in Campus Virtual
+		const CV_IRSE_EMAILS = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates/emails";
+		deployCV("dist/views/irse/**/*", CV_IRSE, fnNone);
+		deployCV("dist/views/irse/**/*", CV_IRSE_TARGET, fnNone);
+		deployCV("dist/views/irse/emails/**/*", CV_IRSE_EMAILS, done);
 	});
 });
 
@@ -105,11 +118,10 @@ gulp.task("minify-views", done => {
 gulp.task("minify-css", done => {
 	const CSS_DEST = "dist/public/css";
 	const CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/css";
-	fs.rmSync(CSS_DEST, { recursive: true, force: true }); // Remove previous unused files
-	gulp.src(CSS_FILES).pipe(cssnano({ reduceIdents: false })).pipe(gulp.dest(CSS_DEST)).on("end", () => { // Minify single files
-		gulp.src("dist/public/css/**/*.css").pipe(concat("styles-min.css")).pipe(gulp.dest(CSS_DEST)).on("end", () => {
-			deployCV("dist/public/css/styles-min.css", CV, done); // deploy minify css in Campus Virtual
-		});
+
+	//fs.rmSync(CSS_DEST, { recursive: true, force: true }); // Remove previous unused files
+	gulp.src(CSS_FILES).pipe(concat("styles-min.css")).pipe(cssnano({ reduceIdents: false })).pipe(gulp.dest(CSS_DEST)).on("end", () => { // Minify single files
+		deployCV("dist/public/css/styles-min.css", CV, done); // deploy minify css in Campus Virtual
 	});
 });
 
@@ -159,4 +171,4 @@ gulp.task("watch", () => {
 	// Other watchers ...
 });
 
-gulp.task("default", gulp.series("copy-ts", "minify-views", "minify-css", "minify-js", "modules", "static", "watch"));
+gulp.task("default", gulp.series("minify-views", "minify-css", "minify-js"/*, "copy-ts", "modules", "static"*/, "watch"));

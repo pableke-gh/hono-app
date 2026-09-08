@@ -20,15 +20,15 @@ export default class TerceroForm extends FormHTML {
 		this.nif.focus();
 	}
 
-	load(data) {
-		tercero.setData(data); // update tercero model
-		super.load(data, beca.isEditable()); // load form with data
+	show() {
 		tabs.show("tercero"); // show tercero tab
-		this.nombre.focus();
+		this.nombre.focus(); // set focus
 	}
-	view(data, cuentas) {
+	load(data, cuentas) {
+		tercero.setData(data); // update tercero model
 		this.cuentas.setCuentas(cuentas); // update cuentas list
-		this.load(data); // cargo los datos del tercero
+		super.load(data, beca.isEditable()); // load form with data
+		this.show(); // show tab
 	}
 }
 

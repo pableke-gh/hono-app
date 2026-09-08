@@ -13,9 +13,9 @@ export default class ButtonCreateTercero extends ButtonForm {
 	}
 
 	execute(ev) {
-		if (this.form.validate(".ui-tercero")) {
+		if (this.form.validate()) {
+			const data = this.form.getData(); // form data
 			const terceros = tables.get("terceros"); // get table
-			const data = this.form.getData(".ui-tercero"); // form data
 			Object.assign(tercero.getData(), data); // merge data
 			if (terceros.contains(tercero.getNif())) // verifico si el nif ya esta asociado
 				terceros.refresh(); // update current row

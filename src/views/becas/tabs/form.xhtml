@@ -21,27 +21,27 @@
 			<label class="ui-block-xl autocomplete">
 				<div class="label required">Cual es la orgánica para la factura:</div>
 				<i class="fas fa-search ui-input-icon left"></i>
-				<input type="search" name="organica" is="organica-input" class=" ui-beca" placeholder="Introduce una orgánica" />
+				<input type="search" name="organica" is="organica-input" placeholder="Introduce una orgánica" />
 				<ul role="list" class="results"></ul>
 			</label>
 			<label class="ui-block-row">
 				<div class="label required">Denominación de la convocatoria o ayuda:</div>
-				<textarea name="memo" is="text-area" class="ui-beca" required="1"></textarea>
+				<textarea name="memo" is="text-area" required="1"></textarea>
 			</label>
 		</div>
 
 		<hr/> <!-- Adjuntos -->
 		<div class="ui-blocks">
 			<div class="ui-block-row">
-				<button type="button" is="btn-bases" class="btn btn-link ui-beca"></button>
+				<button type="button" is="btn-bases" class="btn btn-link"></button>
 				<input type="file" name="bases" is="file-input" accept="application/pdf" class="hide" /><span></span>
 			</div>
 			<div class="ui-block-row">
-				<button type="button" is="btn-resolucion" class="btn btn-link ui-beca"></button>
+				<button type="button" is="btn-resolucion" class="btn btn-link"></button>
 				<input type="file" name="resolucion" is="file-input" accept="application/pdf" class="hide" /><span></span>
 			</div>
 			<div class="ui-block-row">
-				<button type="button" name="btnBeneficiarios" is="btn-beneficiarios" class="btn btn-link ui-beca"></button>
+				<button type="button" name="btnBeneficiarios" is="btn-beneficiarios" class="btn btn-link"></button>
 				<a href="#" class="btn btn-error hide"><i class="fas fa-times"></i></a>
 				<input type="file" name="beneficiarios" is="file-input" accept=".xls, .xlsx" class="hide" /><span></span>
 			</div>
@@ -51,7 +51,7 @@
 		<div class="ui-blocks">
 			<label class="ui-block">
 				<div class="label required">Fecha de la resolución de concesión:</div>
-				<input type="date" name="fResolucion" is="date-input" class="ui-input"/>
+				<input type="date" name="fResolucion" is="date-input" class="ui-input" required="1"/>
 			</label>
 			<label class="ui-block">
 				<div class="label">Fecha máxima de pago:</div>

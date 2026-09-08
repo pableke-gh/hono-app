@@ -43,6 +43,8 @@
 			<i class="far fa-save"></i><h:outputText value="#{msg['lbl.btn.no.enviar']}" escape="false" /></button>
 
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-		<ui:include src="../parts/btn_doc.xhtml"></ui:include>
+		<ui:include src="../parts/btn_doc.xhtml">
+			<ui:param name="report" value="report" />
+		</ui:include>
 	</div>
 </html>

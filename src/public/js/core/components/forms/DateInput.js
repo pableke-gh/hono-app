@@ -19,9 +19,6 @@ export default class DateInput extends TextInput {
 		this.updateRange(); // is date range => update attributes
 		return this;
 	}
-	validate() {
-		return input.validate(this);
-	}
 
 	isDate() { return true; } // input type date
 	updateRange = () => {} // event handler

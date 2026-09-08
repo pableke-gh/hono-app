@@ -11,10 +11,10 @@ import paises from "../../data/paises.js";
 
 export default class Terceros extends TableHTML {
 	connectedCallback() {
-		this.setMsgEmpty("Sin terceros asociados a la solicitud");
+		this.setMsgEmpty("Sin beneficiarios asociados a la solicitud");
 		this.set("#view", row => {
 			api.init().json("/uae/becas/cuentas?nif=" + row.nif).then(cuentas => {
-				document.forms.tercero.view(row, cuentas); // show tercero tab
+				document.forms.tercero.load(row, cuentas); // show tercero tab
 			});
 		});
 	}
@@ -28,7 +28,7 @@ export default class Terceros extends TableHTML {
 
 	row(data, i, resume) {
 		const estado = tercero.setData(data).getEstado(); // indice de estado
-		const cssEstado = [ "text-warn", "text-error", "text-green" ]; // nuevo = 0, cancelado = 1, activo = 2
+		const cssEstado = [ "text-warn", "text-green", "text-error", "text-warn" ]; // activo = 1, cancelado = 2, nuevo = 3
 		const isIbanNuevo = tercero.isIbanNuevo(data.mask) ? "Sí" : "No"; // indicador de si el iban es nuevo o no
 		const view = '<a href="#view"><i class="fas fa-search action resize text-blue"></i></a>'; // icono de ver tercero
 		const remove = beca.isEditable() ? '<a href="#remove" class="fas fa-times action resize text-red" title="Eliminar beneficiario"></a>' : "";

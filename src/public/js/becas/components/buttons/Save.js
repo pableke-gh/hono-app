@@ -12,7 +12,7 @@ export default class ButtonSave extends ButtonForm {
 	}
 
 	execute(ev) {
-		if (this.form.validate(".ui-beca") && i18n.confirm("msgSend")) // validate and user confirmation
+		if (this.form.validate() && i18n.confirm("msgSend")) // validate and user confirmation
 			api.setFormData(this.form.getFormData()).json("/uae/becas/save").then(tabs.showInit);
 		ev.preventDefault(); // ajax call
 	}

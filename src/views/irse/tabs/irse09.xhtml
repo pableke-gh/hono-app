@@ -89,6 +89,8 @@
 			<i class="far fa-file-signature"></i><h:outputText value="#{msg['lbl.btn.enviar']}" escape="false" /></button>
 
 		<ui:include src="../parts/btn_firmar.xhtml"></ui:include>
-		<ui:include src="../parts/btn_doc.xhtml"></ui:include>
+		<ui:include src="../parts/btn_doc.xhtml">
+			<ui:param name="report" value="report9" />
+		</ui:include>
 	</div>
 </html>

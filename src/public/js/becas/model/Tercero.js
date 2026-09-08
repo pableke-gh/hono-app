@@ -4,8 +4,11 @@ import Base from "../../core/model/Base.js";
 class Tercero extends Base {
 	setData(data) {
 		super.setData(data); // load new data
-		const mask = data.mask & 65535; // bit16 = avoid bit17
-		return this.setEstado(mask ? ((mask & 1) ? 1 : 2) : 0);
+		if (!data.estado) { // data from server
+			const mask = data.mask & 65535; // bit16 = avoid bit17
+			this.setEstado(mask ? ((mask & 1) + 1) : 3); // activo = 1, cancelado = 2, nuevo = 3
+		}
+		return this;
 	}
 
 	isNuevo() { return (this.getMask() == 0); }

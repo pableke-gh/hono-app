@@ -29,9 +29,9 @@ export default class NifTercero extends TextInput {
 	connectedCallback() {
 		this.addChange(ev => {
 			this.setValue(sb.toUpperWord(ev.target.value));
-			if (sb.size(this.value) < 5) return; // nif invalido
+			if (sb.size(this.value) < 6) return; // nif invalido
 			api.init().json("/uae/becas/tercero/nif", { nif: this.value }).then(data => {
-				this.form.view(data.tercero, data.cuentas); // update inputs
+				this.form.load(data.tercero, data.cuentas); // update inputs
 			});
 		});
 	}
