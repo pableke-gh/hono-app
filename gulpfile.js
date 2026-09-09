@@ -8,10 +8,8 @@ import cssnano from "gulp-cssnano";
 import transform from "gulp-transform";
 
 const VIEW_FILES = "src/views/**/*";
-const VIEW_CV_CM = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules/**/*";
-const TPLS_CV_CM = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates/**/*";
-const VIEW_CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules/**/*";
-const TPLS_CV_IRSE = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates/**/*";
+const VIEW_CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/public/views/**/*";
+const TPLS_CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/public/templates/**/*";
 const VIEW_OPTION = {
 	caseSensitive: true,
 	sortClassName: true,
@@ -47,25 +45,41 @@ gulp.task("minify-views", done => {
 	gulp.src("dist/public").pipe(gulp.symlink("dist/views")); // static server links
 	gulp.src(VIEW_FILES).pipe(htmlmin(VIEW_OPTION)).pipe(gulp.dest(VIEW_DEST)).on("end", done);
 });
-gulp.task("minify-views-cv-cm", done => {
-	const VIEW_DEST = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules";
-	fs.rmSync(VIEW_DEST, { recursive: true, force: true }); // remove obsolete files
-	gulp.src(VIEW_CV_CM).pipe(htmlmin(VIEW_OPTION)).pipe(gulp.dest(VIEW_DEST)).on("end", done);
+gulp.task("minify-views-cv", done => {
+	const RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules";
+	const TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules";
+	const IRSE_RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules";
+	const IRSE_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/target/classes/META-INF/resources/modules";
+
+	// remove obsolete files
+	fs.rmSync(RESOURCES, { recursive: true, force: true });
+	fs.rmSync(TARGET, { recursive: true, force: true });
+	fs.rmSync(IRSE_RESOURCES, { recursive: true, force: true });
+	fs.rmSync(IRSE_TARGET, { recursive: true, force: true });
+
+	// minifi view resources
+	gulp.src(VIEW_CV).pipe(htmlmin(VIEW_OPTION))
+		.pipe(gulp.dest(RESOURCES)).pipe(gulp.dest(TARGET))
+		.pipe(gulp.dest(IRSE_RESOURCES)).pipe(gulp.dest(IRSE_TARGET))
+		.on("end", done);
 });
-gulp.task("minify-templates-cv-cm", done => {
-	const VIEW_DEST = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/templates";
-	fs.rmSync(VIEW_DEST, { recursive: true, force: true }); // remove obsolete files
-	gulp.src(TPLS_CV_CM).pipe(htmlmin(VIEW_OPTION)).pipe(gulp.dest(VIEW_DEST)).on("end", done);
-});
-gulp.task("minify-views-cv-irse", done => {
-	const VIEW_DEST = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/target/classes/META-INF/resources/modules";
-	fs.rmSync(VIEW_DEST, { recursive: true, force: true }); // remove obsolete files
-	gulp.src(VIEW_CV_IRSE).pipe(htmlmin(VIEW_OPTION)).pipe(gulp.dest(VIEW_DEST)).on("end", done);
-});
-gulp.task("minify-templates-cv-irse", done => {
-	const VIEW_DEST = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/target/classes/templates";
-	fs.rmSync(VIEW_DEST, { recursive: true, force: true }); // remove obsolete files
-	gulp.src(TPLS_CV_IRSE).pipe(htmlmin(VIEW_OPTION)).pipe(gulp.dest(VIEW_DEST)).on("end", done);
+gulp.task("minify-templates-cv", done => {
+	const RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates";
+	const TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/templates";
+	const IRSE_RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates";
+	const IRSE_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/target/classes/templates";
+
+	// remove obsolete files
+	fs.rmSync(RESOURCES, { recursive: true, force: true });
+	fs.rmSync(TARGET, { recursive: true, force: true });
+	fs.rmSync(IRSE_RESOURCES, { recursive: true, force: true });
+	fs.rmSync(IRSE_TARGET, { recursive: true, force: true });
+
+	// minifi template resources
+	gulp.src(TPLS_CV).pipe(htmlmin(VIEW_OPTION))
+		.pipe(gulp.dest(RESOURCES)).pipe(gulp.dest(TARGET))
+		.pipe(gulp.dest(IRSE_RESOURCES)).pipe(gulp.dest(IRSE_TARGET))
+		.on("end", done);
 });
 
 // Tasks to minify all CSS
@@ -121,18 +135,13 @@ gulp.task("static", done => {
 gulp.task("deploy", gulp.series("modules", "minify-views", "minify-css", "copy-ts", "minify-js"));
 
 // Task to build dist in Campus Virtual
-gulp.task("cv", gulp.series(
-	"minify-views-cv-cm", "minify-templates-cv-cm", "minify-views-cv-irse", "minify-templates-cv-irse",
-	"minify-js-cv", "minify-css-cv"
-));
+gulp.task("cv", gulp.series("minify-views-cv", "minify-templates-cv", "minify-js-cv", "minify-css-cv" ));
 
 gulp.task("watch", () => {
 	// Gulp views minifies
 	gulp.watch(VIEW_FILES, gulp.series("minify-views"));
-	gulp.watch(VIEW_CV_CM, gulp.series("minify-views-cv-cm"));
-	gulp.watch(TPLS_CV_CM, gulp.series("minify-templates-cv-cm"));
-	gulp.watch(VIEW_CV_IRSE, gulp.series("minify-views-cv-irse"));
-	gulp.watch(TPLS_CV_IRSE, gulp.series("minify-templates-cv-irse"));
+	gulp.watch(VIEW_CV, gulp.series("minify-views-cv"));
+	gulp.watch(TPLS_CV, gulp.series("minify-templates-cv"));
 
 	// Gulp JS minifies
 	gulp.watch(JS_FILES, gulp.series("minify-js"));
@@ -148,7 +157,7 @@ gulp.task("watch", () => {
 });
 
 gulp.task("default", gulp.series(
-	"minify-views", "minify-views-cv-cm", "minify-templates-cv-cm", "minify-views-cv-irse", "minify-templates-cv-irse",
+	"minify-views", "minify-views-cv", "minify-templates-cv",
 	"minify-js", "minify-js-cv",
 	"minify-css", "minify-css-cv",
 	//"copy-ts", "modules", "static",
