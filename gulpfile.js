@@ -24,14 +24,11 @@ const VIEW_OPTION = {
 };
 
 const JS_FILES = "src/public/js/**/*.js*"; // .js, .jsm or .json
-const JS_FILES_CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/js/**/*.js";
+const JS_FILES_CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/public/js/**/*.js";
 const JS_ROOT = "src/public/js/*.js";
 
 const CSS_FILES = "src/public/css/**/*.css";
-const CSS_CV = [
-	"C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/css/**/*.css", // Select all CSS files
-	"!C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/css/**/*-min.css" // Exclude minified files
-];
+const CSS_CV = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/public/css/**/*.css";
 
 const TS_FILES = [ "src/**/*.ts", "src/**/*.tsx" ];
 const JS_SRC = [ "src/*.js", "src/dao/**/*", "src/data/**/*", "src/i18n/**/*", "src/lib/**/*", "src/routes/**/*" ];
@@ -78,13 +75,11 @@ gulp.task("minify-css", done => {
 	gulp.src(CSS_FILES).pipe(concat("styles-min.css")).pipe(cssnano({ reduceIdents: false })).pipe(gulp.dest(CSS_DEST)).on("end", done);
 });
 gulp.task("minify-css-cv", done => {
-	const RESOURCE ="C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/css";
-	const TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/target/uae/resources/css";
-
-	fs.rmSync(TARGET, { recursive: true, force: true }); // remove previous css files
-	fs.mkdirSync(TARGET, { recursive: true }); // restore css root
+	const RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/css";
+	const CSS_DEST = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/target/uae/resources/css";
+	fs.rmSync(CSS_DEST, { recursive: true, force: true }); // remove previous css files
 	gulp.src(CSS_CV).pipe(concat("styles-min.css")).pipe(cssnano({ reduceIdents: false }))
-		.pipe(gulp.dest(RESOURCE)).pipe(gulp.dest(TARGET)).on("end", done);
+		.pipe(gulp.dest(RESOURCES)).pipe(gulp.dest(CSS_DEST)).on("end", done);
 });
 
 // Tasks to minify all JS
@@ -96,11 +91,13 @@ gulp.task("minify-js", done => {
 	gulp.src(JS_FILES).pipe(terser()).pipe(transform(fnRemoveWhitespace)).pipe(gulp.dest(JS_DEST)).on("end", done);
 });
 gulp.task("minify-js-cv", done => {
+	const RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/src/main/webapp/resources/js";
 	const JS_DEST = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/applications/uae/target/uae/resources/js";
 	const fnRemoveWhitespace = contents => new Buffer(contents.toString().replace(/\s+/g, " "), "utf8"); // remove all whitespace   
 
 	fs.rmSync(JS_DEST, { recursive: true, force: true }); // Remove previous unused files
-	gulp.src(JS_FILES_CV).pipe(terser()).pipe(transform(fnRemoveWhitespace)).pipe(gulp.dest(JS_DEST)).on("end", done);
+	gulp.src(JS_FILES_CV).pipe(terser()).pipe(transform(fnRemoveWhitespace))
+		.pipe(gulp.dest(RESOURCES)).pipe(gulp.dest(JS_DEST)).on("end", done);
 });
 gulp.task("minify-js-root", done => { // root js's
 	gulp.src(JS_ROOT).pipe(terser()).pipe(gulp.dest("dist/public/js")).on("end", done);
