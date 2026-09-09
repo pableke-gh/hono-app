@@ -48,37 +48,27 @@ gulp.task("minify-views", done => {
 gulp.task("minify-views-cv", done => {
 	const RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/META-INF/resources/modules";
 	const TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/META-INF/resources/modules";
-	const IRSE_RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/META-INF/resources/modules";
-	const IRSE_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/target/classes/META-INF/resources/modules";
 
 	// remove obsolete files
 	fs.rmSync(RESOURCES, { recursive: true, force: true });
 	fs.rmSync(TARGET, { recursive: true, force: true });
-	fs.rmSync(IRSE_RESOURCES, { recursive: true, force: true });
-	fs.rmSync(IRSE_TARGET, { recursive: true, force: true });
 
 	// minifi view resources
 	gulp.src(VIEW_CV).pipe(htmlmin(VIEW_OPTION))
 		.pipe(gulp.dest(RESOURCES)).pipe(gulp.dest(TARGET))
-		.pipe(gulp.dest(IRSE_RESOURCES)).pipe(gulp.dest(IRSE_TARGET))
 		.on("end", done);
 });
 gulp.task("minify-templates-cv", done => {
 	const RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/src/main/resources/templates";
 	const TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-cm/target/classes/templates";
-	const IRSE_RESOURCES = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/src/main/resources/templates";
-	const IRSE_TARGET = "C:/CampusVirtualV2/workspaceGIT/campusvirtual/modules/cv-irse/target/classes/templates";
 
 	// remove obsolete files
 	fs.rmSync(RESOURCES, { recursive: true, force: true });
 	fs.rmSync(TARGET, { recursive: true, force: true });
-	fs.rmSync(IRSE_RESOURCES, { recursive: true, force: true });
-	fs.rmSync(IRSE_TARGET, { recursive: true, force: true });
 
 	// minifi template resources
 	gulp.src(TPLS_CV).pipe(htmlmin(VIEW_OPTION))
 		.pipe(gulp.dest(RESOURCES)).pipe(gulp.dest(TARGET))
-		.pipe(gulp.dest(IRSE_RESOURCES)).pipe(gulp.dest(IRSE_TARGET))
 		.on("end", done);
 });
 
