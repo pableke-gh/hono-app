@@ -10,7 +10,7 @@
 		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="importConstants">
-		<p:importConstants type="es.upct.portal.modules.authorities.XecomGroups" var="xecomGroups" />
+		<p:importConstants type="es.upct.portal.modules.isuite.authorities.IsuiteGroups" var="IsuiteGroups" />
 	</ui:define>
 	<ui:define name="metadata">
 		<f:metadata>
@@ -60,20 +60,20 @@
 				<li><a href="/uae/modules/factura/index.xhtml"><i class="fas fa-file-invoice"></i> Solicitud de Facturas y Cartas de Pago</a></li>
 			</ul>
 			
-			<c:if test="#{sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_ING)}">
+			<c:if test="#{sec:hasAuthority(IsuiteGroups.X_CV_UAE_EXTRAECO_ING)}">
 				<h2>Ingresos</h2>
 				<ul>
-					<li><a href="/uae/modules/xecom/ttpp.xhtml">Ingresos de Gestión Académica</a></li>
-					<li><a href="/uae/modules/xecom/ttpp.xhtml?tpv=1">Ingresos de Gestión Económica</a></li>
+					<li><a href="/uae/modules/isuite/ttpp.xhtml">Ingresos de Gestión Académica</a></li>
+					<li><a href="/uae/modules/isuite/ttpp.xhtml?tpv=1">Ingresos de Gestión Económica</a></li>
 				</ul>
 			</c:if>
 
-			<c:if test="#{sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_GACA) or sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_UAE) or sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_GERENCIA)}">
+			<c:if test="#{sec:hasAuthority(IsuiteGroups.X_CV_UAE_EXTRAECO_GACA) or sec:hasAuthority(IsuiteGroups.X_CV_UAE_EXTRAECO_UAE) or sec:hasAuthority(IsuiteGroups.X_CV_UAE_EXTRAECO_GERENCIA)}">
 			<h2>Gestión Presupuestaria</h2>
 			<ul>
-				<li><a href="/uae/modules/xecom/panel_gc.xhtml">Panel de Gestión Presupuestaria</a></li>
-				<c:if test="#{sec:hasAuthority(xecomGroups.X_CV_UAE_EXTRAECO_UAE)}">
-					<li><a href="/uae/modules/xecom/panel_fcb.xhtml">Panel del Fondo de Cobertura</a></li>
+				<li><a href="/uae/modules/isuite/panel_gc.xhtml">Panel de Gestión Presupuestaria</a></li>
+				<c:if test="#{sec:hasAuthority(IsuiteGroups.X_CV_UAE_EXTRAECO_UAE)}">
+					<li><a href="/uae/modules/isuite/panel_fcb.xhtml">Panel del Fondo de Cobertura</a></li>
 				</c:if>
 			</ul>
 			</c:if>
